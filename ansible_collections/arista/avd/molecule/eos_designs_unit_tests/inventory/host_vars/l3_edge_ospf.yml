@@ -1,4 +1,5 @@
 underlay_routing_protocol: ospf
+underlay_ospf_graceful_restart: false
 
 type: spine
 spine:

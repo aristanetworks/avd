@@ -17109,6 +17109,43 @@ class EosDesigns(EosDesignsRootModel):
 
             Ipv6AddressVirtuals._item_type = str
 
+            class Ipv6Nd(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "advertise_ipv6_address_virtuals": {"type": bool},
+                    "valid_lifetime": {"type": str},
+                    "preferred_lifetime": {"type": str},
+                }
+                advertise_ipv6_address_virtuals: bool | None
+                """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+                valid_lifetime: str | None
+                """In seconds <0-4294967295> or infinite."""
+                preferred_lifetime: str | None
+                """In seconds <0-4294967295> or infinite."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ipv6Nd.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                            valid_lifetime: In seconds <0-4294967295> or infinite.
+                            preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                        """
+
             class IpAddressVirtualSecondaries(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -17611,6 +17648,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv6_enable": {"type": bool},
                 "ip_address_virtual": {"type": str},
                 "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+                "ipv6_nd": {"type": Ipv6Nd},
                 "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                 "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -17669,6 +17707,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdList with `str` items.
             """
+            ipv6_nd: Ipv6Nd
+            """Subclass of AvdModel."""
             ip_address_virtual_secondaries: IpAddressVirtualSecondaries
             """
             Secondary IPv4 VXLAN Anycast IP addresses.
@@ -17848,6 +17888,7 @@ class EosDesigns(EosDesignsRootModel):
                     ipv6_enable: bool | None | UndefinedType = Undefined,
                     ip_address_virtual: str | None | UndefinedType = Undefined,
                     ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                    ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                     ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                     ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -17901,6 +17942,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                            Subclass of AvdList with `str` items.
+                        ipv6_nd: Subclass of AvdModel.
                         ip_address_virtual_secondaries:
                            Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -18033,6 +18075,39 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `str` items."""
 
         Ipv6AddressVirtuals._item_type = str
+
+        class Ipv6Nd(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"advertise_ipv6_address_virtuals": {"type": bool}, "valid_lifetime": {"type": str}, "preferred_lifetime": {"type": str}}
+            advertise_ipv6_address_virtuals: bool | None
+            """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+            valid_lifetime: str | None
+            """In seconds <0-4294967295> or infinite."""
+            preferred_lifetime: str | None
+            """In seconds <0-4294967295> or infinite."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                    valid_lifetime: str | None | UndefinedType = Undefined,
+                    preferred_lifetime: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6Nd.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                        valid_lifetime: In seconds <0-4294967295> or infinite.
+                        preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                    """
 
         class IpAddressVirtualSecondaries(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -18538,6 +18613,7 @@ class EosDesigns(EosDesignsRootModel):
             "ipv6_enable": {"type": bool},
             "ip_address_virtual": {"type": str},
             "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+            "ipv6_nd": {"type": Ipv6Nd},
             "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -18612,6 +18688,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdList with `str` items.
         """
+        ipv6_nd: Ipv6Nd
+        """Subclass of AvdModel."""
         ip_address_virtual_secondaries: IpAddressVirtualSecondaries
         """
         Secondary IPv4 VXLAN Anycast IP addresses.
@@ -18793,6 +18871,7 @@ class EosDesigns(EosDesignsRootModel):
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ip_address_virtual: str | None | UndefinedType = Undefined,
                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -18858,6 +18937,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdList with `str` items.
+                    ipv6_nd: Subclass of AvdModel.
                     ip_address_virtual_secondaries:
                        Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -44402,6 +44482,43 @@ class EosDesigns(EosDesignsRootModel):
 
                             Ipv6AddressVirtuals._item_type = str
 
+                            class Ipv6Nd(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {
+                                    "advertise_ipv6_address_virtuals": {"type": bool},
+                                    "valid_lifetime": {"type": str},
+                                    "preferred_lifetime": {"type": str},
+                                }
+                                advertise_ipv6_address_virtuals: bool | None
+                                """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+                                valid_lifetime: str | None
+                                """In seconds <0-4294967295> or infinite."""
+                                preferred_lifetime: str | None
+                                """In seconds <0-4294967295> or infinite."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                                        valid_lifetime: str | None | UndefinedType = Undefined,
+                                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Ipv6Nd.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                                            valid_lifetime: In seconds <0-4294967295> or infinite.
+                                            preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                                        """
+
                             class IpAddressVirtualSecondaries(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
 
@@ -44916,6 +45033,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ipv6_enable": {"type": bool},
                                 "ip_address_virtual": {"type": str},
                                 "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+                                "ipv6_nd": {"type": Ipv6Nd},
                                 "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                                 "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -44984,6 +45102,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
+                            ipv6_nd: Ipv6Nd
+                            """Subclass of AvdModel."""
                             ip_address_virtual_secondaries: IpAddressVirtualSecondaries
                             """
                             Secondary IPv4 VXLAN Anycast IP addresses.
@@ -45164,6 +45284,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_enable: bool | None | UndefinedType = Undefined,
                                     ip_address_virtual: str | None | UndefinedType = Undefined,
                                     ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                                    ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                                     ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                                     ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -45223,6 +45344,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                            Subclass of AvdList with `str` items.
+                                        ipv6_nd: Subclass of AvdModel.
                                         ip_address_virtual_secondaries:
                                            Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -45355,6 +45477,43 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         Ipv6AddressVirtuals._item_type = str
+
+                        class Ipv6Nd(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "advertise_ipv6_address_virtuals": {"type": bool},
+                                "valid_lifetime": {"type": str},
+                                "preferred_lifetime": {"type": str},
+                            }
+                            advertise_ipv6_address_virtuals: bool | None
+                            """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+                            valid_lifetime: str | None
+                            """In seconds <0-4294967295> or infinite."""
+                            preferred_lifetime: str | None
+                            """In seconds <0-4294967295> or infinite."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                                    valid_lifetime: str | None | UndefinedType = Undefined,
+                                    preferred_lifetime: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ipv6Nd.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                                        valid_lifetime: In seconds <0-4294967295> or infinite.
+                                        preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                                    """
 
                         class IpAddressVirtualSecondaries(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -45868,6 +46027,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv6_enable": {"type": bool},
                             "ip_address_virtual": {"type": str},
                             "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+                            "ipv6_nd": {"type": Ipv6Nd},
                             "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -45966,6 +46126,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdList with `str` items.
                         """
+                        ipv6_nd: Ipv6Nd
+                        """Subclass of AvdModel."""
                         ip_address_virtual_secondaries: IpAddressVirtualSecondaries
                         """
                         Secondary IPv4 VXLAN Anycast IP addresses.
@@ -46150,6 +46312,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv6_enable: bool | None | UndefinedType = Undefined,
                                 ip_address_virtual: str | None | UndefinedType = Undefined,
                                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -46231,6 +46394,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
+                                    ipv6_nd: Subclass of AvdModel.
                                     ip_address_virtual_secondaries:
                                        Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -69276,7 +69440,6 @@ class EosDesigns(EosDesignsRootModel):
         "l3_edge": {"type": L3Edge},
         "l3_interface_profiles": {"type": L3InterfaceProfiles},
         "load_interval": {"type": EosCliConfigGen.LoadInterval},
-        "local_users": {"type": EosCliConfigGen.LocalUsers},
         "logging_settings": {"type": LoggingSettings},
         "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
@@ -69423,7 +69586,6 @@ class EosDesigns(EosDesignsRootModel):
         "overlay_cvx_servers": {"type": OverlayCvxServers},
         "overlay_her_flood_list_per_vni": {"type": bool, "default": False},
         "overlay_her_flood_list_scope": {"type": str, "default": "fabric"},
-        "overlay_loopback_description": {"type": str},
         "overlay_mlag_rfc5549": {"type": bool, "default": False},
         "overlay_rd_type": {"type": OverlayRdType},
         "overlay_routing_protocol": {"type": str},
@@ -69671,7 +69833,7 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_ospf_area": {"type": str, "default": "0.0.0.0"},
         "underlay_ospf_authentication": {"type": UnderlayOspfAuthentication},
         "underlay_ospf_bfd_enable": {"type": bool, "default": False},
-        "underlay_ospf_graceful_restart": {"type": bool, "default": False},
+        "underlay_ospf_graceful_restart": {"type": bool, "default": True},
         "underlay_ospf_max_lsa": {"type": int, "default": 12000},
         "underlay_ospf_maximum_paths": {"type": int},
         "underlay_ospf_process_id": {"type": int, "default": 100},
@@ -70589,10 +70751,15 @@ class EosDesigns(EosDesignsRootModel):
     is_deployed: bool
     """
     If the device is already deployed in the fabric.
-    When set to false, interfaces toward this device
-    may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.
-    Furthermore
-    `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.
+    When set to false:
+      - The `cv_deploy` role will
+    not apply configurations to this device.
+      - Peer interfaces toward this device may be shutdown
+    based on the `shutdown_interfaces_towards_undeployed_peers` setting.
+      - BGP peerings toward this
+    device may be shutdown based on the `shutdown_bgp_towards_undeployed_peers` setting.
+      - Validation
+    tests by the `anta_runner` role are automatically skipped for this device.
 
     Default value: `True`
     """
@@ -70654,7 +70821,6 @@ class EosDesigns(EosDesignsRootModel):
     `L3InterfaceProfilesItem` items. Primary key is `profile` (`str`).
     """
     load_interval: EosCliConfigGen.LoadInterval
-    local_users: EosCliConfigGen.LocalUsers
     logging_settings: LoggingSettings
     """
     Logging settings
@@ -71022,8 +71188,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"fabric"`
     """
-    overlay_loopback_description: str | None
-    """Customize the description on overlay interface Loopback0."""
     overlay_mlag_rfc5549: bool
     """
     IPv6 Unnumbered for MLAG iBGP connections.
@@ -71212,38 +71376,14 @@ class EosDesigns(EosDesignsRootModel):
     """
     shutdown_bgp_towards_undeployed_peers: bool
     """
-    When a device is set undeployed using `is_deployed: false` and
-    `shutdown_bgp_towards_undeployed_peers` key is set to true, the BGP neighborship is shutdown on the
-    peer.
+    Administratively shuts down BGP peerings towards devices marked with `is_deployed: false`.
 
     Default value: `True`
     """
     shutdown_interfaces_towards_undeployed_peers: bool
     """
-    - It is possible to provision configurations for a complete topology but flag devices as undeployed
-    using the host level variable `is_deployed: false`.
-
-    ```yaml
-    # Use at the host level
-    is_deployed: <
-    true or false or default -> true >
-    ```
-
-    - By default, this will have no impact within the
-    `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still
-    be pushed by the `eos_config_deploy_eapi` directly to devices if used.
-    - However, if the
-    `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices
-    flagged  as `is_deployed: false` and not attempt to configure them.
-    - If the device is not present
-    in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail
-    tests on peers of the undeployed device trying to verify that interfaces are up.
-    - To overcome this
-    and shutdown interfaces towards undeployed peers, the variable
-    `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role
-    interface tests.
-    - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices
-    are not present in the network.
+    Administratively shuts down interfaces on deployed devices that connect to a peer marked with
+    `is_deployed: false`.
 
     Default value: `True`
     """
@@ -71518,7 +71658,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     Enable graceful restart for OSPF underlay.
 
-    Default value: `False`
+    Default value: `True`
     """
     underlay_ospf_max_lsa: int
     """Default value: `12000`"""
@@ -71807,7 +71947,6 @@ class EosDesigns(EosDesignsRootModel):
             l3_edge: L3Edge | UndefinedType = Undefined,
             l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
             load_interval: EosCliConfigGen.LoadInterval | UndefinedType = Undefined,
-            local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
             logging_settings: LoggingSettings | UndefinedType = Undefined,
             mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
@@ -71839,7 +71978,6 @@ class EosDesigns(EosDesignsRootModel):
             overlay_cvx_servers: OverlayCvxServers | UndefinedType = Undefined,
             overlay_her_flood_list_per_vni: bool | UndefinedType = Undefined,
             overlay_her_flood_list_scope: Literal["fabric", "dc"] | UndefinedType = Undefined,
-            overlay_loopback_description: str | None | UndefinedType = Undefined,
             overlay_mlag_rfc5549: bool | UndefinedType = Undefined,
             overlay_rd_type: OverlayRdType | UndefinedType = Undefined,
             overlay_routing_protocol: Literal["ebgp", "ibgp", "cvx", "her", "none"] | None | UndefinedType = Undefined,
@@ -72583,10 +72721,15 @@ class EosDesigns(EosDesignsRootModel):
                    routes defined under 'ipv6_mgmt_destination_networks'.
                 is_deployed:
                    If the device is already deployed in the fabric.
-                   When set to false, interfaces toward this device
-                   may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.
-                   Furthermore
-                   `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.
+                   When set to false:
+                     - The `cv_deploy` role will
+                   not apply configurations to this device.
+                     - Peer interfaces toward this device may be shutdown
+                   based on the `shutdown_interfaces_towards_undeployed_peers` setting.
+                     - BGP peerings toward this
+                   device may be shutdown based on the `shutdown_bgp_towards_undeployed_peers` setting.
+                     - Validation
+                   tests by the `anta_runner` role are automatically skipped for this device.
                 isis_advertise_passive_only: isis_advertise_passive_only
                 isis_area_id: isis_area_id
                 isis_default_circuit_type:
@@ -72619,7 +72762,6 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of AvdIndexedList with
                    `L3InterfaceProfilesItem` items. Primary key is `profile` (`str`).
                 load_interval: load_interval
-                local_users: local_users
                 logging_settings:
                    Logging settings
 
@@ -72882,7 +73024,6 @@ class EosDesigns(EosDesignsRootModel):
                    This can be changed to all VTEPs in the DC (sharing the same "dc_name" value).
                    This is useful
                    if Border Leaf switches are dividing the VXLAN overlay into separate domains.
-                overlay_loopback_description: Customize the description on overlay interface Loopback0.
                 overlay_mlag_rfc5549:
                    IPv6 Unnumbered for MLAG iBGP connections.
                    Requires "underlay_rfc5549: true".
@@ -73019,35 +73160,10 @@ class EosDesigns(EosDesignsRootModel):
                    For
                    default enabling of sFlow for various interface types across the fabric see `fabric_sflow`.
                    Subclass of AvdModel.
-                shutdown_bgp_towards_undeployed_peers:
-                   When a device is set undeployed using `is_deployed: false` and
-                   `shutdown_bgp_towards_undeployed_peers` key is set to true, the BGP neighborship is shutdown on the
-                   peer.
+                shutdown_bgp_towards_undeployed_peers: Administratively shuts down BGP peerings towards devices marked with `is_deployed: false`.
                 shutdown_interfaces_towards_undeployed_peers:
-                   - It is possible to provision configurations for a complete topology but flag devices as undeployed
-                   using the host level variable `is_deployed: false`.
-
-                   ```yaml
-                   # Use at the host level
-                   is_deployed: <
-                   true or false or default -> true >
-                   ```
-
-                   - By default, this will have no impact within the
-                   `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still
-                   be pushed by the `eos_config_deploy_eapi` directly to devices if used.
-                   - However, if the
-                   `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices
-                   flagged  as `is_deployed: false` and not attempt to configure them.
-                   - If the device is not present
-                   in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail
-                   tests on peers of the undeployed device trying to verify that interfaces are up.
-                   - To overcome this
-                   and shutdown interfaces towards undeployed peers, the variable
-                   `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role
-                   interface tests.
-                   - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices
-                   are not present in the network.
+                   Administratively shuts down interfaces on deployed devices that connect to a peer marked with
+                   `is_deployed: false`.
                 snmp_settings:
                    SNMP settings.
                    Configuration of remote SNMP engine IDs are currently only possible using

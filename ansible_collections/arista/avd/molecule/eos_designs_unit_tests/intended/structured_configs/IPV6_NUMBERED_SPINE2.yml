@@ -78,7 +78,7 @@ ntp:
   servers:
   - name: time.google.com
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
