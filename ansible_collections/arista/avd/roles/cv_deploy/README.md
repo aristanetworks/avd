@@ -351,7 +351,7 @@ Click "Save" to exit the dialogue box.
 
 The `arista.avd.cv_deploy` role supports connecting to CloudVision through an [HTTP CONNECT](https://en.wikipedia.org/wiki/HTTP_tunnel#HTTP_CONNECT_method) proxy server, with or without basic authentication.
 
-To enable the proxy, set `cv_proxy_host` (port `TCP/8080` will be used by default). If this variable is not defined, a proxy will not be used (default mode).
+To enable the proxy, set `proxy_host` (port `TCP/8080` will be used by default). If this variable is not defined, a proxy will not be used (default mode).
 
 !!! Warning
 
@@ -365,29 +365,29 @@ Below settings allow modifying the default proxy-related behavior as needed. The
 
 ```yaml
 # Set FQDN/IP of the HTTP CONNECT proxy server.
-cv_proxy_host: <str>
+proxy_host: <str>
 # Set target TCP port of the HTTP CONNECT proxy server.
-cv_proxy_port: 8080
+proxy_port: 8080
 # Set authentication username for the HTTP CONNECT proxy server.
-cv_proxy_username: <str>
+proxy_username: <str>
 # Set authentication password for the HTTP CONNECT proxy server.
-cv_proxy_password: <str>
+proxy_password: <str>
 ```
 
 Example of the configuration to use unauthenticated HTTP proxy using CONNECT method:
 
 ```yaml
-cv_proxy_host: proxy.local.domain
-cv_proxy_port: 3128
+proxy_host: proxy.local.domain
+proxy_port: 3128
 ```
 
 Example of the configuration to use authenticated HTTP proxy using CONNECT method:
 
 ```yaml
-cv_proxy_host: proxy.local.domain
-cv_proxy_port: 3128
-cv_proxy_username: "avd_proxy_user"
-cv_proxy_password: "avd_proxy_password"
+proxy_host: proxy.local.domain
+proxy_port: 3128
+proxy_username: "avd_proxy_user"
+proxy_password: "avd_proxy_password"
 ```
 
 ## License

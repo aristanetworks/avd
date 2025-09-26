@@ -41,19 +41,19 @@ options:
     description: Verifies CloudVison server certificates.
     type: bool
     default: true
-  cv_proxy_host:
+  proxy_host:
     description: FQDN/IP of the HTTP CONNECT proxy server.
     type: str
     required: false
-  cv_proxy_port:
+  proxy_port:
     description: TCP port of the HTTP CONNECT proxy server.
     type: int
     default: 8080
-  cv_proxy_username:
+  proxy_username:
     description: Authentication username for the HTTP CONNECT proxy server.
     type: str
     required: false
-  cv_proxy_password:
+  proxy_password:
     description: Authentication password for the HTTP CONNECT proxy server. It is strongly recommended to use Vault for this.
     type: str
     required: false
@@ -220,10 +220,10 @@ EXAMPLES = r"""
         cv_servers: [ "www.arista.io" ]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: true
-        # cv_proxy_host: "proxy.local.domain"
-        # cv_proxy_port: "8080"
-        # cv_proxy_username: "avd_user"
-        # cv_proxy_password: "avd_password"
+        # proxy_host: "proxy.local.domain"
+        # proxy_port: "8080"
+        # proxy_username: "avd_user"
+        # proxy_password: "avd_password"
         configuration_dir: "{{ inventory_dir }}/intended/configs"
         structured_config_dir: "{{ inventory_dir }}/intended/structured_configs"
         # structured_config_suffix: "yml"

@@ -58,10 +58,10 @@ ARGUMENT_SPEC = {
     "cv_username": {"type": "str", "required": False},
     "cv_password": {"type": "str", "secret": True, "required": False},
     "cv_verify_certs": {"type": "bool", "default": True},
-    "cv_proxy_host": {"type": "str", "required": False},
-    "cv_proxy_port": {"type": "int", "required": False, "default": 8080},
-    "cv_proxy_username": {"type": "str", "required": False},
-    "cv_proxy_password": {"type": "str", "secret": True, "required": False},
+    "proxy_host": {"type": "str", "required": False},
+    "proxy_port": {"type": "int", "required": False, "default": 8080},
+    "proxy_username": {"type": "str", "required": False},
+    "proxy_password": {"type": "str", "secret": True, "required": False},
     "workspace": {
         "type": "dict",
         "options": {
@@ -143,10 +143,10 @@ class ActionModule(ActionBase):
                 username=validated_args.get("cv_username"),
                 password=validated_args.get("cv_password"),
                 verify_certs=validated_args["cv_verify_certs"],
-                proxy_host=get(validated_args, "cv_proxy_host"),
-                proxy_port=get(validated_args, "cv_proxy_port"),
-                proxy_username=get(validated_args, "cv_proxy_username"),
-                proxy_password=get(validated_args, "cv_proxy_password"),
+                proxy_host=get(validated_args, "proxy_host"),
+                proxy_port=get(validated_args, "proxy_port"),
+                proxy_username=get(validated_args, "proxy_username"),
+                proxy_password=get(validated_args, "proxy_password"),
             )
             # Build lists of CVEosConfig, CVDeviceTag, CVInterfaceTag and CVPathfinderMetadata objects.
             eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects = await self.build_objects(

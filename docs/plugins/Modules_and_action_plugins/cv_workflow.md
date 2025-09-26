@@ -37,10 +37,10 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | <samp>cv_username</samp> | str | False | None |  | Username to use if `cv_token` is missing. Not supported for CVaaS. |
 | <samp>cv_password</samp> | str | False | None |  | Password to use if `cv_token` is missing. Not supported for CVaaS. It is strongly recommended to use Vault for this. |
 | <samp>cv_verify_certs</samp> | bool | optional | True |  | Verifies CloudVison server certificates. |
-| <samp>cv_proxy_host</samp> | str | False | None |  | FQDN/IP of the HTTP CONNECT proxy server. |
-| <samp>cv_proxy_port</samp> | int | optional | 8080 |  | TCP port of the HTTP CONNECT proxy server. |
-| <samp>cv_proxy_username</samp> | str | False | None |  | Authentication username for the HTTP CONNECT proxy server. |
-| <samp>cv_proxy_password</samp> | str | False | None |  | Authentication password for the HTTP CONNECT proxy server. It is strongly recommended to use Vault for this. |
+| <samp>proxy_host</samp> | str | False | None |  | FQDN/IP of the HTTP CONNECT proxy server. |
+| <samp>proxy_port</samp> | int | optional | 8080 |  | TCP port of the HTTP CONNECT proxy server. |
+| <samp>proxy_username</samp> | str | False | None |  | Authentication username for the HTTP CONNECT proxy server. |
+| <samp>proxy_password</samp> | str | False | None |  | Authentication password for the HTTP CONNECT proxy server. It is strongly recommended to use Vault for this. |
 | <samp>configuration_dir</samp> | str | True | None |  | Path to directory containing .cfg files with EOS configurations. |
 | <samp>structured_config_dir</samp> | str | False | None |  | Path to directory containing files with AVD structured configurations.<br>If found, the `serial_number` or `system_mac_address` will be used to identify the Device on CloudVision.<br>Any tags found in the structured configuration metadata will be applied to the Device and/or Interfaces. |
 | <samp>structured_config_suffix</samp> | str | optional | yml |  | File suffix for AVD structured configuration files. |
@@ -94,10 +94,10 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
         cv_servers: [ "www.arista.io" ]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: true
-        # cv_proxy_host: "proxy.local.domain"
-        # cv_proxy_port: "8080"
-        # cv_proxy_username: "avd_user"
-        # cv_proxy_password: "avd_password"
+        # proxy_host: "proxy.local.domain"
+        # proxy_port: "8080"
+        # proxy_username: "avd_user"
+        # proxy_password: "avd_password"
         configuration_dir: "{{ inventory_dir }}/intended/configs"
         structured_config_dir: "{{ inventory_dir }}/intended/structured_configs"
         # structured_config_suffix: "yml"
