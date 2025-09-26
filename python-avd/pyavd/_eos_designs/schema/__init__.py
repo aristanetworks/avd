@@ -48426,13 +48426,14 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     nodes: Nodes
                     """
-                    Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                    If not
-                    set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                    peer_group.
+                    List of node names or regular expressions to match against hostnames to configure the peer-group.
+                    The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                    The peer-group
+                    is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                    Subclass of AvdList with `str` items.
+                    Subclass
+                    of AvdList with `str` items.
                     """
                     address_family_ipv4: AddressFamilyIpv4
                     """Subclass of AvdModel."""
@@ -48592,13 +48593,14 @@ class EosDesigns(EosDesignsRootModel):
                                    To protect the password at rest it is strongly recommended to
                                    make use of a vault or similar.
                                 nodes:
-                                   Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                                   If not
-                                   set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                                   peer_group.
+                                   List of node names or regular expressions to match against hostnames to configure the peer-group.
+                                   The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                                   The peer-group
+                                   is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                                   Subclass of AvdList with `str` items.
+                                   Subclass
+                                   of AvdList with `str` items.
                                 address_family_ipv4: Subclass of AvdModel.
                                 address_family_ipv6: Subclass of AvdModel.
                                 type: Key only used for documentation or validation purposes.
@@ -53590,7 +53592,12 @@ class EosDesigns(EosDesignsRootModel):
                         """Time-to-live in range of hops."""
                         nodes: Nodes
                         """
-                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+                        List of node names or regular expressions to match against hostnames.
+                        The regexes need to match full
+                        hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                        Nodes is required to restrict configuration
+                        of BGP neighbors to certain nodes in the network.
+
                         Subclass of AvdList with `str` items.
                         """
                         set_ipv4_next_hop: str | None
@@ -53699,7 +53706,12 @@ class EosDesigns(EosDesignsRootModel):
                                     update_source: update_source
                                     ebgp_multihop: Time-to-live in range of hops.
                                     nodes:
-                                       Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+                                       List of node names or regular expressions to match against hostnames.
+                                       The regexes need to match full
+                                       hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                                       Nodes is required to restrict configuration
+                                       of BGP neighbors to certain nodes in the network.
+
                                        Subclass of AvdList with `str` items.
                                     set_ipv4_next_hop:
                                        IPv4_address
@@ -54384,13 +54396,14 @@ class EosDesigns(EosDesignsRootModel):
                         """BGP peer group name."""
                         nodes: Nodes
                         """
-                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                        If not
-                        set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                        peer_group.
+                        List of node names or regular expressions to match against hostnames to configure the peer-group.
+                        The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                        The peer-group
+                        is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                        Subclass of AvdList with `str` items.
+                        Subclass
+                        of AvdList with `str` items.
                         """
                         password: str | None
                         """
@@ -54554,13 +54567,14 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     name: BGP peer group name.
                                     nodes:
-                                       Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                                       If not
-                                       set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                                       peer_group.
+                                       List of node names or regular expressions to match against hostnames to configure the peer-group.
+                                       The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                                       The peer-group
+                                       is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                                       Subclass of AvdList with `str` items.
+                                       Subclass
+                                       of AvdList with `str` items.
                                     password:
                                        Type 7 encrypted password.
                                        Takes precedence over `cleartext_password`.
@@ -78094,7 +78108,6 @@ class EosDesigns(EosDesignsRootModel):
         "l3_edge": {"type": L3Edge},
         "l3_interface_profiles": {"type": L3InterfaceProfiles},
         "load_interval": {"type": EosCliConfigGen.LoadInterval},
-        "local_users": {"type": EosCliConfigGen.LocalUsers},
         "logging_settings": {"type": LoggingSettings},
         "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
@@ -79464,7 +79477,6 @@ class EosDesigns(EosDesignsRootModel):
     `L3InterfaceProfilesItem` items. Primary key is `profile` (`str`).
     """
     load_interval: EosCliConfigGen.LoadInterval
-    local_users: EosCliConfigGen.LocalUsers
     logging_settings: LoggingSettings
     """
     Logging settings
@@ -80590,7 +80602,6 @@ class EosDesigns(EosDesignsRootModel):
             l3_edge: L3Edge | UndefinedType = Undefined,
             l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
             load_interval: EosCliConfigGen.LoadInterval | UndefinedType = Undefined,
-            local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
             logging_settings: LoggingSettings | UndefinedType = Undefined,
             mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
@@ -81398,7 +81409,6 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of AvdIndexedList with
                    `L3InterfaceProfilesItem` items. Primary key is `profile` (`str`).
                 load_interval: load_interval
-                local_users: local_users
                 logging_settings:
                    Logging settings
 
