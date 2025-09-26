@@ -69439,7 +69439,6 @@ class EosDesigns(EosDesignsRootModel):
         "l3_edge": {"type": L3Edge},
         "l3_interface_profiles": {"type": L3InterfaceProfiles},
         "load_interval": {"type": EosCliConfigGen.LoadInterval},
-        "local_users": {"type": EosCliConfigGen.LocalUsers},
         "logging_settings": {"type": LoggingSettings},
         "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
@@ -70809,7 +70808,6 @@ class EosDesigns(EosDesignsRootModel):
     `L3InterfaceProfilesItem` items. Primary key is `profile` (`str`).
     """
     load_interval: EosCliConfigGen.LoadInterval
-    local_users: EosCliConfigGen.LocalUsers
     logging_settings: LoggingSettings
     """
     Logging settings
@@ -71935,7 +71933,6 @@ class EosDesigns(EosDesignsRootModel):
             l3_edge: L3Edge | UndefinedType = Undefined,
             l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
             load_interval: EosCliConfigGen.LoadInterval | UndefinedType = Undefined,
-            local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
             logging_settings: LoggingSettings | UndefinedType = Undefined,
             mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
@@ -72743,7 +72740,6 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of AvdIndexedList with
                    `L3InterfaceProfilesItem` items. Primary key is `profile` (`str`).
                 load_interval: load_interval
-                local_users: local_users
                 logging_settings:
                    Logging settings
 
