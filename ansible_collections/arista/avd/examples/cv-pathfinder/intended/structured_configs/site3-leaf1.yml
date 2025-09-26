@@ -69,6 +69,10 @@ local_users:
   privilege: 15
   role: network-admin
   sha512_password: $6$a7LdQWHxWzYHpvVt$n62q.1mbm4kzQ5oBr0lhXCE9ntnTn.SNa16DovZHahFQLH.iPcPMZa5JUSFtncrDW4EDQ3oSWgP8G0S4FtOFx1
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

@@ -1,6 +1,9 @@
 ---
 # L3LS Fabric Values
 
+management_eapi:
+  enabled: true
+
 # bgp peer groups passwords
 bgp_peer_groups:
   ipv4_underlay_peers:

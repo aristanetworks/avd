@@ -4,6 +4,9 @@ fabric_name: FABRIC
 underlay_routing_protocol: ebgp
 overlay_routing_protocol: ebgp
 
+management_eapi:
+  enabled: true
+
 bgp_peer_groups:
   # all passwords set to "arista"
   evpn_overlay_peers:
