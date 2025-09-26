@@ -53,9 +53,8 @@ ntp:
   servers:
   - name: 2.2.2.55
     preferred: true
-    vrf: INBANDMGMT
   - name: pool.ntp.org
-    vrf: INBANDMGMT
+  vrf: INBANDMGMT
 port_channel_interfaces:
 - name: Port-Channel1
   description: INBAND-MGMT-PARENT_Po23
