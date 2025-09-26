@@ -84,6 +84,10 @@ loopback_interfaces:
   shutdown: false
   ip_address: 192.168.255.5/32
   ipv6_address: 2001:1::5/128
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
