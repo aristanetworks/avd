@@ -15,15 +15,6 @@ daemon_terminattr:
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet4
-  description: L2_host3_Ethernet4
-  shutdown: false
-  channel_group:
-    id: 4
-    mode: active
-  peer: host3
-  peer_interface: Ethernet4
-  peer_type: l2leaf
 - name: Ethernet42
   description: P2P_host2_Ethernet42
   shutdown: false
@@ -90,14 +81,6 @@ metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_DEPRECATED_VARS
 port_channel_interfaces:
-- name: Port-Channel4
-  description: L2_host3_Port-Channel4
-  shutdown: false
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: none
 - name: Port-Channel1
   description: SERVER_OLD_SW-1/2_ENDPOINT_PORT_CHANNEL
   shutdown: false
