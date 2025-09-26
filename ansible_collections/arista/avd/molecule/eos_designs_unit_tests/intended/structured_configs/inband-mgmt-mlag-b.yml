@@ -200,9 +200,8 @@ ntp:
   servers:
   - name: 2.2.2.55
     preferred: true
-    vrf: default
   - name: pool.ntp.org
-    vrf: default
+  vrf: default
 port_channel_interfaces:
 - name: Port-Channel11
   description: MLAG_inband-mgmt-mlag-a_Port-Channel11
