@@ -1,6 +1,7 @@
 ---
 underlay_routing_protocol: ospf
 underlay_ospf_process_id: 101
+underlay_ospf_graceful_restart: false
 
 type: l3leaf
 
