@@ -59135,7 +59135,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 rp_addresses: RpAddresses
                 """Subclass of AvdList with `RpAddressesItem` items."""
                 ssm_range: str | None
-                """IPv4 Prefix associated with SSM."""
+                """
+                Standard access list name or use the specific keyword 'standard' as a shortcut to apply
+                a predefined
+                rule that permits the 232.0.0.0/8 range for SSM traffic.
+                """
 
                 if TYPE_CHECKING:
 
@@ -59157,7 +59161,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             bfd: Enable/Disable BFD.
                             make_before_break: Enable/Disable Make-Before-Break.
                             rp_addresses: Subclass of AvdList with `RpAddressesItem` items.
-                            ssm_range: IPv4 Prefix associated with SSM.
+                            ssm_range:
+                               Standard access list name or use the specific keyword 'standard' as a shortcut to apply
+                               a predefined
+                               rule that permits the 232.0.0.0/8 range for SSM traffic.
 
                         """
 
