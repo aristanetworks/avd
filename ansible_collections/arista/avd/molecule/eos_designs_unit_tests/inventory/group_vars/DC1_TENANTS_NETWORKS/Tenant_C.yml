@@ -24,6 +24,10 @@ tenant_c:
         route_map_out: TEST_OUT
         route_map_in: TEST_IN
         local_as: 777
+      - name: Tenant_C_BGP_PEER_GROUP_RESTRICTED
+        remote_as: "666"
+        description: "Tenant C peer group"
+        nodes: ['DC1-BL[12]A']
       - name: Tenant_C_BGP_PEER_GROUP2
         remote_as: "667"
         description: "Tenant C peer group2"
@@ -84,7 +88,7 @@ tenant_c:
               route_map_out: TEST_OUT
               rcf_in: TEST_RCF_IN()
               rcf_out: TEST_RCF_OUT()
-            nodes: [ DC1-BL2B ]
+            nodes: ['DC1-BL[12]B']
             update_source: lo0
             bfd: false
             ebgp_multihop: 3

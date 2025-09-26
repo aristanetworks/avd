@@ -20,9 +20,8 @@ ntp:
   servers:
   - name: 10.10.10.1
     preferred: true
-    vrf: INBAND_MGMT
   - name: 10.10.10.2
-    vrf: INBAND_MGMT
+  vrf: INBAND_MGMT
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:

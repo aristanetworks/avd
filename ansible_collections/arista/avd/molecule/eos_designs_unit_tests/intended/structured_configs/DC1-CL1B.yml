@@ -150,9 +150,8 @@ ntp:
   servers:
   - name: 192.168.200.5
     preferred: true
-    vrf: MGMT
   - name: 2001:db8::3
-    vrf: MGMT
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel1311
   description: MLAG_PEER_DC1-CL1A_Po1311

@@ -251,7 +251,8 @@ tenant_a:
             prefix_list_out: PL-TEST-OUT-AF6
           - ip_address: fd5a:fe45:8831:06c5::b
             remote_as: 12345
-            nodes: [DC1-BL1A, DC1-BL1B]
+            # Add peers to devices matching the regex.
+            nodes: ["DC1-BL1[AB]$", 'DC1-BL2[AB]']
         svis:
           - id: 150
             name: Tenant_A_WAN_Zone_1

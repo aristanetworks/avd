@@ -28,11 +28,8 @@ class DaemonTerminattrMixin(Protocol):
 
         The schema will enforce that we only use either new or old models.
         """
-        if not self.inputs.cv_settings:
-            self._legacy_daemon_terminattr()
+        if not (cv_settings := self.inputs.cv_settings):
             return
-
-        cv_settings = self.inputs.cv_settings
 
         clusters: list[EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem] = (
             list(cv_settings.cvaas.clusters) if cv_settings.cvaas.enabled else []
@@ -100,47 +97,3 @@ class DaemonTerminattrMixin(Protocol):
                 return EosCliConfigGen.DaemonTerminattr.Cvauth(method="token-secure", token_file=cluster.token_file)
             case EosDesigns.CvSettings.OnpremClustersItem():
                 return EosCliConfigGen.DaemonTerminattr.Cvauth(method="token", token_file=cluster.token_file)
-
-    def _legacy_daemon_terminattr(self: AvdStructuredConfigBaseProtocol) -> None:
-        """
-        daemon_terminattr set based on cvp_instance_ips.
-
-        Updating cvaddrs and cvauth considering conditions for cvaas and cvp_on_prem IPs
-
-            if 'arista.io' in cvp_instance_ips:
-                 <updating as cvaas_ip>
-            else:
-                 <updating as cvp_on_prem ip>
-        """
-        cvp_instance_ip_list = self.inputs.cvp_instance_ips
-        if not cvp_instance_ip_list:
-            return
-
-        for cvp_instance_ip in cvp_instance_ip_list:
-            if "arista.io" in cvp_instance_ip:
-                # updating for cvaas_ips
-                self.structured_config.daemon_terminattr.cvaddrs.append(f"{cvp_instance_ip}:443")
-                self.structured_config.daemon_terminattr.cvauth._update(
-                    method="token-secure",
-                    # Ignoring sonar-lint false positive for tmp path since this is config for EOS
-                    token_file=self.inputs.cvp_token_file or "/tmp/cv-onboarding-token",  # NOSONAR # noqa: S108
-                )
-            else:
-                # updating for cvp_on_prem_ips
-                cv_address = f"{cvp_instance_ip}:{self.inputs.terminattr_ingestgrpcurl_port}"
-                self.structured_config.daemon_terminattr.cvaddrs.append(cv_address)
-                if (cvp_ingestauth_key := self.inputs.cvp_ingestauth_key) is not None:
-                    self.structured_config.daemon_terminattr.cvauth._update(method="key", key=cvp_ingestauth_key)
-                else:
-                    self.structured_config.daemon_terminattr.cvauth._update(
-                        method="token",
-                        # Ignoring sonar-lint false positive for tmp path since this is config for EOS
-                        token_file=self.inputs.cvp_token_file or "/tmp/token",  # NOSONAR # noqa: S108
-                    )
-
-        self.structured_config.daemon_terminattr._update(
-            cvvrf=self.inputs.mgmt_interface_vrf,
-            smashexcludes=self.inputs.terminattr_smashexcludes,
-            ingestexclude=self.inputs.terminattr_ingestexclude,
-            disable_aaa=self.inputs.terminattr_disable_aaa,
-        )
