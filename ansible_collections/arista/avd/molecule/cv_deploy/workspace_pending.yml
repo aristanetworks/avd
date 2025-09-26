@@ -89,7 +89,7 @@
           run_once: true
           ansible.legacy.uri:
             url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceConfig/some
-            use_proxy: "{{ true if proxy_host and proxy_port and proxy_username and proxy_password else false }}"
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
             validate_certs: "{{ cv_verify_certs }}"
             return_content: true
             headers:
@@ -125,7 +125,8 @@
             cv_deploy_results.workspace.state | default('') != "abandoned"
           # Set HTTPS_PROXY environment variable scoped for this task only
           environment:
-            https_proxy: "http://{{ proxy_username }}:{{ proxy_password }}@{{ proxy_host }}:{{ proxy_port }}"
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
 
         - name: "(ALWAYS) {{ test_id | upper }} Banner"
           tags: ["{{ test_id }}"]
