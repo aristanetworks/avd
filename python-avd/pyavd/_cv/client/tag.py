@@ -34,7 +34,7 @@ if TYPE_CHECKING:
     from datetime import datetime
 
     from . import CVClientProtocol
-    from .models import TagAssignmentTuple, TagTuple
+    from .models import CVTag, CVTagAssignment
 
 
 ELEMENT_TYPE_MAP = {
@@ -55,7 +55,7 @@ class TagMixin(Protocol):
     """Only to be used as mixin on CVClient class."""
 
     tags_api_version: Literal["v2"] = "v2"
-    # TODO: Ensure the to document that we only support v2 of this api - hence only the CV versions supporting that.
+    # TODO: Ensure to document that we only support v2 of this api - hence only the CV versions supporting that.
 
     @GRPCRequestHandler()
     async def get_tags(
@@ -78,8 +78,6 @@ class TagMixin(Protocol):
             creator_type: Optionally filter tags on creator type.
             time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
-
-        TODO: Consider if we should add element_sub_type.
 
         Returns:
             List of Tag objects.
@@ -126,7 +124,7 @@ class TagMixin(Protocol):
     async def set_tags(
         self: CVClientProtocol,
         workspace_id: str,
-        tags: list[TagTuple],
+        tags: list[CVTag],
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[TagKey]:
         """
@@ -134,10 +132,8 @@ class TagMixin(Protocol):
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
-            tags: List of `TagTuple` named tuples to be added.
-            timeout: Base timeout in seconds. 0.1 second will be added per Tag.
-
-        TODO: Consider if we should add element_sub_type.
+            tags: List of `CVTag` named tuples to be added.
+            timeout: Base timeout in seconds. 0.1 second will be added per `CVTag`.
 
         Returns:
             List of Tag objects after being set including any server-generated values.
@@ -148,7 +144,7 @@ class TagMixin(Protocol):
                 TagConfig(
                     key=TagKey(
                         workspace_id=workspace_id,
-                        element_type=tag.element_type_member,
+                        element_type=tag.as_element_type(),
                         label=tag.label,
                         value=tag.value,
                     ),
@@ -181,8 +177,6 @@ class TagMixin(Protocol):
             creator_type: Optionally filter tag assignments on tag creator type.
             time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
-
-        TODO: Consider if we should add element_sub_type.
 
         Returns:
             Workspace object matching the workspace_id
@@ -229,21 +223,19 @@ class TagMixin(Protocol):
     async def set_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
-        tag_assignments: list[TagAssignmentTuple],
+        tag_assignments: list[CVTagAssignment],
         timeout: float = DEFAULT_API_TIMEOUT,
-    ) -> list[TagAssignment]:
+    ) -> list[TagAssignmentKey]:
         """
         Set Tags using arista.tag.v2.TagAssignmentConfigServiceStub.SetSome API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
-            tag_assignments: List of `TagAssignmentTuple` named tuples to be added.
-            timeout: Base timeout in seconds. 0.1 second will be added per Tag assignment.
-
-        TODO: Consider if we should add element_sub_type.
+            tag_assignments: List of `CVTagAssignment` named tuples to be added.
+            timeout: Base timeout in seconds. 0.1 second will be added per `CVTagAssignment`.
 
         Returns:
-            List of TagAssignment objects after being set including any server-generated values.
+            List of TagAssignmentKey objects after being set including any server-generated values.
         """
         request = TagAssignmentConfigSetSomeRequest(values=[])
         for tag_assignment in tag_assignments:
@@ -251,7 +243,7 @@ class TagMixin(Protocol):
                 TagAssignmentConfig(
                     key=TagAssignmentKey(
                         workspace_id=workspace_id,
-                        element_type=tag_assignment.element_type_member,
+                        element_type=tag_assignment.as_element_type(),
                         label=tag_assignment.label,
                         value=tag_assignment.value,
                         device_id=tag_assignment.device_id,
@@ -269,7 +261,7 @@ class TagMixin(Protocol):
     async def delete_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
-        tag_assignments: list[TagAssignmentTuple],
+        tag_assignments: list[CVTagAssignment],
         timeout: float = 30.0,
     ) -> list[TagAssignmentKey]:
         """
@@ -278,9 +270,7 @@ class TagMixin(Protocol):
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
             tag_assignments: List of `TagAssignmentTuple` named tuples to be removed.
-            timeout: Base timeout in seconds. 0.1 second will be added per Tag assignment.
-
-        TODO: Consider if we should add element_sub_type.
+            timeout: Base timeout in seconds. 0.1 second will be added per `CVTagAssignment`.
 
         Returns:
             List of TagAssignmentKey objects after being set including any server-generated values.
@@ -291,7 +281,7 @@ class TagMixin(Protocol):
                 TagAssignmentConfig(
                     key=TagAssignmentKey(
                         workspace_id=workspace_id,
-                        element_type=tag_assignment.element_type_member,
+                        element_type=tag_assignment.as_element_type(),
                         label=tag_assignment.label,
                         value=tag_assignment.value,
                         device_id=tag_assignment.device_id,

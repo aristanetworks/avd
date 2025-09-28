@@ -18,12 +18,12 @@ REVERSED_ELEMENT_TYPE_MAP = {
 }
 
 
-class TagTuple(NamedTuple):
+class CVTag(NamedTuple):
     """
     Represent the input model for a CloudVision Tag.
 
     Attributes:
-        element_type: The type of network element the tag applies to ('device' or 'interface').
+        element_type: The type of network element the tag applies to.
         label: The label of the tag.
         value: The value of the tag.
     """
@@ -32,13 +32,12 @@ class TagTuple(NamedTuple):
     label: str
     value: str
 
-    @property
-    def element_type_member(self) -> ElementType:
-        return ELEMENT_TYPE_MAP[self.element_type]
+    def as_element_type(self) -> ElementType:
+        return ELEMENT_TYPE_MAP.get(self.element_type, ElementType.UNSPECIFIED)
 
     @classmethod
-    def from_cv_tag(cls, tag: Tag) -> Self:
-        """Create a TagTuple from a CV Tag object."""
+    def from_cv_api_tag(cls, tag: Tag) -> Self:
+        """Create a CVTag from a CV API Tag object."""
         element_type = REVERSED_ELEMENT_TYPE_MAP.get(tag.key.element_type, "unspecified")
 
         return cls(
@@ -48,12 +47,12 @@ class TagTuple(NamedTuple):
         )
 
 
-class TagAssignmentTuple(NamedTuple):
+class CVTagAssignment(NamedTuple):
     """
     Represent the input model for a CloudVision Tag Assignment.
 
     Attributes:
-        element_type: The type of network element the tag is assigned to ('device' or 'interface').
+        element_type: The type of network element the tag is assigned to.
         label: The label of the tag.
         value: The value of the tag.
         device_id: The serial number of the device for the assignment.
@@ -66,12 +65,11 @@ class TagAssignmentTuple(NamedTuple):
     device_id: str
     interface_id: str | None = None
 
-    @property
-    def element_type_member(self) -> ElementType:
-        return ELEMENT_TYPE_MAP[self.element_type]
+    def as_element_type(self) -> ElementType:
+        return ELEMENT_TYPE_MAP.get(self.element_type, ElementType.UNSPECIFIED)
 
     @classmethod
-    def from_cv_tag_assignment(cls, tag_assignment: TagAssignment) -> Self:
+    def from_cv_api_tag_assignment(cls, tag_assignment: TagAssignment) -> Self:
         """Create a TagAssignmentTuple from a CV TagAssignment object."""
         # The API may return a complex interface ID like 'Ethernet1@<serial>', so we parse it to get just the interface name.
         interface_id = str(tag_assignment.key.interface_id).rsplit("@", maxsplit=1)[0] if tag_assignment.key.interface_id is not None else None
