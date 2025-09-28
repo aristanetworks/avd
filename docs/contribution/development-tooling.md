@@ -145,7 +145,6 @@ The AVD project leverages Molecule for:
   - `anta_runner`
   - `eos_designs`
   - `eos_cli_config_gen`
-  - `eos_config_deploy_cvp`
 - End-to-end systems integration tests on the following CloudVision role and module:
   - `cv_deploy`
   - `cv_workflow`

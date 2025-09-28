@@ -206,9 +206,6 @@ nav:
                   - Role Configuration: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/role-configuration.md
                   - Custom Templates: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/how-to/custom-templates.md
               - cvp_configlet_upload: ansible_collections/arista/avd/roles/cvp_configlet_upload/README.md
-              - eos_config_deploy_cvp:
-                  - Overview: ansible_collections/arista/avd/roles/eos_config_deploy_cvp/README.md
-                  - Integrating AVD with CVaaS: ansible_collections/arista/avd/roles/eos_config_deploy_cvp/docs/avd-to-cvaas.md
               - eos_config_deploy_eapi: ansible_collections/arista/avd/roles/eos_config_deploy_eapi/README.md
               - eos_snapshot: ansible_collections/arista/avd/roles/eos_snapshot/README.md
               - build_output_folders: ansible_collections/arista/avd/roles/build_output_folders/README.md

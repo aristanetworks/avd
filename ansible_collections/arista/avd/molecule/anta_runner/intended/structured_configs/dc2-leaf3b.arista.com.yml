@@ -160,12 +160,13 @@ port_channel_interfaces:
       - MLAG
 - name: Port-Channel11
   description: dc2-leaf3-fw1_PortChannel
-  vlans: 11-12,21-22
-  type: switched
-  mode: trunk
-  native_vlan: 4092
   mlag: 11
   spanning_tree_portfast: edge
+  switchport:
+    mode: trunk
+    trunk:
+      allowed_vlan: 11-12,21-22
+      native_vlan: 4092
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
