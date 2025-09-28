@@ -3,19 +3,44 @@
 # that can be found in the LICENSE file.
 import logging
 import warnings
+from collections.abc import Generator
+from contextlib import ExitStack
 from typing import Any
 from unittest.mock import MagicMock, patch
 
 import pytest
 from ansible.errors import AnsibleActionFail
+from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers import AnsibleDisplayHandler
 
 
-@patch("ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.avd_action_plugin.Display")
 class TestAvdActionPlugin:
     """Test suite for the AvdActionPlugin base class."""
+
+    @pytest.fixture
+    def mock_display(self) -> Generator[MagicMock, Any, None]:
+        """
+        A fixture that patches the Display singleton in all necessary locations for these unit tests.
+
+        Yields a single shared MagicMock instance that represents the Display() singleton
+        to make sure all parts of the code interact with the same mock.
+        """
+        # This will be the one true mock instance for the singleton
+        shared_mock_instance = MagicMock(spec=Display, verbosity=0)
+
+        with ExitStack() as stack:
+            # Patch the first location
+            log_handlers_patch = stack.enter_context(patch("ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_handlers.Display"))
+            # Patch the second location
+            log_config_patch = stack.enter_context(patch("ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin.log_config.Display"))
+
+            # Ensure both patched classes return our shared mock instance
+            log_handlers_patch.return_value = shared_mock_instance
+            log_config_patch.return_value = shared_mock_instance
+
+            yield shared_mock_instance
 
     def _plugin_factory(self, cls: type[AvdActionPlugin], task_args: dict[str, Any] | None = None) -> AvdActionPlugin:
         """Factory method to instantiate the provided AvdActionPlugin class with mocks for testing."""
@@ -26,9 +51,29 @@ class TestAvdActionPlugin:
         mock_task.check_mode = False
 
         # Return the instantiated plugin class with a full set of mocks
-        return cls(task=mock_task, connection=MagicMock(), play_context=MagicMock(), loader=MagicMock(), templar=MagicMock(), shared_loader_obj=MagicMock())
+        instance = cls(task=mock_task, connection=MagicMock(), play_context=MagicMock(), loader=MagicMock(), templar=MagicMock(), shared_loader_obj=MagicMock())
 
-    def test_run_success(self, patched_display: MagicMock) -> None:
+        # Ignoring Pyright since 'ansible_name' is not typed in Ansible world
+        instance.ansible_name = "pytest_action_plugin"  # pyright: ignore[reportAttributeAccessIssue]
+        return instance
+
+    def test_wrong_logging_config(self) -> None:
+        """Test that an exception is raised when _primary_logger_name is not part of the targeted loggers."""
+
+        class ActionModule(AvdActionPlugin):
+            _logging_config = AvdLoggingConfig(target_loggers=("pyavd", "anta"))
+
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+
+        match = (
+            "The _primary_logger_name 'ansible_collections.arista.avd' must be included in "
+            "the _logging_config.target_loggers tuple for the plugin to work correctly."
+        )
+        with pytest.raises(ValueError, match=match):
+            self._plugin_factory(ActionModule)
+
+    def test_run_success(self) -> None:
         """Test a successful run of the plugin."""
 
         class ActionModule(AvdActionPlugin):
@@ -36,16 +81,14 @@ class TestAvdActionPlugin:
                 _task_vars = task_vars
                 self.result["status"] = "success"
 
-        # Set the desired verbosity
-        patched_display.return_value.verbosity = 0
-
         plugin = self._plugin_factory(cls=ActionModule)
+
         result = plugin.run()
 
         assert result["status"] == "success"
         assert "failed" not in result
 
-    def test_run_failure_recast_as_ansible_exception(self, patched_display: MagicMock) -> None:
+    def test_run_failure_recast_as_ansible_exception(self) -> None:
         """Test that a generic exception in main() is recast as AnsibleActionFail."""
 
         class ActionModule(AvdActionPlugin):
@@ -54,12 +97,9 @@ class TestAvdActionPlugin:
                 msg = "Something went wrong"
                 raise ValueError(msg)
 
-        # Set the desired verbosity
-        patched_display.return_value.verbosity = 0
-
         plugin = self._plugin_factory(ActionModule)
 
-        with pytest.raises(AnsibleActionFail, match="Error during plugin execution: Something went wrong"):
+        with pytest.raises(AnsibleActionFail, match="Error during plugin 'pytest_action_plugin' execution: 'Something went wrong'"):
             plugin.run()
 
     @pytest.mark.parametrize(
@@ -127,7 +167,7 @@ class TestAvdActionPlugin:
             ),
         ],
     )
-    def test_log_levels_set_by_verbosity(self, patched_display: MagicMock, verbosity: int, expected_levels: dict[str, int]) -> None:
+    def test_log_levels_set_by_verbosity(self, mock_display: MagicMock, verbosity: int, expected_levels: dict[str, int]) -> None:
         """Test that log levels are set correctly based on verbosity for both internal and external libraries."""
 
         class ActionModule(AvdActionPlugin):
@@ -141,10 +181,10 @@ class TestAvdActionPlugin:
                     logger = logging.getLogger(logger_name)
                     assert logger.level == expected_level
 
-        # Set the desired verbosity
-        patched_display.return_value.verbosity = verbosity
-
         plugin = self._plugin_factory(ActionModule)
+
+        # Set the desired verbosity and run the plugin
+        mock_display.verbosity = verbosity
         plugin.run()
 
     @pytest.mark.parametrize(
@@ -155,7 +195,7 @@ class TestAvdActionPlugin:
             pytest.param(3, ["vvv", "v", "warning", "error"], id="v3-debug_enabled"),
         ],
     )
-    def test_default_logging_behavior(self, patched_display: MagicMock, verbosity: int, expected_methods_called: list[str]) -> None:
+    def test_default_logging_behavior(self, mock_display: MagicMock, verbosity: int, expected_methods_called: list[str]) -> None:
         """Test the end-to-end default logging behavior (live display on, save logs off)."""
 
         class ActionModule(AvdActionPlugin):
@@ -166,18 +206,18 @@ class TestAvdActionPlugin:
                 self.logger.warning("A warning message.")
                 self.logger.error("An error message.")
 
-        # Set the desired verbosity
-        patched_display.return_value.verbosity = verbosity
-
         plugin = self._plugin_factory(ActionModule)
+
+        # Set the desired verbosity and run the plugin
+        mock_display.verbosity = verbosity
         result = plugin.run()
 
         # Verify that the correct display methods were called
         all_display_methods = {
-            "vvv": patched_display.return_value.vvv,
-            "v": patched_display.return_value.v,
-            "warning": patched_display.return_value.warning,
-            "error": patched_display.return_value.error,
+            "vvv": mock_display.vvv,
+            "v": mock_display.v,
+            "warning": mock_display.warning,
+            "error": mock_display.error,
         }
 
         for method_name, method_mock in all_display_methods.items():
@@ -200,7 +240,7 @@ class TestAvdActionPlugin:
     )
     def test_logging_with_context_and_format(
         self,
-        patched_display: MagicMock,
+        mock_display: MagicMock,
         add_hostname: bool,
         add_role: bool,
         task_vars: dict[str, Any],
@@ -215,17 +255,16 @@ class TestAvdActionPlugin:
                 _task_vars = task_vars
                 self.logger.warning("A message from the plugin.")
 
-        # Set the desired verbosity
-        patched_display.return_value.verbosity = 0
-
         plugin = self._plugin_factory(ActionModule)
+
         plugin.run(task_vars=task_vars)
 
         # Test the display handler received the correctly formatted string
         expected_message = expected_format.format("A message from the plugin.")
-        patched_display.return_value.warning.assert_called_once_with(expected_message)
+        mock_display.warning.assert_called_once_with(expected_message)
 
-    def test_logging_with_save_logs(self, patched_display: MagicMock) -> None:
+    @pytest.mark.usefixtures("mock_display")
+    def test_logging_with_save_logs(self) -> None:
         """Test that logs are saved to the result."""
 
         class ActionModule(AvdActionPlugin):
@@ -235,9 +274,6 @@ class TestAvdActionPlugin:
                 self.logger.error("An error to save.")
                 self.logger.info("An info message not to save.")
 
-        # Set the desired verbosity
-        patched_display.return_value.verbosity = 0
-
         # Enable the feature via task args
         plugin = self._plugin_factory(ActionModule, task_args={"save_logs": True})
         result = plugin.run()
@@ -246,7 +282,7 @@ class TestAvdActionPlugin:
         assert result["logs"]["warnings"] == ["A warning to save."]
         assert result["logs"]["errors"] == ["An error to save."]
 
-    def test_logging_with_live_display_false(self, patched_display: MagicMock) -> None:
+    def test_logging_with_live_display_false(self, mock_display: MagicMock) -> None:
         """Test that logs are never displayed in Ansible."""
 
         class ActionModule(AvdActionPlugin):
@@ -254,15 +290,15 @@ class TestAvdActionPlugin:
                 _task_vars = task_vars
                 self.logger.info("This should not be displayed live.")
 
-        # Set the desired verbosity
-        patched_display.return_value.verbosity = 1
-
         # Enable the feature via task args
         plugin = self._plugin_factory(ActionModule, task_args={"live_display": False})
+
+        # Set the desired verbosity and run the plugin
+        mock_display.verbosity = 1
         plugin.run()
 
         # Assert the display handler was NOT called
-        patched_display.return_value.warning.assert_not_called()
+        mock_display.warning.assert_not_called()
 
     @pytest.mark.parametrize(
         ("warning_type", "message", "expected_key"),
@@ -271,7 +307,7 @@ class TestAvdActionPlugin:
             pytest.param(DeprecationWarning, "This is a deprecation.", "deprecations", id="deprecation_warning"),
         ],
     )
-    def test_warning_capture(self, patched_display: MagicMock, warning_type: type[Warning], message: str, expected_key: str) -> None:
+    def test_warning_capture(self, warning_type: type[Warning], message: str, expected_key: str) -> None:
         """Test that Python warnings are captured and added to the correct list in the result."""
 
         class ActionModule(AvdActionPlugin):
@@ -279,10 +315,8 @@ class TestAvdActionPlugin:
                 _task_vars = task_vars
                 warnings.warn(message, warning_type, stacklevel=1)
 
-        # Set the desired verbosity
-        patched_display.return_value.verbosity = 0
-
         plugin = self._plugin_factory(ActionModule)
+
         result = plugin.run()
 
         # Assert that the message is in the correct list (either 'warnings' or 'deprecations')
@@ -291,7 +325,7 @@ class TestAvdActionPlugin:
         else:
             assert result[expected_key] == [message]
 
-    def test_handles_dirty_logger_state(self, patched_display: MagicMock) -> None:
+    def test_handles_dirty_logger_state(self) -> None:
         """Test that the plugin can handle a logger with pre-existing handlers and restore them correctly upon exit."""
 
         class ActionModule(AvdActionPlugin):
@@ -304,9 +338,6 @@ class TestAvdActionPlugin:
                 # Assert that the plugin default handler is the only one present
                 assert len(self.logger.handlers) == 1
                 assert isinstance(self.logger.handlers[0], AnsibleDisplayHandler)
-
-        # Set the desired verbosity
-        patched_display.return_value.verbosity = 0
 
         # Create a "sticky" handler and add it to the AVD logger BEFORE the test
         logger = logging.getLogger("ansible_collections.arista.avd")

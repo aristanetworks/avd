@@ -4,6 +4,8 @@
 import logging
 from dataclasses import dataclass
 
+from ansible.utils.display import Display
+
 ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
     0: {  # Verbosity: 0
         "ansible_collections.arista.avd": logging.WARNING,
@@ -69,7 +71,7 @@ which is a dependency of `cv_workflow`.
 """
 
 
-def get_avd_log_level(logger_name: str, verbosity: int) -> int:
+def get_avd_log_level(logger_name: str) -> int:
     """
     Calculate the logging level for a given logger based on Ansible verbosity.
 
@@ -80,6 +82,9 @@ def get_avd_log_level(logger_name: str, verbosity: int) -> int:
     Returns:
         The calculated logging level.
     """
+    # Get the verbosity level from Ansible Display singleton object (0 for none, 1 for -v, etc.)
+    verbosity = Display().verbosity
+
     # Any verbosity level set above 6 will be treated as 6
     max_defined_verbosity = max(ANSIBLE_VERBOSITY_MAPPING.keys())
     effective_verbosity = min(verbosity, max_defined_verbosity)

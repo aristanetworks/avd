@@ -10,7 +10,6 @@ from typing import Any, ClassVar
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase
-from ansible.utils.display import Display
 
 from .log_config import AvdLoggingConfig, get_avd_log_level
 from .log_handlers import AnsibleDisplayHandler, ContextFilter, SaveToResultHandler
@@ -28,10 +27,20 @@ class AvdActionPlugin(ActionBase):
         self.result: dict[str, Any] = {}
         self.logger = logging.getLogger(self._primary_logger_name)
 
+        # Enforce that the primary logger is always a target for configuration
+        if self._primary_logger_name not in self._logging_config.target_loggers:
+            msg = (
+                f"The _primary_logger_name '{self._primary_logger_name}' must be included "
+                f"in the _logging_config.target_loggers tuple for the plugin to work correctly."
+            )
+            raise ValueError(msg)
+
     @abstractmethod
     def main(self, task_vars: dict[str, Any]) -> None:
         """
         This method must be implemented by child plugins with their core logic.
+
+        It will be called by the `run()` method implementation below.
 
         Update the `self.result` dictionary attribute in-place to return data to Ansible.
         """
@@ -45,14 +54,15 @@ class AvdActionPlugin(ActionBase):
         del tmp  # tmp no longer has any effect
 
         # Prepare handlers, filters, and format based on logging config and task arguments
-        temp_handlers = []
+        temp_handlers: list[logging.Handler] = []
         if self._task.args.get("save_logs", False):
             temp_handlers.append(SaveToResultHandler(result_dict=self.result))
         if self._task.args.get("live_display", True):
-            temp_handlers.append(AnsibleDisplayHandler(display=Display()))
+            temp_handlers.append(AnsibleDisplayHandler())
 
         # Build the context data and log format string
-        context_data, format_parts = {}, []
+        context_data: dict[str, Any] = {}
+        format_parts: list[str] = []
         if self._logging_config.add_role_context:
             context_data["role_name"] = task_vars.get("ansible_role_name")
             format_parts.append("[%(role_name)s] -")
@@ -63,7 +73,7 @@ class AvdActionPlugin(ActionBase):
         format_parts.append("%(message)s")
         log_format = " ".join(format_parts)
 
-        temp_filters = [ContextFilter(context_data)] if context_data else []
+        temp_filters: list[logging.Filter] = [ContextFilter(context_data)] if context_data else []
 
         try:
             # Use the context manager to apply changes and ensure cleanup
@@ -77,23 +87,24 @@ class AvdActionPlugin(ActionBase):
                 # Run the plugin
                 self.main(task_vars)
 
-                # Process captured Python warnings and update the result object
-                if captured_warnings:
-                    self.result.setdefault("deprecations", [])
-                    self.result.setdefault("warnings", [])
-                    for w in captured_warnings:
-                        msg = str(w.message)
-                        if issubclass(w.category, DeprecationWarning):
-                            # AvdDeprecationWarning's are added from AvdSchemaTools with more context
-                            # This is a catch-all for other deprecations
-                            self.result["deprecations"].append({"msg": msg})
-                        else:
-                            # Catch-all for standard Python warnings from any library
-                            self.result["warnings"].append(msg)
+            # Process captured Python warnings and update the result object
+            if captured_warnings:
+                self.result.setdefault("deprecations", [])
+                self.result.setdefault("warnings", [])
+                for w in captured_warnings:
+                    msg = str(w.message)
+                    if issubclass(w.category, DeprecationWarning):
+                        # AvdDeprecationWarning's are added from AvdSchemaTools with more context
+                        # This is a catch-all for other deprecations
+                        self.result["deprecations"].append({"msg": msg})
+                    else:
+                        # Catch-all for standard Python warnings from any library
+                        self.result["warnings"].append(msg)
 
-        except BaseException as exc:
+        except Exception as exc:
             # Recast errors as AnsibleActionFail
-            msg = f"Error during plugin execution: {exc}"
+            # Ignoring Pyright since 'ansible_name' is not typed in Ansible world
+            msg = f"Error during plugin '{self.ansible_name}' execution: '{exc}'"  # pyright: ignore[reportAttributeAccessIssue]
             raise AnsibleActionFail(msg) from exc
         else:
             return self.result
@@ -128,7 +139,7 @@ class AvdActionPlugin(ActionBase):
             for temp_filter in temp_filters:
                 temp_handler.addFilter(temp_filter)
 
-        original_states = {}
+        original_states: dict[str, Any] = {}
         target_loggers = [logging.getLogger(name) for name in self._logging_config.target_loggers]
 
         for logger in target_loggers:
@@ -142,7 +153,7 @@ class AvdActionPlugin(ActionBase):
             logger.propagate = False
 
             # Apply new configuration
-            desired_level = get_avd_log_level(logger.name, Display().verbosity)
+            desired_level = get_avd_log_level(logger.name)
             logger.setLevel(desired_level)
             for temp_handler in temp_handlers:
                 logger.addHandler(temp_handler)
