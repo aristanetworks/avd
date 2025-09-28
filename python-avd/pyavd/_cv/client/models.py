@@ -1,7 +1,9 @@
 # Copyright (c) 2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from typing import Literal, NamedTuple, Self
+from typing import Literal, NamedTuple
+
+from typing_extensions import Self
 
 from pyavd._cv.api.arista.tag.v2 import ElementType, Tag, TagAssignment
 
