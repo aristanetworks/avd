@@ -24,7 +24,6 @@ ntp:
   servers:
   - name: 10.10.10.1
     preferred: true
-    vrf: default
   - name: 10.10.10.2
     burst: true
     iburst: true
@@ -32,7 +31,7 @@ ntp:
     maxpoll: 5
     minpoll: 3
     version: 4
-    vrf: default
+  vrf: default
   authenticate: true
   authenticate_servers_only: true
   authentication_keys:

@@ -44,9 +44,9 @@ keys:
             description: Interface range or interface.
         mlag_interfaces_speed:
           type: str
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
           description: |
             Set MLAG interfaces speed.
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
         downlink_interfaces:
           type: list
           description: List of downlink interfaces or downlink interface ranges.
@@ -55,4 +55,5 @@ keys:
             description: Interface range or interface.
         uplink_interface_speed:
           type: str
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
           description: Set point-to-Point uplink interface speed.

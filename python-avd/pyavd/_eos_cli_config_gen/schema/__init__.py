@@ -127,17 +127,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Methods._item_type = MethodsItem
 
                 _fields: ClassVar[dict] = {"type": {"type": str}, "methods": {"type": Methods}}
-                type: Literal["none", "start-stop", "stop-only"] | None
+                type: Literal["none", "start-stop", "stop-only"]
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        type: Literal["none", "start-stop", "stop-only"] | None | UndefinedType = Undefined,
-                        methods: Methods | UndefinedType = Undefined,
+                        self, *, type: Literal["none", "start-stop", "stop-only"] | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined
                     ) -> None:
                         """
                         Default.
@@ -216,17 +213,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Methods._item_type = MethodsItem
 
                 _fields: ClassVar[dict] = {"type": {"type": str}, "methods": {"type": Methods}}
-                type: Literal["none", "start-stop", "stop-only"] | None
+                type: Literal["none", "start-stop", "stop-only"]
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        type: Literal["none", "start-stop", "stop-only"] | None | UndefinedType = Undefined,
-                        methods: Methods | UndefinedType = Undefined,
+                        self, *, type: Literal["none", "start-stop", "stop-only"] | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined
                     ) -> None:
                         """
                         Default.
@@ -316,14 +310,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Methods._item_type = MethodsItem
 
                 _fields: ClassVar[dict] = {"type": {"type": str}, "methods": {"type": Methods}}
-                type: Literal["start-stop", "stop-only"] | None
+                type: Literal["start-stop", "stop-only"]
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, type: Literal["start-stop", "stop-only"] | None | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined
+                        self, *, type: Literal["start-stop", "stop-only"] | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined
                     ) -> None:
                         """
                         Default.
@@ -401,7 +395,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"commands": {"type": str}, "type": {"type": str}, "methods": {"type": Methods}}
                 commands: str | None
                 """Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another."""
-                type: Literal["none", "start-stop", "stop-only"] | None
+                type: Literal["none", "start-stop", "stop-only"]
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
@@ -411,7 +405,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         commands: str | None | UndefinedType = Undefined,
-                        type: Literal["none", "start-stop", "stop-only"] | None | UndefinedType = Undefined,
+                        type: Literal["none", "start-stop", "stop-only"] | UndefinedType = Undefined,
                         methods: Methods | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -475,7 +469,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"commands": {"type": str}, "type": {"type": str}, "methods": {"type": Methods}}
                 commands: str | None
                 """Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another."""
-                type: Literal["none", "start-stop", "stop-only"] | None
+                type: Literal["none", "start-stop", "stop-only"]
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
@@ -485,7 +479,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         commands: str | None | UndefinedType = Undefined,
-                        type: Literal["none", "start-stop", "stop-only"] | None | UndefinedType = Undefined,
+                        type: Literal["none", "start-stop", "stop-only"] | UndefinedType = Undefined,
                         methods: Methods | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -12190,11 +12184,94 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         shutdown: bool | None
         load_interval: int | None
         """Interval in seconds for updating interface counters."""
-        speed: str | None
-        """
-        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-        <interface_speed>`.
-        """
+        speed: (
+            Literal[
+                "100full",
+                "100g",
+                "100g-1",
+                "100g-2",
+                "100g-4",
+                "100half",
+                "10full",
+                "10g",
+                "10half",
+                "1g",
+                "200g",
+                "200g-2",
+                "200g-4",
+                "25g",
+                "400g",
+                "400g-4",
+                "400g-8",
+                "40g",
+                "50g",
+                "50g-1",
+                "50g-2",
+                "800g-8",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
+                "auto",
+                "auto 10000full",
+                "auto 1000full",
+                "auto 100full",
+                "auto 100g-1",
+                "auto 100g-2",
+                "auto 100g-4",
+                "auto 100gfull",
+                "auto 100half",
+                "auto 10full",
+                "auto 10gfull",
+                "auto 10half",
+                "auto 1gfull",
+                "auto 2.5gfull",
+                "auto 200g-2",
+                "auto 200g-4",
+                "auto 25gfull",
+                "auto 400g-4",
+                "auto 400g-8",
+                "auto 40gfull",
+                "auto 50g-1",
+                "auto 50g-2",
+                "auto 50gfull",
+                "auto 5gfull",
+                "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
+                "forced 10000full",
+                "forced 1000full",
+                "forced 1000half",
+                "forced 100full",
+                "forced 100gfull",
+                "forced 100half",
+                "forced 10full",
+                "forced 10half",
+                "forced 25gfull",
+                "forced 40gfull",
+                "forced 50gfull",
+            ]
+            | None
+        )
+        """Interface Speed."""
         mtu: int | None
         l2_mtu: int | None
         """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
@@ -12423,7 +12500,92 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 description: str | None | UndefinedType = Undefined,
                 shutdown: bool | None | UndefinedType = Undefined,
                 load_interval: int | None | UndefinedType = Undefined,
-                speed: str | None | UndefinedType = Undefined,
+                speed: Literal[
+                    "100full",
+                    "100g",
+                    "100g-1",
+                    "100g-2",
+                    "100g-4",
+                    "100half",
+                    "10full",
+                    "10g",
+                    "10half",
+                    "1g",
+                    "200g",
+                    "200g-2",
+                    "200g-4",
+                    "25g",
+                    "400g",
+                    "400g-4",
+                    "400g-8",
+                    "40g",
+                    "50g",
+                    "50g-1",
+                    "50g-2",
+                    "800g-8",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
+                    "auto",
+                    "auto 10000full",
+                    "auto 1000full",
+                    "auto 100full",
+                    "auto 100g-1",
+                    "auto 100g-2",
+                    "auto 100g-4",
+                    "auto 100gfull",
+                    "auto 100half",
+                    "auto 10full",
+                    "auto 10gfull",
+                    "auto 10half",
+                    "auto 1gfull",
+                    "auto 2.5gfull",
+                    "auto 200g-2",
+                    "auto 200g-4",
+                    "auto 25gfull",
+                    "auto 400g-4",
+                    "auto 400g-8",
+                    "auto 40gfull",
+                    "auto 50g-1",
+                    "auto 50g-2",
+                    "auto 50gfull",
+                    "auto 5gfull",
+                    "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
+                    "forced 10000full",
+                    "forced 1000full",
+                    "forced 1000half",
+                    "forced 100full",
+                    "forced 100gfull",
+                    "forced 100half",
+                    "forced 10full",
+                    "forced 10half",
+                    "forced 25gfull",
+                    "forced 40gfull",
+                    "forced 50gfull",
+                ]
+                | None
+                | UndefinedType = Undefined,
                 mtu: int | None | UndefinedType = Undefined,
                 l2_mtu: int | None | UndefinedType = Undefined,
                 l2_mru: int | None | UndefinedType = Undefined,
@@ -12537,9 +12699,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     description: description
                     shutdown: shutdown
                     load_interval: Interval in seconds for updating interface counters.
-                    speed:
-                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                       <interface_speed>`.
+                    speed: Interface Speed.
                     mtu: mtu
                     l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
                     l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
@@ -21563,11 +21723,94 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Management Interface Name."""
         description: str | None
         shutdown: bool | None
-        speed: str | None
-        """
-        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-        <interface_speed>`.
-        """
+        speed: (
+            Literal[
+                "100full",
+                "100g",
+                "100g-1",
+                "100g-2",
+                "100g-4",
+                "100half",
+                "10full",
+                "10g",
+                "10half",
+                "1g",
+                "200g",
+                "200g-2",
+                "200g-4",
+                "25g",
+                "400g",
+                "400g-4",
+                "400g-8",
+                "40g",
+                "50g",
+                "50g-1",
+                "50g-2",
+                "800g-8",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
+                "auto",
+                "auto 10000full",
+                "auto 1000full",
+                "auto 100full",
+                "auto 100g-1",
+                "auto 100g-2",
+                "auto 100g-4",
+                "auto 100gfull",
+                "auto 100half",
+                "auto 10full",
+                "auto 10gfull",
+                "auto 10half",
+                "auto 1gfull",
+                "auto 2.5gfull",
+                "auto 200g-2",
+                "auto 200g-4",
+                "auto 25gfull",
+                "auto 400g-4",
+                "auto 400g-8",
+                "auto 40gfull",
+                "auto 50g-1",
+                "auto 50g-2",
+                "auto 50gfull",
+                "auto 5gfull",
+                "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
+                "forced 10000full",
+                "forced 1000full",
+                "forced 1000half",
+                "forced 100full",
+                "forced 100gfull",
+                "forced 100half",
+                "forced 10full",
+                "forced 10half",
+                "forced 25gfull",
+                "forced 40gfull",
+                "forced 50gfull",
+            ]
+            | None
+        )
+        """Interface Speed."""
         mtu: int | None
         vrf: str | None
         """VRF Name."""
@@ -21603,7 +21846,92 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 name: str | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
                 shutdown: bool | None | UndefinedType = Undefined,
-                speed: str | None | UndefinedType = Undefined,
+                speed: Literal[
+                    "100full",
+                    "100g",
+                    "100g-1",
+                    "100g-2",
+                    "100g-4",
+                    "100half",
+                    "10full",
+                    "10g",
+                    "10half",
+                    "1g",
+                    "200g",
+                    "200g-2",
+                    "200g-4",
+                    "25g",
+                    "400g",
+                    "400g-4",
+                    "400g-8",
+                    "40g",
+                    "50g",
+                    "50g-1",
+                    "50g-2",
+                    "800g-8",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
+                    "auto",
+                    "auto 10000full",
+                    "auto 1000full",
+                    "auto 100full",
+                    "auto 100g-1",
+                    "auto 100g-2",
+                    "auto 100g-4",
+                    "auto 100gfull",
+                    "auto 100half",
+                    "auto 10full",
+                    "auto 10gfull",
+                    "auto 10half",
+                    "auto 1gfull",
+                    "auto 2.5gfull",
+                    "auto 200g-2",
+                    "auto 200g-4",
+                    "auto 25gfull",
+                    "auto 400g-4",
+                    "auto 400g-8",
+                    "auto 40gfull",
+                    "auto 50g-1",
+                    "auto 50g-2",
+                    "auto 50gfull",
+                    "auto 5gfull",
+                    "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
+                    "forced 10000full",
+                    "forced 1000full",
+                    "forced 1000half",
+                    "forced 100full",
+                    "forced 100gfull",
+                    "forced 100half",
+                    "forced 10full",
+                    "forced 10half",
+                    "forced 25gfull",
+                    "forced 40gfull",
+                    "forced 50gfull",
+                ]
+                | None
+                | UndefinedType = Undefined,
                 mtu: int | None | UndefinedType = Undefined,
                 vrf: str | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
@@ -21627,9 +21955,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: Management Interface Name.
                     description: description
                     shutdown: shutdown
-                    speed:
-                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                       <interface_speed>`.
+                    speed: Interface Speed.
                     mtu: mtu
                     vrf: VRF Name.
                     ip_address: IPv4_address/Mask.
@@ -26929,7 +27255,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "minpoll": {"type": int},
                 "preferred": {"type": bool},
                 "version": {"type": int},
-                "vrf": {"type": str},
             }
             name: str
             """IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org."""
@@ -26944,8 +27269,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Value of minpoll between 3 - 17 (Logarithmic)."""
             preferred: bool | None
             version: int | None
-            vrf: str | None
-            """VRF name."""
 
             if TYPE_CHECKING:
 
@@ -26961,7 +27284,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     minpoll: int | None | UndefinedType = Undefined,
                     preferred: bool | None | UndefinedType = Undefined,
                     version: int | None | UndefinedType = Undefined,
-                    vrf: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ServersItem.
@@ -26979,7 +27301,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         minpoll: Value of minpoll between 3 - 17 (Logarithmic).
                         preferred: preferred
                         version: version
-                        vrf: VRF name.
 
                     """
 
@@ -27116,6 +27437,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {
             "local_interface": {"type": LocalInterface},
             "servers": {"type": Servers},
+            "vrf": {"type": str},
             "authenticate": {"type": bool},
             "authenticate_servers_only": {"type": bool},
             "authentication_keys": {"type": AuthenticationKeys},
@@ -27126,6 +27448,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         servers: Servers
         """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`)."""
+        vrf: str | None
+        """
+        VRF name for all NTP servers.
+        All NTP servers must be in the same VRF on EOS.
+        """
         authenticate: bool | None
         authenticate_servers_only: bool | None
         authentication_keys: AuthenticationKeys
@@ -27146,6 +27473,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 local_interface: LocalInterface | UndefinedType = Undefined,
                 servers: Servers | UndefinedType = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
                 authenticate: bool | None | UndefinedType = Undefined,
                 authenticate_servers_only: bool | None | UndefinedType = Undefined,
                 authentication_keys: AuthenticationKeys | UndefinedType = Undefined,
@@ -27161,6 +27489,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     local_interface: Subclass of AvdModel.
                     servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`).
+                    vrf:
+                       VRF name for all NTP servers.
+                       All NTP servers must be in the same VRF on EOS.
                     authenticate: authenticate
                     authenticate_servers_only: authenticate_servers_only
                     authentication_keys: Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`).
@@ -29159,52 +29490,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Client(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Dot1q(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"vlan": {"type": int}, "outer": {"type": int}, "inner": {"type": int}}
-                    vlan: int | None
-                    """Client VLAN ID."""
-                    outer: int | None
-                    """Client Outer VLAN ID."""
-                    inner: int | None
-                    """Client Inner VLAN ID."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            vlan: int | None | UndefinedType = Undefined,
-                            outer: int | None | UndefinedType = Undefined,
-                            inner: int | None | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            Dot1q.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                vlan: Client VLAN ID.
-                                outer: Client Outer VLAN ID.
-                                inner: Client Inner VLAN ID.
-
-                            """
-
                 _fields: ClassVar[dict] = {
-                    "dot1q": {"type": Dot1q},
-                    "unmatched": {"type": bool},
                     "encapsulation": {"type": str},
                     "vlan": {"type": int},
                     "outer_vlan": {"type": int},
                     "inner_vlan": {"type": int},
                     "inner_encapsulation": {"type": str},
                 }
-                dot1q: Dot1q
-                """Subclass of AvdModel."""
-                unmatched: bool | None
-                encapsulation: Literal["dot1q", "dot1ad", "unmatched", "untagged"] | None
+                encapsulation: Literal["dot1q", "dot1ad", "unmatched", "untagged"]
                 vlan: int | None
                 """Client VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: unmatched`."""
                 outer_vlan: int | None
@@ -29218,9 +29511,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        dot1q: Dot1q | UndefinedType = Undefined,
-                        unmatched: bool | None | UndefinedType = Undefined,
-                        encapsulation: Literal["dot1q", "dot1ad", "unmatched", "untagged"] | None | UndefinedType = Undefined,
+                        encapsulation: Literal["dot1q", "dot1ad", "unmatched", "untagged"] | UndefinedType = Undefined,
                         vlan: int | None | UndefinedType = Undefined,
                         outer_vlan: int | None | UndefinedType = Undefined,
                         inner_vlan: int | None | UndefinedType = Undefined,
@@ -29233,8 +29524,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            dot1q: Subclass of AvdModel.
-                            unmatched: unmatched
                             encapsulation: encapsulation
                             vlan: Client VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: unmatched`.
                             outer_vlan: Client Outer VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: unmatched`.
@@ -29246,52 +29535,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Network(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Dot1q(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"vlan": {"type": int}, "outer": {"type": int}, "inner": {"type": int}}
-                    vlan: int | None
-                    """Network VLAN ID."""
-                    outer: int | None
-                    """Network Outer VLAN ID."""
-                    inner: int | None
-                    """Network Inner VLAN ID."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            vlan: int | None | UndefinedType = Undefined,
-                            outer: int | None | UndefinedType = Undefined,
-                            inner: int | None | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            Dot1q.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                vlan: Network VLAN ID.
-                                outer: Network Outer VLAN ID.
-                                inner: Network Inner VLAN ID.
-
-                            """
-
                 _fields: ClassVar[dict] = {
-                    "dot1q": {"type": Dot1q},
-                    "client": {"type": bool},
                     "encapsulation": {"type": str},
                     "vlan": {"type": int},
                     "outer_vlan": {"type": int},
                     "inner_vlan": {"type": int},
                     "inner_encapsulation": {"type": str},
                 }
-                dot1q: Dot1q
-                """Subclass of AvdModel."""
-                client: bool | None
-                encapsulation: Literal["dot1q", "dot1ad", "client", "client inner", "untagged"] | None
+                encapsulation: Literal["dot1q", "dot1ad", "client", "client inner", "untagged"]
                 """
                 `untagged` (no encapsulation) is applicable for `untagged` client only.
                 `client` and `client inner`
@@ -29310,9 +29561,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        dot1q: Dot1q | UndefinedType = Undefined,
-                        client: bool | None | UndefinedType = Undefined,
-                        encapsulation: Literal["dot1q", "dot1ad", "client", "client inner", "untagged"] | None | UndefinedType = Undefined,
+                        encapsulation: Literal["dot1q", "dot1ad", "client", "client inner", "untagged"] | UndefinedType = Undefined,
                         vlan: int | None | UndefinedType = Undefined,
                         outer_vlan: int | None | UndefinedType = Undefined,
                         inner_vlan: int | None | UndefinedType = Undefined,
@@ -29325,8 +29574,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            dot1q: Subclass of AvdModel.
-                            client: client
                             encapsulation:
                                `untagged` (no encapsulation) is applicable for `untagged` client only.
                                `client` and `client inner`
@@ -29437,30 +29684,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class Phone(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"trunk": {"type": str}, "vlan": {"type": int}}
-            trunk: Literal["tagged", "untagged"] | None
-            vlan: int | None
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self, *, trunk: Literal["tagged", "untagged"] | None | UndefinedType = Undefined, vlan: int | None | UndefinedType = Undefined
-                ) -> None:
-                    """
-                    Phone.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        trunk: trunk
-                        vlan: vlan
-
-                    """
-
         class L2Protocol(AvdModel):
             """Subclass of AvdModel."""
 
@@ -29486,11 +29709,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         forwarding_profile: L2 protocol forwarding profile.
 
                     """
-
-        class TrunkGroups(AvdList[str]):
-            """Subclass of AvdList with `str` items."""
-
-        TrunkGroups._item_type = str
 
         class Qos(AvdModel):
             """Subclass of AvdModel."""
@@ -29711,46 +29929,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         ldp: Subclass of AvdModel.
 
                     """
-
-        class VlanTranslationsItem(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"field_from": {"type": str}, "to": {"type": int}, "direction": {"type": str, "default": "both"}}
-            _field_to_key_map: ClassVar[dict] = {"field_from": "from"}
-            _key_to_field_map: ClassVar[dict] = {"from": "field_from"}
-            field_from: str | None
-            """List of vlans as string (only one vlan if direction is "both")."""
-            to: int | None
-            """VLAN ID."""
-            direction: Literal["in", "out", "both"]
-            """Default value: `"both"`"""
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self,
-                    *,
-                    field_from: str | None | UndefinedType = Undefined,
-                    to: int | None | UndefinedType = Undefined,
-                    direction: Literal["in", "out", "both"] | UndefinedType = Undefined,
-                ) -> None:
-                    """
-                    VlanTranslationsItem.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        field_from: List of vlans as string (only one vlan if direction is "both").
-                        to: VLAN ID.
-                        direction: direction
-
-                    """
-
-        class VlanTranslations(AvdList[VlanTranslationsItem]):
-            """Subclass of AvdList with `VlanTranslationsItem` items."""
-
-        VlanTranslations._item_type = VlanTranslationsItem
 
         class Shape(AvdModel):
             """Subclass of AvdModel."""
@@ -31976,37 +32154,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "groups": {"type": Groups},
                 }
                 allowed_vlan: str | None
-                """
-                VLAN ID or range(s) of VLAN IDs (1-4094).
-                Warning: This should not be combined with
-                `port_channel_interfaces[].mode = trunk` and `port_channel_interfaces[].vlans`.
-                """
+                """VLAN ID or range(s) of VLAN IDs (1-4094)."""
                 native_vlan: int | None
-                """
-                Set native VLAN when interface is in trunking mode.
-                Warning: This should not be combined with
-                `port_channel_interfaces[].native_vlan`.
-                """
+                """Set native VLAN when interface is in trunking mode."""
                 native_vlan_tag: bool | None
-                """
-                If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
-                Warning: This
-                should not be combined with `port_channel_interfaces[].native_vlan_tag`.
-                """
+                """If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence."""
                 private_vlan_secondary: bool | None
-                """
-                Enable secondary VLAN mapping for a private vlan.
-                Warning: This should not be combined with
-                `port_channel_interfaces[].trunk_private_vlan_secondary`.
-                """
+                """Enable secondary VLAN mapping for a private vlan."""
                 groups: Groups
-                """
-                Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`.
-
-
-                Subclass of
-                AvdList with `str` items.
-                """
+                """Subclass of AvdList with `str` items."""
 
                 if TYPE_CHECKING:
 
@@ -32026,28 +32182,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            allowed_vlan:
-                               VLAN ID or range(s) of VLAN IDs (1-4094).
-                               Warning: This should not be combined with
-                               `port_channel_interfaces[].mode = trunk` and `port_channel_interfaces[].vlans`.
-                            native_vlan:
-                               Set native VLAN when interface is in trunking mode.
-                               Warning: This should not be combined with
-                               `port_channel_interfaces[].native_vlan`.
-                            native_vlan_tag:
-                               If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
-                               Warning: This
-                               should not be combined with `port_channel_interfaces[].native_vlan_tag`.
-                            private_vlan_secondary:
-                               Enable secondary VLAN mapping for a private vlan.
-                               Warning: This should not be combined with
-                               `port_channel_interfaces[].trunk_private_vlan_secondary`.
-                            groups:
-                               Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`.
-
-
-                               Subclass of
-                               AvdList with `str` items.
+                            allowed_vlan: VLAN ID or range(s) of VLAN IDs (1-4094).
+                            native_vlan: Set native VLAN when interface is in trunking mode.
+                            native_vlan_tag: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
+                            private_vlan_secondary: Enable secondary VLAN mapping for a private vlan.
+                            groups: Subclass of AvdList with `str` items.
 
                         """
 
@@ -32056,9 +32195,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"vlan": {"type": int}, "trunk": {"type": str}}
                 vlan: int | None
-                """Warning: This should not be combined with `port_channel_interfaces[].phone.vlan`."""
                 trunk: Literal["tagged", "tagged phone", "untagged", "untagged phone"] | None
-                """Warning: This should not be combined with `port_channel_interfaces[].phone.trunk`"""
 
                 if TYPE_CHECKING:
 
@@ -32075,8 +32212,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            vlan: Warning: This should not be combined with `port_channel_interfaces[].phone.vlan`.
-                            trunk: Warning: This should not be combined with `port_channel_interfaces[].phone.trunk`
+                            vlan: vlan
+                            trunk: trunk
 
                         """
 
@@ -33208,25 +33345,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "tool": {"type": Tool},
             }
             enabled: bool | None
-            """Warning: This should not be combined with `port_channel_interfaces[].type = routed`."""
             mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
-            """Warning: This should not be combined with `port_channel_interfaces[].mode`"""
             access_vlan: int | None
-            """
-            Set VLAN when interface is in access mode.
-            Warning: This should not be combined with
-            `port_channel_interfaces[].mode = access/dot1q-tunnel` and `port_channel_interface.vlans`.
-            """
+            """Set VLAN when interface is in access mode."""
             trunk: Trunk
             """Subclass of AvdModel."""
             phone: Phone
             """Subclass of AvdModel."""
             pvlan_mapping: str | None
-            """
-            Secondary VLAN IDs of the private VLAN mapping.
-            Warning: This should not be combined with
-            `port_channel_interfaces[].pvlan_mapping`.
-            """
+            """Secondary VLAN IDs of the private VLAN mapping."""
             dot1q: Dot1q
             """Subclass of AvdModel."""
             source_interface: Literal["tx", "tx multicast"] | None
@@ -33238,8 +33365,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             vlan_translations: VlanTranslations
             """
             VLAN Translation mappings.
-            Warning: This should not be combined with
-            `port_channel_interfaces[].vlan_translations`.
 
             Subclass of AvdModel.
             """
@@ -33301,18 +33426,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        enabled: Warning: This should not be combined with `port_channel_interfaces[].type = routed`.
-                        mode: Warning: This should not be combined with `port_channel_interfaces[].mode`
-                        access_vlan:
-                           Set VLAN when interface is in access mode.
-                           Warning: This should not be combined with
-                           `port_channel_interfaces[].mode = access/dot1q-tunnel` and `port_channel_interface.vlans`.
+                        enabled: enabled
+                        mode: mode
+                        access_vlan: Set VLAN when interface is in access mode.
                         trunk: Subclass of AvdModel.
                         phone: Subclass of AvdModel.
-                        pvlan_mapping:
-                           Secondary VLAN IDs of the private VLAN mapping.
-                           Warning: This should not be combined with
-                           `port_channel_interfaces[].pvlan_mapping`.
+                        pvlan_mapping: Secondary VLAN IDs of the private VLAN mapping.
                         dot1q: Subclass of AvdModel.
                         source_interface:
                            tx: Allow bridged traffic to go out of the source interface.
@@ -33320,8 +33439,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            only to go out of the source interface.
                         vlan_translations:
                            VLAN Translation mappings.
-                           Warning: This should not be combined with
-                           `port_channel_interfaces[].vlan_translations`.
 
                            Subclass of AvdModel.
                         vlan_forwarding_accept_all: vlan_forwarding_accept_all
@@ -33474,7 +33591,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "enabled": {"type": bool},
                 "administrative_groups": {"type": AdministrativeGroups},
                 "srlgs": {"type": Srlgs},
-                "srlg": {"type": str},
                 "metric": {"type": int},
                 "bandwidth": {"type": Bandwidth},
                 "min_delay_static": {"type": MinDelayStatic},
@@ -33495,8 +33611,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdList with `str` items.
             """
-            srlg: str | None
-            """SRLG name or number."""
             metric: int | None
             bandwidth: Bandwidth
             """
@@ -33523,7 +33637,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     enabled: bool | None | UndefinedType = Undefined,
                     administrative_groups: AdministrativeGroups | UndefinedType = Undefined,
                     srlgs: Srlgs | UndefinedType = Undefined,
-                    srlg: str | None | UndefinedType = Undefined,
                     metric: int | None | UndefinedType = Undefined,
                     bandwidth: Bandwidth | UndefinedType = Undefined,
                     min_delay_static: MinDelayStatic | UndefinedType = Undefined,
@@ -33546,7 +33659,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            List of SRLGs.
 
                            Subclass of AvdList with `str` items.
-                        srlg: SRLG name or number.
                         metric: metric
                         bandwidth:
                            Interface maximum reservable bandwidth.
@@ -33570,25 +33682,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "shutdown": {"type": bool},
             "l2_mtu": {"type": int},
             "l2_mru": {"type": int},
-            "vlans": {"type": str},
             "arp_gratuitous_accept": {"type": bool},
             "snmp_trap_link_change": {"type": bool},
-            "type": {"type": str},
-            "encapsulation_dot1q_vlan": {"type": int},
             "encapsulation_dot1q": {"type": EncapsulationDot1q},
             "vrf": {"type": str},
             "encapsulation_vlan": {"type": EncapsulationVlan},
             "vlan_id": {"type": int},
-            "mode": {"type": str},
-            "native_vlan": {"type": int},
-            "native_vlan_tag": {"type": bool},
             "link_tracking_groups": {"type": LinkTrackingGroups},
             "link_tracking": {"type": LinkTracking},
-            "phone": {"type": Phone},
             "l2_protocol": {"type": L2Protocol},
             "mtu": {"type": int},
             "mlag": {"type": int},
-            "trunk_groups": {"type": TrunkGroups},
             "lacp_fallback_timeout": {"type": int},
             "min_links": {"type": int},
             "lacp_fallback_mode": {"type": str},
@@ -33597,9 +33701,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "service_policy": {"type": ServicePolicy},
             "mpls": {"type": Mpls},
             "ntp_serve": {"type": bool},
-            "trunk_private_vlan_secondary": {"type": bool},
-            "pvlan_mapping": {"type": str},
-            "vlan_translations": {"type": VlanTranslations},
             "shape": {"type": Shape},
             "storm_control": {"type": StormControl},
             "ip_proxy_arp": {"type": bool},
@@ -33610,8 +33711,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "isis_network_point_to_point": {"type": bool},
             "isis_circuit_type": {"type": str},
             "isis_hello_padding": {"type": bool},
-            "isis_authentication_mode": {"type": str},
-            "isis_authentication_key": {"type": str},
             "isis_authentication": {"type": IsisAuthentication},
             "traffic_policy": {"type": TrafficPolicy},
             "evpn_ethernet_segment": {"type": EvpnEthernetSegment},
@@ -33675,63 +33774,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
         l2_mru: int | None
         """"l2_mru" should only be defined for platforms supporting the "l2 mru" CLI."""
-        vlans: str | None
-        """
-        List of switchport vlans as string.
-        For a trunk port this would be a range like "1-200,300".
-        For an
-        access port this would be a single vlan "123".
-        """
         arp_gratuitous_accept: bool | None
         """Accept gratuitous ARP."""
         snmp_trap_link_change: bool | None
-        type: Literal["routed", "switched", "l3dot1q", "l2dot1q"] | None
-        """
-        l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.
-        Interface will not be listed in device documentation, unless "type" is set.
-        """
-        encapsulation_dot1q_vlan: int | None
-        """VLAN tag to configure on sub-interface."""
         encapsulation_dot1q: EncapsulationDot1q
-        """
-        Warning: `encapsulation_dot1q` should not be combined with `ethernet_interfaces[].type: l3dot1q` or
-        `ethernet_interfaces[].type: l2dot1q`.
-
-        Subclass of AvdModel.
-        """
+        """Subclass of AvdModel."""
         vrf: str | None
         """VRF name."""
         encapsulation_vlan: EncapsulationVlan
         """
         This setting can only be applied to sub-interfaces on EOS.
-        Warning: `encapsulation_vlan` should not
-        be combined with `ethernet_interfaces[].type: l3dot1q` or `ethernet_interfaces[].type: l2dot1q`.
+
         Subclass of AvdModel.
         """
         vlan_id: int | None
-        """
-        This setting can only be applied to sub-interfaces on EOS.
-        Warning: `vlan_id` should not be combined
-        with `ethernet_interfaces[].type == l2dot1q`.
-        """
-        mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
-        native_vlan: int | None
-        """If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence."""
-        native_vlan_tag: bool | None
-        """If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence."""
+        """This setting can only be applied to sub-interfaces on EOS."""
         link_tracking_groups: LinkTrackingGroups
         """Subclass of AvdIndexedList with `LinkTrackingGroupsItem` items. Primary key is `name` (`str`)."""
         link_tracking: LinkTracking
-        """Subclass of AvdModel."""
-        phone: Phone
         """Subclass of AvdModel."""
         l2_protocol: L2Protocol
         """Subclass of AvdModel."""
         mtu: int | None
         mlag: int | None
         """MLAG ID."""
-        trunk_groups: TrunkGroups
-        """Subclass of AvdList with `str` items."""
         lacp_fallback_timeout: int | None
         """Timeout in seconds. EOS default is 90 seconds."""
         min_links: int | None
@@ -33751,11 +33817,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         ntp_serve: bool | None
         """Enable/disable serving NTP to clients."""
-        trunk_private_vlan_secondary: bool | None
-        pvlan_mapping: str | None
-        """List of vlans as string."""
-        vlan_translations: VlanTranslations
-        """Subclass of AvdList with `VlanTranslationsItem` items."""
         shape: Shape
         """Subclass of AvdModel."""
         storm_control: StormControl
@@ -33770,16 +33831,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         isis_network_point_to_point: bool | None
         isis_circuit_type: Literal["level-1-2", "level-1", "level-2"] | None
         isis_hello_padding: bool | None
-        isis_authentication_mode: Literal["text", "md5"] | None
-        isis_authentication_key: str | None
-        """Type-7 encrypted password."""
         isis_authentication: IsisAuthentication
-        """
-        This key should not be mixed with port_channel_interfaces[].isis_authentication_mode or
-        ethernet_interfaces[].isis_authentication_key.
-
-        Subclass of AvdModel.
-        """
+        """Subclass of AvdModel."""
         traffic_policy: TrafficPolicy
         """Subclass of AvdModel."""
         evpn_ethernet_segment: EvpnEthernetSegment
@@ -33884,25 +33937,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 shutdown: bool | None | UndefinedType = Undefined,
                 l2_mtu: int | None | UndefinedType = Undefined,
                 l2_mru: int | None | UndefinedType = Undefined,
-                vlans: str | None | UndefinedType = Undefined,
                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 snmp_trap_link_change: bool | None | UndefinedType = Undefined,
-                type: Literal["routed", "switched", "l3dot1q", "l2dot1q"] | None | UndefinedType = Undefined,
-                encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                 encapsulation_dot1q: EncapsulationDot1q | UndefinedType = Undefined,
                 vrf: str | None | UndefinedType = Undefined,
                 encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
                 vlan_id: int | None | UndefinedType = Undefined,
-                mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
-                native_vlan: int | None | UndefinedType = Undefined,
-                native_vlan_tag: bool | None | UndefinedType = Undefined,
                 link_tracking_groups: LinkTrackingGroups | UndefinedType = Undefined,
                 link_tracking: LinkTracking | UndefinedType = Undefined,
-                phone: Phone | UndefinedType = Undefined,
                 l2_protocol: L2Protocol | UndefinedType = Undefined,
                 mtu: int | None | UndefinedType = Undefined,
                 mlag: int | None | UndefinedType = Undefined,
-                trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 lacp_fallback_timeout: int | None | UndefinedType = Undefined,
                 min_links: int | None | UndefinedType = Undefined,
                 lacp_fallback_mode: Literal["individual", "static"] | None | UndefinedType = Undefined,
@@ -33911,9 +33956,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 service_policy: ServicePolicy | UndefinedType = Undefined,
                 mpls: Mpls | UndefinedType = Undefined,
                 ntp_serve: bool | None | UndefinedType = Undefined,
-                trunk_private_vlan_secondary: bool | None | UndefinedType = Undefined,
-                pvlan_mapping: str | None | UndefinedType = Undefined,
-                vlan_translations: VlanTranslations | UndefinedType = Undefined,
                 shape: Shape | UndefinedType = Undefined,
                 storm_control: StormControl | UndefinedType = Undefined,
                 ip_proxy_arp: bool | None | UndefinedType = Undefined,
@@ -33924,8 +33966,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 isis_network_point_to_point: bool | None | UndefinedType = Undefined,
                 isis_circuit_type: Literal["level-1-2", "level-1", "level-2"] | None | UndefinedType = Undefined,
                 isis_hello_padding: bool | None | UndefinedType = Undefined,
-                isis_authentication_mode: Literal["text", "md5"] | None | UndefinedType = Undefined,
-                isis_authentication_key: str | None | UndefinedType = Undefined,
                 isis_authentication: IsisAuthentication | UndefinedType = Undefined,
                 traffic_policy: TrafficPolicy | UndefinedType = Undefined,
                 evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
@@ -33991,42 +34031,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     shutdown: shutdown
                     l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
                     l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
-                    vlans:
-                       List of switchport vlans as string.
-                       For a trunk port this would be a range like "1-200,300".
-                       For an
-                       access port this would be a single vlan "123".
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     snmp_trap_link_change: snmp_trap_link_change
-                    type:
-                       l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.
-                       Interface will not be listed in device documentation, unless "type" is set.
-                    encapsulation_dot1q_vlan: VLAN tag to configure on sub-interface.
-                    encapsulation_dot1q:
-                       Warning: `encapsulation_dot1q` should not be combined with `ethernet_interfaces[].type: l3dot1q` or
-                       `ethernet_interfaces[].type: l2dot1q`.
-
-                       Subclass of AvdModel.
+                    encapsulation_dot1q: Subclass of AvdModel.
                     vrf: VRF name.
                     encapsulation_vlan:
                        This setting can only be applied to sub-interfaces on EOS.
-                       Warning: `encapsulation_vlan` should not
-                       be combined with `ethernet_interfaces[].type: l3dot1q` or `ethernet_interfaces[].type: l2dot1q`.
+
                        Subclass of AvdModel.
-                    vlan_id:
-                       This setting can only be applied to sub-interfaces on EOS.
-                       Warning: `vlan_id` should not be combined
-                       with `ethernet_interfaces[].type == l2dot1q`.
-                    mode: mode
-                    native_vlan: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
-                    native_vlan_tag: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
+                    vlan_id: This setting can only be applied to sub-interfaces on EOS.
                     link_tracking_groups: Subclass of AvdIndexedList with `LinkTrackingGroupsItem` items. Primary key is `name` (`str`).
                     link_tracking: Subclass of AvdModel.
-                    phone: Subclass of AvdModel.
                     l2_protocol: Subclass of AvdModel.
                     mtu: mtu
                     mlag: MLAG ID.
-                    trunk_groups: Subclass of AvdList with `str` items.
                     lacp_fallback_timeout: Timeout in seconds. EOS default is 90 seconds.
                     min_links:
                        Minimum number of ports required up before bringing up a port-channel.
@@ -34038,9 +34056,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     service_policy: Subclass of AvdModel.
                     mpls: Subclass of AvdModel.
                     ntp_serve: Enable/disable serving NTP to clients.
-                    trunk_private_vlan_secondary: trunk_private_vlan_secondary
-                    pvlan_mapping: List of vlans as string.
-                    vlan_translations: Subclass of AvdList with `VlanTranslationsItem` items.
                     shape: Subclass of AvdModel.
                     storm_control: Subclass of AvdModel.
                     ip_proxy_arp: ip_proxy_arp
@@ -34051,13 +34066,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     isis_network_point_to_point: isis_network_point_to_point
                     isis_circuit_type: isis_circuit_type
                     isis_hello_padding: isis_hello_padding
-                    isis_authentication_mode: isis_authentication_mode
-                    isis_authentication_key: Type-7 encrypted password.
-                    isis_authentication:
-                       This key should not be mixed with port_channel_interfaces[].isis_authentication_mode or
-                       ethernet_interfaces[].isis_authentication_key.
-
-                       Subclass of AvdModel.
+                    isis_authentication: Subclass of AvdModel.
                     traffic_policy: Subclass of AvdModel.
                     evpn_ethernet_segment: Subclass of AvdModel.
                     lacp_id: LACP ID with format xxxx.xxxx.xxxx.
@@ -54697,7 +54706,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         This configuration cannot be pushed with `eos_config_deploy_eapi`, because
         of limitations in `arista.eos` and `ansible.netcommon` plugins.
         The configuration can be pushed via
-        CloudVision with `eos_config_deploy_cvp` or `cv_deploy`.
+        CloudVision with the `cv_deploy` role.
 
         Subclass of AvdModel.
         """
@@ -54732,7 +54741,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        This configuration cannot be pushed with `eos_config_deploy_eapi`, because
                        of limitations in `arista.eos` and `ansible.netcommon` plugins.
                        The configuration can be pushed via
-                       CloudVision with `eos_config_deploy_cvp` or `cv_deploy`.
+                       CloudVision with the `cv_deploy` role.
 
                        Subclass of AvdModel.
 
@@ -59128,13 +59137,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 RpAddresses._item_type = RpAddressesItem
 
-                _fields: ClassVar[dict] = {"bfd": {"type": bool}, "make_before_break": {"type": bool}, "rp_addresses": {"type": RpAddresses}}
+                _fields: ClassVar[dict] = {
+                    "bfd": {"type": bool},
+                    "make_before_break": {"type": bool},
+                    "rp_addresses": {"type": RpAddresses},
+                    "ssm_range": {"type": str},
+                }
                 bfd: bool | None
                 """Enable/Disable BFD."""
                 make_before_break: bool | None
                 """Enable/Disable Make-Before-Break."""
                 rp_addresses: RpAddresses
                 """Subclass of AvdList with `RpAddressesItem` items."""
+                ssm_range: str | None
+                """
+                Standard access list name or use the specific keyword 'standard' as a shortcut to apply
+                a predefined
+                rule that permits the 232.0.0.0/8 range for SSM traffic.
+                """
 
                 if TYPE_CHECKING:
 
@@ -59144,6 +59164,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bfd: bool | None | UndefinedType = Undefined,
                         make_before_break: bool | None | UndefinedType = Undefined,
                         rp_addresses: RpAddresses | UndefinedType = Undefined,
+                        ssm_range: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ipv4.
@@ -59155,6 +59176,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             bfd: Enable/Disable BFD.
                             make_before_break: Enable/Disable Make-Before-Break.
                             rp_addresses: Subclass of AvdList with `RpAddressesItem` items.
+                            ssm_range:
+                               Standard access list name or use the specific keyword 'standard' as a shortcut to apply
+                               a predefined
+                               rule that permits the 232.0.0.0/8 range for SSM traffic.
 
                         """
 
@@ -63237,9 +63262,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Traffic class ID."""
                     count: str | None
                     """
-                    Counter name. This should also be added to the `policies[].counters` list.
-                    It will no longer be
-                    added automatically to the counters in AVD 6.0.
+                    Named counter.
+                    Must also be defined under `policies[].counters` to be active.
+                    If not defined, the
+                    counter is inactive on EOS.
                     """
                     drop: bool | None
                     log: bool | None
@@ -63269,9 +63295,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 dscp: dscp
                                 traffic_class: Traffic class ID.
                                 count:
-                                   Counter name. This should also be added to the `policies[].counters` list.
-                                   It will no longer be
-                                   added automatically to the counters in AVD 6.0.
+                                   Named counter.
+                                   Must also be defined under `policies[].counters` to be active.
+                                   If not defined, the
+                                   counter is inactive on EOS.
                                 drop: drop
                                 log: Only supported when action is set to drop.
                                 redirect: Subclass of AvdModel.
@@ -63373,7 +63400,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     traffic_class: int | None
                     """Traffic class ID."""
                     count: str | None
-                    """Counter name. This should also be added to the `policies[].counters` list."""
+                    """
+                    Named counter.
+                    Must also be defined under `policies[].counters` to be active.
+                    If not defined, the
+                    counter is inactive on EOS.
+                    """
                     drop: bool | None
                     log: bool | None
                     """Only supported when action is set to drop."""
@@ -63398,7 +63430,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 dscp: dscp
                                 traffic_class: Traffic class ID.
-                                count: Counter name. This should also be added to the `policies[].counters` list.
+                                count:
+                                   Named counter.
+                                   Must also be defined under `policies[].counters` to be active.
+                                   If not defined, the
+                                   counter is inactive on EOS.
                                 drop: drop
                                 log: Only supported when action is set to drop.
 
@@ -63418,7 +63454,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     traffic_class: int | None
                     """Traffic class ID."""
                     count: str | None
-                    """Counter name. This should also be added to the `policies[].counters` list."""
+                    """
+                    Named counter.
+                    Must also be defined under `policies[].counters` to be active.
+                    If not defined, the
+                    counter is inactive on EOS.
+                    """
                     drop: bool | None
                     log: bool | None
                     """Only supported when action is set to drop."""
@@ -63443,7 +63484,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 dscp: dscp
                                 traffic_class: Traffic class ID.
-                                count: Counter name. This should also be added to the `policies[].counters` list.
+                                count:
+                                   Named counter.
+                                   Must also be defined under `policies[].counters` to be active.
+                                   If not defined, the
+                                   counter is inactive on EOS.
                                 drop: drop
                                 log: Only supported when action is set to drop.
 
@@ -63480,7 +63525,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Traffic Policy Name."""
             counters: Counters
             """
-            Counter name.
+            List of named counters.
 
             Subclass of AvdList with `str` items.
             """
@@ -63508,7 +63553,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: Traffic Policy Name.
                         counters:
-                           Counter name.
+                           List of named counters.
 
                            Subclass of AvdList with `str` items.
                         matches: Subclass of AvdIndexedList with `MatchesItem` items. Primary key is `name` (`str`).
@@ -67994,7 +68039,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     Serial Number of the device.
     Used only for documentation and deployment purposes. It is used by the
-    'eos_config_deploy_cvp' and 'cv_deploy' roles.
+    'cv_deploy' role.
     """
     service_routing_configuration_bgp: ServiceRoutingConfigurationBgp
     """Subclass of AvdModel."""
@@ -68581,7 +68626,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 serial_number:
                    Serial Number of the device.
                    Used only for documentation and deployment purposes. It is used by the
-                   'eos_config_deploy_cvp' and 'cv_deploy' roles.
+                   'cv_deploy' role.
                 service_routing_configuration_bgp: Subclass of AvdModel.
                 service_routing_protocols_model: service_routing_protocols_model
                 service_unsupported_transceiver: Subclass of AvdModel.
