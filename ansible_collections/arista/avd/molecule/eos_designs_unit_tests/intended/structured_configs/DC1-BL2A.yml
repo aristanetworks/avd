@@ -210,6 +210,9 @@ router_bgp:
     maximum_routes: 1000
     route_map_in: TEST_IN
     route_map_out: TEST_OUT
+  - name: Tenant_C_BGP_PEER_GROUP_RESTRICTED
+    remote_as: '666'
+    description: Tenant C peer group
   - name: Tenant_C_BGP_PEER_GROUP2
     remote_as: '667'
     description: Tenant C peer group2
@@ -375,11 +378,20 @@ router_bgp:
         route_targets:
         - 65000:123
     router_id: 192.168.255.16
+    updates:
+      wait_install: true
+    neighbors:
+    - ip_address: fd5a:fe45:8831:06c5::b
+      remote_as: '12345'
     redistribute:
       connected:
         enabled: true
       static:
         enabled: true
+    address_family_ipv6:
+      neighbors:
+      - ip_address: fd5a:fe45:8831:06c5::b
+        activate: true
   - name: Tenant_B_OP_Zone
     rd: 192.168.255.16:20
     route_targets:

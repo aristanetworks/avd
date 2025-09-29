@@ -19,7 +19,6 @@ SCOPES = [
     "cvp_configlet_upload",
     "cv_deploy",
     "eos_cli_config_gen",
-    "eos_config_deploy_cvp",
     "eos_config_deploy_eapi",
     "eos_designs",
     "eos_snapshot",

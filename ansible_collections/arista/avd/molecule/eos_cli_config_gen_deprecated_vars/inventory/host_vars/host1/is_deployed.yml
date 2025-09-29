@@ -1,3 +1,0 @@
----
-# deprecated in favor of metadata.is_deployed
-is_deployed: false
