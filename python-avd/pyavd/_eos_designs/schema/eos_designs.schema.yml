@@ -1421,50 +1421,26 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: str
-    description: 'On-premise CVP ingest auth key. If set, TerminAttr will be configured
-      with key-based authentication for on-premise CVP.
-
-      If not set, TerminAttr will be configured with certificate based authentication:
-
-      - On-premise using token onboarding. Default token path is ''/tmp/token''.
-
-      - CVaaS using token-secure onboarding. Default token path is ''/tmp/cv-onboarding-token''.
-
-      Token must be copied to the device first.'
     deprecation:
       warning: true
+      removed: true
       remove_in_version: 6.0.0
   cvp_instance_ips:
     documentation_options:
       table: cloudvision-settings
     type: list
-    description: 'List of IPv4 addresses or DNS names for CloudVision.
-
-      For on-premise CloudVision enter all the nodes of the cluster.
-
-      For CloudVision as a Service enter the DNS name of the instance.
-
-      `eos_designs` only supports one CloudVision cluster.
-
-      '
-    items:
-      type: str
-      description: IPv4 address or DNS name for CloudVision
     deprecation:
       warning: true
+      removed: true
       new_key: cv_settings
       remove_in_version: 6.0.0
   cvp_token_file:
     documentation_options:
       table: cloudvision-settings
     type: str
-    description: 'cvp_token_file is the path to the token file on the switch.
-
-      If not set the default locations for on-premise or CVaaS will be used.
-
-      See cvp_ingestauth_key for details.'
     deprecation:
       warning: true
+      removed: true
       new_key: cv_settings
       remove_in_version: 6.0.0
   dc_name:
@@ -1575,10 +1551,8 @@ keys:
             description: Interface range or interface.
         mlag_interfaces_speed:
           type: str
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
           description: 'Set MLAG interfaces speed.
-
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
-            or `auto <interface_speed>`.
 
             '
         downlink_interfaces:
@@ -1589,6 +1563,7 @@ keys:
             description: Interface range or interface.
         uplink_interface_speed:
           type: str
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
           description: Set point-to-Point uplink interface speed.
   default_mgmt_method:
     documentation_options:
@@ -2591,10 +2566,12 @@ keys:
     type: dict
   inband_ztp_bootstrap_file:
     type: str
-    description: "Bootstrap URL configured in DHCP to use for inband ZTP.\nIf not
-      set and `cvp_instance_ips` is set then the bootstrap value will be set to:\n
-      \   `https://{cvp_instance_ips[0]}/ztp/bootstrap`\nOtherwise no value will be
-      configured."
+    description: 'Bootstrap URL configured in DHCP to use for inband ZTP.
+
+      By default the URL will be `https://<first cv server>/ztp/bootstrap` if `cv_settings`
+      are used.
+
+      Otherwise no value will be configured.'
     documentation_options:
       table: management-settings
   internal_vlan_order:
@@ -5093,7 +5070,7 @@ keys:
     description: 'Serial Number of the device.
 
       Used for documentation purpose in the fabric documentation as can also be used
-      by the ''eos_config_deploy_cvp'' role.
+      by the ''cv_deploy'' role.
 
       "serial_number" can also be set directly under node type settings.
 
@@ -5594,8 +5571,8 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: bool
-    default: false
     deprecation:
+      removed: true
       warning: true
       new_key: cv_settings
       remove_in_version: 6.0.0
@@ -5603,8 +5580,8 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: str
-    default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
     deprecation:
+      removed: true
       warning: true
       new_key: cv_settings
       remove_in_version: 6.0.0
@@ -5612,24 +5589,17 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: int
-    convert_types:
-    - str
-    default: 9910
-    description: 'Port number used for Terminattr connection to an on-premise CloudVision
-      cluster.
-
-      The port number is always 443 when using CloudVision as a Service, so this value
-      is ignored.'
     deprecation:
       warning: true
+      removed: true
       new_key: cv_settings
       remove_in_version: 6.0.0
   terminattr_smashexcludes:
     documentation_options:
       table: cloudvision-settings
     type: str
-    default: ale,flexCounter,hardware,kni,pulse,strata
     deprecation:
+      removed: true
       warning: true
       new_key: cv_settings
       remove_in_version: 6.0.0
@@ -6664,8 +6634,8 @@ $defs:
     keys:
       speed:
         type: str
-        description: 'Set adapter speed in the format `<interface_speed>` or `forced
-          <interface_speed>` or `auto <interface_speed>`.
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
+        description: 'Set adapter speed.
 
           If not specified speed will be auto.
 
@@ -8937,8 +8907,7 @@ $defs:
                               and documentation.
                           speed:
                             type: str
-                            description: Speed should be set in the format `<interface_speed>`
-                              or `forced <interface_speed>` or `auto <interface_speed>`.
+                            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
                           structured_config:
                             type: dict
                             relaxed_validation: true
@@ -10055,17 +10024,16 @@ $defs:
 
               '
             type: str
+            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
           uplink_switch_interface_speed:
             documentation_options:
               table: node-type-uplink-configuration
             description: 'Set point-to-Point interface speed for the uplink switch
               interface only.
 
-              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
-              or `auto <interface_speed>`.
-
               '
             type: str
+            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
           uplink_mtu:
             documentation_options:
               table: node-type-uplink-configuration
@@ -10181,35 +10149,6 @@ $defs:
               not overlap with autogenerated Port-channel IDs in the Network Services.\nNote!
               For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches
               must have the same value.\n"
-          uplink_structured_config:
-            documentation_options:
-              table: node-type-uplink-configuration
-              hide_keys: true
-            type: dict
-            relaxed_validation: true
-            description: 'Custom structured config applied to "uplink_interfaces",
-              and "uplink_switch_interfaces".
-
-              When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-              for eos_cli_config_gen overrides the settings on the ethernet interface
-              level.
-
-              When uplink_type == "port-channel", custom structured config added under
-              port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides
-              the settings on the port-channel interface level.
-
-              "uplink_structured_config" is applied after "structured_config", so
-              it can override "structured_config" defined on node-level.
-
-              Note! The content of this dictionary is _not_ validated by the schema,
-              since it can be either ethernet_interfaces or port_channel_interfaces.
-
-              '
-            deprecation:
-              warning: true
-              remove_in_version: 6.0.0
-              new_key: uplink_port_channel_structured_config or uplink_ethernet_structured_config
-                or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config
           uplink_ethernet_structured_config:
             type: dict
             $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
@@ -10824,11 +10763,9 @@ $defs:
               table: node-type-l2-mlag-configuration
             description: 'Set MLAG interface speed.
 
-              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
-              or `auto <interface_speed>`.
-
               '
             type: str
+            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
           mlag_peer_l3_vlan:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -11801,6 +11738,17 @@ $defs:
                   devices by default.
 
                   Overrides global `digital_twin.fabric.act_internet_access` flag.'
+          uplink_structured_config:
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            type: dict
+            deprecation:
+              warning: true
+              removed: true
+              remove_in_version: 6.0.0
+              new_key: uplink_port_channel_structured_config or uplink_ethernet_structured_config
+                or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -11927,8 +11875,7 @@ $defs:
           description: Enable or Shutdown the interface.
         speed:
           type: str
-          description: Speed should be set in the format `<interface_speed>` or `forced
-            <interface_speed>` or `auto <interface_speed>`.
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
         receive_bandwidth:
           type: int
           description: 'Maximum allowed receive bandwidth (download) in Mbps for this
@@ -12145,8 +12092,7 @@ $defs:
                 description: The peer device interface. Used for description and documentation.
               speed:
                 type: str
-                description: Speed should be set in the format `<interface_speed>`
-                  or `forced <interface_speed>` or `auto <interface_speed>`.
+                $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
               rx_queue:
                 type: dict
                 $ref: eos_designs#/$defs/rx_queue_settings
@@ -12323,8 +12269,7 @@ $defs:
             '
         speed:
           type: str
-          description: Speed should be set in the format `<interface_speed>` or `forced
-            <interface_speed>` or `auto <interface_speed>`.
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
         ip_pool:
           type: str
           description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A

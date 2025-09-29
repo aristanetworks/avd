@@ -1044,8 +1044,7 @@ $defs:
                               The peer device interface. Used for description and documentation.
                           speed:
                             type: str
-                            description: |-
-                              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
                           structured_config:
                             type: dict
                             relaxed_validation: true

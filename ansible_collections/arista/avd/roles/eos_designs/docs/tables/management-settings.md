@@ -167,7 +167,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "event_handlers.[].trigger_on_maintenance.interface") | String |  |  |  | Trigger condition occurs on maintenance operation of specified interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "event_handlers.[].trigger_on_maintenance.unit") | String |  |  |  | Name of unit. Trigger condition occurs on maintenance operation of specified unit |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous</samp>](## "event_handlers.[].asynchronous") | Boolean |  | `False` |  | Set the action to be non-blocking.<br> |
-    | [<samp>inband_ztp_bootstrap_file</samp>](## "inband_ztp_bootstrap_file") | String |  |  |  | Bootstrap URL configured in DHCP to use for inband ZTP.<br>If not set and `cvp_instance_ips` is set then the bootstrap value will be set to:<br>    `https://{cvp_instance_ips[0]}/ztp/bootstrap`<br>Otherwise no value will be configured. |
+    | [<samp>inband_ztp_bootstrap_file</samp>](## "inband_ztp_bootstrap_file") | String |  |  |  | Bootstrap URL configured in DHCP to use for inband ZTP.<br>By default the URL will be `https://<first cv server>/ztp/bootstrap` if `cv_settings` are used.<br>Otherwise no value will be configured. |
     | [<samp>ipv6_mgmt_destination_networks</samp>](## "ipv6_mgmt_destination_networks") | List, items: String |  |  |  | List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.<br>Replaces the default route.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ipv6_mgmt_destination_networks.[]") | String |  |  |  | IPv6_network/Mask. |
     | [<samp>ipv6_mgmt_gateway</samp>](## "ipv6_mgmt_gateway") | String |  |  | Format: ipv6 | OOB Management interface gateway in IPv6 format.<br>Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'.<br> |
@@ -638,8 +638,7 @@
         asynchronous: <bool; default=False>
 
     # Bootstrap URL configured in DHCP to use for inband ZTP.
-    # If not set and `cvp_instance_ips` is set then the bootstrap value will be set to:
-    #     `https://{cvp_instance_ips[0]}/ztp/bootstrap`
+    # By default the URL will be `https://<first cv server>/ztp/bootstrap` if `cv_settings` are used.
     # Otherwise no value will be configured.
     inband_ztp_bootstrap_file: <str>
 
