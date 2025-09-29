@@ -164,7 +164,8 @@ class RouterBgpMixin(Protocol):
         if self.shared_utils.overlay_ipvpn_gateway is True:
             ipvpn_gateway_peer_group = self._generate_base_peer_group("mpls", "ipvpn_gateway_peers")
             ipvpn_gateway_peer_group._update(
-                local_as=self.shared_utils.node_config.ipvpn_gateway.local_as, maximum_routes=self.shared_utils.node_config.ipvpn_gateway.maximum_routes
+                local_as=self.shared_utils.get_asn(self.shared_utils.node_config.ipvpn_gateway.local_as),
+                maximum_routes=self.shared_utils.node_config.ipvpn_gateway.maximum_routes,
             )
             peer_groups.append(ipvpn_gateway_peer_group)
 

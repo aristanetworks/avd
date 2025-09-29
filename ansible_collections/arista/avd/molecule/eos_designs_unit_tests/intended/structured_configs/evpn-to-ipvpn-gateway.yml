@@ -70,7 +70,7 @@ router_bgp:
     maximum_routes: 0
   - name: IPVPN-GATEWAY-PEERS
     type: mpls
-    local_as: '65555.100'
+    local_as: '4296212580'
     update_source: Loopback0
     bfd: true
     send_community: all
