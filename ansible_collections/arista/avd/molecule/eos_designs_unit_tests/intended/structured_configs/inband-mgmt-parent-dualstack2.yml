@@ -191,9 +191,8 @@ ntp:
   servers:
   - name: 2.2.2.55
     preferred: true
-    vrf: MGMT
   - name: pool.ntp.org
-    vrf: MGMT
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel11
   description: MLAG_inband-mgmt-parent-dualstack1_Port-Channel11

@@ -332,7 +332,6 @@ class EosDesignsFactsProtocol(Protocol):
                 "ipv6_address": {"type": str},
                 "peer_ip_address": {"type": str},
                 "peer_ipv6_address": {"type": str},
-                "structured_config": {"type": dict},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             }
             interface: str
@@ -346,20 +345,6 @@ class EosDesignsFactsProtocol(Protocol):
             ipv6_address: str | None
             peer_ip_address: str | None
             peer_ipv6_address: str | None
-            structured_config: dict
-            """
-            Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-            When
-            uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-            for eos_cli_config_gen overrides the settings on the ethernet interface level.
-            When uplink_type ==
-            "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-            eos_cli_config_gen overrides the settings on the port-channel interface level.
-            "uplink_structured_config" is applied after "structured_config", so it can override
-            "structured_config" defined on node-level.
-            Note! The content of this dictionary is _not_ validated
-            by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-            """
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config applied to `uplink_interfaces`."""
 
@@ -379,7 +364,6 @@ class EosDesignsFactsProtocol(Protocol):
                     ipv6_address: str | None | UndefinedType = Undefined,
                     peer_ip_address: str | None | UndefinedType = Undefined,
                     peer_ipv6_address: str | None | UndefinedType = Undefined,
-                    structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -400,18 +384,6 @@ class EosDesignsFactsProtocol(Protocol):
                         ipv6_address: ipv6_address
                         peer_ip_address: peer_ip_address
                         peer_ipv6_address: peer_ipv6_address
-                        structured_config:
-                           Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                           When
-                           uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                           for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                           When uplink_type ==
-                           "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                           eos_cli_config_gen overrides the settings on the port-channel interface level.
-                           "uplink_structured_config" is applied after "structured_config", so it can override
-                           "structured_config" defined on node-level.
-                           Note! The content of this dictionary is _not_ validated
-                           by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
 
                     """
@@ -462,7 +434,6 @@ class EosDesignsFactsProtocol(Protocol):
             "inband_ztp_vlan": {"type": int},
             "inband_ztp_lacp_fallback_delay": {"type": int},
             "dhcp_server": {"type": bool},
-            "structured_config": {"type": dict},
             "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             "peer_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -517,20 +488,6 @@ class EosDesignsFactsProtocol(Protocol):
         inband_ztp_vlan: int | None
         inband_ztp_lacp_fallback_delay: int | None
         dhcp_server: bool | None
-        structured_config: dict
-        """
-        Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-        When
-        uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-        for eos_cli_config_gen overrides the settings on the ethernet interface level.
-        When uplink_type ==
-        "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-        eos_cli_config_gen overrides the settings on the port-channel interface level.
-        "uplink_structured_config" is applied after "structured_config", so it can override
-        "structured_config" defined on node-level.
-        Note! The content of this dictionary is _not_ validated
-        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-        """
         ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
         """Custom structured config applied to `uplink_interfaces`."""
         port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -585,7 +542,6 @@ class EosDesignsFactsProtocol(Protocol):
                 inband_ztp_vlan: int | None | UndefinedType = Undefined,
                 inband_ztp_lacp_fallback_delay: int | None | UndefinedType = Undefined,
                 dhcp_server: bool | None | UndefinedType = Undefined,
-                structured_config: dict | UndefinedType = Undefined,
                 ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -640,18 +596,6 @@ class EosDesignsFactsProtocol(Protocol):
                     inband_ztp_vlan: inband_ztp_vlan
                     inband_ztp_lacp_fallback_delay: inband_ztp_lacp_fallback_delay
                     dhcp_server: dhcp_server
-                    structured_config:
-                       Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                       When
-                       uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                       for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                       When uplink_type ==
-                       "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                       eos_cli_config_gen overrides the settings on the port-channel interface level.
-                       "uplink_structured_config" is applied after "structured_config", so it can override
-                       "structured_config" defined on node-level.
-                       Note! The content of this dictionary is _not_ validated
-                       by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                     ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                     port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                     peer_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.

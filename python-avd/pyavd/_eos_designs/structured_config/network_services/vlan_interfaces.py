@@ -149,6 +149,14 @@ class VlanInterfacesMixin(Protocol):
             # If any anycast IPs are set, we also enable link-local IPv6 per best practice, unless specifically disabled with 'ipv6_enable: false'
             vlan_interface_config.ipv6_enable = default(vlan_interface_config.ipv6_enable, True)  # noqa: FBT003
 
+            if svi.ipv6_nd.advertise_ipv6_address_virtuals:
+                for ipv6_address in svi.ipv6_address_virtuals:
+                    vlan_interface_config.ipv6_nd_prefixes.append_new(
+                        ipv6_prefix=ipv6_address,
+                        valid_lifetime=svi.ipv6_nd.valid_lifetime,
+                        preferred_lifetime=svi.ipv6_nd.preferred_lifetime,
+                    )
+
         if vrf.name != "default":
             vlan_interface_config.vrf = vrf.name
 
