@@ -9870,6 +9870,7 @@ $defs:
                 keys:
                   enabled:
                     type: bool
+                    description: Set the link tracking group on all downlinks.
                     default: false
               groups:
                 type: list
