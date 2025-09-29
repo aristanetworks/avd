@@ -71619,19 +71619,19 @@ class EosDesigns(EosDesignsRootModel):
     custom_platform_settings: CustomPlatformSettings
     """
     Custom Platform settings to override the default `platform_settings`. This list will be prepended to
-    the list of `platform_settings`. The first entry containing `platforms` matching the `platform` node
-    setting will be chosen. If no matches are found, the first entry containing a platform `default`
-    will be chosen.
+    the list of `platform_settings`. The first entry containing `platforms` matching the full regex of
+    `platform` node setting will be chosen. If no matches are found, the first entry containing a
+    platform `default` will be chosen.
 
     Subclass of AvdList with `CustomPlatformSettingsItem` items.
     """
     platform_settings: PlatformSettings
     """
-    Platform settings. The first entry containing `platforms` matching the `platform` node setting will
-    be chosen. If no matches are found, the first entry containing a platform `default` will be chosen.
-    The default values will be overridden if `platform_settings` is defined. If you need to replace all
-    the default platforms, it is recommended to copy the defaults and modify them. If you need to add
-    custom platforms, create them under `custom_platform_settings`. Entries under
+    Platform settings. The first entry containing `platforms` matching the full regex `platform` node
+    setting will be chosen. If no matches are found, the first entry containing a platform `default`
+    will be chosen. The default values will be overridden if `platform_settings` is defined. If you need
+    to replace all the default platforms, it is recommended to copy the defaults and modify them. If you
+    need to add custom platforms, create them under `custom_platform_settings`. Entries under
     `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
     Subclass of AvdList with `PlatformSettingsItem` items.
 
@@ -73475,17 +73475,17 @@ class EosDesigns(EosDesignsRootModel):
                 p2p_uplinks_qos_profile: QOS Profile assigned on all infrastructure links.
                 custom_platform_settings:
                    Custom Platform settings to override the default `platform_settings`. This list will be prepended to
-                   the list of `platform_settings`. The first entry containing `platforms` matching the `platform` node
-                   setting will be chosen. If no matches are found, the first entry containing a platform `default`
-                   will be chosen.
+                   the list of `platform_settings`. The first entry containing `platforms` matching the full regex of
+                   `platform` node setting will be chosen. If no matches are found, the first entry containing a
+                   platform `default` will be chosen.
 
                    Subclass of AvdList with `CustomPlatformSettingsItem` items.
                 platform_settings:
-                   Platform settings. The first entry containing `platforms` matching the `platform` node setting will
-                   be chosen. If no matches are found, the first entry containing a platform `default` will be chosen.
-                   The default values will be overridden if `platform_settings` is defined. If you need to replace all
-                   the default platforms, it is recommended to copy the defaults and modify them. If you need to add
-                   custom platforms, create them under `custom_platform_settings`. Entries under
+                   Platform settings. The first entry containing `platforms` matching the full regex `platform` node
+                   setting will be chosen. If no matches are found, the first entry containing a platform `default`
+                   will be chosen. The default values will be overridden if `platform_settings` is defined. If you need
+                   to replace all the default platforms, it is recommended to copy the defaults and modify them. If you
+                   need to add custom platforms, create them under `custom_platform_settings`. Entries under
                    `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
                    Subclass of AvdList with `PlatformSettingsItem` items.
                 platform_speed_groups:
