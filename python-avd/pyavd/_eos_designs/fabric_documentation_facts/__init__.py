@@ -161,6 +161,7 @@ class FabricDocumentationFacts(AvdFacts):
                 {
                     "node": hostname,
                     "type": data[0],
+                    "serial_number": self.avd_facts[hostname].serial_number,
                     "node_interface": data[1],
                     "node_ip_address": data[2],
                     "routed": data[4],
@@ -353,6 +354,7 @@ class FabricDocumentationFacts(AvdFacts):
             (
                 self.avd_facts[hostname].type,
                 hostname,
+                self.avd_facts[hostname].serial_number,
                 ethernet_interface["name"],
                 get(ethernet_interface, "peer_type", default=""),
                 get(ethernet_interface, "peer", default=""),

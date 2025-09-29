@@ -2,6 +2,7 @@
 
 ## Table of Contents
 
+- [Serial Number](#serial-number)
 - [Management](#management)
   - [Banner](#banner)
   - [Agents](#agents)
@@ -290,6 +291,10 @@
   - [Interface Groups](#interface-groups)
   - [Maintenance](#maintenance)
 - [EOS CLI Device Configuration](#eos-cli-device-configuration)
+
+### Serial Number
+
+Serial Number: DEADBEEFC0FFEW
 
 ## Management
 

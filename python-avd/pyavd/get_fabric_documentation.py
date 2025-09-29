@@ -85,7 +85,7 @@ def _get_topology_csv(fabric_documentation_facts: FabricDocumentationFacts) -> s
 
     csv_content = StringIO()
     csv_writer = writer(csv_content, lineterminator="\n")
-    csv_writer.writerow(("Node Type", "Node", "Node Interface", "Peer Type", "Peer Node", "Peer Interface", "Node Interface Enabled"))
+    csv_writer.writerow(("Node Type", "Node", "Serial number", "Node Interface", "Peer Type", "Peer Node", "Peer Interface", "Node Interface Enabled"))
     csv_writer.writerows(fabric_documentation_facts.get_physical_links())
     csv_content.seek(0)
     return csv_content.read()
@@ -102,6 +102,7 @@ def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> 
         (
             topology_link["type"],
             topology_link["node"],
+            topology_link["serial_number"],
             topology_link["node_interface"],
             topology_link["node_ip_address"],
             topology_link["peer_type"],
