@@ -98,7 +98,7 @@ def test_data_combining_conflict(
 ) -> None:
     a = data_merging_schema_class._from_dict(a_data)
     c = data_merging_schema_class._from_dict(c_data)
-    with pytest.raises(AristaAvdDuplicateDataError, match="Found duplicate objects with conflicting data while generating configuration for"):
+    with pytest.raises(AristaAvdDuplicateDataError, match=r"Found duplicate objects with conflicting data while generating configuration for"):
         a._combine(c)
 
 
@@ -117,7 +117,7 @@ def test_data_combining_wrong_type(
 ) -> None:
     a = data_merging_schema_class._from_dict(a_data)
     c = 42
-    with pytest.raises(TypeError, match="Unable to combine type '<class 'int'>' into '"):
+    with pytest.raises(TypeError, match=r"Unable to combine type '<class 'int'>' into '"):
         getattr(a, key)._combine(c)
 
 
@@ -143,13 +143,13 @@ def test_data_combining_different_from_null(
 
     # Setting _created_from_null to True for a
     getattr(a, key)._created_from_null = True
-    with pytest.raises(AristaAvdDuplicateDataError, match="Found duplicate objects with conflicting data while generating configuration for.*null.*"):
+    with pytest.raises(AristaAvdDuplicateDataError, match=r"Found duplicate objects with conflicting data while generating configuration for.*null.*"):
         a._combine(b)
 
     # Setting _created_from_null to True for b
     getattr(a, key)._created_from_null = False
     getattr(b, key)._created_from_null = True
-    with pytest.raises(AristaAvdDuplicateDataError, match="Found duplicate objects with conflicting data while generating configuration for.*null.*"):
+    with pytest.raises(AristaAvdDuplicateDataError, match=r"Found duplicate objects with conflicting data while generating configuration for.*null.*"):
         a._combine(b)
 
 
