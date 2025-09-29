@@ -9521,7 +9521,7 @@ class EosDesigns(EosDesignsRootModel):
             "enable_http": {"type": bool},
             "enable_https": {"type": bool, "default": True},
             "default_services": {"type": bool},
-            "vrfs": {"type": Vrfs, "default": lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)},
+            "vrfs": {"type": Vrfs, "default": lambda cls: coerce_type([{"name": "use_default_mgmt_method_vrf", "enabled": True}], target_type=cls)},
         }
         enabled: bool | None
         """Enable/Disable api http-commands."""
@@ -9533,7 +9533,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
-        Default value: `lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)`
+        Default value: `lambda cls: coerce_type([{"name": "use_default_mgmt_method_vrf", "enabled": True}], target_type=cls)`
         """
 
         if TYPE_CHECKING:

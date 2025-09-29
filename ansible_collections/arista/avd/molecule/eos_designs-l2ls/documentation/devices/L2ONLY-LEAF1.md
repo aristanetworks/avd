@@ -2,6 +2,8 @@
 
 ## Table of Contents
 
+- [Management](#management)
+  - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Enable Password](#enable-password)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
@@ -24,6 +26,34 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+
+## Management
+
+### Management API HTTP
+
+#### Management API HTTP Summary
+
+| HTTP | HTTPS | UNIX-Socket | Default Services |
+| ---- | ----- | ----------- | ---------------- |
+| False | True | - | - |
+
+#### Management API VRF Access
+
+| VRF Name | IPv4 ACL | IPv6 ACL |
+| -------- | -------- | -------- |
+| default | - | - |
+
+#### Management API HTTP Device Configuration
+
+```eos
+!
+management api http-commands
+   protocol https
+   no shutdown
+   !
+   vrf default
+      no shutdown
+```
 
 ## Authentication
 

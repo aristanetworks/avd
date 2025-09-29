@@ -904,6 +904,6 @@
 
         ```yaml
         vrfs:
-        - name: use_mgmt_interface_vrf
+        - name: use_default_mgmt_method_vrf
           enabled: true
         ```

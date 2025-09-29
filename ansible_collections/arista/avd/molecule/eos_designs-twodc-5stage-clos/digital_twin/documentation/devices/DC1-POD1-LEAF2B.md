@@ -5,6 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [IP Domain-list](#ip-domain-list)
+  - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [Enable Password](#enable-password)
@@ -91,6 +92,32 @@ ip domain-list structured-config.set.under.vrf.common-vrf
 !
 ```
 
+### Management API HTTP
+
+#### Management API HTTP Summary
+
+| HTTP | HTTPS | UNIX-Socket | Default Services |
+| ---- | ----- | ----------- | ---------------- |
+| False | True | - | - |
+
+#### Management API VRF Access
+
+| VRF Name | IPv4 ACL | IPv6 ACL |
+| -------- | -------- | -------- |
+| MGMT | - | - |
+
+#### Management API HTTP Device Configuration
+
+```eos
+!
+management api http-commands
+   protocol https
+   no shutdown
+   !
+   vrf MGMT
+      no shutdown
+```
+
 ## Authentication
 
 ### Local Users
@@ -137,7 +164,7 @@ snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2B
 | --------- | --------------- | ------------ | --------- |
 | RACK2_MLAG | Vlan4094 | 172.20.110.2 | Port-Channel5 |
 
-Dual primary detection is disabled.
+Dual primary detection is enabled. The detection delay is 5 seconds.
 
 ### MLAG Device Configuration
 
@@ -147,7 +174,9 @@ mlag configuration
    domain-id RACK2_MLAG
    local-interface Vlan4094
    peer-address 172.20.110.2
+   peer-address heartbeat 192.168.1.8 vrf MGMT
    peer-link Port-Channel5
+   dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
    reload-delay non-mlag 330
 ```

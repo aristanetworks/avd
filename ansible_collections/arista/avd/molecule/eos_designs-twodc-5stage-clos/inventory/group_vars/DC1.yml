@@ -1,6 +1,9 @@
 ---
 dc_name: DC1
 
+management_eapi:
+  enabled: true
+
 bgp_peer_groups:
   ipv4_underlay_peers:
     password: "AQQvKeimxJu+uGQ/yYvv9w=="
@@ -19,7 +22,7 @@ super_spine:
   nodes:
     - name: DC1-SUPER-SPINE1
       # id: 1 Using pool manager for ID
-      # mgmt_ip: 192.168.1.1/24 Test without management IP
+      mgmt_ip: 192.168.1.1/24
       # evpn_role: none
       # evpn_route_servers: []
       digital_twin:
@@ -42,7 +45,7 @@ overlay_controller:
   nodes:
     - name: DC1-RS1
       # id: 1 Using pool manager for ID
-      # mgmt_ip: 192.168.1.3/24 Test without management IP
+      mgmt_ip: 192.168.1.3/24
       digital_twin:
         mgmt_ip: 192.168.1.3/24
       bgp_as: 65101

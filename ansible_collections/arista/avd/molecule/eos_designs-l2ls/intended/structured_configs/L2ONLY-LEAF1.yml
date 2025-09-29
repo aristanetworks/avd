@@ -41,6 +41,10 @@ ethernet_interfaces:
 hostname: L2ONLY-LEAF1
 ip_igmp_snooping:
   globally_enabled: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: default
 metadata:
   is_deployed: true
   pod_name: L2LS_L2ONLY
