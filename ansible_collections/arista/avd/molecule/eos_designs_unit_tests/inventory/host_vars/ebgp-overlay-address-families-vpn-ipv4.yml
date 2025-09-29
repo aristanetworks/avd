@@ -2,6 +2,18 @@
 # Test when overlay_address_families is "vpn-ipv4", hence not an overlay_evpn
 type: wan_router
 
+node_type_keys:
+  - key: "wan_router"
+    type: "wan_router"
+    default_evpn_role: "client"
+    default_wan_role: "client"
+    default_underlay_routing_protocol: "none"
+    default_overlay_routing_protocol: "ibgp"
+    default_flow_tracker_type: "hardware"
+    vtep: true
+    network_services:
+      l3: true
+
 overlay_routing_protocol: ebgp
 wan_use_evpn_node_settings_for_lan: true
 
