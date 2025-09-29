@@ -67,7 +67,7 @@ GET_DATA = [
         "org_key": None,
         "separator": ".",
         "expected_result": None,
-        "expected_exception": pytest.raises(AristaAvdError, match="avd_switch_facts.host1.missing_required"),
+        "expected_exception": pytest.raises(AristaAvdError, match=r"avd_switch_facts.host1.missing_required"),
     },
     {  # custom separator - hostname with a "."
         "dictionary": {"avd_switch_facts": {"host1.test": {"id": 42}}},

@@ -23,6 +23,10 @@ snmp_settings:
       enable: true
       ipv4_acl: acl-for-vrf-default
       ipv6_acl: acl-for-vrf-default
+    - name: ACLS-IN-NON-ENABLED-VRF
+      # These ACLs should not be rendered
+      ipv4_acl: acl-for-vrf-blah
+      ipv6_acl: acl-for-vrf-blah
   hosts:
     - host: 10.6.75.125
       vrf: SNMPVRF

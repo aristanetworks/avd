@@ -2,8 +2,8 @@
   ignore_errors: false
   register: result
   vars:
-    custom_structured_configuration_inline_jinja_value: "test"
-    custom_structured_configuration_inline_jinja: "{{ inline_jinja_value }}"
+    custom_structured_configuration__inline_jinja_value: "test"
+    custom_structured_configuration__inline_jinja: "{{ _inline_jinja_value }}"
 
   arista.avd.eos_designs_structured_config:
     template_output: true
@@ -12,6 +12,6 @@
     that:
       - result is success
       - result.ansible_facts is defined
-      - result.ansible_facts.inline_jinja_value == "test"
-      - result.ansible_facts.inline_jinja is defined
-      - result.ansible_facts.inline_jinja == "test"
+      - result.ansible_facts._inline_jinja_value == "test"
+      - result.ansible_facts._inline_jinja is defined
+      - result.ansible_facts._inline_jinja == "test"

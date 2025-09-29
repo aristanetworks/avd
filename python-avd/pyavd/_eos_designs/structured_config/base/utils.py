@@ -19,11 +19,7 @@ if TYPE_CHECKING:
     T_Source_Interfaces = TypeVar(
         "T_Source_Interfaces",
         EosCliConfigGen.IpHttpClientSourceInterfaces,
-        EosCliConfigGen.IpDomainLookup.SourceInterfaces,
         EosCliConfigGen.IpSshClientSourceInterfaces,
-        EosCliConfigGen.IpTacacsSourceInterfaces,
-        EosCliConfigGen.SnmpServer.LocalInterfaces,
-        EosCliConfigGen.IpRadiusSourceInterfaces,
     )
 
     T_ProtocolVrfs = TypeVar(
