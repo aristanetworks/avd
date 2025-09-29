@@ -21,7 +21,7 @@ The **eos_designs** role:
   - Enabled by the [eos_designs_custom_templates](docs/role-configuration.md#custom-templates) data model.
 - Designed to be used with the [eos_cli_config_gen](../eos_cli_config_gen/README.md) role to generate a complete switch configuration and applied using a config replace strategy with either
   - [eos_config_deploy_eapi](../eos_config_deploy_eapi/README.md) role.
-  - [eos_config_deploy_cvp](../eos_config_deploy_cvp/README.md)  role.
+  - [cv_deploy](../cv_deploy/README.md)  role.
 - Designed to generate the intended configuration offline, without relying on switch current state information.
 - Facilitates the evaluation of the configuration post-deployment with the [anta_runner](../anta_runner/README.md) role.
 - Facilitates the evaluation of the configuration prior to deployment with tools like [Batfish](https://www.batfish.org/)

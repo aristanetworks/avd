@@ -1,5 +1,6 @@
 ---
 underlay_routing_protocol: ospf
+underlay_ospf_graceful_restart: false
 underlay_ospf_authentication:
   enabled: true
   message_digest_keys:

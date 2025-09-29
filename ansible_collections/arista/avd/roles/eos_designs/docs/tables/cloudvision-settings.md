@@ -29,14 +29,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;smashexcludes</samp>](## "cv_settings.terminattr.smashexcludes") | String |  | `ale,flexCounter,hardware,kni,pulse,strata` |  | Exclude paths from the shared memory table.<br>e.g. "ale,flexCounter,hardware,kni,pulse,strata"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disable_aaa</samp>](## "cv_settings.terminattr.disable_aaa") | Boolean |  | `False` |  | Disable AAA authorization and accounting.<br>When setting this flag, all commands pushed from CloudVision are applied directly to the CLI without authorization.<br> |
     | [<samp>&nbsp;&nbsp;set_source_interfaces</samp>](## "cv_settings.set_source_interfaces") | Boolean |  | `True` |  | Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.<br>Can be set to `false` to avoid changes when migrating from the old `cv_instances` model. |
-    | [<samp>cvp_ingestauth_key</samp>](## "cvp_ingestauth_key") <span style="color:red">deprecated</span> | String |  |  |  | On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.<br>If not set, TerminAttr will be configured with certificate based authentication:<br>- On-premise using token onboarding. Default token path is '/tmp/token'.<br>- CVaaS using token-secure onboarding. Default token path is '/tmp/cv-onboarding-token'.<br>Token must be copied to the device first.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0.</span> |
-    | [<samp>cvp_instance_ips</samp>](## "cvp_instance_ips") <span style="color:red">deprecated</span> | List, items: String |  |  |  | List of IPv4 addresses or DNS names for CloudVision.<br>For on-premise CloudVision enter all the nodes of the cluster.<br>For CloudVision as a Service enter the DNS name of the instance.<br>`eos_designs` only supports one CloudVision cluster.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "cvp_instance_ips.[]") | String |  |  |  | IPv4 address or DNS name for CloudVision |
-    | [<samp>cvp_token_file</samp>](## "cvp_token_file") <span style="color:red">deprecated</span> | String |  |  |  | cvp_token_file is the path to the token file on the switch.<br>If not set the default locations for on-premise or CVaaS will be used.<br>See cvp_ingestauth_key for details.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
-    | [<samp>terminattr_disable_aaa</samp>](## "terminattr_disable_aaa") <span style="color:red">deprecated</span> | Boolean |  | `False` |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
-    | [<samp>terminattr_ingestexclude</samp>](## "terminattr_ingestexclude") <span style="color:red">deprecated</span> | String |  | `/Sysdb/cell/1/agent,/Sysdb/cell/2/agent` |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
-    | [<samp>terminattr_ingestgrpcurl_port</samp>](## "terminattr_ingestgrpcurl_port") <span style="color:red">deprecated</span> | Integer |  | `9910` |  | Port number used for Terminattr connection to an on-premise CloudVision cluster.<br>The port number is always 443 when using CloudVision as a Service, so this value is ignored.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
-    | [<samp>terminattr_smashexcludes</samp>](## "terminattr_smashexcludes") <span style="color:red">deprecated</span> | String |  | `ale,flexCounter,hardware,kni,pulse,strata` |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
+    | [<samp>cvp_ingestauth_key</samp>](## "cvp_ingestauth_key") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
+    | [<samp>cvp_instance_ips</samp>](## "cvp_instance_ips") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
+    | [<samp>cvp_token_file</samp>](## "cvp_token_file") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
+    | [<samp>terminattr_disable_aaa</samp>](## "terminattr_disable_aaa") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
+    | [<samp>terminattr_ingestexclude</samp>](## "terminattr_ingestexclude") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
+    | [<samp>terminattr_ingestgrpcurl_port</samp>](## "terminattr_ingestgrpcurl_port") <span style="color:red">removed</span> | Integer |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
+    | [<samp>terminattr_smashexcludes</samp>](## "terminattr_smashexcludes") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
 
 === "YAML"
 
@@ -127,52 +126,4 @@
       # Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
       # Can be set to `false` to avoid changes when migrating from the old `cv_instances` model.
       set_source_interfaces: <bool; default=True>
-
-    # On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.
-    # If not set, TerminAttr will be configured with certificate based authentication:
-    # - On-premise using token onboarding. Default token path is '/tmp/token'.
-    # - CVaaS using token-secure onboarding. Default token path is '/tmp/cv-onboarding-token'.
-    # Token must be copied to the device first.
-    # This key is deprecated.
-    # Support will be removed in AVD version 6.0.0.
-    cvp_ingestauth_key: <str>
-
-    # List of IPv4 addresses or DNS names for CloudVision.
-    # For on-premise CloudVision enter all the nodes of the cluster.
-    # For CloudVision as a Service enter the DNS name of the instance.
-    # `eos_designs` only supports one CloudVision cluster.
-    # This key is deprecated.
-    # Support will be removed in AVD version 6.0.0.
-    # Use `cv_settings` instead.
-    cvp_instance_ips:
-
-        # IPv4 address or DNS name for CloudVision
-      - <str>
-
-    # cvp_token_file is the path to the token file on the switch.
-    # If not set the default locations for on-premise or CVaaS will be used.
-    # See cvp_ingestauth_key for details.
-    # This key is deprecated.
-    # Support will be removed in AVD version 6.0.0.
-    # Use `cv_settings` instead.
-    cvp_token_file: <str>
-    # This key is deprecated.
-    # Support will be removed in AVD version 6.0.0.
-    # Use `cv_settings` instead.
-    terminattr_disable_aaa: <bool; default=False>
-    # This key is deprecated.
-    # Support will be removed in AVD version 6.0.0.
-    # Use `cv_settings` instead.
-    terminattr_ingestexclude: <str; default="/Sysdb/cell/1/agent,/Sysdb/cell/2/agent">
-
-    # Port number used for Terminattr connection to an on-premise CloudVision cluster.
-    # The port number is always 443 when using CloudVision as a Service, so this value is ignored.
-    # This key is deprecated.
-    # Support will be removed in AVD version 6.0.0.
-    # Use `cv_settings` instead.
-    terminattr_ingestgrpcurl_port: <int; default=9910>
-    # This key is deprecated.
-    # Support will be removed in AVD version 6.0.0.
-    # Use `cv_settings` instead.
-    terminattr_smashexcludes: <str; default="ale,flexCounter,hardware,kni,pulse,strata">
     ```

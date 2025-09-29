@@ -221,7 +221,7 @@ ethernet_interfaces:
 - name: Ethernet1/18
   description: peerDevice11
   shutdown: false
-  speed: 1000full
+  speed: forced 1000full
   channel_group:
     id: 540
     mode: active

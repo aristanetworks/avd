@@ -12,11 +12,6 @@ l3leaf:
     uplink_interfaces: [Ethernet43]
     uplink_switch_interfaces: [Ethernet43]
     uplink_type: p2p-vrfs
-    # Testing uplink_structured_config for p2p-vrfs uplinks
-    uplink_structured_config:
-      pim:
-        ipv4:
-          sparse_mode: true
   nodes:
     - name: host4
       id: 103

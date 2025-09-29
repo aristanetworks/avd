@@ -2103,11 +2103,94 @@ class EosDesigns(EosDesignsRootModel):
             Required with ip_pool. ID starting
             from 1.
             """
-            speed: str | None
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-            <interface_speed>`.
-            """
+            speed: (
+                Literal[
+                    "100full",
+                    "100g",
+                    "100g-1",
+                    "100g-2",
+                    "100g-4",
+                    "100half",
+                    "10full",
+                    "10g",
+                    "10half",
+                    "1g",
+                    "200g",
+                    "200g-2",
+                    "200g-4",
+                    "25g",
+                    "400g",
+                    "400g-4",
+                    "400g-8",
+                    "40g",
+                    "50g",
+                    "50g-1",
+                    "50g-2",
+                    "800g-8",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
+                    "auto",
+                    "auto 10000full",
+                    "auto 1000full",
+                    "auto 100full",
+                    "auto 100g-1",
+                    "auto 100g-2",
+                    "auto 100g-4",
+                    "auto 100gfull",
+                    "auto 100half",
+                    "auto 10full",
+                    "auto 10gfull",
+                    "auto 10half",
+                    "auto 1gfull",
+                    "auto 2.5gfull",
+                    "auto 200g-2",
+                    "auto 200g-4",
+                    "auto 25gfull",
+                    "auto 400g-4",
+                    "auto 400g-8",
+                    "auto 40gfull",
+                    "auto 50g-1",
+                    "auto 50g-2",
+                    "auto 50gfull",
+                    "auto 5gfull",
+                    "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
+                    "forced 10000full",
+                    "forced 1000full",
+                    "forced 1000half",
+                    "forced 100full",
+                    "forced 100gfull",
+                    "forced 100half",
+                    "forced 10full",
+                    "forced 10half",
+                    "forced 25gfull",
+                    "forced 40gfull",
+                    "forced 50gfull",
+                ]
+                | None
+            )
+            """Interface Speed."""
             ip_pool: str | None
             """
             P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
@@ -2281,7 +2364,92 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     id: int | None | UndefinedType = Undefined,
-                    speed: str | None | UndefinedType = Undefined,
+                    speed: Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    | None
+                    | UndefinedType = Undefined,
                     ip_pool: str | None | UndefinedType = Undefined,
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
@@ -2329,9 +2497,7 @@ class EosDesigns(EosDesignsRootModel):
                            Unique id per subnet_summary. Used to calculate ip addresses.
                            Required with ip_pool. ID starting
                            from 1.
-                        speed:
-                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                           <interface_speed>`.
+                        speed: Interface Speed.
                         ip_pool:
                            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
                            link.
@@ -2790,11 +2956,94 @@ class EosDesigns(EosDesignsRootModel):
             Required with ip_pool. ID starting
             from 1.
             """
-            speed: str | None
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-            <interface_speed>`.
-            """
+            speed: (
+                Literal[
+                    "100full",
+                    "100g",
+                    "100g-1",
+                    "100g-2",
+                    "100g-4",
+                    "100half",
+                    "10full",
+                    "10g",
+                    "10half",
+                    "1g",
+                    "200g",
+                    "200g-2",
+                    "200g-4",
+                    "25g",
+                    "400g",
+                    "400g-4",
+                    "400g-8",
+                    "40g",
+                    "50g",
+                    "50g-1",
+                    "50g-2",
+                    "800g-8",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
+                    "auto",
+                    "auto 10000full",
+                    "auto 1000full",
+                    "auto 100full",
+                    "auto 100g-1",
+                    "auto 100g-2",
+                    "auto 100g-4",
+                    "auto 100gfull",
+                    "auto 100half",
+                    "auto 10full",
+                    "auto 10gfull",
+                    "auto 10half",
+                    "auto 1gfull",
+                    "auto 2.5gfull",
+                    "auto 200g-2",
+                    "auto 200g-4",
+                    "auto 25gfull",
+                    "auto 400g-4",
+                    "auto 400g-8",
+                    "auto 40gfull",
+                    "auto 50g-1",
+                    "auto 50g-2",
+                    "auto 50gfull",
+                    "auto 5gfull",
+                    "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
+                    "forced 10000full",
+                    "forced 1000full",
+                    "forced 1000half",
+                    "forced 100full",
+                    "forced 100gfull",
+                    "forced 100half",
+                    "forced 10full",
+                    "forced 10half",
+                    "forced 25gfull",
+                    "forced 40gfull",
+                    "forced 50gfull",
+                ]
+                | None
+            )
+            """Interface Speed."""
             ip_pool: str | None
             """
             P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
@@ -2963,7 +3212,92 @@ class EosDesigns(EosDesignsRootModel):
                     nodes: Nodes | UndefinedType = Undefined,
                     profile: str | None | UndefinedType = Undefined,
                     id: int | None | UndefinedType = Undefined,
-                    speed: str | None | UndefinedType = Undefined,
+                    speed: Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    | None
+                    | UndefinedType = Undefined,
                     ip_pool: str | None | UndefinedType = Undefined,
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
@@ -3014,9 +3348,7 @@ class EosDesigns(EosDesignsRootModel):
                            Unique id per subnet_summary. Used to calculate ip addresses.
                            Required with ip_pool. ID starting
                            from 1.
-                        speed:
-                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                           <interface_speed>`.
+                        speed: Interface Speed.
                         ip_pool:
                            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
                            link.
@@ -4050,11 +4382,6 @@ class EosDesigns(EosDesignsRootModel):
 
     CvTopology._item_type = CvTopologyItem
 
-    class CvpInstanceIps(AvdList[str]):
-        """Subclass of AvdList with `str` items."""
-
-    CvpInstanceIps._item_type = str
-
     class DefaultInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -4119,19 +4446,187 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdList with `str` items.
         """
-        mlag_interfaces_speed: str | None
-        """
-        Set MLAG interfaces speed.
-        Speed should be set in the format `<interface_speed>` or `forced
-        <interface_speed>` or `auto <interface_speed>`.
-        """
+        mlag_interfaces_speed: (
+            Literal[
+                "100full",
+                "100g",
+                "100g-1",
+                "100g-2",
+                "100g-4",
+                "100half",
+                "10full",
+                "10g",
+                "10half",
+                "1g",
+                "200g",
+                "200g-2",
+                "200g-4",
+                "25g",
+                "400g",
+                "400g-4",
+                "400g-8",
+                "40g",
+                "50g",
+                "50g-1",
+                "50g-2",
+                "800g-8",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
+                "auto",
+                "auto 10000full",
+                "auto 1000full",
+                "auto 100full",
+                "auto 100g-1",
+                "auto 100g-2",
+                "auto 100g-4",
+                "auto 100gfull",
+                "auto 100half",
+                "auto 10full",
+                "auto 10gfull",
+                "auto 10half",
+                "auto 1gfull",
+                "auto 2.5gfull",
+                "auto 200g-2",
+                "auto 200g-4",
+                "auto 25gfull",
+                "auto 400g-4",
+                "auto 400g-8",
+                "auto 40gfull",
+                "auto 50g-1",
+                "auto 50g-2",
+                "auto 50gfull",
+                "auto 5gfull",
+                "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
+                "forced 10000full",
+                "forced 1000full",
+                "forced 1000half",
+                "forced 100full",
+                "forced 100gfull",
+                "forced 100half",
+                "forced 10full",
+                "forced 10half",
+                "forced 25gfull",
+                "forced 40gfull",
+                "forced 50gfull",
+            ]
+            | None
+        )
+        """Set MLAG interfaces speed."""
         downlink_interfaces: DownlinkInterfaces
         """
         List of downlink interfaces or downlink interface ranges.
 
         Subclass of AvdList with `str` items.
         """
-        uplink_interface_speed: str | None
+        uplink_interface_speed: (
+            Literal[
+                "100full",
+                "100g",
+                "100g-1",
+                "100g-2",
+                "100g-4",
+                "100half",
+                "10full",
+                "10g",
+                "10half",
+                "1g",
+                "200g",
+                "200g-2",
+                "200g-4",
+                "25g",
+                "400g",
+                "400g-4",
+                "400g-8",
+                "40g",
+                "50g",
+                "50g-1",
+                "50g-2",
+                "800g-8",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
+                "auto",
+                "auto 10000full",
+                "auto 1000full",
+                "auto 100full",
+                "auto 100g-1",
+                "auto 100g-2",
+                "auto 100g-4",
+                "auto 100gfull",
+                "auto 100half",
+                "auto 10full",
+                "auto 10gfull",
+                "auto 10half",
+                "auto 1gfull",
+                "auto 2.5gfull",
+                "auto 200g-2",
+                "auto 200g-4",
+                "auto 25gfull",
+                "auto 400g-4",
+                "auto 400g-8",
+                "auto 40gfull",
+                "auto 50g-1",
+                "auto 50g-2",
+                "auto 50gfull",
+                "auto 5gfull",
+                "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
+                "forced 10000full",
+                "forced 1000full",
+                "forced 1000half",
+                "forced 100full",
+                "forced 100gfull",
+                "forced 100half",
+                "forced 10full",
+                "forced 10half",
+                "forced 25gfull",
+                "forced 40gfull",
+                "forced 50gfull",
+            ]
+            | None
+        )
         """Set point-to-Point uplink interface speed."""
 
         if TYPE_CHECKING:
@@ -4143,9 +4638,179 @@ class EosDesigns(EosDesignsRootModel):
                 platforms: Platforms | UndefinedType = Undefined,
                 uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                 mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                mlag_interfaces_speed: Literal[
+                    "100full",
+                    "100g",
+                    "100g-1",
+                    "100g-2",
+                    "100g-4",
+                    "100half",
+                    "10full",
+                    "10g",
+                    "10half",
+                    "1g",
+                    "200g",
+                    "200g-2",
+                    "200g-4",
+                    "25g",
+                    "400g",
+                    "400g-4",
+                    "400g-8",
+                    "40g",
+                    "50g",
+                    "50g-1",
+                    "50g-2",
+                    "800g-8",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
+                    "auto",
+                    "auto 10000full",
+                    "auto 1000full",
+                    "auto 100full",
+                    "auto 100g-1",
+                    "auto 100g-2",
+                    "auto 100g-4",
+                    "auto 100gfull",
+                    "auto 100half",
+                    "auto 10full",
+                    "auto 10gfull",
+                    "auto 10half",
+                    "auto 1gfull",
+                    "auto 2.5gfull",
+                    "auto 200g-2",
+                    "auto 200g-4",
+                    "auto 25gfull",
+                    "auto 400g-4",
+                    "auto 400g-8",
+                    "auto 40gfull",
+                    "auto 50g-1",
+                    "auto 50g-2",
+                    "auto 50gfull",
+                    "auto 5gfull",
+                    "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
+                    "forced 10000full",
+                    "forced 1000full",
+                    "forced 1000half",
+                    "forced 100full",
+                    "forced 100gfull",
+                    "forced 100half",
+                    "forced 10full",
+                    "forced 10half",
+                    "forced 25gfull",
+                    "forced 40gfull",
+                    "forced 50gfull",
+                ]
+                | None
+                | UndefinedType = Undefined,
                 downlink_interfaces: DownlinkInterfaces | UndefinedType = Undefined,
-                uplink_interface_speed: str | None | UndefinedType = Undefined,
+                uplink_interface_speed: Literal[
+                    "100full",
+                    "100g",
+                    "100g-1",
+                    "100g-2",
+                    "100g-4",
+                    "100half",
+                    "10full",
+                    "10g",
+                    "10half",
+                    "1g",
+                    "200g",
+                    "200g-2",
+                    "200g-4",
+                    "25g",
+                    "400g",
+                    "400g-4",
+                    "400g-8",
+                    "40g",
+                    "50g",
+                    "50g-1",
+                    "50g-2",
+                    "800g-8",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
+                    "auto",
+                    "auto 10000full",
+                    "auto 1000full",
+                    "auto 100full",
+                    "auto 100g-1",
+                    "auto 100g-2",
+                    "auto 100g-4",
+                    "auto 100gfull",
+                    "auto 100half",
+                    "auto 10full",
+                    "auto 10gfull",
+                    "auto 10half",
+                    "auto 1gfull",
+                    "auto 2.5gfull",
+                    "auto 200g-2",
+                    "auto 200g-4",
+                    "auto 25gfull",
+                    "auto 400g-4",
+                    "auto 400g-8",
+                    "auto 40gfull",
+                    "auto 50g-1",
+                    "auto 50g-2",
+                    "auto 50gfull",
+                    "auto 5gfull",
+                    "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
+                    "forced 10000full",
+                    "forced 1000full",
+                    "forced 1000half",
+                    "forced 100full",
+                    "forced 100gfull",
+                    "forced 100half",
+                    "forced 10full",
+                    "forced 10half",
+                    "forced 25gfull",
+                    "forced 40gfull",
+                    "forced 50gfull",
+                ]
+                | None
+                | UndefinedType = Undefined,
             ) -> None:
                 """
                 DefaultInterfacesItem.
@@ -4173,10 +4838,7 @@ class EosDesigns(EosDesignsRootModel):
                        List of MLAG interfaces or MLAG interface ranges.
 
                        Subclass of AvdList with `str` items.
-                    mlag_interfaces_speed:
-                       Set MLAG interfaces speed.
-                       Speed should be set in the format `<interface_speed>` or `forced
-                       <interface_speed>` or `auto <interface_speed>`.
+                    mlag_interfaces_speed: Set MLAG interfaces speed.
                     downlink_interfaces:
                        List of downlink interfaces or downlink interface ranges.
 
@@ -7535,11 +8197,94 @@ class EosDesigns(EosDesignsRootModel):
             Required with ip_pool. ID starting
             from 1.
             """
-            speed: str | None
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-            <interface_speed>`.
-            """
+            speed: (
+                Literal[
+                    "100full",
+                    "100g",
+                    "100g-1",
+                    "100g-2",
+                    "100g-4",
+                    "100half",
+                    "10full",
+                    "10g",
+                    "10half",
+                    "1g",
+                    "200g",
+                    "200g-2",
+                    "200g-4",
+                    "25g",
+                    "400g",
+                    "400g-4",
+                    "400g-8",
+                    "40g",
+                    "50g",
+                    "50g-1",
+                    "50g-2",
+                    "800g-8",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
+                    "auto",
+                    "auto 10000full",
+                    "auto 1000full",
+                    "auto 100full",
+                    "auto 100g-1",
+                    "auto 100g-2",
+                    "auto 100g-4",
+                    "auto 100gfull",
+                    "auto 100half",
+                    "auto 10full",
+                    "auto 10gfull",
+                    "auto 10half",
+                    "auto 1gfull",
+                    "auto 2.5gfull",
+                    "auto 200g-2",
+                    "auto 200g-4",
+                    "auto 25gfull",
+                    "auto 400g-4",
+                    "auto 400g-8",
+                    "auto 40gfull",
+                    "auto 50g-1",
+                    "auto 50g-2",
+                    "auto 50gfull",
+                    "auto 5gfull",
+                    "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
+                    "forced 10000full",
+                    "forced 1000full",
+                    "forced 1000half",
+                    "forced 100full",
+                    "forced 100gfull",
+                    "forced 100half",
+                    "forced 10full",
+                    "forced 10half",
+                    "forced 25gfull",
+                    "forced 40gfull",
+                    "forced 50gfull",
+                ]
+                | None
+            )
+            """Interface Speed."""
             ip_pool: str | None
             """
             P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
@@ -7713,7 +8458,92 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     id: int | None | UndefinedType = Undefined,
-                    speed: str | None | UndefinedType = Undefined,
+                    speed: Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    | None
+                    | UndefinedType = Undefined,
                     ip_pool: str | None | UndefinedType = Undefined,
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
@@ -7761,9 +8591,7 @@ class EosDesigns(EosDesignsRootModel):
                            Unique id per subnet_summary. Used to calculate ip addresses.
                            Required with ip_pool. ID starting
                            from 1.
-                        speed:
-                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                           <interface_speed>`.
+                        speed: Interface Speed.
                         ip_pool:
                            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
                            link.
@@ -8222,11 +9050,94 @@ class EosDesigns(EosDesignsRootModel):
             Required with ip_pool. ID starting
             from 1.
             """
-            speed: str | None
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-            <interface_speed>`.
-            """
+            speed: (
+                Literal[
+                    "100full",
+                    "100g",
+                    "100g-1",
+                    "100g-2",
+                    "100g-4",
+                    "100half",
+                    "10full",
+                    "10g",
+                    "10half",
+                    "1g",
+                    "200g",
+                    "200g-2",
+                    "200g-4",
+                    "25g",
+                    "400g",
+                    "400g-4",
+                    "400g-8",
+                    "40g",
+                    "50g",
+                    "50g-1",
+                    "50g-2",
+                    "800g-8",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
+                    "auto",
+                    "auto 10000full",
+                    "auto 1000full",
+                    "auto 100full",
+                    "auto 100g-1",
+                    "auto 100g-2",
+                    "auto 100g-4",
+                    "auto 100gfull",
+                    "auto 100half",
+                    "auto 10full",
+                    "auto 10gfull",
+                    "auto 10half",
+                    "auto 1gfull",
+                    "auto 2.5gfull",
+                    "auto 200g-2",
+                    "auto 200g-4",
+                    "auto 25gfull",
+                    "auto 400g-4",
+                    "auto 400g-8",
+                    "auto 40gfull",
+                    "auto 50g-1",
+                    "auto 50g-2",
+                    "auto 50gfull",
+                    "auto 5gfull",
+                    "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
+                    "forced 10000full",
+                    "forced 1000full",
+                    "forced 1000half",
+                    "forced 100full",
+                    "forced 100gfull",
+                    "forced 100half",
+                    "forced 10full",
+                    "forced 10half",
+                    "forced 25gfull",
+                    "forced 40gfull",
+                    "forced 50gfull",
+                ]
+                | None
+            )
+            """Interface Speed."""
             ip_pool: str | None
             """
             P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
@@ -8395,7 +9306,92 @@ class EosDesigns(EosDesignsRootModel):
                     nodes: Nodes | UndefinedType = Undefined,
                     profile: str | None | UndefinedType = Undefined,
                     id: int | None | UndefinedType = Undefined,
-                    speed: str | None | UndefinedType = Undefined,
+                    speed: Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    | None
+                    | UndefinedType = Undefined,
                     ip_pool: str | None | UndefinedType = Undefined,
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
@@ -8446,9 +9442,7 @@ class EosDesigns(EosDesignsRootModel):
                            Unique id per subnet_summary. Used to calculate ip addresses.
                            Required with ip_pool. ID starting
                            from 1.
-                        speed:
-                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                           <interface_speed>`.
+                        speed: Interface Speed.
                         ip_pool:
                            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
                            link.
@@ -8915,11 +9909,94 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `True`
         """
-        speed: str | None
-        """
-        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-        <interface_speed>`.
-        """
+        speed: (
+            Literal[
+                "100full",
+                "100g",
+                "100g-1",
+                "100g-2",
+                "100g-4",
+                "100half",
+                "10full",
+                "10g",
+                "10half",
+                "1g",
+                "200g",
+                "200g-2",
+                "200g-4",
+                "25g",
+                "400g",
+                "400g-4",
+                "400g-8",
+                "40g",
+                "50g",
+                "50g-1",
+                "50g-2",
+                "800g-8",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
+                "auto",
+                "auto 10000full",
+                "auto 1000full",
+                "auto 100full",
+                "auto 100g-1",
+                "auto 100g-2",
+                "auto 100g-4",
+                "auto 100gfull",
+                "auto 100half",
+                "auto 10full",
+                "auto 10gfull",
+                "auto 10half",
+                "auto 1gfull",
+                "auto 2.5gfull",
+                "auto 200g-2",
+                "auto 200g-4",
+                "auto 25gfull",
+                "auto 400g-4",
+                "auto 400g-8",
+                "auto 40gfull",
+                "auto 50g-1",
+                "auto 50g-2",
+                "auto 50gfull",
+                "auto 5gfull",
+                "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
+                "forced 10000full",
+                "forced 1000full",
+                "forced 1000half",
+                "forced 100full",
+                "forced 100gfull",
+                "forced 100half",
+                "forced 10full",
+                "forced 10half",
+                "forced 25gfull",
+                "forced 40gfull",
+                "forced 50gfull",
+            ]
+            | None
+        )
+        """Interface Speed."""
         receive_bandwidth: int | None
         """
         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -9030,7 +10107,92 @@ class EosDesigns(EosDesignsRootModel):
                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                 dhcp_accept_default_route: bool | UndefinedType = Undefined,
                 enabled: bool | UndefinedType = Undefined,
-                speed: str | None | UndefinedType = Undefined,
+                speed: Literal[
+                    "100full",
+                    "100g",
+                    "100g-1",
+                    "100g-2",
+                    "100g-4",
+                    "100half",
+                    "10full",
+                    "10g",
+                    "10half",
+                    "1g",
+                    "200g",
+                    "200g-2",
+                    "200g-4",
+                    "25g",
+                    "400g",
+                    "400g-4",
+                    "400g-8",
+                    "40g",
+                    "50g",
+                    "50g-1",
+                    "50g-2",
+                    "800g-8",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
+                    "auto",
+                    "auto 10000full",
+                    "auto 1000full",
+                    "auto 100full",
+                    "auto 100g-1",
+                    "auto 100g-2",
+                    "auto 100g-4",
+                    "auto 100gfull",
+                    "auto 100half",
+                    "auto 10full",
+                    "auto 10gfull",
+                    "auto 10half",
+                    "auto 1gfull",
+                    "auto 2.5gfull",
+                    "auto 200g-2",
+                    "auto 200g-4",
+                    "auto 25gfull",
+                    "auto 400g-4",
+                    "auto 400g-8",
+                    "auto 40gfull",
+                    "auto 50g-1",
+                    "auto 50g-2",
+                    "auto 50gfull",
+                    "auto 5gfull",
+                    "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
+                    "forced 10000full",
+                    "forced 1000full",
+                    "forced 1000half",
+                    "forced 100full",
+                    "forced 100gfull",
+                    "forced 100half",
+                    "forced 10full",
+                    "forced 10half",
+                    "forced 25gfull",
+                    "forced 40gfull",
+                    "forced 50gfull",
+                ]
+                | None
+                | UndefinedType = Undefined,
                 receive_bandwidth: int | None | UndefinedType = Undefined,
                 transmit_bandwidth: int | None | UndefinedType = Undefined,
                 peer: str | None | UndefinedType = Undefined,
@@ -9096,9 +10258,7 @@ class EosDesigns(EosDesignsRootModel):
                        specified.
                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                     enabled: Enable or Shutdown the interface.
-                    speed:
-                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                       <interface_speed>`.
+                    speed: Interface Speed.
                     receive_bandwidth:
                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                        This is currently used on
@@ -10776,10 +11936,95 @@ class EosDesigns(EosDesignsRootModel):
         """
         endpoint: str | None
         """Name or description of the endpoints connected to these ports."""
-        speed: str | None
+        speed: (
+            Literal[
+                "100full",
+                "100g",
+                "100g-1",
+                "100g-2",
+                "100g-4",
+                "100half",
+                "10full",
+                "10g",
+                "10half",
+                "1g",
+                "200g",
+                "200g-2",
+                "200g-4",
+                "25g",
+                "400g",
+                "400g-4",
+                "400g-8",
+                "40g",
+                "50g",
+                "50g-1",
+                "50g-2",
+                "800g-8",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
+                "auto",
+                "auto 10000full",
+                "auto 1000full",
+                "auto 100full",
+                "auto 100g-1",
+                "auto 100g-2",
+                "auto 100g-4",
+                "auto 100gfull",
+                "auto 100half",
+                "auto 10full",
+                "auto 10gfull",
+                "auto 10half",
+                "auto 1gfull",
+                "auto 2.5gfull",
+                "auto 200g-2",
+                "auto 200g-4",
+                "auto 25gfull",
+                "auto 400g-4",
+                "auto 400g-8",
+                "auto 40gfull",
+                "auto 50g-1",
+                "auto 50g-2",
+                "auto 50gfull",
+                "auto 5gfull",
+                "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
+                "forced 10000full",
+                "forced 1000full",
+                "forced 1000half",
+                "forced 100full",
+                "forced 100gfull",
+                "forced 100half",
+                "forced 10full",
+                "forced 10half",
+                "forced 25gfull",
+                "forced 40gfull",
+                "forced 50gfull",
+            ]
+            | None
+        )
         """
-        Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-        <interface_speed>`.
+        Set adapter speed.
         If not specified speed will be auto.
         """
         profile: str | None
@@ -10930,7 +12175,92 @@ class EosDesigns(EosDesignsRootModel):
                 switch_ports: SwitchPorts | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
                 endpoint: str | None | UndefinedType = Undefined,
-                speed: str | None | UndefinedType = Undefined,
+                speed: Literal[
+                    "100full",
+                    "100g",
+                    "100g-1",
+                    "100g-2",
+                    "100g-4",
+                    "100half",
+                    "10full",
+                    "10g",
+                    "10half",
+                    "1g",
+                    "200g",
+                    "200g-2",
+                    "200g-4",
+                    "25g",
+                    "400g",
+                    "400g-4",
+                    "400g-8",
+                    "40g",
+                    "50g",
+                    "50g-1",
+                    "50g-2",
+                    "800g-8",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
+                    "auto",
+                    "auto 10000full",
+                    "auto 1000full",
+                    "auto 100full",
+                    "auto 100g-1",
+                    "auto 100g-2",
+                    "auto 100g-4",
+                    "auto 100gfull",
+                    "auto 100half",
+                    "auto 10full",
+                    "auto 10gfull",
+                    "auto 10half",
+                    "auto 1gfull",
+                    "auto 2.5gfull",
+                    "auto 200g-2",
+                    "auto 200g-4",
+                    "auto 25gfull",
+                    "auto 400g-4",
+                    "auto 400g-8",
+                    "auto 40gfull",
+                    "auto 50g-1",
+                    "auto 50g-2",
+                    "auto 50gfull",
+                    "auto 5gfull",
+                    "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
+                    "forced 10000full",
+                    "forced 1000full",
+                    "forced 1000half",
+                    "forced 100full",
+                    "forced 100gfull",
+                    "forced 100half",
+                    "forced 10full",
+                    "forced 10half",
+                    "forced 25gfull",
+                    "forced 40gfull",
+                    "forced 50gfull",
+                ]
+                | None
+                | UndefinedType = Undefined,
                 profile: str | None | UndefinedType = Undefined,
                 enabled: bool | UndefinedType = Undefined,
                 mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
@@ -11032,8 +12362,7 @@ class EosDesigns(EosDesignsRootModel):
                        key if set.
                     endpoint: Name or description of the endpoints connected to these ports.
                     speed:
-                       Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                       <interface_speed>`.
+                       Set adapter speed.
                        If not specified speed will be auto.
                     profile: Port-profile name to inherit configuration.
                     enabled:
@@ -15372,10 +16701,95 @@ class EosDesigns(EosDesignsRootModel):
         Port_profiles can refer to another port_profile to inherit settings in
         up to two levels (adapter->profile->parent_profile).
         """
-        speed: str | None
+        speed: (
+            Literal[
+                "100full",
+                "100g",
+                "100g-1",
+                "100g-2",
+                "100g-4",
+                "100half",
+                "10full",
+                "10g",
+                "10half",
+                "1g",
+                "200g",
+                "200g-2",
+                "200g-4",
+                "25g",
+                "400g",
+                "400g-4",
+                "400g-8",
+                "40g",
+                "50g",
+                "50g-1",
+                "50g-2",
+                "800g-8",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
+                "auto",
+                "auto 10000full",
+                "auto 1000full",
+                "auto 100full",
+                "auto 100g-1",
+                "auto 100g-2",
+                "auto 100g-4",
+                "auto 100gfull",
+                "auto 100half",
+                "auto 10full",
+                "auto 10gfull",
+                "auto 10half",
+                "auto 1gfull",
+                "auto 2.5gfull",
+                "auto 200g-2",
+                "auto 200g-4",
+                "auto 25gfull",
+                "auto 400g-4",
+                "auto 400g-8",
+                "auto 40gfull",
+                "auto 50g-1",
+                "auto 50g-2",
+                "auto 50gfull",
+                "auto 5gfull",
+                "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
+                "forced 10000full",
+                "forced 1000full",
+                "forced 1000half",
+                "forced 100full",
+                "forced 100gfull",
+                "forced 100half",
+                "forced 10full",
+                "forced 10half",
+                "forced 25gfull",
+                "forced 40gfull",
+                "forced 50gfull",
+            ]
+            | None
+        )
         """
-        Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-        <interface_speed>`.
+        Set adapter speed.
         If not specified speed will be auto.
         """
         description: str | None
@@ -15541,7 +16955,92 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 profile: str | UndefinedType = Undefined,
                 parent_profile: str | None | UndefinedType = Undefined,
-                speed: str | None | UndefinedType = Undefined,
+                speed: Literal[
+                    "100full",
+                    "100g",
+                    "100g-1",
+                    "100g-2",
+                    "100g-4",
+                    "100half",
+                    "10full",
+                    "10g",
+                    "10half",
+                    "1g",
+                    "200g",
+                    "200g-2",
+                    "200g-4",
+                    "25g",
+                    "400g",
+                    "400g-4",
+                    "400g-8",
+                    "40g",
+                    "50g",
+                    "50g-1",
+                    "50g-2",
+                    "800g-8",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
+                    "auto",
+                    "auto 10000full",
+                    "auto 1000full",
+                    "auto 100full",
+                    "auto 100g-1",
+                    "auto 100g-2",
+                    "auto 100g-4",
+                    "auto 100gfull",
+                    "auto 100half",
+                    "auto 10full",
+                    "auto 10gfull",
+                    "auto 10half",
+                    "auto 1gfull",
+                    "auto 2.5gfull",
+                    "auto 200g-2",
+                    "auto 200g-4",
+                    "auto 25gfull",
+                    "auto 400g-4",
+                    "auto 400g-8",
+                    "auto 40gfull",
+                    "auto 50g-1",
+                    "auto 50g-2",
+                    "auto 50gfull",
+                    "auto 5gfull",
+                    "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
+                    "forced 10000full",
+                    "forced 1000full",
+                    "forced 1000half",
+                    "forced 100full",
+                    "forced 100gfull",
+                    "forced 100half",
+                    "forced 10full",
+                    "forced 10half",
+                    "forced 25gfull",
+                    "forced 40gfull",
+                    "forced 50gfull",
+                ]
+                | None
+                | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
                 enabled: bool | UndefinedType = Undefined,
                 mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
@@ -15588,8 +17087,7 @@ class EosDesigns(EosDesignsRootModel):
                        Port_profiles can refer to another port_profile to inherit settings in
                        up to two levels (adapter->profile->parent_profile).
                     speed:
-                       Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                       <interface_speed>`.
+                       Set adapter speed.
                        If not specified speed will be auto.
                     description:
                        Description or description template to be used on all ports.
@@ -17088,6 +18586,43 @@ class EosDesigns(EosDesignsRootModel):
 
             Ipv6AddressVirtuals._item_type = str
 
+            class Ipv6Nd(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "advertise_ipv6_address_virtuals": {"type": bool},
+                    "valid_lifetime": {"type": str},
+                    "preferred_lifetime": {"type": str},
+                }
+                advertise_ipv6_address_virtuals: bool | None
+                """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+                valid_lifetime: str | None
+                """In seconds <0-4294967295> or infinite."""
+                preferred_lifetime: str | None
+                """In seconds <0-4294967295> or infinite."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ipv6Nd.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                            valid_lifetime: In seconds <0-4294967295> or infinite.
+                            preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                        """
+
             class IpAddressVirtualSecondaries(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -17590,6 +19125,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv6_enable": {"type": bool},
                 "ip_address_virtual": {"type": str},
                 "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+                "ipv6_nd": {"type": Ipv6Nd},
                 "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                 "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -17648,6 +19184,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdList with `str` items.
             """
+            ipv6_nd: Ipv6Nd
+            """Subclass of AvdModel."""
             ip_address_virtual_secondaries: IpAddressVirtualSecondaries
             """
             Secondary IPv4 VXLAN Anycast IP addresses.
@@ -17827,6 +19365,7 @@ class EosDesigns(EosDesignsRootModel):
                     ipv6_enable: bool | None | UndefinedType = Undefined,
                     ip_address_virtual: str | None | UndefinedType = Undefined,
                     ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                    ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                     ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                     ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -17880,6 +19419,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                            Subclass of AvdList with `str` items.
+                        ipv6_nd: Subclass of AvdModel.
                         ip_address_virtual_secondaries:
                            Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -18012,6 +19552,39 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `str` items."""
 
         Ipv6AddressVirtuals._item_type = str
+
+        class Ipv6Nd(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"advertise_ipv6_address_virtuals": {"type": bool}, "valid_lifetime": {"type": str}, "preferred_lifetime": {"type": str}}
+            advertise_ipv6_address_virtuals: bool | None
+            """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+            valid_lifetime: str | None
+            """In seconds <0-4294967295> or infinite."""
+            preferred_lifetime: str | None
+            """In seconds <0-4294967295> or infinite."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                    valid_lifetime: str | None | UndefinedType = Undefined,
+                    preferred_lifetime: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6Nd.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                        valid_lifetime: In seconds <0-4294967295> or infinite.
+                        preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                    """
 
         class IpAddressVirtualSecondaries(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -18517,6 +20090,7 @@ class EosDesigns(EosDesignsRootModel):
             "ipv6_enable": {"type": bool},
             "ip_address_virtual": {"type": str},
             "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+            "ipv6_nd": {"type": Ipv6Nd},
             "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -18591,6 +20165,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdList with `str` items.
         """
+        ipv6_nd: Ipv6Nd
+        """Subclass of AvdModel."""
         ip_address_virtual_secondaries: IpAddressVirtualSecondaries
         """
         Secondary IPv4 VXLAN Anycast IP addresses.
@@ -18772,6 +20348,7 @@ class EosDesigns(EosDesignsRootModel):
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ip_address_virtual: str | None | UndefinedType = Undefined,
                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -18837,6 +20414,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdList with `str` items.
+                    ipv6_nd: Subclass of AvdModel.
                     ip_address_virtual_secondaries:
                        Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -22326,10 +23904,95 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    speed: str | None
+                    speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
                     """
-                    Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                    <interface_speed>`.
+                    Set adapter speed.
                     If not specified speed will be auto.
                     """
                     description: str | None
@@ -22499,7 +24162,92 @@ class EosDesigns(EosDesignsRootModel):
                             switches: Switches | UndefinedType = Undefined,
                             endpoint_ports: EndpointPorts | UndefinedType = Undefined,
                             descriptions: Descriptions | UndefinedType = Undefined,
-                            speed: str | None | UndefinedType = Undefined,
+                            speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
                             description: str | None | UndefinedType = Undefined,
                             profile: str | None | UndefinedType = Undefined,
                             enabled: bool | UndefinedType = Undefined,
@@ -22581,8 +24329,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 speed:
-                                   Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                   <interface_speed>`.
+                                   Set adapter speed.
                                    If not specified speed will be auto.
                                 description:
                                    Description or description template to be used on all ports.
@@ -23971,10 +25718,95 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    speed: str | None
+                    speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
                     """
-                    Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                    <interface_speed>`.
+                    Set adapter speed.
                     If not specified speed will be auto.
                     """
                     description: str | None
@@ -24144,7 +25976,92 @@ class EosDesigns(EosDesignsRootModel):
                             switches: Switches | UndefinedType = Undefined,
                             endpoint_ports: EndpointPorts | UndefinedType = Undefined,
                             descriptions: Descriptions | UndefinedType = Undefined,
-                            speed: str | None | UndefinedType = Undefined,
+                            speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
                             description: str | None | UndefinedType = Undefined,
                             profile: str | None | UndefinedType = Undefined,
                             enabled: bool | UndefinedType = Undefined,
@@ -24226,8 +26143,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 speed:
-                                   Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                   <interface_speed>`.
+                                   Set adapter speed.
                                    If not specified speed will be auto.
                                 description:
                                    Description or description template to be used on all ports.
@@ -26049,11 +27965,94 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `True`
                         """
-                        speed: str | None
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        speed: (
+                            Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                        )
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -26164,7 +28163,92 @@ class EosDesigns(EosDesignsRootModel):
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
-                                speed: str | None | UndefinedType = Undefined,
+                                speed: Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                                | UndefinedType = Undefined,
                                 receive_bandwidth: int | None | UndefinedType = Undefined,
                                 transmit_bandwidth: int | None | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -26228,9 +28312,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -26383,11 +28465,94 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             peer_interface: str | None
                             """The peer device interface. Used for description and documentation."""
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: (
+                                Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                            )
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -26409,7 +28574,92 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Literal[
+                                        "100full",
+                                        "100g",
+                                        "100g-1",
+                                        "100g-2",
+                                        "100g-4",
+                                        "100half",
+                                        "10full",
+                                        "10g",
+                                        "10half",
+                                        "1g",
+                                        "200g",
+                                        "200g-2",
+                                        "200g-4",
+                                        "25g",
+                                        "400g",
+                                        "400g-4",
+                                        "400g-8",
+                                        "40g",
+                                        "50g",
+                                        "50g-1",
+                                        "50g-2",
+                                        "800g-8",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
+                                        "auto",
+                                        "auto 10000full",
+                                        "auto 1000full",
+                                        "auto 100full",
+                                        "auto 100g-1",
+                                        "auto 100g-2",
+                                        "auto 100g-4",
+                                        "auto 100gfull",
+                                        "auto 100half",
+                                        "auto 10full",
+                                        "auto 10gfull",
+                                        "auto 10half",
+                                        "auto 1gfull",
+                                        "auto 2.5gfull",
+                                        "auto 200g-2",
+                                        "auto 200g-4",
+                                        "auto 25gfull",
+                                        "auto 400g-4",
+                                        "auto 400g-8",
+                                        "auto 40gfull",
+                                        "auto 50g-1",
+                                        "auto 50g-2",
+                                        "auto 50gfull",
+                                        "auto 5gfull",
+                                        "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
+                                        "forced 10000full",
+                                        "forced 1000full",
+                                        "forced 1000half",
+                                        "forced 100full",
+                                        "forced 100gfull",
+                                        "forced 100half",
+                                        "forced 10full",
+                                        "forced 10half",
+                                        "forced 25gfull",
+                                        "forced 40gfull",
+                                        "forced 50gfull",
+                                    ]
+                                    | None
+                                    | UndefinedType = Undefined,
                                     rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
@@ -26432,9 +28682,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -27156,7 +29404,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -27366,7 +29613,93 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     uplink_switches: UplinkSwitches
                     """Subclass of AvdList with `str` items."""
-                    uplink_interface_speed: str | None
+                    uplink_interface_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
                     """
                     Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                     (Uplink switch
@@ -27374,12 +29707,94 @@ class EosDesigns(EosDesignsRootModel):
                     Speed should be set in the
                     format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                     """
-                    uplink_switch_interface_speed: str | None
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    uplink_switch_interface_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -27461,20 +29876,6 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
-                    """
-                    uplink_structured_config: dict
-                    """
-                    Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                    When
-                    uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                    for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                    When uplink_type ==
-                    "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                    eos_cli_config_gen overrides the settings on the port-channel interface level.
-                    "uplink_structured_config" is applied after "structured_config", so it can override
-                    "structured_config" defined on node-level.
-                    Note! The content of this dictionary is _not_ validated
-                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -27720,12 +30121,94 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    mlag_interfaces_speed: str | None
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    mlag_interfaces_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -28156,8 +30639,178 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                            uplink_interface_speed: str | None | UndefinedType = Undefined,
-                            uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                            uplink_interface_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
+                            uplink_switch_interface_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
                             uplink_mtu: int | None | UndefinedType = Undefined,
                             max_uplink_switches: int | None | UndefinedType = Undefined,
                             max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -28167,7 +30820,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -28205,7 +30857,92 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                            mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                            mlag_interfaces_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
@@ -28354,10 +31091,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -28418,18 +31152,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                uplink_structured_config:
-                                   Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                   When
-                                   uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                   for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                   When uplink_type ==
-                                   "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                   eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                   "uplink_structured_config" is applied after "structured_config", so it can override
-                                   "structured_config" defined on node-level.
-                                   Note! The content of this dictionary is _not_ validated
-                                   by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -28591,10 +31313,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -30595,11 +33314,94 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `True`
                             """
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: (
+                                Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                            )
+                            """Interface Speed."""
                             receive_bandwidth: int | None
                             """
                             Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -30710,7 +33512,92 @@ class EosDesigns(EosDesignsRootModel):
                                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                     dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                     enabled: bool | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Literal[
+                                        "100full",
+                                        "100g",
+                                        "100g-1",
+                                        "100g-2",
+                                        "100g-4",
+                                        "100half",
+                                        "10full",
+                                        "10g",
+                                        "10half",
+                                        "1g",
+                                        "200g",
+                                        "200g-2",
+                                        "200g-4",
+                                        "25g",
+                                        "400g",
+                                        "400g-4",
+                                        "400g-8",
+                                        "40g",
+                                        "50g",
+                                        "50g-1",
+                                        "50g-2",
+                                        "800g-8",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
+                                        "auto",
+                                        "auto 10000full",
+                                        "auto 1000full",
+                                        "auto 100full",
+                                        "auto 100g-1",
+                                        "auto 100g-2",
+                                        "auto 100g-4",
+                                        "auto 100gfull",
+                                        "auto 100half",
+                                        "auto 10full",
+                                        "auto 10gfull",
+                                        "auto 10half",
+                                        "auto 1gfull",
+                                        "auto 2.5gfull",
+                                        "auto 200g-2",
+                                        "auto 200g-4",
+                                        "auto 25gfull",
+                                        "auto 400g-4",
+                                        "auto 400g-8",
+                                        "auto 40gfull",
+                                        "auto 50g-1",
+                                        "auto 50g-2",
+                                        "auto 50gfull",
+                                        "auto 5gfull",
+                                        "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
+                                        "forced 10000full",
+                                        "forced 1000full",
+                                        "forced 1000half",
+                                        "forced 100full",
+                                        "forced 100gfull",
+                                        "forced 100half",
+                                        "forced 10full",
+                                        "forced 10half",
+                                        "forced 25gfull",
+                                        "forced 40gfull",
+                                        "forced 50gfull",
+                                    ]
+                                    | None
+                                    | UndefinedType = Undefined,
                                     receive_bandwidth: int | None | UndefinedType = Undefined,
                                     transmit_bandwidth: int | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
@@ -30774,9 +33661,7 @@ class EosDesigns(EosDesignsRootModel):
                                            specified.
                                         dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                         enabled: Enable or Shutdown the interface.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         receive_bandwidth:
                                            Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                            This is currently used on
@@ -30929,11 +33814,94 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 peer_interface: str | None
                                 """The peer device interface. Used for description and documentation."""
-                                speed: str | None
-                                """
-                                Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                <interface_speed>`.
-                                """
+                                speed: (
+                                    Literal[
+                                        "100full",
+                                        "100g",
+                                        "100g-1",
+                                        "100g-2",
+                                        "100g-4",
+                                        "100half",
+                                        "10full",
+                                        "10g",
+                                        "10half",
+                                        "1g",
+                                        "200g",
+                                        "200g-2",
+                                        "200g-4",
+                                        "25g",
+                                        "400g",
+                                        "400g-4",
+                                        "400g-8",
+                                        "40g",
+                                        "50g",
+                                        "50g-1",
+                                        "50g-2",
+                                        "800g-8",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
+                                        "auto",
+                                        "auto 10000full",
+                                        "auto 1000full",
+                                        "auto 100full",
+                                        "auto 100g-1",
+                                        "auto 100g-2",
+                                        "auto 100g-4",
+                                        "auto 100gfull",
+                                        "auto 100half",
+                                        "auto 10full",
+                                        "auto 10gfull",
+                                        "auto 10half",
+                                        "auto 1gfull",
+                                        "auto 2.5gfull",
+                                        "auto 200g-2",
+                                        "auto 200g-4",
+                                        "auto 25gfull",
+                                        "auto 400g-4",
+                                        "auto 400g-8",
+                                        "auto 40gfull",
+                                        "auto 50g-1",
+                                        "auto 50g-2",
+                                        "auto 50gfull",
+                                        "auto 5gfull",
+                                        "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
+                                        "forced 10000full",
+                                        "forced 1000full",
+                                        "forced 1000half",
+                                        "forced 100full",
+                                        "forced 100gfull",
+                                        "forced 100half",
+                                        "forced 10full",
+                                        "forced 10half",
+                                        "forced 25gfull",
+                                        "forced 40gfull",
+                                        "forced 50gfull",
+                                    ]
+                                    | None
+                                )
+                                """Interface Speed."""
                                 rx_queue: RxQueue
                                 """
                                 Receive queue parameters for platform SFE interface profile.
@@ -30955,7 +33923,92 @@ class EosDesigns(EosDesignsRootModel):
                                         description: str | None | UndefinedType = Undefined,
                                         peer: str | None | UndefinedType = Undefined,
                                         peer_interface: str | None | UndefinedType = Undefined,
-                                        speed: str | None | UndefinedType = Undefined,
+                                        speed: Literal[
+                                            "100full",
+                                            "100g",
+                                            "100g-1",
+                                            "100g-2",
+                                            "100g-4",
+                                            "100half",
+                                            "10full",
+                                            "10g",
+                                            "10half",
+                                            "1g",
+                                            "200g",
+                                            "200g-2",
+                                            "200g-4",
+                                            "25g",
+                                            "400g",
+                                            "400g-4",
+                                            "400g-8",
+                                            "40g",
+                                            "50g",
+                                            "50g-1",
+                                            "50g-2",
+                                            "800g-8",
+                                            "sfp-1000baset auto 100full",
+                                            "1.6t-8",
+                                            "100mfull",
+                                            "100mhalf",
+                                            "10mfull",
+                                            "10mhalf",
+                                            "200g-1",
+                                            "400g-2",
+                                            "40g-4",
+                                            "800g-4",
+                                            "auto",
+                                            "auto 10000full",
+                                            "auto 1000full",
+                                            "auto 100full",
+                                            "auto 100g-1",
+                                            "auto 100g-2",
+                                            "auto 100g-4",
+                                            "auto 100gfull",
+                                            "auto 100half",
+                                            "auto 10full",
+                                            "auto 10gfull",
+                                            "auto 10half",
+                                            "auto 1gfull",
+                                            "auto 2.5gfull",
+                                            "auto 200g-2",
+                                            "auto 200g-4",
+                                            "auto 25gfull",
+                                            "auto 400g-4",
+                                            "auto 400g-8",
+                                            "auto 40gfull",
+                                            "auto 50g-1",
+                                            "auto 50g-2",
+                                            "auto 50gfull",
+                                            "auto 5gfull",
+                                            "auto 800g-8",
+                                            "auto 1.6t-8",
+                                            "auto 100mfull",
+                                            "auto 100mhalf",
+                                            "auto 10g",
+                                            "auto 10mfull",
+                                            "auto 10mhalf",
+                                            "auto 1g",
+                                            "auto 2.5g",
+                                            "auto 200g-1",
+                                            "auto 25g",
+                                            "auto 400g-2",
+                                            "auto 40g-4",
+                                            "auto 5g",
+                                            "auto 800g-4",
+                                            "forced 10000full",
+                                            "forced 1000full",
+                                            "forced 1000half",
+                                            "forced 100full",
+                                            "forced 100gfull",
+                                            "forced 100half",
+                                            "forced 10full",
+                                            "forced 10half",
+                                            "forced 25gfull",
+                                            "forced 40gfull",
+                                            "forced 50gfull",
+                                        ]
+                                        | None
+                                        | UndefinedType = Undefined,
                                         rx_queue: RxQueue | UndefinedType = Undefined,
                                         structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                     ) -> None:
@@ -30978,9 +34031,7 @@ class EosDesigns(EosDesignsRootModel):
                                                If not set, this inherits the peer
                                                setting on the port-channel interface.
                                             peer_interface: The peer device interface. Used for description and documentation.
-                                            speed:
-                                               Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                               <interface_speed>`.
+                                            speed: Interface Speed.
                                             rx_queue:
                                                Receive queue parameters for platform SFE interface profile.
                                                This setting is ignored unless the
@@ -31710,7 +34761,6 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_macsec": {"type": UplinkMacsec},
                             "uplink_port_channel_id": {"type": int},
                             "uplink_switch_port_channel_id": {"type": int},
-                            "uplink_structured_config": {"type": dict},
                             "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -31930,7 +34980,93 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         uplink_switches: UplinkSwitches
                         """Subclass of AvdList with `str` items."""
-                        uplink_interface_speed: str | None
+                        uplink_interface_speed: (
+                            Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                        )
                         """
                         Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                         (Uplink switch
@@ -31938,12 +35074,94 @@ class EosDesigns(EosDesignsRootModel):
                         Speed should be set in the
                         format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                         """
-                        uplink_switch_interface_speed: str | None
-                        """
-                        Set point-to-Point interface speed for the uplink switch interface only.
-                        Speed should be set in the
-                        format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                        """
+                        uplink_switch_interface_speed: (
+                            Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                        )
+                        """Set point-to-Point interface speed for the uplink switch interface only."""
                         uplink_mtu: int | None
                         """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                         max_uplink_switches: int | None
@@ -32025,20 +35243,6 @@ class EosDesigns(EosDesignsRootModel):
                         autogenerated Port-channel IDs in the Network Services.
                         Note! For MLAG pairs the ID must be between
                         1 and 2000 and both MLAG switches must have the same value.
-                        """
-                        uplink_structured_config: dict
-                        """
-                        Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                        When
-                        uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                        for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                        When uplink_type ==
-                        "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                        eos_cli_config_gen overrides the settings on the port-channel interface level.
-                        "uplink_structured_config" is applied after "structured_config", so it can override
-                        "structured_config" defined on node-level.
-                        Note! The content of this dictionary is _not_ validated
-                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         """
                         uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                         """Custom structured config applied to `uplink_interfaces`."""
@@ -32284,12 +35488,94 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdList with `str` items.
                         """
-                        mlag_interfaces_speed: str | None
-                        """
-                        Set MLAG interface speed.
-                        Speed should be set in the format `<interface_speed>` or `forced
-                        <interface_speed>` or `auto <interface_speed>`.
-                        """
+                        mlag_interfaces_speed: (
+                            Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                        )
+                        """Set MLAG interface speed."""
                         mlag_peer_l3_vlan: int
                         """
                         Underlay L3 peering SVI interface id.
@@ -32722,8 +36008,178 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                                 uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                                 uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                                uplink_interface_speed: str | None | UndefinedType = Undefined,
-                                uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                                uplink_interface_speed: Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                                | UndefinedType = Undefined,
+                                uplink_switch_interface_speed: Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                                | UndefinedType = Undefined,
                                 uplink_mtu: int | None | UndefinedType = Undefined,
                                 max_uplink_switches: int | None | UndefinedType = Undefined,
                                 max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -32733,7 +36189,6 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                                uplink_structured_config: dict | UndefinedType = Undefined,
                                 uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -32771,7 +36226,92 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                                 mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                                 mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                                mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                                mlag_interfaces_speed: Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                                | UndefinedType = Undefined,
                                 mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                                 mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                                 mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
@@ -32927,10 +36467,7 @@ class EosDesigns(EosDesignsRootModel):
                                        interface speed can be overridden with `uplink_switch_interface_speed`).
                                        Speed should be set in the
                                        format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                    uplink_switch_interface_speed:
-                                       Set point-to-Point interface speed for the uplink switch interface only.
-                                       Speed should be set in the
-                                       format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                    uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                     uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                     max_uplink_switches:
                                        Maximum number of uplink switches.
@@ -32991,18 +36528,6 @@ class EosDesigns(EosDesignsRootModel):
                                        autogenerated Port-channel IDs in the Network Services.
                                        Note! For MLAG pairs the ID must be between
                                        1 and 2000 and both MLAG switches must have the same value.
-                                    uplink_structured_config:
-                                       Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                       When
-                                       uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                       for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                       When uplink_type ==
-                                       "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                       eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                       "uplink_structured_config" is applied after "structured_config", so it can override
-                                       "structured_config" defined on node-level.
-                                       Note! The content of this dictionary is _not_ validated
-                                       by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                     uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                     uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                     uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -33164,10 +36689,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
-                                    mlag_interfaces_speed:
-                                       Set MLAG interface speed.
-                                       Speed should be set in the format `<interface_speed>` or `forced
-                                       <interface_speed>` or `auto <interface_speed>`.
+                                    mlag_interfaces_speed: Set MLAG interface speed.
                                     mlag_peer_l3_vlan:
                                        Underlay L3 peering SVI interface id.
                                        If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -35082,11 +38604,94 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `True`
                         """
-                        speed: str | None
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        speed: (
+                            Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                        )
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -35197,7 +38802,92 @@ class EosDesigns(EosDesignsRootModel):
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
-                                speed: str | None | UndefinedType = Undefined,
+                                speed: Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                                | UndefinedType = Undefined,
                                 receive_bandwidth: int | None | UndefinedType = Undefined,
                                 transmit_bandwidth: int | None | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -35261,9 +38951,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -35416,11 +39104,94 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             peer_interface: str | None
                             """The peer device interface. Used for description and documentation."""
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: (
+                                Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                            )
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -35442,7 +39213,92 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Literal[
+                                        "100full",
+                                        "100g",
+                                        "100g-1",
+                                        "100g-2",
+                                        "100g-4",
+                                        "100half",
+                                        "10full",
+                                        "10g",
+                                        "10half",
+                                        "1g",
+                                        "200g",
+                                        "200g-2",
+                                        "200g-4",
+                                        "25g",
+                                        "400g",
+                                        "400g-4",
+                                        "400g-8",
+                                        "40g",
+                                        "50g",
+                                        "50g-1",
+                                        "50g-2",
+                                        "800g-8",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
+                                        "auto",
+                                        "auto 10000full",
+                                        "auto 1000full",
+                                        "auto 100full",
+                                        "auto 100g-1",
+                                        "auto 100g-2",
+                                        "auto 100g-4",
+                                        "auto 100gfull",
+                                        "auto 100half",
+                                        "auto 10full",
+                                        "auto 10gfull",
+                                        "auto 10half",
+                                        "auto 1gfull",
+                                        "auto 2.5gfull",
+                                        "auto 200g-2",
+                                        "auto 200g-4",
+                                        "auto 25gfull",
+                                        "auto 400g-4",
+                                        "auto 400g-8",
+                                        "auto 40gfull",
+                                        "auto 50g-1",
+                                        "auto 50g-2",
+                                        "auto 50gfull",
+                                        "auto 5gfull",
+                                        "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
+                                        "forced 10000full",
+                                        "forced 1000full",
+                                        "forced 1000half",
+                                        "forced 100full",
+                                        "forced 100gfull",
+                                        "forced 100half",
+                                        "forced 10full",
+                                        "forced 10half",
+                                        "forced 25gfull",
+                                        "forced 40gfull",
+                                        "forced 50gfull",
+                                    ]
+                                    | None
+                                    | UndefinedType = Undefined,
                                     rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
@@ -35465,9 +39321,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -36191,7 +40045,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -36414,7 +40267,93 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     uplink_switches: UplinkSwitches
                     """Subclass of AvdList with `str` items."""
-                    uplink_interface_speed: str | None
+                    uplink_interface_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
                     """
                     Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                     (Uplink switch
@@ -36422,12 +40361,94 @@ class EosDesigns(EosDesignsRootModel):
                     Speed should be set in the
                     format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                     """
-                    uplink_switch_interface_speed: str | None
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    uplink_switch_interface_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -36509,20 +40530,6 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
-                    """
-                    uplink_structured_config: dict
-                    """
-                    Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                    When
-                    uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                    for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                    When uplink_type ==
-                    "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                    eos_cli_config_gen overrides the settings on the port-channel interface level.
-                    "uplink_structured_config" is applied after "structured_config", so it can override
-                    "structured_config" defined on node-level.
-                    Note! The content of this dictionary is _not_ validated
-                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -36768,12 +40775,94 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    mlag_interfaces_speed: str | None
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    mlag_interfaces_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -37206,8 +41295,178 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                            uplink_interface_speed: str | None | UndefinedType = Undefined,
-                            uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                            uplink_interface_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
+                            uplink_switch_interface_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
                             uplink_mtu: int | None | UndefinedType = Undefined,
                             max_uplink_switches: int | None | UndefinedType = Undefined,
                             max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -37217,7 +41476,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -37255,7 +41513,92 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                            mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                            mlag_interfaces_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
@@ -37413,10 +41756,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -37477,18 +41817,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                uplink_structured_config:
-                                   Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                   When
-                                   uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                   for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                   When uplink_type ==
-                                   "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                   eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                   "uplink_structured_config" is applied after "structured_config", so it can override
-                                   "structured_config" defined on node-level.
-                                   Note! The content of this dictionary is _not_ validated
-                                   by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -37650,10 +41978,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -39643,11 +43968,94 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `True`
                         """
-                        speed: str | None
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        speed: (
+                            Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                        )
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -39758,7 +44166,92 @@ class EosDesigns(EosDesignsRootModel):
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
-                                speed: str | None | UndefinedType = Undefined,
+                                speed: Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                                | UndefinedType = Undefined,
                                 receive_bandwidth: int | None | UndefinedType = Undefined,
                                 transmit_bandwidth: int | None | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -39822,9 +44315,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -39977,11 +44468,94 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             peer_interface: str | None
                             """The peer device interface. Used for description and documentation."""
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: (
+                                Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                            )
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -40003,7 +44577,92 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Literal[
+                                        "100full",
+                                        "100g",
+                                        "100g-1",
+                                        "100g-2",
+                                        "100g-4",
+                                        "100half",
+                                        "10full",
+                                        "10g",
+                                        "10half",
+                                        "1g",
+                                        "200g",
+                                        "200g-2",
+                                        "200g-4",
+                                        "25g",
+                                        "400g",
+                                        "400g-4",
+                                        "400g-8",
+                                        "40g",
+                                        "50g",
+                                        "50g-1",
+                                        "50g-2",
+                                        "800g-8",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
+                                        "auto",
+                                        "auto 10000full",
+                                        "auto 1000full",
+                                        "auto 100full",
+                                        "auto 100g-1",
+                                        "auto 100g-2",
+                                        "auto 100g-4",
+                                        "auto 100gfull",
+                                        "auto 100half",
+                                        "auto 10full",
+                                        "auto 10gfull",
+                                        "auto 10half",
+                                        "auto 1gfull",
+                                        "auto 2.5gfull",
+                                        "auto 200g-2",
+                                        "auto 200g-4",
+                                        "auto 25gfull",
+                                        "auto 400g-4",
+                                        "auto 400g-8",
+                                        "auto 40gfull",
+                                        "auto 50g-1",
+                                        "auto 50g-2",
+                                        "auto 50gfull",
+                                        "auto 5gfull",
+                                        "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
+                                        "forced 10000full",
+                                        "forced 1000full",
+                                        "forced 1000half",
+                                        "forced 100full",
+                                        "forced 100gfull",
+                                        "forced 100half",
+                                        "forced 10full",
+                                        "forced 10half",
+                                        "forced 25gfull",
+                                        "forced 40gfull",
+                                        "forced 50gfull",
+                                    ]
+                                    | None
+                                    | UndefinedType = Undefined,
                                     rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
@@ -40026,9 +44685,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -40752,7 +45409,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -40972,7 +45628,93 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     uplink_switches: UplinkSwitches
                     """Subclass of AvdList with `str` items."""
-                    uplink_interface_speed: str | None
+                    uplink_interface_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
                     """
                     Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                     (Uplink switch
@@ -40980,12 +45722,94 @@ class EosDesigns(EosDesignsRootModel):
                     Speed should be set in the
                     format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                     """
-                    uplink_switch_interface_speed: str | None
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    uplink_switch_interface_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -41067,20 +45891,6 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
-                    """
-                    uplink_structured_config: dict
-                    """
-                    Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                    When
-                    uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                    for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                    When uplink_type ==
-                    "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                    eos_cli_config_gen overrides the settings on the port-channel interface level.
-                    "uplink_structured_config" is applied after "structured_config", so it can override
-                    "structured_config" defined on node-level.
-                    Note! The content of this dictionary is _not_ validated
-                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -41326,12 +46136,94 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    mlag_interfaces_speed: str | None
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    mlag_interfaces_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -41764,8 +46656,178 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                            uplink_interface_speed: str | None | UndefinedType = Undefined,
-                            uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                            uplink_interface_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
+                            uplink_switch_interface_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
                             uplink_mtu: int | None | UndefinedType = Undefined,
                             max_uplink_switches: int | None | UndefinedType = Undefined,
                             max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -41775,7 +46837,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -41813,7 +46874,92 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                            mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                            mlag_interfaces_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
@@ -41969,10 +47115,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -42033,18 +47176,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                uplink_structured_config:
-                                   Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                   When
-                                   uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                   for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                   When uplink_type ==
-                                   "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                   eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                   "uplink_structured_config" is applied after "structured_config", so it can override
-                                   "structured_config" defined on node-level.
-                                   Note! The content of this dictionary is _not_ validated
-                                   by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -42206,10 +47337,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -43160,13 +48288,14 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     nodes: Nodes
                     """
-                    Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                    If not
-                    set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                    peer_group.
+                    List of node names or regular expressions to match against hostnames to configure the peer-group.
+                    The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                    The peer-group
+                    is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                    Subclass of AvdList with `str` items.
+                    Subclass
+                    of AvdList with `str` items.
                     """
                     address_family_ipv4: AddressFamilyIpv4
                     """Subclass of AvdModel."""
@@ -43326,13 +48455,14 @@ class EosDesigns(EosDesignsRootModel):
                                    To protect the password at rest it is strongly recommended to
                                    make use of a vault or similar.
                                 nodes:
-                                   Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                                   If not
-                                   set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                                   peer_group.
+                                   List of node names or regular expressions to match against hostnames to configure the peer-group.
+                                   The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                                   The peer-group
+                                   is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                                   Subclass of AvdList with `str` items.
+                                   Subclass
+                                   of AvdList with `str` items.
                                 address_family_ipv4: Subclass of AvdModel.
                                 address_family_ipv6: Subclass of AvdModel.
                                 type: Key only used for documentation or validation purposes.
@@ -44381,6 +49511,43 @@ class EosDesigns(EosDesignsRootModel):
 
                             Ipv6AddressVirtuals._item_type = str
 
+                            class Ipv6Nd(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {
+                                    "advertise_ipv6_address_virtuals": {"type": bool},
+                                    "valid_lifetime": {"type": str},
+                                    "preferred_lifetime": {"type": str},
+                                }
+                                advertise_ipv6_address_virtuals: bool | None
+                                """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+                                valid_lifetime: str | None
+                                """In seconds <0-4294967295> or infinite."""
+                                preferred_lifetime: str | None
+                                """In seconds <0-4294967295> or infinite."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                                        valid_lifetime: str | None | UndefinedType = Undefined,
+                                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Ipv6Nd.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                                            valid_lifetime: In seconds <0-4294967295> or infinite.
+                                            preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                                        """
+
                             class IpAddressVirtualSecondaries(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
 
@@ -44895,6 +50062,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ipv6_enable": {"type": bool},
                                 "ip_address_virtual": {"type": str},
                                 "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+                                "ipv6_nd": {"type": Ipv6Nd},
                                 "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                                 "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -44963,6 +50131,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
+                            ipv6_nd: Ipv6Nd
+                            """Subclass of AvdModel."""
                             ip_address_virtual_secondaries: IpAddressVirtualSecondaries
                             """
                             Secondary IPv4 VXLAN Anycast IP addresses.
@@ -45143,6 +50313,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_enable: bool | None | UndefinedType = Undefined,
                                     ip_address_virtual: str | None | UndefinedType = Undefined,
                                     ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                                    ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                                     ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                                     ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -45202,6 +50373,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                            Subclass of AvdList with `str` items.
+                                        ipv6_nd: Subclass of AvdModel.
                                         ip_address_virtual_secondaries:
                                            Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -45334,6 +50506,43 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         Ipv6AddressVirtuals._item_type = str
+
+                        class Ipv6Nd(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "advertise_ipv6_address_virtuals": {"type": bool},
+                                "valid_lifetime": {"type": str},
+                                "preferred_lifetime": {"type": str},
+                            }
+                            advertise_ipv6_address_virtuals: bool | None
+                            """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+                            valid_lifetime: str | None
+                            """In seconds <0-4294967295> or infinite."""
+                            preferred_lifetime: str | None
+                            """In seconds <0-4294967295> or infinite."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                                    valid_lifetime: str | None | UndefinedType = Undefined,
+                                    preferred_lifetime: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ipv6Nd.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                                        valid_lifetime: In seconds <0-4294967295> or infinite.
+                                        preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                                    """
 
                         class IpAddressVirtualSecondaries(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -45847,6 +51056,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv6_enable": {"type": bool},
                             "ip_address_virtual": {"type": str},
                             "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+                            "ipv6_nd": {"type": Ipv6Nd},
                             "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -45945,6 +51155,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdList with `str` items.
                         """
+                        ipv6_nd: Ipv6Nd
+                        """Subclass of AvdModel."""
                         ip_address_virtual_secondaries: IpAddressVirtualSecondaries
                         """
                         Secondary IPv4 VXLAN Anycast IP addresses.
@@ -46129,6 +51341,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv6_enable: bool | None | UndefinedType = Undefined,
                                 ip_address_virtual: str | None | UndefinedType = Undefined,
                                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -46210,6 +51423,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
+                                    ipv6_nd: Subclass of AvdModel.
                                     ip_address_virtual_secondaries:
                                        Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -47191,11 +52405,94 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             peer_interface: str | None
                             """The peer device interface. Used for description and documentation."""
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: (
+                                Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                            )
+                            """Interface Speed."""
                             structured_config: EosCliConfigGen.EthernetInterfacesItem
                             """Custom structured config for the member ethernet interface."""
 
@@ -47208,7 +52505,92 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Literal[
+                                        "100full",
+                                        "100g",
+                                        "100g-1",
+                                        "100g-2",
+                                        "100g-4",
+                                        "100half",
+                                        "10full",
+                                        "10g",
+                                        "10half",
+                                        "1g",
+                                        "200g",
+                                        "200g-2",
+                                        "200g-4",
+                                        "25g",
+                                        "400g",
+                                        "400g-4",
+                                        "400g-8",
+                                        "40g",
+                                        "50g",
+                                        "50g-1",
+                                        "50g-2",
+                                        "800g-8",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
+                                        "auto",
+                                        "auto 10000full",
+                                        "auto 1000full",
+                                        "auto 100full",
+                                        "auto 100g-1",
+                                        "auto 100g-2",
+                                        "auto 100g-4",
+                                        "auto 100gfull",
+                                        "auto 100half",
+                                        "auto 10full",
+                                        "auto 10gfull",
+                                        "auto 10half",
+                                        "auto 1gfull",
+                                        "auto 2.5gfull",
+                                        "auto 200g-2",
+                                        "auto 200g-4",
+                                        "auto 25gfull",
+                                        "auto 400g-4",
+                                        "auto 400g-8",
+                                        "auto 40gfull",
+                                        "auto 50g-1",
+                                        "auto 50g-2",
+                                        "auto 50gfull",
+                                        "auto 5gfull",
+                                        "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
+                                        "forced 10000full",
+                                        "forced 1000full",
+                                        "forced 1000half",
+                                        "forced 100full",
+                                        "forced 100gfull",
+                                        "forced 100half",
+                                        "forced 10full",
+                                        "forced 10half",
+                                        "forced 25gfull",
+                                        "forced 40gfull",
+                                        "forced 50gfull",
+                                    ]
+                                    | None
+                                    | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -47230,9 +52612,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         structured_config: Custom structured config for the member ethernet interface.
 
                                     """
@@ -48074,7 +53454,12 @@ class EosDesigns(EosDesignsRootModel):
                         """Time-to-live in range of hops."""
                         nodes: Nodes
                         """
-                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+                        List of node names or regular expressions to match against hostnames.
+                        The regexes need to match full
+                        hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                        Nodes is required to restrict configuration
+                        of BGP neighbors to certain nodes in the network.
+
                         Subclass of AvdList with `str` items.
                         """
                         set_ipv4_next_hop: str | None
@@ -48183,7 +53568,12 @@ class EosDesigns(EosDesignsRootModel):
                                     update_source: update_source
                                     ebgp_multihop: Time-to-live in range of hops.
                                     nodes:
-                                       Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+                                       List of node names or regular expressions to match against hostnames.
+                                       The regexes need to match full
+                                       hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                                       Nodes is required to restrict configuration
+                                       of BGP neighbors to certain nodes in the network.
+
                                        Subclass of AvdList with `str` items.
                                     set_ipv4_next_hop:
                                        IPv4_address
@@ -48868,13 +54258,14 @@ class EosDesigns(EosDesignsRootModel):
                         """BGP peer group name."""
                         nodes: Nodes
                         """
-                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                        If not
-                        set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                        peer_group.
+                        List of node names or regular expressions to match against hostnames to configure the peer-group.
+                        The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                        The peer-group
+                        is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                        Subclass of AvdList with `str` items.
+                        Subclass
+                        of AvdList with `str` items.
                         """
                         password: str | None
                         """
@@ -49038,13 +54429,14 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     name: BGP peer group name.
                                     nodes:
-                                       Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                                       If not
-                                       set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                                       peer_group.
+                                       List of node names or regular expressions to match against hostnames to configure the peer-group.
+                                       The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                                       The peer-group
+                                       is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                                       Subclass of AvdList with `str` items.
+                                       Subclass
+                                       of AvdList with `str` items.
                                     password:
                                        Type 7 encrypted password.
                                        Takes precedence over `cleartext_password`.
@@ -52544,11 +57936,94 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `True`
                         """
-                        speed: str | None
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        speed: (
+                            Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                        )
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -52659,7 +58134,92 @@ class EosDesigns(EosDesignsRootModel):
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
-                                speed: str | None | UndefinedType = Undefined,
+                                speed: Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                                | UndefinedType = Undefined,
                                 receive_bandwidth: int | None | UndefinedType = Undefined,
                                 transmit_bandwidth: int | None | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -52723,9 +58283,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -52878,11 +58436,94 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             peer_interface: str | None
                             """The peer device interface. Used for description and documentation."""
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: (
+                                Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                            )
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -52904,7 +58545,92 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Literal[
+                                        "100full",
+                                        "100g",
+                                        "100g-1",
+                                        "100g-2",
+                                        "100g-4",
+                                        "100half",
+                                        "10full",
+                                        "10g",
+                                        "10half",
+                                        "1g",
+                                        "200g",
+                                        "200g-2",
+                                        "200g-4",
+                                        "25g",
+                                        "400g",
+                                        "400g-4",
+                                        "400g-8",
+                                        "40g",
+                                        "50g",
+                                        "50g-1",
+                                        "50g-2",
+                                        "800g-8",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
+                                        "auto",
+                                        "auto 10000full",
+                                        "auto 1000full",
+                                        "auto 100full",
+                                        "auto 100g-1",
+                                        "auto 100g-2",
+                                        "auto 100g-4",
+                                        "auto 100gfull",
+                                        "auto 100half",
+                                        "auto 10full",
+                                        "auto 10gfull",
+                                        "auto 10half",
+                                        "auto 1gfull",
+                                        "auto 2.5gfull",
+                                        "auto 200g-2",
+                                        "auto 200g-4",
+                                        "auto 25gfull",
+                                        "auto 400g-4",
+                                        "auto 400g-8",
+                                        "auto 40gfull",
+                                        "auto 50g-1",
+                                        "auto 50g-2",
+                                        "auto 50gfull",
+                                        "auto 5gfull",
+                                        "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
+                                        "forced 10000full",
+                                        "forced 1000full",
+                                        "forced 1000half",
+                                        "forced 100full",
+                                        "forced 100gfull",
+                                        "forced 100half",
+                                        "forced 10full",
+                                        "forced 10half",
+                                        "forced 25gfull",
+                                        "forced 40gfull",
+                                        "forced 50gfull",
+                                    ]
+                                    | None
+                                    | UndefinedType = Undefined,
                                     rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
@@ -52927,9 +58653,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -53651,7 +59375,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -53861,7 +59584,93 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     uplink_switches: UplinkSwitches
                     """Subclass of AvdList with `str` items."""
-                    uplink_interface_speed: str | None
+                    uplink_interface_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
                     """
                     Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                     (Uplink switch
@@ -53869,12 +59678,94 @@ class EosDesigns(EosDesignsRootModel):
                     Speed should be set in the
                     format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                     """
-                    uplink_switch_interface_speed: str | None
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    uplink_switch_interface_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -53956,20 +59847,6 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
-                    """
-                    uplink_structured_config: dict
-                    """
-                    Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                    When
-                    uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                    for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                    When uplink_type ==
-                    "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                    eos_cli_config_gen overrides the settings on the port-channel interface level.
-                    "uplink_structured_config" is applied after "structured_config", so it can override
-                    "structured_config" defined on node-level.
-                    Note! The content of this dictionary is _not_ validated
-                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -54215,12 +60092,94 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    mlag_interfaces_speed: str | None
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    mlag_interfaces_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -54651,8 +60610,178 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                            uplink_interface_speed: str | None | UndefinedType = Undefined,
-                            uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                            uplink_interface_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
+                            uplink_switch_interface_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
                             uplink_mtu: int | None | UndefinedType = Undefined,
                             max_uplink_switches: int | None | UndefinedType = Undefined,
                             max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -54662,7 +60791,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -54700,7 +60828,92 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                            mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                            mlag_interfaces_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
@@ -54849,10 +61062,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -54913,18 +61123,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                uplink_structured_config:
-                                   Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                   When
-                                   uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                   for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                   When uplink_type ==
-                                   "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                   eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                   "uplink_structured_config" is applied after "structured_config", so it can override
-                                   "structured_config" defined on node-level.
-                                   Note! The content of this dictionary is _not_ validated
-                                   by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -55086,10 +61284,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -57090,11 +63285,94 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `True`
                             """
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: (
+                                Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                            )
+                            """Interface Speed."""
                             receive_bandwidth: int | None
                             """
                             Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -57205,7 +63483,92 @@ class EosDesigns(EosDesignsRootModel):
                                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                     dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                     enabled: bool | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Literal[
+                                        "100full",
+                                        "100g",
+                                        "100g-1",
+                                        "100g-2",
+                                        "100g-4",
+                                        "100half",
+                                        "10full",
+                                        "10g",
+                                        "10half",
+                                        "1g",
+                                        "200g",
+                                        "200g-2",
+                                        "200g-4",
+                                        "25g",
+                                        "400g",
+                                        "400g-4",
+                                        "400g-8",
+                                        "40g",
+                                        "50g",
+                                        "50g-1",
+                                        "50g-2",
+                                        "800g-8",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
+                                        "auto",
+                                        "auto 10000full",
+                                        "auto 1000full",
+                                        "auto 100full",
+                                        "auto 100g-1",
+                                        "auto 100g-2",
+                                        "auto 100g-4",
+                                        "auto 100gfull",
+                                        "auto 100half",
+                                        "auto 10full",
+                                        "auto 10gfull",
+                                        "auto 10half",
+                                        "auto 1gfull",
+                                        "auto 2.5gfull",
+                                        "auto 200g-2",
+                                        "auto 200g-4",
+                                        "auto 25gfull",
+                                        "auto 400g-4",
+                                        "auto 400g-8",
+                                        "auto 40gfull",
+                                        "auto 50g-1",
+                                        "auto 50g-2",
+                                        "auto 50gfull",
+                                        "auto 5gfull",
+                                        "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
+                                        "forced 10000full",
+                                        "forced 1000full",
+                                        "forced 1000half",
+                                        "forced 100full",
+                                        "forced 100gfull",
+                                        "forced 100half",
+                                        "forced 10full",
+                                        "forced 10half",
+                                        "forced 25gfull",
+                                        "forced 40gfull",
+                                        "forced 50gfull",
+                                    ]
+                                    | None
+                                    | UndefinedType = Undefined,
                                     receive_bandwidth: int | None | UndefinedType = Undefined,
                                     transmit_bandwidth: int | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
@@ -57269,9 +63632,7 @@ class EosDesigns(EosDesignsRootModel):
                                            specified.
                                         dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                         enabled: Enable or Shutdown the interface.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         receive_bandwidth:
                                            Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                            This is currently used on
@@ -57424,11 +63785,94 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 peer_interface: str | None
                                 """The peer device interface. Used for description and documentation."""
-                                speed: str | None
-                                """
-                                Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                <interface_speed>`.
-                                """
+                                speed: (
+                                    Literal[
+                                        "100full",
+                                        "100g",
+                                        "100g-1",
+                                        "100g-2",
+                                        "100g-4",
+                                        "100half",
+                                        "10full",
+                                        "10g",
+                                        "10half",
+                                        "1g",
+                                        "200g",
+                                        "200g-2",
+                                        "200g-4",
+                                        "25g",
+                                        "400g",
+                                        "400g-4",
+                                        "400g-8",
+                                        "40g",
+                                        "50g",
+                                        "50g-1",
+                                        "50g-2",
+                                        "800g-8",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
+                                        "auto",
+                                        "auto 10000full",
+                                        "auto 1000full",
+                                        "auto 100full",
+                                        "auto 100g-1",
+                                        "auto 100g-2",
+                                        "auto 100g-4",
+                                        "auto 100gfull",
+                                        "auto 100half",
+                                        "auto 10full",
+                                        "auto 10gfull",
+                                        "auto 10half",
+                                        "auto 1gfull",
+                                        "auto 2.5gfull",
+                                        "auto 200g-2",
+                                        "auto 200g-4",
+                                        "auto 25gfull",
+                                        "auto 400g-4",
+                                        "auto 400g-8",
+                                        "auto 40gfull",
+                                        "auto 50g-1",
+                                        "auto 50g-2",
+                                        "auto 50gfull",
+                                        "auto 5gfull",
+                                        "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
+                                        "forced 10000full",
+                                        "forced 1000full",
+                                        "forced 1000half",
+                                        "forced 100full",
+                                        "forced 100gfull",
+                                        "forced 100half",
+                                        "forced 10full",
+                                        "forced 10half",
+                                        "forced 25gfull",
+                                        "forced 40gfull",
+                                        "forced 50gfull",
+                                    ]
+                                    | None
+                                )
+                                """Interface Speed."""
                                 rx_queue: RxQueue
                                 """
                                 Receive queue parameters for platform SFE interface profile.
@@ -57450,7 +63894,92 @@ class EosDesigns(EosDesignsRootModel):
                                         description: str | None | UndefinedType = Undefined,
                                         peer: str | None | UndefinedType = Undefined,
                                         peer_interface: str | None | UndefinedType = Undefined,
-                                        speed: str | None | UndefinedType = Undefined,
+                                        speed: Literal[
+                                            "100full",
+                                            "100g",
+                                            "100g-1",
+                                            "100g-2",
+                                            "100g-4",
+                                            "100half",
+                                            "10full",
+                                            "10g",
+                                            "10half",
+                                            "1g",
+                                            "200g",
+                                            "200g-2",
+                                            "200g-4",
+                                            "25g",
+                                            "400g",
+                                            "400g-4",
+                                            "400g-8",
+                                            "40g",
+                                            "50g",
+                                            "50g-1",
+                                            "50g-2",
+                                            "800g-8",
+                                            "sfp-1000baset auto 100full",
+                                            "1.6t-8",
+                                            "100mfull",
+                                            "100mhalf",
+                                            "10mfull",
+                                            "10mhalf",
+                                            "200g-1",
+                                            "400g-2",
+                                            "40g-4",
+                                            "800g-4",
+                                            "auto",
+                                            "auto 10000full",
+                                            "auto 1000full",
+                                            "auto 100full",
+                                            "auto 100g-1",
+                                            "auto 100g-2",
+                                            "auto 100g-4",
+                                            "auto 100gfull",
+                                            "auto 100half",
+                                            "auto 10full",
+                                            "auto 10gfull",
+                                            "auto 10half",
+                                            "auto 1gfull",
+                                            "auto 2.5gfull",
+                                            "auto 200g-2",
+                                            "auto 200g-4",
+                                            "auto 25gfull",
+                                            "auto 400g-4",
+                                            "auto 400g-8",
+                                            "auto 40gfull",
+                                            "auto 50g-1",
+                                            "auto 50g-2",
+                                            "auto 50gfull",
+                                            "auto 5gfull",
+                                            "auto 800g-8",
+                                            "auto 1.6t-8",
+                                            "auto 100mfull",
+                                            "auto 100mhalf",
+                                            "auto 10g",
+                                            "auto 10mfull",
+                                            "auto 10mhalf",
+                                            "auto 1g",
+                                            "auto 2.5g",
+                                            "auto 200g-1",
+                                            "auto 25g",
+                                            "auto 400g-2",
+                                            "auto 40g-4",
+                                            "auto 5g",
+                                            "auto 800g-4",
+                                            "forced 10000full",
+                                            "forced 1000full",
+                                            "forced 1000half",
+                                            "forced 100full",
+                                            "forced 100gfull",
+                                            "forced 100half",
+                                            "forced 10full",
+                                            "forced 10half",
+                                            "forced 25gfull",
+                                            "forced 40gfull",
+                                            "forced 50gfull",
+                                        ]
+                                        | None
+                                        | UndefinedType = Undefined,
                                         rx_queue: RxQueue | UndefinedType = Undefined,
                                         structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                     ) -> None:
@@ -57473,9 +64002,7 @@ class EosDesigns(EosDesignsRootModel):
                                                If not set, this inherits the peer
                                                setting on the port-channel interface.
                                             peer_interface: The peer device interface. Used for description and documentation.
-                                            speed:
-                                               Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                               <interface_speed>`.
+                                            speed: Interface Speed.
                                             rx_queue:
                                                Receive queue parameters for platform SFE interface profile.
                                                This setting is ignored unless the
@@ -58205,7 +64732,6 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_macsec": {"type": UplinkMacsec},
                             "uplink_port_channel_id": {"type": int},
                             "uplink_switch_port_channel_id": {"type": int},
-                            "uplink_structured_config": {"type": dict},
                             "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -58425,7 +64951,93 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         uplink_switches: UplinkSwitches
                         """Subclass of AvdList with `str` items."""
-                        uplink_interface_speed: str | None
+                        uplink_interface_speed: (
+                            Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                        )
                         """
                         Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                         (Uplink switch
@@ -58433,12 +65045,94 @@ class EosDesigns(EosDesignsRootModel):
                         Speed should be set in the
                         format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                         """
-                        uplink_switch_interface_speed: str | None
-                        """
-                        Set point-to-Point interface speed for the uplink switch interface only.
-                        Speed should be set in the
-                        format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                        """
+                        uplink_switch_interface_speed: (
+                            Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                        )
+                        """Set point-to-Point interface speed for the uplink switch interface only."""
                         uplink_mtu: int | None
                         """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                         max_uplink_switches: int | None
@@ -58520,20 +65214,6 @@ class EosDesigns(EosDesignsRootModel):
                         autogenerated Port-channel IDs in the Network Services.
                         Note! For MLAG pairs the ID must be between
                         1 and 2000 and both MLAG switches must have the same value.
-                        """
-                        uplink_structured_config: dict
-                        """
-                        Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                        When
-                        uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                        for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                        When uplink_type ==
-                        "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                        eos_cli_config_gen overrides the settings on the port-channel interface level.
-                        "uplink_structured_config" is applied after "structured_config", so it can override
-                        "structured_config" defined on node-level.
-                        Note! The content of this dictionary is _not_ validated
-                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         """
                         uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                         """Custom structured config applied to `uplink_interfaces`."""
@@ -58779,12 +65459,94 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdList with `str` items.
                         """
-                        mlag_interfaces_speed: str | None
-                        """
-                        Set MLAG interface speed.
-                        Speed should be set in the format `<interface_speed>` or `forced
-                        <interface_speed>` or `auto <interface_speed>`.
-                        """
+                        mlag_interfaces_speed: (
+                            Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                        )
+                        """Set MLAG interface speed."""
                         mlag_peer_l3_vlan: int
                         """
                         Underlay L3 peering SVI interface id.
@@ -59217,8 +65979,178 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                                 uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                                 uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                                uplink_interface_speed: str | None | UndefinedType = Undefined,
-                                uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                                uplink_interface_speed: Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                                | UndefinedType = Undefined,
+                                uplink_switch_interface_speed: Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                                | UndefinedType = Undefined,
                                 uplink_mtu: int | None | UndefinedType = Undefined,
                                 max_uplink_switches: int | None | UndefinedType = Undefined,
                                 max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -59228,7 +66160,6 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                                uplink_structured_config: dict | UndefinedType = Undefined,
                                 uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -59266,7 +66197,92 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                                 mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                                 mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                                mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                                mlag_interfaces_speed: Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                                | UndefinedType = Undefined,
                                 mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                                 mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                                 mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
@@ -59422,10 +66438,7 @@ class EosDesigns(EosDesignsRootModel):
                                        interface speed can be overridden with `uplink_switch_interface_speed`).
                                        Speed should be set in the
                                        format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                    uplink_switch_interface_speed:
-                                       Set point-to-Point interface speed for the uplink switch interface only.
-                                       Speed should be set in the
-                                       format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                    uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                     uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                     max_uplink_switches:
                                        Maximum number of uplink switches.
@@ -59486,18 +66499,6 @@ class EosDesigns(EosDesignsRootModel):
                                        autogenerated Port-channel IDs in the Network Services.
                                        Note! For MLAG pairs the ID must be between
                                        1 and 2000 and both MLAG switches must have the same value.
-                                    uplink_structured_config:
-                                       Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                       When
-                                       uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                       for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                       When uplink_type ==
-                                       "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                       eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                       "uplink_structured_config" is applied after "structured_config", so it can override
-                                       "structured_config" defined on node-level.
-                                       Note! The content of this dictionary is _not_ validated
-                                       by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                     uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                     uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                     uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -59659,10 +66660,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
-                                    mlag_interfaces_speed:
-                                       Set MLAG interface speed.
-                                       Speed should be set in the format `<interface_speed>` or `forced
-                                       <interface_speed>` or `auto <interface_speed>`.
+                                    mlag_interfaces_speed: Set MLAG interface speed.
                                     mlag_peer_l3_vlan:
                                        Underlay L3 peering SVI interface id.
                                        If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -61577,11 +68575,94 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `True`
                         """
-                        speed: str | None
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        speed: (
+                            Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                        )
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -61692,7 +68773,92 @@ class EosDesigns(EosDesignsRootModel):
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
-                                speed: str | None | UndefinedType = Undefined,
+                                speed: Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                                | UndefinedType = Undefined,
                                 receive_bandwidth: int | None | UndefinedType = Undefined,
                                 transmit_bandwidth: int | None | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -61756,9 +68922,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -61911,11 +69075,94 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             peer_interface: str | None
                             """The peer device interface. Used for description and documentation."""
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: (
+                                Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                            )
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -61937,7 +69184,92 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Literal[
+                                        "100full",
+                                        "100g",
+                                        "100g-1",
+                                        "100g-2",
+                                        "100g-4",
+                                        "100half",
+                                        "10full",
+                                        "10g",
+                                        "10half",
+                                        "1g",
+                                        "200g",
+                                        "200g-2",
+                                        "200g-4",
+                                        "25g",
+                                        "400g",
+                                        "400g-4",
+                                        "400g-8",
+                                        "40g",
+                                        "50g",
+                                        "50g-1",
+                                        "50g-2",
+                                        "800g-8",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
+                                        "auto",
+                                        "auto 10000full",
+                                        "auto 1000full",
+                                        "auto 100full",
+                                        "auto 100g-1",
+                                        "auto 100g-2",
+                                        "auto 100g-4",
+                                        "auto 100gfull",
+                                        "auto 100half",
+                                        "auto 10full",
+                                        "auto 10gfull",
+                                        "auto 10half",
+                                        "auto 1gfull",
+                                        "auto 2.5gfull",
+                                        "auto 200g-2",
+                                        "auto 200g-4",
+                                        "auto 25gfull",
+                                        "auto 400g-4",
+                                        "auto 400g-8",
+                                        "auto 40gfull",
+                                        "auto 50g-1",
+                                        "auto 50g-2",
+                                        "auto 50gfull",
+                                        "auto 5gfull",
+                                        "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
+                                        "forced 10000full",
+                                        "forced 1000full",
+                                        "forced 1000half",
+                                        "forced 100full",
+                                        "forced 100gfull",
+                                        "forced 100half",
+                                        "forced 10full",
+                                        "forced 10half",
+                                        "forced 25gfull",
+                                        "forced 40gfull",
+                                        "forced 50gfull",
+                                    ]
+                                    | None
+                                    | UndefinedType = Undefined,
                                     rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
@@ -61960,9 +69292,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -62686,7 +70016,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -62909,7 +70238,93 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     uplink_switches: UplinkSwitches
                     """Subclass of AvdList with `str` items."""
-                    uplink_interface_speed: str | None
+                    uplink_interface_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
                     """
                     Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                     (Uplink switch
@@ -62917,12 +70332,94 @@ class EosDesigns(EosDesignsRootModel):
                     Speed should be set in the
                     format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                     """
-                    uplink_switch_interface_speed: str | None
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    uplink_switch_interface_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -63004,20 +70501,6 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
-                    """
-                    uplink_structured_config: dict
-                    """
-                    Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                    When
-                    uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                    for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                    When uplink_type ==
-                    "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                    eos_cli_config_gen overrides the settings on the port-channel interface level.
-                    "uplink_structured_config" is applied after "structured_config", so it can override
-                    "structured_config" defined on node-level.
-                    Note! The content of this dictionary is _not_ validated
-                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -63263,12 +70746,94 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    mlag_interfaces_speed: str | None
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    mlag_interfaces_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -63701,8 +71266,178 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                            uplink_interface_speed: str | None | UndefinedType = Undefined,
-                            uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                            uplink_interface_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
+                            uplink_switch_interface_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
                             uplink_mtu: int | None | UndefinedType = Undefined,
                             max_uplink_switches: int | None | UndefinedType = Undefined,
                             max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -63712,7 +71447,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -63750,7 +71484,92 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                            mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                            mlag_interfaces_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
@@ -63908,10 +71727,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -63972,18 +71788,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                uplink_structured_config:
-                                   Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                   When
-                                   uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                   for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                   When uplink_type ==
-                                   "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                   eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                   "uplink_structured_config" is applied after "structured_config", so it can override
-                                   "structured_config" defined on node-level.
-                                   Note! The content of this dictionary is _not_ validated
-                                   by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -64145,10 +71949,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -66138,11 +73939,94 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `True`
                         """
-                        speed: str | None
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        speed: (
+                            Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                        )
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -66253,7 +74137,92 @@ class EosDesigns(EosDesignsRootModel):
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
-                                speed: str | None | UndefinedType = Undefined,
+                                speed: Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                                | UndefinedType = Undefined,
                                 receive_bandwidth: int | None | UndefinedType = Undefined,
                                 transmit_bandwidth: int | None | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -66317,9 +74286,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -66472,11 +74439,94 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             peer_interface: str | None
                             """The peer device interface. Used for description and documentation."""
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: (
+                                Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
+                                | None
+                            )
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -66498,7 +74548,92 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Literal[
+                                        "100full",
+                                        "100g",
+                                        "100g-1",
+                                        "100g-2",
+                                        "100g-4",
+                                        "100half",
+                                        "10full",
+                                        "10g",
+                                        "10half",
+                                        "1g",
+                                        "200g",
+                                        "200g-2",
+                                        "200g-4",
+                                        "25g",
+                                        "400g",
+                                        "400g-4",
+                                        "400g-8",
+                                        "40g",
+                                        "50g",
+                                        "50g-1",
+                                        "50g-2",
+                                        "800g-8",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
+                                        "auto",
+                                        "auto 10000full",
+                                        "auto 1000full",
+                                        "auto 100full",
+                                        "auto 100g-1",
+                                        "auto 100g-2",
+                                        "auto 100g-4",
+                                        "auto 100gfull",
+                                        "auto 100half",
+                                        "auto 10full",
+                                        "auto 10gfull",
+                                        "auto 10half",
+                                        "auto 1gfull",
+                                        "auto 2.5gfull",
+                                        "auto 200g-2",
+                                        "auto 200g-4",
+                                        "auto 25gfull",
+                                        "auto 400g-4",
+                                        "auto 400g-8",
+                                        "auto 40gfull",
+                                        "auto 50g-1",
+                                        "auto 50g-2",
+                                        "auto 50gfull",
+                                        "auto 5gfull",
+                                        "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
+                                        "forced 10000full",
+                                        "forced 1000full",
+                                        "forced 1000half",
+                                        "forced 100full",
+                                        "forced 100gfull",
+                                        "forced 100half",
+                                        "forced 10full",
+                                        "forced 10half",
+                                        "forced 25gfull",
+                                        "forced 40gfull",
+                                        "forced 50gfull",
+                                    ]
+                                    | None
+                                    | UndefinedType = Undefined,
                                     rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
@@ -66521,9 +74656,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -67247,7 +75380,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -67467,7 +75599,93 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     uplink_switches: UplinkSwitches
                     """Subclass of AvdList with `str` items."""
-                    uplink_interface_speed: str | None
+                    uplink_interface_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
                     """
                     Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                     (Uplink switch
@@ -67475,12 +75693,94 @@ class EosDesigns(EosDesignsRootModel):
                     Speed should be set in the
                     format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                     """
-                    uplink_switch_interface_speed: str | None
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    uplink_switch_interface_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -67562,20 +75862,6 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
-                    """
-                    uplink_structured_config: dict
-                    """
-                    Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                    When
-                    uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                    for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                    When uplink_type ==
-                    "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                    eos_cli_config_gen overrides the settings on the port-channel interface level.
-                    "uplink_structured_config" is applied after "structured_config", so it can override
-                    "structured_config" defined on node-level.
-                    Note! The content of this dictionary is _not_ validated
-                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -67821,12 +76107,94 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    mlag_interfaces_speed: str | None
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    mlag_interfaces_speed: (
+                        Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        | None
+                    )
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -68259,8 +76627,178 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                            uplink_interface_speed: str | None | UndefinedType = Undefined,
-                            uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                            uplink_interface_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
+                            uplink_switch_interface_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
                             uplink_mtu: int | None | UndefinedType = Undefined,
                             max_uplink_switches: int | None | UndefinedType = Undefined,
                             max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -68270,7 +76808,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -68308,7 +76845,92 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                            mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                            mlag_interfaces_speed: Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
+                            | None
+                            | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
@@ -68464,10 +77086,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -68528,18 +77147,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                uplink_structured_config:
-                                   Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                   When
-                                   uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                   for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                   When uplink_type ==
-                                   "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                   eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                   "uplink_structured_config" is applied after "structured_config", so it can override
-                                   "structured_config" defined on node-level.
-                                   Note! The content of this dictionary is _not_ validated
-                                   by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -68701,10 +77308,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -69188,9 +77792,6 @@ class EosDesigns(EosDesignsRootModel):
         "cv_tags_topology_type": {"type": str},
         "cv_token": {"type": str},
         "cv_topology": {"type": CvTopology},
-        "cvp_ingestauth_key": {"type": str},
-        "cvp_instance_ips": {"type": CvpInstanceIps},
-        "cvp_token_file": {"type": str},
         "dc_name": {"type": str},
         "default_connected_endpoints_description": {"type": str, "default": "{endpoint_type!u}_{endpoint}{endpoint_port?<_}"},
         "default_connected_endpoints_port_channel_description": {"type": str, "default": "{endpoint_type!u}_{endpoint}{endpoint_port_channel?<_}"},
@@ -69254,7 +77855,6 @@ class EosDesigns(EosDesignsRootModel):
         "l3_edge": {"type": L3Edge},
         "l3_interface_profiles": {"type": L3InterfaceProfiles},
         "load_interval": {"type": EosCliConfigGen.LoadInterval},
-        "local_users": {"type": EosCliConfigGen.LocalUsers},
         "logging_settings": {"type": LoggingSettings},
         "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
@@ -69623,10 +78223,6 @@ class EosDesigns(EosDesignsRootModel):
         "ssh_settings": {"type": SshSettings},
         "svi_profiles": {"type": SviProfiles},
         "system_mac_address": {"type": str},
-        "terminattr_disable_aaa": {"type": bool, "default": False},
-        "terminattr_ingestexclude": {"type": str, "default": "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"},
-        "terminattr_ingestgrpcurl_port": {"type": int, "default": 9910},
-        "terminattr_smashexcludes": {"type": str, "default": "ale,flexCounter,hardware,kni,pulse,strata"},
         "timezone": {"type": str},
         "trunk_groups": {"type": TrunkGroups},
         "type": {"type": str},
@@ -69648,7 +78244,7 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_ospf_area": {"type": str, "default": "0.0.0.0"},
         "underlay_ospf_authentication": {"type": UnderlayOspfAuthentication},
         "underlay_ospf_bfd_enable": {"type": bool, "default": False},
-        "underlay_ospf_graceful_restart": {"type": bool, "default": False},
+        "underlay_ospf_graceful_restart": {"type": bool, "default": True},
         "underlay_ospf_max_lsa": {"type": int, "default": 12000},
         "underlay_ospf_maximum_paths": {"type": int},
         "underlay_ospf_process_id": {"type": int, "default": 100},
@@ -70030,36 +78626,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of
     AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname` (`str`).
-    """
-    cvp_ingestauth_key: str | None
-    """
-    On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication
-    for on-premise CVP.
-    If not set, TerminAttr will be configured with certificate based authentication:
-    - On-premise using token onboarding. Default token path is '/tmp/token'.
-    - CVaaS using token-secure
-    onboarding. Default token path is '/tmp/cv-onboarding-token'.
-    Token must be copied to the device
-    first.
-    """
-    cvp_instance_ips: CvpInstanceIps
-    """
-    List of IPv4 addresses or DNS names for CloudVision.
-    For on-premise CloudVision enter all the nodes
-    of the cluster.
-    For CloudVision as a Service enter the DNS name of the instance.
-    `eos_designs` only
-    supports one CloudVision cluster.
-
-
-    Subclass of AvdList with `str` items.
-    """
-    cvp_token_file: str | None
-    """
-    cvp_token_file is the path to the token file on the switch.
-    If not set the default locations for on-
-    premise or CVaaS will be used.
-    See cvp_ingestauth_key for details.
     """
     dc_name: str | None
     """
@@ -70487,11 +79053,9 @@ class EosDesigns(EosDesignsRootModel):
     inband_ztp_bootstrap_file: str | None
     """
     Bootstrap URL configured in DHCP to use for inband ZTP.
-    If not set and `cvp_instance_ips` is set
-    then the bootstrap value will be set to:
-        `https://{cvp_instance_ips[0]}/ztp/bootstrap`
-    Otherwise
-    no value will be configured.
+    By default the URL will be `https://<first
+    cv server>/ztp/bootstrap` if `cv_settings` are used.
+    Otherwise no value will be configured.
     """
     internal_vlan_order: InternalVlanOrder
     """
@@ -70554,10 +79118,15 @@ class EosDesigns(EosDesignsRootModel):
     is_deployed: bool
     """
     If the device is already deployed in the fabric.
-    When set to false, interfaces toward this device
-    may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.
-    Furthermore
-    `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.
+    When set to false:
+      - The `cv_deploy` role will
+    not apply configurations to this device.
+      - Peer interfaces toward this device may be shutdown
+    based on the `shutdown_interfaces_towards_undeployed_peers` setting.
+      - BGP peerings toward this
+    device may be shutdown based on the `shutdown_bgp_towards_undeployed_peers` setting.
+      - Validation
+    tests by the `anta_runner` role are automatically skipped for this device.
 
     Default value: `True`
     """
@@ -70619,7 +79188,6 @@ class EosDesigns(EosDesignsRootModel):
     `L3InterfaceProfilesItem` items. Primary key is `profile` (`str`).
     """
     load_interval: EosCliConfigGen.LoadInterval
-    local_users: EosCliConfigGen.LocalUsers
     logging_settings: LoggingSettings
     """
     Logging settings
@@ -71160,9 +79728,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     Serial Number of the device.
     Used for documentation purpose in the fabric documentation as can also
-    be used by the 'eos_config_deploy_cvp' role.
-    "serial_number" can also be set directly under node
-    type settings.
+    be used by the 'cv_deploy' role.
+    "serial_number" can also be set directly under node type settings.
     If both are set, the value under node type settings takes precedence.
     """
     sflow_settings: SflowSettings
@@ -71175,38 +79742,14 @@ class EosDesigns(EosDesignsRootModel):
     """
     shutdown_bgp_towards_undeployed_peers: bool
     """
-    When a device is set undeployed using `is_deployed: false` and
-    `shutdown_bgp_towards_undeployed_peers` key is set to true, the BGP neighborship is shutdown on the
-    peer.
+    Administratively shuts down BGP peerings towards devices marked with `is_deployed: false`.
 
     Default value: `True`
     """
     shutdown_interfaces_towards_undeployed_peers: bool
     """
-    - It is possible to provision configurations for a complete topology but flag devices as undeployed
-    using the host level variable `is_deployed: false`.
-
-    ```yaml
-    # Use at the host level
-    is_deployed: <
-    true or false or default -> true >
-    ```
-
-    - By default, this will have no impact within the
-    `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still
-    be pushed by the `eos_config_deploy_eapi` directly to devices if used.
-    - However, if the
-    `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices
-    flagged  as `is_deployed: false` and not attempt to configure them.
-    - If the device is not present
-    in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail
-    tests on peers of the undeployed device trying to verify that interfaces are up.
-    - To overcome this
-    and shutdown interfaces towards undeployed peers, the variable
-    `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role
-    interface tests.
-    - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices
-    are not present in the network.
+    Administratively shuts down interfaces on deployed devices that connect to a peer marked with
+    `is_deployed: false`.
 
     Default value: `True`
     """
@@ -71262,20 +79805,6 @@ class EosDesigns(EosDesignsRootModel):
     If both are set, the value under node type settings takes
     precedence.
     """
-    terminattr_disable_aaa: bool
-    """Default value: `False`"""
-    terminattr_ingestexclude: str
-    """Default value: `"/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"`"""
-    terminattr_ingestgrpcurl_port: int
-    """
-    Port number used for Terminattr connection to an on-premise CloudVision cluster.
-    The port number is
-    always 443 when using CloudVision as a Service, so this value is ignored.
-
-    Default value: `9910`
-    """
-    terminattr_smashexcludes: str
-    """Default value: `"ale,flexCounter,hardware,kni,pulse,strata"`"""
     timezone: str | None
     """Clock timezone like "CET" or "US/Pacific"."""
     trunk_groups: TrunkGroups
@@ -71481,7 +80010,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     Enable graceful restart for OSPF underlay.
 
-    Default value: `False`
+    Default value: `True`
     """
     underlay_ospf_max_lsa: int
     """Default value: `12000`"""
@@ -71706,9 +80235,6 @@ class EosDesigns(EosDesignsRootModel):
             cv_tags_topology_type: str | None | UndefinedType = Undefined,
             cv_token: str | None | UndefinedType = Undefined,
             cv_topology: CvTopology | UndefinedType = Undefined,
-            cvp_ingestauth_key: str | None | UndefinedType = Undefined,
-            cvp_instance_ips: CvpInstanceIps | UndefinedType = Undefined,
-            cvp_token_file: str | None | UndefinedType = Undefined,
             dc_name: str | None | UndefinedType = Undefined,
             default_connected_endpoints_description: str | UndefinedType = Undefined,
             default_connected_endpoints_port_channel_description: str | UndefinedType = Undefined,
@@ -71769,7 +80295,6 @@ class EosDesigns(EosDesignsRootModel):
             l3_edge: L3Edge | UndefinedType = Undefined,
             l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
             load_interval: EosCliConfigGen.LoadInterval | UndefinedType = Undefined,
-            local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
             logging_settings: LoggingSettings | UndefinedType = Undefined,
             mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
@@ -71828,10 +80353,6 @@ class EosDesigns(EosDesignsRootModel):
             ssh_settings: SshSettings | UndefinedType = Undefined,
             svi_profiles: SviProfiles | UndefinedType = Undefined,
             system_mac_address: str | None | UndefinedType = Undefined,
-            terminattr_disable_aaa: bool | UndefinedType = Undefined,
-            terminattr_ingestexclude: str | UndefinedType = Undefined,
-            terminattr_ingestgrpcurl_port: int | UndefinedType = Undefined,
-            terminattr_smashexcludes: str | UndefinedType = Undefined,
             timezone: str | None | UndefinedType = Undefined,
             trunk_groups: TrunkGroups | UndefinedType = Undefined,
             type: str | None | UndefinedType = Undefined,
@@ -72148,30 +80669,6 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of
                    AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname` (`str`).
-                cvp_ingestauth_key:
-                   On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication
-                   for on-premise CVP.
-                   If not set, TerminAttr will be configured with certificate based authentication:
-                   - On-premise using token onboarding. Default token path is '/tmp/token'.
-                   - CVaaS using token-secure
-                   onboarding. Default token path is '/tmp/cv-onboarding-token'.
-                   Token must be copied to the device
-                   first.
-                cvp_instance_ips:
-                   List of IPv4 addresses or DNS names for CloudVision.
-                   For on-premise CloudVision enter all the nodes
-                   of the cluster.
-                   For CloudVision as a Service enter the DNS name of the instance.
-                   `eos_designs` only
-                   supports one CloudVision cluster.
-
-
-                   Subclass of AvdList with `str` items.
-                cvp_token_file:
-                   cvp_token_file is the path to the token file on the switch.
-                   If not set the default locations for on-
-                   premise or CVaaS will be used.
-                   See cvp_ingestauth_key for details.
                 dc_name:
                    DC Name is used in:
                    - Fabric Documentation (Optional, falls back to fabric_name)
@@ -72485,11 +80982,9 @@ class EosDesigns(EosDesignsRootModel):
                 hardware_counters: hardware_counters
                 inband_ztp_bootstrap_file:
                    Bootstrap URL configured in DHCP to use for inband ZTP.
-                   If not set and `cvp_instance_ips` is set
-                   then the bootstrap value will be set to:
-                       `https://{cvp_instance_ips[0]}/ztp/bootstrap`
-                   Otherwise
-                   no value will be configured.
+                   By default the URL will be `https://<first
+                   cv server>/ztp/bootstrap` if `cv_settings` are used.
+                   Otherwise no value will be configured.
                 internal_vlan_order:
                    Internal vlan allocation order and range.
 
@@ -72536,10 +81031,15 @@ class EosDesigns(EosDesignsRootModel):
                    routes defined under 'ipv6_mgmt_destination_networks'.
                 is_deployed:
                    If the device is already deployed in the fabric.
-                   When set to false, interfaces toward this device
-                   may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.
-                   Furthermore
-                   `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.
+                   When set to false:
+                     - The `cv_deploy` role will
+                   not apply configurations to this device.
+                     - Peer interfaces toward this device may be shutdown
+                   based on the `shutdown_interfaces_towards_undeployed_peers` setting.
+                     - BGP peerings toward this
+                   device may be shutdown based on the `shutdown_bgp_towards_undeployed_peers` setting.
+                     - Validation
+                   tests by the `anta_runner` role are automatically skipped for this device.
                 isis_advertise_passive_only: isis_advertise_passive_only
                 isis_area_id: isis_area_id
                 isis_default_circuit_type:
@@ -72572,7 +81072,6 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of AvdIndexedList with
                    `L3InterfaceProfilesItem` items. Primary key is `profile` (`str`).
                 load_interval: load_interval
-                local_users: local_users
                 logging_settings:
                    Logging settings
 
@@ -72961,9 +81460,8 @@ class EosDesigns(EosDesignsRootModel):
                 serial_number:
                    Serial Number of the device.
                    Used for documentation purpose in the fabric documentation as can also
-                   be used by the 'eos_config_deploy_cvp' role.
-                   "serial_number" can also be set directly under node
-                   type settings.
+                   be used by the 'cv_deploy' role.
+                   "serial_number" can also be set directly under node type settings.
                    If both are set, the value under node type settings takes precedence.
                 sflow_settings:
                    sFlow settings.
@@ -72971,35 +81469,10 @@ class EosDesigns(EosDesignsRootModel):
                    For
                    default enabling of sFlow for various interface types across the fabric see `fabric_sflow`.
                    Subclass of AvdModel.
-                shutdown_bgp_towards_undeployed_peers:
-                   When a device is set undeployed using `is_deployed: false` and
-                   `shutdown_bgp_towards_undeployed_peers` key is set to true, the BGP neighborship is shutdown on the
-                   peer.
+                shutdown_bgp_towards_undeployed_peers: Administratively shuts down BGP peerings towards devices marked with `is_deployed: false`.
                 shutdown_interfaces_towards_undeployed_peers:
-                   - It is possible to provision configurations for a complete topology but flag devices as undeployed
-                   using the host level variable `is_deployed: false`.
-
-                   ```yaml
-                   # Use at the host level
-                   is_deployed: <
-                   true or false or default -> true >
-                   ```
-
-                   - By default, this will have no impact within the
-                   `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still
-                   be pushed by the `eos_config_deploy_eapi` directly to devices if used.
-                   - However, if the
-                   `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices
-                   flagged  as `is_deployed: false` and not attempt to configure them.
-                   - If the device is not present
-                   in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail
-                   tests on peers of the undeployed device trying to verify that interfaces are up.
-                   - To overcome this
-                   and shutdown interfaces towards undeployed peers, the variable
-                   `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role
-                   interface tests.
-                   - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices
-                   are not present in the network.
+                   Administratively shuts down interfaces on deployed devices that connect to a peer marked with
+                   `is_deployed: false`.
                 snmp_settings:
                    SNMP settings.
                    Configuration of remote SNMP engine IDs are currently only possible using
@@ -73043,13 +81516,6 @@ class EosDesigns(EosDesignsRootModel):
                    also be set under node type settings.
                    If both are set, the value under node type settings takes
                    precedence.
-                terminattr_disable_aaa: terminattr_disable_aaa
-                terminattr_ingestexclude: terminattr_ingestexclude
-                terminattr_ingestgrpcurl_port:
-                   Port number used for Terminattr connection to an on-premise CloudVision cluster.
-                   The port number is
-                   always 443 when using CloudVision as a Service, so this value is ignored.
-                terminattr_smashexcludes: terminattr_smashexcludes
                 timezone: Clock timezone like "CET" or "US/Pacific".
                 trunk_groups: Subclass of AvdModel.
                 type:
