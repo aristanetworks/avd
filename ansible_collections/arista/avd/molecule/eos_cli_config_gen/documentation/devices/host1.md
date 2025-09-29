@@ -10683,8 +10683,8 @@ Make-before-break: False
 
 ##### IP Sparse Mode VRFs
 
-| VRF Name | SSM Range | BFD Enabled | Make-before-break |
-| -------- | --------- | ----------- | ----------------- |
+| VRF Name | SSM Range ACL | BFD Enabled | Make-before-break |
+| -------- | ------------- | ----------- | ----------------- |
 | MCAST_VRF1 | SSM-MCAST | True | False |
 | MCAST_VRF2_ALL_GROUPS | - | False | - |
 | Test_RP_ACL | - | False | True |
