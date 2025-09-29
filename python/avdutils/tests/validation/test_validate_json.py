@@ -27,7 +27,7 @@ def init_store() -> None:
 
 @pytest.mark.usefixtures("init_store")
 def test_validate_json() -> None:
-    validation_result = validate_json('{"ethernet_interfaces": [{"name": "Ethernet1", "speed": 100}, {"name": "Ethernet1"}, {}]}', "eos_cli_config_gen")
+    validation_result = validate_json('{"ethernet_interfaces": [{"name": "Ethernet1", "description": 12345}, {"name": "Ethernet1"}, {}]}', "eos_cli_config_gen")
 
     violations = iter(validation_result.violations)
     feedback = next(violations)
@@ -54,12 +54,12 @@ def test_validate_json() -> None:
     assert feedback.path == ["config_end"]
     assert isinstance(feedback.issue, Issue.DefaultValueInserted)
     feedback = next(coercions)
-    assert feedback.path == ["ethernet_interfaces", "0", "speed"]
+    assert feedback.path == ["ethernet_interfaces", "0", "description"]
     assert isinstance(feedback.issue, Issue.Coercion)
     assert isinstance(feedback.issue._0.found, Value.Int)
-    assert feedback.issue._0.found._0 == 100
+    assert feedback.issue._0.found._0 == 12345
     assert isinstance(feedback.issue._0.made, Value.Str)
-    assert feedback.issue._0.made._0 == "100"
+    assert feedback.issue._0.made._0 == "12345"
     feedback = next(coercions)
     feedback = next(coercions)
     feedback = next(coercions)

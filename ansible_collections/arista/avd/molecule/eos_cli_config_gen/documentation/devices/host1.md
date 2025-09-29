@@ -617,14 +617,16 @@ clock timezone GMT
 
 ##### NTP Servers
 
-| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 1.2.3.4 | - | - | - | - | - | - | - | lo0 | - |
-| 2.2.2.55 | - | - | - | - | - | - | - | - | - |
-| 10.1.1.1 | - | - | - | - | - | - | - | - | - |
-| 10.1.1.2 | - | True | - | - | - | - | - | - | - |
-| 20.20.20.1 | - | - | - | - | - | - | - | - | 2 |
-| ie.pool.ntp.org | - | - | False | True | - | - | - | - | 1 |
+NTP servers VRF: MGMT
+
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 1.2.3.4 | - | - | - | - | - | - | lo0 | - |
+| 2.2.2.55 | - | - | - | - | - | - | - | - |
+| 10.1.1.1 | - | - | - | - | - | - | - | - |
+| 10.1.1.2 | True | - | - | - | - | - | - | - |
+| 20.20.20.1 | - | - | - | - | - | - | - | 2 |
+| ie.pool.ntp.org | - | False | True | - | - | - | - | 1 |
 
 ##### NTP Authentication
 
@@ -650,12 +652,12 @@ ntp authentication-key 3 sha1 8a <removed>
 ntp trusted-key 1-2
 ntp authenticate servers
 ntp local-interface lo1
-ntp server 1.2.3.4 local-interface lo0
-ntp server 2.2.2.55
-ntp server 10.1.1.1
-ntp server 10.1.1.2 prefer
-ntp server 20.20.20.1 key <removed>
-ntp server ie.pool.ntp.org iburst key <removed>
+ntp server vrf MGMT 1.2.3.4 local-interface lo0
+ntp server vrf MGMT 2.2.2.55
+ntp server vrf MGMT 10.1.1.1
+ntp server vrf MGMT 10.1.1.2 prefer
+ntp server vrf MGMT 20.20.20.1 key <removed>
+ntp server vrf MGMT ie.pool.ntp.org iburst key <removed>
 ntp serve all
 ```
 
@@ -13020,7 +13022,7 @@ mac security
 
 ##### BLUE-C1-POLICY
 
-Counters: DEMO-TRAFFIC, DROP-PACKETS
+Counters: DROP-PACKETS
 
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
@@ -13093,7 +13095,7 @@ traffic-policies
    counter interface poll interval 10 seconds
    !
    traffic-policy BLUE-C1-POLICY
-      counter DEMO-TRAFFIC DROP-PACKETS
+      counter DROP-PACKETS
       !
       match BLUE-C1-POLICY-01 ipv4
          source prefix 10.0.0.0/8 192.168.0.0/16

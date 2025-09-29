@@ -39,7 +39,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: DC1-LEAF2A_Ethernet8
   shutdown: false
-  speed: forced 10000
+  speed: forced 10000full
   channel_group:
     id: 1
     mode: active
@@ -49,7 +49,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: DC1-LEAF2B_Ethernet8
   shutdown: false
-  speed: forced 10000
+  speed: forced 10000full
   channel_group:
     id: 1
     mode: active
@@ -127,9 +127,8 @@ ntp:
   servers:
   - name: 192.168.200.5
     preferred: true
-    vrf: MGMT
   - name: 2001:db8::3
-    vrf: MGMT
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_DC1-L2LEAF1A_Po3

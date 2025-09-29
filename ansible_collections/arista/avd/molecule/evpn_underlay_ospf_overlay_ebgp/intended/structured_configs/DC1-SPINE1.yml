@@ -178,7 +178,7 @@ ntp:
   servers:
   - name: 192.168.200.5
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 router_bfd:
   multihop:
     interval: 1200
