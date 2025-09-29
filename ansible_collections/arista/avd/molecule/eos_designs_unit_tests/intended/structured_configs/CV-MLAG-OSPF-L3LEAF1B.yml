@@ -138,7 +138,6 @@ router_ospf:
     - Ethernet1
     - Vlan4094
     max_lsa: 12000
-    maximum_paths: 128
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mst:
