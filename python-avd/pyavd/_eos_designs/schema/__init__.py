@@ -26373,7 +26373,7 @@ class EosDesigns(EosDesignsRootModel):
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                             enabled: bool
                             """
-                            Set the link tracking group on all downlinks.
+                            Enable link tracking on all downlinks.
 
                             Default value: `False`
                             """
@@ -26388,7 +26388,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled: Set the link tracking group on all downlinks.
+                                        enabled: Enable link tracking on all downlinks.
 
                                     """
 
@@ -31746,7 +31746,7 @@ class EosDesigns(EosDesignsRootModel):
                                 _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                                 enabled: bool
                                 """
-                                Set the link tracking group on all downlinks.
+                                Enable link tracking on all downlinks.
 
                                 Default value: `False`
                                 """
@@ -31761,7 +31761,7 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            enabled: Set the link tracking group on all downlinks.
+                                            enabled: Enable link tracking on all downlinks.
 
                                         """
 
@@ -37082,7 +37082,7 @@ class EosDesigns(EosDesignsRootModel):
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                             enabled: bool
                             """
-                            Set the link tracking group on all downlinks.
+                            Enable link tracking on all downlinks.
 
                             Default value: `False`
                             """
@@ -37097,7 +37097,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled: Set the link tracking group on all downlinks.
+                                        enabled: Enable link tracking on all downlinks.
 
                                     """
 
@@ -42481,7 +42481,7 @@ class EosDesigns(EosDesignsRootModel):
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                             enabled: bool
                             """
-                            Set the link tracking group on all downlinks.
+                            Enable link tracking on all downlinks.
 
                             Default value: `False`
                             """
@@ -42496,7 +42496,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled: Set the link tracking group on all downlinks.
+                                        enabled: Enable link tracking on all downlinks.
 
                                     """
 
@@ -56484,7 +56484,7 @@ class EosDesigns(EosDesignsRootModel):
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                             enabled: bool
                             """
-                            Set the link tracking group on all downlinks.
+                            Enable link tracking on all downlinks.
 
                             Default value: `False`
                             """
@@ -56499,7 +56499,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled: Set the link tracking group on all downlinks.
+                                        enabled: Enable link tracking on all downlinks.
 
                                     """
 
@@ -61857,7 +61857,7 @@ class EosDesigns(EosDesignsRootModel):
                                 _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                                 enabled: bool
                                 """
-                                Set the link tracking group on all downlinks.
+                                Enable link tracking on all downlinks.
 
                                 Default value: `False`
                                 """
@@ -61872,7 +61872,7 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            enabled: Set the link tracking group on all downlinks.
+                                            enabled: Enable link tracking on all downlinks.
 
                                         """
 
@@ -67193,7 +67193,7 @@ class EosDesigns(EosDesignsRootModel):
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                             enabled: bool
                             """
-                            Set the link tracking group on all downlinks.
+                            Enable link tracking on all downlinks.
 
                             Default value: `False`
                             """
@@ -67208,7 +67208,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled: Set the link tracking group on all downlinks.
+                                        enabled: Enable link tracking on all downlinks.
 
                                     """
 
@@ -72592,7 +72592,7 @@ class EosDesigns(EosDesignsRootModel):
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                             enabled: bool
                             """
-                            Set the link tracking group on all downlinks.
+                            Enable link tracking on all downlinks.
 
                             Default value: `False`
                             """
@@ -72607,7 +72607,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled: Set the link tracking group on all downlinks.
+                                        enabled: Enable link tracking on all downlinks.
 
                                     """
 
