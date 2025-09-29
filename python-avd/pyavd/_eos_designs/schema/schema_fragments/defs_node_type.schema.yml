@@ -102,7 +102,7 @@ $defs:
                 keys:
                   enabled:
                     type: bool
-                    description: Set the link tracking group on all downlinks.
+                    description: Enable link tracking on all downlinks.
                     default: false
               groups:
                 type: list
