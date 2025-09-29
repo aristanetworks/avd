@@ -12273,6 +12273,8 @@ $defs:
         ip:
           type: list
           description: Specific IP addresses used on this P2P link.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: Node IPv4 address/Mask.
@@ -12284,6 +12286,8 @@ $defs:
         nodes:
           type: list
           description: Nodes where this link should be configured.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: 'The values can be < node_a >, < node_b >.
@@ -12295,6 +12299,8 @@ $defs:
           type: list
           description: Interfaces where this link should be configured and Required
             unless using port-channels.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: 'The value can be like < node_a_interface >, < node_b_interface
@@ -12318,6 +12324,8 @@ $defs:
         descriptions:
           type: list
           description: Interface descriptions.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: "Description or description template to be used on the ethernet
@@ -12531,19 +12539,6 @@ $defs:
 
             - ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the
             RFC5549 underlay if configured.'
-        structured_config:
-          type: dict
-          relaxed_validation: true
-          documentation_options:
-            hide_keys: true
-          description: 'Custom structured config for interfaces.
-
-            Note! The content of this dictionary is _not_ validated by the schema,
-            since it can be either ethernet_interfaces or port_channel_interfaces.'
-          deprecation:
-            warning: true
-            remove_in_version: 6.0.0
-            new_key: ethernet_structured_config or port_channel_structured_config
         ethernet_structured_config:
           type: dict
           relaxed_validation: true
@@ -12565,6 +12560,13 @@ $defs:
             warning: true
             new_key: multicast_pim_sm
             remove_in_version: 6.0.0
+        structured_config:
+          type: dict
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: ethernet_structured_config or port_channel_structured_config
   rx_queue_settings:
     type: dict
     description: 'Receive queue parameters for platform SFE interface profile.

@@ -2089,7 +2089,6 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
-                "structured_config": {"type": dict},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -2346,12 +2345,6 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
-            structured_config: dict
-            """
-            Custom structured config for interfaces.
-            Note! The content of this dictionary is _not_ validated by
-            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-            """
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -2481,7 +2474,6 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
-                    structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -2603,10 +2595,6 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
-                        structured_config:
-                           Custom structured config for interfaces.
-                           Note! The content of this dictionary is _not_ validated by
-                           the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 
@@ -2936,7 +2924,6 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
-                "structured_config": {"type": dict},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -3193,12 +3180,6 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
-            structured_config: dict
-            """
-            Custom structured config for interfaces.
-            Note! The content of this dictionary is _not_ validated by
-            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-            """
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -3328,7 +3309,6 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
-                    structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -3450,10 +3430,6 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
-                        structured_config:
-                           Custom structured config for interfaces.
-                           Note! The content of this dictionary is _not_ validated by
-                           the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 
@@ -8183,7 +8159,6 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
-                "structured_config": {"type": dict},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -8440,12 +8415,6 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
-            structured_config: dict
-            """
-            Custom structured config for interfaces.
-            Note! The content of this dictionary is _not_ validated by
-            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-            """
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -8575,7 +8544,6 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
-                    structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -8697,10 +8665,6 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
-                        structured_config:
-                           Custom structured config for interfaces.
-                           Note! The content of this dictionary is _not_ validated by
-                           the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 
@@ -9030,7 +8994,6 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
-                "structured_config": {"type": dict},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -9287,12 +9250,6 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
-            structured_config: dict
-            """
-            Custom structured config for interfaces.
-            Note! The content of this dictionary is _not_ validated by
-            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-            """
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -9422,7 +9379,6 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
-                    structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -9544,10 +9500,6 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
-                        structured_config:
-                           Custom structured config for interfaces.
-                           Note! The content of this dictionary is _not_ validated by
-                           the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 
