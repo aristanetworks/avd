@@ -369,11 +369,20 @@ router_bgp:
         route_targets:
         - 65000:123
     router_id: 192.168.255.17
+    updates:
+      wait_install: true
+    neighbors:
+    - ip_address: fd5a:fe45:8831:06c5::b
+      remote_as: '12345'
     redistribute:
       connected:
         enabled: true
       static:
         enabled: true
+    address_family_ipv6:
+      neighbors:
+      - ip_address: fd5a:fe45:8831:06c5::b
+        activate: true
   - name: Tenant_B_OP_Zone
     rd: 192.168.255.17:20
     route_targets:
