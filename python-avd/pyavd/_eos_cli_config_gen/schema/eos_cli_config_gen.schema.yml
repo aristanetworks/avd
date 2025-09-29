@@ -21794,9 +21794,7 @@ keys:
                   description: 'Standard access list name or use the specific keyword
                     ''standard'' as a shortcut to apply
 
-                    a predefined rule that permits the 232.0.0.0/8 range for SSM traffic.
-
-                    '
+                    a predefined rule that permits the 232.0.0.0/8 range for SSM traffic.'
   router_rip:
     type: dict
     description: Routing Information Protocol settings.
