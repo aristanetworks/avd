@@ -71627,7 +71627,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     platform_settings: PlatformSettings
     """
-    Platform settings. The first entry containing `platforms` matching the full regex `platform` node
+    Platform settings. The first entry containing `platforms` matching the full regex of `platform` node
     setting will be chosen. If no matches are found, the first entry containing a platform `default`
     will be chosen. The default values will be overridden if `platform_settings` is defined. If you need
     to replace all the default platforms, it is recommended to copy the defaults and modify them. If you
@@ -73481,7 +73481,7 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of AvdList with `CustomPlatformSettingsItem` items.
                 platform_settings:
-                   Platform settings. The first entry containing `platforms` matching the full regex `platform` node
+                   Platform settings. The first entry containing `platforms` matching the full regex of `platform` node
                    setting will be chosen. If no matches are found, the first entry containing a platform `default`
                    will be chosen. The default values will be overridden if `platform_settings` is defined. If you need
                    to replace all the default platforms, it is recommended to copy the defaults and modify them. If you
