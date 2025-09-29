@@ -30,10 +30,14 @@ ntp authenticate
 {%         set ntp_int_cli = ntp_int_cli ~ " " ~ ntp.local_interface.name %}
 {{ ntp_int_cli }}
 {%     endif %}
+{%     set ntp_vrf = "" %}
+{%     if ntp.vrf is arista.avd.defined and ntp.vrf != "default" %}
+{%         set ntp_vrf = ntp.vrf %}
+{%     endif %}
 {%     for server in ntp.servers | arista.avd.natural_sort('name') %}
 {%         set ntp_server_cli = "ntp server" %}
-{%         if server.vrf is arista.avd.defined and server.vrf != 'default' %}
-{%             set ntp_server_cli = ntp_server_cli ~ " vrf " ~ server.vrf %}
+{%         if ntp_vrf %}
+{%             set ntp_server_cli = ntp_server_cli ~ " vrf " ~ ntp_vrf %}
 {%         endif %}
 {%         set ntp_server_cli = ntp_server_cli ~ " " ~ server.name %}
 {%         if server.preferred is arista.avd.defined(true) %}

@@ -16,12 +16,6 @@
           - ansible_collections/arista/avd/roles/eos_cli_config_gen/*
           - ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*
 
-"role: eos_config_deploy_cvp":
-  - changed-files:
-      - any-glob-to-any-file:
-          - ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*
-          - ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*
-
 "role: eos_config_deploy_eapi":
   - changed-files:
       - any-glob-to-any-file:

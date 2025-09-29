@@ -316,7 +316,7 @@ ntp:
   servers:
   - name: 0.pool.ntp.org
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel4
   description: REGION2-INTERNET-CORP_inet-site3-wan1_inet-cloud_Port-Channel8

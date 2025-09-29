@@ -85,7 +85,6 @@ class UtilsMixin(Protocol):
                     sflow_enabled=self.shared_utils.get_interface_sflow(uplink.peer_interface, self.inputs.fabric_sflow.downlinks),
                     flow_tracking=downlinks_flow_tracking,
                     spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
-                    structured_config=uplink.structured_config,
                     ethernet_structured_config=uplink.peer_ethernet_structured_config,
                     port_channel_structured_config=uplink.peer_port_channel_structured_config,
                 )

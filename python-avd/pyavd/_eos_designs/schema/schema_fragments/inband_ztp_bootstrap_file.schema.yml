@@ -10,8 +10,7 @@ keys:
     type: str
     description: |-
       Bootstrap URL configured in DHCP to use for inband ZTP.
-      If not set and `cvp_instance_ips` is set then the bootstrap value will be set to:
-          `https://{cvp_instance_ips[0]}/ztp/bootstrap`
+      By default the URL will be `https://<first cv server>/ztp/bootstrap` if `cv_settings` are used.
       Otherwise no value will be configured.
     documentation_options:
       table: management-settings

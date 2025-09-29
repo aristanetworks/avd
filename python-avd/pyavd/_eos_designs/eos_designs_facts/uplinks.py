@@ -369,9 +369,6 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     subinterface.ip_address = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_ip(uplink_index, vrf.name)
                     subinterface.peer_ip_address = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_peer_ip(uplink_index, vrf.name)
 
-                if self.shared_utils.node_config.uplink_structured_config is not None:
-                    subinterface.structured_config = self.shared_utils.node_config.uplink_structured_config
-
                 uplink.subinterfaces.append(subinterface)
 
         return uplink
@@ -385,10 +382,6 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         - `uplink_switch_ethernet_structured_config`
         - `uplink_port_channel_structured_config`
         - `uplink_switch_port_channel_structured_config`
-
-        OR
-
-        - `uplink_structured_config` (deprecated) TODO: Remove in AVD 6.0.0
         """
         if ethernet_struct_config := self.shared_utils.node_config.uplink_ethernet_structured_config:
             uplink.ethernet_structured_config = ethernet_struct_config
@@ -398,12 +391,6 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             uplink.port_channel_structured_config = port_channel_struct_config
         if peer_port_channel_struct_config := self.shared_utils.node_config.uplink_switch_port_channel_structured_config:
             uplink.peer_port_channel_structured_config = peer_port_channel_struct_config
-
-        if (
-            not any((ethernet_struct_config, peer_ethernet_struct_config, port_channel_struct_config, peer_port_channel_struct_config))
-            and self.shared_utils.node_config.uplink_structured_config is not None
-        ):
-            uplink.structured_config = self.shared_utils.node_config.uplink_structured_config
 
     @remove_cached_property_type
     @cached_property
