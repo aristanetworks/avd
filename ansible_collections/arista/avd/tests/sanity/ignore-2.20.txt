@@ -1,4 +1,3 @@
-plugins/modules/configlet_build_config.py validate-modules:missing-gplv3-license
 plugins/modules/eos_designs_documentation.py validate-modules:missing-gplv3-license
 plugins/modules/eos_designs_facts.py validate-modules:missing-gplv3-license
 plugins/modules/eos_designs_structured_config.py validate-modules:missing-gplv3-license
