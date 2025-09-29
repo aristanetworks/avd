@@ -4,21 +4,6 @@ config_end: true
 dns_domain: this.should.warn.test
 enable_password:
   disabled: true
-ethernet_interfaces:
-- name: Ethernet4
-  description: uplink_structured_config on port-channel uplink
-  shutdown: false
-  channel_group:
-    id: 4
-    mode: active
-  storm_control:
-    broadcast:
-      level: '25'
-    unknown_unicast:
-      level: '25'
-  peer: host1
-  peer_interface: Ethernet4
-  peer_type: l3leaf
 hostname: host3
 ip_domain_lookup:
   source_interfaces:
@@ -44,20 +29,6 @@ management_interfaces:
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_DEPRECATED_VARS
-port_channel_interfaces:
-- name: Port-Channel4
-  description: uplink_structured_config on port-channel uplink
-  shutdown: false
-  storm_control:
-    broadcast:
-      level: '25'
-    unknown_unicast:
-      level: '25'
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: none
 service_routing_protocols_model: multi-agent
 snmp_server:
   hosts:

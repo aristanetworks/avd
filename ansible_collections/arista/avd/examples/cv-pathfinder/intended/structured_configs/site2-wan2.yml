@@ -345,7 +345,7 @@ ntp:
   servers:
   - name: 0.pool.ntp.org
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 prefix_lists:
 - name: ALLOW-DEFAULT
   sequence_numbers:

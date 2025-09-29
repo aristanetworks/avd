@@ -278,7 +278,7 @@ wan_router:
                 - name: Ethernet1/17
                   # interface speed not specified
                 - name: Ethernet1/18
-                  speed: "1000full"
+                  speed: "forced 1000full"
               ip_address: 172.15.6.9/31
               public_ip: 10.36.36.100
               peer: peerDevice11

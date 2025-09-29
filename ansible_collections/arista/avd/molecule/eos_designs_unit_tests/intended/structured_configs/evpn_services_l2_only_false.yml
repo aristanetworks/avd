@@ -100,9 +100,8 @@ ntp:
   servers:
   - name: 192.168.200.5
     preferred: true
-    vrf: MGMT
   - name: 2001:db8::3
-    vrf: MGMT
+  vrf: MGMT
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

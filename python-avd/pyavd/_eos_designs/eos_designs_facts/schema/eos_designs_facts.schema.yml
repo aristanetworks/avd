@@ -295,12 +295,6 @@ keys:
           type: int
         dhcp_server:
           type: bool
-        # TODO: AVD6.0.0 - Remove 'structured_config'
-        structured_config:
-          type: dict
-          documentation_options:
-            table: eos_designs_facts
-          $ref: eos_designs#/$defs/node_type/keys/defaults/keys/uplink_structured_config
         ethernet_structured_config:
           type: dict
           documentation_options:
@@ -356,11 +350,6 @@ keys:
                 type: str
               peer_ipv6_address:
                 type: str
-              structured_config:
-                type: dict
-                documentation_options:
-                  table: eos_designs_facts
-                $ref: eos_designs#/$defs/node_type/keys/defaults/keys/uplink_structured_config
               ethernet_structured_config:
                 type: dict
                 documentation_options:

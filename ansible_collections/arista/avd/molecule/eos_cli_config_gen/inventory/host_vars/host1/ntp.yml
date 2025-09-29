@@ -1,5 +1,5 @@
 ---
-### NTP tests (Tested with default VRF here. Tested with Management VRF in "dns-ntp")
+### NTP tests (Tested with MGMT VRF here.)
 ntp:
   local_interface:
     name: lo1
@@ -17,6 +17,7 @@ ntp:
       key: 2
     - name: 1.2.3.4
       local_interface: lo0
+  vrf: MGMT
   authenticate_servers_only: true
   trusted_keys: "1-2"
   authentication_keys:

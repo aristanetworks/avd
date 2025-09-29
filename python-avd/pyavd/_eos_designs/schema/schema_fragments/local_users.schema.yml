@@ -11,8 +11,7 @@ keys:
       table: management-settings
     deprecation:
       warning: true
-      removed: false
+      removed: true
       remove_in_version: 6.0.0
       new_key: aaa_settings.local_users
-    $ref: "eos_cli_config_gen#/keys/local_users"
     type: list
