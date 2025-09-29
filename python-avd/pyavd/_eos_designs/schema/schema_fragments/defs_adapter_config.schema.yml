@@ -11,8 +11,9 @@ $defs:
     keys:
       speed:
         type: str
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
         description: |
-          Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+          Set adapter speed.
           If not specified speed will be auto.
       description:
         type: str

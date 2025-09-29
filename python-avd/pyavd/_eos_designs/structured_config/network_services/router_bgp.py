@@ -89,13 +89,17 @@ class RouterBgpMixin(Protocol):
                     [
                         peer_group
                         for peer_group in vrf.bgp_peer_groups
-                        if self.shared_utils.hostname in peer_group.nodes or peer_group.name in vrf_peer_peergroups
+                        if self.shared_utils.match_regexes(peer_group.nodes, self.shared_utils.hostname) or peer_group.name in vrf_peer_peergroups
                     ],
                 )
                 peer_peergroups.update(vrf_peer_peergroups)
 
             peer_groups.extend(
-                [peer_group for peer_group in tenant.bgp_peer_groups if self.shared_utils.hostname in peer_group.nodes or peer_group.name in peer_peergroups],
+                [
+                    peer_group
+                    for peer_group in tenant.bgp_peer_groups
+                    if self.shared_utils.match_regexes(peer_group.nodes, self.shared_utils.hostname) or peer_group.name in peer_peergroups
+                ],
             )
 
         for peer_group in peer_groups:

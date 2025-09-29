@@ -21,8 +21,7 @@ $defs:
             Required with ip_pool. ID starting from 1.
         speed:
           type: str
-          description: |-
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
         ip_pool:
           type: str
           description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.

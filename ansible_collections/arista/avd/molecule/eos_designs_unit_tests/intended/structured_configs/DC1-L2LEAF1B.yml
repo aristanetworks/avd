@@ -39,7 +39,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: DC1-LEAF2A_Ethernet8
   shutdown: false
-  speed: forced 10000
+  speed: forced 10000full
   channel_group:
     id: 1
     mode: active
@@ -49,7 +49,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: DC1-LEAF2B_Ethernet8
   shutdown: false
-  speed: forced 10000
+  speed: forced 10000full
   channel_group:
     id: 1
     mode: active

@@ -77,9 +77,6 @@ class DhcpServersMixin(Protocol):
         if self.inputs.cv_settings.onprem_clusters:
             return next(iter(next(iter(self.inputs.cv_settings.onprem_clusters)).servers)).name
 
-        if self.inputs.cvp_instance_ips:
-            return self.inputs.cvp_instance_ips[0]
-
         return None
 
     def _update_ipv4_ztp_boot_file(self: AvdStructuredConfigUnderlayProtocol, dhcp_server: EosCliConfigGen.DhcpServersItem) -> None:

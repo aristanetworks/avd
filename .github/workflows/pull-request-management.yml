@@ -74,8 +74,6 @@ jobs:
               - 'ansible_collections/arista/avd/molecule/**/*'
               - 'python-avd/pyavd/_eos_designs/*'
               - 'python-avd/pyavd/_eos_designs/**/*'
-              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
-              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
               - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
               - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
             config_gen:
@@ -87,8 +85,6 @@ jobs:
               - 'python-avd/pyavd/_eos_cli_config_gen/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/**/*'
             cloudvision:
-              - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
-              - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
               - '.github/workflows/pull-request-management.yml'
@@ -330,47 +326,7 @@ jobs:
       - name: Check GIT status
         run: |
           sh .github/check-git-status.sh
-  # ----------------------------------- #
-  # Cloudvision MOLECULE
-  # ----------------------------------- #
-  molecule_cloudvision:
-    name: Validate cvp_collection
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        avd_scenario:
-          - "eos_config_deploy_cvp"
-        ansible_version:
-          - "ansible-core<2.19.0"
-        include:
-          - avd_scenario: "eos_config_deploy_cvp"
-            ansible_version: "ansible-core==2.16.0"
-    needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.cloudvision == 'true' || needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
 
-    steps:
-      - uses: actions/checkout@v5
-      - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
-        with:
-          name: pyavd
-          path: /tmp/pyavd/
-      - name: Install pyavd and Ansible requirements
-        run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
-      - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
-        run: |
-          molecule test --scenario-name ${{ matrix.avd_scenario }}
-      - name: Check GIT status
-        run: |
-          sh .github/check-git-status.sh
-      # - uses: actions/upload-artifact@v4
-      #   with:
-      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
-      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
-      #
   # ----------------------------------- #
   # ANTA Runner MOLECULE
   # ----------------------------------- #
