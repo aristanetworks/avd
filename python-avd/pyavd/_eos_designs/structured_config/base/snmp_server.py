@@ -79,15 +79,19 @@ class SnmpServerMixin(Protocol):
         if not snmp_settings.location:
             return
 
-        location_elements = [
-            self.shared_utils.fabric_name,
-            self.inputs.dc_name,
-            self.inputs.pod_name,
-            self.shared_utils.node_config.rack,
-            self.shared_utils.hostname,
-        ]
-        location_elements = [location for location in location_elements if location not in [None, ""]]
-        self.structured_config.snmp_server.location = " ".join(location_elements)
+        location_element = ""
+        if self.shared_utils.fabric_name:
+            location_element += f"{self.shared_utils.fabric_name} "
+        if self.inputs.dc_name:
+            location_element += f"{self.inputs.dc_name} "
+        if self.inputs.pod_name:
+            location_element += f"{self.inputs.pod_name} "
+        if self.shared_utils.node_config.rack:
+            location_element += f"{self.shared_utils.node_config.rack} "
+        if self.shared_utils.hostname:
+            location_element += self.shared_utils.hostname
+
+        self.structured_config.snmp_server.location = location_element.strip()
 
     def _snmp_users(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
         """
