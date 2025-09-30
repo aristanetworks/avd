@@ -98,7 +98,6 @@ router_bgp:
   router_id: 10.255.128.11
   maximum_paths:
     paths: 4
-    ecmp: 4
   bgp:
     default:
       ipv4_unicast: false
