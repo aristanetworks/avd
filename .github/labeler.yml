@@ -48,11 +48,6 @@
       - any-glob-to-any-file:
           - ansible_collections/arista/avd/plugins/filter/defined.py
 
-"module: inventory_to_container":
-  - changed-files:
-      - any-glob-to-any-file:
-          - ansible_collections/arista/avd/plugins/modules/inventory_to_container.py
-
 "type: Python filters":
   - changed-files:
       - any-glob-to-any-file:
@@ -67,7 +62,7 @@
 "state: Documentation role Updated":
   - changed-files:
       - any-glob-to-any-file:
-          - 'ansible_collections/arista/avd/roles/**/*.md'
+          - "ansible_collections/arista/avd/roles/**/*.md"
 
 "type: documentation":
   - changed-files:
