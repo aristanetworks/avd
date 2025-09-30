@@ -11,7 +11,7 @@ from typing import Any, ClassVar
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase
 
-from .log_config import AvdLoggingConfig, get_avd_log_level
+from .log_config import AvdLoggingConfig, LoggerState, get_avd_log_level
 from .log_handlers import AnsibleDisplayHandler, ContextFilter, SaveToResultHandler
 
 
@@ -82,6 +82,7 @@ class AvdActionPlugin(ActionBase):
                 self._logging_context(temp_handlers=temp_handlers, temp_filters=temp_filters, log_format=log_format),
             ):
                 # DeprecationWarning is ignored by default
+                # NOTE: This will override PYTHONWARNINGS environment variable
                 warnings.simplefilter("always", DeprecationWarning)
 
                 # Run the plugin
@@ -139,7 +140,7 @@ class AvdActionPlugin(ActionBase):
             for temp_filter in temp_filters:
                 temp_handler.addFilter(temp_filter)
 
-        original_states: dict[str, Any] = {}
+        original_states: dict[str, LoggerState] = {}
         target_loggers = [logging.getLogger(name) for name in self._logging_config.target_loggers]
 
         for logger in target_loggers:

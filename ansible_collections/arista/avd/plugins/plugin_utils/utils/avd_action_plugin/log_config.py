@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 import logging
 from dataclasses import dataclass
+from typing import TypedDict
 
 from ansible.utils.display import Display
 
@@ -102,3 +103,11 @@ class AvdLoggingConfig:
     add_role_context: bool = False
     add_hostname_context: bool = False
     target_loggers: tuple[str, ...] = ("ansible_collections.arista.avd", "pyavd", "schema_tools")
+
+
+class LoggerState(TypedDict):
+    """Dictionary to store logger parameters to be restored later."""
+
+    level: int
+    handlers: list[logging.Handler]
+    propagate: bool
