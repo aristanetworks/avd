@@ -63,6 +63,9 @@ router pim sparse-mode
    vrf {{ vrf.name }}
 {%         if vrf.ipv4 is arista.avd.defined %}
       ipv4
+{%             if vrf.ipv4.ssm_range is arista.avd.defined %}
+         ssm range {{ vrf.ipv4.ssm_range }}
+{%             endif %}
 {%             if vrf.ipv4.bfd is arista.avd.defined(true) %}
          bfd
 {%             endif %}
