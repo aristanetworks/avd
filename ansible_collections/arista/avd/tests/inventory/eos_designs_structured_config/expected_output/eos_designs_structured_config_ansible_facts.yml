@@ -20,11 +20,6 @@ management_api_http:
   enable_https: true
 ip_igmp_snooping:
   globally_enabled: true
-# Including switch.* facts here as they are outputted in ansible_facts (not in dest file)
-switch:
-  id: 1
-  uplinks: []
-  vlans: ""
 metadata:
   fabric_name: integration_tests
   is_deployed: true
