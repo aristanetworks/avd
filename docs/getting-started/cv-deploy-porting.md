@@ -199,4 +199,4 @@ To manage only the Static Configuration Studio content, you run in **"manifest-o
 </div>
 
 !!! note
-    For a complete overview of all the updates and capabilities in the `cv_deploy` role, including how to manage containers, please see the role [documentation](../../ansible_collections/arista/avd/roles/cv_deploy/README.md)
+    For a complete overview of all the updates and capabilities in the `cv_deploy` role, including how to manage configlets and configlet containers, please see the role [documentation](../../ansible_collections/arista/avd/roles/cv_deploy/README.md)
