@@ -145,6 +145,7 @@ class UnderlayMixin(Protocol):
 
     @cached_property
     def underlay_bgp_peer_group(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.PeerGroupsItem:
+        """Returns underlay BGP peer group instance."""
         af_type = "ipv4" if not self.underlay_ipv6_numbered else "ipv6"
         return EosCliConfigGen.RouterBgp.PeerGroupsItem(
             name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
@@ -157,6 +158,7 @@ class UnderlayMixin(Protocol):
 
     @cached_property
     def address_family_ipv4_peer_group(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem | None:
+        """Returns an instance of address_family_ipv4_peer_group."""
         if self.underlay_ipv6_numbered:
             return None
 
@@ -170,6 +172,7 @@ class UnderlayMixin(Protocol):
 
     @cached_property
     def address_family_ipv6_peer_group(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.AddressFamilyIpv6.PeerGroupsItem | None:
+        """Returns an instance of address_family_ipv6_peer_group."""
         if not self.underlay_ipv6:
             return None
         return EosCliConfigGen.RouterBgp.AddressFamilyIpv6.PeerGroupsItem(name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True)
