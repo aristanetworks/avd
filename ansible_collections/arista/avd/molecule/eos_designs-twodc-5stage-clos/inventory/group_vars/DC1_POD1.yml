@@ -86,7 +86,7 @@ l3leaf:
       nodes:
         - name: DC1-POD1-LEAF1A
           # id: 1 Using pool manager for ID
-          mgmt_ip: 192.168.1.7/24
+          # mgmt_ip: 192.168.1.7/24 Test without management IP
           uplink_switch_interfaces: ["Ethernet3", "Ethernet3"]
           digital_twin:
             mgmt_ip: 192.168.1.7/24

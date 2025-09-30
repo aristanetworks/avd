@@ -2,9 +2,6 @@
 
 dc_name: DC2
 
-management_eapi:
-  enabled: true
-
 super_spine:
   defaults:
     platform: vEOS-LAB
