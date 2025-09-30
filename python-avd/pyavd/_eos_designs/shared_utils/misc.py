@@ -19,6 +19,8 @@ from pyavd.j2filters import range_expand
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
 
+# TODO: This should be updated every time the schema is updated.
+# Right now it has to be manually updated.
 SPEED_TYPE = Literal[
     "100full",
     "100g",
