@@ -41,7 +41,10 @@ class VlansMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 for svi in vrf.svis:
-                    self.structured_config.vlans.append(self._get_vlan_config(svi, tenant), ignore_fields=("tenant",))
+                    # TODO: this feels quite dangerous as we could overwrite things from other modules
+                    target_vlan = self.structured_config.vlans.obtain(svi.id)
+                    # what if we have the same Vlans in different tenant now..
+                    target_vlan._deepmerge(self._get_vlan_config(svi, tenant))
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Continue to next VRF if mlag vlan_id is not set
@@ -71,7 +74,9 @@ class VlansMixin(Protocol):
                     all_primary_vlans.add(l2vlan.private_vlan.primary_vlan)
                     vlan.private_vlan._update(type=l2vlan.private_vlan.type, primary_vlan=l2vlan.private_vlan.primary_vlan)
 
-                self.structured_config.vlans.append(vlan, ignore_fields=("tenant",))
+                # TODO: this feels quite dangerous as we could overwrite things from other modules
+                target_vlan = self.structured_config.vlans.obtain(l2vlan.id)
+                target_vlan._deepmerge(vlan)
 
         # Check that all referenced primary vlans exist
         if not all_primary_vlans.issubset(self.structured_config.vlans.keys()):

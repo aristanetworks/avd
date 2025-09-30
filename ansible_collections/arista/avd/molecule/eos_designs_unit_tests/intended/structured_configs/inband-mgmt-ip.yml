@@ -77,8 +77,8 @@ vlan_internal_order:
     ending: 1199
 vlans:
 - id: 103
-  name: MYVLANNAME
-  tenant: system
+  name: Inband management vlan
+  tenant: INBAND_MGMT_TESTS
 vrfs:
 - name: MGMT
   ip_routing: false

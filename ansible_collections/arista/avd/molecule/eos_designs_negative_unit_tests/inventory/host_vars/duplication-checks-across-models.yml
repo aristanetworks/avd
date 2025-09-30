@@ -1,23 +1,21 @@
 ---
-avd_eos_designs_enforce_duplication_checks_across_all_models: true
-
 type: l3spine
 l3spine:
   nodes:
-    - name: avd_eos_designs_enforce_duplication_checks_across_all_models
+    - name: duplication-checks-across-models
       id: 1
       loopback_ipv4_pool: 192.168.100.0/24
 
 l3_edge:
   p2p_links:
     - ip: [10.10.10.0/31, 10.10.10.1/31]
-      nodes: [avd_eos_designs_enforce_duplication_checks_across_all_models, somethingelse]
+      nodes: [duplication-checks-across-models, somethingelse]
       interfaces: [Ethernet1, Ethernet1]
 
 servers:
   - name: Myserver
     adapters:
-      - switches: [avd_eos_designs_enforce_duplication_checks_across_all_models]
+      - switches: [duplication-checks-across-models]
         switch_ports: [Ethernet1]
         vlans: 100
 

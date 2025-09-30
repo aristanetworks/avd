@@ -316,7 +316,8 @@ class EthernetInterfacesMixin(Protocol):
             self.structured_config.ethernet_interfaces.append(interface)
 
     def set_direct_ie_connection_ethernet_interfaces(self: AvdStructuredConfigNetworkServicesProtocol, source_interface: str) -> None:
-        # TODO: This should be moved to the place where we configure the same interface in underlay as this will clash between modules..
-        interface = EosCliConfigGen.EthernetInterfacesItem(name=source_interface)
+        """
+        This method expects that the source_interface was configuredin the underlay.
+        """
+        interface = self.structured_config.ethernet_interfaces.obtain(source_interface)
         interface.ip_nat.service_profile = self.INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME
-        self.structured_config.ethernet_interfaces.append(interface)

@@ -31,7 +31,5 @@ class RouterOspfMixin(Protocol):
                 no_passive_interfaces.append(p2p_link_data["interface"])
 
         if no_passive_interfaces:
-            self.structured_config.router_ospf.process_ids.append_new(
-                id=self.inputs.underlay_ospf_process_id,
-                no_passive_interfaces=no_passive_interfaces,
-            )
+            process = self.structured_config.router_ospf.process_ids.obtain(self.inputs.underlay_ospf_process_id)
+            process.no_passive_interfaces.extend(no_passive_interfaces)
