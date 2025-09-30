@@ -145,7 +145,7 @@ class AvdActionPlugin(ActionBase):
 
         for logger in target_loggers:
             # Save original state (level, handlers, propagation)
-            original_states[logger.name] = {"level": logger.level, "handlers": list(logger.handlers), "propagate": logger.propagate}
+            original_states[logger.name] = LoggerState(level=logger.level, handlers=tuple(logger.handlers), propagate=logger.propagate)
 
             # Defend against lingering handlers from other plugins if not cleaned up
             logger.handlers.clear()
@@ -168,6 +168,6 @@ class AvdActionPlugin(ActionBase):
 
                 # Restore the original state from before we started
                 original_state = original_states[logger.name]
-                logger.setLevel(original_state["level"])
-                logger.handlers.extend(original_state["handlers"])
-                logger.propagate = original_state["propagate"]
+                logger.setLevel(original_state.level)
+                logger.handlers.extend(original_state.handlers)
+                logger.propagate = original_state.propagate
