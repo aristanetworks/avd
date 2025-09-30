@@ -49,18 +49,6 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 1.2.3.1/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
-management_interfaces:
-- name: Management1
-  description: OOB_MANAGEMENT
-  shutdown: false
-  vrf: MGMT
-  ip_address: 192.168.3.1/24
-  type: oob
-  gateway: 192.168.200.1
 metadata:
   is_deployed: true
   fabric_name: ANSIBLE_ONLY

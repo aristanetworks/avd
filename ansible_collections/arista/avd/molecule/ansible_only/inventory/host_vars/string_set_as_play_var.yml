@@ -2,7 +2,7 @@ loopback_ipv4_pool: 192.168.0.0/24
 
 # Disable management_eapi.
 management_eapi:
-  enabled: true
+  enabled: false
 
 type: l2leaf
 l2leaf:
