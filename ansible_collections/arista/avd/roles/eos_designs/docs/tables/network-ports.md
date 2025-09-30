@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>network_ports</samp>](## "network_ports") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;-&nbsp;switches</samp>](## "network_ports.[].switches") | List, items: String |  |  |  | Regex matching the full hostname of one or more switches.<br>The regular expression must match the full hostname.<br> |
+    | [<samp>&nbsp;&nbsp;-&nbsp;switches</samp>](## "network_ports.[].switches") | List, items: String |  |  | Min Length: 1 | Regex matching the full hostname of one or more switches.<br>The regular expression must match the full hostname.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_ports.[].switches.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platforms</samp>](## "network_ports.[].platforms") | List, items: String |  |  | Min Length: 1 | Regex matching the full platform name of one or more switches. If used in combination with switch hostname matching, both criteria must match for configuration.<br>If you need to add custom platforms to match specific port quantities, create them under `custom_platform_settings`. Entries under `custom_platform_settings` should<br>match the platform match criteria.<br><br>For example, `720XP-48Y6` would require a custom platform type:<br><br>platforms:<br>  - 720XP<br>  - 720XP-48Y6 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_ports.[].platforms.[]") | String |  |  |  |  |
@@ -198,7 +198,7 @@
 
         # Regex matching the full hostname of one or more switches.
         # The regular expression must match the full hostname.
-      - switches:
+      - switches: # >=1 items
           - <str>
 
         # Regex matching the full platform name of one or more switches. If used in combination with switch hostname matching, both criteria must match for configuration.
