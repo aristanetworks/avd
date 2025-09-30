@@ -44,7 +44,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
     _custom_data: dict[str, Any]
     """
     Dictionary holding extra keys given in _from_dict.
-    These keys are either keys starting with underscore or any non-schema key if _from_dict was called with 'keep_extra_keys'.
+    These keys start with an underscore.
     """
     _skipped_keys: set[str]
     """
@@ -58,12 +58,8 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
         return cls._from_dict(data)
 
     @classmethod
-    def _from_dict(cls: type[T_AvdModel], data: Mapping, keep_extra_keys: bool = False) -> T_AvdModel:
-        """
-        Returns a new instance loaded with the data from the given dict.
-
-        TODO: AVD6.0.0 remove the keep_extra_keys option so we no longer support custom keys without _ in structured config.
-        """
+    def _from_dict(cls: type[T_AvdModel], data: Mapping) -> T_AvdModel:
+        """Returns a new instance loaded with the data from the given dict."""
         if not isinstance(data, Mapping):
             msg = f"Expecting 'data' as a 'Mapping' when loading data into '{cls.__name__}'. Got '{type(data)}"
             raise TypeError(msg)
@@ -74,7 +70,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
 
         for key in data:
             if not (field := cls._get_field_name(key)):
-                if keep_extra_keys or str(key).startswith("_"):
+                if str(key).startswith("_"):
                     custom_data[key] = data[key]
                     continue
 

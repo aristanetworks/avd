@@ -429,7 +429,7 @@ ntp:
   servers:
   - name: 0.pool.ntp.org
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 platform:
   sfe:
     data_plane_cpu_allocation_max: 1

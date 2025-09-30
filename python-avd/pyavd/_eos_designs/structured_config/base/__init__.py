@@ -166,7 +166,7 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def router_multicast(self) -> None:
-        """router_multicast set based on underlay_multicast, underlay_router and switch.evpn_multicast facts."""
+        """router_multicast set based on underlay_multicast_<>, underlay_router and switch.evpn_multicast facts."""
         if not self.shared_utils.any_multicast_enabled:
             return
 
@@ -430,9 +430,8 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def local_users(self) -> None:
-        """local_users set based on global local_users data model or aaa_settings.local_users data model."""
-        local_users = self.inputs.aaa_settings.local_users or self.inputs.local_users
-        if not local_users:
+        """local_users set based on global aaa_settings.local_users data model."""
+        if not (local_users := self.inputs.aaa_settings.local_users):
             return
 
         self.structured_config.local_users = local_users._natural_sorted()

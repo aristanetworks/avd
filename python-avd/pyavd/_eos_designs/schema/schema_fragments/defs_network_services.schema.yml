@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -114,8 +114,9 @@ $defs:
                 items:
                   type: str
                 description: |
-                  Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                  If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
+                  List of node names or regular expressions to match against hostnames to configure the peer-group.
+                  The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                  The peer-group is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
               address_family_ipv4:
                 type: dict
                 keys:
@@ -333,8 +334,8 @@ $defs:
               type: str
               description: |-
                 The value of `source_address` will be interpreted according to these rules:
-                - `vrf_router_id` will configure the vrf Loopback address.
-                - `diagnostic_loopback` will configure the vtep loopback.
+                - `vrf_router_id` will configure the VRF router ID address.
+                - `diagnostic_loopback` will configure the VRF Diagnostic Loopback.
                 - `main_router_id` will configure the Loopback0 IP address.
                 - An IPv4 address will be used directly as the source address.
               default: main_router_id
@@ -1048,8 +1049,7 @@ $defs:
                               The peer device interface. Used for description and documentation.
                           speed:
                             type: str
-                            description: |-
-                              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
                           structured_config:
                             type: dict
                             relaxed_validation: true
@@ -1253,11 +1253,16 @@ $defs:
                 items:
                   type: dict
                   keys:
+                    nodes:
+                      type: list
+                      items:
+                        type: str
                     destination_address_prefix:
                       type: str
                       description: IPv4_address.
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: prefix
                     gateway:
@@ -1265,35 +1270,33 @@ $defs:
                       description: IPv4_address.
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: next_hop
-                    nodes:
-                      type: list
-                      items:
-                        type: str
               ipv6_static_routes:
                 type: list
                 $ref: "eos_designs#/$defs/static_routes"
                 items:
                   type: dict
                   keys:
+                    nodes:
+                      type: list
+                      items:
+                        type: str
                     destination_address_prefix:
                       type: str
-                      description: IPv6_address.
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: prefix
                     gateway:
                       type: str
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: next_hop
-                    nodes:
-                      type: list
-                      items:
-                        type: str
               redistribute_static:
                 type: bool
                 description: Enable or disable the redistribution of all static routes to BGP in the VRF.
@@ -1377,7 +1380,10 @@ $defs:
                       type: list
                       items:
                         type: str
-                      description: Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+                      description: |-
+                        List of node names or regular expressions to match against hostnames.
+                        The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                     set_ipv4_next_hop:
                       type: str
                       description: |
@@ -1479,8 +1485,9 @@ $defs:
                       items:
                         type: str
                       description: |
-                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                        If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
+                        List of node names or regular expressions to match against hostnames to configure the peer-group.
+                        The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                        The peer-group is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
                     password:
                       type: str
                       description: |-
@@ -1642,7 +1649,7 @@ $defs:
           description: |
             Point to point services (pseudowires).
             Only supported for node types with "network_services.l1: true".
-            By default this is only set for node type "pe" with "design.type: mpls"
+            By default this is only set for node type "pe".
           items:
             type: dict
             keys:

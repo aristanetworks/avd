@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -11,7 +11,7 @@ keys:
       table: metadata
     description: |-
       Serial Number of the device.
-      Used only for documentation and deployment purposes. It is used by the 'eos_config_deploy_cvp' and 'cv_deploy' roles.
+      Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role.
     type: str
     convert_types:
       - int

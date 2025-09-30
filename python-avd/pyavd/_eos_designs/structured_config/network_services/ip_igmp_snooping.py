@@ -102,16 +102,20 @@ class IpIgmpSnoopingMixin(Protocol):
         source_address_key = default(vlan.igmp_snooping_querier.source_address, tenant.igmp_snooping_querier.source_address)
 
         if vrf is not None:
-            # SVI is attached to a VRF
             if source_address_key == "vrf_router_id":
-                source_address = self.get_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
+                source_address = self.get_vrf_router_id(vrf, tenant, vrf.bgp.router_id, none_source_interface=True)
             else:
                 source_address = self.get_vrf_router_id(
-                    vrf, tenant, source_address_key, context="'igmp_snooping_querier.source_address' is set to 'diagnostic_loopback' on the VLAN"
+                    vrf,
+                    tenant,
+                    source_address_key,
+                    error_context="'igmp_snooping_querier.source_address' is set to 'diagnostic_loopback' on the VLAN",
+                    none_source_interface=True,
                 )
+
+        # For L2VLANs, 'vrf_router_id' and 'diagnostic_loopback' are treated as 'main_router_id'.
         elif source_address_key in {"main_router_id", "diagnostic_loopback", "vrf_router_id"}:
-            # For L2VLANs, 'vrf_router_id' and 'diagnostic_loopback' are treated as 'main_router_id'.
-            source_address = self.shared_utils.router_id if self.inputs.use_router_general_for_router_id is not True else None
+            source_address = self.shared_utils.router_id
         else:
             source_address = source_address_key
 
@@ -121,8 +125,6 @@ class IpIgmpSnoopingMixin(Protocol):
         vrf_info = f" in VRF '{vrf.name}'" if vrf else ""
         msg = (
             f"Unable to determine the IGMP snooping querier source address for VLAN '{vlan.name}'{vrf_info} in Tenant '{tenant.name}'. "
-            "The configured 'igmp_snooping_querier.source_address' could not be resolved. "
-            "If using 'main_router_id', 'diagnostic_loopback', or 'vrf_router_id' for an L2VLAN or SVI, "
-            "ensure that 'use_router_general_for_router_id' is not true."
+            "The configured 'igmp_snooping_querier.source_address' resolved to None."
         )
         raise AristaAvdInvalidInputsError(msg)

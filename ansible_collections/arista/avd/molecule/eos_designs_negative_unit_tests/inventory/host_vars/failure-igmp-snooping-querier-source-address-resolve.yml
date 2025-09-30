@@ -11,14 +11,12 @@ l3leaf:
       id: 1
       mgmt_ip: 192.168.200.101/24
 
-use_router_general_for_router_id: true
-
 tenants:
   - name: Tenant_A
     mac_vrf_vni_base: 10000
     igmp_snooping_querier:
       enabled: true
-      source_address: main_router_id
+      source_address: none
     vrfs:
       - name: IGMP_QUERIER_TEST_3
         description: "IGMP_QUERIER_TEST_3"
@@ -30,5 +28,4 @@ tenants:
 
 expected_error_message: >-
   Unable to determine the IGMP snooping querier source address for VLAN 'VLAN_21' in VRF 'IGMP_QUERIER_TEST_3' in Tenant 'Tenant_A'.
-  The configured 'igmp_snooping_querier.source_address' could not be resolved.
-  If using 'main_router_id', 'diagnostic_loopback', or 'vrf_router_id' for an L2VLAN or SVI, ensure that 'use_router_general_for_router_id' is not true.
+  The configured 'igmp_snooping_querier.source_address' resolved to None.

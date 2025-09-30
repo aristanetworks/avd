@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -45,6 +45,22 @@ $defs:
         items:
           type: str
           description: IPv6_address/Mask.
+      ipv6_nd:
+        type: dict
+        keys:
+          advertise_ipv6_address_virtuals:
+            type: bool
+            description: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+          valid_lifetime:
+            type: str
+            description: In seconds <0-4294967295> or infinite.
+            convert_types:
+              - int
+          preferred_lifetime:
+            type: str
+            description: In seconds <0-4294967295> or infinite.
+            convert_types:
+              - int
       ip_address_virtual_secondaries:
         type: list
         description: Secondary IPv4 VXLAN Anycast IP addresses.
@@ -212,8 +228,8 @@ $defs:
             type: str
             description: |-
               The value of `source_address` will be interpreted according to these rules:
-              - `vrf_router_id` will configure the vrf Loopback address.
-              - 'diagnostic_loopback' will configure the vtep loopback.
+              - `vrf_router_id` will configure the VRF router ID address.
+              - 'diagnostic_loopback' will configure the VRF Diagnostic Loopback address.
               - `main_router_id` will configure the Loopback0 IP address.
               - An IPv4 address will be used directly as the source address.
               Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.

@@ -400,7 +400,8 @@ class UtilsMixin(Protocol):
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
         tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
         router_id: str,
-        context: str = "'router_id' is set to 'diagnostic_loopback' on the VRF",
+        error_context: str = "'router_id' is set to 'diagnostic_loopback' on the VRF",
+        none_source_interface: bool = False,
     ) -> str | None:
         """
         Determine the router ID for a given VRF based on its configuration.
@@ -424,13 +425,13 @@ class UtilsMixin(Protocol):
                 msg = (
                     f"Invalid configuration on VRF '{vrf.name}' in Tenant '{tenant.name}'. "
                     "'vtep_diagnostic.loopback' along with either 'vtep_diagnostic.loopback_ip_pools' or 'vtep_diagnostic.loopback_ip_range' must be defined "
-                    f"when {context}."
+                    f"when {error_context}."
                 )
                 raise AristaAvdInvalidInputsError(msg)
             # Resolve router ID from loopback interface
             return get_ip_from_ip_prefix(interface_data.ip_address)
         if router_id == "main_router_id":
-            return self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None
+            return self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id or none_source_interface else None
         # Handle "none" router ID
         if router_id == "none":
             return None

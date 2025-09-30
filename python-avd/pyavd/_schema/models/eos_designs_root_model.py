@@ -31,7 +31,7 @@ SKIP_KEYS = ["custom_structured_configuration_list_merge", "custom_structured_co
 
 class EosDesignsRootModel(AvdModel):
     @classmethod
-    def _from_dict(cls, data: Mapping, keep_extra_keys: bool = False, load_custom_structured_config: bool = True) -> Self:
+    def _from_dict(cls, data: Mapping, load_custom_structured_config: bool = True) -> Self:
         """
         Returns a new instance loaded with the data from the given dict.
 
@@ -44,13 +44,10 @@ class EosDesignsRootModel(AvdModel):
 
         Args:
             data: A mapping containing the EosDesigns input data to be loaded.
-            keep_extra_keys: Store all unknown keys in the self._custom_data dict and include it again in the output of _to_dict().
-                By default only keys starting with _ will be stored. This will change the behavior to store _all_ keys.
             load_custom_structured_config: Some custom structured config contains inline Jinja templates relying on variables produced by EosDesignsFacts.
                 To avoid such templates breaking the type checks, we can skip loading custom_structured_configuration during the facts phase by setting this
                 to False.
 
-        TODO: AVD6.0.0 remove the keep_extra_keys option so we no longer support custom keys without _ in structured config
         """
         if not isinstance(data, Mapping):
             msg = f"Expecting 'data' as a 'Mapping' when loading data into '{cls.__name__}'. Got '{type(data)}"
@@ -60,7 +57,7 @@ class EosDesignsRootModel(AvdModel):
         if load_custom_structured_config:
             root_data["_custom_structured_configurations"] = cls._CustomStructuredConfigurations(cls._get_csc_items(data))
 
-        eos_designs_root = super()._from_dict(ChainMap(root_data, data), keep_extra_keys=keep_extra_keys)
+        eos_designs_root = super()._from_dict(ChainMap(root_data, data))
 
         if eos_cli_config_gen_keys := eos_designs_root._skipped_keys.intersection(EOS_CLI_CONFIG_GEN_INPUT_KEYS):
             # TODO: revisit once logging is present.

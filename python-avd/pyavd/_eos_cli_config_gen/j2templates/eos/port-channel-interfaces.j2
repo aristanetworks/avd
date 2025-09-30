@@ -43,32 +43,16 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.l2_protocol.forwarding_profile is arista.avd.defined %}
    l2-protocol forwarding profile {{ port_channel_interface.l2_protocol.forwarding_profile }}
 {%     endif %}
-{%     if port_channel_interface.vlans is arista.avd.defined and port_channel_interface.mode is arista.avd.defined and port_channel_interface.mode in ["access", "dot1q-tunnel"] %}
-   switchport access vlan {{ port_channel_interface.vlans }}
-{%     endif %}
 {%     if port_channel_interface.switchport.access_vlan is arista.avd.defined %}
    switchport access vlan {{ port_channel_interface.switchport.access_vlan }}
-{%     endif %}
-{%     if port_channel_interface.mode is arista.avd.defined and port_channel_interface.mode in ['trunk', 'trunk phone'] %}
-{%         if port_channel_interface.native_vlan_tag is arista.avd.defined(true) %}
-   switchport trunk native vlan tag
-{%         elif port_channel_interface.native_vlan is arista.avd.defined %}
-   switchport trunk native vlan {{ port_channel_interface.native_vlan }}
-{%         endif %}
 {%     endif %}
 {%     if port_channel_interface.switchport.trunk.native_vlan_tag is arista.avd.defined(true) %}
    switchport trunk native vlan tag
 {%     elif port_channel_interface.switchport.trunk.native_vlan is arista.avd.defined %}
    switchport trunk native vlan {{ port_channel_interface.switchport.trunk.native_vlan }}
 {%     endif %}
-{%     if port_channel_interface.phone.vlan is arista.avd.defined %}
-   switchport phone vlan {{ port_channel_interface.phone.vlan }}
-{%     endif %}
 {%     if port_channel_interface.switchport.phone.vlan is arista.avd.defined %}
    switchport phone vlan {{ port_channel_interface.switchport.phone.vlan }}
-{%     endif %}
-{%     if port_channel_interface.phone.trunk is arista.avd.defined %}
-   switchport phone trunk {{ port_channel_interface.phone.trunk }}
 {%     endif %}
 {%     if port_channel_interface.switchport.phone.trunk is arista.avd.defined %}
    switchport phone trunk {{ port_channel_interface.switchport.phone.trunk }}
@@ -82,14 +66,8 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.switchport.dot1q.vlan_tag is arista.avd.defined %}
    switchport dot1q vlan tag {{ port_channel_interface.switchport.dot1q.vlan_tag }}
 {%     endif %}
-{%     if port_channel_interface.vlans is arista.avd.defined and port_channel_interface.mode is arista.avd.defined("trunk") %}
-   switchport trunk allowed vlan {{ port_channel_interface.vlans }}
-{%     endif %}
 {%     if port_channel_interface.switchport.trunk.allowed_vlan is arista.avd.defined %}
    switchport trunk allowed vlan {{ port_channel_interface.switchport.trunk.allowed_vlan }}
-{%     endif %}
-{%     if port_channel_interface.mode is arista.avd.defined and port_channel_interface.mode != "access" %}
-   switchport mode {{ port_channel_interface.mode }}
 {%     endif %}
 {%     if port_channel_interface.switchport.mode is arista.avd.defined %}
    switchport mode {{ port_channel_interface.switchport.mode }}
@@ -100,21 +78,12 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.switchport.vlan_forwarding_accept_all is arista.avd.defined(true) %}
    switchport vlan forwarding accept all
 {%     endif %}
-{%     for  trunk_group in port_channel_interface.trunk_groups | arista.avd.natural_sort %}
-   switchport trunk group {{ trunk_group }}
-{%     endfor %}
 {%     for trunk_group in port_channel_interface.switchport.trunk.groups | arista.avd.natural_sort %}
    switchport trunk group {{ trunk_group }}
 {%     endfor %}
 {%     if port_channel_interface.switchport.enabled is arista.avd.defined(true) %}
    switchport
 {%     elif port_channel_interface.switchport.enabled is arista.avd.defined(false) %}
-   no switchport
-{%     endif %}
-{%     if port_channel_interface.type is arista.avd.defined("switched") %}
-   switchport
-{%     endif %}
-{%     if port_channel_interface.type is arista.avd.defined("routed") %}
    no switchport
 {%     endif %}
 {%     if port_channel_interface.encapsulation_dot1q.vlan is arista.avd.defined %}
@@ -124,39 +93,8 @@ interface {{ port_channel_interface.name }}
 {%         endif %}
    {{ encapsulation_dot1q_cli }}
 {%     endif %}
-{%     if port_channel_interface.vlan_id is arista.avd.defined and port_channel_interface.type | arista.avd.default != 'l2dot1q' %}
+{%     if port_channel_interface.vlan_id is arista.avd.defined %}
    vlan id {{ port_channel_interface.vlan_id }}
-{%     endif %}
-{%     if port_channel_interface.type | arista.avd.default in ['l3dot1q', 'l2dot1q'] %}
-{%         if port_channel_interface.encapsulation_dot1q_vlan is arista.avd.defined %}
-   encapsulation dot1q vlan {{ port_channel_interface.encapsulation_dot1q_vlan }}
-{%         endif %}
-{%         if port_channel_interface.vlan_id is arista.avd.defined and
-              port_channel_interface.type == 'l2dot1q' %}
-   vlan id {{ port_channel_interface.vlan_id }}
-{%         endif %}
-{%         if port_channel_interface.encapsulation_vlan.client.dot1q.vlan is arista.avd.defined and not port_channel_interface.encapsulation_dot1q_vlan is arista.avd.defined %}
-{%             set encapsulation_cli = "client dot1q " ~ port_channel_interface.encapsulation_vlan.client.dot1q.vlan %}
-{%             if port_channel_interface.encapsulation_vlan.network.dot1q.vlan is arista.avd.defined %}
-{%                 set encapsulation_cli = encapsulation_cli ~ " network dot1q " ~ port_channel_interface.encapsulation_vlan.network.dot1q.vlan %}
-{%             elif port_channel_interface.encapsulation_vlan.network.client is arista.avd.defined(true) %}
-{%                 set encapsulation_cli = encapsulation_cli ~ " network client" %}
-{%             endif %}
-{%         elif port_channel_interface.encapsulation_vlan.client.dot1q.inner is arista.avd.defined and port_channel_interface.encapsulation_vlan.client.dot1q.outer is arista.avd.defined %}
-{%             set encapsulation_cli = "client dot1q outer " ~ port_channel_interface.encapsulation_vlan.client.dot1q.outer ~ " inner " ~ port_channel_interface.encapsulation_vlan.client.dot1q.inner %}
-{%             if port_channel_interface.encapsulation_vlan.network.dot1q.inner is arista.avd.defined and port_channel_interface.encapsulation_vlan.network.dot1q.outer is arista.avd.defined %}
-{%                 set encapsulation_cli = encapsulation_cli ~ " network dot1q outer " ~ port_channel_interface.encapsulation_vlan.network.dot1q.outer ~ " inner " ~ port_channel_interface.encapsulation_vlan.network.dot1q.inner %}
-{%             elif port_channel_interface.encapsulation_vlan.network.dot1q.client is arista.avd.defined(true) %}
-{%                 set encapsulation_cli = encapsulation_cli ~ " network client" %}
-{%             endif %}
-{%         elif port_channel_interface.encapsulation_vlan.client.unmatched is arista.avd.defined(true) %}
-{%             set encapsulation_cli = "client unmatched" %}
-{%         endif %}
-{%         if encapsulation_cli is arista.avd.defined %}
-   !
-   encapsulation vlan
-      {{ encapsulation_cli }}
-{%         endif %}
 {%     endif %}
 {%     if port_channel_interface.encapsulation_vlan.client.encapsulation is arista.avd.defined and not port_channel_interface.encapsulation_dot1q.vlan is arista.avd.defined %}
 {%         set client_encapsulation = port_channel_interface.encapsulation_vlan.client.encapsulation %}
@@ -205,17 +143,6 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.switchport.source_interface is arista.avd.defined %}
    switchport source-interface {{ port_channel_interface.switchport.source_interface }}
 {%     endif %}
-{%     for vlan_translation in port_channel_interface.vlan_translations | arista.avd.natural_sort %}
-{%         if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
-{%             set vlan_translation_cli = 'switchport vlan translation' %}
-{%             if vlan_translation.direction | arista.avd.default in ['in', 'out'] %}
-{%                 set vlan_translation_cli = vlan_translation_cli ~ ' ' ~ vlan_translation.direction %}
-{%             endif %}
-{%             set vlan_translation_cli = vlan_translation_cli ~ ' ' ~ vlan_translation.from %}
-{%             set vlan_translation_cli = vlan_translation_cli ~ ' ' ~ vlan_translation.to %}
-   {{ vlan_translation_cli }}
-{%         endif %}
-{%     endfor %}
 {%     for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_both | arista.avd.natural_sort('from') %}
 {%         set vlan_translation_both_cli = 'switchport vlan translation ' ~ vlan_translation.from %}
 {%         if vlan_translation.dot1q_tunnel is arista.avd.defined(true) %}
@@ -256,16 +183,8 @@ interface {{ port_channel_interface.name }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if port_channel_interface.trunk_private_vlan_secondary is arista.avd.defined(true) %}
-   switchport trunk private-vlan secondary
-{%     elif port_channel_interface.trunk_private_vlan_secondary is arista.avd.defined(false) %}
-   no switchport trunk private-vlan secondary
-{%     endif %}
 {%     if port_channel_interface.switchport.trunk.private_vlan_secondary is arista.avd.defined(true) %}
    switchport trunk private-vlan secondary
-{%     endif %}
-{%     if port_channel_interface.pvlan_mapping is arista.avd.defined %}
-   switchport pvlan mapping {{ port_channel_interface.pvlan_mapping }}
 {%     endif %}
 {%     if port_channel_interface.switchport.pvlan_mapping is arista.avd.defined %}
    switchport pvlan mapping {{ port_channel_interface.switchport.pvlan_mapping }}
@@ -762,14 +681,6 @@ interface {{ port_channel_interface.name }}
    isis authentication key {{ port_channel_interface.isis_authentication.level_2.key_type }} {{ port_channel_interface.isis_authentication.level_2.key | arista.avd.hide_passwords(hide_passwords) }} level-2
 {%             endif %}
 {%         endif %}
-{%     else %}
-{%         if port_channel_interface.isis_authentication_mode is arista.avd.defined and
-              port_channel_interface.isis_authentication_mode in ["text", "md5"] %}
-   isis authentication mode {{ port_channel_interface.isis_authentication_mode }}
-{%         endif %}
-{%         if port_channel_interface.isis_authentication_key is arista.avd.defined %}
-   isis authentication key 7 {{ port_channel_interface.isis_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
-{%         endif %}
 {%     endif %}
 {%     for section in port_channel_interface.storm_control | arista.avd.natural_sort %}
 {%         if section != "all" %}
@@ -962,9 +873,6 @@ interface {{ port_channel_interface.name }}
 {%     for srlg in port_channel_interface.traffic_engineering.srlgs | arista.avd.natural_sort %}
    traffic-engineering srlg {{ srlg }}
 {%     endfor %}
-{%     if port_channel_interface.traffic_engineering.srlg is arista.avd.defined %}
-   traffic-engineering srlg {{ port_channel_interface.traffic_engineering.srlg }}
-{%     endif %}
 {%     if port_channel_interface.traffic_engineering.metric is arista.avd.defined %}
    traffic-engineering metric {{ port_channel_interface.traffic_engineering.metric }}
 {%     endif %}
