@@ -410,7 +410,7 @@ class UtilsMixin(Protocol):
             vrf: The VRF object containing OSPF/BGP and vtep_diagnostic details.
             tenant: The Tenant to which the VRF belongs.
             router_id: The router ID type specified for the VRF (e.g., "vtep_diagnostic", "main_router_id", "none", or an IPv4 address).
-            context: A string indicating the context of the router ID (e.g., "router_id" for BGP or OSPF).
+            error_context: A string indicating the context of the router ID (e.g., "router_id" for BGP or OSPF).
             none_source_interface: A boolean indicating if the source-interface is 'none' then raise the error.
 
         Returns:
