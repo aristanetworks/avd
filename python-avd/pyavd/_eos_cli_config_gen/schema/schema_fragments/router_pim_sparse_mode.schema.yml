@@ -118,3 +118,8 @@ keys:
                         max: 32
                       override:
                         type: bool
+                ssm_range:
+                  type: str
+                  description: |-
+                    Standard access list name or use the specific keyword 'standard' as a shortcut to apply
+                    a predefined rule that permits the 232.0.0.0/8 range for SSM traffic.
