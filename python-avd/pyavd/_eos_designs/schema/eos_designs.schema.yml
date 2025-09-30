@@ -3264,6 +3264,7 @@ keys:
             '
           items:
             type: str
+          min_length: 1
         platforms:
           type: list
           min_length: 1
@@ -5981,6 +5982,7 @@ keys:
     type: int
     min: 1
     max: 128
+    default: 128
     convert_types:
     - str
   underlay_ospf_process_id:

@@ -1422,9 +1422,9 @@ Make-before-break: True
 
 ##### IP Sparse Mode VRFs
 
-| VRF Name | BFD Enabled | Make-before-break |
-| -------- | ----------- | ----------------- |
-| MCAST_VRF1 | False | True |
+| VRF Name | SSM Range ACL | BFD Enabled | Make-before-break |
+| -------- | ------------- | ----------- | ----------------- |
+| MCAST_VRF1 | standard | False | True |
 
 ##### Router Multicast Device Configuration
 
@@ -1436,6 +1436,7 @@ router pim sparse-mode
    !
    vrf MCAST_VRF1
       ipv4
+         ssm range standard
          make-before-break
 ```
 
