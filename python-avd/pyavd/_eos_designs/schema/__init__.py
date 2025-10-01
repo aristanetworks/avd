@@ -78267,7 +78267,7 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_ospf_bfd_enable": {"type": bool, "default": False},
         "underlay_ospf_graceful_restart": {"type": bool, "default": True},
         "underlay_ospf_max_lsa": {"type": int, "default": 12000},
-        "underlay_ospf_maximum_paths": {"type": int},
+        "underlay_ospf_maximum_paths": {"type": int, "default": 128},
         "underlay_ospf_process_id": {"type": int, "default": 100},
         "underlay_rfc5549": {"type": bool, "default": False},
         "underlay_routing_protocol": {"type": str},
@@ -80035,8 +80035,12 @@ class EosDesigns(EosDesignsRootModel):
     """
     underlay_ospf_max_lsa: int
     """Default value: `12000`"""
-    underlay_ospf_maximum_paths: int | None
-    """Maximum number of next-hops in an ECMP route."""
+    underlay_ospf_maximum_paths: int
+    """
+    Maximum number of next-hops in an ECMP route.
+
+    Default value: `128`
+    """
     underlay_ospf_process_id: int
     """Default value: `100`"""
     underlay_rfc5549: bool
@@ -80397,7 +80401,7 @@ class EosDesigns(EosDesignsRootModel):
             underlay_ospf_bfd_enable: bool | UndefinedType = Undefined,
             underlay_ospf_graceful_restart: bool | UndefinedType = Undefined,
             underlay_ospf_max_lsa: int | UndefinedType = Undefined,
-            underlay_ospf_maximum_paths: int | None | UndefinedType = Undefined,
+            underlay_ospf_maximum_paths: int | UndefinedType = Undefined,
             underlay_ospf_process_id: int | UndefinedType = Undefined,
             underlay_rfc5549: bool | UndefinedType = Undefined,
             underlay_routing_protocol: Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
