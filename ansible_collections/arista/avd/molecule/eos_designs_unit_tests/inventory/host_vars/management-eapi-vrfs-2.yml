@@ -16,6 +16,7 @@ l3leaf:
       id: 13
 
 management_eapi:
+  enabled: true
   vrfs:
     - name: use_inband_mgmt_vrf
       enabled: true
