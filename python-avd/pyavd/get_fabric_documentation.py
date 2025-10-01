@@ -97,7 +97,7 @@ def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> 
 
     csv_content = StringIO()
     csv_writer = writer(csv_content, lineterminator="\n")
-    csv_writer.writerow(("Type", "Node", "Node Interface", "Leaf IP Address", "Peer Type", "Peer Node", "Peer Interface", "Peer IP Address"))
+    csv_writer.writerow(("Type", "Node", "Serial Number", "Node Interface", "Leaf IP Address", "Peer Type", "Peer Node", "Peer Interface", "Peer IP Address"))
     csv_writer.writerows(
         (
             topology_link["type"],
