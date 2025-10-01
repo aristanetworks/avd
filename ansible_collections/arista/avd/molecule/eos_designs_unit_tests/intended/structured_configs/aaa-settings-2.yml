@@ -53,10 +53,6 @@ ip_tacacs_source_interfaces:
   vrf: INBAND_MGMT
 - name: Vlan125
   vrf: MGMT1
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS

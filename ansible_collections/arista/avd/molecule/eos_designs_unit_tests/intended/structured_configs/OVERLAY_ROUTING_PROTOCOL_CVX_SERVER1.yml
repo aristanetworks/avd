@@ -12,10 +12,6 @@ cvx:
 enable_password:
   disabled: true
 hostname: OVERLAY_ROUTING_PROTOCOL_CVX_SERVER1
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

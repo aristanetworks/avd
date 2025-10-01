@@ -74,8 +74,6 @@ jobs:
               - 'ansible_collections/arista/avd/molecule/**/*'
               - 'python-avd/pyavd/_eos_designs/*'
               - 'python-avd/pyavd/_eos_designs/**/*'
-              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
-              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
             config_gen:
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
@@ -84,10 +82,6 @@ jobs:
               - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/**/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/**/*'
-            cloudvision:
-              - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
-              - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
-              - '.github/workflows/pull-request-management.yml'
             plugins:
               - 'ansible_collections/arista/avd/plugins/filter/**'
               - 'ansible_collections/arista/avd/plugins/test/**'
