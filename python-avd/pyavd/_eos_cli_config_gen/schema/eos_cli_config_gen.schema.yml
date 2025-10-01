@@ -12184,7 +12184,7 @@ keys:
           type: list
           items:
             type: str
-            description: IPv4 address/mask or "dhcp".
+            description: IPv4 address/mask.
         dhcp_client_accept_default_route:
           type: bool
           description: Install default-route obtained via DHCP.

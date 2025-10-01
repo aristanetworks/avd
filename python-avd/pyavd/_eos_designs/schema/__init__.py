@@ -51629,11 +51629,6 @@ class EosDesigns(EosDesignsRootModel):
 
                         IpAddresses._item_type = str
 
-                        class IpAddressSecondaries(AvdList[str]):
-                            """Subclass of AvdList with `str` items."""
-
-                        IpAddressSecondaries._item_type = str
-
                         class StaticRoutesItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -52223,7 +52218,6 @@ class EosDesigns(EosDesignsRootModel):
                             "interfaces": {"type": Interfaces},
                             "encapsulation_dot1q_vlan": {"type": EncapsulationDot1qVlan},
                             "ip_addresses": {"type": IpAddresses},
-                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "static_routes": {"type": StaticRoutes},
                             "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                             "nodes": {"type": Nodes},
@@ -52252,8 +52246,6 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdList with `int` items.
                         """
                         ip_addresses: IpAddresses
-                        """Subclass of AvdList with `str` items."""
-                        ip_address_secondaries: IpAddressSecondaries
                         """Subclass of AvdList with `str` items."""
                         static_routes: StaticRoutes
                         """
@@ -52343,7 +52335,6 @@ class EosDesigns(EosDesignsRootModel):
                                 interfaces: Interfaces | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: EncapsulationDot1qVlan | UndefinedType = Undefined,
                                 ip_addresses: IpAddresses | UndefinedType = Undefined,
-                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
@@ -52376,7 +52367,6 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList with `int` items.
                                     ip_addresses: Subclass of AvdList with `str` items.
-                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     static_routes:
                                        Static routes to be configured on every device where this interface is configured.
 

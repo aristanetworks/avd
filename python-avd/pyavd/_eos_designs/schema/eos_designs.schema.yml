@@ -8662,11 +8662,6 @@ $defs:
                       items:
                         type: str
                         description: IPv4_address/Mask.
-                    ip_address_secondaries:
-                      type: list
-                      items:
-                        type: str
-                        description: IPv4_address/Mask.
                     static_routes:
                       type: list
                       $ref: eos_designs#/$defs/static_routes
