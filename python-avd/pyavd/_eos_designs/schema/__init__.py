@@ -10677,35 +10677,23 @@ class EosDesigns(EosDesignsRootModel):
         Vrfs._item_type = VrfsItem
 
         _fields: ClassVar[dict] = {
-            "enabled": {"type": bool, "default": True},
+            "enabled": {"type": bool},
             "enable_http": {"type": bool},
             "enable_https": {"type": bool, "default": True},
             "default_services": {"type": bool},
-            "vrfs": {"type": Vrfs, "default": lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)},
+            "vrfs": {"type": Vrfs, "default": lambda cls: coerce_type([{"name": "use_default_mgmt_method_vrf", "enabled": True}], target_type=cls)},
         }
-        enabled: bool
-        """
-        Enable/Disable api http-commands.
-
-        Default value: `True`
-        """
+        enabled: bool | None
+        """Enable/Disable api http-commands."""
         enable_http: bool | None
         enable_https: bool
         """Default value: `True`"""
         default_services: bool | None
         vrfs: Vrfs
         """
-        Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not**
-        configured and the default value of `use_mgmt_interface_vrf` is used.
-        To enforce the presence of
-        `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using
-        `name: use_mgmt_interface_vrf`.
-        This behavior will be removed in AVD 6.0.
+        Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
-        Subclass of
-        AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
-
-        Default value: `lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)`
+        Default value: `lambda cls: coerce_type([{"name": "use_default_mgmt_method_vrf", "enabled": True}], target_type=cls)`
         """
 
         if TYPE_CHECKING:
@@ -10713,7 +10701,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
-                enabled: bool | UndefinedType = Undefined,
+                enabled: bool | None | UndefinedType = Undefined,
                 enable_http: bool | None | UndefinedType = Undefined,
                 enable_https: bool | UndefinedType = Undefined,
                 default_services: bool | None | UndefinedType = Undefined,
@@ -10730,16 +10718,7 @@ class EosDesigns(EosDesignsRootModel):
                     enable_http: enable_http
                     enable_https: enable_https
                     default_services: default_services
-                    vrfs:
-                       Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not**
-                       configured and the default value of `use_mgmt_interface_vrf` is used.
-                       To enforce the presence of
-                       `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using
-                       `name: use_mgmt_interface_vrf`.
-                       This behavior will be removed in AVD 6.0.
-
-                       Subclass of
-                       AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
                 """
 

@@ -29,6 +29,9 @@ eos_designs_documentation:
 underlay_routing_protocol: ebgp
 overlay_routing_protocol: ebgp
 
+management_eapi:
+  enabled: true
+
 # Local users
 aaa_settings:
   local_users:

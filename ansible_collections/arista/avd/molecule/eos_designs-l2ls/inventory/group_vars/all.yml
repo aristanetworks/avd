@@ -6,3 +6,7 @@ eos_designs_documentation:
   topology_csv: true
   p2p_links_csv: true
   toc: false
+
+# Enable management EAPI.
+management_eapi:
+  enabled: true

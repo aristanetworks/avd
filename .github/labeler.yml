@@ -4,12 +4,6 @@
           - ansible_collections/arista/avd/roles/build_output_folders/*
           - ansible_collections/arista/avd/roles/build_output_folders/**/*
 
-"role: cvp_configlet_upload":
-  - changed-files:
-      - any-glob-to-any-file:
-          - ansible_collections/arista/avd/roles/cvp_configlet_upload/*
-          - ansible_collections/arista/avd/roles/cvp_configlet_upload/**/*
-
 "role: eos_cli_config_gen":
   - changed-files:
       - any-glob-to-any-file:
@@ -53,11 +47,6 @@
   - changed-files:
       - any-glob-to-any-file:
           - ansible_collections/arista/avd/plugins/filter/defined.py
-
-"module: configlet_build_config":
-  - changed-files:
-      - any-glob-to-any-file:
-          - ansible_collections/arista/avd/plugins/modules/configlet_build_config.py
 
 "module: inventory_to_container":
   - changed-files:

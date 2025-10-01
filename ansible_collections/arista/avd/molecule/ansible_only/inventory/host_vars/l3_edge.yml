@@ -1,6 +1,10 @@
 ---
 type: spine
 
+# Disable management_eapi.
+management_eapi:
+  enabled: false
+
 node_type_keys:
   - key: spine
     type: spine
