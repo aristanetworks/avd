@@ -1,6 +1,9 @@
 # Nashua EVE-NG LAB shared attributes
 root_dir: '{{ playbook_dir }}'
 
+management_eapi:
+  enabled: true
+
 # local users
 aaa_settings:
   local_users:
