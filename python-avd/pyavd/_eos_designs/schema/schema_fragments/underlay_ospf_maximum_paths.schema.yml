@@ -7,12 +7,12 @@
 type: dict
 keys:
   underlay_ospf_maximum_paths:
-    # TODO: AVD 6.0 - Set default: 128
     description: Maximum number of next-hops in an ECMP route.
     documentation_options:
       table: ospf-settings
     type: int
     min: 1
     max: 128
+    default: 128
     convert_types:
       - str
