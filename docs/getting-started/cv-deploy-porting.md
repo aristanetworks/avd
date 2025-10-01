@@ -147,53 +147,131 @@ We recommend leveraging the `cv_server` and `cv_token` keys to specify the authe
 
 ```
 
-## Uploading Static Configlets
+## Migration Scenarios for Static Configlets
 
-The `cv_deploy` role also replaces the functionality of the legacy `cvp_configlet_upload` role. Instead of discovering configlets in a directory, `cv_deploy` uses an explicit manifest to manage configlets and containers in the CloudVision **Static Configuration Studio**.
+The `cv_deploy` role replaces `cvp_configlet_upload` by managing configlets in the CloudVision **Static Configuration Studio**. Depending on your workflow, you can either deploy static configlets alongside device configurations or manage them exclusively.
 
-To manage only the Static Configuration Studio content, you run in **"manifest-only" mode** by setting `cv_devices: []`. This instructs the role to skip all device-specific operations and only process the manifest. Note that the playbook task still requires the standard connection variables and can use other keys like `cv_run_change_control` specified in the previous section.
+Below are the two common migration scenarios.
+
+### Scenario 1: Adding Static Configlets to a Device Deployment
+
+Use this approach when your playbook deploys AVD-generated configurations to CloudVision but you also need to upload additional static configlets.
 
 <div class="grid" markdown>
 
-=== "Old (`cvp_configlet_upload`)"
+=== "Old (Separate Tasks)"
 
-    The legacy `cvp_configlet_upload` role would scan a specified directory and upload any files with a given extension.
+    You would first deploy device configs and then upload the static configlets.
 
     ```yaml
     ---
-    - name: Upload CVP configlets
-      ansible.builtin.import_role:
-        name: arista.avd.cvp_configlet_upload
-      vars:
-        configlet_directory: "configlets/"
-        file_extension: "txt"
-        configlets_cvp_prefix: "DC1-AVD_"
+    - name: Deploy to CloudVision
+      hosts: cloudvision
+      gather_facts: false
+
+      tasks:
+        # Task 1
+        - name: Deploy Device Configurations
+          ansible.builtin.import_role:
+            name: arista.avd.eos_config_deploy_cvp
+          vars:
+            container_root: 'DC1_FABRIC'
+            configlets_prefix: 'DC1-AVD'
+            device_filter: 'DC1'
+            state: present
+
+        # Task 2
+        - name: Deploy Static Configlets
+          ansible.builtin.import_role:
+            name: arista.avd.cvp_configlet_upload
+          vars:
+            configlet_directory: "configlets/"
+            file_extension: "txt"
+            configlets_cvp_prefix: "DC1-AVD"
     ```
 
-=== "New (`cv_deploy`)"
+=== "New (Single, Unified Task)"
 
-    With `cv_deploy`, you define a manifest that explicitly lists each configlet name and source file.
+    With `cv_deploy`, you define a **"manifest"** using `cv_static_config_manifest` within the same task that deploys your device configurations.
 
-    ```yaml hl_lines="11 14-19"
+    ```yaml hl_lines="15-20"
     ---
-    - name: Upload CVP configlets to Static Configuration Studio
-      ansible.builtin.import_role:
-        name: arista.avd.cv_deploy
-      vars:
-        cv_server: <hostname or IP address of CloudVision host>
-        cv_token: <insert service_account token here - use Ansible Vault>
-        cv_run_change_control: true
+    - name: Deploy to CloudVision
+      hosts: FABRIC
+      gather_facts: false
 
-        # Use "manifest-only" mode to skip device-specific tasks.
-        cv_devices: []
+      tasks:
+        - name: Deploy Device Configurations and Static Configlets
+          ansible.builtin.import_role:
+            name: arista.avd.cv_deploy
+          vars:
+            cv_server: <hostname or IP address of CloudVision host>
+            cv_token: <insert service_account token here - use Ansible Vault>
 
-        # Explicitly define configlets and containers in a manifest.
-        cv_static_config_manifest:
-          configlets:
-            - name: "DC1-AVD_access_lists"
-              file: "configlets/access_lists.txt"
-            - name: "DC1-AVD_ntp_servers"
-              file: "configlets/ntp_servers.txt"
+            # The manifest is deployed alongside device configurations in the Static Configuration Studio
+            cv_static_config_manifest:
+              configlets:
+                - name: "DC1-AVD_access_lists"
+                  file: "configlets/access_lists.txt"
+                - name: "DC1-AVD_ntp_servers"
+                  file: "configlets/ntp_servers.txt"
+    ```
+
+</div>
+
+### Scenario 2: Managing Only Static Configlets
+
+Use this approach to replace a playbook whose **only** job was to upload configlets using `cvp_configlet_upload`. This requires running `cv_deploy` in **"manifest-only" mode**.
+
+<div class="grid" markdown>
+
+=== "Old (`cvp_configlet_upload` only)"
+
+    The playbook has a single purpose: to scan a directory and upload configlets.
+
+    ```yaml
+    ---
+    - name: Deploy to CloudVision
+      hosts: cloudvision
+      gather_facts: false
+
+      tasks:
+        - name: Deploy Static Configlets
+          ansible.builtin.import_role:
+            name: arista.avd.cvp_configlet_upload
+          vars:
+            configlet_directory: "configlets/"
+            file_extension: "txt"
+            configlets_cvp_prefix: "DC1-AVD"
+    ```
+
+=== "New (Manifest-Only Mode)"
+
+    By setting `cv_devices: []`, it instructs the role to skip all device-specific operations and only process the manifest.
+
+    ```yaml hl_lines="14-15"
+    ---
+    - name: Deploy to CloudVision
+      hosts: FABRIC
+      gather_facts: false
+
+      tasks:
+        - name: Deploy Static Configlets
+          ansible.builtin.import_role:
+            name: arista.avd.cv_deploy
+          vars:
+            cv_server: <hostname or IP address of CloudVision host>
+            cv_token: <insert service_account token here - use Ansible Vault>
+
+            # Enable manifest-only mode
+            cv_devices: []
+
+            cv_static_config_manifest:
+              configlets:
+                - name: "DC1-AVD_access_lists"
+                  file: "configlets/access_lists.txt"
+                - name: "DC1-AVD_ntp_servers"
+                  file: "configlets/ntp_servers.txt"
     ```
 
 </div>
