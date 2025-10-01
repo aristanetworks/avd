@@ -269,10 +269,14 @@ loopback_interfaces:
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.101.4/32
   ipv6_address: 2001:db8:1::2/128
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.1.8/16
+  type: oob
+  gateway: 192.168.1.254
 metadata:
   is_deployed: true
   platform: vEOS-LAB

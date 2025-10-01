@@ -46,10 +46,6 @@ loopback_interfaces:
   description: TEST_CUSTOM_PREFIX_VTEP_VXLAN_Tunnel_Source_L3LEAF
   shutdown: false
   ip_address: 192.168.254.21/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

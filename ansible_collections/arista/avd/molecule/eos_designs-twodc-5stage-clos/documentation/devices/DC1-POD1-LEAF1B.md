@@ -5,7 +5,6 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [IP Domain-list](#ip-domain-list)
-  - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [Enable Password](#enable-password)
@@ -78,32 +77,6 @@ interface Management1
 ```eos
 ip domain-list structured-config.set.under.vrf.common-vrf
 !
-```
-
-### Management API HTTP
-
-#### Management API HTTP Summary
-
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
-
-#### Management API VRF Access
-
-| VRF Name | IPv4 ACL | IPv6 ACL |
-| -------- | -------- | -------- |
-| MGMT | - | - |
-
-#### Management API HTTP Device Configuration
-
-```eos
-!
-management api http-commands
-   protocol https
-   no shutdown
-   !
-   vrf MGMT
-      no shutdown
 ```
 
 ## Authentication

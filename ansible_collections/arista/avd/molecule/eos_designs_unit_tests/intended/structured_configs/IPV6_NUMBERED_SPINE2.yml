@@ -56,10 +56,6 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ipv6_address: 2001:db8:0:2::1/64
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

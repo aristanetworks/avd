@@ -76,10 +76,6 @@ loopback_interfaces:
   shutdown: false
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.102.3/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

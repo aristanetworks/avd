@@ -39,10 +39,6 @@ loopback_interfaces:
   description: TEST_CUSTOM_PREFIX_VTEP_VXLAN_Tunnel_Source_L3LEAF
   shutdown: false
   ip_address: 192.168.254.23/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   platform: vEOS-LAB

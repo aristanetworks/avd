@@ -25,10 +25,6 @@ ip_name_servers:
   vrf: other_vrf
 - ip_address: 10.10.10.3
   vrf: MGMT
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

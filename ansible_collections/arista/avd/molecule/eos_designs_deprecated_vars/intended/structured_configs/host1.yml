@@ -55,10 +55,6 @@ loopback_interfaces:
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.101/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: default
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

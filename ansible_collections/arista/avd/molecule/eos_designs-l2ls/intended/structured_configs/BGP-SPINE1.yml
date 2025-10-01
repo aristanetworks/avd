@@ -176,6 +176,14 @@ management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.1/24
+  type: oob
+  gateway: 172.31.0.1
 metadata:
   is_deployed: true
   pod_name: L2LS_BGP
@@ -345,6 +353,12 @@ metadata:
         value: AVD-Managed
       - name: Link-Type
         value: Egress
+    - interface: Management1
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Management
 mlag_configuration:
   domain_id: BGP_SPINES
   local_interface: Vlan4094

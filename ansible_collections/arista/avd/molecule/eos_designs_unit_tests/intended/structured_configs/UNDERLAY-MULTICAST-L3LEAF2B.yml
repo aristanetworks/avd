@@ -58,10 +58,6 @@ loopback_interfaces:
 - name: Loopback5
   description: PIM RP
   ip_address: 192.168.200.5/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

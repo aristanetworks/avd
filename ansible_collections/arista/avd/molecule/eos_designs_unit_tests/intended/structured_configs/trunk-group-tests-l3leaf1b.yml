@@ -72,10 +72,6 @@ loopback_interfaces:
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.249.9/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   pod_name: TRUNK_GROUP_TESTS
