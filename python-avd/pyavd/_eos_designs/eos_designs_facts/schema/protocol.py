@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Literal, Protocol
+from typing import TYPE_CHECKING, ClassVar, Literal, Protocol, TypeAlias
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
@@ -237,6 +237,8 @@ class EosDesignsFactsProtocol(Protocol):
     class UplinksItem(AvdModel):
         """Subclass of AvdModel."""
 
+        Type: TypeAlias = Literal["underlay_p2p", "underlay_l2"]
+
         class Ptp(AvdModel):
             """Subclass of AvdModel."""
 
@@ -281,13 +283,14 @@ class EosDesignsFactsProtocol(Protocol):
         class LinkTrackingGroupsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Direction: TypeAlias = Literal["upstream", "downstream"]
             _fields: ClassVar[dict] = {"name": {"type": str}, "direction": {"type": str}}
             name: str
-            direction: Literal["upstream", "downstream"]
+            direction: Direction
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, direction: Literal["upstream", "downstream"] | UndefinedType = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, direction: Direction | UndefinedType = Undefined) -> None:
                     """
                     LinkTrackingGroupsItem.
 
@@ -316,6 +319,9 @@ class EosDesignsFactsProtocol(Protocol):
             """Subclass of AvdList with `str` items."""
 
         PeerTrunkGroups._item_type = str
+
+        SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+        PeerSpanningTreePortfast: TypeAlias = Literal["edge", "network"]
 
         class SubinterfacesItem(AvdModel):
             """Subclass of AvdModel."""
@@ -446,7 +452,7 @@ class EosDesignsFactsProtocol(Protocol):
         peer_type: str
         peer_is_deployed: bool
         peer_bgp_as: str | None
-        type: Literal["underlay_p2p", "underlay_l2"]
+        type: Type
         speed: str | None
         bfd: bool | None
         peer_speed: str | None
@@ -480,8 +486,8 @@ class EosDesignsFactsProtocol(Protocol):
         native_vlan: int | None
         short_esi: str | None
         peer_short_esi: str | None
-        spanning_tree_portfast: Literal["edge", "network"] | None
-        peer_spanning_tree_portfast: Literal["edge", "network"] | None
+        spanning_tree_portfast: SpanningTreePortfast | None
+        peer_spanning_tree_portfast: PeerSpanningTreePortfast | None
         sflow_enabled: bool | None
         flow_tracking: EosDesigns.FabricFlowTracking.Uplinks
         """Enable flow-tracking on all fabric uplinks."""
@@ -510,7 +516,7 @@ class EosDesignsFactsProtocol(Protocol):
                 peer_type: str | UndefinedType = Undefined,
                 peer_is_deployed: bool | UndefinedType = Undefined,
                 peer_bgp_as: str | None | UndefinedType = Undefined,
-                type: Literal["underlay_p2p", "underlay_l2"] | UndefinedType = Undefined,
+                type: Type | UndefinedType = Undefined,
                 speed: str | None | UndefinedType = Undefined,
                 bfd: bool | None | UndefinedType = Undefined,
                 peer_speed: str | None | UndefinedType = Undefined,
@@ -535,8 +541,8 @@ class EosDesignsFactsProtocol(Protocol):
                 native_vlan: int | None | UndefinedType = Undefined,
                 short_esi: str | None | UndefinedType = Undefined,
                 peer_short_esi: str | None | UndefinedType = Undefined,
-                spanning_tree_portfast: Literal["edge", "network"] | None | UndefinedType = Undefined,
-                peer_spanning_tree_portfast: Literal["edge", "network"] | None | UndefinedType = Undefined,
+                spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                peer_spanning_tree_portfast: PeerSpanningTreePortfast | None | UndefinedType = Undefined,
                 sflow_enabled: bool | None | UndefinedType = Undefined,
                 flow_tracking: EosDesigns.FabricFlowTracking.Uplinks | UndefinedType = Undefined,
                 inband_ztp_vlan: int | None | UndefinedType = Undefined,
