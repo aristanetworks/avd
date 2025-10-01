@@ -68,6 +68,7 @@ generate_cv_tags:
 # Management api-http
 # Expicitely disabling http and https
 management_eapi:
+  enabled: true
   enable_https: false
   enable_http: false
   default_services: false
