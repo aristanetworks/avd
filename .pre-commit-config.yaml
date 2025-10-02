@@ -1,3 +1,4 @@
+---
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
@@ -170,7 +171,8 @@ repos:
         types: [text]
         args:
           - '--ignore-words=.github/ignore-codespell-words'  # Ignore words listed in this file
-        exclude: >  # List of regex patterns for files/directories to exclude
+        # List of regex patterns for files/directories to exclude
+        exclude: >
           (?x)^(
             .*\.cfg|  # Exclude all .cfg files
             .*\.svg|  # Exclude all .svg files
