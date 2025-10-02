@@ -22,14 +22,11 @@ theme:
     - content.code.copy
     - content.tabs.link
     - header.autohide
-    - navigation.expand
-    - navigation.instant
     - navigation.prune
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.top
     - search.highlight
-    # - toc.integrate
     - toc.follow
   highlightjs: true
   icon:
@@ -208,13 +205,8 @@ nav:
                   - Overview: ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md
                   - Role Configuration: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/role-configuration.md
                   - Custom Templates: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/how-to/custom-templates.md
-              - cvp_configlet_upload: ansible_collections/arista/avd/roles/cvp_configlet_upload/README.md
-              - eos_config_deploy_cvp:
-                  - Overview: ansible_collections/arista/avd/roles/eos_config_deploy_cvp/README.md
-                  - Integrating AVD with CVaaS: ansible_collections/arista/avd/roles/eos_config_deploy_cvp/docs/avd-to-cvaas.md
               - eos_config_deploy_eapi: ansible_collections/arista/avd/roles/eos_config_deploy_eapi/README.md
               - eos_snapshot: ansible_collections/arista/avd/roles/eos_snapshot/README.md
-              - dhcp_provisioner: ansible_collections/arista/avd/roles/dhcp_provisioner/README.md
               - build_output_folders: ansible_collections/arista/avd/roles/build_output_folders/README.md
               - cv_deploy: ansible_collections/arista/avd/roles/cv_deploy/README.md
               - anta_runner: ansible_collections/arista/avd/roles/anta_runner/README.md

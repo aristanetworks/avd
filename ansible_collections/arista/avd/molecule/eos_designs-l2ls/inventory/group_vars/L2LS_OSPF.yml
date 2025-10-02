@@ -3,6 +3,7 @@
 pod_name: L2LS_OSPF
 
 underlay_routing_protocol: ospf
+underlay_ospf_graceful_restart: false
 
 tenants:
   - name: L2LS_OSPF

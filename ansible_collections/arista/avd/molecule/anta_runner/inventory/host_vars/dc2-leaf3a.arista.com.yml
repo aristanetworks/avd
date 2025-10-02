@@ -105,41 +105,44 @@ custom_structured_configuration_ethernet_interfaces:
 custom_structured_configuration_port_channel_interfaces:
   - name: Port-Channel11
     description: dc2-leaf3-fw1_PortChannel
-    type: switched
     # shutdown: false
-    mode: trunk
-    vlans: 11-12,21-22
-    native_vlan: 4092
+    switchport:
+      mode: trunk
+      trunk:
+        allowed_vlan: 11-12,21-22
+        native_vlan: 4092
     spanning_tree_portfast: edge
     mlag: 11
 
   - name: Port-Channel12
     description: Test_mode_and_vlans
-    # test for type `switched`
-    type: switched
-    mode: access
-    vlans: 100
+    # test for switchport mode access.
+    switchport:
+      mode: access
+      access_vlan: 100
 
   - name: Port-Channel13
     description: Test_native_vlan_and_trunk_groups
-    type: switched
-    native_vlan: 4092
-    native_vlan_tag: true
-    mode: trunk
-    trunk_groups:
-      - MLAG
+    switchport:
+      mode: trunk
+      trunk:
+        groups:
+          - MLAG
+        native_vlan: 4092
+        native_vlan_tag: true
 
   - name: Port-Channel14
     description: Test_phone
-    type: switched
-    mode: trunk phone
-    phone:
-      vlan: 20
-      trunk: tagged
+    switchport:
+      mode: trunk phone
+      phone:
+        vlan: 20
+        trunk: tagged
 
   - name: Port-Channel15
     description: Test_type_routed
-    type: routed
     ip_address: 1.1.1.1/24
     peer: dc2-leaf2b
     peer_interface: Ethernet2
+    switchport:
+      enabled: false

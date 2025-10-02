@@ -21,8 +21,8 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF1A | - | CUSTOM-PLATFORM | Provisioned | - |
-| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2A | - | vEOS-LAB | Provisioned | - |
+| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF1A | 192.168.1.10/24 | CUSTOM-PLATFORM | Provisioned | - |
+| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2A | 192.168.1.11/24 | vEOS-LAB | Provisioned | - |
 | DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2B | 192.168.1.12/24 | TOOLS-SERVER | Provisioned | - |
 | DC1_POD1 | l3leaf | DC1-POD1-LEAF1A | - | vEOS-LAB | Provisioned | - |
 | DC1_POD1 | l3leaf | DC1-POD1-LEAF1B | 192.168.1.26/24 | vEOS-LAB | Provisioned | - |
@@ -36,7 +36,7 @@
 | DC1 | overlay-controller | DC1-RS2 | 192.168.1.4/24 | vEOS-LAB | Provisioned | - |
 | DC1 | super-spine | DC1-SUPER-SPINE1 | - | vEOS-LAB | Provisioned | - |
 | DC1 | super-spine | DC1-SUPER-SPINE2 | 192.168.1.2/24 | vEOS-LAB | Provisioned | - |
-| DC1_POD1 | l3leaf | DC1.POD1.LEAF2A | - | vEOS-LAB | Provisioned | - |
+| DC1_POD1 | l3leaf | DC1.POD1.LEAF2A | 192.168.1.8/16 | vEOS-LAB | Provisioned | - |
 | DC2_POD1 | l2leaf | DC2-POD1-L2LEAF1A | 192.168.1.23/24 | vEOS-LAB | Provisioned | - |
 | DC2_POD1 | l2leaf | DC2-POD1-L2LEAF2A | 192.168.1.25/24 | vEOS-LAB | Provisioned | - |
 | DC2_POD1 | l3leaf | DC2-POD1-LEAF1A | 192.168.1.22/24 | vEOS-LAB | Provisioned | - |

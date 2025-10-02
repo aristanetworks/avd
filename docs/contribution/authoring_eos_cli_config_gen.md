@@ -22,7 +22,7 @@ This document outlines the steps and checklist for contributing to the `eos_cli_
 
 ### Prepare development environment
 
-Follow the [Development Tooling Guide](https://avd.arista.com/stable/docs/contribution/development-tooling.html).
+Follow the [Development Tooling Guide](../contribution/development-tooling.md).
 
 ### Schema creation
 
@@ -78,7 +78,7 @@ Run `pre-commit run --all`, this will trigger recompiling the schemas and the te
 
 !!! Note
 
-    When using Ansible (either through molecule or from a test repo), AVD is able to detect when it is running from source, and recompiles schemas and templates automatically during the "Verify Requirements" step, as outlined in the [Development Tooling Guide](https://avd.arista.com/stable/docs/contribution/development-tooling.html).
+    When using Ansible (either through molecule or from a test repo), AVD is able to detect when it is running from source, and recompiles schemas and templates automatically during the "Verify Requirements" step, as outlined in the [Development Tooling Guide](../contribution/development-tooling.md).
 
     However, if you are using pyavd or need to manually recompile the schemas and templates for any other reason, you can run the following commands:
 

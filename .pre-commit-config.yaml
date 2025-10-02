@@ -1,3 +1,4 @@
+---
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
@@ -103,7 +104,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.13.1
+    rev: v0.13.2
     hooks:
       # Run the linter.
       - id: ruff
@@ -170,7 +171,8 @@ repos:
         types: [text]
         args:
           - '--ignore-words=.github/ignore-codespell-words'  # Ignore words listed in this file
-        exclude: >  # List of regex patterns for files/directories to exclude
+        # List of regex patterns for files/directories to exclude
+        exclude: >
           (?x)^(
             .*\.cfg|  # Exclude all .cfg files
             .*\.svg|  # Exclude all .svg files
@@ -264,6 +266,7 @@ repos:
           - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/service-unsupported-transceiver.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/unsupported-transceiver.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-node-type-keys.key.md
+          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/design.md
         pass_filenames: false
 
       - id: templates
