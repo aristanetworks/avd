@@ -18,10 +18,13 @@ ip_igmp_snooping:
 link_tracking_groups:
 - name: LT_GROUP1
   recovery_delay: 300
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.1.1/24
+  type: oob
 metadata:
   is_deployed: true
   platform: 720XP

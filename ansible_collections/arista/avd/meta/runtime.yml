@@ -27,6 +27,12 @@ plugin_routing:
           Use the builtin `ansible.builtin.regex_replace` filter instead like
           `{{ <short_esi> | ansible.builtin.regex_replace('(\\d{2})(\\d{2}):(\\d{2})(\\d{2}):(\\d{2})(\\d{2})', '\\1:\\2:\\3:\\4:\\5:\\6') }}`.
   modules:
+    configlet_build_config:
+      tombstone:
+        removal_version: 6.0.0-dev1
+        warning_text: |-
+          The internal 'configlet_build_config' module is no longer used by AVD.
+          The module is released as open source, so it can be copied and reused according to the license and copyright.
     eos_validate_state_runner:
       tombstone:
         removal_version: 6.0.0-dev0

@@ -14,10 +14,6 @@ ip_ssh_client_source_interfaces:
 - name: Management1
 - name: Vlan4092
   vrf: INBANDMGMT
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: default
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

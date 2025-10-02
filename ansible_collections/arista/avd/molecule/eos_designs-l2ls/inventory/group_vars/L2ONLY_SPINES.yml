@@ -12,6 +12,8 @@ l2spine:
     - group: L2ONLY_SPINES
       nodes:
         - name: L2ONLY-SPINE1
+          mgmt_ip: 192.168.0.3/24
           id: 1
         - name: L2ONLY-SPINE2
+          mgmt_ip: 192.168.0.4/24
           id: 2
