@@ -1,2 +1,5 @@
 ---
 fabric_name: DIGITAL_TWIN
+
+management_eapi:
+  enabled: true

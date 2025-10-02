@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Literal
+from typing import TYPE_CHECKING, ClassVar, Literal, TypeAlias
 
 from pyavd._schema.models.avd_indexed_list import AvdIndexedList
 from pyavd._schema.models.avd_list import AvdList
@@ -27,11 +27,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Console(AvdModel):
                 """Subclass of AvdModel."""
 
+                Type: TypeAlias = Literal["none", "start-stop", "stop-only"]
+
                 class MethodsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Method: TypeAlias = Literal["logging", "group"]
                     _fields: ClassVar[dict] = {"method": {"type": str}, "group": {"type": str}}
-                    method: Literal["logging", "group"]
+                    method: Method
                     group: str | None
                     """
                     Specify the server group to be used.
@@ -41,9 +44,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, method: Literal["logging", "group"] | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, method: Method | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                             """
                             MethodsItem.
 
@@ -65,15 +66,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Methods._item_type = MethodsItem
 
                 _fields: ClassVar[dict] = {"type": {"type": str}, "methods": {"type": Methods}}
-                type: Literal["none", "start-stop", "stop-only"]
+                type: Type
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, type: Literal["none", "start-stop", "stop-only"] | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, type: Type | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined) -> None:
                         """
                         Console.
 
@@ -89,11 +88,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Default(AvdModel):
                 """Subclass of AvdModel."""
 
+                Type: TypeAlias = Literal["none", "start-stop", "stop-only"]
+
                 class MethodsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Method: TypeAlias = Literal["logging", "group"]
                     _fields: ClassVar[dict] = {"method": {"type": str}, "group": {"type": str}}
-                    method: Literal["logging", "group"]
+                    method: Method
                     group: str | None
                     """
                     Specify the server group to be used.
@@ -103,9 +105,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, method: Literal["logging", "group"] | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, method: Method | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                             """
                             MethodsItem.
 
@@ -127,15 +127,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Methods._item_type = MethodsItem
 
                 _fields: ClassVar[dict] = {"type": {"type": str}, "methods": {"type": Methods}}
-                type: Literal["none", "start-stop", "stop-only"]
+                type: Type
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, type: Literal["none", "start-stop", "stop-only"] | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, type: Type | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined) -> None:
                         """
                         Default.
 
@@ -175,11 +173,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Default(AvdModel):
                 """Subclass of AvdModel."""
 
+                Type: TypeAlias = Literal["none", "start-stop", "stop-only"]
+
                 class MethodsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Method: TypeAlias = Literal["logging", "group"]
                     _fields: ClassVar[dict] = {"method": {"type": str}, "group": {"type": str}}
-                    method: Literal["logging", "group"]
+                    method: Method
                     group: str | None
                     """
                     Specify the server group to be used.
@@ -189,9 +190,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, method: Literal["logging", "group"] | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, method: Method | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                             """
                             MethodsItem.
 
@@ -213,15 +212,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Methods._item_type = MethodsItem
 
                 _fields: ClassVar[dict] = {"type": {"type": str}, "methods": {"type": Methods}}
-                type: Literal["none", "start-stop", "stop-only"]
+                type: Type
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, type: Literal["none", "start-stop", "stop-only"] | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, type: Type | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined) -> None:
                         """
                         Default.
 
@@ -258,9 +255,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Default(AvdModel):
                 """Subclass of AvdModel."""
 
+                Type: TypeAlias = Literal["start-stop", "stop-only"]
+
                 class MethodsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Method: TypeAlias = Literal["logging", "group"]
                     _fields: ClassVar[dict] = {"multicast": {"type": bool}, "method": {"type": str}, "group": {"type": str}}
                     multicast: bool | None
                     """
@@ -268,7 +268,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     This option is applicable only
                     when the `method` key is explicitly set to `group`.
                     """
-                    method: Literal["logging", "group"]
+                    method: Method
                     group: str | None
                     """
                     Specify the server group to be used.
@@ -282,7 +282,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             multicast: bool | None | UndefinedType = Undefined,
-                            method: Literal["logging", "group"] | UndefinedType = Undefined,
+                            method: Method | UndefinedType = Undefined,
                             group: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -310,15 +310,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Methods._item_type = MethodsItem
 
                 _fields: ClassVar[dict] = {"type": {"type": str}, "methods": {"type": Methods}}
-                type: Literal["start-stop", "stop-only"]
+                type: Type
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, type: Literal["start-stop", "stop-only"] | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, type: Type | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined) -> None:
                         """
                         Default.
 
@@ -355,11 +353,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ConsoleItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                Type: TypeAlias = Literal["none", "start-stop", "stop-only"]
+
                 class MethodsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Method: TypeAlias = Literal["logging", "group"]
                     _fields: ClassVar[dict] = {"method": {"type": str}, "group": {"type": str}}
-                    method: Literal["logging", "group"]
+                    method: Method
                     group: str | None
                     """
                     Specify the server group to be used.
@@ -369,9 +370,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, method: Literal["logging", "group"] | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, method: Method | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                             """
                             MethodsItem.
 
@@ -395,7 +394,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"commands": {"type": str}, "type": {"type": str}, "methods": {"type": Methods}}
                 commands: str | None
                 """Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another."""
-                type: Literal["none", "start-stop", "stop-only"]
+                type: Type
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
@@ -405,7 +404,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         commands: str | None | UndefinedType = Undefined,
-                        type: Literal["none", "start-stop", "stop-only"] | UndefinedType = Undefined,
+                        type: Type | UndefinedType = Undefined,
                         methods: Methods | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -429,11 +428,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class DefaultItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                Type: TypeAlias = Literal["none", "start-stop", "stop-only"]
+
                 class MethodsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Method: TypeAlias = Literal["logging", "group"]
                     _fields: ClassVar[dict] = {"method": {"type": str}, "group": {"type": str}}
-                    method: Literal["logging", "group"]
+                    method: Method
                     group: str | None
                     """
                     Specify the server group to be used.
@@ -443,9 +445,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, method: Literal["logging", "group"] | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, method: Method | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                             """
                             MethodsItem.
 
@@ -469,7 +469,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"commands": {"type": str}, "type": {"type": str}, "methods": {"type": Methods}}
                 commands: str | None
                 """Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another."""
-                type: Literal["none", "start-stop", "stop-only"]
+                type: Type
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
@@ -479,7 +479,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         commands: str | None | UndefinedType = Undefined,
-                        type: Literal["none", "start-stop", "stop-only"] | UndefinedType = Undefined,
+                        type: Type | UndefinedType = Undefined,
                         methods: Methods | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -1074,6 +1074,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class AaaServerGroupsItem(AvdModel):
         """Subclass of AvdModel."""
 
+        Type: TypeAlias = Literal["tacacs+", "radius", "ldap"]
+
         class ServersItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -1106,18 +1108,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {"name": {"type": str}, "type": {"type": str}, "servers": {"type": Servers}}
         name: str
         """Group name."""
-        type: Literal["tacacs+", "radius", "ldap"] | None
+        type: Type | None
         servers: Servers
         """Subclass of AvdList with `ServersItem` items."""
 
         if TYPE_CHECKING:
 
             def __init__(
-                self,
-                *,
-                name: str | UndefinedType = Undefined,
-                type: Literal["tacacs+", "radius", "ldap"] | None | UndefinedType = Undefined,
-                servers: Servers | UndefinedType = Undefined,
+                self, *, name: str | UndefinedType = Undefined, type: Type | None | UndefinedType = Undefined, servers: Servers | UndefinedType = Undefined
             ) -> None:
                 """
                 AaaServerGroupsItem.
@@ -1141,6 +1139,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     class AccessListsItem(AvdModel):
         """Subclass of AvdModel."""
+
+        PermitResponseTraffic: TypeAlias = Literal["nat"]
 
         class SequenceNumbersItem(AvdModel):
             """Subclass of AvdModel."""
@@ -1187,7 +1187,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         name: str
         """Access-list Name."""
         counters_per_entry: bool | None
-        permit_response_traffic: Literal["nat"] | None
+        permit_response_traffic: PermitResponseTraffic | None
         """
         Permit response traffic automatically based on NAT translations.
         Minimum EOS version requirement
@@ -1203,7 +1203,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 name: str | UndefinedType = Undefined,
                 counters_per_entry: bool | None | UndefinedType = Undefined,
-                permit_response_traffic: Literal["nat"] | None | UndefinedType = Undefined,
+                permit_response_traffic: PermitResponseTraffic | None | UndefinedType = Undefined,
                 sequence_numbers: SequenceNumbers | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -1441,10 +1441,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ApplicationsItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                Service: TypeAlias = Literal["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"]
                 _fields: ClassVar[dict] = {"name": {"type": str}, "service": {"type": str}}
                 name: str
                 """Application name."""
-                service: Literal["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"] | None
+                service: Service | None
                 """
                 Service Name.
                 Specific service to target for this application.
@@ -1456,14 +1457,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        name: str | UndefinedType = Undefined,
-                        service: Literal["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"]
-                        | None
-                        | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, service: Service | None | UndefinedType = Undefined) -> None:
                         """
                         ApplicationsItem.
 
@@ -2027,10 +2021,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ApplicationsItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                Service: TypeAlias = Literal["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"]
                 _fields: ClassVar[dict] = {"name": {"type": str}, "service": {"type": str}}
                 name: str
                 """Application Name."""
-                service: Literal["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"] | None
+                service: Service | None
                 """
                 Service Name.
                 Specific service to target for this application.
@@ -2042,14 +2037,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        name: str | UndefinedType = Undefined,
-                        service: Literal["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"]
-                        | None
-                        | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, service: Service | None | UndefinedType = Undefined) -> None:
                         """
                         ApplicationsItem.
 
@@ -2081,10 +2069,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class CategoriesItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                Service: TypeAlias = Literal["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"]
                 _fields: ClassVar[dict] = {"name": {"type": str}, "service": {"type": str}}
                 name: str
                 """Name of a category."""
-                service: Literal["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"] | None
+                service: Service | None
                 """
                 Service Name.
                 Specific service to target for this application.
@@ -2096,14 +2085,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        name: str | UndefinedType = Undefined,
-                        service: Literal["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"]
-                        | None
-                        | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, service: Service | None | UndefinedType = Undefined) -> None:
                         """
                         CategoriesItem.
 
@@ -2379,17 +2361,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class AsPath(AvdModel):
         """Subclass of AvdModel."""
 
+        RegexMode: TypeAlias = Literal["asn", "string"]
+
         class AccessListsItem(AvdModel):
             """Subclass of AvdModel."""
 
             class EntriesItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                Type: TypeAlias = Literal["permit", "deny"]
+                Origin: TypeAlias = Literal["any", "egp", "igp", "incomplete"]
                 _fields: ClassVar[dict] = {"type": {"type": str}, "match": {"type": str}, "origin": {"type": str, "default": "any"}}
-                type: Literal["permit", "deny"] | None
+                type: Type | None
                 match: str | None
                 """Regex To Match."""
-                origin: Literal["any", "egp", "igp", "incomplete"]
+                origin: Origin
                 """Default value: `"any"`"""
 
                 if TYPE_CHECKING:
@@ -2397,9 +2383,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        type: Literal["permit", "deny"] | None | UndefinedType = Undefined,
+                        type: Type | None | UndefinedType = Undefined,
                         match: str | None | UndefinedType = Undefined,
-                        origin: Literal["any", "egp", "igp", "incomplete"] | UndefinedType = Undefined,
+                        origin: Origin | UndefinedType = Undefined,
                     ) -> None:
                         """
                         EntriesItem.
@@ -2448,15 +2434,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         AccessLists._item_type = AccessListsItem
 
         _fields: ClassVar[dict] = {"regex_mode": {"type": str}, "access_lists": {"type": AccessLists}}
-        regex_mode: Literal["asn", "string"] | None
+        regex_mode: RegexMode | None
         access_lists: AccessLists
         """Subclass of AvdIndexedList with `AccessListsItem` items. Primary key is `name` (`str`)."""
 
         if TYPE_CHECKING:
 
-            def __init__(
-                self, *, regex_mode: Literal["asn", "string"] | None | UndefinedType = Undefined, access_lists: AccessLists | UndefinedType = Undefined
-            ) -> None:
+            def __init__(self, *, regex_mode: RegexMode | None | UndefinedType = Undefined, access_lists: AccessLists | UndefinedType = Undefined) -> None:
                 """
                 AsPath.
 
@@ -2468,6 +2452,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     access_lists: Subclass of AvdIndexedList with `AccessListsItem` items. Primary key is `name` (`str`).
 
                 """
+
+    AvdDataValidationMode: TypeAlias = Literal["error", "warning"]
 
     class Banners(AvdModel):
         """Subclass of AvdModel."""
@@ -2557,17 +2543,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Secret(AvdModel):
             """Subclass of AvdModel."""
 
+            HashAlgorithm: TypeAlias = Literal["md5", "sha512"]
             _fields: ClassVar[dict] = {"hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
-            hash_algorithm: Literal["md5", "sha512"]
+            hash_algorithm: HashAlgorithm
             """Default value: `"sha512"`"""
             key: str | None
             """Hashed Password."""
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self, *, hash_algorithm: Literal["md5", "sha512"] | UndefinedType = Undefined, key: str | None | UndefinedType = Undefined
-                ) -> None:
+                def __init__(self, *, hash_algorithm: HashAlgorithm | UndefinedType = Undefined, key: str | None | UndefinedType = Undefined) -> None:
                     """
                     Secret.
 
@@ -2606,6 +2591,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             class AssociationsItem(AvdModel):
                 """Subclass of AvdModel."""
+
+                Direction: TypeAlias = Literal["up", "down"]
 
                 class EndPointsItem(AvdModel):
                     """Subclass of AvdModel."""
@@ -2702,7 +2689,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 }
                 id: int
                 """Maintenance association ID."""
-                direction: Literal["up", "down"] | None
+                direction: Direction | None
                 """Local maintenance endpoint direction."""
                 end_points: EndPoints
                 """
@@ -2729,7 +2716,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         id: int | UndefinedType = Undefined,
-                        direction: Literal["up", "down"] | None | UndefinedType = Undefined,
+                        direction: Direction | None | UndefinedType = Undefined,
                         end_points: EndPoints | UndefinedType = Undefined,
                         profile: str | None | UndefinedType = Undefined,
                         remote_end_points: RemoteEndPoints | UndefinedType = Undefined,
@@ -2851,12 +2838,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class AlarmIndication(AvdModel):
                 """Subclass of AvdModel."""
 
+                TxInterval: TypeAlias = Literal["1 seconds", "1 minutes"]
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "client_domain_level": {"type": int}, "tx_interval": {"type": str}}
                 enabled: bool | None
                 """Enable sending of alarm indication signal (AIS) packets."""
                 client_domain_level: int | None
                 """Client maintenance domain level for which to send AIS packets."""
-                tx_interval: Literal["1 seconds", "1 minutes"] | None
+                tx_interval: TxInterval | None
                 """Transmission interval for AIS packets."""
 
                 if TYPE_CHECKING:
@@ -2866,7 +2854,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         enabled: bool | None | UndefinedType = Undefined,
                         client_domain_level: int | None | UndefinedType = Undefined,
-                        tx_interval: Literal["1 seconds", "1 minutes"] | None | UndefinedType = Undefined,
+                        tx_interval: TxInterval | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AlarmIndication.
@@ -2884,6 +2872,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ContinuityCheck(AvdModel):
                 """Subclass of AvdModel."""
 
+                TxInterval: TypeAlias = Literal[
+                    "3.33 milliseconds", "10 milliseconds", "100 milliseconds", "1 seconds", "10 seconds", "1 minutes", "10 minutes"
+                ]
+
                 class AlarmDefects(AvdList[str]):
                     """Subclass of AvdList with `str` items."""
 
@@ -2899,7 +2891,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Enable the continuity check protocol to monitor connectivity."""
                 qos_cos: int | None
                 """Set the class of service (CoS) value for CFM frames."""
-                tx_interval: Literal["3.33 milliseconds", "10 milliseconds", "100 milliseconds", "1 seconds", "10 seconds", "1 minutes", "10 minutes"] | None
+                tx_interval: TxInterval | None
                 """Set the transmission interval for continuity check messages (CCMs)."""
                 alarm_defects: AlarmDefects
                 """
@@ -2923,9 +2915,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         enabled: bool | None | UndefinedType = Undefined,
                         qos_cos: int | None | UndefinedType = Undefined,
-                        tx_interval: Literal["3.33 milliseconds", "10 milliseconds", "100 milliseconds", "1 seconds", "10 seconds", "1 minutes", "10 minutes"]
-                        | None
-                        | UndefinedType = Undefined,
+                        tx_interval: TxInterval | None | UndefinedType = Undefined,
                         alarm_defects: AlarmDefects | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -3323,6 +3313,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            Ecn: TypeAlias = Literal["ce", "ect", "ect-ce", "non-ect"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "vlan": {"type": str},
@@ -3352,7 +3343,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
               - Range of decimal DSCP values. Examples:
             "1,3-10".
             """
-            ecn: Literal["ce", "ect", "ect-ce", "non-ect"] | None
+            ecn: Ecn | None
             """
             Match packets based on the ECN value.
             Accepted values:
@@ -3374,7 +3365,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip: Ip | UndefinedType = Undefined,
                     ipv6: Ipv6 | UndefinedType = Undefined,
                     dscp: str | None | UndefinedType = Undefined,
-                    ecn: Literal["ce", "ect", "ect-ce", "non-ect"] | None | UndefinedType = Undefined,
+                    ecn: Ecn | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     QosItem.
@@ -3490,16 +3481,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Redis(AvdModel):
                     """Subclass of AvdModel."""
 
+                    PasswordType: TypeAlias = Literal["0", "7", "8a"]
                     _fields: ClassVar[dict] = {"password": {"type": str}, "password_type": {"type": str, "default": "7"}}
                     password: str | None
                     """Hashed password using the password_type."""
-                    password_type: Literal["0", "7", "8a"]
+                    password_type: PasswordType
                     """Default value: `"7"`"""
 
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, password: str | None | UndefinedType = Undefined, password_type: Literal["0", "7", "8a"] | UndefinedType = Undefined
+                            self, *, password: str | None | UndefinedType = Undefined, password_type: PasswordType | UndefinedType = Undefined
                         ) -> None:
                             """
                             Redis.
@@ -3536,17 +3528,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Vxlan(AvdModel):
                 """Subclass of AvdModel."""
 
+                VtepMacLearning: TypeAlias = Literal["control-plane", "data-plane"]
                 _fields: ClassVar[dict] = {"shutdown": {"type": bool}, "vtep_mac_learning": {"type": str}}
                 shutdown: bool | None
-                vtep_mac_learning: Literal["control-plane", "data-plane"] | None
+                vtep_mac_learning: VtepMacLearning | None
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        shutdown: bool | None | UndefinedType = Undefined,
-                        vtep_mac_learning: Literal["control-plane", "data-plane"] | None | UndefinedType = Undefined,
+                        self, *, shutdown: bool | None | UndefinedType = Undefined, vtep_mac_learning: VtepMacLearning | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         Vxlan.
@@ -3636,6 +3626,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Cvauth(AvdModel):
                 """Subclass of AvdModel."""
 
+                Method: TypeAlias = Literal["token", "token-secure", "key", "certs"]
                 _fields: ClassVar[dict] = {
                     "method": {"type": str},
                     "key": {"type": str},
@@ -3644,7 +3635,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "ca_file": {"type": str},
                     "key_file": {"type": str},
                 }
-                method: Literal["token", "token-secure", "key", "certs"] | None
+                method: Method | None
                 key: str | None
                 token_file: str | None
                 """
@@ -3672,7 +3663,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        method: Literal["token", "token-secure", "key", "certs"] | None | UndefinedType = Undefined,
+                        method: Method | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         token_file: str | None | UndefinedType = Undefined,
                         cert_file: str | None | UndefinedType = Undefined,
@@ -3814,6 +3805,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Cvauth(AvdModel):
             """Subclass of AvdModel."""
 
+            Method: TypeAlias = Literal["token", "token-secure", "key", "certs"]
             _fields: ClassVar[dict] = {
                 "method": {"type": str},
                 "key": {"type": str},
@@ -3822,7 +3814,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "ca_file": {"type": str},
                 "key_file": {"type": str},
             }
-            method: Literal["token", "token-secure", "key", "certs"] | None
+            method: Method | None
             key: str | None
             token_file: str | None
             """
@@ -3850,7 +3842,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    method: Literal["token", "token-secure", "key", "certs"] | None | UndefinedType = Undefined,
+                    method: Method | None | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
                     token_file: str | None | UndefinedType = Undefined,
                     cert_file: str | None | UndefinedType = Undefined,
@@ -4733,20 +4725,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class RadiusAvPairUsernameFormat(AvdModel):
             """Subclass of AvdModel."""
 
+            Delimiter: TypeAlias = Literal["colon", "hyphen", "none", "period"]
+            MacStringCase: TypeAlias = Literal["lowercase", "uppercase"]
             _fields: ClassVar[dict] = {"delimiter": {"type": str}, "mac_string_case": {"type": str}}
-            delimiter: Literal["colon", "hyphen", "none", "period"]
+            delimiter: Delimiter
             """Delimiter to use in MAC address string."""
-            mac_string_case: Literal["lowercase", "uppercase"]
+            mac_string_case: MacStringCase
             """MAC address string in lowercase/uppercase."""
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    delimiter: Literal["colon", "hyphen", "none", "period"] | UndefinedType = Undefined,
-                    mac_string_case: Literal["lowercase", "uppercase"] | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, delimiter: Delimiter | UndefinedType = Undefined, mac_string_case: MacStringCase | UndefinedType = Undefined) -> None:
                     """
                     RadiusAvPairUsernameFormat.
 
@@ -5051,12 +5040,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Unresponsive(AvdModel):
                 """Subclass of AvdModel."""
 
+                EapResponse: TypeAlias = Literal["success", "disabled"]
+
                 class Action(AvdModel):
                     """Subclass of AvdModel."""
 
                     class CachedResultsTimeout(AvdModel):
                         """Subclass of AvdModel."""
 
+                        TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
                         _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
                         time_duration: int | None
                         """
@@ -5067,15 +5059,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         <1-240000>     duration in hours
                         <1-864000000>  duration in seconds
                         """
-                        time_duration_unit: Literal["days", "hours", "minutes", "seconds"]
+                        time_duration_unit: TimeDurationUnit
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self,
-                                *,
-                                time_duration: int | None | UndefinedType = Undefined,
-                                time_duration_unit: Literal["days", "hours", "minutes", "seconds"] | UndefinedType = Undefined,
+                                self, *, time_duration: int | None | UndefinedType = Undefined, time_duration_unit: TimeDurationUnit | UndefinedType = Undefined
                             ) -> None:
                                 """
                                 CachedResultsTimeout.
@@ -5151,6 +5140,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class CachedResultsTimeout(AvdModel):
                         """Subclass of AvdModel."""
 
+                        TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
                         _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
                         time_duration: int | None
                         """
@@ -5161,15 +5151,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         <1-240000>     duration in hours
                         <1-864000000>  duration in seconds
                         """
-                        time_duration_unit: Literal["days", "hours", "minutes", "seconds"]
+                        time_duration_unit: TimeDurationUnit
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self,
-                                *,
-                                time_duration: int | None | UndefinedType = Undefined,
-                                time_duration_unit: Literal["days", "hours", "minutes", "seconds"] | UndefinedType = Undefined,
+                                self, *, time_duration: int | None | UndefinedType = Undefined, time_duration_unit: TimeDurationUnit | UndefinedType = Undefined
                             ) -> None:
                                 """
                                 CachedResultsTimeout.
@@ -5241,7 +5228,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "phone_action": {"type": PhoneAction},
                     "recovery_action_reauthenticate": {"type": bool},
                 }
-                eap_response: Literal["success", "disabled"] | None
+                eap_response: EapResponse | None
                 """EAP response to send."""
                 action: Action
                 """
@@ -5262,7 +5249,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        eap_response: Literal["success", "disabled"] | None | UndefinedType = Undefined,
+                        eap_response: EapResponse | None | UndefinedType = Undefined,
                         action: Action | UndefinedType = Undefined,
                         phone_action: PhoneAction | UndefinedType = Undefined,
                         recovery_action_reauthenticate: bool | None | UndefinedType = Undefined,
@@ -5375,6 +5362,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ProfilesItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                EapMethod: TypeAlias = Literal["fast", "tls"]
+                PassphraseType: TypeAlias = Literal["0", "7", "8a"]
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "eap_method": {"type": str},
@@ -5384,7 +5373,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "ssl_profile": {"type": str},
                 }
                 name: str
-                eap_method: Literal["fast", "tls"] | None
+                eap_method: EapMethod | None
                 """
                 Extensible Authentication Protocol method:
                   - EAP Flexible Authentication via Secure Tunneling.
@@ -5393,7 +5382,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 identity: str | None
                 """User identity."""
-                passphrase_type: Literal["0", "7", "8a"]
+                passphrase_type: PassphraseType
                 """Default value: `"7"`"""
                 passphrase: str | None
                 """Extensible Authentication Protocol password."""
@@ -5405,9 +5394,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        eap_method: Literal["fast", "tls"] | None | UndefinedType = Undefined,
+                        eap_method: EapMethod | None | UndefinedType = Undefined,
                         identity: str | None | UndefinedType = Undefined,
-                        passphrase_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                        passphrase_type: PassphraseType | UndefinedType = Undefined,
                         passphrase: str | None | UndefinedType = Undefined,
                         ssl_profile: str | None | UndefinedType = Undefined,
                     ) -> None:
@@ -5608,6 +5597,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class DpsInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
+        Name: TypeAlias = Literal["Dps1"]
+
         class FlowTracker(AvdModel):
             """Subclass of AvdModel."""
 
@@ -5635,12 +5626,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TcpMssCeiling(AvdModel):
             """Subclass of AvdModel."""
 
+            Direction: TypeAlias = Literal["ingress", "egress"]
             _fields: ClassVar[dict] = {"ipv4": {"type": int}, "ipv6": {"type": int}, "direction": {"type": str}}
             ipv4: int | None
             """Segment Size for IPv4."""
             ipv6: int | None
             """Segment Size for IPv6."""
-            direction: Literal["ingress", "egress"] | None
+            direction: Direction | None
             """Optional direction ('ingress', 'egress')  for tcp mss ceiling."""
 
             if TYPE_CHECKING:
@@ -5650,7 +5642,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     ipv4: int | None | UndefinedType = Undefined,
                     ipv6: int | None | UndefinedType = Undefined,
-                    direction: Literal["ingress", "egress"] | None | UndefinedType = Undefined,
+                    direction: Direction | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     TcpMssCeiling.
@@ -5675,7 +5667,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "tcp_mss_ceiling": {"type": TcpMssCeiling},
             "eos_cli": {"type": str},
         }
-        name: Literal["Dps1"]
+        name: Name
         """"Dps1" is currently the only supported interface."""
         description: str | None
         shutdown: bool | None
@@ -5695,7 +5687,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                name: Literal["Dps1"] | UndefinedType = Undefined,
+                name: Name | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
                 shutdown: bool | None | UndefinedType = Undefined,
                 mtu: int | None | UndefinedType = Undefined,
@@ -5794,10 +5786,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class EnablePassword(AvdModel):
         """Subclass of AvdModel."""
 
+        HashAlgorithm: TypeAlias = Literal["md5", "sha512"]
         _fields: ClassVar[dict] = {"disabled": {"type": bool}, "hash_algorithm": {"type": str}, "key": {"type": str}}
         disabled: bool | None
         """Set to `true` to configure `no enable password` which is the EOS default."""
-        hash_algorithm: Literal["md5", "sha512"] | None
+        hash_algorithm: HashAlgorithm | None
         key: str | None
         """
         Must be the hash of the password using the specified algorithm.
@@ -5811,7 +5804,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 disabled: bool | None | UndefinedType = Undefined,
-                hash_algorithm: Literal["md5", "sha512"] | None | UndefinedType = Undefined,
+                hash_algorithm: HashAlgorithm | None | UndefinedType = Undefined,
                 key: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -5948,8 +5941,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class CausesItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "interval": {"type": int}}
-                name: Literal[
+                Name: TypeAlias = Literal[
                     "arp-inspection",
                     "bpduguard",
                     "dot1x",
@@ -5968,36 +5960,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "xcvr-power-unsupported",
                     "xcvr-unsupported",
                 ]
+                _fields: ClassVar[dict] = {"name": {"type": str}, "interval": {"type": int}}
+                name: Name
                 interval: int | None
                 """Interval for each recovery cause in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        name: Literal[
-                            "arp-inspection",
-                            "bpduguard",
-                            "dot1x",
-                            "hitless-reload-down",
-                            "lacp-rate-limit",
-                            "link-flap",
-                            "no-internal-vlan",
-                            "portchannelguard",
-                            "portsec",
-                            "speed-misconfigured",
-                            "tap-port-init",
-                            "tapagg",
-                            "uplink-failure-detection",
-                            "xcvr-misconfigured",
-                            "xcvr-overheat",
-                            "xcvr-power-unsupported",
-                            "xcvr-unsupported",
-                        ]
-                        | UndefinedType = Undefined,
-                        interval: int | None | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, name: Name | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         CausesItem.
 
@@ -6062,6 +6032,91 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class EthernetInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
+        Speed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
+
         class L2Protocol(AvdModel):
             """Subclass of AvdModel."""
 
@@ -6087,6 +6142,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         forwarding_profile: L2 protocol forwarding profile.
 
                     """
+
+        MacTimestamp: TypeAlias = Literal["before-fcs", "replace-fcs", "header"]
 
         class AddressLocking(AvdModel):
             """Subclass of AvdModel."""
@@ -6188,12 +6245,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Flowcontrol(AvdModel):
             """Subclass of AvdModel."""
 
+            Received: TypeAlias = Literal["desired", "on", "off"]
             _fields: ClassVar[dict] = {"received": {"type": str}}
-            received: Literal["desired", "on", "off"] | None
+            received: Received | None
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, received: Literal["desired", "on", "off"] | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, received: Received | None | UndefinedType = Undefined) -> None:
                     """
                     Flowcontrol.
 
@@ -6263,16 +6321,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class LinkTrackingGroupsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Direction: TypeAlias = Literal["upstream", "downstream"]
             _fields: ClassVar[dict] = {"name": {"type": str}, "direction": {"type": str}}
             name: str
             """Group name."""
-            direction: Literal["upstream", "downstream"] | None
+            direction: Direction | None
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self, *, name: str | UndefinedType = Undefined, direction: Literal["upstream", "downstream"] | None | UndefinedType = Undefined
-                ) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, direction: Direction | None | UndefinedType = Undefined) -> None:
                     """
                     LinkTrackingGroupsItem.
 
@@ -6295,13 +6352,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class LinkTracking(AvdModel):
             """Subclass of AvdModel."""
 
+            Direction: TypeAlias = Literal["upstream", "downstream"]
+
             class Groups(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
             Groups._item_type = str
 
             _fields: ClassVar[dict] = {"direction": {"type": str}, "groups": {"type": Groups}}
-            direction: Literal["upstream", "downstream"] | None
+            direction: Direction | None
             groups: Groups
             """
             Link state group(s) an interface belongs to.
@@ -6311,9 +6370,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self, *, direction: Literal["upstream", "downstream"] | None | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined
-                ) -> None:
+                def __init__(self, *, direction: Direction | None | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
                     """
                     LinkTracking.
 
@@ -6332,9 +6389,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class EvpnEthernetSegment(AvdModel):
             """Subclass of AvdModel."""
 
+            Redundancy: TypeAlias = Literal["all-active", "single-active"]
+
             class DesignatedForwarderElection(AvdModel):
                 """Subclass of AvdModel."""
 
+                Algorithm: TypeAlias = Literal["modulus", "preference"]
                 _fields: ClassVar[dict] = {
                     "algorithm": {"type": str},
                     "preference_value": {"type": int},
@@ -6343,7 +6403,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "subsequent_hold_time": {"type": int},
                     "candidate_reachability_required": {"type": bool},
                 }
-                algorithm: Literal["modulus", "preference"] | None
+                algorithm: Algorithm | None
                 preference_value: int | None
                 """Preference_value is only used when "algorithm" is "preference"."""
                 dont_preempt: bool | None
@@ -6357,7 +6417,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        algorithm: Literal["modulus", "preference"] | None | UndefinedType = Undefined,
+                        algorithm: Algorithm | None | UndefinedType = Undefined,
                         preference_value: int | None | UndefinedType = Undefined,
                         dont_preempt: bool | None | UndefinedType = Undefined,
                         hold_time: int | None | UndefinedType = Undefined,
@@ -6413,7 +6473,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             }
             identifier: str | None
             """EVPN Ethernet Segment Identifier (Type 1 format)."""
-            redundancy: Literal["all-active", "single-active"] | None
+            redundancy: Redundancy | None
             designated_forwarder_election: DesignatedForwarderElection
             """Subclass of AvdModel."""
             mpls: Mpls
@@ -6427,7 +6487,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     identifier: str | None | UndefinedType = Undefined,
-                    redundancy: Literal["all-active", "single-active"] | None | UndefinedType = Undefined,
+                    redundancy: Redundancy | None | UndefinedType = Undefined,
                     designated_forwarder_election: DesignatedForwarderElection | UndefinedType = Undefined,
                     mpls: Mpls | UndefinedType = Undefined,
                     route_target: str | None | UndefinedType = Undefined,
@@ -6477,6 +6537,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Client(AvdModel):
                 """Subclass of AvdModel."""
 
+                Encapsulation: TypeAlias = Literal["dot1q", "dot1ad", "unmatched", "untagged"]
+                InnerEncapsulation: TypeAlias = Literal["dot1q", "dot1ad"]
                 _fields: ClassVar[dict] = {
                     "encapsulation": {"type": str},
                     "vlan": {"type": int},
@@ -6484,25 +6546,25 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "inner_vlan": {"type": int},
                     "inner_encapsulation": {"type": str},
                 }
-                encapsulation: Literal["dot1q", "dot1ad", "unmatched", "untagged"]
+                encapsulation: Encapsulation
                 vlan: int | None
                 """Client VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: unmatched`."""
                 outer_vlan: int | None
                 """Client Outer VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: unmatched`."""
                 inner_vlan: int | None
                 """Client Inner VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: unmatched`."""
-                inner_encapsulation: Literal["dot1q", "dot1ad"] | None
+                inner_encapsulation: InnerEncapsulation | None
 
                 if TYPE_CHECKING:
 
                     def __init__(
                         self,
                         *,
-                        encapsulation: Literal["dot1q", "dot1ad", "unmatched", "untagged"] | UndefinedType = Undefined,
+                        encapsulation: Encapsulation | UndefinedType = Undefined,
                         vlan: int | None | UndefinedType = Undefined,
                         outer_vlan: int | None | UndefinedType = Undefined,
                         inner_vlan: int | None | UndefinedType = Undefined,
-                        inner_encapsulation: Literal["dot1q", "dot1ad"] | None | UndefinedType = Undefined,
+                        inner_encapsulation: InnerEncapsulation | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Client.
@@ -6522,6 +6584,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Network(AvdModel):
                 """Subclass of AvdModel."""
 
+                Encapsulation: TypeAlias = Literal["dot1q", "dot1ad", "client", "client inner", "untagged"]
+                InnerEncapsulation: TypeAlias = Literal["dot1q", "dot1ad"]
                 _fields: ClassVar[dict] = {
                     "encapsulation": {"type": str},
                     "vlan": {"type": int},
@@ -6529,7 +6593,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "inner_vlan": {"type": int},
                     "inner_encapsulation": {"type": str},
                 }
-                encapsulation: Literal["dot1q", "dot1ad", "client", "client inner", "untagged"]
+                encapsulation: Encapsulation
                 """
                 `untagged` (no encapsulation) is applicable for `untagged` client only.
                 `client` and `client inner`
@@ -6541,18 +6605,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Network outer VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: client`."""
                 inner_vlan: int | None
                 """Network inner VLAN ID.  Not applicable for `encapsulation: untagged` or `encapsulation: client`."""
-                inner_encapsulation: Literal["dot1q", "dot1ad"] | None
+                inner_encapsulation: InnerEncapsulation | None
 
                 if TYPE_CHECKING:
 
                     def __init__(
                         self,
                         *,
-                        encapsulation: Literal["dot1q", "dot1ad", "client", "client inner", "untagged"] | UndefinedType = Undefined,
+                        encapsulation: Encapsulation | UndefinedType = Undefined,
                         vlan: int | None | UndefinedType = Undefined,
                         outer_vlan: int | None | UndefinedType = Undefined,
                         inner_vlan: int | None | UndefinedType = Undefined,
-                        inner_encapsulation: Literal["dot1q", "dot1ad"] | None | UndefinedType = Undefined,
+                        inner_encapsulation: InnerEncapsulation | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Network.
@@ -6606,6 +6670,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `str` items."""
 
         IpAddressSecondaries._item_type = str
+
+        IpVerifyUnicastSourceReachableVia: TypeAlias = Literal["any", "rx"]
 
         class IpHelpersItem(AvdModel):
             """Subclass of AvdModel."""
@@ -6695,6 +6761,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class StaticItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Direction: TypeAlias = Literal["egress", "ingress"]
+                    Protocol: TypeAlias = Literal["udp", "tcp"]
                     _fields: ClassVar[dict] = {
                         "access_list": {"type": str},
                         "comment": {"type": str},
@@ -6710,7 +6778,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     access_list: str | None
                     """'access_list' and 'group' are mutual exclusive."""
                     comment: str | None
-                    direction: Literal["egress", "ingress"] | None
+                    direction: Direction | None
                     """
                     Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware
                     platform.
@@ -6724,7 +6792,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     original_port: int | None
                     """TCP/UDP port. The combination of `original_ip` and `original_port` must be unique."""
                     priority: int | None
-                    protocol: Literal["udp", "tcp"] | None
+                    protocol: Protocol | None
                     translated_ip: str
                     """IPv4 address."""
                     translated_port: int | None
@@ -6737,12 +6805,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             access_list: str | None | UndefinedType = Undefined,
                             comment: str | None | UndefinedType = Undefined,
-                            direction: Literal["egress", "ingress"] | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
                             group: int | None | UndefinedType = Undefined,
                             original_ip: str | None | UndefinedType = Undefined,
                             original_port: int | None | UndefinedType = Undefined,
                             priority: int | None | UndefinedType = Undefined,
-                            protocol: Literal["udp", "tcp"] | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
                             translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
@@ -6802,6 +6870,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class DynamicItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    NatType: TypeAlias = Literal["overload", "pool", "pool-address-only", "pool-full-cone"]
                     _fields: ClassVar[dict] = {
                         "access_list": {"type": str},
                         "comment": {"type": str},
@@ -6811,7 +6880,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     access_list: str
                     comment: str | None
-                    nat_type: Literal["overload", "pool", "pool-address-only", "pool-full-cone"]
+                    nat_type: NatType
                     pool_name: str | None
                     """
                     required if 'nat_type' is pool, pool-address-only or pool-full-cone.
@@ -6827,7 +6896,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             access_list: str | UndefinedType = Undefined,
                             comment: str | None | UndefinedType = Undefined,
-                            nat_type: Literal["overload", "pool", "pool-address-only", "pool-full-cone"] | UndefinedType = Undefined,
+                            nat_type: NatType | UndefinedType = Undefined,
                             pool_name: str | None | UndefinedType = Undefined,
                             priority: int | None | UndefinedType = Undefined,
                         ) -> None:
@@ -6859,6 +6928,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class StaticItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Direction: TypeAlias = Literal["egress", "ingress"]
+                    Protocol: TypeAlias = Literal["udp", "tcp"]
                     _fields: ClassVar[dict] = {
                         "access_list": {"type": str},
                         "comment": {"type": str},
@@ -6874,7 +6945,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     access_list: str | None
                     """'access_list' and 'group' are mutual exclusive."""
                     comment: str | None
-                    direction: Literal["egress", "ingress"] | None
+                    direction: Direction | None
                     """
                     Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware
                     platform.
@@ -6888,7 +6959,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     original_port: int | None
                     """TCP/UDP port. The combination of `original_ip` and `original_port` must be unique."""
                     priority: int | None
-                    protocol: Literal["udp", "tcp"] | None
+                    protocol: Protocol | None
                     translated_ip: str
                     """IPv4 address."""
                     translated_port: int | None
@@ -6901,12 +6972,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             access_list: str | None | UndefinedType = Undefined,
                             comment: str | None | UndefinedType = Undefined,
-                            direction: Literal["egress", "ingress"] | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
                             group: int | None | UndefinedType = Undefined,
                             original_ip: str | None | UndefinedType = Undefined,
                             original_port: int | None | UndefinedType = Undefined,
                             priority: int | None | UndefinedType = Undefined,
-                            protocol: Literal["udp", "tcp"] | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
                             translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
@@ -7217,12 +7288,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
+
         class OspfMessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
+            HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
             _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}}
             id: int
-            hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None
+            hash_algorithm: HashAlgorithm | None
             key: str | None
             """Encrypted password - only type 7 supported."""
 
@@ -7232,7 +7306,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None | UndefinedType = Undefined,
+                    hash_algorithm: HashAlgorithm | None | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -7377,10 +7451,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TcpMssCeiling(AvdModel):
             """Subclass of AvdModel."""
 
+            Direction: TypeAlias = Literal["egress", "ingress"]
             _fields: ClassVar[dict] = {"ipv4": {"type": int}, "ipv6": {"type": int}, "direction": {"type": str}}
             ipv4: int | None
             ipv6: int | None
-            direction: Literal["egress", "ingress"] | None
+            direction: Direction | None
 
             if TYPE_CHECKING:
 
@@ -7389,7 +7464,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     ipv4: int | None | UndefinedType = Undefined,
                     ipv6: int | None | UndefinedType = Undefined,
-                    direction: Literal["egress", "ingress"] | None | UndefinedType = Undefined,
+                    direction: Direction | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     TcpMssCeiling.
@@ -7407,15 +7482,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class ChannelGroup(AvdModel):
             """Subclass of AvdModel."""
 
+            Mode: TypeAlias = Literal["on", "active", "passive"]
             _fields: ClassVar[dict] = {"id": {"type": int}, "mode": {"type": str}}
             id: int | None
-            mode: Literal["on", "active", "passive"] | None
+            mode: Mode | None
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self, *, id: int | None | UndefinedType = Undefined, mode: Literal["on", "active", "passive"] | None | UndefinedType = Undefined
-                ) -> None:
+                def __init__(self, *, id: int | None | UndefinedType = Undefined, mode: Mode | None | UndefinedType = Undefined) -> None:
                     """
                     ChannelGroup.
 
@@ -7428,15 +7502,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        IsisCircuitType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
         class IsisAuthentication(AvdModel):
             """Subclass of AvdModel."""
 
             class Both(AvdModel):
                 """Subclass of AvdModel."""
 
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
+
                 class KeyIdsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    KeyType: TypeAlias = Literal["0", "7", "8a"]
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "algorithm": {"type": str},
@@ -7446,8 +7526,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     id: int
                     """Configure authentication key-id."""
-                    algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
-                    key_type: Literal["0", "7", "8a"]
+                    algorithm: Algorithm
+                    key_type: KeyType
                     """Configure authentication key type."""
                     key: str
                     """Password string."""
@@ -7460,8 +7540,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
-                            algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                            key_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                            algorithm: Algorithm | UndefinedType = Undefined,
+                            key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
                             rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -7487,6 +7567,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 KeyIds._item_type = KeyIdsItem
 
+                Mode: TypeAlias = Literal["md5", "sha", "text", "shared-secret"]
+
                 class Sha(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -7510,18 +7592,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class SharedSecret(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
                     _fields: ClassVar[dict] = {"profile": {"type": str}, "algorithm": {"type": str}}
                     profile: str
-                    algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    algorithm: Algorithm
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            profile: str | UndefinedType = Undefined,
-                            algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, profile: str | UndefinedType = Undefined, algorithm: Algorithm | UndefinedType = Undefined) -> None:
                             """
                             SharedSecret.
 
@@ -7543,13 +7621,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "shared_secret": {"type": SharedSecret},
                     "rx_disabled": {"type": bool},
                 }
-                key_type: Literal["0", "7", "8a"] | None
+                key_type: KeyType | None
                 """Configure authentication key type."""
                 key: str | None
                 """Password string. `key_type` is required for this setting."""
                 key_ids: KeyIds
                 """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
-                mode: Literal["md5", "sha", "text", "shared-secret"] | None
+                mode: Mode | None
                 """Authentication mode."""
                 sha: Sha
                 """
@@ -7571,10 +7649,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Literal["md5", "sha", "text", "shared-secret"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
                         rx_disabled: bool | None | UndefinedType = Undefined,
@@ -7605,9 +7683,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Level1(AvdModel):
                 """Subclass of AvdModel."""
 
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
+
                 class KeyIdsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    KeyType: TypeAlias = Literal["0", "7", "8a"]
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "algorithm": {"type": str},
@@ -7617,8 +7699,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     id: int
                     """Configure authentication key-id."""
-                    algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
-                    key_type: Literal["0", "7", "8a"]
+                    algorithm: Algorithm
+                    key_type: KeyType
                     """Configure authentication key type."""
                     key: str
                     """Password string."""
@@ -7631,8 +7713,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
-                            algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                            key_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                            algorithm: Algorithm | UndefinedType = Undefined,
+                            key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
                             rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -7658,6 +7740,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 KeyIds._item_type = KeyIdsItem
 
+                Mode: TypeAlias = Literal["md5", "sha", "text", "shared-secret"]
+
                 class Sha(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -7681,18 +7765,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class SharedSecret(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
                     _fields: ClassVar[dict] = {"profile": {"type": str}, "algorithm": {"type": str}}
                     profile: str
-                    algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    algorithm: Algorithm
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            profile: str | UndefinedType = Undefined,
-                            algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, profile: str | UndefinedType = Undefined, algorithm: Algorithm | UndefinedType = Undefined) -> None:
                             """
                             SharedSecret.
 
@@ -7714,13 +7794,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "shared_secret": {"type": SharedSecret},
                     "rx_disabled": {"type": bool},
                 }
-                key_type: Literal["0", "7", "8a"] | None
+                key_type: KeyType | None
                 """Configure authentication key type."""
                 key: str | None
                 """Password string. `key_type` is required for this setting."""
                 key_ids: KeyIds
                 """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
-                mode: Literal["md5", "sha", "text", "shared-secret"] | None
+                mode: Mode | None
                 """Authentication mode."""
                 sha: Sha
                 """
@@ -7742,10 +7822,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Literal["md5", "sha", "text", "shared-secret"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
                         rx_disabled: bool | None | UndefinedType = Undefined,
@@ -7776,9 +7856,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Level2(AvdModel):
                 """Subclass of AvdModel."""
 
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
+
                 class KeyIdsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    KeyType: TypeAlias = Literal["0", "7", "8a"]
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "algorithm": {"type": str},
@@ -7788,8 +7872,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     id: int
                     """Configure authentication key-id."""
-                    algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
-                    key_type: Literal["0", "7", "8a"]
+                    algorithm: Algorithm
+                    key_type: KeyType
                     """Configure authentication key type."""
                     key: str
                     """Password string."""
@@ -7802,8 +7886,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
-                            algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                            key_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                            algorithm: Algorithm | UndefinedType = Undefined,
+                            key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
                             rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -7829,6 +7913,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 KeyIds._item_type = KeyIdsItem
 
+                Mode: TypeAlias = Literal["md5", "sha", "text", "shared-secret"]
+
                 class Sha(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -7852,18 +7938,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class SharedSecret(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
                     _fields: ClassVar[dict] = {"profile": {"type": str}, "algorithm": {"type": str}}
                     profile: str
-                    algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    algorithm: Algorithm
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            profile: str | UndefinedType = Undefined,
-                            algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, profile: str | UndefinedType = Undefined, algorithm: Algorithm | UndefinedType = Undefined) -> None:
                             """
                             SharedSecret.
 
@@ -7885,13 +7967,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "shared_secret": {"type": SharedSecret},
                     "rx_disabled": {"type": bool},
                 }
-                key_type: Literal["0", "7", "8a"] | None
+                key_type: KeyType | None
                 """Configure authentication key type."""
                 key: str | None
                 """Password string. `key_type` is required for this setting."""
                 key_ids: KeyIds
                 """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
-                mode: Literal["md5", "sha", "text", "shared-secret"] | None
+                mode: Mode | None
                 """Authentication mode."""
                 sha: Sha
                 """
@@ -7913,10 +7995,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Literal["md5", "sha", "text", "shared-secret"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
                         rx_disabled: bool | None | UndefinedType = Undefined,
@@ -7992,16 +8074,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Poe(AvdModel):
             """Subclass of AvdModel."""
 
+            Priority: TypeAlias = Literal["critical", "high", "medium", "low"]
+
             class Reboot(AvdModel):
                 """Subclass of AvdModel."""
 
+                Action: TypeAlias = Literal["maintain", "power-off"]
                 _fields: ClassVar[dict] = {"action": {"type": str}}
-                action: Literal["maintain", "power-off"] | None
+                action: Action | None
                 """PoE action for interface."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, action: Literal["maintain", "power-off"] | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, action: Action | None | UndefinedType = Undefined) -> None:
                         """
                         Reboot.
 
@@ -8016,8 +8101,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class LinkDown(AvdModel):
                 """Subclass of AvdModel."""
 
+                Action: TypeAlias = Literal["maintain", "power-off"]
                 _fields: ClassVar[dict] = {"action": {"type": str}, "power_off_delay": {"type": int}}
-                action: Literal["maintain", "power-off"] | None
+                action: Action | None
                 """PoE action for interface."""
                 power_off_delay: int | None
                 """
@@ -8027,12 +8113,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        action: Literal["maintain", "power-off"] | None | UndefinedType = Undefined,
-                        power_off_delay: int | None | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, action: Action | None | UndefinedType = Undefined, power_off_delay: int | None | UndefinedType = Undefined) -> None:
                         """
                         LinkDown.
 
@@ -8050,13 +8131,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Shutdown(AvdModel):
                 """Subclass of AvdModel."""
 
+                Action: TypeAlias = Literal["maintain", "power-off"]
                 _fields: ClassVar[dict] = {"action": {"type": str}}
-                action: Literal["maintain", "power-off"] | None
+                action: Action | None
                 """PoE action for interface."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, action: Literal["maintain", "power-off"] | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, action: Action | None | UndefinedType = Undefined) -> None:
                         """
                         Shutdown.
 
@@ -8117,7 +8199,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Default value: `False`
             """
-            priority: Literal["critical", "high", "medium", "low"] | None
+            priority: Priority | None
             """Prioritize a port's power in the event that one of the switch's power supplies loses power."""
             reboot: Reboot
             """
@@ -8162,7 +8244,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     disabled: bool | UndefinedType = Undefined,
-                    priority: Literal["critical", "high", "medium", "low"] | None | UndefinedType = Undefined,
+                    priority: Priority | None | UndefinedType = Undefined,
                     reboot: Reboot | UndefinedType = Undefined,
                     link_down: LinkDown | UndefinedType = Undefined,
                     shutdown: Shutdown | UndefinedType = Undefined,
@@ -8231,18 +8313,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            DelayMechanism: TypeAlias = Literal["e2e", "p2p"]
+
             class Profile(AvdModel):
                 """Subclass of AvdModel."""
 
                 class G82751(AvdModel):
                     """Subclass of AvdModel."""
 
+                    DestinationMacAddress: TypeAlias = Literal["forwardable", "non-forwardable"]
                     _fields: ClassVar[dict] = {"destination_mac_address": {"type": str}}
-                    destination_mac_address: Literal["forwardable", "non-forwardable"] | None
+                    destination_mac_address: DestinationMacAddress | None
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, destination_mac_address: Literal["forwardable", "non-forwardable"] | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, destination_mac_address: DestinationMacAddress | None | UndefinedType = Undefined) -> None:
                             """
                             G82751.
 
@@ -8292,6 +8377,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            Role: TypeAlias = Literal["master", "dynamic"]
+            Transport: TypeAlias = Literal["ipv4", "ipv6", "layer2"]
             _fields: ClassVar[dict] = {
                 "enable": {"type": bool},
                 "announce": {"type": Announce},
@@ -8307,15 +8394,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             announce: Announce
             """Subclass of AvdModel."""
             delay_req: int | None
-            delay_mechanism: Literal["e2e", "p2p"] | None
+            delay_mechanism: DelayMechanism | None
             profile: Profile
             """Subclass of AvdModel."""
             sync_message: SyncMessage
             """Subclass of AvdModel."""
-            role: Literal["master", "dynamic"] | None
+            role: Role | None
             vlan: str | None
             """VLAN can be 'all' or list of vlans as string."""
-            transport: Literal["ipv4", "ipv6", "layer2"] | None
+            transport: Transport | None
 
             if TYPE_CHECKING:
 
@@ -8325,12 +8412,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     enable: bool | None | UndefinedType = Undefined,
                     announce: Announce | UndefinedType = Undefined,
                     delay_req: int | None | UndefinedType = Undefined,
-                    delay_mechanism: Literal["e2e", "p2p"] | None | UndefinedType = Undefined,
+                    delay_mechanism: DelayMechanism | None | UndefinedType = Undefined,
                     profile: Profile | UndefinedType = Undefined,
                     sync_message: SyncMessage | UndefinedType = Undefined,
-                    role: Literal["master", "dynamic"] | None | UndefinedType = Undefined,
+                    role: Role | None | UndefinedType = Undefined,
                     vlan: str | None | UndefinedType = Undefined,
-                    transport: Literal["ipv4", "ipv6", "layer2"] | None | UndefinedType = Undefined,
+                    transport: Transport | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ptp.
@@ -8357,10 +8444,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class All(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional field and is hardware dependent.
 
@@ -8369,7 +8457,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         All.
 
@@ -8385,10 +8473,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Broadcast(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional field and is hardware dependent.
 
@@ -8397,7 +8486,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         Broadcast.
 
@@ -8413,10 +8502,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Multicast(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional field and is hardware dependent.
 
@@ -8425,7 +8515,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         Multicast.
 
@@ -8441,10 +8531,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class UnknownUnicast(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional field and is hardware dependent.
 
@@ -8453,7 +8544,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         UnknownUnicast.
 
@@ -8599,22 +8690,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Dot1x(AvdModel):
             """Subclass of AvdModel."""
 
+            PortControl: TypeAlias = Literal["auto", "force-authorized", "force-unauthorized"]
+
             class Pae(AvdModel):
                 """Subclass of AvdModel."""
 
+                Mode: TypeAlias = Literal["authenticator", "supplicant"]
                 _fields: ClassVar[dict] = {"mode": {"type": str}, "supplicant_profile": {"type": str}}
-                mode: Literal["authenticator", "supplicant"] | None
+                mode: Mode | None
                 supplicant_profile: str | None
                 """Supplicant profile name."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        mode: Literal["authenticator", "supplicant"] | None | UndefinedType = Undefined,
-                        supplicant_profile: str | None | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, supplicant_profile: str | None | UndefinedType = Undefined) -> None:
                         """
                         Pae.
 
@@ -8630,15 +8719,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class AuthenticationFailure(AvdModel):
                 """Subclass of AvdModel."""
 
+                Action: TypeAlias = Literal["allow", "drop"]
                 _fields: ClassVar[dict] = {"action": {"type": str}, "allow_vlan": {"type": int}}
-                action: Literal["allow", "drop"] | None
+                action: Action | None
                 allow_vlan: int | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, action: Literal["allow", "drop"] | None | UndefinedType = Undefined, allow_vlan: int | None | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, action: Action | None | UndefinedType = Undefined, allow_vlan: int | None | UndefinedType = Undefined) -> None:
                         """
                         AuthenticationFailure.
 
@@ -8654,17 +8742,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class HostMode(AvdModel):
                 """Subclass of AvdModel."""
 
+                Mode: TypeAlias = Literal["multi-host", "single-host"]
                 _fields: ClassVar[dict] = {"mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
-                mode: Literal["multi-host", "single-host"] | None
+                mode: Mode | None
                 multi_host_authenticated: bool | None
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        mode: Literal["multi-host", "single-host"] | None | UndefinedType = Undefined,
-                        multi_host_authenticated: bool | None | UndefinedType = Undefined,
+                        self, *, mode: Mode | None | UndefinedType = Undefined, multi_host_authenticated: bool | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         HostMode.
@@ -8834,12 +8920,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Unresponsive(AvdModel):
                     """Subclass of AvdModel."""
 
+                    EapResponse: TypeAlias = Literal["success", "disabled"]
+
                     class Action(AvdModel):
                         """Subclass of AvdModel."""
 
                         class CachedResultsTimeout(AvdModel):
                             """Subclass of AvdModel."""
 
+                            TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
                             _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
                             time_duration: int | None
                             """
@@ -8850,7 +8939,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             <1-240000>     duration in hours
                             <1-864000000>  duration in seconds
                             """
-                            time_duration_unit: Literal["days", "hours", "minutes", "seconds"]
+                            time_duration_unit: TimeDurationUnit
 
                             if TYPE_CHECKING:
 
@@ -8858,7 +8947,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     time_duration: int | None | UndefinedType = Undefined,
-                                    time_duration_unit: Literal["days", "hours", "minutes", "seconds"] | UndefinedType = Undefined,
+                                    time_duration_unit: TimeDurationUnit | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     CachedResultsTimeout.
@@ -8939,6 +9028,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         class CachedResultsTimeout(AvdModel):
                             """Subclass of AvdModel."""
 
+                            TimeDurationUnit: TypeAlias = Literal["days", "hours", "minutes", "seconds"]
                             _fields: ClassVar[dict] = {"time_duration": {"type": int}, "time_duration_unit": {"type": str}}
                             time_duration: int | None
                             """
@@ -8949,7 +9039,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             <1-240000>     duration in hours
                             <1-864000000>  duration in seconds
                             """
-                            time_duration_unit: Literal["days", "hours", "minutes", "seconds"]
+                            time_duration_unit: TimeDurationUnit
 
                             if TYPE_CHECKING:
 
@@ -8957,7 +9047,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     time_duration: int | None | UndefinedType = Undefined,
-                                    time_duration_unit: Literal["days", "hours", "minutes", "seconds"] | UndefinedType = Undefined,
+                                    time_duration_unit: TimeDurationUnit | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     CachedResultsTimeout.
@@ -9024,7 +9114,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 """
 
                     _fields: ClassVar[dict] = {"eap_response": {"type": str}, "action": {"type": Action}, "phone_action": {"type": PhoneAction}}
-                    eap_response: Literal["success", "disabled"] | None
+                    eap_response: EapResponse | None
                     """EAP response to send. EOS default is `success`."""
                     action: Action
                     """
@@ -9044,7 +9134,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            eap_response: Literal["success", "disabled"] | None | UndefinedType = Undefined,
+                            eap_response: EapResponse | None | UndefinedType = Undefined,
                             action: Action | UndefinedType = Undefined,
                             phone_action: PhoneAction | UndefinedType = Undefined,
                         ) -> None:
@@ -9107,7 +9197,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "eapol": {"type": Eapol},
                 "aaa": {"type": Aaa},
             }
-            port_control: Literal["auto", "force-authorized", "force-unauthorized"] | None
+            port_control: PortControl | None
             port_control_force_authorized_phone: bool | None
             reauthentication: bool | None
             pae: Pae
@@ -9135,7 +9225,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    port_control: Literal["auto", "force-authorized", "force-unauthorized"] | None | UndefinedType = Undefined,
+                    port_control: PortControl | None | UndefinedType = Undefined,
                     port_control_force_authorized_phone: bool | None | UndefinedType = Undefined,
                     reauthentication: bool | None | UndefinedType = Undefined,
                     pae: Pae | UndefinedType = Undefined,
@@ -9211,8 +9301,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Qos(AvdModel):
             """Subclass of AvdModel."""
 
+            Trust: TypeAlias = Literal["dscp", "cos", "disabled"]
             _fields: ClassVar[dict] = {"trust": {"type": str}, "dscp": {"type": int}, "cos": {"type": int}}
-            trust: Literal["dscp", "cos", "disabled"] | None
+            trust: Trust | None
             dscp: int | None
             """DSCP value."""
             cos: int | None
@@ -9223,7 +9314,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    trust: Literal["dscp", "cos", "disabled"] | None | UndefinedType = Undefined,
+                    trust: Trust | None | UndefinedType = Undefined,
                     dscp: int | None | UndefinedType = Undefined,
                     cos: int | None | UndefinedType = Undefined,
                 ) -> None:
@@ -9239,6 +9330,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         cos: COS value.
 
                     """
+
+        SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+        SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
 
         class SpanningTreeBpduguardRateLimit(AvdModel):
             """Subclass of AvdModel."""
@@ -9272,6 +9366,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         interval: Number of seconds in the BPDU input rate limiter timer.
 
                     """
+
+        SpanningTreeGuard: TypeAlias = Literal["loop", "root", "disabled"]
+        SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
 
         class PriorityFlowControl(AvdModel):
             """Subclass of AvdModel."""
@@ -9474,15 +9571,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class LacpTimer(AvdModel):
             """Subclass of AvdModel."""
 
+            Mode: TypeAlias = Literal["fast", "normal"]
             _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
-            mode: Literal["fast", "normal"] | None
+            mode: Mode | None
             multiplier: int | None
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self, *, mode: Literal["fast", "normal"] | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined
-                ) -> None:
+                def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined) -> None:
                     """
                     LacpTimer.
 
@@ -9497,6 +9593,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         class Transceiver(AvdModel):
             """Subclass of AvdModel."""
+
+            FrequencyUnit: TypeAlias = Literal["ghz"]
 
             class Media(AvdModel):
                 """Subclass of AvdModel."""
@@ -9518,6 +9616,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             override: Transceiver type.
 
                         """
+
+            ApplicationOverride: TypeAlias = Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "100gbase-srbd"]
 
             class ApplicationOverrideLanesItem(AvdModel):
                 """Subclass of AvdModel."""
@@ -9565,11 +9665,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             }
             frequency: str | None
             """Transceiver Laser Frequency in GHz (min 190000, max 200000)."""
-            frequency_unit: Literal["ghz"] | None
+            frequency_unit: FrequencyUnit | None
             """Unit of Transceiver Laser Frequency."""
             media: Media
             """Subclass of AvdModel."""
-            application_override: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "100gbase-srbd"] | None
+            application_override: ApplicationOverride | None
             """
             Set CMIS transceiver application.
             '100gbase-srbd' should not be used in conjunction with
@@ -9589,11 +9689,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     frequency: str | None | UndefinedType = Undefined,
-                    frequency_unit: Literal["ghz"] | None | UndefinedType = Undefined,
+                    frequency_unit: FrequencyUnit | None | UndefinedType = Undefined,
                     media: Media | UndefinedType = Undefined,
-                    application_override: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "100gbase-srbd"]
-                    | None
-                    | UndefinedType = Undefined,
+                    application_override: ApplicationOverride | None | UndefinedType = Undefined,
                     application_override_lanes: ApplicationOverrideLanes | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -9942,6 +10040,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class Threshold(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Units: TypeAlias = Literal["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
                         _fields: ClassVar[dict] = {
                             "units": {"type": str},
                             "min": {"type": int},
@@ -9949,7 +10048,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "max_probability": {"type": int},
                             "weight": {"type": int},
                         }
-                        units: Literal["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
+                        units: Units
                         """Indicate the units to be used for the threshold values."""
                         min: int
                         """Set the random-detect ECN minimum-threshold."""
@@ -9965,7 +10064,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                units: Literal["segments", "bytes", "kbytes", "mbytes", "milliseconds"] | UndefinedType = Undefined,
+                                units: Units | UndefinedType = Undefined,
                                 min: int | UndefinedType = Undefined,
                                 max: int | UndefinedType = Undefined,
                                 max_probability: int | None | UndefinedType = Undefined,
@@ -10072,6 +10171,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class Threshold(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Units: TypeAlias = Literal["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
                         _fields: ClassVar[dict] = {
                             "units": {"type": str},
                             "min": {"type": int},
@@ -10079,7 +10179,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "max_probability": {"type": int},
                             "weight": {"type": int},
                         }
-                        units: Literal["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
+                        units: Units
                         """Indicate the units to be used for the threshold values."""
                         min: int | None
                         """Set the random-detect ECN minimum-threshold."""
@@ -10095,7 +10195,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                units: Literal["segments", "bytes", "kbytes", "mbytes", "milliseconds"] | UndefinedType = Undefined,
+                                units: Units | UndefinedType = Undefined,
                                 min: int | None | UndefinedType = Undefined,
                                 max: int | UndefinedType = Undefined,
                                 max_probability: int | UndefinedType = Undefined,
@@ -10359,6 +10459,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 SecondaryAddresses._item_type = str
 
+                Version: TypeAlias = Literal[2, 3]
                 _fields: ClassVar[dict] = {"address": {"type": str}, "secondary_addresses": {"type": SecondaryAddresses}, "version": {"type": int}}
                 address: str
                 """Virtual IPv4 address."""
@@ -10368,7 +10469,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Subclass of AvdList with `str` items.
                 """
-                version: Literal[2, 3] | None
+                version: Version | None
 
                 if TYPE_CHECKING:
 
@@ -10377,7 +10478,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         address: str | UndefinedType = Undefined,
                         secondary_addresses: SecondaryAddresses | UndefinedType = Undefined,
-                        version: Literal[2, 3] | None | UndefinedType = Undefined,
+                        version: Version | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ipv4.
@@ -10431,12 +10532,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class PeerAuthentication(AvdModel):
                 """Subclass of AvdModel."""
 
+                Mode: TypeAlias = Literal["text", "ietf-md5"]
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
                 _fields: ClassVar[dict] = {"mode": {"type": str}, "key": {"type": str}, "key_type": {"type": str}}
-                mode: Literal["text", "ietf-md5"]
+                mode: Mode
                 """Authentication mode."""
                 key: str
                 """Authentication key."""
-                key_type: Literal["0", "7", "8a"] | None
+                key_type: KeyType | None
                 """Authentication key type."""
 
                 if TYPE_CHECKING:
@@ -10444,9 +10547,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        mode: Literal["text", "ietf-md5"] | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType = Undefined,
                         key: str | UndefinedType = Undefined,
-                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerAuthentication.
@@ -10535,6 +10638,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Switchport(AvdModel):
             """Subclass of AvdModel."""
 
+            Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone", "tap", "tool", "tap-tool"]
+
             class Trunk(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -10590,18 +10695,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Phone(AvdModel):
                 """Subclass of AvdModel."""
 
+                Trunk: TypeAlias = Literal["tagged", "tagged phone", "untagged", "untagged phone"]
                 _fields: ClassVar[dict] = {"vlan": {"type": int}, "trunk": {"type": str}}
                 vlan: int | None
-                trunk: Literal["tagged", "tagged phone", "untagged", "untagged phone"] | None
+                trunk: Trunk | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        vlan: int | None | UndefinedType = Undefined,
-                        trunk: Literal["tagged", "tagged phone", "untagged", "untagged phone"] | None | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, vlan: int | None | UndefinedType = Undefined, trunk: Trunk | None | UndefinedType = Undefined) -> None:
                         """
                         Phone.
 
@@ -10617,20 +10718,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Dot1q(AvdModel):
                 """Subclass of AvdModel."""
 
+                VlanTag: TypeAlias = Literal["disallowed", "required"]
                 _fields: ClassVar[dict] = {"ethertype": {"type": int}, "vlan_tag": {"type": str}}
                 ethertype: int | None
                 """Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged frames."""
-                vlan_tag: Literal["disallowed", "required"] | None
+                vlan_tag: VlanTag | None
                 """Allow/disallow VLAN tagged frames."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        ethertype: int | None | UndefinedType = Undefined,
-                        vlan_tag: Literal["disallowed", "required"] | None | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, ethertype: int | None | UndefinedType = Undefined, vlan_tag: VlanTag | None | UndefinedType = Undefined) -> None:
                         """
                         Dot1q.
 
@@ -10642,6 +10739,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             vlan_tag: Allow/disallow VLAN tagged frames.
 
                         """
+
+            SourceInterface: TypeAlias = Literal["tx", "tx multicast"]
 
             class VlanTranslations(AvdModel):
                 """Subclass of AvdModel."""
@@ -10983,20 +11082,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Violation(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Mode: TypeAlias = Literal["shutdown", "protect"]
                     _fields: ClassVar[dict] = {"mode": {"type": str}, "protect_log": {"type": bool}}
-                    mode: Literal["shutdown", "protect"] | None
+                    mode: Mode | None
                     """Configure port security mode."""
                     protect_log: bool | None
                     """Log new addresses seen after limit is reached in protect mode."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            mode: Literal["shutdown", "protect"] | None | UndefinedType = Undefined,
-                            protect_log: bool | None | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, protect_log: bool | None | UndefinedType = Undefined) -> None:
                             """
                             Violation.
 
@@ -11632,19 +11727,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Identity(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Tag: TypeAlias = Literal["dot1q", "qinq"]
+                    Dot1qDzgreSource: TypeAlias = Literal["policy", "port"]
+                    QinqDzgreSource: TypeAlias = Literal["policy inner port", "port inner policy"]
                     _fields: ClassVar[dict] = {"tag": {"type": str}, "dot1q_dzgre_source": {"type": str}, "qinq_dzgre_source": {"type": str}}
-                    tag: Literal["dot1q", "qinq"] | None
-                    dot1q_dzgre_source: Literal["policy", "port"] | None
-                    qinq_dzgre_source: Literal["policy inner port", "port inner policy"] | None
+                    tag: Tag | None
+                    dot1q_dzgre_source: Dot1qDzgreSource | None
+                    qinq_dzgre_source: QinqDzgreSource | None
 
                     if TYPE_CHECKING:
 
                         def __init__(
                             self,
                             *,
-                            tag: Literal["dot1q", "qinq"] | None | UndefinedType = Undefined,
-                            dot1q_dzgre_source: Literal["policy", "port"] | None | UndefinedType = Undefined,
-                            qinq_dzgre_source: Literal["policy inner port", "port inner policy"] | None | UndefinedType = Undefined,
+                            tag: Tag | None | UndefinedType = Undefined,
+                            dot1q_dzgre_source: Dot1qDzgreSource | None | UndefinedType = Undefined,
+                            qinq_dzgre_source: QinqDzgreSource | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Identity.
@@ -11743,7 +11841,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "tool": {"type": Tool},
             }
             enabled: bool | None
-            mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone", "tap", "tool", "tap-tool"] | None
+            mode: Mode | None
             access_vlan: int | None
             """Set VLAN when interface is in access mode."""
             trunk: Trunk
@@ -11754,7 +11852,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Secondary VLAN IDs of the private VLAN mapping."""
             dot1q: Dot1q
             """Subclass of AvdModel."""
-            source_interface: Literal["tx", "tx multicast"] | None
+            source_interface: SourceInterface | None
             """
             tx: Allow bridged traffic to go out of the source interface.
             tx multicast: Allow multicast traffic
@@ -11802,13 +11900,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     enabled: bool | None | UndefinedType = Undefined,
-                    mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone", "tap", "tool", "tap-tool"] | None | UndefinedType = Undefined,
+                    mode: Mode | None | UndefinedType = Undefined,
                     access_vlan: int | None | UndefinedType = Undefined,
                     trunk: Trunk | UndefinedType = Undefined,
                     phone: Phone | UndefinedType = Undefined,
                     pvlan_mapping: str | None | UndefinedType = Undefined,
                     dot1q: Dot1q | UndefinedType = Undefined,
-                    source_interface: Literal["tx", "tx multicast"] | None | UndefinedType = Undefined,
+                    source_interface: SourceInterface | None | UndefinedType = Undefined,
                     vlan_translations: VlanTranslations | UndefinedType = Undefined,
                     vlan_forwarding_accept_all: bool | None | UndefinedType = Undefined,
                     backup_link: BackupLink | UndefinedType = Undefined,
@@ -11879,15 +11977,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Bandwidth(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["gbps", "mbps", "percent"]
                 _fields: ClassVar[dict] = {"number": {"type": int}, "unit": {"type": str}}
                 number: int
-                unit: Literal["gbps", "mbps", "percent"]
+                unit: Unit
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, number: int | UndefinedType = Undefined, unit: Literal["gbps", "mbps", "percent"] | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, number: int | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         Bandwidth.
 
@@ -11903,19 +12000,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class MinDelayStatic(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["microseconds", "milliseconds"]
                 _fields: ClassVar[dict] = {"number": {"type": int}, "unit": {"type": str}}
                 number: int
                 """
                 Valid values are 1-16777215 microseconds. This is regardless of whether the specified unit is
                 milliseconds or microseconds.
                 """
-                unit: Literal["microseconds", "milliseconds"]
+                unit: Unit
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, number: int | UndefinedType = Undefined, unit: Literal["microseconds", "milliseconds"] | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, number: int | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         MinDelayStatic.
 
@@ -11936,6 +12032,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class TwampLightFallback(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Unit: TypeAlias = Literal["microseconds", "milliseconds"]
                     _fields: ClassVar[dict] = {"number": {"type": int}, "unit": {"type": str}}
                     number: int
                     """
@@ -11943,13 +12040,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     This is regardless of whether the specified unit is
                     milliseconds or microseconds.
                     """
-                    unit: Literal["microseconds", "milliseconds"]
+                    unit: Unit
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, number: int | UndefinedType = Undefined, unit: Literal["microseconds", "milliseconds"] | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, number: int | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                             """
                             TwampLightFallback.
 
@@ -12184,93 +12279,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         shutdown: bool | None
         load_interval: int | None
         """Interval in seconds for updating interface counters."""
-        speed: (
-            Literal[
-                "100full",
-                "100g",
-                "100g-1",
-                "100g-2",
-                "100g-4",
-                "100half",
-                "10full",
-                "10g",
-                "10half",
-                "1g",
-                "200g",
-                "200g-2",
-                "200g-4",
-                "25g",
-                "400g",
-                "400g-4",
-                "400g-8",
-                "40g",
-                "50g",
-                "50g-1",
-                "50g-2",
-                "800g-8",
-                "sfp-1000baset auto 100full",
-                "1.6t-8",
-                "100mfull",
-                "100mhalf",
-                "10mfull",
-                "10mhalf",
-                "200g-1",
-                "400g-2",
-                "40g-4",
-                "800g-4",
-                "auto",
-                "auto 10000full",
-                "auto 1000full",
-                "auto 100full",
-                "auto 100g-1",
-                "auto 100g-2",
-                "auto 100g-4",
-                "auto 100gfull",
-                "auto 100half",
-                "auto 10full",
-                "auto 10gfull",
-                "auto 10half",
-                "auto 1gfull",
-                "auto 2.5gfull",
-                "auto 200g-2",
-                "auto 200g-4",
-                "auto 25gfull",
-                "auto 400g-4",
-                "auto 400g-8",
-                "auto 40gfull",
-                "auto 50g-1",
-                "auto 50g-2",
-                "auto 50gfull",
-                "auto 5gfull",
-                "auto 800g-8",
-                "auto 1.6t-8",
-                "auto 100mfull",
-                "auto 100mhalf",
-                "auto 10g",
-                "auto 10mfull",
-                "auto 10mhalf",
-                "auto 1g",
-                "auto 2.5g",
-                "auto 200g-1",
-                "auto 25g",
-                "auto 400g-2",
-                "auto 40g-4",
-                "auto 5g",
-                "auto 800g-4",
-                "forced 10000full",
-                "forced 1000full",
-                "forced 1000half",
-                "forced 100full",
-                "forced 100gfull",
-                "forced 100half",
-                "forced 10full",
-                "forced 10half",
-                "forced 25gfull",
-                "forced 40gfull",
-                "forced 50gfull",
-            ]
-            | None
-        )
+        speed: Speed | None
         """Interface Speed."""
         mtu: int | None
         l2_mtu: int | None
@@ -12281,7 +12290,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Accept gratuitous ARP."""
         l2_protocol: L2Protocol
         """Subclass of AvdModel."""
-        mac_timestamp: Literal["before-fcs", "replace-fcs", "header"] | None
+        mac_timestamp: MacTimestamp | None
         """
         header: Insert timestamp in ethernet header. Supported on platforms like 7500E/R and 7280E/R.
         before-fcs: Insert timestamp before fcs field. Supported on platforms like 7150.
@@ -12319,7 +12328,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """IPv4 address/mask or "dhcp"."""
         ip_address_secondaries: IpAddressSecondaries
         """Subclass of AvdList with `str` items."""
-        ip_verify_unicast_source_reachable_via: Literal["any", "rx"] | None
+        ip_verify_unicast_source_reachable_via: IpVerifyUnicastSourceReachableVia | None
         dhcp_client_accept_default_route: bool | None
         """Install default-route obtained via DHCP."""
         dhcp_server_ipv4: bool | None
@@ -12365,7 +12374,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ospf_network_point_to_point: bool | None
         ospf_area: str | None
         ospf_cost: int | None
-        ospf_authentication: Literal["none", "simple", "message-digest"] | None
+        ospf_authentication: OspfAuthentication | None
         ospf_authentication_key: str | None
         """Encrypted password - only type 7 supported."""
         ospf_message_digest_keys: OspfMessageDigestKeys
@@ -12394,7 +12403,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         isis_passive: bool | None
         isis_metric: int | None
         isis_network_point_to_point: bool | None
-        isis_circuit_type: Literal["level-1-2", "level-1", "level-2"] | None
+        isis_circuit_type: IsisCircuitType | None
         isis_hello_padding: bool | None
         isis_authentication: IsisAuthentication
         """Subclass of AvdModel."""
@@ -12422,12 +12431,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         qos: Qos
         """Subclass of AvdModel."""
-        spanning_tree_bpdufilter: Literal["enabled", "disabled", "True", "False", "true", "false"] | None
-        spanning_tree_bpduguard: Literal["enabled", "disabled", "True", "False", "true", "false"] | None
+        spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
+        spanning_tree_bpduguard: SpanningTreeBpduguard | None
         spanning_tree_bpduguard_rate_limit: SpanningTreeBpduguardRateLimit
         """Subclass of AvdModel."""
-        spanning_tree_guard: Literal["loop", "root", "disabled"] | None
-        spanning_tree_portfast: Literal["edge", "network"] | None
+        spanning_tree_guard: SpanningTreeGuard | None
+        spanning_tree_portfast: SpanningTreePortfast | None
         vmtracer: bool | None
         priority_flow_control: PriorityFlowControl
         """Subclass of AvdModel."""
@@ -12500,98 +12509,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 description: str | None | UndefinedType = Undefined,
                 shutdown: bool | None | UndefinedType = Undefined,
                 load_interval: int | None | UndefinedType = Undefined,
-                speed: Literal[
-                    "100full",
-                    "100g",
-                    "100g-1",
-                    "100g-2",
-                    "100g-4",
-                    "100half",
-                    "10full",
-                    "10g",
-                    "10half",
-                    "1g",
-                    "200g",
-                    "200g-2",
-                    "200g-4",
-                    "25g",
-                    "400g",
-                    "400g-4",
-                    "400g-8",
-                    "40g",
-                    "50g",
-                    "50g-1",
-                    "50g-2",
-                    "800g-8",
-                    "sfp-1000baset auto 100full",
-                    "1.6t-8",
-                    "100mfull",
-                    "100mhalf",
-                    "10mfull",
-                    "10mhalf",
-                    "200g-1",
-                    "400g-2",
-                    "40g-4",
-                    "800g-4",
-                    "auto",
-                    "auto 10000full",
-                    "auto 1000full",
-                    "auto 100full",
-                    "auto 100g-1",
-                    "auto 100g-2",
-                    "auto 100g-4",
-                    "auto 100gfull",
-                    "auto 100half",
-                    "auto 10full",
-                    "auto 10gfull",
-                    "auto 10half",
-                    "auto 1gfull",
-                    "auto 2.5gfull",
-                    "auto 200g-2",
-                    "auto 200g-4",
-                    "auto 25gfull",
-                    "auto 400g-4",
-                    "auto 400g-8",
-                    "auto 40gfull",
-                    "auto 50g-1",
-                    "auto 50g-2",
-                    "auto 50gfull",
-                    "auto 5gfull",
-                    "auto 800g-8",
-                    "auto 1.6t-8",
-                    "auto 100mfull",
-                    "auto 100mhalf",
-                    "auto 10g",
-                    "auto 10mfull",
-                    "auto 10mhalf",
-                    "auto 1g",
-                    "auto 2.5g",
-                    "auto 200g-1",
-                    "auto 25g",
-                    "auto 400g-2",
-                    "auto 40g-4",
-                    "auto 5g",
-                    "auto 800g-4",
-                    "forced 10000full",
-                    "forced 1000full",
-                    "forced 1000half",
-                    "forced 100full",
-                    "forced 100gfull",
-                    "forced 100half",
-                    "forced 10full",
-                    "forced 10half",
-                    "forced 25gfull",
-                    "forced 40gfull",
-                    "forced 50gfull",
-                ]
-                | None
-                | UndefinedType = Undefined,
+                speed: Speed | None | UndefinedType = Undefined,
                 mtu: int | None | UndefinedType = Undefined,
                 l2_mtu: int | None | UndefinedType = Undefined,
                 l2_mru: int | None | UndefinedType = Undefined,
                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 l2_protocol: L2Protocol | UndefinedType = Undefined,
-                mac_timestamp: Literal["before-fcs", "replace-fcs", "header"] | None | UndefinedType = Undefined,
+                mac_timestamp: MacTimestamp | None | UndefinedType = Undefined,
                 snmp_trap_link_change: bool | None | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
                 flowcontrol: Flowcontrol | UndefinedType = Undefined,
@@ -12606,7 +12530,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 vlan_id: int | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
                 ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
-                ip_verify_unicast_source_reachable_via: Literal["any", "rx"] | None | UndefinedType = Undefined,
+                ip_verify_unicast_source_reachable_via: IpVerifyUnicastSourceReachableVia | None | UndefinedType = Undefined,
                 dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
                 dhcp_server_ipv4: bool | None | UndefinedType = Undefined,
                 dhcp_server_ipv6: bool | None | UndefinedType = Undefined,
@@ -12629,7 +12553,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ospf_network_point_to_point: bool | None | UndefinedType = Undefined,
                 ospf_area: str | None | UndefinedType = Undefined,
                 ospf_cost: int | None | UndefinedType = Undefined,
-                ospf_authentication: Literal["none", "simple", "message-digest"] | None | UndefinedType = Undefined,
+                ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
                 ospf_authentication_key: str | None | UndefinedType = Undefined,
                 ospf_message_digest_keys: OspfMessageDigestKeys | UndefinedType = Undefined,
                 pim: Pim | UndefinedType = Undefined,
@@ -12642,7 +12566,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 isis_passive: bool | None | UndefinedType = Undefined,
                 isis_metric: int | None | UndefinedType = Undefined,
                 isis_network_point_to_point: bool | None | UndefinedType = Undefined,
-                isis_circuit_type: Literal["level-1-2", "level-1", "level-2"] | None | UndefinedType = Undefined,
+                isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
                 isis_hello_padding: bool | None | UndefinedType = Undefined,
                 isis_authentication: IsisAuthentication | UndefinedType = Undefined,
                 poe: Poe | UndefinedType = Undefined,
@@ -12655,11 +12579,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 service_profile: str | None | UndefinedType = Undefined,
                 shape: Shape | UndefinedType = Undefined,
                 qos: Qos | UndefinedType = Undefined,
-                spanning_tree_bpdufilter: Literal["enabled", "disabled", "True", "False", "true", "false"] | None | UndefinedType = Undefined,
-                spanning_tree_bpduguard: Literal["enabled", "disabled", "True", "False", "true", "false"] | None | UndefinedType = Undefined,
+                spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
+                spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
                 spanning_tree_bpduguard_rate_limit: SpanningTreeBpduguardRateLimit | UndefinedType = Undefined,
-                spanning_tree_guard: Literal["loop", "root", "disabled"] | None | UndefinedType = Undefined,
-                spanning_tree_portfast: Literal["edge", "network"] | None | UndefinedType = Undefined,
+                spanning_tree_guard: SpanningTreeGuard | None | UndefinedType = Undefined,
+                spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                 vmtracer: bool | None | UndefinedType = Undefined,
                 priority_flow_control: PriorityFlowControl | UndefinedType = Undefined,
                 bfd: Bfd | UndefinedType = Undefined,
@@ -12877,6 +12801,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        Trigger: TypeAlias = Literal["on-boot", "on-counters", "on-intf", "on-logging", "on-maintenance", "on-startup-config", "vm-tracer vm"]
+
         class TriggerOnCounters(AvdModel):
             """Subclass of AvdModel."""
 
@@ -12996,6 +12922,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TriggerOnMaintenance(AvdModel):
             """Subclass of AvdModel."""
 
+            Operation: TypeAlias = Literal["enter", "exit"]
+            Action: TypeAlias = Literal["after", "before", "all", "begin", "end"]
+            Stage: TypeAlias = Literal["bgp", "linkdown", "mlag", "ratemon"]
             _fields: ClassVar[dict] = {
                 "operation": {"type": str},
                 "bgp_peer": {"type": str},
@@ -13005,16 +12934,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "interface": {"type": str},
                 "unit": {"type": str},
             }
-            operation: Literal["enter", "exit"]
+            operation: Operation
             bgp_peer: str | None
             """
             Ipv4/Ipv6 address or peer group name.
             Trigger condition occurs on maintenance operation of specified
             BGP peer.
             """
-            action: Literal["after", "before", "all", "begin", "end"]
+            action: Action
             """Action for maintenance operation."""
-            stage: Literal["bgp", "linkdown", "mlag", "ratemon"] | None
+            stage: Stage | None
             """Action is triggered after/before specified stage."""
             vrf: str | None
             """VRF name. VRF can be defined for "bgp_peer" only."""
@@ -13028,10 +12957,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    operation: Literal["enter", "exit"] | UndefinedType = Undefined,
+                    operation: Operation | UndefinedType = Undefined,
                     bgp_peer: str | None | UndefinedType = Undefined,
-                    action: Literal["after", "before", "all", "begin", "end"] | UndefinedType = Undefined,
-                    stage: Literal["bgp", "linkdown", "mlag", "ratemon"] | None | UndefinedType = Undefined,
+                    action: Action | UndefinedType = Undefined,
+                    stage: Stage | None | UndefinedType = Undefined,
                     vrf: str | None | UndefinedType = Undefined,
                     interface: str | None | UndefinedType = Undefined,
                     unit: str | None | UndefinedType = Undefined,
@@ -13076,7 +13005,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         delay: int | None
         """Event-handler delay in seconds."""
-        trigger: Literal["on-boot", "on-counters", "on-intf", "on-logging", "on-maintenance", "on-startup-config", "vm-tracer vm"] | None
+        trigger: Trigger | None
         """Configure event trigger condition."""
         trigger_on_counters: TriggerOnCounters
         """Subclass of AvdModel."""
@@ -13111,9 +13040,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 name: str | UndefinedType = Undefined,
                 actions: Actions | UndefinedType = Undefined,
                 delay: int | None | UndefinedType = Undefined,
-                trigger: Literal["on-boot", "on-counters", "on-intf", "on-logging", "on-maintenance", "on-startup-config", "vm-tracer vm"]
-                | None
-                | UndefinedType = Undefined,
+                trigger: Trigger | None | UndefinedType = Undefined,
                 trigger_on_counters: TriggerOnCounters | UndefinedType = Undefined,
                 trigger_on_logging: TriggerOnLogging | UndefinedType = Undefined,
                 trigger_on_intf: TriggerOnIntf | UndefinedType = Undefined,
@@ -13805,6 +13732,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Collectors._item_type = CollectorsItem
 
+                    Format: TypeAlias = Literal["sflow", "drop-report"]
                     _fields: ClassVar[dict] = {
                         "name": {"type": str},
                         "collectors": {"type": Collectors},
@@ -13817,7 +13745,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Exporter Name."""
                     collectors: Collectors
                     """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
-                    format: Literal["sflow", "drop-report"] | None
+                    format: Format | None
                     """Configure flow export format. Valid values are platform dependent."""
                     local_interface: str | None
                     """Local Source Interface."""
@@ -13832,7 +13760,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             name: str | UndefinedType = Undefined,
                             collectors: Collectors | UndefinedType = Undefined,
-                            format: Literal["sflow", "drop-report"] | None | UndefinedType = Undefined,
+                            format: Format | None | UndefinedType = Undefined,
                             local_interface: str | None | UndefinedType = Undefined,
                             template_interval: int | None | UndefinedType = Undefined,
                             dscp: int | None | UndefinedType = Undefined,
@@ -13971,18 +13899,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class AccessList(AvdModel):
             """Subclass of AvdModel."""
 
+            Mechanism: TypeAlias = Literal["algomatch", "none", "tcam"]
             _fields: ClassVar[dict] = {"mechanism": {"type": str}, "update_default_result_permit": {"type": bool}}
-            mechanism: Literal["algomatch", "none", "tcam"] | None
+            mechanism: Mechanism | None
             update_default_result_permit: bool | None
             """Accept the packets when access-list is being updated."""
 
             if TYPE_CHECKING:
 
                 def __init__(
-                    self,
-                    *,
-                    mechanism: Literal["algomatch", "none", "tcam"] | None | UndefinedType = Undefined,
-                    update_default_result_permit: bool | None | UndefinedType = Undefined,
+                    self, *, mechanism: Mechanism | None | UndefinedType = Undefined, update_default_result_permit: bool | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     AccessList.
@@ -14092,17 +14018,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class FeaturesItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {
-                "name": {"type": str},
-                "direction": {"type": str},
-                "enabled": {"type": bool, "default": True},
-                "address_type": {"type": str},
-                "layer3": {"type": bool},
-                "vrf": {"type": str},
-                "prefix": {"type": str},
-                "units_packets": {"type": bool},
-            }
-            name: Literal[
+            Name: TypeAlias = Literal[
                 "acl",
                 "decap-group",
                 "directflow",
@@ -14135,7 +14051,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "vtep decap",
                 "vtep encap",
             ]
-            direction: Literal["in", "out", "cpu"] | None
+            Direction: TypeAlias = Literal["in", "out", "cpu"]
+            AddressType: TypeAlias = Literal["ipv4", "ipv6", "mac"]
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "direction": {"type": str},
+                "enabled": {"type": bool, "default": True},
+                "address_type": {"type": str},
+                "layer3": {"type": bool},
+                "vrf": {"type": str},
+                "prefix": {"type": str},
+                "units_packets": {"type": bool},
+            }
+            name: Name
+            direction: Direction | None
             """
             Most features support only 'in' and 'out'. Some like traffic-policy support 'cpu'.
             Some features DO
@@ -14144,7 +14073,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             enabled: bool
             """Default value: `True`"""
-            address_type: Literal["ipv4", "ipv6", "mac"] | None
+            address_type: AddressType | None
             """
             Supported only for the following features:
             - acl: [ipv4, ipv6, mac] if direction is 'out'
@@ -14174,43 +14103,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    name: Literal[
-                        "acl",
-                        "decap-group",
-                        "directflow",
-                        "ecn",
-                        "flow-spec",
-                        "gre tunnel interface",
-                        "ip",
-                        "mpls interface",
-                        "mpls lfib",
-                        "mpls tunnel",
-                        "multicast",
-                        "nexthop",
-                        "pbr",
-                        "pdp",
-                        "policing interface",
-                        "qos",
-                        "qos dual-rate-policer",
-                        "route",
-                        "routed-port",
-                        "segment-security",
-                        "subinterface",
-                        "tapagg",
-                        "traffic-class",
-                        "traffic-policy",
-                        "traffic-policy vlan-interface",
-                        "vlan",
-                        "vlan-interface",
-                        "vni decap",
-                        "vni encap",
-                        "vtep decap",
-                        "vtep encap",
-                    ]
-                    | UndefinedType = Undefined,
-                    direction: Literal["in", "out", "cpu"] | None | UndefinedType = Undefined,
+                    name: Name | UndefinedType = Undefined,
+                    direction: Direction | None | UndefinedType = Undefined,
                     enabled: bool | UndefinedType = Undefined,
-                    address_type: Literal["ipv4", "ipv6", "mac"] | None | UndefinedType = Undefined,
+                    address_type: AddressType | None | UndefinedType = Undefined,
                     layer3: bool | None | UndefinedType = Undefined,
                     vrf: str | None | UndefinedType = Undefined,
                     prefix: str | None | UndefinedType = Undefined,
@@ -14523,10 +14419,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class EntriesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Action: TypeAlias = Literal["permit", "deny"]
+            SourcePortsMatch: TypeAlias = Literal["eq", "gt", "lt", "neq", "range"]
+
             class SourcePorts(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
             SourcePorts._item_type = str
+
+            DestinationPortsMatch: TypeAlias = Literal["eq", "gt", "lt", "neq", "range"]
 
             class DestinationPorts(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
@@ -14538,6 +14439,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             TcpFlags._item_type = str
 
+            TtlMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
             _fields: ClassVar[dict] = {
                 "sequence": {"type": int},
                 "remark": {"type": str},
@@ -14570,7 +14472,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Comment up to 100 characters.
             If remark is defined, other keys in the ACL entry will be ignored.
             """
-            action: Literal["permit", "deny"] | None
+            action: Action | None
             """
             ACL action.
             Required except for remarks.
@@ -14586,7 +14488,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "<ip>" without a mask means host.
             Required except for remarks.
             """
-            source_ports_match: Literal["eq", "gt", "lt", "neq", "range"]
+            source_ports_match: SourcePortsMatch
             """Default value: `"eq"`"""
             source_ports: SourcePorts
             """Subclass of AvdList with `str` items."""
@@ -14596,7 +14498,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "<ip>" without a mask means host.
             Required except for remarks.
             """
-            destination_ports_match: Literal["eq", "gt", "lt", "neq", "range"]
+            destination_ports_match: DestinationPortsMatch
             """Default value: `"eq"`"""
             destination_ports: DestinationPorts
             """Subclass of AvdList with `str` items."""
@@ -14608,7 +14510,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Log matches against this rule."""
             ttl: int | None
             """TTL value."""
-            ttl_match: Literal["eq", "gt", "lt", "neq"]
+            ttl_match: TtlMatch
             """Default value: `"eq"`"""
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
@@ -14633,19 +14535,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     sequence: int | None | UndefinedType = Undefined,
                     remark: str | None | UndefinedType = Undefined,
-                    action: Literal["permit", "deny"] | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
                     protocol: str | None | UndefinedType = Undefined,
                     source: str | None | UndefinedType = Undefined,
-                    source_ports_match: Literal["eq", "gt", "lt", "neq", "range"] | UndefinedType = Undefined,
+                    source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
                     source_ports: SourcePorts | UndefinedType = Undefined,
                     destination: str | None | UndefinedType = Undefined,
-                    destination_ports_match: Literal["eq", "gt", "lt", "neq", "range"] | UndefinedType = Undefined,
+                    destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
                     fragments: bool | None | UndefinedType = Undefined,
                     log: bool | None | UndefinedType = Undefined,
                     ttl: int | None | UndefinedType = Undefined,
-                    ttl_match: Literal["eq", "gt", "lt", "neq"] | UndefinedType = Undefined,
+                    ttl_match: TtlMatch | UndefinedType = Undefined,
                     icmp_type: str | None | UndefinedType = Undefined,
                     icmp_code: str | None | UndefinedType = Undefined,
                     nexthop_group: str | None | UndefinedType = Undefined,
@@ -14705,6 +14607,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Entries._item_type = EntriesItem
 
+        PermitResponseTraffic: TypeAlias = Literal["nat"]
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "counters_per_entry": {"type": bool},
@@ -14720,7 +14623,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdList with `EntriesItem` items.
         """
-        permit_response_traffic: Literal["nat"] | None
+        permit_response_traffic: PermitResponseTraffic | None
         """
         Permit response traffic automatically based on NAT translations.
         Minimum EOS version requirement
@@ -14735,7 +14638,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 name: str | UndefinedType = Undefined,
                 counters_per_entry: bool | None | UndefinedType = Undefined,
                 entries: Entries | UndefinedType = Undefined,
-                permit_response_traffic: Literal["nat"] | None | UndefinedType = Undefined,
+                permit_response_traffic: PermitResponseTraffic | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 IpAccessListsItem.
@@ -14770,13 +14673,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class EntriesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Action: TypeAlias = Literal["permit", "deny"]
+
             class Communities(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
             Communities._item_type = str
 
             _fields: ClassVar[dict] = {"action": {"type": str}, "communities": {"type": Communities}, "regexp": {"type": str}}
-            action: Literal["permit", "deny"]
+            action: Action
             communities: Communities
             """
             If defined, a standard community-list will be configured.
@@ -14802,7 +14707,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    action: Literal["permit", "deny"] | UndefinedType = Undefined,
+                    action: Action | UndefinedType = Undefined,
                     communities: Communities | UndefinedType = Undefined,
                     regexp: str | None | UndefinedType = Undefined,
                 ) -> None:
@@ -14904,12 +14809,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class InformationOption(AvdModel):
             """Subclass of AvdModel."""
 
+            CircuitIdFormat: TypeAlias = Literal["%h:%p", "%p:%v"]
             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "circuit_id_type": {"type": str}, "circuit_id_format": {"type": str}}
             enabled: bool | None
             """Enable insertion of option-82 in DHCP request packets."""
             circuit_id_type: str | None
             """"none" or <0 - 255>."""
-            circuit_id_format: Literal["%h:%p", "%p:%v"] | None
+            circuit_id_format: CircuitIdFormat | None
             """
             Required if `circuit_id_type` is set.
             - "%h:%p" Hostname and interface name
@@ -14924,7 +14830,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     enabled: bool | None | UndefinedType = Undefined,
                     circuit_id_type: str | None | UndefinedType = Undefined,
-                    circuit_id_format: Literal["%h:%p", "%p:%v"] | None | UndefinedType = Undefined,
+                    circuit_id_format: CircuitIdFormat | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     InformationOption.
@@ -15044,8 +14950,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class EntriesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Type: TypeAlias = Literal["permit", "deny"]
             _fields: ClassVar[dict] = {"type": {"type": str}, "extcommunities": {"type": str}}
-            type: Literal["permit", "deny"]
+            type: Type
             extcommunities: str
             """
             Communities as string.
@@ -15054,7 +14961,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, type: Literal["permit", "deny"] | UndefinedType = Undefined, extcommunities: str | UndefinedType = Undefined) -> None:
+                def __init__(self, *, type: Type | UndefinedType = Undefined, extcommunities: str | UndefinedType = Undefined) -> None:
                     """
                     EntriesItem.
 
@@ -15108,14 +15015,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class EntriesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Type: TypeAlias = Literal["permit", "deny"]
             _fields: ClassVar[dict] = {"type": {"type": str}, "regexp": {"type": str}}
-            type: Literal["permit", "deny"]
+            type: Type
             regexp: str
             """Regular Expression."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, type: Literal["permit", "deny"] | UndefinedType = Undefined, regexp: str | UndefinedType = Undefined) -> None:
+                def __init__(self, *, type: Type | UndefinedType = Undefined, regexp: str | UndefinedType = Undefined) -> None:
                     """
                     EntriesItem.
 
@@ -15205,12 +15113,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Prefixes(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Profile: TypeAlias = Literal["internet", "urpf-internet"]
                     _fields: ClassVar[dict] = {"profile": {"type": str}}
-                    profile: Literal["internet", "urpf-internet"] | None
+                    profile: Profile | None
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, profile: Literal["internet", "urpf-internet"] | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, profile: Profile | None | UndefinedType = Undefined) -> None:
                             """
                             Prefixes.
 
@@ -15801,6 +15710,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class StaticItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Direction: TypeAlias = Literal["egress", "ingress"]
+                    Protocol: TypeAlias = Literal["udp", "tcp"]
                     _fields: ClassVar[dict] = {
                         "access_list": {"type": str},
                         "comment": {"type": str},
@@ -15816,7 +15727,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     access_list: str | None
                     """'access_list' and 'group' are mutual exclusive."""
                     comment: str | None
-                    direction: Literal["egress", "ingress"] | None
+                    direction: Direction | None
                     """
                     Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware
                     platform.
@@ -15830,7 +15741,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     original_port: int | None
                     """TCP/UDP port. The combination of `original_ip` and `original_port` must be unique."""
                     priority: int | None
-                    protocol: Literal["udp", "tcp"] | None
+                    protocol: Protocol | None
                     translated_ip: str
                     """IPv4 address."""
                     translated_port: int | None
@@ -15843,12 +15754,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             access_list: str | None | UndefinedType = Undefined,
                             comment: str | None | UndefinedType = Undefined,
-                            direction: Literal["egress", "ingress"] | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
                             group: int | None | UndefinedType = Undefined,
                             original_ip: str | None | UndefinedType = Undefined,
                             original_port: int | None | UndefinedType = Undefined,
                             priority: int | None | UndefinedType = Undefined,
-                            protocol: Literal["udp", "tcp"] | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
                             translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
@@ -15908,6 +15819,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class DynamicItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    NatType: TypeAlias = Literal["overload", "pool", "pool-address-only", "pool-full-cone"]
                     _fields: ClassVar[dict] = {
                         "access_list": {"type": str},
                         "comment": {"type": str},
@@ -15917,7 +15829,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     access_list: str
                     comment: str | None
-                    nat_type: Literal["overload", "pool", "pool-address-only", "pool-full-cone"]
+                    nat_type: NatType
                     pool_name: str | None
                     """
                     required if 'nat_type' is pool, pool-address-only or pool-full-cone.
@@ -15933,7 +15845,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             access_list: str | UndefinedType = Undefined,
                             comment: str | None | UndefinedType = Undefined,
-                            nat_type: Literal["overload", "pool", "pool-address-only", "pool-full-cone"] | UndefinedType = Undefined,
+                            nat_type: NatType | UndefinedType = Undefined,
                             pool_name: str | None | UndefinedType = Undefined,
                             priority: int | None | UndefinedType = Undefined,
                         ) -> None:
@@ -15965,6 +15877,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class StaticItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Direction: TypeAlias = Literal["egress", "ingress"]
+                    Protocol: TypeAlias = Literal["udp", "tcp"]
                     _fields: ClassVar[dict] = {
                         "access_list": {"type": str},
                         "comment": {"type": str},
@@ -15980,7 +15894,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     access_list: str | None
                     """'access_list' and 'group' are mutual exclusive."""
                     comment: str | None
-                    direction: Literal["egress", "ingress"] | None
+                    direction: Direction | None
                     """
                     Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware
                     platform.
@@ -15994,7 +15908,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     original_port: int | None
                     """TCP/UDP port. The combination of `original_ip` and `original_port` must be unique."""
                     priority: int | None
-                    protocol: Literal["udp", "tcp"] | None
+                    protocol: Protocol | None
                     translated_ip: str
                     """IPv4 address."""
                     translated_port: int | None
@@ -16007,12 +15921,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             access_list: str | None | UndefinedType = Undefined,
                             comment: str | None | UndefinedType = Undefined,
-                            direction: Literal["egress", "ingress"] | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
                             group: int | None | UndefinedType = Undefined,
                             original_ip: str | None | UndefinedType = Undefined,
                             original_port: int | None | UndefinedType = Undefined,
                             priority: int | None | UndefinedType = Undefined,
-                            protocol: Literal["udp", "tcp"] | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
                             translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
@@ -16109,6 +16023,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class PoolsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Type: TypeAlias = Literal["ip-port", "port-only"]
+
             class RangesItem(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -16177,7 +16093,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "utilization_log_threshold": {"type": int},
             }
             name: str
-            type: Literal["ip-port", "port-only"]
+            type: Type
             """Default value: `"ip-port"`"""
             prefix_length: int | None
             """It is only used and required when `type` is `ip-port`."""
@@ -16191,7 +16107,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    type: Literal["ip-port", "port-only"] | UndefinedType = Undefined,
+                    type: Type | UndefinedType = Undefined,
                     prefix_length: int | None | UndefinedType = Undefined,
                     ranges: Ranges | UndefinedType = Undefined,
                     utilization_log_threshold: int | None | UndefinedType = Undefined,
@@ -16412,14 +16328,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class TimeoutsItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                Protocol: TypeAlias = Literal["tcp", "udp"]
                 _fields: ClassVar[dict] = {"protocol": {"type": str}, "timeout": {"type": int}}
-                protocol: Literal["tcp", "udp"]
+                protocol: Protocol
                 timeout: int
                 """In seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, protocol: Literal["tcp", "udp"] | UndefinedType = Undefined, timeout: int | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, protocol: Protocol | UndefinedType = Undefined, timeout: int | UndefinedType = Undefined) -> None:
                         """
                         TimeoutsItem.
 
@@ -16561,6 +16478,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class IkePoliciesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Encryption: TypeAlias = Literal["3des", "aes128", "aes256"]
+            DhGroup: TypeAlias = Literal[1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24]
+            Integrity: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "local_id": {"type": str},
@@ -16587,11 +16507,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             ike_lifetime: int | None
             """IKE lifetime in hours."""
-            encryption: Literal["3des", "aes128", "aes256"] | None
+            encryption: Encryption | None
             """IKE encryption algorithm."""
-            dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24] | None
+            dh_group: DhGroup | None
             """Diffie-Hellman group for the key exchange."""
-            integrity: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None
+            integrity: Integrity | None
             """Integrity algorithm."""
 
             if TYPE_CHECKING:
@@ -16603,9 +16523,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     local_id: str | None | UndefinedType = Undefined,
                     local_id_fqdn: str | None | UndefinedType = Undefined,
                     ike_lifetime: int | None | UndefinedType = Undefined,
-                    encryption: Literal["3des", "aes128", "aes256"] | None | UndefinedType = Undefined,
-                    dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24] | None | UndefinedType = Undefined,
-                    integrity: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None | UndefinedType = Undefined,
+                    encryption: Encryption | None | UndefinedType = Undefined,
+                    dh_group: DhGroup | None | UndefinedType = Undefined,
+                    integrity: Integrity | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     IkePoliciesItem.
@@ -16644,6 +16564,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class SaLifetime(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["gigabytes", "hours", "megabytes", "thousand-packets"]
                 _fields: ClassVar[dict] = {"value": {"type": int}, "unit": {"type": str, "default": "hours"}}
                 value: int | None
                 """
@@ -16655,17 +16576,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 <1-6000>     Byte limit in GB ( 1024 MB )
                 <1-6144000>  Byte limit in MB ( 1024 KB )
                 """
-                unit: Literal["gigabytes", "hours", "megabytes", "thousand-packets"]
+                unit: Unit
                 """Default value: `"hours"`"""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        value: int | None | UndefinedType = Undefined,
-                        unit: Literal["gigabytes", "hours", "megabytes", "thousand-packets"] | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, value: int | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         SaLifetime.
 
@@ -16688,19 +16604,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Esp(AvdModel):
                 """Subclass of AvdModel."""
 
+                Integrity: TypeAlias = Literal["disabled", "sha1", "sha256", "sha384", "sha512", "md5"]
+                Encryption: TypeAlias = Literal["disabled", "aes128", "aes128gcm128", "aes128gcm64", "aes256", "aes256gcm128", "3des"]
                 _fields: ClassVar[dict] = {"integrity": {"type": str}, "encryption": {"type": str}}
-                integrity: Literal["disabled", "sha1", "sha256", "sha384", "sha512", "md5"] | None
-                encryption: Literal["disabled", "aes128", "aes128gcm128", "aes128gcm64", "aes256", "aes256gcm128", "3des"] | None
+                integrity: Integrity | None
+                encryption: Encryption | None
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        integrity: Literal["disabled", "sha1", "sha256", "sha384", "sha512", "md5"] | None | UndefinedType = Undefined,
-                        encryption: Literal["disabled", "aes128", "aes128gcm128", "aes128gcm64", "aes256", "aes256gcm128", "3des"]
-                        | None
-                        | UndefinedType = Undefined,
+                        self, *, integrity: Integrity | None | UndefinedType = Undefined, encryption: Encryption | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         Esp.
@@ -16714,6 +16627,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            PfsDhGroup: TypeAlias = Literal[1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24]
             _fields: ClassVar[dict] = {"name": {"type": str}, "sa_lifetime": {"type": SaLifetime}, "esp": {"type": Esp}, "pfs_dh_group": {"type": int}}
             name: str
             """Name of the SA policy."""
@@ -16721,7 +16635,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             esp: Esp
             """Subclass of AvdModel."""
-            pfs_dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24] | None
+            pfs_dh_group: PfsDhGroup | None
 
             if TYPE_CHECKING:
 
@@ -16731,7 +16645,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     sa_lifetime: SaLifetime | UndefinedType = Undefined,
                     esp: Esp | UndefinedType = Undefined,
-                    pfs_dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24] | None | UndefinedType = Undefined,
+                    pfs_dh_group: PfsDhGroup | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     SaPoliciesItem.
@@ -16757,15 +16671,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class ProfilesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Connection: TypeAlias = Literal["add", "start", "route"]
+
             class Dpd(AvdModel):
                 """Subclass of AvdModel."""
 
+                Action: TypeAlias = Literal["clear", "hold", "restart"]
                 _fields: ClassVar[dict] = {"interval": {"type": int}, "time": {"type": int}, "action": {"type": str}}
                 interval: int
                 """Interval (in seconds) between keep-alive messages."""
                 time: int
                 """Time (in seconds) after which the action is applied."""
-                action: Literal["clear", "hold", "restart"]
+                action: Action
                 """
                 Action to apply.
 
@@ -16778,11 +16695,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        interval: int | UndefinedType = Undefined,
-                        time: int | UndefinedType = Undefined,
-                        action: Literal["clear", "hold", "restart"] | UndefinedType = Undefined,
+                        self, *, interval: int | UndefinedType = Undefined, time: int | UndefinedType = Undefined, action: Action | UndefinedType = Undefined
                     ) -> None:
                         """
                         Dpd.
@@ -16803,6 +16716,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            Mode: TypeAlias = Literal["transport", "tunnel"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "ike_policy": {"type": str},
@@ -16819,7 +16733,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Name of the IKE policy to use in this profile."""
             sa_policy: str | None
             """Name of the Security Association to use in this profile."""
-            connection: Literal["add", "start", "route"] | None
+            connection: Connection | None
             """IPsec connection (Initiator/Responder/Dynamic)."""
             shared_key: str | None
             """Encrypted password - only type 7 supported."""
@@ -16829,7 +16743,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
-            mode: Literal["transport", "tunnel"] | None
+            mode: Mode | None
             """Ipsec mode type."""
             flow_parallelization_encapsulation_udp: bool | None
             """
@@ -16846,10 +16760,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     ike_policy: str | None | UndefinedType = Undefined,
                     sa_policy: str | None | UndefinedType = Undefined,
-                    connection: Literal["add", "start", "route"] | None | UndefinedType = Undefined,
+                    connection: Connection | None | UndefinedType = Undefined,
                     shared_key: str | None | UndefinedType = Undefined,
                     dpd: Dpd | UndefinedType = Undefined,
-                    mode: Literal["transport", "tunnel"] | None | UndefinedType = Undefined,
+                    mode: Mode | None | UndefinedType = Undefined,
                     flow_parallelization_encapsulation_udp: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -17182,10 +17096,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Option(AvdModel):
             """Subclass of AvdModel."""
 
+            RemoteIdFormat: TypeAlias = Literal["%m:%i", "%m:%p"]
             _fields: ClassVar[dict] = {"link_layer_address": {"type": bool}, "remote_id_format": {"type": str}}
             link_layer_address: bool | None
             """Add Option 79 (Link Layer Address Option)."""
-            remote_id_format: Literal["%m:%i", "%m:%p"] | None
+            remote_id_format: RemoteIdFormat | None
             """
             Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface
             name (`%m:%p`).
@@ -17194,10 +17109,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self,
-                    *,
-                    link_layer_address: bool | None | UndefinedType = Undefined,
-                    remote_id_format: Literal["%m:%i", "%m:%p"] | None | UndefinedType = Undefined,
+                    self, *, link_layer_address: bool | None | UndefinedType = Undefined, remote_id_format: RemoteIdFormat | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     Option.
@@ -17578,6 +17490,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Isis(AvdModel):
                     """Subclass of AvdModel."""
 
+                    IsisLevel: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
                     _fields: ClassVar[dict] = {
                         "enabled": {"type": bool},
                         "isis_level": {"type": str},
@@ -17585,7 +17498,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "include_leaked": {"type": bool},
                     }
                     enabled: bool
-                    isis_level: Literal["level-1", "level-2", "level-1-2"] | None
+                    isis_level: IsisLevel | None
                     """Redistribute IS-IS route level."""
                     route_map: str | None
                     include_leaked: bool | None
@@ -17597,7 +17510,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            isis_level: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
+                            isis_level: IsisLevel | None | UndefinedType = Undefined,
                             route_map: str | None | UndefinedType = Undefined,
                             include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -18107,13 +18020,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ProtocolsItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                Name: TypeAlias = Literal["bfd per-link rfc-7130", "e-lmi", "isis", "lacp", "lldp", "macsec", "pause", "stp"]
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "forward": {"type": bool},
                     "tagged_forward": {"type": bool},
                     "untagged_forward": {"type": bool},
                 }
-                name: Literal["bfd per-link rfc-7130", "e-lmi", "isis", "lacp", "lldp", "macsec", "pause", "stp"]
+                name: Name
                 forward: bool | None
                 tagged_forward: bool | None
                 untagged_forward: bool | None
@@ -18123,7 +18037,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        name: Literal["bfd per-link rfc-7130", "e-lmi", "isis", "lacp", "lldp", "macsec", "pause", "stp"] | UndefinedType = Undefined,
+                        name: Name | UndefinedType = Undefined,
                         forward: bool | None | UndefinedType = Undefined,
                         tagged_forward: bool | None | UndefinedType = Undefined,
                         untagged_forward: bool | None | UndefinedType = Undefined,
@@ -18350,8 +18264,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TlvsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "transmit": {"type": bool}}
-            name: Literal[
+            Name: TypeAlias = Literal[
                 "link-aggregation",
                 "management-address",
                 "max-frame-size",
@@ -18364,29 +18277,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "system-name",
                 "vlan-name",
             ]
+            _fields: ClassVar[dict] = {"name": {"type": str}, "transmit": {"type": bool}}
+            name: Name
             transmit: bool | None
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    name: Literal[
-                        "link-aggregation",
-                        "management-address",
-                        "max-frame-size",
-                        "med",
-                        "port-description",
-                        "port-vlan",
-                        "power-via-mdi",
-                        "system-capabilities",
-                        "system-description",
-                        "system-name",
-                        "vlan-name",
-                    ]
-                    | UndefinedType = Undefined,
-                    transmit: bool | None | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, name: Name | UndefinedType = Undefined, transmit: bool | None | UndefinedType = Undefined) -> None:
                     """
                     TlvsItem.
 
@@ -18677,6 +18574,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Cluster(AvdModel):
             """Subclass of AvdModel."""
 
+            DestinationGrouping: TypeAlias = Literal["bgp field-set", "prefix length", "vtep"]
+            ForwardingType: TypeAlias = Literal["bridged encapsulation vxlan ipv4", "routed ipv4"]
+
             class Flow(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -18829,7 +18729,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "flow": {"type": Flow},
                 "port_groups": {"type": PortGroups},
             }
-            destination_grouping: Literal["bgp field-set", "prefix length", "vtep"] | None
+            destination_grouping: DestinationGrouping | None
             """Perform destination grouping using given setting."""
             prefix_length: int | None
             """
@@ -18837,7 +18737,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             This setting must be
             defined when `destination_grouping` is set to `prefix length`.
             """
-            forwarding_type: Literal["bridged encapsulation vxlan ipv4", "routed ipv4"] | None
+            forwarding_type: ForwardingType | None
             load_balance_method_flow_round_robin: bool | None
             """Enable round-robin load balancing for flow-based traffic."""
             flow: Flow
@@ -18855,9 +18755,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    destination_grouping: Literal["bgp field-set", "prefix length", "vtep"] | None | UndefinedType = Undefined,
+                    destination_grouping: DestinationGrouping | None | UndefinedType = Undefined,
                     prefix_length: int | None | UndefinedType = Undefined,
-                    forwarding_type: Literal["bridged encapsulation vxlan ipv4", "routed ipv4"] | None | UndefinedType = Undefined,
+                    forwarding_type: ForwardingType | None | UndefinedType = Undefined,
                     load_balance_method_flow_round_robin: bool | None | UndefinedType = Undefined,
                     flow: Flow | UndefinedType = Undefined,
                     port_groups: PortGroups | UndefinedType = Undefined,
@@ -18937,6 +18837,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class LocalUsersItem(AvdModel):
         """Subclass of AvdModel."""
 
+        Shell: TypeAlias = Literal["/bin/bash", "/bin/sh", "/sbin/nologin"]
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "disabled": {"type": bool},
@@ -18973,7 +18874,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         ssh_key: str | None
         secondary_ssh_key: str | None
-        shell: Literal["/bin/bash", "/bin/sh", "/sbin/nologin"] | None
+        shell: Shell | None
         """Specify shell for the user."""
 
         if TYPE_CHECKING:
@@ -18989,7 +18890,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 no_password: bool | None | UndefinedType = Undefined,
                 ssh_key: str | None | UndefinedType = Undefined,
                 secondary_ssh_key: str | None | UndefinedType = Undefined,
-                shell: Literal["/bin/bash", "/bin/sh", "/sbin/nologin"] | None | UndefinedType = Undefined,
+                shell: Shell | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 LocalUsersItem.
@@ -19028,24 +18929,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class Logging(AvdModel):
         """Subclass of AvdModel."""
 
+        Console: TypeAlias = Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
+        Monitor: TypeAlias = Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
+
         class Buffered(AvdModel):
             """Subclass of AvdModel."""
 
+            Level: TypeAlias = Literal["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "disabled"]
             _fields: ClassVar[dict] = {"size": {"type": int}, "level": {"type": str}}
             size: int | None
-            level: Literal["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "disabled"] | None
+            level: Level | None
             """Buffer logging severity level."""
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    size: int | None | UndefinedType = Undefined,
-                    level: Literal["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "disabled"]
-                    | None
-                    | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, size: int | None | UndefinedType = Undefined, level: Level | None | UndefinedType = Undefined) -> None:
                     """
                     Buffered.
 
@@ -19058,11 +18956,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        Trap: TypeAlias = Literal[
+            "alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"
+        ]
+
         class Synchronous(AvdModel):
             """Subclass of AvdModel."""
 
+            Level: TypeAlias = Literal[
+                "alerts", "all", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "disabled"
+            ]
             _fields: ClassVar[dict] = {"level": {"type": str, "default": "critical"}}
-            level: Literal["alerts", "all", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "disabled"]
+            level: Level
             """
             Synchronous logging severity level.
 
@@ -19071,12 +18976,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    level: Literal["alerts", "all", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "disabled"]
-                    | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, level: Level | UndefinedType = Undefined) -> None:
                     """
                     Synchronous.
 
@@ -19091,13 +18991,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Format(AvdModel):
             """Subclass of AvdModel."""
 
+            Timestamp: TypeAlias = Literal[
+                "high-resolution", "traditional", "traditional timezone", "traditional year", "traditional timezone year", "traditional year timezone"
+            ]
+            Hostname: TypeAlias = Literal["fqdn", "ipv4"]
             _fields: ClassVar[dict] = {"timestamp": {"type": str}, "hostname": {"type": str}, "sequence_numbers": {"type": bool}, "rfc5424": {"type": bool}}
-            timestamp: (
-                Literal["high-resolution", "traditional", "traditional timezone", "traditional year", "traditional timezone year", "traditional year timezone"]
-                | None
-            )
+            timestamp: Timestamp | None
             """Timestamp format."""
-            hostname: Literal["fqdn", "ipv4"] | None
+            hostname: Hostname | None
             """Hostname format in syslogs. For hostname _only_, remove the line. (default EOS CLI behaviour)."""
             sequence_numbers: bool | None
             """Add sequence numbers to log messages."""
@@ -19109,12 +19010,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    timestamp: Literal[
-                        "high-resolution", "traditional", "traditional timezone", "traditional year", "traditional timezone year", "traditional year timezone"
-                    ]
-                    | None
-                    | UndefinedType = Undefined,
-                    hostname: Literal["fqdn", "ipv4"] | None | UndefinedType = Undefined,
+                    timestamp: Timestamp | None | UndefinedType = Undefined,
+                    hostname: Hostname | None | UndefinedType = Undefined,
                     sequence_numbers: bool | None | UndefinedType = Undefined,
                     rfc5424: bool | None | UndefinedType = Undefined,
                 ) -> None:
@@ -19132,11 +19029,40 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        Facility: TypeAlias = Literal[
+            "auth",
+            "cron",
+            "daemon",
+            "kern",
+            "local0",
+            "local1",
+            "local2",
+            "local3",
+            "local4",
+            "local5",
+            "local6",
+            "local7",
+            "lpr",
+            "mail",
+            "news",
+            "sys9",
+            "sys10",
+            "sys11",
+            "sys12",
+            "sys13",
+            "sys14",
+            "syslog",
+            "user",
+            "uucp",
+        ]
+
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
             class HostsItem(AvdModel):
                 """Subclass of AvdModel."""
+
+                Protocol: TypeAlias = Literal["tcp", "udp", "tls"]
 
                 class Ports(AvdList[int]):
                     """Subclass of AvdList with `int` items."""
@@ -19151,7 +19077,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 }
                 name: str
                 """Syslog server name."""
-                protocol: Literal["tcp", "udp", "tls"]
+                protocol: Protocol
                 """Default value: `"udp"`"""
                 ports: Ports
                 """Subclass of AvdList with `int` items."""
@@ -19164,7 +19090,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        protocol: Literal["tcp", "udp", "tls"] | UndefinedType = Undefined,
+                        protocol: Protocol | UndefinedType = Undefined,
                         ports: Ports | UndefinedType = Undefined,
                         ssl_profile: str | None | UndefinedType = Undefined,
                     ) -> None:
@@ -19235,14 +19161,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class MatchListsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Action: TypeAlias = Literal["discard"]
                     _fields: ClassVar[dict] = {"name": {"type": str}, "action": {"type": str}}
                     name: str
                     """Match list."""
-                    action: Literal["discard"] | None
+                    action: Action | None
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, name: str | UndefinedType = Undefined, action: Literal["discard"] | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, name: str | UndefinedType = Undefined, action: Action | None | UndefinedType = Undefined) -> None:
                             """
                             MatchListsItem.
 
@@ -19383,29 +19310,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class LevelItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Severity: TypeAlias = Literal[
+                "alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "0", "1", "2", "3", "4", "5", "6", "7"
+            ]
             _fields: ClassVar[dict] = {"facility": {"type": str}, "severity": {"type": str}}
             facility: str
-            severity: (
-                Literal[
-                    "alerts",
-                    "critical",
-                    "debugging",
-                    "emergencies",
-                    "errors",
-                    "informational",
-                    "notifications",
-                    "warnings",
-                    "0",
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6",
-                    "7",
-                ]
-                | None
-            )
+            severity: Severity | None
             """
             Severity of facility. Below are the supported severities.
             emergencies    System is unusable
@@ -19425,31 +19335,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    facility: str | UndefinedType = Undefined,
-                    severity: Literal[
-                        "alerts",
-                        "critical",
-                        "debugging",
-                        "emergencies",
-                        "errors",
-                        "informational",
-                        "notifications",
-                        "warnings",
-                        "0",
-                        "1",
-                        "2",
-                        "3",
-                        "4",
-                        "5",
-                        "6",
-                        "7",
-                    ]
-                    | None
-                    | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, facility: str | UndefinedType = Undefined, severity: Severity | None | UndefinedType = Undefined) -> None:
                     """
                     LevelItem.
 
@@ -19498,49 +19384,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "event": {"type": Event},
             "level": {"type": Level},
         }
-        console: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"] | None
+        console: Console | None
         """Console logging severity level."""
-        monitor: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"] | None
+        monitor: Monitor | None
         """Monitor logging severity level."""
         buffered: Buffered
         """Subclass of AvdModel."""
         repeat_messages: bool | None
         """Summarize concurrent repeat messages."""
-        trap: Literal["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"] | None
+        trap: Trap | None
         """Trap logging severity level."""
         synchronous: Synchronous
         """Subclass of AvdModel."""
         format: Format
         """Subclass of AvdModel."""
-        facility: (
-            Literal[
-                "auth",
-                "cron",
-                "daemon",
-                "kern",
-                "local0",
-                "local1",
-                "local2",
-                "local3",
-                "local4",
-                "local5",
-                "local6",
-                "local7",
-                "lpr",
-                "mail",
-                "news",
-                "sys9",
-                "sys10",
-                "sys11",
-                "sys12",
-                "sys13",
-                "sys14",
-                "syslog",
-                "user",
-                "uucp",
-            ]
-            | None
-        )
+        facility: Facility | None
         source_interface: str | None
         """Source Interface Name."""
         vrfs: Vrfs
@@ -19562,47 +19420,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                console: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
-                | None
-                | UndefinedType = Undefined,
-                monitor: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
-                | None
-                | UndefinedType = Undefined,
+                console: Console | None | UndefinedType = Undefined,
+                monitor: Monitor | None | UndefinedType = Undefined,
                 buffered: Buffered | UndefinedType = Undefined,
                 repeat_messages: bool | None | UndefinedType = Undefined,
-                trap: Literal["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"]
-                | None
-                | UndefinedType = Undefined,
+                trap: Trap | None | UndefinedType = Undefined,
                 synchronous: Synchronous | UndefinedType = Undefined,
                 format: Format | UndefinedType = Undefined,
-                facility: Literal[
-                    "auth",
-                    "cron",
-                    "daemon",
-                    "kern",
-                    "local0",
-                    "local1",
-                    "local2",
-                    "local3",
-                    "local4",
-                    "local5",
-                    "local6",
-                    "local7",
-                    "lpr",
-                    "mail",
-                    "news",
-                    "sys9",
-                    "sys10",
-                    "sys11",
-                    "sys12",
-                    "sys13",
-                    "sys14",
-                    "syslog",
-                    "user",
-                    "uucp",
-                ]
-                | None
-                | UndefinedType = Undefined,
+                facility: Facility | None | UndefinedType = Undefined,
                 source_interface: str | None | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 policy: Policy | UndefinedType = Undefined,
@@ -20088,6 +19913,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class ProfilesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Cipher: TypeAlias = Literal["aes128-gcm", "aes128-gcm-xpn", "aes256-gcm", "aes256-gcm-xpn"]
+
             class ConnectionKeysItem(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -20175,12 +20002,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class EthernetFlowControl(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Mode: TypeAlias = Literal["encrypt", "bypass"]
                     _fields: ClassVar[dict] = {"mode": {"type": str}}
-                    mode: Literal["encrypt", "bypass"]
+                    mode: Mode
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, mode: Literal["encrypt", "bypass"] | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, mode: Mode | UndefinedType = Undefined) -> None:
                             """
                             EthernetFlowControl.
 
@@ -20195,12 +20023,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Lldp(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Mode: TypeAlias = Literal["bypass", "bypass unauthorized"]
                     _fields: ClassVar[dict] = {"mode": {"type": str}}
-                    mode: Literal["bypass", "bypass unauthorized"]
+                    mode: Mode
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, mode: Literal["bypass", "bypass unauthorized"] | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, mode: Mode | UndefinedType = Undefined) -> None:
                             """
                             Lldp.
 
@@ -20238,17 +20067,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class TrafficUnprotected(AvdModel):
                 """Subclass of AvdModel."""
 
+                Action: TypeAlias = Literal["allow", "drop"]
                 _fields: ClassVar[dict] = {"action": {"type": str}, "allow_active_sak": {"type": bool}}
-                action: Literal["allow", "drop"]
+                action: Action
                 """Allow/drop the transmit/receive of unprotected traffic."""
                 allow_active_sak: bool | None
                 """Allow transmit/receive of encrypted traffic using operational SAK and block otherwise."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, action: Literal["allow", "drop"] | UndefinedType = Undefined, allow_active_sak: bool | None | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, action: Action | UndefinedType = Undefined, allow_active_sak: bool | None | UndefinedType = Undefined) -> None:
                         """
                         TrafficUnprotected.
 
@@ -20297,7 +20125,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             }
             name: str
             """Profile-Name."""
-            cipher: Literal["aes128-gcm", "aes128-gcm-xpn", "aes256-gcm", "aes256-gcm-xpn"] | None
+            cipher: Cipher | None
             connection_keys: ConnectionKeys
             """Subclass of AvdIndexedList with `ConnectionKeysItem` items. Primary key is `id` (`str`)."""
             mka: Mka
@@ -20316,7 +20144,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    cipher: Literal["aes128-gcm", "aes128-gcm-xpn", "aes256-gcm", "aes256-gcm-xpn"] | None | UndefinedType = Undefined,
+                    cipher: Cipher | None | UndefinedType = Undefined,
                     connection_keys: ConnectionKeys | UndefinedType = Undefined,
                     mka: Mka | UndefinedType = Undefined,
                     sci: bool | None | UndefinedType = Undefined,
@@ -20752,6 +20580,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class GrpcItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                NotificationTimestamp: TypeAlias = Literal["send-time", "last-change-time"]
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "ssl_profile": {"type": str},
@@ -20767,7 +20596,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """SSL profile name."""
                 vrf: str | None
                 """VRF name is optional."""
-                notification_timestamp: Literal["send-time", "last-change-time"] | None
+                notification_timestamp: NotificationTimestamp | None
                 """
                 Per the gNMI specification, the default timestamp field of a notification message is set to be
                 the
@@ -20797,7 +20626,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: str | UndefinedType = Undefined,
                         ssl_profile: str | None | UndefinedType = Undefined,
                         vrf: str | None | UndefinedType = Undefined,
-                        notification_timestamp: Literal["send-time", "last-change-time"] | None | UndefinedType = Undefined,
+                        notification_timestamp: NotificationTimestamp | None | UndefinedType = Undefined,
                         ip_access_group: str | None | UndefinedType = Undefined,
                         port: int | None | UndefinedType = Undefined,
                         authorization_requests: bool | None | UndefinedType = Undefined,
@@ -21409,12 +21238,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Secret(AvdModel):
             """Subclass of AvdModel."""
 
+            Hash: TypeAlias = Literal["md5", "sha512"]
             _fields: ClassVar[dict] = {"hash": {"type": str}}
-            hash: Literal["md5", "sha512"] | None
+            hash: Hash | None
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, hash: Literal["md5", "sha512"] | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, hash: Hash | None | UndefinedType = Undefined) -> None:
                     """
                     Secret.
 
@@ -21446,6 +21276,92 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     class ManagementInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
+
+        Speed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
+        Type: TypeAlias = Literal["oob", "inband"]
 
         class Lldp(AvdModel):
             """Subclass of AvdModel."""
@@ -21723,93 +21639,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Management Interface Name."""
         description: str | None
         shutdown: bool | None
-        speed: (
-            Literal[
-                "100full",
-                "100g",
-                "100g-1",
-                "100g-2",
-                "100g-4",
-                "100half",
-                "10full",
-                "10g",
-                "10half",
-                "1g",
-                "200g",
-                "200g-2",
-                "200g-4",
-                "25g",
-                "400g",
-                "400g-4",
-                "400g-8",
-                "40g",
-                "50g",
-                "50g-1",
-                "50g-2",
-                "800g-8",
-                "sfp-1000baset auto 100full",
-                "1.6t-8",
-                "100mfull",
-                "100mhalf",
-                "10mfull",
-                "10mhalf",
-                "200g-1",
-                "400g-2",
-                "40g-4",
-                "800g-4",
-                "auto",
-                "auto 10000full",
-                "auto 1000full",
-                "auto 100full",
-                "auto 100g-1",
-                "auto 100g-2",
-                "auto 100g-4",
-                "auto 100gfull",
-                "auto 100half",
-                "auto 10full",
-                "auto 10gfull",
-                "auto 10half",
-                "auto 1gfull",
-                "auto 2.5gfull",
-                "auto 200g-2",
-                "auto 200g-4",
-                "auto 25gfull",
-                "auto 400g-4",
-                "auto 400g-8",
-                "auto 40gfull",
-                "auto 50g-1",
-                "auto 50g-2",
-                "auto 50gfull",
-                "auto 5gfull",
-                "auto 800g-8",
-                "auto 1.6t-8",
-                "auto 100mfull",
-                "auto 100mhalf",
-                "auto 10g",
-                "auto 10mfull",
-                "auto 10mhalf",
-                "auto 1g",
-                "auto 2.5g",
-                "auto 200g-1",
-                "auto 25g",
-                "auto 400g-2",
-                "auto 40g-4",
-                "auto 5g",
-                "auto 800g-4",
-                "forced 10000full",
-                "forced 1000full",
-                "forced 1000half",
-                "forced 100full",
-                "forced 100gfull",
-                "forced 100half",
-                "forced 10full",
-                "forced 10half",
-                "forced 25gfull",
-                "forced 40gfull",
-                "forced 50gfull",
-            ]
-            | None
-        )
+        speed: Speed | None
         """Interface Speed."""
         mtu: int | None
         vrf: str | None
@@ -21819,7 +21649,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_enable: bool | None
         ipv6_address: str | None
         """IPv6_address/Mask."""
-        type: Literal["oob", "inband"]
+        type: Type
         """
         For documentation purposes only.
 
@@ -21846,98 +21676,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 name: str | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
                 shutdown: bool | None | UndefinedType = Undefined,
-                speed: Literal[
-                    "100full",
-                    "100g",
-                    "100g-1",
-                    "100g-2",
-                    "100g-4",
-                    "100half",
-                    "10full",
-                    "10g",
-                    "10half",
-                    "1g",
-                    "200g",
-                    "200g-2",
-                    "200g-4",
-                    "25g",
-                    "400g",
-                    "400g-4",
-                    "400g-8",
-                    "40g",
-                    "50g",
-                    "50g-1",
-                    "50g-2",
-                    "800g-8",
-                    "sfp-1000baset auto 100full",
-                    "1.6t-8",
-                    "100mfull",
-                    "100mhalf",
-                    "10mfull",
-                    "10mhalf",
-                    "200g-1",
-                    "400g-2",
-                    "40g-4",
-                    "800g-4",
-                    "auto",
-                    "auto 10000full",
-                    "auto 1000full",
-                    "auto 100full",
-                    "auto 100g-1",
-                    "auto 100g-2",
-                    "auto 100g-4",
-                    "auto 100gfull",
-                    "auto 100half",
-                    "auto 10full",
-                    "auto 10gfull",
-                    "auto 10half",
-                    "auto 1gfull",
-                    "auto 2.5gfull",
-                    "auto 200g-2",
-                    "auto 200g-4",
-                    "auto 25gfull",
-                    "auto 400g-4",
-                    "auto 400g-8",
-                    "auto 40gfull",
-                    "auto 50g-1",
-                    "auto 50g-2",
-                    "auto 50gfull",
-                    "auto 5gfull",
-                    "auto 800g-8",
-                    "auto 1.6t-8",
-                    "auto 100mfull",
-                    "auto 100mhalf",
-                    "auto 10g",
-                    "auto 10mfull",
-                    "auto 10mhalf",
-                    "auto 1g",
-                    "auto 2.5g",
-                    "auto 200g-1",
-                    "auto 25g",
-                    "auto 400g-2",
-                    "auto 40g-4",
-                    "auto 5g",
-                    "auto 800g-4",
-                    "forced 10000full",
-                    "forced 1000full",
-                    "forced 1000half",
-                    "forced 100full",
-                    "forced 100gfull",
-                    "forced 100half",
-                    "forced 10full",
-                    "forced 10half",
-                    "forced 25gfull",
-                    "forced 40gfull",
-                    "forced 50gfull",
-                ]
-                | None
-                | UndefinedType = Undefined,
+                speed: Speed | None | UndefinedType = Undefined,
                 mtu: int | None | UndefinedType = Undefined,
                 vrf: str | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
-                type: Literal["oob", "inband"] | UndefinedType = Undefined,
+                type: Type | UndefinedType = Undefined,
                 gateway: str | None | UndefinedType = Undefined,
                 ipv6_gateway: str | None | UndefinedType = Undefined,
                 mac_address: str | None | UndefinedType = Undefined,
@@ -22527,6 +22272,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class SecretsItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                SecretType: TypeAlias = Literal["0", "7", "8a"]
+
                 class ReceiveLifetime(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -22653,7 +22400,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 }
                 name: str
                 secret: str
-                secret_type: Literal["0", "7", "8a"]
+                secret_type: SecretType
                 """Default value: `"7"`"""
                 receive_lifetime: ReceiveLifetime
                 """Subclass of AvdModel."""
@@ -22669,7 +22416,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         name: str | UndefinedType = Undefined,
                         secret: str | UndefinedType = Undefined,
-                        secret_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                        secret_type: SecretType | UndefinedType = Undefined,
                         receive_lifetime: ReceiveLifetime | UndefinedType = Undefined,
                         transmit_lifetime: TransmitLifetime | UndefinedType = Undefined,
                         local_time: bool | None | UndefinedType = Undefined,
@@ -22788,13 +22535,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Authentication(AvdModel):
             """Subclass of AvdModel."""
 
+            EmptyPasswords: TypeAlias = Literal["auto", "deny", "permit"]
+
             class Protocols(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
             Protocols._item_type = str
 
             _fields: ClassVar[dict] = {"empty_passwords": {"type": str}, "protocols": {"type": Protocols}}
-            empty_passwords: Literal["auto", "deny", "permit"] | None
+            empty_passwords: EmptyPasswords | None
             """Permit or deny empty passwords for SSH authentication."""
             protocols: Protocols
             """
@@ -22806,10 +22555,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self,
-                    *,
-                    empty_passwords: Literal["auto", "deny", "permit"] | None | UndefinedType = Undefined,
-                    protocols: Protocols | UndefinedType = Undefined,
+                    self, *, empty_passwords: EmptyPasswords | None | UndefinedType = Undefined, protocols: Protocols | UndefinedType = Undefined
                 ) -> None:
                     """
                     Authentication.
@@ -23121,10 +22867,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ExcludeCommandsItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                Type: TypeAlias = Literal["text", "json"]
                 _fields: ClassVar[dict] = {"command": {"type": str}, "type": {"type": str, "default": "text"}}
                 command: str | None
                 """Command to exclude from tech-support."""
-                type: Literal["text", "json"]
+                type: Type
                 """
                 The supported values for type are platform dependent.
 
@@ -23133,7 +22880,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, command: str | None | UndefinedType = Undefined, type: Literal["text", "json"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, command: str | None | UndefinedType = Undefined, type: Type | UndefinedType = Undefined) -> None:
                         """
                         ExcludeCommandsItem.
 
@@ -24566,6 +24313,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class DigitalTwin(AvdModel):
             """Subclass of AvdModel."""
 
+            Environment: TypeAlias = Literal["act"]
             _fields: ClassVar[dict] = {
                 "environment": {"type": str},
                 "node_type": {"type": str},
@@ -24575,7 +24323,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "password": {"type": str},
                 "internet_access": {"type": bool},
             }
-            environment: Literal["act"] | None
+            environment: Environment | None
             """Targeted Digital Twin environment."""
             node_type: str | None
             """
@@ -24608,7 +24356,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    environment: Literal["act"] | None | UndefinedType = Undefined,
+                    environment: Environment | None | UndefinedType = Undefined,
                     node_type: str | None | UndefinedType = Undefined,
                     ip_addr: str | None | UndefinedType = Undefined,
                     version: str | None | UndefinedType = Undefined,
@@ -25258,14 +25006,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Probe(AvdModel):
             """Subclass of AvdModel."""
 
+            Method: TypeAlias = Literal["status-server", "access-request"]
+
             class AccessRequest(AvdModel):
                 """Subclass of AvdModel."""
 
+                PasswordType: TypeAlias = Literal["0", "7", "8a"]
                 _fields: ClassVar[dict] = {"username": {"type": str}, "password": {"type": str}, "password_type": {"type": str, "default": "7"}}
                 username: str | None
                 password: str | None
                 """Encrypted password using the `password_type`."""
-                password_type: Literal["0", "7", "8a"]
+                password_type: PasswordType
                 """Default value: `"7"`"""
 
                 if TYPE_CHECKING:
@@ -25275,7 +25026,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         username: str | None | UndefinedType = Undefined,
                         password: str | None | UndefinedType = Undefined,
-                        password_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                        password_type: PasswordType | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AccessRequest.
@@ -25300,7 +25051,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Server probe interval in seconds."""
             threshold_failure: int | None
             """Number of consecutive failed probes before a server is marked as dead."""
-            method: Literal["status-server", "access-request"] | None
+            method: Method | None
             """Method used to probe the server. `status-server` is the EOS default method."""
             access_request: AccessRequest
             """
@@ -25316,7 +25067,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     interval: int | None | UndefinedType = Undefined,
                     threshold_failure: int | None | UndefinedType = Undefined,
-                    method: Literal["status-server", "access-request"] | None | UndefinedType = Undefined,
+                    method: Method | None | UndefinedType = Undefined,
                     access_request: AccessRequest | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -25367,13 +25118,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class MonitorSessionDefaultEncapsulationGre(AvdModel):
         """Subclass of AvdModel."""
 
+        Payload: TypeAlias = Literal["full-packet", "inner-packet"]
         _fields: ClassVar[dict] = {"payload": {"type": str}}
-        payload: Literal["full-packet", "inner-packet"] | None
+        payload: Payload | None
         """Mirroring GRE payload type configuration commands."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, payload: Literal["full-packet", "inner-packet"] | None | UndefinedType = Undefined) -> None:
+            def __init__(self, *, payload: Payload | None | UndefinedType = Undefined) -> None:
                 """
                 MonitorSessionDefaultEncapsulationGre.
 
@@ -25391,11 +25143,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class SourcesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Direction: TypeAlias = Literal["rx", "tx", "both"]
+
             class AccessGroup(AvdModel):
                 """Subclass of AvdModel."""
 
+                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                 _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                type: Literal["ip", "ipv6", "mac"] | None
+                type: Type | None
                 name: str | None
                 """ACL Name."""
                 priority: int | None
@@ -25405,7 +25160,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
+                        type: Type | None | UndefinedType = Undefined,
                         name: str | None | UndefinedType = Undefined,
                         priority: int | None | UndefinedType = Undefined,
                     ) -> None:
@@ -25425,7 +25180,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {"name": {"type": str}, "direction": {"type": str}, "access_group": {"type": AccessGroup}}
             name: str
             """Interface name, range or comma separated list."""
-            direction: Literal["rx", "tx", "both"] | None
+            direction: Direction | None
             access_group: AccessGroup
             """Subclass of AvdModel."""
 
@@ -25435,7 +25190,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    direction: Literal["rx", "tx", "both"] | None | UndefinedType = Undefined,
+                    direction: Direction | None | UndefinedType = Undefined,
                     access_group: AccessGroup | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -25466,16 +25221,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class AccessGroup(AvdModel):
             """Subclass of AvdModel."""
 
+            Type: TypeAlias = Literal["ip", "ipv6", "mac"]
             _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-            type: Literal["ip", "ipv6", "mac"] | None
+            type: Type | None
             name: str | None
             """ACL Name."""
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self, *, type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined
-                ) -> None:
+                def __init__(self, *, type: Type | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
                     """
                     AccessGroup.
 
@@ -25613,6 +25367,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class DestinationsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            PasswordType: TypeAlias = Literal["0", "7", "8a"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "database": {"type": str},
@@ -25631,7 +25386,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """It only accepts http(s), udp and unix domain destination URL."""
             username: str | None
             password: str | None
-            password_type: Literal["0", "7", "8a"]
+            password_type: PasswordType
             """Default value: `"7"`"""
 
             if TYPE_CHECKING:
@@ -25645,7 +25400,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     url: str | None | UndefinedType = Undefined,
                     username: str | None | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
-                    password_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                    password_type: PasswordType | UndefinedType = Undefined,
                 ) -> None:
                     """
                     DestinationsItem.
@@ -25811,12 +25566,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Collection(AvdModel):
                 """Subclass of AvdModel."""
 
+                Version: TypeAlias = Literal[1, 2]
                 _fields: ClassVar[dict] = {"source": {"type": str}, "destination": {"type": str}, "version": {"type": int}}
                 source: str | None
                 """Source IP address of GRE tunnel."""
                 destination: str | None
                 """Destination IP address of GRE tunnel."""
-                version: Literal[1, 2] | None
+                version: Version | None
                 """Postcard version."""
 
                 if TYPE_CHECKING:
@@ -25826,7 +25582,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         source: str | None | UndefinedType = Undefined,
                         destination: str | None | UndefinedType = Undefined,
-                        version: Literal[1, 2] | None | UndefinedType = Undefined,
+                        version: Version | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Collection.
@@ -25843,6 +25599,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             class Sample(AvdModel):
                 """Subclass of AvdModel."""
+
+                Rate: TypeAlias = Literal[16384, 32768, 65536]
 
                 class TcpUdpChecksum(AvdModel):
                     """Subclass of AvdModel."""
@@ -25869,7 +25627,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             """
 
                 _fields: ClassVar[dict] = {"rate": {"type": int}, "tcp_udp_checksum": {"type": TcpUdpChecksum}}
-                rate: Literal[16384, 32768, 65536] | None
+                rate: Rate | None
                 """Sampling rate. `rate` is preferred when both `rate` and `tcp_udp_checksum` are defined."""
                 tcp_udp_checksum: TcpUdpChecksum
                 """
@@ -25880,12 +25638,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        rate: Literal[16384, 32768, 65536] | None | UndefinedType = Undefined,
-                        tcp_udp_checksum: TcpUdpChecksum | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, rate: Rate | None | UndefinedType = Undefined, tcp_udp_checksum: TcpUdpChecksum | UndefinedType = Undefined) -> None:
                         """
                         Sample.
 
@@ -25995,8 +25748,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class MatchRulesItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                Type: TypeAlias = Literal["ipv4", "ipv6"]
+
                 class ProtocolsItem(AvdModel):
                     """Subclass of AvdModel."""
+
+                    Protocol: TypeAlias = Literal["tcp", "udp"]
 
                     class SourcePorts(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -26013,7 +25770,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "source_ports": {"type": SourcePorts},
                         "destination_ports": {"type": DestinationPorts},
                     }
-                    protocol: Literal["tcp", "udp"]
+                    protocol: Protocol
                     source_ports: SourcePorts
                     """
                     A list of port numbers or port range or port name. Combination of port numbers or range and port
@@ -26041,7 +25798,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            protocol: Literal["tcp", "udp"] | UndefinedType = Undefined,
+                            protocol: Protocol | UndefinedType = Undefined,
                             source_ports: SourcePorts | UndefinedType = Undefined,
                             destination_ports: DestinationPorts | UndefinedType = Undefined,
                         ) -> None:
@@ -26088,7 +25845,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "protocols": {"type": Protocols},
                 }
                 name: str
-                type: Literal["ipv4", "ipv6"]
+                type: Type
                 """IP address version."""
                 destination_prefix: str | None
                 """
@@ -26109,7 +25866,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        type: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+                        type: Type | UndefinedType = Undefined,
                         destination_prefix: str | None | UndefinedType = Undefined,
                         source_prefix: str | None | UndefinedType = Undefined,
                         protocols: Protocols | UndefinedType = Undefined,
@@ -26480,10 +26237,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Refresh(AvdModel):
                 """Subclass of AvdModel."""
 
+                Method: TypeAlias = Literal["bundled", "explicit"]
                 _fields: ClassVar[dict] = {"interval": {"type": int}, "method": {"type": str}}
                 interval: int | None
                 """Time between refreshes."""
-                method: Literal["bundled", "explicit"] | None
+                method: Method | None
                 """
                 Neighbor refresh mechanism.
                 bundled: Refresh states using message identifier lists.
@@ -26493,9 +26251,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, interval: int | None | UndefinedType = Undefined, method: Literal["bundled", "explicit"] | None | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, interval: int | None | UndefinedType = Undefined, method: Method | None | UndefinedType = Undefined) -> None:
                         """
                         Refresh.
 
@@ -26518,10 +26274,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class PasswordIndexesItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    PasswordType: TypeAlias = Literal["0", "7", "8a"]
                     _fields: ClassVar[dict] = {"index": {"type": int}, "password_type": {"type": str, "default": "7"}, "password": {"type": str}}
                     index: int
                     """Password index."""
-                    password_type: Literal["0", "7", "8a"]
+                    password_type: PasswordType
                     """
                     Authentication password type.
 
@@ -26536,7 +26293,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             index: int | UndefinedType = Undefined,
-                            password_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                            password_type: PasswordType | UndefinedType = Undefined,
                             password: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -26559,6 +26316,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 PasswordIndexes._item_type = PasswordIndexesItem
 
+                Type: TypeAlias = Literal["md5", "none"]
                 _fields: ClassVar[dict] = {
                     "password_indexes": {"type": PasswordIndexes},
                     "active_index": {"type": int},
@@ -26571,7 +26329,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Use index as active password."""
                 sequence_number_window: int | None
                 """Size of reorder window for index in the sequence."""
-                type: Literal["md5", "none"] | None
+                type: Type | None
                 """Authentication mechanism."""
 
                 if TYPE_CHECKING:
@@ -26582,7 +26340,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         password_indexes: PasswordIndexes | UndefinedType = Undefined,
                         active_index: int | None | UndefinedType = Undefined,
                         sequence_number_window: int | None | UndefinedType = Undefined,
-                        type: Literal["md5", "none"] | None | UndefinedType = Undefined,
+                        type: Type | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Authentication.
@@ -26604,17 +26362,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Authentication(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Type: TypeAlias = Literal["md5", "none"]
                     _fields: ClassVar[dict] = {"index": {"type": int}, "type": {"type": str}}
                     index: int | None
                     """Password index."""
-                    type: Literal["md5", "none"] | None
+                    type: Type | None
                     """Authentication mechanism."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, index: int | None | UndefinedType = Undefined, type: Literal["md5", "none"] | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, index: int | None | UndefinedType = Undefined, type: Type | None | UndefinedType = Undefined) -> None:
                             """
                             Authentication.
 
@@ -26672,8 +26429,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class FastReroute(AvdModel):
                 """Subclass of AvdModel."""
 
+                Mode: TypeAlias = Literal["link-protection", "node-protection", "none"]
+                Reversion: TypeAlias = Literal["global", "local"]
                 _fields: ClassVar[dict] = {"mode": {"type": str}, "reversion": {"type": str}, "bypass_tunnel_optimization_interval": {"type": int}}
-                mode: Literal["link-protection", "node-protection", "none"] | None
+                mode: Mode | None
                 """
                 Fast reroute mode.
                 link-protection: Protect against failure of the next link.
@@ -26681,7 +26440,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Protect against failure of the next node.
                 none: Disable fast reroute.
                 """
-                reversion: Literal["global", "local"] | None
+                reversion: Reversion | None
                 """
                 Reversion behavior.
                 Global revertive repair.
@@ -26698,8 +26457,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        mode: Literal["link-protection", "node-protection", "none"] | None | UndefinedType = Undefined,
-                        reversion: Literal["global", "local"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
+                        reversion: Reversion | None | UndefinedType = Undefined,
                         bypass_tunnel_optimization_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -26749,19 +26508,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            LabelLocalTermination: TypeAlias = Literal["implicit-null", "explicit-null"]
+
             class PreemptionMethod(AvdModel):
                 """Subclass of AvdModel."""
 
+                Preemption: TypeAlias = Literal["hard", "soft"]
                 _fields: ClassVar[dict] = {"preemption": {"type": str}, "timer": {"type": int}}
-                preemption: Literal["hard", "soft"] | None
+                preemption: Preemption | None
                 timer: int | None
                 """Timer value in units of seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, preemption: Literal["hard", "soft"] | None | UndefinedType = Undefined, timer: int | None | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, preemption: Preemption | None | UndefinedType = Undefined, timer: int | None | UndefinedType = Undefined) -> None:
                         """
                         PreemptionMethod.
 
@@ -26969,7 +26729,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             srlg: Srlg
             """Subclass of AvdModel."""
-            label_local_termination: Literal["implicit-null", "explicit-null"] | None
+            label_local_termination: LabelLocalTermination | None
             """Local termination label to be advertised."""
             preemption_method: PreemptionMethod
             """Subclass of AvdModel."""
@@ -27006,7 +26766,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv6_access_group: str | None | UndefinedType = Undefined,
                     fast_reroute: FastReroute | UndefinedType = Undefined,
                     srlg: Srlg | UndefinedType = Undefined,
-                    label_local_termination: Literal["implicit-null", "explicit-null"] | None | UndefinedType = Undefined,
+                    label_local_termination: LabelLocalTermination | None | UndefinedType = Undefined,
                     preemption_method: PreemptionMethod | UndefinedType = Undefined,
                     mtu_signaling: bool | None | UndefinedType = Undefined,
                     graceful_restart: GracefulRestart | UndefinedType = Undefined,
@@ -27058,16 +26818,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Model(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Ttl: TypeAlias = Literal["pipe", "uniform"]
+                    Dscp: TypeAlias = Literal["pipe", "uniform"]
                     _fields: ClassVar[dict] = {"ttl": {"type": str}, "dscp": {"type": str}}
-                    ttl: Literal["pipe", "uniform"]
-                    dscp: Literal["pipe", "uniform"]
+                    ttl: Ttl
+                    dscp: Dscp
                     """The DSCP model `uniform` is supported only on specific hardware platforms."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, ttl: Literal["pipe", "uniform"] | UndefinedType = Undefined, dscp: Literal["pipe", "uniform"] | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, ttl: Ttl | UndefinedType = Undefined, dscp: Dscp | UndefinedType = Undefined) -> None:
                             """
                             Model.
 
@@ -27083,16 +26843,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class PhpModel(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Ttl: TypeAlias = Literal["pipe", "uniform"]
+                    Dscp: TypeAlias = Literal["pipe", "uniform"]
                     _fields: ClassVar[dict] = {"ttl": {"type": str}, "dscp": {"type": str}}
-                    ttl: Literal["pipe", "uniform"]
-                    dscp: Literal["pipe", "uniform"]
+                    ttl: Ttl
+                    dscp: Dscp
                     """The DSCP model `uniform` is supported only on specific hardware platforms."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, ttl: Literal["pipe", "uniform"] | UndefinedType = Undefined, dscp: Literal["pipe", "uniform"] | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, ttl: Ttl | UndefinedType = Undefined, dscp: Dscp | UndefinedType = Undefined) -> None:
                             """
                             PhpModel.
 
@@ -27314,13 +27074,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class AuthenticationKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
+            HashAlgorithm: TypeAlias = Literal["md5", "sha1"]
+            KeyType: TypeAlias = Literal["0", "7", "8a"]
             _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}, "key_type": {"type": str}}
             id: int
             """Key identifier."""
-            hash_algorithm: Literal["md5", "sha1"]
+            hash_algorithm: HashAlgorithm
             key: str
             """Obfuscated key."""
-            key_type: Literal["0", "7", "8a"] | None
+            key_type: KeyType | None
 
             if TYPE_CHECKING:
 
@@ -27328,9 +27090,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    hash_algorithm: Literal["md5", "sha1"] | UndefinedType = Undefined,
+                    hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                     key: str | UndefinedType = Undefined,
-                    key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                    key_type: KeyType | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AuthenticationKeysItem.
@@ -27622,9 +27384,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ConnectorsItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                Type: TypeAlias = Literal["interface", "pseudowire"]
                 _fields: ClassVar[dict] = {"id": {"type": str}, "type": {"type": str}, "endpoint": {"type": str}}
                 id: str
-                type: Literal["interface", "pseudowire"]
+                type: Type
                 endpoint: str
                 """
                 String with relevant endpoint depending on type.
@@ -27639,11 +27402,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        id: str | UndefinedType = Undefined,
-                        type: Literal["interface", "pseudowire"] | UndefinedType = Undefined,
-                        endpoint: str | UndefinedType = Undefined,
+                        self, *, id: str | UndefinedType = Undefined, type: Type | UndefinedType = Undefined, endpoint: str | UndefinedType = Undefined
                     ) -> None:
                         """
                         ConnectorsItem.
@@ -27833,8 +27592,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class HeadroomPool(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Unit: TypeAlias = Literal["bytes", "cells"]
                     _fields: ClassVar[dict] = {"unit": {"type": str}, "limit": {"type": int}}
-                    unit: Literal["bytes", "cells"] | None
+                    unit: Unit | None
                     """
                     Unit to be used for the `headroom_pool` value.
                     If not specified, default is bytes.
@@ -27844,9 +27604,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined, limit: int | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, unit: Unit | None | UndefinedType = Undefined, limit: int | None | UndefinedType = Undefined) -> None:
                             """
                             HeadroomPool.
 
@@ -27870,11 +27628,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         class PriorityGroupsItem(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Threshold: TypeAlias = Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"]
+
                             class Reserved(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                Unit: TypeAlias = Literal["bytes", "cells"]
                                 _fields: ClassVar[dict] = {"unit": {"type": str}, "memory": {"type": int}}
-                                unit: Literal["bytes", "cells"] | None
+                                unit: Unit | None
                                 """
                                 Unit to be used for the `priority_groups` `reserved` value.
                                 If not specified, default is bytes.
@@ -27885,10 +27646,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 if TYPE_CHECKING:
 
                                     def __init__(
-                                        self,
-                                        *,
-                                        unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined,
-                                        memory: int | None | UndefinedType = Undefined,
+                                        self, *, unit: Unit | None | UndefinedType = Undefined, memory: int | None | UndefinedType = Undefined
                                     ) -> None:
                                         """
                                         Reserved.
@@ -27907,7 +27665,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             _fields: ClassVar[dict] = {"id": {"type": int}, "threshold": {"type": str}, "reserved": {"type": Reserved}}
                             id: int
                             """Priority-group group number."""
-                            threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
+                            threshold: Threshold | None
                             reserved: Reserved
                             """Subclass of AvdModel."""
 
@@ -27917,9 +27675,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     id: int | UndefinedType = Undefined,
-                                    threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"]
-                                    | None
-                                    | UndefinedType = Undefined,
+                                    threshold: Threshold | None | UndefinedType = Undefined,
                                     reserved: Reserved | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -27942,11 +27698,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         PriorityGroups._item_type = PriorityGroupsItem
 
+                        Threshold: TypeAlias = Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"]
+
                         class Reserved(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Unit: TypeAlias = Literal["bytes", "cells"]
                             _fields: ClassVar[dict] = {"unit": {"type": str}, "memory": {"type": int}}
-                            unit: Literal["bytes", "cells"] | None
+                            unit: Unit | None
                             """
                             Unit to be used for the `reserved` value.
                             If not specified, default is bytes.
@@ -27956,9 +27715,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(
-                                    self, *, unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined, memory: int | None | UndefinedType = Undefined
-                                ) -> None:
+                                def __init__(self, *, unit: Unit | None | UndefinedType = Undefined, memory: int | None | UndefinedType = Undefined) -> None:
                                     """
                                     Reserved.
 
@@ -27976,8 +27733,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         class Headroom(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Unit: TypeAlias = Literal["bytes", "cells"]
                             _fields: ClassVar[dict] = {"unit": {"type": str}, "memory": {"type": int}}
-                            unit: Literal["bytes", "cells"] | None
+                            unit: Unit | None
                             """
                             Unit to be used for the headroom value.
                             If not specified, default is bytes.
@@ -27987,9 +27745,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(
-                                    self, *, unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined, memory: int | None | UndefinedType = Undefined
-                                ) -> None:
+                                def __init__(self, *, unit: Unit | None | UndefinedType = Undefined, memory: int | None | UndefinedType = Undefined) -> None:
                                     """
                                     Headroom.
 
@@ -28013,7 +27769,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         }
                         priority_groups: PriorityGroups
                         """Subclass of AvdIndexedList with `PriorityGroupsItem` items. Primary key is `id` (`int`)."""
-                        threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
+                        threshold: Threshold | None
                         """Specify the dynamic shared memory threshold."""
                         reserved: Reserved
                         """Subclass of AvdModel."""
@@ -28028,7 +27784,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 priority_groups: PriorityGroups | UndefinedType = Undefined,
-                                threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None | UndefinedType = Undefined,
+                                threshold: Threshold | None | UndefinedType = Undefined,
                                 reserved: Reserved | UndefinedType = Undefined,
                                 headroom: Headroom | UndefinedType = Undefined,
                                 resume: int | None | UndefinedType = Undefined,
@@ -28051,11 +27807,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MulticastQueuesItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Unit: TypeAlias = Literal["bytes", "cells"]
+                        Threshold: TypeAlias = Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"]
+
                         class Drop(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Precedence: TypeAlias = Literal[1, 2]
                             _fields: ClassVar[dict] = {"precedence": {"type": int}, "threshold": {"type": str}}
-                            precedence: Literal[1, 2]
+                            precedence: Precedence
                             threshold: str
                             """
                             Drop Threshold. This value may also be fractions.
@@ -28064,9 +27824,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(
-                                    self, *, precedence: Literal[1, 2] | UndefinedType = Undefined, threshold: str | UndefinedType = Undefined
-                                ) -> None:
+                                def __init__(self, *, precedence: Precedence | UndefinedType = Undefined, threshold: str | UndefinedType = Undefined) -> None:
                                     """
                                     Drop.
 
@@ -28089,14 +27847,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "drop": {"type": Drop},
                         }
                         id: int
-                        unit: Literal["bytes", "cells"] | None
+                        unit: Unit | None
                         """Unit to be used for the reservation value. If not specified, default is bytes."""
                         reserved: int | None
                         """
                         Amount of memory that should be reserved for this
                         queue.
                         """
-                        threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
+                        threshold: Threshold | None
                         """Dynamic Shared Memory threshold."""
                         drop: Drop
                         """Subclass of AvdModel."""
@@ -28107,9 +27865,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 id: int | UndefinedType = Undefined,
-                                unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined,
+                                unit: Unit | None | UndefinedType = Undefined,
                                 reserved: int | None | UndefinedType = Undefined,
-                                threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None | UndefinedType = Undefined,
+                                threshold: Threshold | None | UndefinedType = Undefined,
                                 drop: Drop | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -28139,11 +27897,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class UnicastQueuesItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Unit: TypeAlias = Literal["bytes", "cells"]
+                        Threshold: TypeAlias = Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"]
+
                         class Drop(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Precedence: TypeAlias = Literal[1, 2]
                             _fields: ClassVar[dict] = {"precedence": {"type": int}, "threshold": {"type": str}}
-                            precedence: Literal[1, 2]
+                            precedence: Precedence
                             threshold: str
                             """
                             Drop Threshold. This value may also be fractions.
@@ -28152,9 +27914,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(
-                                    self, *, precedence: Literal[1, 2] | UndefinedType = Undefined, threshold: str | UndefinedType = Undefined
-                                ) -> None:
+                                def __init__(self, *, precedence: Precedence | UndefinedType = Undefined, threshold: str | UndefinedType = Undefined) -> None:
                                     """
                                     Drop.
 
@@ -28177,14 +27937,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "drop": {"type": Drop},
                         }
                         id: int
-                        unit: Literal["bytes", "cells"] | None
+                        unit: Unit | None
                         """Unit to be used for the reservation value. If not specified, default is bytes."""
                         reserved: int | None
                         """
                         Amount of memory that should be reserved for this
                         queue.
                         """
-                        threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
+                        threshold: Threshold | None
                         """Dynamic Shared Memory threshold."""
                         drop: Drop
                         """Subclass of AvdModel."""
@@ -28195,9 +27955,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 id: int | UndefinedType = Undefined,
-                                unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined,
+                                unit: Unit | None | UndefinedType = Undefined,
                                 reserved: int | None | UndefinedType = Undefined,
-                                threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None | UndefinedType = Undefined,
+                                threshold: Threshold | None | UndefinedType = Undefined,
                                 drop: Drop | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -28412,12 +28172,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class MulticastReplication(AvdModel):
                 """Subclass of AvdModel."""
 
+                Default: TypeAlias = Literal["ingress", "egress"]
                 _fields: ClassVar[dict] = {"default": {"type": str}}
-                default: Literal["ingress", "egress"] | None
+                default: Default | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, default: Literal["ingress", "egress"] | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, default: Default | None | UndefinedType = Undefined) -> None:
                         """
                         MulticastReplication.
 
@@ -28429,6 +28190,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            MdbProfile: TypeAlias = Literal["balanced", "balanced-xl", "l3", "l3-xl", "l3-xxl", "l3-xxxl"]
             _fields: ClassVar[dict] = {
                 "qos_maps": {"type": QosMaps},
                 "lag": {"type": Lag},
@@ -28443,7 +28205,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             forwarding_mode: str | None
             multicast_replication: MulticastReplication
             """Subclass of AvdModel."""
-            mdb_profile: Literal["balanced", "balanced-xl", "l3", "l3-xl", "l3-xxl", "l3-xxxl"] | None
+            mdb_profile: MdbProfile | None
             """Sand platforms MDB Profile configuration. Note: l3-xxxl does not support MLAG."""
 
             if TYPE_CHECKING:
@@ -28455,7 +28217,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     lag: Lag | UndefinedType = Undefined,
                     forwarding_mode: str | None | UndefinedType = Undefined,
                     multicast_replication: MulticastReplication | UndefinedType = Undefined,
-                    mdb_profile: Literal["balanced", "balanced-xl", "l3", "l3-xl", "l3-xxl", "l3-xxxl"] | None | UndefinedType = Undefined,
+                    mdb_profile: MdbProfile | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Sand.
@@ -28487,6 +28249,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         class RxQueue(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Mode: TypeAlias = Literal["shared", "exclusive"]
                             _fields: ClassVar[dict] = {"count": {"type": int}, "worker": {"type": str}, "mode": {"type": str}}
                             count: int | None
                             """
@@ -28498,7 +28261,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Worker ids specified as combination of range and/or comma separated values
                             such as 0-4,7.
                             """
-                            mode: Literal["shared", "exclusive"] | None
+                            mode: Mode | None
                             """Mode applicable to the workers. Default mode is 'shared'."""
 
                             if TYPE_CHECKING:
@@ -28508,7 +28271,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     *,
                                     count: int | None | UndefinedType = Undefined,
                                     worker: str | None | UndefinedType = Undefined,
-                                    mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                    mode: Mode | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     RxQueue.
@@ -28674,13 +28437,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class BufferingEgress(AvdModel):
                 """Subclass of AvdModel."""
 
+                Profile: TypeAlias = Literal["unicast", "balanced"]
                 _fields: ClassVar[dict] = {"profile": {"type": str}}
-                profile: Literal["unicast", "balanced"] | None
+                profile: Profile | None
                 """Preferred traffic profile for egress fap buffering."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, profile: Literal["unicast", "balanced"] | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, profile: Profile | None | UndefinedType = Undefined) -> None:
                         """
                         BufferingEgress.
 
@@ -28788,13 +28552,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Reboot(AvdModel):
             """Subclass of AvdModel."""
 
+            Action: TypeAlias = Literal["power-off", "maintain"]
             _fields: ClassVar[dict] = {"action": {"type": str}}
-            action: Literal["power-off", "maintain"] | None
+            action: Action | None
             """PoE action for interface. By default in EOS, reboot action is set to power-off."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, action: Literal["power-off", "maintain"] | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, action: Action | None | UndefinedType = Undefined) -> None:
                     """
                     Reboot.
 
@@ -28809,13 +28574,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class InterfaceShutdown(AvdModel):
             """Subclass of AvdModel."""
 
+            Action: TypeAlias = Literal["power-off", "maintain"]
             _fields: ClassVar[dict] = {"action": {"type": str}}
-            action: Literal["power-off", "maintain"] | None
+            action: Action | None
             """PoE action for interface. By default in EOS, interface shutdown action is set to maintain."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, action: Literal["power-off", "maintain"] | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, action: Action | None | UndefinedType = Undefined) -> None:
                     """
                     InterfaceShutdown.
 
@@ -29038,23 +28804,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Police(AvdModel):
                     """Subclass of AvdModel."""
 
+                    RateUnit: TypeAlias = Literal["bps", "kbps", "mbps", "pps"]
+                    RateBurstSizeUnit: TypeAlias = Literal["bytes", "kbytes", "mbytes", "packets"]
+
                     class Action(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Type: TypeAlias = Literal["dscp", "drop-precedence"]
                         _fields: ClassVar[dict] = {"type": {"type": str}, "dscp_value": {"type": str}}
-                        type: Literal["dscp", "drop-precedence"] | None
+                        type: Type | None
                         """Set action for policed traffic."""
                         dscp_value: str | None
                         """Set when action.type is set to "dscp"."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(
-                                self,
-                                *,
-                                type: Literal["dscp", "drop-precedence"] | None | UndefinedType = Undefined,
-                                dscp_value: str | None | UndefinedType = Undefined,
-                            ) -> None:
+                            def __init__(self, *, type: Type | None | UndefinedType = Undefined, dscp_value: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Action.
 
@@ -29067,6 +28832,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 """
 
+                    HigherRateUnit: TypeAlias = Literal["bps", "kbps", "mbps", "pps"]
+                    HigherRateBurstSizeUnit: TypeAlias = Literal["bytes", "kbytes", "mbytes", "packets"]
                     _fields: ClassVar[dict] = {
                         "rate": {"type": int},
                         "rate_unit": {"type": str, "default": "bps"},
@@ -29083,11 +28850,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Specify rate.
                     Range in kbps <8-200000000>.
                     """
-                    rate_unit: Literal["bps", "kbps", "mbps", "pps"]
+                    rate_unit: RateUnit
                     """Default value: `"bps"`"""
                     rate_burst_size: int | None
                     """Range in bytes <256-128000000>."""
-                    rate_burst_size_unit: Literal["bytes", "kbytes", "mbytes", "packets"]
+                    rate_burst_size_unit: RateBurstSizeUnit
                     """Default value: `"bytes"`"""
                     action: Action
                     """Subclass of AvdModel."""
@@ -29096,11 +28863,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Specify higher rate.
                     Range in kbps <lower_rate in kbps + 8 - lower_rate in kbps + 200000000>.
                     """
-                    higher_rate_unit: Literal["bps", "kbps", "mbps", "pps"]
+                    higher_rate_unit: HigherRateUnit
                     """Default value: `"bps"`"""
                     higher_rate_burst_size: int | None
                     """Range in bytes <256-128000000>."""
-                    higher_rate_burst_size_unit: Literal["bytes", "kbytes", "mbytes", "packets"]
+                    higher_rate_burst_size_unit: HigherRateBurstSizeUnit
                     """Default value: `"bytes"`"""
 
                     if TYPE_CHECKING:
@@ -29109,14 +28876,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             rate: int | None | UndefinedType = Undefined,
-                            rate_unit: Literal["bps", "kbps", "mbps", "pps"] | UndefinedType = Undefined,
+                            rate_unit: RateUnit | UndefinedType = Undefined,
                             rate_burst_size: int | None | UndefinedType = Undefined,
-                            rate_burst_size_unit: Literal["bytes", "kbytes", "mbytes", "packets"] | UndefinedType = Undefined,
+                            rate_burst_size_unit: RateBurstSizeUnit | UndefinedType = Undefined,
                             action: Action | UndefinedType = Undefined,
                             higher_rate: int | None | UndefinedType = Undefined,
-                            higher_rate_unit: Literal["bps", "kbps", "mbps", "pps"] | UndefinedType = Undefined,
+                            higher_rate_unit: HigherRateUnit | UndefinedType = Undefined,
                             higher_rate_burst_size: int | None | UndefinedType = Undefined,
-                            higher_rate_burst_size_unit: Literal["bytes", "kbytes", "mbytes", "packets"] | UndefinedType = Undefined,
+                            higher_rate_burst_size_unit: HigherRateBurstSizeUnit | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Police.
@@ -29208,13 +28975,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ClassesItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                RateUnit: TypeAlias = Literal["pps", "kbps"]
                 _fields: ClassVar[dict] = {"name": {"type": str}, "shape": {"type": int}, "bandwidth": {"type": int}, "rate_unit": {"type": str}}
                 name: str
                 shape: int | None
                 """Maximum rate limit."""
                 bandwidth: int | None
                 """Minimum bandwidth."""
-                rate_unit: Literal["pps", "kbps"] | None
+                rate_unit: RateUnit | None
                 """The `rate_unit` must be defined for `shape` and `bandwidth`."""
 
                 if TYPE_CHECKING:
@@ -29225,7 +28993,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: str | UndefinedType = Undefined,
                         shape: int | None | UndefinedType = Undefined,
                         bandwidth: int | None | UndefinedType = Undefined,
-                        rate_unit: Literal["pps", "kbps"] | None | UndefinedType = Undefined,
+                        rate_unit: RateUnit | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ClassesItem.
@@ -29323,6 +29091,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class LoadBalanceTridentUdfItem(AvdModel):
             """Subclass of AvdModel."""
 
+            EthType: TypeAlias = Literal["ipv4", "ipv6"]
+            Header: TypeAlias = Literal["inner_l3", "inner_l4", "outer_l2", "outer_l3", "outer_l4"]
             _fields: ClassVar[dict] = {
                 "eth_type": {"type": str},
                 "ip_protocol": {"type": str},
@@ -29330,7 +29100,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "offset": {"type": int},
                 "mask": {"type": str},
             }
-            eth_type: Literal["ipv4", "ipv6"]
+            eth_type: EthType
             """Ethernet type in the port channel hash."""
             ip_protocol: str | None
             """
@@ -29338,7 +29108,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             IP protocol number within the
             range <0-255>.
             """
-            header: Literal["inner_l3", "inner_l4", "outer_l2", "outer_l3", "outer_l4"]
+            header: Header
             offset: int
             """Offset starting from selected header in the packet."""
             mask: str | None
@@ -29349,9 +29119,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    eth_type: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+                    eth_type: EthType | UndefinedType = Undefined,
                     ip_protocol: str | None | UndefinedType = Undefined,
-                    header: Literal["inner_l3", "inner_l4", "outer_l2", "outer_l3", "outer_l4"] | UndefinedType = Undefined,
+                    header: Header | UndefinedType = Undefined,
                     offset: int | UndefinedType = Undefined,
                     mask: str | None | UndefinedType = Undefined,
                 ) -> None:
@@ -29490,6 +29260,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Client(AvdModel):
                 """Subclass of AvdModel."""
 
+                Encapsulation: TypeAlias = Literal["dot1q", "dot1ad", "unmatched", "untagged"]
+                InnerEncapsulation: TypeAlias = Literal["dot1q", "dot1ad"]
                 _fields: ClassVar[dict] = {
                     "encapsulation": {"type": str},
                     "vlan": {"type": int},
@@ -29497,25 +29269,25 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "inner_vlan": {"type": int},
                     "inner_encapsulation": {"type": str},
                 }
-                encapsulation: Literal["dot1q", "dot1ad", "unmatched", "untagged"]
+                encapsulation: Encapsulation
                 vlan: int | None
                 """Client VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: unmatched`."""
                 outer_vlan: int | None
                 """Client Outer VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: unmatched`."""
                 inner_vlan: int | None
                 """Client Inner VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: unmatched`."""
-                inner_encapsulation: Literal["dot1q", "dot1ad"] | None
+                inner_encapsulation: InnerEncapsulation | None
 
                 if TYPE_CHECKING:
 
                     def __init__(
                         self,
                         *,
-                        encapsulation: Literal["dot1q", "dot1ad", "unmatched", "untagged"] | UndefinedType = Undefined,
+                        encapsulation: Encapsulation | UndefinedType = Undefined,
                         vlan: int | None | UndefinedType = Undefined,
                         outer_vlan: int | None | UndefinedType = Undefined,
                         inner_vlan: int | None | UndefinedType = Undefined,
-                        inner_encapsulation: Literal["dot1q", "dot1ad"] | None | UndefinedType = Undefined,
+                        inner_encapsulation: InnerEncapsulation | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Client.
@@ -29535,6 +29307,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Network(AvdModel):
                 """Subclass of AvdModel."""
 
+                Encapsulation: TypeAlias = Literal["dot1q", "dot1ad", "client", "client inner", "untagged"]
+                InnerEncapsulation: TypeAlias = Literal["dot1q", "dot1ad"]
                 _fields: ClassVar[dict] = {
                     "encapsulation": {"type": str},
                     "vlan": {"type": int},
@@ -29542,7 +29316,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "inner_vlan": {"type": int},
                     "inner_encapsulation": {"type": str},
                 }
-                encapsulation: Literal["dot1q", "dot1ad", "client", "client inner", "untagged"]
+                encapsulation: Encapsulation
                 """
                 `untagged` (no encapsulation) is applicable for `untagged` client only.
                 `client` and `client inner`
@@ -29554,18 +29328,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Network outer VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: client`."""
                 inner_vlan: int | None
                 """Network inner VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: client`."""
-                inner_encapsulation: Literal["dot1q", "dot1ad"] | None
+                inner_encapsulation: InnerEncapsulation | None
 
                 if TYPE_CHECKING:
 
                     def __init__(
                         self,
                         *,
-                        encapsulation: Literal["dot1q", "dot1ad", "client", "client inner", "untagged"] | UndefinedType = Undefined,
+                        encapsulation: Encapsulation | UndefinedType = Undefined,
                         vlan: int | None | UndefinedType = Undefined,
                         outer_vlan: int | None | UndefinedType = Undefined,
                         inner_vlan: int | None | UndefinedType = Undefined,
-                        inner_encapsulation: Literal["dot1q", "dot1ad"] | None | UndefinedType = Undefined,
+                        inner_encapsulation: InnerEncapsulation | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Network.
@@ -29618,16 +29392,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class LinkTrackingGroupsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Direction: TypeAlias = Literal["upstream", "downstream"]
             _fields: ClassVar[dict] = {"name": {"type": str}, "direction": {"type": str}}
             name: str
             """Group name."""
-            direction: Literal["upstream", "downstream"] | None
+            direction: Direction | None
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self, *, name: str | UndefinedType = Undefined, direction: Literal["upstream", "downstream"] | None | UndefinedType = Undefined
-                ) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, direction: Direction | None | UndefinedType = Undefined) -> None:
                     """
                     LinkTrackingGroupsItem.
 
@@ -29650,13 +29423,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class LinkTracking(AvdModel):
             """Subclass of AvdModel."""
 
+            Direction: TypeAlias = Literal["upstream", "downstream"]
+
             class Groups(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
             Groups._item_type = str
 
             _fields: ClassVar[dict] = {"direction": {"type": str}, "groups": {"type": Groups}}
-            direction: Literal["upstream", "downstream"] | None
+            direction: Direction | None
             groups: Groups
             """
             Link state group(s) an interface belongs to.
@@ -29666,9 +29441,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self, *, direction: Literal["upstream", "downstream"] | None | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined
-                ) -> None:
+                def __init__(self, *, direction: Direction | None | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
                     """
                     LinkTracking.
 
@@ -29710,11 +29483,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        LacpFallbackMode: TypeAlias = Literal["individual", "static"]
+
         class Qos(AvdModel):
             """Subclass of AvdModel."""
 
+            Trust: TypeAlias = Literal["dscp", "cos", "disabled"]
             _fields: ClassVar[dict] = {"trust": {"type": str}, "dscp": {"type": int}, "cos": {"type": int}}
-            trust: Literal["dscp", "cos", "disabled"] | None
+            trust: Trust | None
             dscp: int | None
             """DSCP value."""
             cos: int | None
@@ -29725,7 +29501,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    trust: Literal["dscp", "cos", "disabled"] | None | UndefinedType = Undefined,
+                    trust: Trust | None | UndefinedType = Undefined,
                     dscp: int | None | UndefinedType = Undefined,
                     cos: int | None | UndefinedType = Undefined,
                 ) -> None:
@@ -29972,10 +29748,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class All(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional field and is hardware dependent.
 
@@ -29984,7 +29761,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         All.
 
@@ -30000,10 +29777,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Broadcast(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional field and is hardware dependent.
 
@@ -30012,7 +29790,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         Broadcast.
 
@@ -30028,10 +29806,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Multicast(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional field and is hardware dependent.
 
@@ -30040,7 +29819,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         Multicast.
 
@@ -30056,10 +29835,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class UnknownUnicast(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional field and is hardware dependent.
 
@@ -30068,7 +29848,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         UnknownUnicast.
 
@@ -30120,15 +29900,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        IsisCircuitType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
         class IsisAuthentication(AvdModel):
             """Subclass of AvdModel."""
 
             class Both(AvdModel):
                 """Subclass of AvdModel."""
 
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
+
                 class KeyIdsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    KeyType: TypeAlias = Literal["0", "7", "8a"]
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "algorithm": {"type": str},
@@ -30138,8 +29924,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     id: int
                     """Configure authentication key-id."""
-                    algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
-                    key_type: Literal["0", "7", "8a"]
+                    algorithm: Algorithm
+                    key_type: KeyType
                     """Configure authentication key type."""
                     key: str
                     """Password string."""
@@ -30152,8 +29938,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
-                            algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                            key_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                            algorithm: Algorithm | UndefinedType = Undefined,
+                            key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
                             rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -30179,6 +29965,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 KeyIds._item_type = KeyIdsItem
 
+                Mode: TypeAlias = Literal["md5", "sha", "text", "shared-secret"]
+
                 class Sha(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -30202,18 +29990,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class SharedSecret(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
                     _fields: ClassVar[dict] = {"profile": {"type": str}, "algorithm": {"type": str}}
                     profile: str
-                    algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    algorithm: Algorithm
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            profile: str | UndefinedType = Undefined,
-                            algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, profile: str | UndefinedType = Undefined, algorithm: Algorithm | UndefinedType = Undefined) -> None:
                             """
                             SharedSecret.
 
@@ -30235,13 +30019,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "shared_secret": {"type": SharedSecret},
                     "rx_disabled": {"type": bool},
                 }
-                key_type: Literal["0", "7", "8a"] | None
+                key_type: KeyType | None
                 """Configure authentication key type."""
                 key: str | None
                 """Password string. `key_type` is required for this setting."""
                 key_ids: KeyIds
                 """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
-                mode: Literal["md5", "sha", "text", "shared-secret"] | None
+                mode: Mode | None
                 """Authentication mode."""
                 sha: Sha
                 """
@@ -30263,10 +30047,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Literal["md5", "sha", "text", "shared-secret"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
                         rx_disabled: bool | None | UndefinedType = Undefined,
@@ -30297,9 +30081,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Level1(AvdModel):
                 """Subclass of AvdModel."""
 
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
+
                 class KeyIdsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    KeyType: TypeAlias = Literal["0", "7", "8a"]
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "algorithm": {"type": str},
@@ -30309,8 +30097,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     id: int
                     """Configure authentication key-id."""
-                    algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
-                    key_type: Literal["0", "7", "8a"]
+                    algorithm: Algorithm
+                    key_type: KeyType
                     """Configure authentication key type."""
                     key: str
                     """Password string."""
@@ -30323,8 +30111,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
-                            algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                            key_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                            algorithm: Algorithm | UndefinedType = Undefined,
+                            key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
                             rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -30350,6 +30138,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 KeyIds._item_type = KeyIdsItem
 
+                Mode: TypeAlias = Literal["md5", "sha", "text", "shared-secret"]
+
                 class Sha(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -30373,18 +30163,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class SharedSecret(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
                     _fields: ClassVar[dict] = {"profile": {"type": str}, "algorithm": {"type": str}}
                     profile: str
-                    algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    algorithm: Algorithm
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            profile: str | UndefinedType = Undefined,
-                            algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, profile: str | UndefinedType = Undefined, algorithm: Algorithm | UndefinedType = Undefined) -> None:
                             """
                             SharedSecret.
 
@@ -30406,13 +30192,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "shared_secret": {"type": SharedSecret},
                     "rx_disabled": {"type": bool},
                 }
-                key_type: Literal["0", "7", "8a"] | None
+                key_type: KeyType | None
                 """Configure authentication key type."""
                 key: str | None
                 """Password string. `key_type` is required for this setting."""
                 key_ids: KeyIds
                 """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
-                mode: Literal["md5", "sha", "text", "shared-secret"] | None
+                mode: Mode | None
                 """Authentication mode."""
                 sha: Sha
                 """
@@ -30434,10 +30220,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Literal["md5", "sha", "text", "shared-secret"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
                         rx_disabled: bool | None | UndefinedType = Undefined,
@@ -30468,9 +30254,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Level2(AvdModel):
                 """Subclass of AvdModel."""
 
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
+
                 class KeyIdsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    KeyType: TypeAlias = Literal["0", "7", "8a"]
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "algorithm": {"type": str},
@@ -30480,8 +30270,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     id: int
                     """Configure authentication key-id."""
-                    algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
-                    key_type: Literal["0", "7", "8a"]
+                    algorithm: Algorithm
+                    key_type: KeyType
                     """Configure authentication key type."""
                     key: str
                     """Password string."""
@@ -30494,8 +30284,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
-                            algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                            key_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                            algorithm: Algorithm | UndefinedType = Undefined,
+                            key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
                             rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -30521,6 +30311,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 KeyIds._item_type = KeyIdsItem
 
+                Mode: TypeAlias = Literal["md5", "sha", "text", "shared-secret"]
+
                 class Sha(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -30544,18 +30336,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class SharedSecret(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
                     _fields: ClassVar[dict] = {"profile": {"type": str}, "algorithm": {"type": str}}
                     profile: str
-                    algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    algorithm: Algorithm
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            profile: str | UndefinedType = Undefined,
-                            algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, profile: str | UndefinedType = Undefined, algorithm: Algorithm | UndefinedType = Undefined) -> None:
                             """
                             SharedSecret.
 
@@ -30577,13 +30365,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "shared_secret": {"type": SharedSecret},
                     "rx_disabled": {"type": bool},
                 }
-                key_type: Literal["0", "7", "8a"] | None
+                key_type: KeyType | None
                 """Configure authentication key type."""
                 key: str | None
                 """Password string. `key_type` is required for this setting."""
                 key_ids: KeyIds
                 """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
-                mode: Literal["md5", "sha", "text", "shared-secret"] | None
+                mode: Mode | None
                 """Authentication mode."""
                 sha: Sha
                 """
@@ -30605,10 +30393,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Literal["md5", "sha", "text", "shared-secret"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
                         rx_disabled: bool | None | UndefinedType = Undefined,
@@ -30708,9 +30496,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class EvpnEthernetSegment(AvdModel):
             """Subclass of AvdModel."""
 
+            Redundancy: TypeAlias = Literal["all-active", "single-active"]
+
             class DesignatedForwarderElection(AvdModel):
                 """Subclass of AvdModel."""
 
+                Algorithm: TypeAlias = Literal["modulus", "preference"]
                 _fields: ClassVar[dict] = {
                     "algorithm": {"type": str},
                     "preference_value": {"type": int},
@@ -30719,7 +30510,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "subsequent_hold_time": {"type": int},
                     "candidate_reachability_required": {"type": bool},
                 }
-                algorithm: Literal["modulus", "preference"] | None
+                algorithm: Algorithm | None
                 preference_value: int | None
                 """Preference_value is only used when "algorithm" is "preference"."""
                 dont_preempt: bool
@@ -30737,7 +30528,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        algorithm: Literal["modulus", "preference"] | None | UndefinedType = Undefined,
+                        algorithm: Algorithm | None | UndefinedType = Undefined,
                         preference_value: int | None | UndefinedType = Undefined,
                         dont_preempt: bool | UndefinedType = Undefined,
                         hold_time: int | None | UndefinedType = Undefined,
@@ -30793,7 +30584,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             }
             identifier: str | None
             """EVPN Ethernet Segment Identifier (Type 1 format)."""
-            redundancy: Literal["all-active", "single-active"] | None
+            redundancy: Redundancy | None
             designated_forwarder_election: DesignatedForwarderElection
             """Subclass of AvdModel."""
             mpls: Mpls
@@ -30807,7 +30598,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     identifier: str | None | UndefinedType = Undefined,
-                    redundancy: Literal["all-active", "single-active"] | None | UndefinedType = Undefined,
+                    redundancy: Redundancy | None | UndefinedType = Undefined,
                     designated_forwarder_election: DesignatedForwarderElection | UndefinedType = Undefined,
                     mpls: Mpls | UndefinedType = Undefined,
                     route_target: str | None | UndefinedType = Undefined,
@@ -30826,6 +30617,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         route_target: EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
 
                     """
+
+        SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+        SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+        SpanningTreeGuard: TypeAlias = Literal["loop", "root", "disabled"]
+        SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
 
         class Ptp(AvdModel):
             """Subclass of AvdModel."""
@@ -30852,18 +30648,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            DelayMechanism: TypeAlias = Literal["e2e", "p2p"]
+
             class Profile(AvdModel):
                 """Subclass of AvdModel."""
 
                 class G82751(AvdModel):
                     """Subclass of AvdModel."""
 
+                    DestinationMacAddress: TypeAlias = Literal["forwardable", "non-forwardable"]
                     _fields: ClassVar[dict] = {"destination_mac_address": {"type": str}}
-                    destination_mac_address: Literal["forwardable", "non-forwardable"] | None
+                    destination_mac_address: DestinationMacAddress | None
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, destination_mac_address: Literal["forwardable", "non-forwardable"] | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, destination_mac_address: DestinationMacAddress | None | UndefinedType = Undefined) -> None:
                             """
                             G82751.
 
@@ -30913,6 +30712,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            Role: TypeAlias = Literal["master", "dynamic"]
+            Transport: TypeAlias = Literal["ipv4", "ipv6", "layer2"]
             _fields: ClassVar[dict] = {
                 "enable": {"type": bool},
                 "announce": {"type": Announce},
@@ -30929,15 +30730,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             announce: Announce
             """Subclass of AvdModel."""
             delay_req: int | None
-            delay_mechanism: Literal["e2e", "p2p"] | None
+            delay_mechanism: DelayMechanism | None
             profile: Profile
             """Subclass of AvdModel."""
             sync_message: SyncMessage
             """Subclass of AvdModel."""
-            role: Literal["master", "dynamic"] | None
+            role: Role | None
             vlan: str | None
             """VLAN can be 'all' or list of vlans as string."""
-            transport: Literal["ipv4", "ipv6", "layer2"] | None
+            transport: Transport | None
             mpass: bool | None
             """
             When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
@@ -30956,12 +30757,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     enable: bool | None | UndefinedType = Undefined,
                     announce: Announce | UndefinedType = Undefined,
                     delay_req: int | None | UndefinedType = Undefined,
-                    delay_mechanism: Literal["e2e", "p2p"] | None | UndefinedType = Undefined,
+                    delay_mechanism: DelayMechanism | None | UndefinedType = Undefined,
                     profile: Profile | UndefinedType = Undefined,
                     sync_message: SyncMessage | UndefinedType = Undefined,
-                    role: Literal["master", "dynamic"] | None | UndefinedType = Undefined,
+                    role: Role | None | UndefinedType = Undefined,
                     vlan: str | None | UndefinedType = Undefined,
-                    transport: Literal["ipv4", "ipv6", "layer2"] | None | UndefinedType = Undefined,
+                    transport: Transport | None | UndefinedType = Undefined,
                     mpass: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -30989,6 +30790,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            devices.
 
                     """
+
+        IpVerifyUnicastSourceReachableVia: TypeAlias = Literal["any", "rx"]
 
         class IpNat(AvdModel):
             """Subclass of AvdModel."""
@@ -31039,6 +30842,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class StaticItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Direction: TypeAlias = Literal["egress", "ingress"]
+                    Protocol: TypeAlias = Literal["udp", "tcp"]
                     _fields: ClassVar[dict] = {
                         "access_list": {"type": str},
                         "comment": {"type": str},
@@ -31054,7 +30859,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     access_list: str | None
                     """'access_list' and 'group' are mutual exclusive."""
                     comment: str | None
-                    direction: Literal["egress", "ingress"] | None
+                    direction: Direction | None
                     """
                     Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware
                     platform.
@@ -31068,7 +30873,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     original_port: int | None
                     """TCP/UDP port. The combination of `original_ip` and `original_port` must be unique."""
                     priority: int | None
-                    protocol: Literal["udp", "tcp"] | None
+                    protocol: Protocol | None
                     translated_ip: str
                     """IPv4 address."""
                     translated_port: int | None
@@ -31081,12 +30886,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             access_list: str | None | UndefinedType = Undefined,
                             comment: str | None | UndefinedType = Undefined,
-                            direction: Literal["egress", "ingress"] | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
                             group: int | None | UndefinedType = Undefined,
                             original_ip: str | None | UndefinedType = Undefined,
                             original_port: int | None | UndefinedType = Undefined,
                             priority: int | None | UndefinedType = Undefined,
-                            protocol: Literal["udp", "tcp"] | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
                             translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
@@ -31146,6 +30951,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class DynamicItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    NatType: TypeAlias = Literal["overload", "pool", "pool-address-only", "pool-full-cone"]
                     _fields: ClassVar[dict] = {
                         "access_list": {"type": str},
                         "comment": {"type": str},
@@ -31155,7 +30961,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     access_list: str
                     comment: str | None
-                    nat_type: Literal["overload", "pool", "pool-address-only", "pool-full-cone"]
+                    nat_type: NatType
                     pool_name: str | None
                     """
                     required if 'nat_type' is pool, pool-address-only or pool-full-cone.
@@ -31171,7 +30977,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             access_list: str | UndefinedType = Undefined,
                             comment: str | None | UndefinedType = Undefined,
-                            nat_type: Literal["overload", "pool", "pool-address-only", "pool-full-cone"] | UndefinedType = Undefined,
+                            nat_type: NatType | UndefinedType = Undefined,
                             pool_name: str | None | UndefinedType = Undefined,
                             priority: int | None | UndefinedType = Undefined,
                         ) -> None:
@@ -31203,6 +31009,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class StaticItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Direction: TypeAlias = Literal["egress", "ingress"]
+                    Protocol: TypeAlias = Literal["udp", "tcp"]
                     _fields: ClassVar[dict] = {
                         "access_list": {"type": str},
                         "comment": {"type": str},
@@ -31218,7 +31026,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     access_list: str | None
                     """'access_list' and 'group' are mutual exclusive."""
                     comment: str | None
-                    direction: Literal["egress", "ingress"] | None
+                    direction: Direction | None
                     """
                     Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware
                     platform.
@@ -31232,7 +31040,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     original_port: int | None
                     """TCP/UDP port. The combination of `original_ip` and `original_port` must be unique."""
                     priority: int | None
-                    protocol: Literal["udp", "tcp"] | None
+                    protocol: Protocol | None
                     translated_ip: str
                     """IPv4 address."""
                     translated_port: int | None
@@ -31245,12 +31053,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             access_list: str | None | UndefinedType = Undefined,
                             comment: str | None | UndefinedType = Undefined,
-                            direction: Literal["egress", "ingress"] | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
                             group: int | None | UndefinedType = Undefined,
                             original_ip: str | None | UndefinedType = Undefined,
                             original_port: int | None | UndefinedType = Undefined,
                             priority: int | None | UndefinedType = Undefined,
-                            protocol: Literal["udp", "tcp"] | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
                             translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
@@ -31480,12 +31288,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
+
         class OspfMessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
+            HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
             _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}}
             id: int
-            hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None
+            hash_algorithm: HashAlgorithm | None
             key: str | None
             """Encrypted password."""
 
@@ -31495,7 +31306,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None | UndefinedType = Undefined,
+                    hash_algorithm: HashAlgorithm | None | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -31962,6 +31773,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 SecondaryAddresses._item_type = str
 
+                Version: TypeAlias = Literal[2, 3]
                 _fields: ClassVar[dict] = {"address": {"type": str}, "secondary_addresses": {"type": SecondaryAddresses}, "version": {"type": int}}
                 address: str
                 """Virtual IPv4 address."""
@@ -31971,7 +31783,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Subclass of AvdList with `str` items.
                 """
-                version: Literal[2, 3] | None
+                version: Version | None
 
                 if TYPE_CHECKING:
 
@@ -31980,7 +31792,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         address: str | UndefinedType = Undefined,
                         secondary_addresses: SecondaryAddresses | UndefinedType = Undefined,
-                        version: Literal[2, 3] | None | UndefinedType = Undefined,
+                        version: Version | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ipv4.
@@ -32034,12 +31846,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class PeerAuthentication(AvdModel):
                 """Subclass of AvdModel."""
 
+                Mode: TypeAlias = Literal["text", "ietf-md5"]
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
                 _fields: ClassVar[dict] = {"mode": {"type": str}, "key": {"type": str}, "key_type": {"type": str}}
-                mode: Literal["text", "ietf-md5"]
+                mode: Mode
                 """Authentication mode."""
                 key: str
                 """Authentication key."""
-                key_type: Literal["0", "7", "8a"] | None
+                key_type: KeyType | None
                 """Authentication key type."""
 
                 if TYPE_CHECKING:
@@ -32047,9 +31861,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        mode: Literal["text", "ietf-md5"] | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType = Undefined,
                         key: str | UndefinedType = Undefined,
-                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerAuthentication.
@@ -32138,6 +31952,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Switchport(AvdModel):
             """Subclass of AvdModel."""
 
+            Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
+
             class Trunk(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -32193,18 +32009,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Phone(AvdModel):
                 """Subclass of AvdModel."""
 
+                Trunk: TypeAlias = Literal["tagged", "tagged phone", "untagged", "untagged phone"]
                 _fields: ClassVar[dict] = {"vlan": {"type": int}, "trunk": {"type": str}}
                 vlan: int | None
-                trunk: Literal["tagged", "tagged phone", "untagged", "untagged phone"] | None
+                trunk: Trunk | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        vlan: int | None | UndefinedType = Undefined,
-                        trunk: Literal["tagged", "tagged phone", "untagged", "untagged phone"] | None | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, vlan: int | None | UndefinedType = Undefined, trunk: Trunk | None | UndefinedType = Undefined) -> None:
                         """
                         Phone.
 
@@ -32220,19 +32032,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Dot1q(AvdModel):
                 """Subclass of AvdModel."""
 
+                VlanTag: TypeAlias = Literal["disallowed", "required"]
                 _fields: ClassVar[dict] = {"ethertype": {"type": int}, "vlan_tag": {"type": str}}
                 ethertype: int | None
                 """Ethertype/TPID (Tag Protocol IDentifier) for VLAN tagged frames."""
-                vlan_tag: Literal["disallowed", "required"] | None
+                vlan_tag: VlanTag | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        ethertype: int | None | UndefinedType = Undefined,
-                        vlan_tag: Literal["disallowed", "required"] | None | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, ethertype: int | None | UndefinedType = Undefined, vlan_tag: VlanTag | None | UndefinedType = Undefined) -> None:
                         """
                         Dot1q.
 
@@ -32244,6 +32052,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             vlan_tag: vlan_tag
 
                         """
+
+            SourceInterface: TypeAlias = Literal["tx", "tx multicast"]
 
             class VlanTranslations(AvdModel):
                 """Subclass of AvdModel."""
@@ -32585,20 +32395,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Violation(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Mode: TypeAlias = Literal["shutdown", "protect"]
                     _fields: ClassVar[dict] = {"mode": {"type": str}, "protect_log": {"type": bool}}
-                    mode: Literal["shutdown", "protect"] | None
+                    mode: Mode | None
                     """Configure port security mode."""
                     protect_log: bool | None
                     """Log new addresses seen after limit is reached in protect mode."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            mode: Literal["shutdown", "protect"] | None | UndefinedType = Undefined,
-                            protect_log: bool | None | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, protect_log: bool | None | UndefinedType = Undefined) -> None:
                             """
                             Violation.
 
@@ -33234,19 +33040,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Identity(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Tag: TypeAlias = Literal["dot1q", "qinq"]
+                    Dot1qDzgreSource: TypeAlias = Literal["policy", "port"]
+                    QinqDzgreSource: TypeAlias = Literal["policy inner port", "port inner policy"]
                     _fields: ClassVar[dict] = {"tag": {"type": str}, "dot1q_dzgre_source": {"type": str}, "qinq_dzgre_source": {"type": str}}
-                    tag: Literal["dot1q", "qinq"] | None
-                    dot1q_dzgre_source: Literal["policy", "port"] | None
-                    qinq_dzgre_source: Literal["policy inner port", "port inner policy"] | None
+                    tag: Tag | None
+                    dot1q_dzgre_source: Dot1qDzgreSource | None
+                    qinq_dzgre_source: QinqDzgreSource | None
 
                     if TYPE_CHECKING:
 
                         def __init__(
                             self,
                             *,
-                            tag: Literal["dot1q", "qinq"] | None | UndefinedType = Undefined,
-                            dot1q_dzgre_source: Literal["policy", "port"] | None | UndefinedType = Undefined,
-                            qinq_dzgre_source: Literal["policy inner port", "port inner policy"] | None | UndefinedType = Undefined,
+                            tag: Tag | None | UndefinedType = Undefined,
+                            dot1q_dzgre_source: Dot1qDzgreSource | None | UndefinedType = Undefined,
+                            qinq_dzgre_source: QinqDzgreSource | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Identity.
@@ -33345,7 +33154,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "tool": {"type": Tool},
             }
             enabled: bool | None
-            mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+            mode: Mode | None
             access_vlan: int | None
             """Set VLAN when interface is in access mode."""
             trunk: Trunk
@@ -33356,7 +33165,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Secondary VLAN IDs of the private VLAN mapping."""
             dot1q: Dot1q
             """Subclass of AvdModel."""
-            source_interface: Literal["tx", "tx multicast"] | None
+            source_interface: SourceInterface | None
             """
             tx: Allow bridged traffic to go out of the source interface.
             tx multicast: Allow multicast traffic
@@ -33404,13 +33213,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     enabled: bool | None | UndefinedType = Undefined,
-                    mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                    mode: Mode | None | UndefinedType = Undefined,
                     access_vlan: int | None | UndefinedType = Undefined,
                     trunk: Trunk | UndefinedType = Undefined,
                     phone: Phone | UndefinedType = Undefined,
                     pvlan_mapping: str | None | UndefinedType = Undefined,
                     dot1q: Dot1q | UndefinedType = Undefined,
-                    source_interface: Literal["tx", "tx multicast"] | None | UndefinedType = Undefined,
+                    source_interface: SourceInterface | None | UndefinedType = Undefined,
                     vlan_translations: VlanTranslations | UndefinedType = Undefined,
                     vlan_forwarding_accept_all: bool | None | UndefinedType = Undefined,
                     backup_link: BackupLink | UndefinedType = Undefined,
@@ -33481,15 +33290,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Bandwidth(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["gbps", "mbps", "percent"]
                 _fields: ClassVar[dict] = {"number": {"type": int}, "unit": {"type": str}}
                 number: int
-                unit: Literal["gbps", "mbps", "percent"]
+                unit: Unit
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, number: int | UndefinedType = Undefined, unit: Literal["gbps", "mbps", "percent"] | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, number: int | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         Bandwidth.
 
@@ -33505,6 +33313,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class MinDelayStatic(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["microseconds", "milliseconds"]
                 _fields: ClassVar[dict] = {"number": {"type": int}, "unit": {"type": str}}
                 number: int
                 """
@@ -33512,13 +33321,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 This is regardless of whether the specified unit is
                 milliseconds or microseconds.
                 """
-                unit: Literal["microseconds", "milliseconds"]
+                unit: Unit
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, number: int | UndefinedType = Undefined, unit: Literal["microseconds", "milliseconds"] | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, number: int | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         MinDelayStatic.
 
@@ -33540,6 +33347,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class TwampLightFallback(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Unit: TypeAlias = Literal["microseconds", "milliseconds"]
                     _fields: ClassVar[dict] = {"number": {"type": int}, "unit": {"type": str}}
                     number: int
                     """
@@ -33547,13 +33355,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     This is regardless of whether the specified unit is
                     milliseconds or microseconds.
                     """
-                    unit: Literal["microseconds", "milliseconds"]
+                    unit: Unit
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, number: int | UndefinedType = Undefined, unit: Literal["microseconds", "milliseconds"] | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, number: int | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                             """
                             TwampLightFallback.
 
@@ -33806,7 +33612,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Maximum in `min_links` is
         hardware dependent.
         """
-        lacp_fallback_mode: Literal["individual", "static"] | None
+        lacp_fallback_mode: LacpFallbackMode | None
         qos: Qos
         """Subclass of AvdModel."""
         bfd: Bfd
@@ -33829,7 +33635,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         isis_passive: bool | None
         isis_metric: int | None
         isis_network_point_to_point: bool | None
-        isis_circuit_type: Literal["level-1-2", "level-1", "level-2"] | None
+        isis_circuit_type: IsisCircuitType | None
         isis_hello_padding: bool | None
         isis_authentication: IsisAuthentication
         """Subclass of AvdModel."""
@@ -33839,10 +33645,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         lacp_id: str | None
         """LACP ID with format xxxx.xxxx.xxxx."""
-        spanning_tree_bpdufilter: Literal["enabled", "disabled", "True", "False", "true", "false"] | None
-        spanning_tree_bpduguard: Literal["enabled", "disabled", "True", "False", "true", "false"] | None
-        spanning_tree_guard: Literal["loop", "root", "disabled"] | None
-        spanning_tree_portfast: Literal["edge", "network"] | None
+        spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
+        spanning_tree_bpduguard: SpanningTreeBpduguard | None
+        spanning_tree_guard: SpanningTreeGuard | None
+        spanning_tree_portfast: SpanningTreePortfast | None
         vmtracer: bool | None
         ptp: Ptp
         """Subclass of AvdModel."""
@@ -33854,7 +33660,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Enable IPv4 DHCP server."""
         dhcp_server_ipv6: bool | None
         """Enable IPv6 DHCP server."""
-        ip_verify_unicast_source_reachable_via: Literal["any", "rx"] | None
+        ip_verify_unicast_source_reachable_via: IpVerifyUnicastSourceReachableVia | None
         ip_nat: IpNat
         """Subclass of AvdModel."""
         ipv6_enable: bool | None
@@ -33885,7 +33691,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ospf_network_point_to_point: bool | None
         ospf_area: str | None
         ospf_cost: int | None
-        ospf_authentication: Literal["none", "simple", "message-digest"] | None
+        ospf_authentication: OspfAuthentication | None
         ospf_authentication_key: str | None
         """Encrypted password."""
         ospf_message_digest_keys: OspfMessageDigestKeys
@@ -33950,7 +33756,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 mlag: int | None | UndefinedType = Undefined,
                 lacp_fallback_timeout: int | None | UndefinedType = Undefined,
                 min_links: int | None | UndefinedType = Undefined,
-                lacp_fallback_mode: Literal["individual", "static"] | None | UndefinedType = Undefined,
+                lacp_fallback_mode: LacpFallbackMode | None | UndefinedType = Undefined,
                 qos: Qos | UndefinedType = Undefined,
                 bfd: Bfd | UndefinedType = Undefined,
                 service_policy: ServicePolicy | UndefinedType = Undefined,
@@ -33964,23 +33770,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 isis_passive: bool | None | UndefinedType = Undefined,
                 isis_metric: int | None | UndefinedType = Undefined,
                 isis_network_point_to_point: bool | None | UndefinedType = Undefined,
-                isis_circuit_type: Literal["level-1-2", "level-1", "level-2"] | None | UndefinedType = Undefined,
+                isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
                 isis_hello_padding: bool | None | UndefinedType = Undefined,
                 isis_authentication: IsisAuthentication | UndefinedType = Undefined,
                 traffic_policy: TrafficPolicy | UndefinedType = Undefined,
                 evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
                 lacp_id: str | None | UndefinedType = Undefined,
-                spanning_tree_bpdufilter: Literal["enabled", "disabled", "True", "False", "true", "false"] | None | UndefinedType = Undefined,
-                spanning_tree_bpduguard: Literal["enabled", "disabled", "True", "False", "true", "false"] | None | UndefinedType = Undefined,
-                spanning_tree_guard: Literal["loop", "root", "disabled"] | None | UndefinedType = Undefined,
-                spanning_tree_portfast: Literal["edge", "network"] | None | UndefinedType = Undefined,
+                spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
+                spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
+                spanning_tree_guard: SpanningTreeGuard | None | UndefinedType = Undefined,
+                spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                 vmtracer: bool | None | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
                 dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
                 dhcp_server_ipv4: bool | None | UndefinedType = Undefined,
                 dhcp_server_ipv6: bool | None | UndefinedType = Undefined,
-                ip_verify_unicast_source_reachable_via: Literal["any", "rx"] | None | UndefinedType = Undefined,
+                ip_verify_unicast_source_reachable_via: IpVerifyUnicastSourceReachableVia | None | UndefinedType = Undefined,
                 ip_nat: IpNat | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
@@ -33999,7 +33805,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ospf_network_point_to_point: bool | None | UndefinedType = Undefined,
                 ospf_area: str | None | UndefinedType = Undefined,
                 ospf_cost: int | None | UndefinedType = Undefined,
-                ospf_authentication: Literal["none", "simple", "message-digest"] | None | UndefinedType = Undefined,
+                ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
                 ospf_authentication_key: str | None | UndefinedType = Undefined,
                 ospf_message_digest_keys: OspfMessageDigestKeys | UndefinedType = Undefined,
                 flow_tracker: FlowTracker | UndefinedType = Undefined,
@@ -34203,6 +34009,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Watchdog(AvdModel):
             """Subclass of AvdModel."""
 
+            Action: TypeAlias = Literal["drop", "no-drop"]
             _fields: ClassVar[dict] = {
                 "action": {"type": str},
                 "timeout": {"type": str},
@@ -34210,7 +34017,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "recovery_time": {"type": str},
                 "override_action_drop": {"type": bool},
             }
-            action: Literal["drop", "no-drop"] | None
+            action: Action | None
             """Action on stuck queue."""
             timeout: str | None
             """
@@ -34243,7 +34050,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    action: Literal["drop", "no-drop"] | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
                     timeout: str | None | UndefinedType = Undefined,
                     polling_interval: str | None | UndefinedType = Undefined,
                     recovery_time: str | None | UndefinedType = Undefined,
@@ -34301,6 +34108,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     class Ptp(AvdModel):
         """Subclass of AvdModel."""
+
+        Mode: TypeAlias = Literal["boundary", "disabled", "e2etransparent", "gptp", "ordinarymaster", "p2ptransparent"]
+        Profile: TypeAlias = Literal["g8275.1", "g8275.2"]
 
         class Source(AvdModel):
             """Subclass of AvdModel."""
@@ -34627,8 +34437,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "free_running": {"type": FreeRunning},
             "forward_v1": {"type": bool},
         }
-        mode: Literal["boundary", "disabled", "e2etransparent", "gptp", "ordinarymaster", "p2ptransparent"] | None
-        profile: Literal["g8275.1", "g8275.2"] | None
+        mode: Mode | None
+        profile: Profile | None
         mode_one_step: bool | None
         forward_unicast: bool | None
         clock_identity: str | None
@@ -34662,8 +34472,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                mode: Literal["boundary", "disabled", "e2etransparent", "gptp", "ordinarymaster", "p2ptransparent"] | None | UndefinedType = Undefined,
-                profile: Literal["g8275.1", "g8275.2"] | None | UndefinedType = Undefined,
+                mode: Mode | None | UndefinedType = Undefined,
+                profile: Profile | None | UndefinedType = Undefined,
                 mode_one_step: bool | None | UndefinedType = Undefined,
                 forward_unicast: bool | None | UndefinedType = Undefined,
                 clock_identity: str | None | UndefinedType = Undefined,
@@ -34954,6 +34764,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class QosProfilesItem(AvdModel):
         """Subclass of AvdModel."""
 
+        Trust: TypeAlias = Literal["cos", "dscp", "disabled"]
+
         class Shape(AvdModel):
             """Subclass of AvdModel."""
 
@@ -35025,6 +34837,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TxQueuesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Priority: TypeAlias = Literal["priority strict", "no priority"]
+
             class Shape(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -35060,6 +34874,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class Threshold(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Units: TypeAlias = Literal["segments", "bytes", "kbytes", "mbytes", "milliseconds", "microseconds"]
                         _fields: ClassVar[dict] = {
                             "units": {"type": str},
                             "min": {"type": int},
@@ -35067,7 +34882,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "max_probability": {"type": int},
                             "weight": {"type": int},
                         }
-                        units: Literal["segments", "bytes", "kbytes", "mbytes", "milliseconds", "microseconds"]
+                        units: Units
                         """Units to be used for the threshold values."""
                         min: int
                         """Random-detect ECN minimum-threshold."""
@@ -35083,7 +34898,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                units: Literal["segments", "bytes", "kbytes", "mbytes", "milliseconds", "microseconds"] | UndefinedType = Undefined,
+                                units: Units | UndefinedType = Undefined,
                                 min: int | UndefinedType = Undefined,
                                 max: int | UndefinedType = Undefined,
                                 max_probability: int | None | UndefinedType = Undefined,
@@ -35131,6 +34946,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class Threshold(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Units: TypeAlias = Literal["segments", "bytes", "kbytes", "mbytes", "microseconds", "milliseconds"]
                         _fields: ClassVar[dict] = {
                             "units": {"type": str},
                             "drop_precedence": {"type": int},
@@ -35139,7 +34955,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "drop_probability": {"type": int},
                             "weight": {"type": int},
                         }
-                        units: Literal["segments", "bytes", "kbytes", "mbytes", "microseconds", "milliseconds"]
+                        units: Units
                         """Units to be used for the threshold values."""
                         drop_precedence: int | None
                         """Specify Drop Precedence value."""
@@ -35157,7 +34973,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                units: Literal["segments", "bytes", "kbytes", "mbytes", "microseconds", "milliseconds"] | UndefinedType = Undefined,
+                                units: Units | UndefinedType = Undefined,
                                 drop_precedence: int | None | UndefinedType = Undefined,
                                 min: int | UndefinedType = Undefined,
                                 max: int | UndefinedType = Undefined,
@@ -35246,7 +35062,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """TX-Queue ID."""
             bandwidth_percent: int | None
             bandwidth_guaranteed_percent: int | None
-            priority: Literal["priority strict", "no priority"] | None
+            priority: Priority | None
             shape: Shape
             """Subclass of AvdModel."""
             comment: str | None
@@ -35262,7 +35078,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     id: int | UndefinedType = Undefined,
                     bandwidth_percent: int | None | UndefinedType = Undefined,
                     bandwidth_guaranteed_percent: int | None | UndefinedType = Undefined,
-                    priority: Literal["priority strict", "no priority"] | None | UndefinedType = Undefined,
+                    priority: Priority | None | UndefinedType = Undefined,
                     shape: Shape | UndefinedType = Undefined,
                     comment: str | None | UndefinedType = Undefined,
                     random_detect: RandomDetect | UndefinedType = Undefined,
@@ -35293,6 +35109,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         class UcTxQueuesItem(AvdModel):
             """Subclass of AvdModel."""
+
+            Priority: TypeAlias = Literal["priority strict", "no priority"]
 
             class Shape(AvdModel):
                 """Subclass of AvdModel."""
@@ -35329,6 +35147,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class Threshold(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Units: TypeAlias = Literal["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
                         _fields: ClassVar[dict] = {
                             "units": {"type": str},
                             "min": {"type": int},
@@ -35336,7 +35155,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "max_probability": {"type": int},
                             "weight": {"type": int},
                         }
-                        units: Literal["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
+                        units: Units
                         """Unit to be used for the threshold values."""
                         min: int
                         """Random-detect ECN minimum-threshold."""
@@ -35352,7 +35171,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                units: Literal["segments", "bytes", "kbytes", "mbytes", "milliseconds"] | UndefinedType = Undefined,
+                                units: Units | UndefinedType = Undefined,
                                 min: int | UndefinedType = Undefined,
                                 max: int | UndefinedType = Undefined,
                                 max_probability: int | None | UndefinedType = Undefined,
@@ -35400,6 +35219,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class Threshold(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Units: TypeAlias = Literal["segments", "bytes", "kbytes", "mbytes", "microseconds", "milliseconds"]
                         _fields: ClassVar[dict] = {
                             "units": {"type": str},
                             "drop_precedence": {"type": int},
@@ -35408,7 +35228,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "drop_probability": {"type": int},
                             "weight": {"type": int},
                         }
-                        units: Literal["segments", "bytes", "kbytes", "mbytes", "microseconds", "milliseconds"]
+                        units: Units
                         """Units to be used for the threshold values."""
                         drop_precedence: int | None
                         """Specify Drop Precedence value."""
@@ -35426,7 +35246,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                units: Literal["segments", "bytes", "kbytes", "mbytes", "microseconds", "milliseconds"] | UndefinedType = Undefined,
+                                units: Units | UndefinedType = Undefined,
                                 drop_precedence: int | None | UndefinedType = Undefined,
                                 min: int | UndefinedType = Undefined,
                                 max: int | UndefinedType = Undefined,
@@ -35515,7 +35335,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """UC TX queue ID."""
             bandwidth_percent: int | None
             bandwidth_guaranteed_percent: int | None
-            priority: Literal["priority strict", "no priority"] | None
+            priority: Priority | None
             shape: Shape
             """Subclass of AvdModel."""
             comment: str | None
@@ -35531,7 +35351,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     id: int | UndefinedType = Undefined,
                     bandwidth_percent: int | None | UndefinedType = Undefined,
                     bandwidth_guaranteed_percent: int | None | UndefinedType = Undefined,
-                    priority: Literal["priority strict", "no priority"] | None | UndefinedType = Undefined,
+                    priority: Priority | None | UndefinedType = Undefined,
                     shape: Shape | UndefinedType = Undefined,
                     comment: str | None | UndefinedType = Undefined,
                     random_detect: RandomDetect | UndefinedType = Undefined,
@@ -35562,6 +35382,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         class McTxQueuesItem(AvdModel):
             """Subclass of AvdModel."""
+
+            Priority: TypeAlias = Literal["priority strict", "no priority"]
 
             class Shape(AvdModel):
                 """Subclass of AvdModel."""
@@ -35601,7 +35423,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """MC TX queue ID."""
             bandwidth_percent: int | None
             bandwidth_guaranteed_percent: int | None
-            priority: Literal["priority strict", "no priority"] | None
+            priority: Priority | None
             shape: Shape
             """Subclass of AvdModel."""
             comment: str | None
@@ -35615,7 +35437,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     id: int | UndefinedType = Undefined,
                     bandwidth_percent: int | None | UndefinedType = Undefined,
                     bandwidth_guaranteed_percent: int | None | UndefinedType = Undefined,
-                    priority: Literal["priority strict", "no priority"] | None | UndefinedType = Undefined,
+                    priority: Priority | None | UndefinedType = Undefined,
                     shape: Shape | UndefinedType = Undefined,
                     comment: str | None | UndefinedType = Undefined,
                 ) -> None:
@@ -35647,6 +35469,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             class Watchdog(AvdModel):
                 """Subclass of AvdModel."""
+
+                Action: TypeAlias = Literal["drop", "notify-only"]
 
                 class Timer(AvdModel):
                     """Subclass of AvdModel."""
@@ -35735,7 +35559,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "action": {"type": str}, "timer": {"type": Timer}}
                 enabled: bool
                 """Enable the watchdog on stuck transmit queues."""
-                action: Literal["drop", "notify-only"] | None
+                action: Action | None
                 """
                 Override the default error-disable action to either drop
                 traffic on the stuck queue or notify-only
@@ -35755,7 +35579,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         enabled: bool | UndefinedType = Undefined,
-                        action: Literal["drop", "notify-only"] | None | UndefinedType = Undefined,
+                        action: Action | None | UndefinedType = Undefined,
                         timer: Timer | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -35873,7 +35697,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         name: str
         """Profile-Name."""
-        trust: Literal["cos", "dscp", "disabled"] | None
+        trust: Trust | None
         cos: int | None
         dscp: int | None
         shape: Shape
@@ -35900,7 +35724,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                trust: Literal["cos", "dscp", "disabled"] | None | UndefinedType = Undefined,
+                trust: Trust | None | UndefinedType = Undefined,
                 cos: int | None | UndefinedType = Undefined,
                 dscp: int | None | UndefinedType = Undefined,
                 shape: Shape | UndefinedType = Undefined,
@@ -36718,10 +36542,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class SequenceNumbersItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Action: TypeAlias = Literal["permit", "deny"]
             _fields: ClassVar[dict] = {"sequence": {"type": int}, "action": {"type": str}, "mode": {"type": str}, "command": {"type": str}}
             sequence: int | None
             """Sequence number."""
-            action: Literal["permit", "deny"] | None
+            action: Action | None
             mode: str | None
             """"config", "config-all", "exec" or mode key as string."""
             command: str | None
@@ -36733,7 +36558,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     sequence: int | None | UndefinedType = Undefined,
-                    action: Literal["permit", "deny"] | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
                     mode: str | None | UndefinedType = Undefined,
                     command: str | None | UndefinedType = Undefined,
                 ) -> None:
@@ -36790,6 +36615,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class SequenceNumbersItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Type: TypeAlias = Literal["permit", "deny"]
+
             class Match(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -36835,7 +36662,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _key_to_field_map: ClassVar[dict] = {"continue": "field_continue"}
             sequence: int
             """Sequence ID."""
-            type: Literal["permit", "deny"]
+            type: Type
             description: str | None
             match: Match
             """
@@ -36860,7 +36687,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     sequence: int | UndefinedType = Undefined,
-                    type: Literal["permit", "deny"] | UndefinedType = Undefined,
+                    type: Type | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     match: Match | UndefinedType = Undefined,
                     set: Set | UndefinedType = Undefined,
@@ -36927,6 +36754,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     class RouterAdaptiveVirtualTopology(AvdModel):
         """Subclass of AvdModel."""
+
+        TopologyRole: TypeAlias = Literal["edge", "pathfinder", "transit region", "transit zone"]
 
         class Region(AvdModel):
             """Subclass of AvdModel."""
@@ -37000,12 +36829,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class MetricOrder(AvdModel):
                 """Subclass of AvdModel."""
 
+                PreferredMetric: TypeAlias = Literal["jitter", "latency", "load", "loss-rate"]
                 _fields: ClassVar[dict] = {"preferred_metric": {"type": str}}
-                preferred_metric: Literal["jitter", "latency", "load", "loss-rate"]
+                preferred_metric: PreferredMetric
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, preferred_metric: Literal["jitter", "latency", "load", "loss-rate"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, preferred_metric: PreferredMetric | UndefinedType = Undefined) -> None:
                         """
                         MetricOrder.
 
@@ -37318,7 +37148,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "policies": {"type": Policies},
             "vrfs": {"type": Vrfs},
         }
-        topology_role: Literal["edge", "pathfinder", "transit region", "transit zone"] | None
+        topology_role: TopologyRole | None
         """Role name."""
         gateway_vxlan: bool | None
         """
@@ -37361,7 +37191,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                topology_role: Literal["edge", "pathfinder", "transit region", "transit zone"] | None | UndefinedType = Undefined,
+                topology_role: TopologyRole | None | UndefinedType = Undefined,
                 gateway_vxlan: bool | None | UndefinedType = Undefined,
                 region: Region | UndefinedType = Undefined,
                 zone: Zone | UndefinedType = Undefined,
@@ -37626,6 +37456,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     class RouterBgp(AvdModel):
         """Subclass of AvdModel."""
+
+        AsNotation: TypeAlias = Literal["asdot", "asplain"]
 
         class Timers(AvdModel):
             """Subclass of AvdModel."""
@@ -37935,10 +37767,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class AdditionalPaths(AvdModel):
                 """Subclass of AvdModel."""
 
+                Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                 _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                 receive: bool | None
                 """Enable or disable reception of additional-paths."""
-                send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                send: Send | None
                 """
                 Select an option to send multiple paths for same prefix through bgp updates.
                 any: Send any eligible
@@ -37961,7 +37794,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         receive: bool | None | UndefinedType = Undefined,
-                        send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                        send: Send | None | UndefinedType = Undefined,
                         send_limit: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -38104,22 +37937,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class NeighborDefault(AvdModel):
             """Subclass of AvdModel."""
 
+            SendCommunity: TypeAlias = Literal[
+                "all", "large", "extended", "standard", "extended large", "standard large", "standard extended", "standard extended large"
+            ]
             _fields: ClassVar[dict] = {"send_community": {"type": str}}
-            send_community: (
-                Literal["all", "large", "extended", "standard", "extended large", "standard large", "standard extended", "standard extended large"] | None
-            )
+            send_community: SendCommunity | None
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    send_community: Literal[
-                        "all", "large", "extended", "standard", "extended large", "standard large", "standard extended", "standard extended large"
-                    ]
-                    | None
-                    | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, send_community: SendCommunity | None | UndefinedType = Undefined) -> None:
                     """
                     NeighborDefault.
 
@@ -38277,13 +38103,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class DirectionIn(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
                     _fields: ClassVar[dict] = {
                         "action": {"type": str},
                         "include_community_list": {"type": bool},
                         "include_prefix_list": {"type": bool},
                         "include_sub_route_map": {"type": bool},
                     }
-                    action: Literal["deny", "permit", "deny-in-out"]
+                    action: Action
                     """Missing policy action."""
                     include_community_list: bool | None
                     """Include community-list references in missing policy decision."""
@@ -38297,7 +38124,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            action: Literal["deny", "permit", "deny-in-out"] | UndefinedType = Undefined,
+                            action: Action | UndefinedType = Undefined,
                             include_community_list: bool | None | UndefinedType = Undefined,
                             include_prefix_list: bool | None | UndefinedType = Undefined,
                             include_sub_route_map: bool | None | UndefinedType = Undefined,
@@ -38319,13 +38146,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class DirectionOut(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
                     _fields: ClassVar[dict] = {
                         "action": {"type": str},
                         "include_community_list": {"type": bool},
                         "include_prefix_list": {"type": bool},
                         "include_sub_route_map": {"type": bool},
                     }
-                    action: Literal["deny", "permit", "deny-in-out"]
+                    action: Action
                     """Missing policy action."""
                     include_community_list: bool | None
                     """Include community-list references in missing policy decision."""
@@ -38339,7 +38167,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            action: Literal["deny", "permit", "deny-in-out"] | UndefinedType = Undefined,
+                            action: Action | UndefinedType = Undefined,
                             include_community_list: bool | None | UndefinedType = Undefined,
                             include_prefix_list: bool | None | UndefinedType = Undefined,
                             include_sub_route_map: bool | None | UndefinedType = Undefined,
@@ -38466,20 +38294,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class SharedSecret(AvdModel):
                 """Subclass of AvdModel."""
 
+                HashAlgorithm: TypeAlias = Literal["aes-128-cmac-96", "hmac-sha-256", "hmac-sha1-96"]
                 _fields: ClassVar[dict] = {"profile": {"type": str}, "hash_algorithm": {"type": str}}
                 profile: str
                 """Name of profile defined under `management_security`."""
-                hash_algorithm: Literal["aes-128-cmac-96", "hmac-sha-256", "hmac-sha1-96"]
+                hash_algorithm: HashAlgorithm
                 """Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        profile: str | UndefinedType = Undefined,
-                        hash_algorithm: Literal["aes-128-cmac-96", "hmac-sha-256", "hmac-sha1-96"] | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, profile: str | UndefinedType = Undefined, hash_algorithm: HashAlgorithm | UndefinedType = Undefined) -> None:
                         """
                         SharedSecret.
 
@@ -38838,13 +38662,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class DirectionIn(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
                     _fields: ClassVar[dict] = {
                         "action": {"type": str},
                         "include_community_list": {"type": bool},
                         "include_prefix_list": {"type": bool},
                         "include_sub_route_map": {"type": bool},
                     }
-                    action: Literal["deny", "permit", "deny-in-out"]
+                    action: Action
                     """Missing policy action."""
                     include_community_list: bool | None
                     """Include community-list references in missing policy decision."""
@@ -38858,7 +38683,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            action: Literal["deny", "permit", "deny-in-out"] | UndefinedType = Undefined,
+                            action: Action | UndefinedType = Undefined,
                             include_community_list: bool | None | UndefinedType = Undefined,
                             include_prefix_list: bool | None | UndefinedType = Undefined,
                             include_sub_route_map: bool | None | UndefinedType = Undefined,
@@ -38880,13 +38705,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class DirectionOut(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
                     _fields: ClassVar[dict] = {
                         "action": {"type": str},
                         "include_community_list": {"type": bool},
                         "include_prefix_list": {"type": bool},
                         "include_sub_route_map": {"type": bool},
                     }
-                    action: Literal["deny", "permit", "deny-in-out"]
+                    action: Action
                     """Missing policy action."""
                     include_community_list: bool | None
                     """Include community-list references in missing policy decision."""
@@ -38900,7 +38726,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            action: Literal["deny", "permit", "deny-in-out"] | UndefinedType = Undefined,
+                            action: Action | UndefinedType = Undefined,
                             include_community_list: bool | None | UndefinedType = Undefined,
                             include_prefix_list: bool | None | UndefinedType = Undefined,
                             include_sub_route_map: bool | None | UndefinedType = Undefined,
@@ -39079,20 +38905,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class SharedSecret(AvdModel):
                 """Subclass of AvdModel."""
 
+                HashAlgorithm: TypeAlias = Literal["aes-128-cmac-96", "hmac-sha-256", "hmac-sha1-96"]
                 _fields: ClassVar[dict] = {"profile": {"type": str}, "hash_algorithm": {"type": str}}
                 profile: str
                 """Name of profile defined under `management_security`."""
-                hash_algorithm: Literal["aes-128-cmac-96", "hmac-sha-256", "hmac-sha1-96"]
+                hash_algorithm: HashAlgorithm
                 """Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        profile: str | UndefinedType = Undefined,
-                        hash_algorithm: Literal["aes-128-cmac-96", "hmac-sha-256", "hmac-sha1-96"] | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, profile: str | UndefinedType = Undefined, hash_algorithm: HashAlgorithm | UndefinedType = Undefined) -> None:
                         """
                         SharedSecret.
 
@@ -39614,6 +39436,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Isis(AvdModel):
                 """Subclass of AvdModel."""
 
+                IsisLevel: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
                 _fields: ClassVar[dict] = {
                     "enabled": {"type": bool},
                     "isis_level": {"type": str},
@@ -39622,7 +39445,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "include_leaked": {"type": bool},
                 }
                 enabled: bool
-                isis_level: Literal["level-1", "level-2", "level-1-2"] | None
+                isis_level: IsisLevel | None
                 """Redistribute IS-IS route level."""
                 route_map: str | None
                 rcf: str | None
@@ -39641,7 +39464,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         enabled: bool | UndefinedType = Undefined,
-                        isis_level: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
+                        isis_level: IsisLevel | None | UndefinedType = Undefined,
                         route_map: str | None | UndefinedType = Undefined,
                         rcf: str | None | UndefinedType = Undefined,
                         include_leaked: bool | None | UndefinedType = Undefined,
@@ -39733,6 +39556,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class MatchNssaExternal(AvdModel):
                     """Subclass of AvdModel."""
 
+                    NssaType: TypeAlias = Literal[1, 2]
                     _fields: ClassVar[dict] = {
                         "enabled": {"type": bool},
                         "nssa_type": {"type": int},
@@ -39740,7 +39564,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "include_leaked": {"type": bool},
                     }
                     enabled: bool
-                    nssa_type: Literal[1, 2] | None
+                    nssa_type: NssaType | None
                     """NSSA External Type Number."""
                     route_map: str | None
                     include_leaked: bool | None
@@ -39752,7 +39576,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                            nssa_type: NssaType | None | UndefinedType = Undefined,
                             route_map: str | None | UndefinedType = Undefined,
                             include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -39907,6 +39731,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class MatchNssaExternal(AvdModel):
                     """Subclass of AvdModel."""
 
+                    NssaType: TypeAlias = Literal[1, 2]
                     _fields: ClassVar[dict] = {
                         "enabled": {"type": bool},
                         "nssa_type": {"type": int},
@@ -39914,7 +39739,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "include_leaked": {"type": bool},
                     }
                     enabled: bool
-                    nssa_type: Literal[1, 2] | None
+                    nssa_type: NssaType | None
                     """NSSA External Type Number."""
                     route_map: str | None
                     include_leaked: bool | None
@@ -39926,7 +39751,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                            nssa_type: NssaType | None | UndefinedType = Undefined,
                             route_map: str | None | UndefinedType = Undefined,
                             include_leaked: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -40186,16 +40011,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class RdEvpnDomain(AvdModel):
                 """Subclass of AvdModel."""
 
+                Domain: TypeAlias = Literal["remote", "all"]
                 _fields: ClassVar[dict] = {"domain": {"type": str}, "rd": {"type": str}}
-                domain: Literal["remote", "all"] | None
+                domain: Domain | None
                 rd: str | None
                 """Route distinguisher."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, domain: Literal["remote", "all"] | None | UndefinedType = Undefined, rd: str | None | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, rd: str | None | UndefinedType = Undefined) -> None:
                         """
                         RdEvpnDomain.
 
@@ -40229,15 +40053,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class ImportEvpnDomainsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Domain: TypeAlias = Literal["remote", "all"]
                     _fields: ClassVar[dict] = {"domain": {"type": str}, "route_target": {"type": str}}
-                    domain: Literal["remote", "all"] | None
+                    domain: Domain | None
                     route_target: str | None
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, domain: Literal["remote", "all"] | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined) -> None:
                             """
                             ImportEvpnDomainsItem.
 
@@ -40258,15 +40081,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class ExportEvpnDomainsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Domain: TypeAlias = Literal["remote", "all"]
                     _fields: ClassVar[dict] = {"domain": {"type": str}, "route_target": {"type": str}}
-                    domain: Literal["remote", "all"] | None
+                    domain: Domain | None
                     route_target: str | None
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, domain: Literal["remote", "all"] | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined) -> None:
                             """
                             ExportEvpnDomainsItem.
 
@@ -40287,15 +40109,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class ImportExportEvpnDomainsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Domain: TypeAlias = Literal["remote", "all"]
                     _fields: ClassVar[dict] = {"domain": {"type": str}, "route_target": {"type": str}}
-                    domain: Literal["remote", "all"] | None
+                    domain: Domain | None
                     route_target: str | None
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, domain: Literal["remote", "all"] | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined) -> None:
                             """
                             ImportExportEvpnDomainsItem.
 
@@ -40461,16 +40282,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class RdEvpnDomain(AvdModel):
                 """Subclass of AvdModel."""
 
+                Domain: TypeAlias = Literal["remote", "all"]
                 _fields: ClassVar[dict] = {"domain": {"type": str}, "rd": {"type": str}}
-                domain: Literal["remote", "all"] | None
+                domain: Domain | None
                 rd: str | None
                 """Route distinguisher."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, domain: Literal["remote", "all"] | None | UndefinedType = Undefined, rd: str | None | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, rd: str | None | UndefinedType = Undefined) -> None:
                         """
                         RdEvpnDomain.
 
@@ -40504,15 +40324,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class ImportEvpnDomainsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Domain: TypeAlias = Literal["remote", "all"]
                     _fields: ClassVar[dict] = {"domain": {"type": str}, "route_target": {"type": str}}
-                    domain: Literal["remote", "all"] | None
+                    domain: Domain | None
                     route_target: str | None
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, domain: Literal["remote", "all"] | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined) -> None:
                             """
                             ImportEvpnDomainsItem.
 
@@ -40533,15 +40352,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class ExportEvpnDomainsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Domain: TypeAlias = Literal["remote", "all"]
                     _fields: ClassVar[dict] = {"domain": {"type": str}, "route_target": {"type": str}}
-                    domain: Literal["remote", "all"] | None
+                    domain: Domain | None
                     route_target: str | None
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, domain: Literal["remote", "all"] | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined) -> None:
                             """
                             ExportEvpnDomainsItem.
 
@@ -40562,15 +40380,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class ImportExportEvpnDomainsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Domain: TypeAlias = Literal["remote", "all"]
                     _fields: ClassVar[dict] = {"domain": {"type": str}, "route_target": {"type": str}}
-                    domain: Literal["remote", "all"] | None
+                    domain: Domain | None
                     route_target: str | None
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, domain: Literal["remote", "all"] | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined) -> None:
                             """
                             ImportExportEvpnDomainsItem.
 
@@ -40847,6 +40664,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NeighborDefault(AvdModel):
                 """Subclass of AvdModel."""
 
+                Encapsulation: TypeAlias = Literal["vxlan", "mpls", "path-selection"]
+
                 class NextHopSelfReceivedEvpnRoutes(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -40874,7 +40693,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "next_hop_self_source_interface": {"type": str},
                     "next_hop_self_received_evpn_routes": {"type": NextHopSelfReceivedEvpnRoutes},
                 }
-                encapsulation: Literal["vxlan", "mpls", "path-selection"] | None
+                encapsulation: Encapsulation | None
                 """Transport encapsulation for neighbor."""
                 next_hop_self_source_interface: str | None
                 """Source interface name for MPLS encapsulation. Requires `encapsulation` to be set as `mpls`."""
@@ -40886,7 +40705,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        encapsulation: Literal["vxlan", "mpls", "path-selection"] | None | UndefinedType = Undefined,
+                        encapsulation: Encapsulation | None | UndefinedType = Undefined,
                         next_hop_self_source_interface: str | None | UndefinedType = Undefined,
                         next_hop_self_received_evpn_routes: NextHopSelfReceivedEvpnRoutes | UndefinedType = Undefined,
                     ) -> None:
@@ -40906,20 +40725,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NextHopMplsResolutionRibsItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                RibType: TypeAlias = Literal["system-connected", "tunnel-rib-colored", "tunnel-rib"]
                 _fields: ClassVar[dict] = {"rib_type": {"type": str}, "rib_name": {"type": str}}
-                rib_type: Literal["system-connected", "tunnel-rib-colored", "tunnel-rib"]
+                rib_type: RibType
                 """Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use."""
                 rib_name: str | None
                 """The name of the tunnel-rib to use when using 'tunnel-rib' type."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        rib_type: Literal["system-connected", "tunnel-rib-colored", "tunnel-rib"] | UndefinedType = Undefined,
-                        rib_name: str | None | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, rib_type: RibType | UndefinedType = Undefined, rib_name: str | None | UndefinedType = Undefined) -> None:
                         """
                         NextHopMplsResolutionRibsItem.
 
@@ -40979,10 +40794,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -41005,7 +40821,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -41031,6 +40847,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                Encapsulation: TypeAlias = Literal["vxlan", "mpls", "path-selection"]
                 _fields: ClassVar[dict] = {
                     "ip_address": {"type": str},
                     "activate": {"type": bool},
@@ -41069,7 +40886,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
-                encapsulation: Literal["vxlan", "mpls", "path-selection"] | None
+                encapsulation: Encapsulation | None
                 """Transport encapsulation for the neighbor."""
                 next_hop_self_source_interface: str | None
                 """Source interface name for MPLS encapsulation. Requires `encapsulation` to be set as `mpls`."""
@@ -41089,7 +40906,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
-                        encapsulation: Literal["vxlan", "mpls", "path-selection"] | None | UndefinedType = Undefined,
+                        encapsulation: Encapsulation | None | UndefinedType = Undefined,
                         next_hop_self_source_interface: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -41164,13 +40981,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                Encapsulation: TypeAlias = Literal["vxlan", "mpls", "path-selection"]
+
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -41193,7 +41013,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -41258,7 +41078,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 default_route: DefaultRoute
                 """Subclass of AvdModel."""
                 domain_remote: bool | None
-                encapsulation: Literal["vxlan", "mpls", "path-selection"] | None
+                encapsulation: Encapsulation | None
                 """Transport encapsulation for the peer-group."""
                 next_hop_self_source_interface: str | None
                 """Source interface name for MPLS encapsulation. Requires `encapsulation` to be set as `mpls`."""
@@ -41280,7 +41100,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
                         domain_remote: bool | None | UndefinedType = Undefined,
-                        encapsulation: Literal["vxlan", "mpls", "path-selection"] | None | UndefinedType = Undefined,
+                        encapsulation: Encapsulation | None | UndefinedType = Undefined,
                         next_hop_self_source_interface: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
@@ -41377,13 +41197,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Route(AvdModel):
                 """Subclass of AvdModel."""
 
+                ImportMatchFailureAction: TypeAlias = Literal["discard"]
                 _fields: ClassVar[dict] = {
                     "import_match_failure_action": {"type": str},
                     "import_ethernet_segment_ip_mass_withdraw": {"type": bool},
                     "import_overlay_index_gateway": {"type": bool},
                     "export_ethernet_segment_ip_mass_withdraw": {"type": bool},
                 }
-                import_match_failure_action: Literal["discard"] | None
+                import_match_failure_action: ImportMatchFailureAction | None
                 import_ethernet_segment_ip_mass_withdraw: bool | None
                 import_overlay_index_gateway: bool | None
                 export_ethernet_segment_ip_mass_withdraw: bool | None
@@ -41393,7 +41214,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        import_match_failure_action: Literal["discard"] | None | UndefinedType = Undefined,
+                        import_match_failure_action: ImportMatchFailureAction | None | UndefinedType = Undefined,
                         import_ethernet_segment_ip_mass_withdraw: bool | None | UndefinedType = Undefined,
                         import_overlay_index_gateway: bool | None | UndefinedType = Undefined,
                         export_ethernet_segment_ip_mass_withdraw: bool | None | UndefinedType = Undefined,
@@ -41418,10 +41239,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -41444,7 +41266,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -41514,8 +41336,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class EvpnEthernetSegmentItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                Domain: TypeAlias = Literal["all", "local", "remote"]
                 _fields: ClassVar[dict] = {"domain": {"type": str}, "identifier": {"type": str}, "route_target_import": {"type": str}}
-                domain: Literal["all", "local", "remote"]
+                domain: Domain
                 identifier: str | None
                 """EVPN Ethernet Segment Identifier (Type 1 format)."""
                 route_target_import: str | None
@@ -41526,7 +41349,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        domain: Literal["all", "local", "remote"] | UndefinedType = Undefined,
+                        domain: Domain | UndefinedType = Undefined,
                         identifier: str | None | UndefinedType = Undefined,
                         route_target_import: str | None | UndefinedType = Undefined,
                     ) -> None:
@@ -41771,6 +41594,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {
                         "install": {"type": bool},
                         "install_ecmp_primary": {"type": bool},
@@ -41784,7 +41608,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Allow additional path with ECMP primary path."""
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -41809,7 +41633,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             install: bool | None | UndefinedType = Undefined,
                             install_ecmp_primary: bool | None | UndefinedType = Undefined,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -41889,12 +41713,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {"prefix_list": {"type": str}, "receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                     prefix_list: str | None
                     """Apply the configurations only to the routes matching the prefix list."""
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -41918,7 +41743,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             prefix_list: str | None | UndefinedType = Undefined,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -42116,12 +41941,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {"prefix_list": {"type": str}, "receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                     prefix_list: str | None
                     """Apply the configurations only to the routes matching the prefix list."""
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -42145,7 +41971,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             prefix_list: str | None | UndefinedType = Undefined,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -42449,6 +42275,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Isis(AvdModel):
                     """Subclass of AvdModel."""
 
+                    IsisLevel: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
                     _fields: ClassVar[dict] = {
                         "enabled": {"type": bool},
                         "isis_level": {"type": str},
@@ -42457,7 +42284,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "include_leaked": {"type": bool},
                     }
                     enabled: bool
-                    isis_level: Literal["level-1", "level-2", "level-1-2"] | None
+                    isis_level: IsisLevel | None
                     """Redistribute IS-IS route level."""
                     route_map: str | None
                     rcf: str | None
@@ -42476,7 +42303,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            isis_level: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
+                            isis_level: IsisLevel | None | UndefinedType = Undefined,
                             route_map: str | None | UndefinedType = Undefined,
                             rcf: str | None | UndefinedType = Undefined,
                             include_leaked: bool | None | UndefinedType = Undefined,
@@ -42568,6 +42395,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MatchNssaExternal(AvdModel):
                         """Subclass of AvdModel."""
 
+                        NssaType: TypeAlias = Literal[1, 2]
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
                             "nssa_type": {"type": int},
@@ -42575,7 +42403,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "include_leaked": {"type": bool},
                         }
                         enabled: bool
-                        nssa_type: Literal[1, 2] | None
+                        nssa_type: NssaType | None
                         """NSSA External Type Number."""
                         route_map: str | None
                         include_leaked: bool | None
@@ -42587,7 +42415,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
                                 route_map: str | None | UndefinedType = Undefined,
                                 include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
@@ -42742,6 +42570,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MatchNssaExternal(AvdModel):
                         """Subclass of AvdModel."""
 
+                        NssaType: TypeAlias = Literal[1, 2]
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
                             "nssa_type": {"type": int},
@@ -42749,7 +42578,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "include_leaked": {"type": bool},
                         }
                         enabled: bool
-                        nssa_type: Literal[1, 2] | None
+                        nssa_type: NssaType | None
                         """NSSA External Type Number."""
                         route_map: str | None
                         include_leaked: bool | None
@@ -42761,7 +42590,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
                                 route_map: str | None | UndefinedType = Undefined,
                                 include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
@@ -43105,10 +42934,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -43131,7 +42961,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -43163,13 +42993,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class DirectionIn(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
                         _fields: ClassVar[dict] = {
                             "action": {"type": str},
                             "include_community_list": {"type": bool},
                             "include_prefix_list": {"type": bool},
                             "include_sub_route_map": {"type": bool},
                         }
-                        action: Literal["deny", "permit", "deny-in-out"]
+                        action: Action
                         """Missing policy action."""
                         include_community_list: bool | None
                         """Include community-list references in missing policy decision."""
@@ -43183,7 +43014,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                action: Literal["deny", "permit", "deny-in-out"] | UndefinedType = Undefined,
+                                action: Action | UndefinedType = Undefined,
                                 include_community_list: bool | None | UndefinedType = Undefined,
                                 include_prefix_list: bool | None | UndefinedType = Undefined,
                                 include_sub_route_map: bool | None | UndefinedType = Undefined,
@@ -43205,13 +43036,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class DirectionOut(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
                         _fields: ClassVar[dict] = {
                             "action": {"type": str},
                             "include_community_list": {"type": bool},
                             "include_prefix_list": {"type": bool},
                             "include_sub_route_map": {"type": bool},
                         }
-                        action: Literal["deny", "permit", "deny-in-out"]
+                        action: Action
                         """Missing policy action."""
                         include_community_list: bool | None
                         """Include community-list references in missing policy decision."""
@@ -43225,7 +43057,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                action: Literal["deny", "permit", "deny-in-out"] | UndefinedType = Undefined,
+                                action: Action | UndefinedType = Undefined,
                                 include_community_list: bool | None | UndefinedType = Undefined,
                                 include_prefix_list: bool | None | UndefinedType = Undefined,
                                 include_sub_route_map: bool | None | UndefinedType = Undefined,
@@ -43321,6 +43153,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            LabelLocalTermination: TypeAlias = Literal["explicit-null", "implicit-null"]
+
             class NeighborDefault(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -43347,10 +43181,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -43373,7 +43208,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -43425,13 +43260,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class DirectionIn(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
                         _fields: ClassVar[dict] = {
                             "action": {"type": str},
                             "include_community_list": {"type": bool},
                             "include_prefix_list": {"type": bool},
                             "include_sub_route_map": {"type": bool},
                         }
-                        action: Literal["deny", "permit", "deny-in-out"]
+                        action: Action
                         """Missing policy action."""
                         include_community_list: bool | None
                         """Include community-list references in missing policy decision."""
@@ -43445,7 +43281,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                action: Literal["deny", "permit", "deny-in-out"] | UndefinedType = Undefined,
+                                action: Action | UndefinedType = Undefined,
                                 include_community_list: bool | None | UndefinedType = Undefined,
                                 include_prefix_list: bool | None | UndefinedType = Undefined,
                                 include_sub_route_map: bool | None | UndefinedType = Undefined,
@@ -43467,13 +43303,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class DirectionOut(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
                         _fields: ClassVar[dict] = {
                             "action": {"type": str},
                             "include_community_list": {"type": bool},
                             "include_prefix_list": {"type": bool},
                             "include_sub_route_map": {"type": bool},
                         }
-                        action: Literal["deny", "permit", "deny-in-out"]
+                        action: Action
                         """Missing policy action."""
                         include_community_list: bool | None
                         """Include community-list references in missing policy decision."""
@@ -43487,7 +43324,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                action: Literal["deny", "permit", "deny-in-out"] | UndefinedType = Undefined,
+                                action: Action | UndefinedType = Undefined,
                                 include_community_list: bool | None | UndefinedType = Undefined,
                                 include_prefix_list: bool | None | UndefinedType = Undefined,
                                 include_sub_route_map: bool | None | UndefinedType = Undefined,
@@ -43693,10 +43530,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -43719,7 +43557,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -43771,13 +43609,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class DirectionIn(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
                         _fields: ClassVar[dict] = {
                             "action": {"type": str},
                             "include_community_list": {"type": bool},
                             "include_prefix_list": {"type": bool},
                             "include_sub_route_map": {"type": bool},
                         }
-                        action: Literal["deny", "permit", "deny-in-out"]
+                        action: Action
                         """Missing policy action."""
                         include_community_list: bool | None
                         """Include community-list references in missing policy decision."""
@@ -43791,7 +43630,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                action: Literal["deny", "permit", "deny-in-out"] | UndefinedType = Undefined,
+                                action: Action | UndefinedType = Undefined,
                                 include_community_list: bool | None | UndefinedType = Undefined,
                                 include_prefix_list: bool | None | UndefinedType = Undefined,
                                 include_sub_route_map: bool | None | UndefinedType = Undefined,
@@ -43813,13 +43652,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class DirectionOut(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
                         _fields: ClassVar[dict] = {
                             "action": {"type": str},
                             "include_community_list": {"type": bool},
                             "include_prefix_list": {"type": bool},
                             "include_sub_route_map": {"type": bool},
                         }
-                        action: Literal["deny", "permit", "deny-in-out"]
+                        action: Action
                         """Missing policy action."""
                         include_community_list: bool | None
                         """Include community-list references in missing policy decision."""
@@ -43833,7 +43673,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                action: Literal["deny", "permit", "deny-in-out"] | UndefinedType = Undefined,
+                                action: Action | UndefinedType = Undefined,
                                 include_community_list: bool | None | UndefinedType = Undefined,
                                 include_prefix_list: bool | None | UndefinedType = Undefined,
                                 include_sub_route_map: bool | None | UndefinedType = Undefined,
@@ -44097,20 +43937,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NextHopResolutionRibsItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                RibType: TypeAlias = Literal["system-connected", "tunnel-rib-colored", "tunnel-rib"]
                 _fields: ClassVar[dict] = {"rib_type": {"type": str}, "rib_name": {"type": str}}
-                rib_type: Literal["system-connected", "tunnel-rib-colored", "tunnel-rib"]
+                rib_type: RibType
                 """Type of RIB. For 'tunnel-rib', use 'rib_name' to specify the name of the Tunnel-RIB to use."""
                 rib_name: str | None
                 """The name of the tunnel-rib to use when using 'tunnel-rib' type."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        rib_type: Literal["system-connected", "tunnel-rib-colored", "tunnel-rib"] | UndefinedType = Undefined,
-                        rib_name: str | None | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, rib_type: RibType | UndefinedType = Undefined, rib_name: str | None | UndefinedType = Undefined) -> None:
                         """
                         NextHopResolutionRibsItem.
 
@@ -44131,8 +43967,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class TunnelSourceProtocolsItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                Protocol: TypeAlias = Literal["isis segment-routing", "ldp"]
                 _fields: ClassVar[dict] = {"protocol": {"type": str}, "rcf": {"type": str}}
-                protocol: Literal["isis segment-routing", "ldp"]
+                protocol: Protocol
                 rcf: str | None
                 """
                 Optional RCF function name with parenthesis.
@@ -44141,9 +43978,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, protocol: Literal["isis segment-routing", "ldp"] | UndefinedType = Undefined, rcf: str | None | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, protocol: Protocol | UndefinedType = Undefined, rcf: str | None | UndefinedType = Undefined) -> None:
                         """
                         TunnelSourceProtocolsItem.
 
@@ -44188,7 +44023,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             bgp: Bgp
             """Subclass of AvdModel."""
             graceful_restart: bool | None
-            label_local_termination: Literal["explicit-null", "implicit-null"] | None
+            label_local_termination: LabelLocalTermination | None
             lfib_entry_installation_skipped: bool | None
             """Skip LFIB entry installation and next hop self route advertisements."""
             neighbor_default: NeighborDefault
@@ -44224,7 +44059,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     aigp_session: AigpSession | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     graceful_restart: bool | None | UndefinedType = Undefined,
-                    label_local_termination: Literal["explicit-null", "implicit-null"] | None | UndefinedType = Undefined,
+                    label_local_termination: LabelLocalTermination | None | UndefinedType = Undefined,
                     lfib_entry_installation_skipped: bool | None | UndefinedType = Undefined,
                     neighbor_default: NeighborDefault | UndefinedType = Undefined,
                     peer_groups: PeerGroups | UndefinedType = Undefined,
@@ -44523,6 +44358,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Isis(AvdModel):
                     """Subclass of AvdModel."""
 
+                    IsisLevel: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
                     _fields: ClassVar[dict] = {
                         "enabled": {"type": bool},
                         "isis_level": {"type": str},
@@ -44531,7 +44367,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "include_leaked": {"type": bool},
                     }
                     enabled: bool
-                    isis_level: Literal["level-1", "level-2", "level-1-2"] | None
+                    isis_level: IsisLevel | None
                     """Redistribute IS-IS route level."""
                     route_map: str | None
                     rcf: str | None
@@ -44550,7 +44386,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            isis_level: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
+                            isis_level: IsisLevel | None | UndefinedType = Undefined,
                             route_map: str | None | UndefinedType = Undefined,
                             rcf: str | None | UndefinedType = Undefined,
                             include_leaked: bool | None | UndefinedType = Undefined,
@@ -44624,9 +44460,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MatchNssaExternal(AvdModel):
                         """Subclass of AvdModel."""
 
+                        NssaType: TypeAlias = Literal[1, 2]
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "nssa_type": {"type": int}, "route_map": {"type": str}}
                         enabled: bool
-                        nssa_type: Literal[1, 2] | None
+                        nssa_type: NssaType | None
                         """NSSA External Type Number."""
                         route_map: str | None
 
@@ -44636,7 +44473,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
                                 route_map: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -44766,9 +44603,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MatchNssaExternal(AvdModel):
                         """Subclass of AvdModel."""
 
+                        NssaType: TypeAlias = Literal[1, 2]
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "nssa_type": {"type": int}, "route_map": {"type": str}}
                         enabled: bool
-                        nssa_type: Literal[1, 2] | None
+                        nssa_type: NssaType | None
                         """NSSA External Type Number."""
                         route_map: str | None
 
@@ -44778,7 +44616,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
                                 route_map: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -45154,6 +44992,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {
                         "install": {"type": bool},
                         "install_ecmp_primary": {"type": bool},
@@ -45167,7 +45006,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Allow additional path with ECMP primary path."""
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -45192,7 +45031,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             install: bool | None | UndefinedType = Undefined,
                             install_ecmp_primary: bool | None | UndefinedType = Undefined,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -45249,12 +45088,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {"prefix_list": {"type": str}, "receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                     prefix_list: str | None
                     """Apply the configurations only to the routes matching the prefix list."""
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -45278,7 +45118,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             prefix_list: str | None | UndefinedType = Undefined,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -45401,12 +45241,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {"prefix_list": {"type": str}, "receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                     prefix_list: str | None
                     """Apply the configurations only to the routes matching the prefix list."""
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -45430,7 +45271,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             prefix_list: str | None | UndefinedType = Undefined,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -45702,6 +45543,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Isis(AvdModel):
                     """Subclass of AvdModel."""
 
+                    IsisLevel: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
                     _fields: ClassVar[dict] = {
                         "enabled": {"type": bool},
                         "isis_level": {"type": str},
@@ -45710,7 +45552,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "include_leaked": {"type": bool},
                     }
                     enabled: bool
-                    isis_level: Literal["level-1", "level-2", "level-1-2"] | None
+                    isis_level: IsisLevel | None
                     """Redistribute IS-IS route level."""
                     route_map: str | None
                     rcf: str | None
@@ -45729,7 +45571,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            isis_level: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
+                            isis_level: IsisLevel | None | UndefinedType = Undefined,
                             route_map: str | None | UndefinedType = Undefined,
                             rcf: str | None | UndefinedType = Undefined,
                             include_leaked: bool | None | UndefinedType = Undefined,
@@ -45821,6 +45663,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MatchNssaExternal(AvdModel):
                         """Subclass of AvdModel."""
 
+                        NssaType: TypeAlias = Literal[1, 2]
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
                             "nssa_type": {"type": int},
@@ -45828,7 +45671,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "include_leaked": {"type": bool},
                         }
                         enabled: bool
-                        nssa_type: Literal[1, 2] | None
+                        nssa_type: NssaType | None
                         """NSSA External Type Number."""
                         route_map: str | None
                         include_leaked: bool | None
@@ -45840,7 +45683,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
                                 route_map: str | None | UndefinedType = Undefined,
                                 include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
@@ -46127,17 +45970,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class MissingPolicy(AvdModel):
                     """Subclass of AvdModel."""
 
+                    DirectionInAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
+                    DirectionOutAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
                     _fields: ClassVar[dict] = {"direction_in_action": {"type": str}, "direction_out_action": {"type": str}}
-                    direction_in_action: Literal["deny", "deny-in-out", "permit"] | None
-                    direction_out_action: Literal["deny", "deny-in-out", "permit"] | None
+                    direction_in_action: DirectionInAction | None
+                    direction_out_action: DirectionOutAction | None
 
                     if TYPE_CHECKING:
 
                         def __init__(
                             self,
                             *,
-                            direction_in_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
-                            direction_out_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
+                            direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                            direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MissingPolicy.
@@ -46393,6 +46238,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Isis(AvdModel):
                     """Subclass of AvdModel."""
 
+                    IsisLevel: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
                     _fields: ClassVar[dict] = {
                         "enabled": {"type": bool},
                         "isis_level": {"type": str},
@@ -46401,7 +46247,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "include_leaked": {"type": bool},
                     }
                     enabled: bool
-                    isis_level: Literal["level-1", "level-2", "level-1-2"] | None
+                    isis_level: IsisLevel | None
                     """Redistribute IS-IS route level."""
                     route_map: str | None
                     rcf: str | None
@@ -46420,7 +46266,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            isis_level: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
+                            isis_level: IsisLevel | None | UndefinedType = Undefined,
                             route_map: str | None | UndefinedType = Undefined,
                             rcf: str | None | UndefinedType = Undefined,
                             include_leaked: bool | None | UndefinedType = Undefined,
@@ -46494,9 +46340,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MatchNssaExternal(AvdModel):
                         """Subclass of AvdModel."""
 
+                        NssaType: TypeAlias = Literal[1, 2]
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "nssa_type": {"type": int}, "route_map": {"type": str}}
                         enabled: bool
-                        nssa_type: Literal[1, 2] | None
+                        nssa_type: NssaType | None
                         """NSSA External Type Number."""
                         route_map: str | None
 
@@ -46506,7 +46353,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
                                 route_map: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -46636,9 +46483,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MatchNssaExternal(AvdModel):
                         """Subclass of AvdModel."""
 
+                        NssaType: TypeAlias = Literal[1, 2]
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "nssa_type": {"type": int}, "route_map": {"type": str}}
                         enabled: bool
-                        nssa_type: Literal[1, 2] | None
+                        nssa_type: NssaType | None
                         """NSSA External Type Number."""
                         route_map: str | None
 
@@ -46648,7 +46496,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
                                 route_map: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -46993,17 +46841,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class MissingPolicy(AvdModel):
                     """Subclass of AvdModel."""
 
+                    DirectionInAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
+                    DirectionOutAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
                     _fields: ClassVar[dict] = {"direction_in_action": {"type": str}, "direction_out_action": {"type": str}}
-                    direction_in_action: Literal["deny", "deny-in-out", "permit"] | None
-                    direction_out_action: Literal["deny", "deny-in-out", "permit"] | None
+                    direction_in_action: DirectionInAction | None
+                    direction_out_action: DirectionOutAction | None
 
                     if TYPE_CHECKING:
 
                         def __init__(
                             self,
                             *,
-                            direction_in_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
-                            direction_out_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
+                            direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                            direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MissingPolicy.
@@ -47041,17 +46891,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class MissingPolicy(AvdModel):
                     """Subclass of AvdModel."""
 
+                    DirectionInAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
+                    DirectionOutAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
                     _fields: ClassVar[dict] = {"direction_in_action": {"type": str}, "direction_out_action": {"type": str}}
-                    direction_in_action: Literal["deny", "deny-in-out", "permit"] | None
-                    direction_out_action: Literal["deny", "deny-in-out", "permit"] | None
+                    direction_in_action: DirectionInAction | None
+                    direction_out_action: DirectionOutAction | None
 
                     if TYPE_CHECKING:
 
                         def __init__(
                             self,
                             *,
-                            direction_in_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
-                            direction_out_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
+                            direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                            direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MissingPolicy.
@@ -47107,17 +46959,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class MissingPolicy(AvdModel):
                     """Subclass of AvdModel."""
 
+                    DirectionInAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
+                    DirectionOutAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
                     _fields: ClassVar[dict] = {"direction_in_action": {"type": str}, "direction_out_action": {"type": str}}
-                    direction_in_action: Literal["deny", "deny-in-out", "permit"] | None
-                    direction_out_action: Literal["deny", "deny-in-out", "permit"] | None
+                    direction_in_action: DirectionInAction | None
+                    direction_out_action: DirectionOutAction | None
 
                     if TYPE_CHECKING:
 
                         def __init__(
                             self,
                             *,
-                            direction_in_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
-                            direction_out_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
+                            direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                            direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MissingPolicy.
@@ -47265,17 +47119,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class MissingPolicy(AvdModel):
                     """Subclass of AvdModel."""
 
+                    DirectionInAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
+                    DirectionOutAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
                     _fields: ClassVar[dict] = {"direction_in_action": {"type": str}, "direction_out_action": {"type": str}}
-                    direction_in_action: Literal["deny", "deny-in-out", "permit"] | None
-                    direction_out_action: Literal["deny", "deny-in-out", "permit"] | None
+                    direction_in_action: DirectionInAction | None
+                    direction_out_action: DirectionOutAction | None
 
                     if TYPE_CHECKING:
 
                         def __init__(
                             self,
                             *,
-                            direction_in_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
-                            direction_out_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
+                            direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                            direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MissingPolicy.
@@ -47405,17 +47261,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class MissingPolicy(AvdModel):
                     """Subclass of AvdModel."""
 
+                    DirectionInAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
+                    DirectionOutAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
                     _fields: ClassVar[dict] = {"direction_in_action": {"type": str}, "direction_out_action": {"type": str}}
-                    direction_in_action: Literal["deny", "deny-in-out", "permit"] | None
-                    direction_out_action: Literal["deny", "deny-in-out", "permit"] | None
+                    direction_in_action: DirectionInAction | None
+                    direction_out_action: DirectionOutAction | None
 
                     if TYPE_CHECKING:
 
                         def __init__(
                             self,
                             *,
-                            direction_in_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
-                            direction_out_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
+                            direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                            direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MissingPolicy.
@@ -47545,10 +47403,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -47571,7 +47430,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -47621,10 +47480,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -47647,7 +47507,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -47714,10 +47574,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -47740,7 +47601,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -47957,12 +47818,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Route(AvdModel):
                 """Subclass of AvdModel."""
 
+                ImportMatchFailureAction: TypeAlias = Literal["discard"]
                 _fields: ClassVar[dict] = {"import_match_failure_action": {"type": str}}
-                import_match_failure_action: Literal["discard"] | None
+                import_match_failure_action: ImportMatchFailureAction | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, import_match_failure_action: Literal["discard"] | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, import_match_failure_action: ImportMatchFailureAction | None | UndefinedType = Undefined) -> None:
                         """
                         Route.
 
@@ -48280,12 +48142,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Route(AvdModel):
                 """Subclass of AvdModel."""
 
+                ImportMatchFailureAction: TypeAlias = Literal["discard"]
                 _fields: ClassVar[dict] = {"import_match_failure_action": {"type": str}}
-                import_match_failure_action: Literal["discard"] | None
+                import_match_failure_action: ImportMatchFailureAction | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, import_match_failure_action: Literal["discard"] | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, import_match_failure_action: ImportMatchFailureAction | None | UndefinedType = Undefined) -> None:
                         """
                         Route.
 
@@ -48487,6 +48350,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {
                         "install": {"type": bool},
                         "install_ecmp_primary": {"type": bool},
@@ -48500,7 +48364,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Allow additional path with ECMP primary path."""
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -48525,7 +48389,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             install: bool | None | UndefinedType = Undefined,
                             install_ecmp_primary: bool | None | UndefinedType = Undefined,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -48621,8 +48485,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class EvpnMulticastGatewayDrElection(AvdModel):
                 """Subclass of AvdModel."""
 
+                Algorithm: TypeAlias = Literal["hrw", "modulus", "preference"]
                 _fields: ClassVar[dict] = {"algorithm": {"type": str}, "preference_value": {"type": int}}
-                algorithm: Literal["hrw", "modulus", "preference"]
+                algorithm: Algorithm
                 """
                 DR election algorithms:
                   hrw: Default selection based on highest random weight.
@@ -48636,12 +48501,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self,
-                        *,
-                        algorithm: Literal["hrw", "modulus", "preference"] | UndefinedType = Undefined,
-                        preference_value: int | None | UndefinedType = Undefined,
-                    ) -> None:
+                    def __init__(self, *, algorithm: Algorithm | UndefinedType = Undefined, preference_value: int | None | UndefinedType = Undefined) -> None:
                         """
                         EvpnMulticastGatewayDrElection.
 
@@ -48663,8 +48523,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class DefaultRouteExportsItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                AddressFamily: TypeAlias = Literal["evpn", "vpn-ipv4", "vpn-ipv6"]
                 _fields: ClassVar[dict] = {"address_family": {"type": str}, "always": {"type": bool}, "route_map": {"type": str}, "rcf": {"type": str}}
-                address_family: Literal["evpn", "vpn-ipv4", "vpn-ipv6"]
+                address_family: AddressFamily
                 always: bool | None
                 route_map: str | None
                 rcf: str | None
@@ -48678,7 +48539,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        address_family: Literal["evpn", "vpn-ipv4", "vpn-ipv6"] | UndefinedType = Undefined,
+                        address_family: AddressFamily | UndefinedType = Undefined,
                         always: bool | None | UndefinedType = Undefined,
                         route_map: str | None | UndefinedType = Undefined,
                         rcf: str | None | UndefinedType = Undefined,
@@ -49275,10 +49136,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                     _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                     receive: bool | None
                     """Enable or disable reception of additional-paths."""
-                    send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                    send: Send | None
                     """
                     Select an option to send multiple paths for same prefix through bgp updates.
                     any: Send any eligible
@@ -49301,7 +49163,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             receive: bool | None | UndefinedType = Undefined,
-                            send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                            send: Send | None | UndefinedType = Undefined,
                             send_limit: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -49743,6 +49605,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Isis(AvdModel):
                     """Subclass of AvdModel."""
 
+                    IsisLevel: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
                     _fields: ClassVar[dict] = {
                         "enabled": {"type": bool},
                         "isis_level": {"type": str},
@@ -49751,7 +49614,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "include_leaked": {"type": bool},
                     }
                     enabled: bool
-                    isis_level: Literal["level-1", "level-2", "level-1-2"] | None
+                    isis_level: IsisLevel | None
                     """Redistribute IS-IS route level."""
                     route_map: str | None
                     rcf: str | None
@@ -49770,7 +49633,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             enabled: bool | UndefinedType = Undefined,
-                            isis_level: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
+                            isis_level: IsisLevel | None | UndefinedType = Undefined,
                             route_map: str | None | UndefinedType = Undefined,
                             rcf: str | None | UndefinedType = Undefined,
                             include_leaked: bool | None | UndefinedType = Undefined,
@@ -49862,6 +49725,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MatchNssaExternal(AvdModel):
                         """Subclass of AvdModel."""
 
+                        NssaType: TypeAlias = Literal[1, 2]
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
                             "nssa_type": {"type": int},
@@ -49869,7 +49733,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "include_leaked": {"type": bool},
                         }
                         enabled: bool
-                        nssa_type: Literal[1, 2] | None
+                        nssa_type: NssaType | None
                         """NSSA External Type Number."""
                         route_map: str | None
                         include_leaked: bool | None
@@ -49881,7 +49745,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
                                 route_map: str | None | UndefinedType = Undefined,
                                 include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
@@ -50036,6 +49900,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MatchNssaExternal(AvdModel):
                         """Subclass of AvdModel."""
 
+                        NssaType: TypeAlias = Literal[1, 2]
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
                             "nssa_type": {"type": int},
@@ -50043,7 +49908,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "include_leaked": {"type": bool},
                         }
                         enabled: bool
-                        nssa_type: Literal[1, 2] | None
+                        nssa_type: NssaType | None
                         """NSSA External Type Number."""
                         route_map: str | None
                         include_leaked: bool | None
@@ -50055,7 +49920,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                nssa_type: NssaType | None | UndefinedType = Undefined,
                                 route_map: str | None | UndefinedType = Undefined,
                                 include_leaked: bool | None | UndefinedType = Undefined,
                             ) -> None:
@@ -50372,17 +50237,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MissingPolicy(AvdModel):
                         """Subclass of AvdModel."""
 
+                        DirectionInAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
+                        DirectionOutAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
                         _fields: ClassVar[dict] = {"direction_in_action": {"type": str}, "direction_out_action": {"type": str}}
-                        direction_in_action: Literal["deny", "deny-in-out", "permit"] | None
-                        direction_out_action: Literal["deny", "deny-in-out", "permit"] | None
+                        direction_in_action: DirectionInAction | None
+                        direction_out_action: DirectionOutAction | None
 
                         if TYPE_CHECKING:
 
                             def __init__(
                                 self,
                                 *,
-                                direction_in_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
-                                direction_out_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
+                                direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                                direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MissingPolicy.
@@ -50399,6 +50266,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class AdditionalPaths(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                         _fields: ClassVar[dict] = {
                             "install": {"type": bool},
                             "install_ecmp_primary": {"type": bool},
@@ -50412,7 +50280,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """Allow additional path with ECMP primary path."""
                         receive: bool | None
                         """Enable or disable reception of additional-paths."""
-                        send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                        send: Send | None
                         """
                         Select an option to send multiple paths for same prefix through bgp updates.
                         any: Send any eligible
@@ -50437,7 +50305,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 install: bool | None | UndefinedType = Undefined,
                                 install_ecmp_primary: bool | None | UndefinedType = Undefined,
                                 receive: bool | None | UndefinedType = Undefined,
-                                send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                                send: Send | None | UndefinedType = Undefined,
                                 send_limit: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -50548,10 +50416,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class AdditionalPaths(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                         _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                         receive: bool | None
                         """Enable or disable reception of additional-paths."""
-                        send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                        send: Send | None
                         """
                         Select an option to send multiple paths for same prefix through bgp updates.
                         any: Send any eligible
@@ -50574,7 +50443,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 receive: bool | None | UndefinedType = Undefined,
-                                send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                                send: Send | None | UndefinedType = Undefined,
                                 send_limit: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -50863,6 +50732,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class Isis(AvdModel):
                         """Subclass of AvdModel."""
 
+                        IsisLevel: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
                             "isis_level": {"type": str},
@@ -50871,7 +50741,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "include_leaked": {"type": bool},
                         }
                         enabled: bool
-                        isis_level: Literal["level-1", "level-2", "level-1-2"] | None
+                        isis_level: IsisLevel | None
                         """Redistribute IS-IS route level."""
                         route_map: str | None
                         rcf: str | None
@@ -50890,7 +50760,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                isis_level: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
+                                isis_level: IsisLevel | None | UndefinedType = Undefined,
                                 route_map: str | None | UndefinedType = Undefined,
                                 rcf: str | None | UndefinedType = Undefined,
                                 include_leaked: bool | None | UndefinedType = Undefined,
@@ -50982,6 +50852,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         class MatchNssaExternal(AvdModel):
                             """Subclass of AvdModel."""
 
+                            NssaType: TypeAlias = Literal[1, 2]
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool},
                                 "nssa_type": {"type": int},
@@ -50989,7 +50860,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 "include_leaked": {"type": bool},
                             }
                             enabled: bool
-                            nssa_type: Literal[1, 2] | None
+                            nssa_type: NssaType | None
                             """NSSA External Type Number."""
                             route_map: str | None
                             include_leaked: bool | None
@@ -51001,7 +50872,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                    nssa_type: NssaType | None | UndefinedType = Undefined,
                                     route_map: str | None | UndefinedType = Undefined,
                                     include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -51156,6 +51027,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         class MatchNssaExternal(AvdModel):
                             """Subclass of AvdModel."""
 
+                            NssaType: TypeAlias = Literal[1, 2]
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool},
                                 "nssa_type": {"type": int},
@@ -51163,7 +51035,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 "include_leaked": {"type": bool},
                             }
                             enabled: bool
-                            nssa_type: Literal[1, 2] | None
+                            nssa_type: NssaType | None
                             """NSSA External Type Number."""
                             route_map: str | None
                             include_leaked: bool | None
@@ -51175,7 +51047,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                    nssa_type: NssaType | None | UndefinedType = Undefined,
                                     route_map: str | None | UndefinedType = Undefined,
                                     include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -51489,17 +51361,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MissingPolicy(AvdModel):
                         """Subclass of AvdModel."""
 
+                        DirectionInAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
+                        DirectionOutAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
                         _fields: ClassVar[dict] = {"direction_in_action": {"type": str}, "direction_out_action": {"type": str}}
-                        direction_in_action: Literal["deny", "deny-in-out", "permit"] | None
-                        direction_out_action: Literal["deny", "deny-in-out", "permit"] | None
+                        direction_in_action: DirectionInAction | None
+                        direction_out_action: DirectionOutAction | None
 
                         if TYPE_CHECKING:
 
                             def __init__(
                                 self,
                                 *,
-                                direction_in_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
-                                direction_out_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
+                                direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                                direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MissingPolicy.
@@ -51516,6 +51390,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class AdditionalPaths(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                         _fields: ClassVar[dict] = {
                             "install": {"type": bool},
                             "install_ecmp_primary": {"type": bool},
@@ -51529,7 +51404,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """Allow additional path with ECMP primary path."""
                         receive: bool | None
                         """Enable or disable reception of additional-paths."""
-                        send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                        send: Send | None
                         """
                         Select an option to send multiple paths for same prefix through bgp updates.
                         any: Send any eligible
@@ -51554,7 +51429,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 install: bool | None | UndefinedType = Undefined,
                                 install_ecmp_primary: bool | None | UndefinedType = Undefined,
                                 receive: bool | None | UndefinedType = Undefined,
-                                send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                                send: Send | None | UndefinedType = Undefined,
                                 send_limit: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -51622,10 +51497,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class AdditionalPaths(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Send: TypeAlias = Literal["any", "backup", "ecmp", "limit", "disabled"]
                         _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": str}, "send_limit": {"type": int}}
                         receive: bool | None
                         """Enable or disable reception of additional-paths."""
-                        send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None
+                        send: Send | None
                         """
                         Select an option to send multiple paths for same prefix through bgp updates.
                         any: Send any eligible
@@ -51648,7 +51524,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 receive: bool | None | UndefinedType = Undefined,
-                                send: Literal["any", "backup", "ecmp", "limit", "disabled"] | None | UndefinedType = Undefined,
+                                send: Send | None | UndefinedType = Undefined,
                                 send_limit: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -51954,6 +51830,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class Isis(AvdModel):
                         """Subclass of AvdModel."""
 
+                        IsisLevel: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
                             "isis_level": {"type": str},
@@ -51962,7 +51839,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "include_leaked": {"type": bool},
                         }
                         enabled: bool
-                        isis_level: Literal["level-1", "level-2", "level-1-2"] | None
+                        isis_level: IsisLevel | None
                         """Redistribute IS-IS route level."""
                         route_map: str | None
                         rcf: str | None
@@ -51981,7 +51858,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                isis_level: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
+                                isis_level: IsisLevel | None | UndefinedType = Undefined,
                                 route_map: str | None | UndefinedType = Undefined,
                                 rcf: str | None | UndefinedType = Undefined,
                                 include_leaked: bool | None | UndefinedType = Undefined,
@@ -52073,6 +51950,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         class MatchNssaExternal(AvdModel):
                             """Subclass of AvdModel."""
 
+                            NssaType: TypeAlias = Literal[1, 2]
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool},
                                 "nssa_type": {"type": int},
@@ -52080,7 +51958,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 "include_leaked": {"type": bool},
                             }
                             enabled: bool
-                            nssa_type: Literal[1, 2] | None
+                            nssa_type: NssaType | None
                             """NSSA External Type Number."""
                             route_map: str | None
                             include_leaked: bool | None
@@ -52092,7 +51970,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                    nssa_type: NssaType | None | UndefinedType = Undefined,
                                     route_map: str | None | UndefinedType = Undefined,
                                     include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -52379,17 +52257,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MissingPolicy(AvdModel):
                         """Subclass of AvdModel."""
 
+                        DirectionInAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
+                        DirectionOutAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
                         _fields: ClassVar[dict] = {"direction_in_action": {"type": str}, "direction_out_action": {"type": str}}
-                        direction_in_action: Literal["deny", "deny-in-out", "permit"] | None
-                        direction_out_action: Literal["deny", "deny-in-out", "permit"] | None
+                        direction_in_action: DirectionInAction | None
+                        direction_out_action: DirectionOutAction | None
 
                         if TYPE_CHECKING:
 
                             def __init__(
                                 self,
                                 *,
-                                direction_in_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
-                                direction_out_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
+                                direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                                direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MissingPolicy.
@@ -52608,6 +52488,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class Isis(AvdModel):
                         """Subclass of AvdModel."""
 
+                        IsisLevel: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
                             "isis_level": {"type": str},
@@ -52616,7 +52497,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "include_leaked": {"type": bool},
                         }
                         enabled: bool
-                        isis_level: Literal["level-1", "level-2", "level-1-2"] | None
+                        isis_level: IsisLevel | None
                         """Redistribute IS-IS route level."""
                         route_map: str | None
                         rcf: str | None
@@ -52635,7 +52516,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                isis_level: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
+                                isis_level: IsisLevel | None | UndefinedType = Undefined,
                                 route_map: str | None | UndefinedType = Undefined,
                                 rcf: str | None | UndefinedType = Undefined,
                                 include_leaked: bool | None | UndefinedType = Undefined,
@@ -52709,9 +52590,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         class MatchNssaExternal(AvdModel):
                             """Subclass of AvdModel."""
 
+                            NssaType: TypeAlias = Literal[1, 2]
                             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "nssa_type": {"type": int}, "route_map": {"type": str}}
                             enabled: bool
-                            nssa_type: Literal[1, 2] | None
+                            nssa_type: NssaType | None
                             """NSSA External Type Number."""
                             route_map: str | None
 
@@ -52721,7 +52603,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                    nssa_type: NssaType | None | UndefinedType = Undefined,
                                     route_map: str | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -52869,6 +52751,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         class MatchNssaExternal(AvdModel):
                             """Subclass of AvdModel."""
 
+                            NssaType: TypeAlias = Literal[1, 2]
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool},
                                 "nssa_type": {"type": int},
@@ -52876,7 +52759,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 "include_leaked": {"type": bool},
                             }
                             enabled: bool
-                            nssa_type: Literal[1, 2] | None
+                            nssa_type: NssaType | None
                             """NSSA External Type Number."""
                             route_map: str | None
                             include_leaked: bool | None
@@ -52888,7 +52771,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                    nssa_type: NssaType | None | UndefinedType = Undefined,
                                     route_map: str | None | UndefinedType = Undefined,
                                     include_leaked: bool | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -53101,17 +52984,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MissingPolicy(AvdModel):
                         """Subclass of AvdModel."""
 
+                        DirectionInAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
+                        DirectionOutAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
                         _fields: ClassVar[dict] = {"direction_in_action": {"type": str}, "direction_out_action": {"type": str}}
-                        direction_in_action: Literal["deny", "deny-in-out", "permit"] | None
-                        direction_out_action: Literal["deny", "deny-in-out", "permit"] | None
+                        direction_in_action: DirectionInAction | None
+                        direction_out_action: DirectionOutAction | None
 
                         if TYPE_CHECKING:
 
                             def __init__(
                                 self,
                                 *,
-                                direction_in_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
-                                direction_out_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
+                                direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                                direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MissingPolicy.
@@ -53308,6 +53193,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class Isis(AvdModel):
                         """Subclass of AvdModel."""
 
+                        IsisLevel: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
                             "isis_level": {"type": str},
@@ -53316,7 +53202,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "include_leaked": {"type": bool},
                         }
                         enabled: bool
-                        isis_level: Literal["level-1", "level-2", "level-1-2"] | None
+                        isis_level: IsisLevel | None
                         """Redistribute IS-IS route level."""
                         route_map: str | None
                         rcf: str | None
@@ -53335,7 +53221,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                isis_level: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
+                                isis_level: IsisLevel | None | UndefinedType = Undefined,
                                 route_map: str | None | UndefinedType = Undefined,
                                 rcf: str | None | UndefinedType = Undefined,
                                 include_leaked: bool | None | UndefinedType = Undefined,
@@ -53409,9 +53295,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         class MatchNssaExternal(AvdModel):
                             """Subclass of AvdModel."""
 
+                            NssaType: TypeAlias = Literal[1, 2]
                             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "nssa_type": {"type": int}, "route_map": {"type": str}}
                             enabled: bool
-                            nssa_type: Literal[1, 2] | None
+                            nssa_type: NssaType | None
                             """NSSA External Type Number."""
                             route_map: str | None
 
@@ -53421,7 +53308,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                    nssa_type: NssaType | None | UndefinedType = Undefined,
                                     route_map: str | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -53551,9 +53438,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         class MatchNssaExternal(AvdModel):
                             """Subclass of AvdModel."""
 
+                            NssaType: TypeAlias = Literal[1, 2]
                             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "nssa_type": {"type": int}, "route_map": {"type": str}}
                             enabled: bool
-                            nssa_type: Literal[1, 2] | None
+                            nssa_type: NssaType | None
                             """NSSA External Type Number."""
                             route_map: str | None
 
@@ -53563,7 +53451,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    nssa_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                                    nssa_type: NssaType | None | UndefinedType = Undefined,
                                     route_map: str | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -53764,17 +53652,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MissingPolicy(AvdModel):
                         """Subclass of AvdModel."""
 
+                        DirectionInAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
+                        DirectionOutAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
                         _fields: ClassVar[dict] = {"direction_in_action": {"type": str}, "direction_out_action": {"type": str}}
-                        direction_in_action: Literal["deny", "deny-in-out", "permit"] | None
-                        direction_out_action: Literal["deny", "deny-in-out", "permit"] | None
+                        direction_in_action: DirectionInAction | None
+                        direction_out_action: DirectionOutAction | None
 
                         if TYPE_CHECKING:
 
                             def __init__(
                                 self,
                                 *,
-                                direction_in_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
-                                direction_out_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
+                                direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                                direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MissingPolicy.
@@ -53865,17 +53755,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MissingPolicy(AvdModel):
                         """Subclass of AvdModel."""
 
+                        DirectionInAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
+                        DirectionOutAction: TypeAlias = Literal["deny", "deny-in-out", "permit"]
                         _fields: ClassVar[dict] = {"direction_in_action": {"type": str}, "direction_out_action": {"type": str}}
-                        direction_in_action: Literal["deny", "deny-in-out", "permit"] | None
-                        direction_out_action: Literal["deny", "deny-in-out", "permit"] | None
+                        direction_in_action: DirectionInAction | None
+                        direction_out_action: DirectionOutAction | None
 
                         if TYPE_CHECKING:
 
                             def __init__(
                                 self,
                                 *,
-                                direction_in_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
-                                direction_out_action: Literal["deny", "deny-in-out", "permit"] | None | UndefinedType = Undefined,
+                                direction_in_action: DirectionInAction | None | UndefinedType = Undefined,
+                                direction_out_action: DirectionOutAction | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 MissingPolicy.
@@ -54233,7 +54125,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
         number.
         """
-        as_notation: Literal["asdot", "asplain"] | None
+        as_notation: AsNotation | None
         """
         BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>". This
         flag indicates which mode is preferred - asplain is the default.
@@ -54335,7 +54227,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 field_as: str | None | UndefinedType = Undefined,
-                as_notation: Literal["asdot", "asplain"] | None | UndefinedType = Undefined,
+                as_notation: AsNotation | None | UndefinedType = Undefined,
                 router_id: str | None | UndefinedType = Undefined,
                 timers: Timers | UndefinedType = Undefined,
                 distance: Distance | UndefinedType = Undefined,
@@ -54750,13 +54642,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class RouterIgmp(AvdModel):
         """Subclass of AvdModel."""
 
+        HostProxyMatchMroute: TypeAlias = Literal["all", "iif"]
+
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            HostProxyMatchMroute: TypeAlias = Literal["all", "iif"]
             _fields: ClassVar[dict] = {"name": {"type": str}, "host_proxy_match_mroute": {"type": str}}
             name: str
             """VRF name."""
-            host_proxy_match_mroute: Literal["all", "iif"] | None
+            host_proxy_match_mroute: HostProxyMatchMroute | None
             """
             Specify conditions for sending IGMP joins for host-proxy.
             'iif' will enable igmp host-proxy to work
@@ -54767,7 +54662,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, name: str | UndefinedType = Undefined, host_proxy_match_mroute: Literal["all", "iif"] | None | UndefinedType = Undefined
+                    self, *, name: str | UndefinedType = Undefined, host_proxy_match_mroute: HostProxyMatchMroute | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     VrfsItem.
@@ -54793,7 +54688,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Vrfs._item_type = VrfsItem
 
         _fields: ClassVar[dict] = {"host_proxy_match_mroute": {"type": str}, "ssm_aware": {"type": bool}, "vrfs": {"type": Vrfs}}
-        host_proxy_match_mroute: Literal["all", "iif"] | None
+        host_proxy_match_mroute: HostProxyMatchMroute | None
         """
         Specify conditions for sending IGMP joins for host-proxy.
         'iif' will enable igmp host-proxy to work
@@ -54815,7 +54710,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                host_proxy_match_mroute: Literal["all", "iif"] | None | UndefinedType = Undefined,
+                host_proxy_match_mroute: HostProxyMatchMroute | None | UndefinedType = Undefined,
                 ssm_aware: bool | None | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
             ) -> None:
@@ -55039,6 +54934,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     class RouterIsis(AvdModel):
         """Subclass of AvdModel."""
+
+        IsType: TypeAlias = Literal["level-1", "level-1-2", "level-2"]
 
         class Timers(AvdModel):
             """Subclass of AvdModel."""
@@ -55310,9 +55207,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Both(AvdModel):
                 """Subclass of AvdModel."""
 
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
+
                 class KeyIdsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    KeyType: TypeAlias = Literal["0", "7", "8a"]
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "algorithm": {"type": str},
@@ -55322,8 +55223,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     id: int
                     """Configure authentication key-id."""
-                    algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
-                    key_type: Literal["0", "7", "8a"]
+                    algorithm: Algorithm
+                    key_type: KeyType
                     """Configure authentication key type."""
                     key: str
                     """Password string."""
@@ -55336,8 +55237,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
-                            algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                            key_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                            algorithm: Algorithm | UndefinedType = Undefined,
+                            key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
                             rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -55363,6 +55264,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 KeyIds._item_type = KeyIdsItem
 
+                Mode: TypeAlias = Literal["md5", "sha", "text", "shared-secret"]
+
                 class Sha(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -55386,18 +55289,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class SharedSecret(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
                     _fields: ClassVar[dict] = {"profile": {"type": str}, "algorithm": {"type": str}}
                     profile: str
-                    algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    algorithm: Algorithm
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            profile: str | UndefinedType = Undefined,
-                            algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, profile: str | UndefinedType = Undefined, algorithm: Algorithm | UndefinedType = Undefined) -> None:
                             """
                             SharedSecret.
 
@@ -55419,13 +55318,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "shared_secret": {"type": SharedSecret},
                     "rx_disabled": {"type": bool},
                 }
-                key_type: Literal["0", "7", "8a"] | None
+                key_type: KeyType | None
                 """Configure authentication key type."""
                 key: str | None
                 """Password string. `key_type` is required for this setting."""
                 key_ids: KeyIds
                 """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
-                mode: Literal["md5", "sha", "text", "shared-secret"] | None
+                mode: Mode | None
                 """Authentication mode."""
                 sha: Sha
                 """
@@ -55447,10 +55346,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Literal["md5", "sha", "text", "shared-secret"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
                         rx_disabled: bool | None | UndefinedType = Undefined,
@@ -55481,9 +55380,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Level1(AvdModel):
                 """Subclass of AvdModel."""
 
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
+
                 class KeyIdsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    KeyType: TypeAlias = Literal["0", "7", "8a"]
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "algorithm": {"type": str},
@@ -55493,8 +55396,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     id: int
                     """Configure authentication key-id."""
-                    algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
-                    key_type: Literal["0", "7", "8a"]
+                    algorithm: Algorithm
+                    key_type: KeyType
                     """Configure authentication key type."""
                     key: str
                     """Password string."""
@@ -55507,8 +55410,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
-                            algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                            key_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                            algorithm: Algorithm | UndefinedType = Undefined,
+                            key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
                             rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -55534,6 +55437,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 KeyIds._item_type = KeyIdsItem
 
+                Mode: TypeAlias = Literal["md5", "sha", "text", "shared-secret"]
+
                 class Sha(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -55557,18 +55462,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class SharedSecret(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
                     _fields: ClassVar[dict] = {"profile": {"type": str}, "algorithm": {"type": str}}
                     profile: str
-                    algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    algorithm: Algorithm
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            profile: str | UndefinedType = Undefined,
-                            algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, profile: str | UndefinedType = Undefined, algorithm: Algorithm | UndefinedType = Undefined) -> None:
                             """
                             SharedSecret.
 
@@ -55590,13 +55491,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "shared_secret": {"type": SharedSecret},
                     "rx_disabled": {"type": bool},
                 }
-                key_type: Literal["0", "7", "8a"] | None
+                key_type: KeyType | None
                 """Configure authentication key type."""
                 key: str | None
                 """Password string. `key_type` is required for this setting."""
                 key_ids: KeyIds
                 """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
-                mode: Literal["md5", "sha", "text", "shared-secret"] | None
+                mode: Mode | None
                 """Authentication mode."""
                 sha: Sha
                 """
@@ -55618,10 +55519,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Literal["md5", "sha", "text", "shared-secret"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
                         rx_disabled: bool | None | UndefinedType = Undefined,
@@ -55652,9 +55553,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Level2(AvdModel):
                 """Subclass of AvdModel."""
 
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
+
                 class KeyIdsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    KeyType: TypeAlias = Literal["0", "7", "8a"]
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "algorithm": {"type": str},
@@ -55664,8 +55569,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     id: int
                     """Configure authentication key-id."""
-                    algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
-                    key_type: Literal["0", "7", "8a"]
+                    algorithm: Algorithm
+                    key_type: KeyType
                     """Configure authentication key type."""
                     key: str
                     """Password string."""
@@ -55678,8 +55583,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
-                            algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                            key_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                            algorithm: Algorithm | UndefinedType = Undefined,
+                            key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
                             rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -55705,6 +55610,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 KeyIds._item_type = KeyIdsItem
 
+                Mode: TypeAlias = Literal["md5", "sha", "text", "shared-secret"]
+
                 class Sha(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -55728,18 +55635,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class SharedSecret(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
                     _fields: ClassVar[dict] = {"profile": {"type": str}, "algorithm": {"type": str}}
                     profile: str
-                    algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    algorithm: Algorithm
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            profile: str | UndefinedType = Undefined,
-                            algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, profile: str | UndefinedType = Undefined, algorithm: Algorithm | UndefinedType = Undefined) -> None:
                             """
                             SharedSecret.
 
@@ -55761,13 +55664,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "shared_secret": {"type": SharedSecret},
                     "rx_disabled": {"type": bool},
                 }
-                key_type: Literal["0", "7", "8a"] | None
+                key_type: KeyType | None
                 """Configure authentication key type."""
                 key: str | None
                 """Password string. `key_type` is required for this setting."""
                 key_ids: KeyIds
                 """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
-                mode: Literal["md5", "sha", "text", "shared-secret"] | None
+                mode: Mode | None
                 """Authentication mode."""
                 sha: Sha
                 """
@@ -55789,10 +55692,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Literal["md5", "sha", "text", "shared-secret"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
                         rx_disabled: bool | None | UndefinedType = Undefined,
@@ -55888,17 +55791,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class RedistributeRoutesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            SourceProtocol: TypeAlias = Literal["bgp", "connected", "isis", "ospf", "ospfv3", "static"]
+            OspfRouteType: TypeAlias = Literal["external", "internal", "nssa-external"]
             _fields: ClassVar[dict] = {
                 "source_protocol": {"type": str},
                 "route_map": {"type": str},
                 "include_leaked": {"type": bool},
                 "ospf_route_type": {"type": str},
             }
-            source_protocol: Literal["bgp", "connected", "isis", "ospf", "ospfv3", "static"]
+            source_protocol: SourceProtocol
             route_map: str | None
             """Route-map name."""
             include_leaked: bool | None
-            ospf_route_type: Literal["external", "internal", "nssa-external"] | None
+            ospf_route_type: OspfRouteType | None
             """ospf_route_type is required with source_protocols 'ospf' and 'ospfv3'."""
 
             if TYPE_CHECKING:
@@ -55906,10 +55811,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    source_protocol: Literal["bgp", "connected", "isis", "ospf", "ospfv3", "static"] | UndefinedType = Undefined,
+                    source_protocol: SourceProtocol | UndefinedType = Undefined,
                     route_map: str | None | UndefinedType = Undefined,
                     include_leaked: bool | None | UndefinedType = Undefined,
-                    ospf_route_type: Literal["external", "internal", "nssa-external"] | None | UndefinedType = Undefined,
+                    ospf_route_type: OspfRouteType | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     RedistributeRoutesItem.
@@ -55936,6 +55841,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class FastRerouteTiLfa(AvdModel):
                 """Subclass of AvdModel."""
 
+                Mode: TypeAlias = Literal["link-protection", "node-protection"]
+                Level: TypeAlias = Literal["level-1", "level-2"]
+
                 class Srlg(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -55959,8 +55867,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             """
 
                 _fields: ClassVar[dict] = {"mode": {"type": str}, "level": {"type": str}, "srlg": {"type": Srlg}}
-                mode: Literal["link-protection", "node-protection"] | None
-                level: Literal["level-1", "level-2"] | None
+                mode: Mode | None
+                level: Level | None
                 srlg: Srlg
                 """
                 Shared Risk Link Group.
@@ -55973,8 +55881,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        mode: Literal["link-protection", "node-protection"] | None | UndefinedType = Undefined,
-                        level: Literal["level-1", "level-2"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
+                        level: Level | None | UndefinedType = Undefined,
                         srlg: Srlg | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -56064,6 +55972,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class FastRerouteTiLfa(AvdModel):
                 """Subclass of AvdModel."""
 
+                Mode: TypeAlias = Literal["link-protection", "node-protection"]
+                Level: TypeAlias = Literal["level-1", "level-2"]
+
                 class Srlg(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -56087,8 +55998,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             """
 
                 _fields: ClassVar[dict] = {"mode": {"type": str}, "level": {"type": str}, "srlg": {"type": Srlg}}
-                mode: Literal["link-protection", "node-protection"] | None
-                level: Literal["level-1", "level-2"] | None
+                mode: Mode | None
+                level: Level | None
                 """Optional, default is to protect all levels."""
                 srlg: Srlg
                 """
@@ -56102,8 +56013,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        mode: Literal["link-protection", "node-protection"] | None | UndefinedType = Undefined,
-                        level: Literal["level-1", "level-2"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
+                        level: Level | None | UndefinedType = Undefined,
                         srlg: Srlg | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -56220,6 +56131,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class SpfInterval(AvdModel):
             """Subclass of AvdModel."""
 
+            IntervalUnit: TypeAlias = Literal["seconds", "milliseconds"]
             _fields: ClassVar[dict] = {
                 "interval": {"type": int},
                 "interval_unit": {"type": str},
@@ -56233,7 +56145,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Range in
             milliseconds: <1-300000>
             """
-            interval_unit: Literal["seconds", "milliseconds"] | None
+            interval_unit: IntervalUnit | None
             """If interval unit is not defined EOS takes `seconds` by default."""
             wait_interval: int | None
             """Initial wait interval for SPF in milliseconds."""
@@ -56246,7 +56158,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     interval: int | None | UndefinedType = Undefined,
-                    interval_unit: Literal["seconds", "milliseconds"] | None | UndefinedType = Undefined,
+                    interval_unit: IntervalUnit | None | UndefinedType = Undefined,
                     wait_interval: int | None | UndefinedType = Undefined,
                     hold_interval: int | None | UndefinedType = Undefined,
                 ) -> None:
@@ -56354,7 +56266,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """IPv4 Address."""
         is_hostname: str | None
         """Hostname of Intermediate System."""
-        is_type: Literal["level-1", "level-1-2", "level-2"] | None
+        is_type: IsType | None
         log_adjacency_changes: bool | None
         mpls_ldp_sync_default: bool | None
         timers: Timers
@@ -56389,7 +56301,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 net: str | None | UndefinedType = Undefined,
                 router_id: str | None | UndefinedType = Undefined,
                 is_hostname: str | None | UndefinedType = Undefined,
-                is_type: Literal["level-1", "level-1-2", "level-2"] | None | UndefinedType = Undefined,
+                is_type: IsType | None | UndefinedType = Undefined,
                 log_adjacency_changes: bool | None | UndefinedType = Undefined,
                 mpls_ldp_sync_default: bool | None | UndefinedType = Undefined,
                 timers: Timers | UndefinedType = Undefined,
@@ -57077,6 +56989,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            Multipath: TypeAlias = Literal["none", "deterministic", "deterministic color", "deterministic router-id"]
+            SoftwareForwarding: TypeAlias = Literal["kernel", "sfe"]
+
             class Rpf(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -57169,8 +57084,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             counters: Counters
             """Subclass of AvdModel."""
             routing: bool | None
-            multipath: Literal["none", "deterministic", "deterministic color", "deterministic router-id"] | None
-            software_forwarding: Literal["kernel", "sfe"] | None
+            multipath: Multipath | None
+            software_forwarding: SoftwareForwarding | None
             rpf: Rpf
             """Subclass of AvdModel."""
 
@@ -57182,8 +57097,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     activity_polling_interval: int | None | UndefinedType = Undefined,
                     counters: Counters | UndefinedType = Undefined,
                     routing: bool | None | UndefinedType = Undefined,
-                    multipath: Literal["none", "deterministic", "deterministic color", "deterministic router-id"] | None | UndefinedType = Undefined,
-                    software_forwarding: Literal["kernel", "sfe"] | None | UndefinedType = Undefined,
+                    multipath: Multipath | None | UndefinedType = Undefined,
+                    software_forwarding: SoftwareForwarding | None | UndefinedType = Undefined,
                     rpf: Rpf | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -57506,11 +57421,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class DefaultInformationOriginate(AvdModel):
                 """Subclass of AvdModel."""
 
+                MetricType: TypeAlias = Literal[1, 2]
                 _fields: ClassVar[dict] = {"always": {"type": bool}, "metric": {"type": int}, "metric_type": {"type": int}}
                 always: bool | None
                 metric: int | None
                 """Metric for default route."""
-                metric_type: Literal[1, 2] | None
+                metric_type: MetricType | None
                 """OSPF metric type for default route."""
 
                 if TYPE_CHECKING:
@@ -57520,7 +57436,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         always: bool | None | UndefinedType = Undefined,
                         metric: int | None | UndefinedType = Undefined,
-                        metric_type: Literal[1, 2] | None | UndefinedType = Undefined,
+                        metric_type: MetricType | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         DefaultInformationOriginate.
@@ -57734,19 +57650,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                Type: TypeAlias = Literal["normal", "stub", "nssa"]
+
                 class DefaultInformationOriginate(AvdModel):
                     """Subclass of AvdModel."""
 
+                    MetricType: TypeAlias = Literal[1, 2]
                     _fields: ClassVar[dict] = {"metric": {"type": int}, "metric_type": {"type": int}}
                     metric: int | None
                     """Metric for default route."""
-                    metric_type: Literal[1, 2] | None
+                    metric_type: MetricType | None
                     """OSPF metric type for default route."""
 
                     if TYPE_CHECKING:
 
                         def __init__(
-                            self, *, metric: int | None | UndefinedType = Undefined, metric_type: Literal[1, 2] | None | UndefinedType = Undefined
+                            self, *, metric: int | None | UndefinedType = Undefined, metric_type: MetricType | None | UndefinedType = Undefined
                         ) -> None:
                             """
                             DefaultInformationOriginate.
@@ -57771,7 +57690,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 id: str
                 filter: Filter
                 """Subclass of AvdModel."""
-                type: Literal["normal", "stub", "nssa"]
+                type: Type
                 """Default value: `"normal"`"""
                 no_summary: bool | None
                 nssa_only: bool | None
@@ -57785,7 +57704,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         id: str | UndefinedType = Undefined,
                         filter: Filter | UndefinedType = Undefined,
-                        type: Literal["normal", "stub", "nssa"] | UndefinedType = Undefined,
+                        type: Type | UndefinedType = Undefined,
                         no_summary: bool | None | UndefinedType = Undefined,
                         nssa_only: bool | None | UndefinedType = Undefined,
                         default_information_originate: DefaultInformationOriginate | UndefinedType = Undefined,
@@ -58102,6 +58021,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class RouterPathSelection(AvdModel):
         """Subclass of AvdModel."""
 
+        PeerDynamicSource: TypeAlias = Literal["stun"]
+
         class MtuDiscoveryHosts(AvdModel):
             """Subclass of AvdModel."""
 
@@ -58130,6 +58051,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         class PathGroupsItem(AvdModel):
             """Subclass of AvdModel."""
+
+            FlowAssignment: TypeAlias = Literal["lan"]
 
             class LocalInterfacesItem(AvdModel):
                 """Subclass of AvdModel."""
@@ -58415,7 +58338,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Path group ID."""
             ipsec_profile: str | None
             """IPSec profile for the path group."""
-            flow_assignment: Literal["lan"] | None
+            flow_assignment: FlowAssignment | None
             """Flow assignment `lan` can not be configured in a path group with dynamic peers."""
             local_interfaces: LocalInterfaces
             """Subclass of AvdIndexedList with `LocalInterfacesItem` items. Primary key is `name` (`str`)."""
@@ -58441,7 +58364,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     id: int | None | UndefinedType = Undefined,
                     ipsec_profile: str | None | UndefinedType = Undefined,
-                    flow_assignment: Literal["lan"] | None | UndefinedType = Undefined,
+                    flow_assignment: FlowAssignment | None | UndefinedType = Undefined,
                     local_interfaces: LocalInterfaces | UndefinedType = Undefined,
                     local_ips: LocalIps | UndefinedType = Undefined,
                     dynamic_peers: DynamicPeers | UndefinedType = Undefined,
@@ -58721,6 +58644,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TcpMssCeiling(AvdModel):
             """Subclass of AvdModel."""
 
+            Direction: TypeAlias = Literal["ingress"]
             _fields: ClassVar[dict] = {"ipv4": {"type": str}, "direction": {"type": str, "default": "ingress"}}
             ipv4: str | None
             """
@@ -58731,7 +58655,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             and multi-hop path
             MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).
             """
-            direction: Literal["ingress"]
+            direction: Direction
             """
             Enforce on packets through DPS tunnel for a specific direction.
             Only 'ingress' direction is
@@ -58742,7 +58666,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, ipv4: str | None | UndefinedType = Undefined, direction: Literal["ingress"] | UndefinedType = Undefined) -> None:
+                def __init__(self, *, ipv4: str | None | UndefinedType = Undefined, direction: Direction | UndefinedType = Undefined) -> None:
                     """
                     TcpMssCeiling.
 
@@ -58829,7 +58753,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "tcp_mss_ceiling": {"type": TcpMssCeiling},
             "interfaces": {"type": Interfaces},
         }
-        peer_dynamic_source: Literal["stun"] | None
+        peer_dynamic_source: PeerDynamicSource | None
         """Source of dynamic peer discovery."""
         mtu_discovery_interval: int | None
         """MTU discovery interval in seconds."""
@@ -58853,7 +58777,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                peer_dynamic_source: Literal["stun"] | None | UndefinedType = Undefined,
+                peer_dynamic_source: PeerDynamicSource | None | UndefinedType = Undefined,
                 mtu_discovery_interval: int | None | UndefinedType = Undefined,
                 mtu_discovery_hosts: MtuDiscoveryHosts | UndefinedType = Undefined,
                 path_groups: PathGroups | UndefinedType = Undefined,
@@ -59309,6 +59233,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class SequenceNumbersItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                Action: TypeAlias = Literal["forward", "drop", "redirect"]
                 _fields: ClassVar[dict] = {
                     "sequence": {"type": int},
                     "application": {"type": str},
@@ -59321,7 +59246,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Sequence ID."""
                 application: str
                 """The name of the application."""
-                action: Literal["forward", "drop", "redirect"]
+                action: Action
                 """
                 The action to take - note that platform support for the redirect action is limited. The "redirect"
                 action also requires the 'next_hop' to be configured.
@@ -59344,7 +59269,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         sequence: int | UndefinedType = Undefined,
                         application: str | UndefinedType = Undefined,
-                        action: Literal["forward", "drop", "redirect"] | UndefinedType = Undefined,
+                        action: Action | UndefinedType = Undefined,
                         log: bool | None | UndefinedType = Undefined,
                         stateless: bool | UndefinedType = Undefined,
                         next_hop: str | None | UndefinedType = Undefined,
@@ -59419,8 +59344,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class MatchListsItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        AddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
                         _fields: ClassVar[dict] = {"address_family": {"type": str}, "covered_prefix_list": {"type": str}, "prefix": {"type": str}}
-                        address_family: Literal["ipv4", "ipv6"]
+                        address_family: AddressFamily
                         """Indicate which address-family the match list belongs to e.g. ipv4 or ipv6."""
                         covered_prefix_list: str | None
                         """
@@ -59438,7 +59364,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+                                address_family: AddressFamily | UndefinedType = Undefined,
                                 covered_prefix_list: str | None | UndefinedType = Undefined,
                                 prefix: str | None | UndefinedType = Undefined,
                             ) -> None:
@@ -59855,6 +59781,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class PathGroupItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        ExplicitNull: TypeAlias = Literal["ipv4", "ipv6", "ipv4 ipv6", "none"]
+
                         class SegmentListItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -59898,7 +59826,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         _fields: ClassVar[dict] = {"preference": {"type": int}, "explicit_null": {"type": str}, "segment_list": {"type": SegmentList}}
                         preference: int | None
-                        explicit_null: Literal["ipv4", "ipv6", "ipv4 ipv6", "none"] | None
+                        explicit_null: ExplicitNull | None
                         segment_list: SegmentList
                         """Subclass of AvdList with `SegmentListItem` items."""
 
@@ -59908,7 +59836,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 preference: int | None | UndefinedType = Undefined,
-                                explicit_null: Literal["ipv4", "ipv6", "ipv4 ipv6", "none"] | None | UndefinedType = Undefined,
+                                explicit_null: ExplicitNull | None | UndefinedType = Undefined,
                                 segment_list: SegmentList | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -60080,6 +60008,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            Metric: TypeAlias = Literal["0", "1", "2", "igp-metric", "min-delay", "te-metric"]
             _fields: ClassVar[dict] = {
                 "number": {"type": int},
                 "name": {"type": str},
@@ -60095,7 +60024,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Flex-algo name, must be unique across all flex-algo definitions."""
             administrative_group: AdministrativeGroup
             """Subclass of AvdModel."""
-            metric: Literal["0", "1", "2", "igp-metric", "min-delay", "te-metric"] | None
+            metric: Metric | None
             """
             Metric can be specified as an integer or named type, 0 = igp-metric, 1 = min-delay, 2 = te-metric.
             Device CLI will show the name regardless.
@@ -60116,7 +60045,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     number: int | UndefinedType = Undefined,
                     name: str | UndefinedType = Undefined,
                     administrative_group: AdministrativeGroup | UndefinedType = Undefined,
-                    metric: Literal["0", "1", "2", "igp-metric", "min-delay", "te-metric"] | None | UndefinedType = Undefined,
+                    metric: Metric | None | UndefinedType = Undefined,
                     priority: int | None | UndefinedType = Undefined,
                     color: int | None | UndefinedType = Undefined,
                     srlg_exclude: str | None | UndefinedType = Undefined,
@@ -60211,6 +60140,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     no_equals_default: no_equals_default
 
                 """
+
+    ServiceRoutingProtocolsModel: TypeAlias = Literal["multi-agent", "ribd"]
 
     class ServiceUnsupportedTransceiver(AvdModel):
         """Subclass of AvdModel."""
@@ -60677,6 +60608,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class CommunitiesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Access: TypeAlias = Literal["ro", "rw"]
+
             class AccessListIpv4(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -60728,7 +60661,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             }
             name: str
             """Community name."""
-            access: Literal["ro", "rw"] | None
+            access: Access | None
             access_list_ipv4: AccessListIpv4
             """Subclass of AvdModel."""
             access_list_ipv6: AccessListIpv6
@@ -60741,7 +60674,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    access: Literal["ro", "rw"] | None | UndefinedType = Undefined,
+                    access: Access | None | UndefinedType = Undefined,
                     access_list_ipv4: AccessListIpv4 | UndefinedType = Undefined,
                     access_list_ipv6: AccessListIpv6 | UndefinedType = Undefined,
                     view: str | None | UndefinedType = Undefined,
@@ -60893,6 +60826,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class GroupsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Version: TypeAlias = Literal["v1", "v2c", "v3"]
+            Authentication: TypeAlias = Literal["auth", "noauth", "priv"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "version": {"type": str},
@@ -60903,8 +60838,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             }
             name: str | None
             """Group name."""
-            version: Literal["v1", "v2c", "v3"] | None
-            authentication: Literal["auth", "noauth", "priv"] | None
+            version: Version | None
+            authentication: Authentication | None
             read: str | None
             """Read view."""
             write: str | None
@@ -60918,8 +60853,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | None | UndefinedType = Undefined,
-                    version: Literal["v1", "v2c", "v3"] | None | UndefinedType = Undefined,
-                    authentication: Literal["auth", "noauth", "priv"] | None | UndefinedType = Undefined,
+                    version: Version | None | UndefinedType = Undefined,
+                    authentication: Authentication | None | UndefinedType = Undefined,
                     read: str | None | UndefinedType = Undefined,
                     write: str | None | UndefinedType = Undefined,
                     notify: str | None | UndefinedType = Undefined,
@@ -60948,6 +60883,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class UsersItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Version: TypeAlias = Literal["v1", "v2c", "v3"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "group": {"type": str},
@@ -60971,7 +60907,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             udp_port: int | None
             """udp_port will not be used if no remote_address is configured."""
-            version: Literal["v1", "v2c", "v3"] | None
+            version: Version | None
             localized: str | None
             """Engine ID in hexadecimal for localizing auth and/or priv."""
             auth: str | None
@@ -60992,7 +60928,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     group: str | None | UndefinedType = Undefined,
                     remote_address: str | None | UndefinedType = Undefined,
                     udp_port: int | None | UndefinedType = Undefined,
-                    version: Literal["v1", "v2c", "v3"] | None | UndefinedType = Undefined,
+                    version: Version | None | UndefinedType = Undefined,
                     localized: str | None | UndefinedType = Undefined,
                     auth: str | None | UndefinedType = Undefined,
                     auth_passphrase: str | None | UndefinedType = Undefined,
@@ -61029,20 +60965,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class HostsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Version: TypeAlias = Literal["1", "2c", "3"]
+
             class UsersItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                AuthenticationLevel: TypeAlias = Literal["auth", "noauth", "priv"]
                 _fields: ClassVar[dict] = {"username": {"type": str}, "authentication_level": {"type": str}}
                 username: str | None
-                authentication_level: Literal["auth", "noauth", "priv"] | None
+                authentication_level: AuthenticationLevel | None
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        username: str | None | UndefinedType = Undefined,
-                        authentication_level: Literal["auth", "noauth", "priv"] | None | UndefinedType = Undefined,
+                        self, *, username: str | None | UndefinedType = Undefined, authentication_level: AuthenticationLevel | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         UsersItem.
@@ -61071,7 +61007,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             host: str | None
             """Host IP address or name."""
             vrf: str | None
-            version: Literal["1", "2c", "3"] | None
+            version: Version | None
             community: str | None
             """Community name. Required with version "1" or "2c"."""
             users: Users
@@ -61084,7 +61020,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     host: str | None | UndefinedType = Undefined,
                     vrf: str | None | UndefinedType = Undefined,
-                    version: Literal["1", "2c", "3"] | None | UndefinedType = Undefined,
+                    version: Version | None | UndefinedType = Undefined,
                     community: str | None | UndefinedType = Undefined,
                     users: Users | UndefinedType = Undefined,
                 ) -> None:
@@ -61316,6 +61252,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        Mode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
+
         class BpduguardRateLimit(AvdModel):
             """Subclass of AvdModel."""
 
@@ -61534,7 +61472,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         root_super: bool | None
         edge_port: EdgePort
         """Subclass of AvdModel."""
-        mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None
+        mode: Mode | None
         bpduguard_rate_limit: BpduguardRateLimit
         """Subclass of AvdModel."""
         rstp_priority: int | None
@@ -61563,7 +61501,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 root_super: bool | None | UndefinedType = Undefined,
                 edge_port: EdgePort | UndefinedType = Undefined,
-                mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
+                mode: Mode | None | UndefinedType = Undefined,
                 bpduguard_rate_limit: BpduguardRateLimit | UndefinedType = Undefined,
                 rstp_priority: int | None | UndefinedType = Undefined,
                 mst: Mst | UndefinedType = Undefined,
@@ -61940,9 +61878,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class SwitchportDefault(AvdModel):
         """Subclass of AvdModel."""
 
+        Mode: TypeAlias = Literal["routed", "access"]
+
         class Phone(AvdModel):
             """Subclass of AvdModel."""
 
+            Trunk: TypeAlias = Literal["tagged", "untagged", "tagged phone", "untagged phone"]
+            QosTrust: TypeAlias = Literal["cos", "dscp"]
             _fields: ClassVar[dict] = {
                 "cos": {"type": int},
                 "trunk": {"type": str},
@@ -61951,12 +61893,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "qos_trust": {"type": str},
             }
             cos: int | None
-            trunk: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None
+            trunk: Trunk | None
             vlan: int | None
             """VLAN ID."""
             access_list_bypass: bool | None
             """Bypass phone traffic from configured access-list."""
-            qos_trust: Literal["cos", "dscp"] | None
+            qos_trust: QosTrust | None
             """
             Quality of Service (QoS) trust mode. Outgoing traffic class being derived from the ingress COS/DSCP
             value.
@@ -61968,10 +61910,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     cos: int | None | UndefinedType = Undefined,
-                    trunk: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None | UndefinedType = Undefined,
+                    trunk: Trunk | None | UndefinedType = Undefined,
                     vlan: int | None | UndefinedType = Undefined,
                     access_list_bypass: bool | None | UndefinedType = Undefined,
-                    qos_trust: Literal["cos", "dscp"] | None | UndefinedType = Undefined,
+                    qos_trust: QosTrust | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Phone.
@@ -61991,13 +61933,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         _fields: ClassVar[dict] = {"mode": {"type": str}, "phone": {"type": Phone}}
-        mode: Literal["routed", "access"] | None
+        mode: Mode | None
         phone: Phone
         """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, mode: Literal["routed", "access"] | None | UndefinedType = Undefined, phone: Phone | UndefinedType = Undefined) -> None:
+            def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, phone: Phone | UndefinedType = Undefined) -> None:
                 """
                 SwitchportDefault.
 
@@ -62214,17 +62156,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class L1(AvdModel):
             """Subclass of AvdModel."""
 
+            UnsupportedSpeedAction: TypeAlias = Literal["error", "warn"]
+            UnsupportedErrorCorrectionAction: TypeAlias = Literal["error", "warn"]
             _fields: ClassVar[dict] = {"unsupported_speed_action": {"type": str}, "unsupported_error_correction_action": {"type": str}}
-            unsupported_speed_action: Literal["error", "warn"] | None
-            unsupported_error_correction_action: Literal["error", "warn"] | None
+            unsupported_speed_action: UnsupportedSpeedAction | None
+            unsupported_error_correction_action: UnsupportedErrorCorrectionAction | None
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
-                    unsupported_speed_action: Literal["error", "warn"] | None | UndefinedType = Undefined,
-                    unsupported_error_correction_action: Literal["error", "warn"] | None | UndefinedType = Undefined,
+                    unsupported_speed_action: UnsupportedSpeedAction | None | UndefinedType = Undefined,
+                    unsupported_error_correction_action: UnsupportedErrorCorrectionAction | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     L1.
@@ -62265,6 +62209,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class HostsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            KeyType: TypeAlias = Literal["0", "7", "8a"]
             _fields: ClassVar[dict] = {
                 "host": {"type": str},
                 "vrf": {"type": str},
@@ -62278,7 +62223,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             vrf: str | None
             key: str | None
             """Encrypted key."""
-            key_type: Literal["0", "7", "8a"]
+            key_type: KeyType
             """Default value: `"7"`"""
             single_connection: bool | None
             timeout: int | None
@@ -62292,7 +62237,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     host: str | None | UndefinedType = Undefined,
                     vrf: str | None | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
-                    key_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                    key_type: KeyType | UndefinedType = Undefined,
                     single_connection: bool | None | UndefinedType = Undefined,
                     timeout: int | None | UndefinedType = Undefined,
                 ) -> None:
@@ -62416,16 +62361,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Header(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Format: TypeAlias = Literal["48-bit", "64-bit"]
                     _fields: ClassVar[dict] = {"format": {"type": str}, "eth_type": {"type": int}}
-                    format: Literal["48-bit", "64-bit"] | None
+                    format: Format | None
                     eth_type: int | None
                     """EtherType."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, format: Literal["48-bit", "64-bit"] | None | UndefinedType = Undefined, eth_type: int | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, format: Format | None | UndefinedType = Undefined, eth_type: int | None | UndefinedType = Undefined) -> None:
                             """
                             Header.
 
@@ -62458,6 +62402,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            FcsError: TypeAlias = Literal["correct", "discard", "pass-through"]
             _fields: ClassVar[dict] = {"timestamp": {"type": Timestamp}, "fcs_append": {"type": bool}, "fcs_error": {"type": str}}
             timestamp: Timestamp
             """
@@ -62472,7 +62417,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             mac.fcs_append and mac.fcs_error are mutually exclusive. If both are defined, mac.fcs_append takes
             precedence.
             """
-            fcs_error: Literal["correct", "discard", "pass-through"] | None
+            fcs_error: FcsError | None
 
             if TYPE_CHECKING:
 
@@ -62481,7 +62426,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     timestamp: Timestamp | UndefinedType = Undefined,
                     fcs_append: bool | None | UndefinedType = Undefined,
-                    fcs_error: Literal["correct", "discard", "pass-through"] | None | UndefinedType = Undefined,
+                    fcs_error: FcsError | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Mac.
@@ -62892,6 +62837,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             class MatchesItem(AvdModel):
                 """Subclass of AvdModel."""
+
+                Type: TypeAlias = Literal["ipv4", "ipv6"]
 
                 class Source(AvdModel):
                     """Subclass of AvdModel."""
@@ -63317,7 +63264,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 }
                 name: str
                 """Traffic Policy Item."""
-                type: Literal["ipv4", "ipv6"]
+                type: Type
                 source: Source
                 """Subclass of AvdModel."""
                 destination: Destination
@@ -63344,7 +63291,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        type: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+                        type: Type | UndefinedType = Undefined,
                         source: Source | UndefinedType = Undefined,
                         destination: Destination | UndefinedType = Undefined,
                         ttl: str | None | UndefinedType = Undefined,
@@ -63638,12 +63585,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TcpMssCeiling(AvdModel):
             """Subclass of AvdModel."""
 
+            Direction: TypeAlias = Literal["ingress", "egress"]
             _fields: ClassVar[dict] = {"ipv4": {"type": int}, "ipv6": {"type": int}, "direction": {"type": str}}
             ipv4: int | None
             """Segment Size for IPv4."""
             ipv6: int | None
             """Segment Size for IPv6."""
-            direction: Literal["ingress", "egress"] | None
+            direction: Direction | None
             """Optional direction ('ingress', 'egress')  for tcp mss ceiling."""
 
             if TYPE_CHECKING:
@@ -63653,7 +63601,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     ipv4: int | None | UndefinedType = Undefined,
                     ipv6: int | None | UndefinedType = Undefined,
-                    direction: Literal["ingress", "egress"] | None | UndefinedType = Undefined,
+                    direction: Direction | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     TcpMssCeiling.
@@ -63668,6 +63616,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        TunnelMode: TypeAlias = Literal["gre", "ipsec"]
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "description": {"type": str},
@@ -63716,7 +63665,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """IPv6 ACL Name for egress."""
         tcp_mss_ceiling: TcpMssCeiling
         """Subclass of AvdModel."""
-        tunnel_mode: Literal["gre", "ipsec"] | None
+        tunnel_mode: TunnelMode | None
         """
         Tunnel encapsulation method.
         `gre`: Generic route encapsulation protocol,
@@ -63771,7 +63720,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_access_group_in: str | None | UndefinedType = Undefined,
                 ipv6_access_group_out: str | None | UndefinedType = Undefined,
                 tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
-                tunnel_mode: Literal["gre", "ipsec"] | None | UndefinedType = Undefined,
+                tunnel_mode: TunnelMode | None | UndefinedType = Undefined,
                 source_interface: str | None | UndefinedType = Undefined,
                 source: str | None | UndefinedType = Undefined,
                 destination: str | None | UndefinedType = Undefined,
@@ -63931,6 +63880,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `str` items."""
 
         IpAddressVirtualSecondaries._item_type = str
+
+        IpVerifyUnicastSourceReachableVia: TypeAlias = Literal["any", "rx"]
 
         class IpIgmpHostProxy(AvdModel):
             """Subclass of AvdModel."""
@@ -64215,6 +64166,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class StaticItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Direction: TypeAlias = Literal["egress", "ingress"]
+                    Protocol: TypeAlias = Literal["udp", "tcp"]
                     _fields: ClassVar[dict] = {
                         "access_list": {"type": str},
                         "comment": {"type": str},
@@ -64230,7 +64183,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     access_list: str | None
                     """'access_list' and 'group' are mutual exclusive."""
                     comment: str | None
-                    direction: Literal["egress", "ingress"] | None
+                    direction: Direction | None
                     """
                     Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware
                     platform.
@@ -64244,7 +64197,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     original_port: int | None
                     """TCP/UDP port. The combination of `original_ip` and `original_port` must be unique."""
                     priority: int | None
-                    protocol: Literal["udp", "tcp"] | None
+                    protocol: Protocol | None
                     translated_ip: str
                     """IPv4 address."""
                     translated_port: int | None
@@ -64257,12 +64210,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             access_list: str | None | UndefinedType = Undefined,
                             comment: str | None | UndefinedType = Undefined,
-                            direction: Literal["egress", "ingress"] | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
                             group: int | None | UndefinedType = Undefined,
                             original_ip: str | None | UndefinedType = Undefined,
                             original_port: int | None | UndefinedType = Undefined,
                             priority: int | None | UndefinedType = Undefined,
-                            protocol: Literal["udp", "tcp"] | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
                             translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
@@ -64322,6 +64275,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class DynamicItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    NatType: TypeAlias = Literal["overload", "pool", "pool-address-only", "pool-full-cone"]
                     _fields: ClassVar[dict] = {
                         "access_list": {"type": str},
                         "comment": {"type": str},
@@ -64331,7 +64285,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     access_list: str
                     comment: str | None
-                    nat_type: Literal["overload", "pool", "pool-address-only", "pool-full-cone"]
+                    nat_type: NatType
                     pool_name: str | None
                     """
                     required if 'nat_type' is pool, pool-address-only or pool-full-cone.
@@ -64347,7 +64301,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             access_list: str | UndefinedType = Undefined,
                             comment: str | None | UndefinedType = Undefined,
-                            nat_type: Literal["overload", "pool", "pool-address-only", "pool-full-cone"] | UndefinedType = Undefined,
+                            nat_type: NatType | UndefinedType = Undefined,
                             pool_name: str | None | UndefinedType = Undefined,
                             priority: int | None | UndefinedType = Undefined,
                         ) -> None:
@@ -64379,6 +64333,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class StaticItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Direction: TypeAlias = Literal["egress", "ingress"]
+                    Protocol: TypeAlias = Literal["udp", "tcp"]
                     _fields: ClassVar[dict] = {
                         "access_list": {"type": str},
                         "comment": {"type": str},
@@ -64394,7 +64350,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     access_list: str | None
                     """'access_list' and 'group' are mutual exclusive."""
                     comment: str | None
-                    direction: Literal["egress", "ingress"] | None
+                    direction: Direction | None
                     """
                     Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware
                     platform.
@@ -64408,7 +64364,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     original_port: int | None
                     """TCP/UDP port. The combination of `original_ip` and `original_port` must be unique."""
                     priority: int | None
-                    protocol: Literal["udp", "tcp"] | None
+                    protocol: Protocol | None
                     translated_ip: str
                     """IPv4 address."""
                     translated_port: int | None
@@ -64421,12 +64377,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             access_list: str | None | UndefinedType = Undefined,
                             comment: str | None | UndefinedType = Undefined,
-                            direction: Literal["egress", "ingress"] | None | UndefinedType = Undefined,
+                            direction: Direction | None | UndefinedType = Undefined,
                             group: int | None | UndefinedType = Undefined,
                             original_ip: str | None | UndefinedType = Undefined,
                             original_port: int | None | UndefinedType = Undefined,
                             priority: int | None | UndefinedType = Undefined,
-                            protocol: Literal["udp", "tcp"] | None | UndefinedType = Undefined,
+                            protocol: Protocol | None | UndefinedType = Undefined,
                             translated_ip: str | UndefinedType = Undefined,
                             translated_port: int | None | UndefinedType = Undefined,
                         ) -> None:
@@ -64860,12 +64816,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
+
         class OspfMessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
+            HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
             _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}}
             id: int
-            hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None
+            hash_algorithm: HashAlgorithm | None
             key: str | None
             """Encrypted password."""
 
@@ -64875,7 +64834,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None | UndefinedType = Undefined,
+                    hash_algorithm: HashAlgorithm | None | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -65007,9 +64966,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Both(AvdModel):
                 """Subclass of AvdModel."""
 
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
+
                 class KeyIdsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    KeyType: TypeAlias = Literal["0", "7", "8a"]
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "algorithm": {"type": str},
@@ -65019,8 +64982,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     id: int
                     """Configure authentication key-id."""
-                    algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
-                    key_type: Literal["0", "7", "8a"]
+                    algorithm: Algorithm
+                    key_type: KeyType
                     """Configure authentication key type."""
                     key: str
                     """Password string."""
@@ -65033,8 +64996,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
-                            algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                            key_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                            algorithm: Algorithm | UndefinedType = Undefined,
+                            key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
                             rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -65060,6 +65023,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 KeyIds._item_type = KeyIdsItem
 
+                Mode: TypeAlias = Literal["md5", "sha", "text", "shared-secret"]
+
                 class Sha(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -65083,18 +65048,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class SharedSecret(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
                     _fields: ClassVar[dict] = {"profile": {"type": str}, "algorithm": {"type": str}}
                     profile: str
-                    algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    algorithm: Algorithm
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            profile: str | UndefinedType = Undefined,
-                            algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, profile: str | UndefinedType = Undefined, algorithm: Algorithm | UndefinedType = Undefined) -> None:
                             """
                             SharedSecret.
 
@@ -65116,13 +65077,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "shared_secret": {"type": SharedSecret},
                     "rx_disabled": {"type": bool},
                 }
-                key_type: Literal["0", "7", "8a"] | None
+                key_type: KeyType | None
                 """Configure authentication key type."""
                 key: str | None
                 """Password string. `key_type` is required for this setting."""
                 key_ids: KeyIds
                 """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
-                mode: Literal["md5", "sha", "text", "shared-secret"] | None
+                mode: Mode | None
                 """Authentication mode."""
                 sha: Sha
                 """
@@ -65144,10 +65105,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Literal["md5", "sha", "text", "shared-secret"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
                         rx_disabled: bool | None | UndefinedType = Undefined,
@@ -65178,9 +65139,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Level1(AvdModel):
                 """Subclass of AvdModel."""
 
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
+
                 class KeyIdsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    KeyType: TypeAlias = Literal["0", "7", "8a"]
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "algorithm": {"type": str},
@@ -65190,8 +65155,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     id: int
                     """Configure authentication key-id."""
-                    algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
-                    key_type: Literal["0", "7", "8a"]
+                    algorithm: Algorithm
+                    key_type: KeyType
                     """Configure authentication key type."""
                     key: str
                     """Password string."""
@@ -65204,8 +65169,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
-                            algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                            key_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                            algorithm: Algorithm | UndefinedType = Undefined,
+                            key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
                             rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -65231,6 +65196,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 KeyIds._item_type = KeyIdsItem
 
+                Mode: TypeAlias = Literal["md5", "sha", "text", "shared-secret"]
+
                 class Sha(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -65254,18 +65221,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class SharedSecret(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
                     _fields: ClassVar[dict] = {"profile": {"type": str}, "algorithm": {"type": str}}
                     profile: str
-                    algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    algorithm: Algorithm
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            profile: str | UndefinedType = Undefined,
-                            algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, profile: str | UndefinedType = Undefined, algorithm: Algorithm | UndefinedType = Undefined) -> None:
                             """
                             SharedSecret.
 
@@ -65287,13 +65250,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "shared_secret": {"type": SharedSecret},
                     "rx_disabled": {"type": bool},
                 }
-                key_type: Literal["0", "7", "8a"] | None
+                key_type: KeyType | None
                 """Configure authentication key type."""
                 key: str | None
                 """Password string. `key_type` is required for this setting."""
                 key_ids: KeyIds
                 """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
-                mode: Literal["md5", "sha", "text", "shared-secret"] | None
+                mode: Mode | None
                 """Authentication mode."""
                 sha: Sha
                 """
@@ -65315,10 +65278,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Literal["md5", "sha", "text", "shared-secret"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
                         rx_disabled: bool | None | UndefinedType = Undefined,
@@ -65349,9 +65312,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Level2(AvdModel):
                 """Subclass of AvdModel."""
 
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
+
                 class KeyIdsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    KeyType: TypeAlias = Literal["0", "7", "8a"]
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "algorithm": {"type": str},
@@ -65361,8 +65328,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     id: int
                     """Configure authentication key-id."""
-                    algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
-                    key_type: Literal["0", "7", "8a"]
+                    algorithm: Algorithm
+                    key_type: KeyType
                     """Configure authentication key type."""
                     key: str
                     """Password string."""
@@ -65375,8 +65342,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
-                            algorithm: Literal["sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                            key_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                            algorithm: Algorithm | UndefinedType = Undefined,
+                            key_type: KeyType | UndefinedType = Undefined,
                             key: str | UndefinedType = Undefined,
                             rfc_5310: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -65402,6 +65369,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 KeyIds._item_type = KeyIdsItem
 
+                Mode: TypeAlias = Literal["md5", "sha", "text", "shared-secret"]
+
                 class Sha(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -65425,18 +65394,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class SharedSecret(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Algorithm: TypeAlias = Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
                     _fields: ClassVar[dict] = {"profile": {"type": str}, "algorithm": {"type": str}}
                     profile: str
-                    algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"]
+                    algorithm: Algorithm
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            profile: str | UndefinedType = Undefined,
-                            algorithm: Literal["md5", "sha-1", "sha-224", "sha-256", "sha-384", "sha-512"] | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, profile: str | UndefinedType = Undefined, algorithm: Algorithm | UndefinedType = Undefined) -> None:
                             """
                             SharedSecret.
 
@@ -65458,13 +65423,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "shared_secret": {"type": SharedSecret},
                     "rx_disabled": {"type": bool},
                 }
-                key_type: Literal["0", "7", "8a"] | None
+                key_type: KeyType | None
                 """Configure authentication key type."""
                 key: str | None
                 """Password string. `key_type` is required for this setting."""
                 key_ids: KeyIds
                 """Subclass of AvdIndexedList with `KeyIdsItem` items. Primary key is `id` (`int`)."""
-                mode: Literal["md5", "sha", "text", "shared-secret"] | None
+                mode: Mode | None
                 """Authentication mode."""
                 sha: Sha
                 """
@@ -65486,10 +65451,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         key_ids: KeyIds | UndefinedType = Undefined,
-                        mode: Literal["md5", "sha", "text", "shared-secret"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         sha: Sha | UndefinedType = Undefined,
                         shared_secret: SharedSecret | UndefinedType = Undefined,
                         rx_disabled: bool | None | UndefinedType = Undefined,
@@ -65722,6 +65687,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 SecondaryAddresses._item_type = str
 
+                Version: TypeAlias = Literal[2, 3]
                 _fields: ClassVar[dict] = {"address": {"type": str}, "secondary_addresses": {"type": SecondaryAddresses}, "version": {"type": int}}
                 address: str
                 """Virtual IPv4 address."""
@@ -65731,7 +65697,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Subclass of AvdList with `str` items.
                 """
-                version: Literal[2, 3] | None
+                version: Version | None
 
                 if TYPE_CHECKING:
 
@@ -65740,7 +65706,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         address: str | UndefinedType = Undefined,
                         secondary_addresses: SecondaryAddresses | UndefinedType = Undefined,
-                        version: Literal[2, 3] | None | UndefinedType = Undefined,
+                        version: Version | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ipv4.
@@ -65794,12 +65760,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class PeerAuthentication(AvdModel):
                 """Subclass of AvdModel."""
 
+                Mode: TypeAlias = Literal["text", "ietf-md5"]
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
                 _fields: ClassVar[dict] = {"mode": {"type": str}, "key": {"type": str}, "key_type": {"type": str}}
-                mode: Literal["text", "ietf-md5"]
+                mode: Mode
                 """Authentication mode."""
                 key: str
                 """Authentication key."""
-                key_type: Literal["0", "7", "8a"] | None
+                key_type: KeyType | None
                 """Authentication key type."""
 
                 if TYPE_CHECKING:
@@ -65807,9 +65775,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        mode: Literal["text", "ietf-md5"] | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType = Undefined,
                         key: str | UndefinedType = Undefined,
-                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                        key_type: KeyType | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerAuthentication.
@@ -66129,7 +66097,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """IPv4_address/Mask."""
         ip_address_virtual_secondaries: IpAddressVirtualSecondaries
         """Subclass of AvdList with `str` items."""
-        ip_verify_unicast_source_reachable_via: Literal["any", "rx"] | None
+        ip_verify_unicast_source_reachable_via: IpVerifyUnicastSourceReachableVia | None
         ip_igmp: bool | None
         ip_igmp_version: int | None
         ip_igmp_querier_address_virtual: bool | None
@@ -66203,7 +66171,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ospf_area: str | None
         ipv6_ospf_area: str | None
         ospf_cost: int | None
-        ospf_authentication: Literal["none", "simple", "message-digest"] | None
+        ospf_authentication: OspfAuthentication | None
         ospf_authentication_key: str | None
         """Encrypted password used for simple authentication."""
         ospf_message_digest_keys: OspfMessageDigestKeys
@@ -66279,7 +66247,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                 ip_address_virtual: str | None | UndefinedType = Undefined,
                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
-                ip_verify_unicast_source_reachable_via: Literal["any", "rx"] | None | UndefinedType = Undefined,
+                ip_verify_unicast_source_reachable_via: IpVerifyUnicastSourceReachableVia | None | UndefinedType = Undefined,
                 ip_igmp: bool | None | UndefinedType = Undefined,
                 ip_igmp_version: int | None | UndefinedType = Undefined,
                 ip_igmp_querier_address_virtual: bool | None | UndefinedType = Undefined,
@@ -66311,7 +66279,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ospf_area: str | None | UndefinedType = Undefined,
                 ipv6_ospf_area: str | None | UndefinedType = Undefined,
                 ospf_cost: int | None | UndefinedType = Undefined,
-                ospf_authentication: Literal["none", "simple", "message-digest"] | None | UndefinedType = Undefined,
+                ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
                 ospf_authentication_key: str | None | UndefinedType = Undefined,
                 ospf_message_digest_keys: OspfMessageDigestKeys | UndefinedType = Undefined,
                 pim: Pim | UndefinedType = Undefined,
@@ -66454,6 +66422,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class VlanInternalOrder(AvdModel):
         """Subclass of AvdModel."""
 
+        Allocation: TypeAlias = Literal["ascending", "descending"]
+
         class Range(AvdModel):
             """Subclass of AvdModel."""
 
@@ -66479,13 +66449,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         _fields: ClassVar[dict] = {"allocation": {"type": str}, "range": {"type": Range}}
-        allocation: Literal["ascending", "descending"]
+        allocation: Allocation
         range: Range
         """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, allocation: Literal["ascending", "descending"] | UndefinedType = Undefined, range: Range | UndefinedType = Undefined) -> None:
+            def __init__(self, *, allocation: Allocation | UndefinedType = Undefined, range: Range | UndefinedType = Undefined) -> None:
                 """
                 VlanInternalOrder.
 
@@ -66500,6 +66470,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     class VlansItem(AvdModel):
         """Subclass of AvdModel."""
+
+        State: TypeAlias = Literal["active", "suspend"]
 
         class AddressLocking(AvdModel):
             """Subclass of AvdModel."""
@@ -66590,16 +66562,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class PrivateVlan(AvdModel):
             """Subclass of AvdModel."""
 
+            Type: TypeAlias = Literal["community", "isolated"]
             _fields: ClassVar[dict] = {"type": {"type": str}, "primary_vlan": {"type": int}}
-            type: Literal["community", "isolated"] | None
+            type: Type | None
             primary_vlan: int | None
             """Primary VLAN ID."""
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self, *, type: Literal["community", "isolated"] | None | UndefinedType = Undefined, primary_vlan: int | None | UndefinedType = Undefined
-                ) -> None:
+                def __init__(self, *, type: Type | None | UndefinedType = Undefined, primary_vlan: int | None | UndefinedType = Undefined) -> None:
                     """
                     PrivateVlan.
 
@@ -66626,7 +66597,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """VLAN ID."""
         name: str | None
         """VLAN Name."""
-        state: Literal["active", "suspend"] | None
+        state: State | None
         address_locking: AddressLocking
         """Subclass of AvdModel."""
         trunk_groups: TrunkGroups
@@ -66645,7 +66616,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 id: int | UndefinedType = Undefined,
                 name: str | None | UndefinedType = Undefined,
-                state: Literal["active", "suspend"] | None | UndefinedType = Undefined,
+                state: State | None | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 e_tree: ETree | UndefinedType = Undefined,
@@ -67587,7 +67558,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     as_path: AsPath
     """Subclass of AvdModel."""
-    avd_data_validation_mode: Literal["error", "warning"]
+    avd_data_validation_mode: AvdDataValidationMode
     """
     Validation Mode for AVD input data validation.
     Input data validation will validate the input
@@ -68043,7 +68014,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     service_routing_configuration_bgp: ServiceRoutingConfigurationBgp
     """Subclass of AvdModel."""
-    service_routing_protocols_model: Literal["multi-agent", "ribd"] | None
+    service_routing_protocols_model: ServiceRoutingProtocolsModel | None
     service_unsupported_transceiver: ServiceUnsupportedTransceiver
     """Subclass of AvdModel."""
     sflow: Sflow
@@ -68136,7 +68107,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             application_traffic_recognition: ApplicationTrafficRecognition | UndefinedType = Undefined,
             arp: Arp | UndefinedType = Undefined,
             as_path: AsPath | UndefinedType = Undefined,
-            avd_data_validation_mode: Literal["error", "warning"] | UndefinedType = Undefined,
+            avd_data_validation_mode: AvdDataValidationMode | UndefinedType = Undefined,
             banners: Banners | UndefinedType = Undefined,
             bgp_groups: BgpGroups | UndefinedType = Undefined,
             boot: Boot | UndefinedType = Undefined,
@@ -68288,7 +68259,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             router_traffic_engineering: RouterTrafficEngineering | UndefinedType = Undefined,
             serial_number: str | None | UndefinedType = Undefined,
             service_routing_configuration_bgp: ServiceRoutingConfigurationBgp | UndefinedType = Undefined,
-            service_routing_protocols_model: Literal["multi-agent", "ribd"] | None | UndefinedType = Undefined,
+            service_routing_protocols_model: ServiceRoutingProtocolsModel | None | UndefinedType = Undefined,
             service_unsupported_transceiver: ServiceUnsupportedTransceiver | UndefinedType = Undefined,
             sflow: Sflow | UndefinedType = Undefined,
             snmp_server: SnmpServer | UndefinedType = Undefined,
