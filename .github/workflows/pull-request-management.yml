@@ -26,7 +26,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  required-checks:  # Added in github settings as a required check before merge. This ensures that CI finishes before merge queue is merged.
+  required-checks: # Added in github settings as a required check before merge. This ensures that CI finishes before merge queue is merged.
     needs:
       - python_type_checking
       - python_requirements
@@ -626,7 +626,7 @@ jobs:
       - name: Set up Python 3.11
         uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: "3.11"
       - name: Install coverage
         working-directory: python-avd
         run: pip install --group coverage
@@ -670,13 +670,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # macos-13 covers x64 and macos-latest covers arm
+        # macos-14 covers x64 and macos-latest covers arm
+        # note that at some point x64 won't be available anymore as per
+        # https://github.com/actions/runner-images/issues/13046
+        # the next update will be macos-15-intel
         os:
           [
             ubuntu-latest,
             ubuntu-24.04-arm,
             windows-latest,
-            macos-13,
+            macos-14,
             macos-latest,
           ]
     steps:
@@ -728,13 +731,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # macos-13 covers x64 and macos-latest covers arm
+        # macos-14 covers x64 and macos-latest covers arm
+        # note that at some point x64 won't be available anymore as per
+        # https://github.com/actions/runner-images/issues/13046
+        # the next update will be macos-15-intel
         os:
           [
             ubuntu-latest,
             ubuntu-24.04-arm,
             windows-latest,
-            macos-13,
+            macos-14,
             macos-latest,
           ]
         python: ["3.10", "3.11", "3.12", "3.13"]
