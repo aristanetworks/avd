@@ -13,8 +13,6 @@ ansible-core>=2.16.0,<2.19.0
 ansible-doc-extractor>=0.1.10
 ansible-lint>=25.1.3
 aristaproto[compiler]>=0.1.1
-# pyright will fail with lower version despite us catching it in pyavd._utils.password_utils.password_utils
-cryptography>=43.0.0
 codespell>=2.2.6
 deepmerge>=1.1.0
 docker>=7.1.0
