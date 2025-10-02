@@ -164,9 +164,7 @@ async def deploy_to_cv(
             try:
                 # Verify devices exist and update CVDevice objects with _exists_on_cv.
                 # Depending on skip_missing_devices we will raise or skip missing devices.
-                # Since verify_devices will silently return if _exists_on_cv is already set,
-                # we can just send all the items even if we have duplicate device objects.
-                existing_devices = await verify_devices_on_cv(
+                await verify_devices_on_cv(
                     devices=devices,
                     workspace_id=result.workspace.id,
                     skip_missing_devices=skip_missing_devices,
@@ -238,7 +236,7 @@ async def deploy_to_cv(
                 result.workspace.state = "abandoned"
                 return result
 
-            await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=existing_devices, warnings=result.warnings)
+            await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=result.warnings)
 
             # Create/update CVChangeControl object with ID created by workspace.
             if result.workspace.change_control_id is not None:

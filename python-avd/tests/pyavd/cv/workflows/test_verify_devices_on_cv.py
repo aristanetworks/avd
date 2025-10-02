@@ -8,17 +8,10 @@ from typing import TYPE_CHECKING
 import pytest
 
 from pyavd._cv.workflows.models import CVDevice
-from pyavd._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory, verify_devices_on_cv
+from pyavd._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory
 
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
-
-
-@pytest.mark.asyncio
-async def test_verify_devices_on_cv_no_devices(cv_client: CVClient) -> None:
-    """Test an attempt to verify empty lict of targeted devices."""
-    result = await verify_devices_on_cv(devices=[], workspace_id="", skip_missing_devices=False, warnings=[], cv_client=cv_client)
-    assert len(result) == 0
 
 
 @pytest.mark.asyncio

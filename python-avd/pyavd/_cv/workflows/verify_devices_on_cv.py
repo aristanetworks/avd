@@ -19,24 +19,18 @@ LOGGER = getLogger(__name__)
 
 async def verify_devices_on_cv(
     *, devices: list[CVDevice], workspace_id: str, skip_missing_devices: bool, warnings: list[Exception], cv_client: CVClient
-) -> list[CVDevice]:
-    """
-    Verify that the given Devices are already present in the CloudVision Inventory & I&T Studio.
-
-    Returns list of CVDevice objects found on CloudVision.
-    """
+) -> None:
+    """Verify that the given Devices are already present in the CloudVision Inventory & I&T Studio."""
     LOGGER.info("verify_devices_on_cv: %s", len(devices))
 
     # Return if we have nothing to do.
     if not devices:
-        return []
+        return
 
     existing_devices = await verify_devices_in_cloudvision_inventory(
         devices=devices, skip_missing_devices=skip_missing_devices, warnings=warnings, cv_client=cv_client
     )
     await verify_devices_in_topology_studio(existing_devices, workspace_id, cv_client)
-
-    return existing_devices
 
 
 async def verify_devices_in_cloudvision_inventory(
@@ -75,12 +69,8 @@ async def verify_devices_in_cloudvision_inventory(
     found_device_dict_by_system_mac = {found_device.system_mac_address: found_device for found_device in found_devices}
     found_device_dict_by_hostname = {found_device.hostname: found_device for found_device in found_devices}
 
-    # By updating the objects in-place, we will skip duplicates by checking if _exists_on_cv was already set.
-    # This also helps if the same object is used in multiple lists (like interface_tags and device_tags).
     existing_devices: list[CVDevice] = []
     for device in devices:
-        if device._exists_on_cv is not None:
-            continue
         # Use serial_number as unique ID if set.
         if device.serial_number is not None:
             if device.serial_number not in found_device_dict_by_serial:
