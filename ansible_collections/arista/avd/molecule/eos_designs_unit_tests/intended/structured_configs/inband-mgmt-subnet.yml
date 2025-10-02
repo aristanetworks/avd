@@ -39,10 +39,6 @@ ip_name_servers:
   vrf: default
 - ip_address: 8.8.8.8
   vrf: default
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS

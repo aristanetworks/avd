@@ -13,7 +13,6 @@ keys:
       $ref: "eos_designs#/$defs/adapter_config"
       # These keys will take precedence over $ref
       keys:
-        # TODO: AVD 6.0.0 add min_length: 1 for switches
         switches:
           type: list
           description: |
@@ -21,6 +20,7 @@ keys:
             The regular expression must match the full hostname.
           items:
             type: str
+          min_length: 1
         platforms:
           type: list
           min_length: 1

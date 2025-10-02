@@ -34,6 +34,7 @@ router_pim_sparse_mode:
       ipv4:
         bfd: true
         make_before_break: false
+        ssm_range: SSM-MCAST
         rp_addresses:
           - address: 10.238.2.161
             groups:
