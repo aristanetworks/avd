@@ -4,15 +4,15 @@
   ~ that can be found in the LICENSE file.
   -->
 
-## Introduction to Node Types
+## What is a Node Type?
 
 A **Node Type** is a data model template that defines the behavior and configuration of a group of devices with a similar function. Instead of configuring every switch from scratch, you assign a `node_type` to it, and AVD applies a pre-defined set of design rules.
 
-The `eos_designs` role comes with built-in node types like `spine`, `l3leaf`, `l2leaf` and others. While these defaults cover most L3LS EVPN designs, AVD gives you the option to customize them or create your own.
+Think of node types as blueprints for your network. You have a blueprint for your switches (`spine`). Every switch built from the same blueprint will have the same fundamental design, ensuring consistency.
 
 ## Default node types
 
-Based on the Arista AVD `eos_designs` role and its various supported network topologies, here are the default node type keys organized by their primary design.
+Here are the default node type keys organized by their primary design.
 
 ### Data Center/Campus L3LS (Leaf-Spine) Design
 
@@ -23,8 +23,8 @@ These are the most common node types for a standard datacenter fabric.
 | `spine` | Core switch in a leaf-spine fabric, responsible for high-speed interconnects. |
 | `l3spine` | A spine switch with additional L3 P2P links, often used for external connectivity. |
 | `l2spine` | A spine switch used in a collapsed core or smaller fabric design. |
-| `l3leaf` | Access switch providing both L2 and L3 services, acting as the gateway for endpoints. |
-| `l2leaf` | Access switch providing only L2 services, extending VLANs to an L3 leaf for routing. |
+| `l3leaf` | A switch providing both L2 and L3 services, acting as the gateway for endpoints. |
+| `l2leaf` | A switch providing only L2 services, extending VLANs to an L3 leaf for routing. |
 | `overlay_controller` | A control-plane node, often a virtual switch, acting as an EVPN route server or reflector. |
 
 ### WAN (SD-WAN / AutoVPN) Design
@@ -46,50 +46,69 @@ These node types are used for building MPLS core networks.
 | `p` | **Provider**: A core router within the MPLS network, responsible for high-speed label switching. |
 | `rr` | **Route Reflector**: A control-plane node that reflects BGP routes between PE routers. |
 
-## Customize an Existing Node Type
+Note: node_type are not tied to a design you can use any type within your network configuration
 
-All node type customizations are defined under the `node_type_keys` variable. Each key in this list represents a node type you want to define or override.
+## How to Use Node Types
 
-The most common use case is to override the default settings for a standard node type, like `l3leaf`.
+Using node types is a simple process, you assign the type and AVD handles the rest.
 
-Let's say you want to change the default BGP password and enable `bfd` on all your L3 leafs.
+### Step 1: Assign a Node Type
 
-### Step 1: Define the Node Type Key
+The recommended approach is to assign the node type to an entire group of devices in your `group_vars` files. This simplifies scaling and management, especially in large networks.
 
-In your group variables (e.g., `group_vars/FABRIC.yml`), you define the `node_type_keys` and specify which node type you are customizing.
-
-```yaml
-node_type_keys:
-  - key: l3leaf # (1)!
-    type: l3leaf
-```
-
-1. This entry targets all devices where the 'type' is set to 'l3leaf'
-
-### Step 2: Set Default Values for the Node Type
-
-Under the same key, you can now define `defaults`. Any setting here will be applied to all nodes of this type.
+`inventory/inventory.yml`
 
 ```yaml
-node_type_keys:
-  - key: l3leaf
-    type: l3leaf
-    defaults: # (1)!
-      bgp_password: "MySecurePassword" # (2)!
-      bfd: #(3)!
-        multihop:
-          interval: 300
-          min_rx: 300
-          multiplier: 3
-      management_interface: Management1 # (4)!
+all:
+  children:
+    SPINES:
+      hosts:
+        spine-1:
+        spine-2:
+    L3_LEAFS:
+      hosts:
+        leaf-1:
+        leaf-2:
 ```
 
-1. Custom Settings for all l3leaf nodes
-2. Set a default BGP password (using Ansible Vault is recommended)
-3. Enable BFD on P2P uplinks
-4. Set a default management interface
+Now, create a group variables file for each group and define the type there.
 
-Any device in your inventory with `type: l3leaf` will now inherit these settings.
+`group_vars\SPINES.yml`
+
+```yaml
+type: spine
+```
+
+`group_vars\L3_LEAFS.yml`
+
+```yaml
+type: l3leaf
+```
+
+### Step 2: AVD Generates the Configuration
+
+When you run your AVD playbook, AVD reads the `type` for each device and applies the corresponding configuration logic.
+
+- **`spine-1` and `spine-2`** will be configured as high-speed IP cores, with BGP settings suitable for a spine.
+
+- **`leaf-1` and `leaf-2`** will be configured with Layer 2 and Layer 3 features, including SVIs for VLANs, VXLAN for network virtualization, and MLAG for redundancy.
+
+## Assigning Defaults to Node Types
+
+Similarly, you can set default values for your spine switches. For example, you might want to set a default BGP password and adjust the MLAG reload delay for all spines.
+
+**In `group_vars/SPINES.yml`:**
+
+``` yaml
+type: spine
+  defaults:
+    bgp_password: "SpineCorePassword"
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
+```
+
+Now, every device you assign the `spine` type will inherit these specific settings, saving time and preventing misconfigurations.
 
 ## Create a Custom Node Type
 
@@ -129,21 +148,3 @@ type: border_leaf #(1)!
 1. Assign our custom node type
 
 The device `border-leaf-1a` will now be configured using the settings you defined for `border_leaf`, while other devices can continue to use the standard `l3leaf` or `spine` types.
-
-## Per-Node Overrides
-
-Even with defaults set at the node type level, you can still override any setting on a specific device.
-
-For example, if one of your `l3leaf` devices needs a different BGP password, you can set it directly in the host's variables.
-
-`host_vars/special-leaf.yml`
-
-```yaml
-type: l3leaf
-
-bgp_password: "A_Different_Password_For_This_Host_Only"
-```
-
-1. This value will override the default set under node_type_keys
-
-This multi-layered approach---**global defaults -> node type defaults -> per-node specifics**---is what makes AVD so powerful for managing complex network configurations with minimal repetition.
