@@ -24,6 +24,10 @@ overlay_routing_protocol: ebgp
 custom_structured_configuration_management_api_http:
   https_ssl_profile: eAPI_SSL_Profile
 
+management_eapi:
+  enabled: true
+  enable_https: true
+
 aaa_settings:
   local_users:
     - name: ansible

@@ -44,7 +44,7 @@ ip_igmp_snooping:
 management_api_http:
   enable_https: true
   enable_vrfs:
-  - name: MGMT
+  - name: default
 metadata:
   is_deployed: true
   pod_name: L2LS_L2ONLY

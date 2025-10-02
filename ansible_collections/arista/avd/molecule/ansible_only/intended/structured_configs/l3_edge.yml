@@ -49,10 +49,6 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 1.2.3.1/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   fabric_name: ANSIBLE_ONLY
