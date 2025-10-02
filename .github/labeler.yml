@@ -1,3 +1,4 @@
+---
 "role: build_output_folders":
   - changed-files:
       - any-glob-to-any-file:
@@ -62,7 +63,7 @@
 "state: Documentation role Updated":
   - changed-files:
       - any-glob-to-any-file:
-          - "ansible_collections/arista/avd/roles/**/*.md"
+          - 'ansible_collections/arista/avd/roles/**/*.md'
 
 "type: documentation":
   - changed-files:
