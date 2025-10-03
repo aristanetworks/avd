@@ -18235,7 +18235,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "contact": {"type": str},
             "location": {"type": bool, "default": False},
-            "location_template": {"type": str, "default": "{fabric_name} {dc_name} {pod_name} {switch_rack} {inventory_hostname}"},
+            "location_template": {"type": str, "default": "{fabric_name} {dc_name?> }{pod_name?> }{switch_rack?> }{inventory_hostname}"},
             "vrfs": {"type": Vrfs},
             "compute_local_engineid": {"type": bool, "default": False},
             "compute_local_engineid_source": {"type": str, "default": "hostname_and_ip"},
@@ -18270,7 +18270,7 @@ class EosDesigns(EosDesignsRootModel):
           - inventory_hostname: Hostname used in
         inventory.
 
-        Default value: `"{fabric_name} {dc_name} {pod_name} {switch_rack} {inventory_hostname}"`
+        Default value: `"{fabric_name} {dc_name?> }{pod_name?> }{switch_rack?> }{inventory_hostname}"`
         """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""

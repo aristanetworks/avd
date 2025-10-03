@@ -33,7 +33,7 @@ keys:
             - pod_name: The pod or cluster grouping within the data center.
             - switch_rack: Physical rack location of switch.
             - inventory_hostname: Hostname used in inventory.
-        default: "{fabric_name} {dc_name} {pod_name} {switch_rack} {inventory_hostname}"
+        default: "{fabric_name} {dc_name?> }{pod_name?> }{switch_rack?> }{inventory_hostname}"
       vrfs:
         type: list
         primary_key: name

@@ -10,7 +10,7 @@
     | [<samp>snmp_settings</samp>](## "snmp_settings") | Dictionary |  |  |  | SNMP settings.<br>Configuration of remote SNMP engine IDs are currently only possible using `structured_config`. |
     | [<samp>&nbsp;&nbsp;contact</samp>](## "snmp_settings.contact") | String |  |  |  | SNMP contact. |
     | [<samp>&nbsp;&nbsp;location</samp>](## "snmp_settings.location") | Boolean |  | `False` |  | Set SNMP location in order to define location_template. |
-    | [<samp>&nbsp;&nbsp;location_template</samp>](## "snmp_settings.location_template") | String |  | `{fabric_name} {dc_name} {pod_name} {switch_rack} {inventory_hostname}` |  | Customize the location description.<br>Set `location:true` to set `location_template`.<br>The available template fields are:<br>  - fabric_name: The logical name of the fabric.<br>  - dc_name: The name of the data center associated with the fabric.<br>  - pod_name: The pod or cluster grouping within the data center.<br>  - switch_rack: Physical rack location of switch.<br>  - inventory_hostname: Hostname used in inventory. |
+    | [<samp>&nbsp;&nbsp;location_template</samp>](## "snmp_settings.location_template") | String |  | `{fabric_name} {dc_name?> }{pod_name?> }{switch_rack?> }{inventory_hostname}` |  | Customize the location description.<br>Set `location:true` to set `location_template`.<br>The available template fields are:<br>  - fabric_name: The logical name of the fabric.<br>  - dc_name: The name of the data center associated with the fabric.<br>  - pod_name: The pod or cluster grouping within the data center.<br>  - switch_rack: Physical rack location of switch.<br>  - inventory_hostname: Hostname used in inventory. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "snmp_settings.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.vrfs.[].name") | String | Required, Unique |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the SNMP ACL under the VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "snmp_settings.vrfs.[].enable") | Boolean |  |  |  | Enable/disable SNMP for this VRF. |
@@ -88,7 +88,7 @@
       #   - pod_name: The pod or cluster grouping within the data center.
       #   - switch_rack: Physical rack location of switch.
       #   - inventory_hostname: Hostname used in inventory.
-      location_template: <str; default="{fabric_name} {dc_name} {pod_name} {switch_rack} {inventory_hostname}">
+      location_template: <str; default="{fabric_name} {dc_name?> }{pod_name?> }{switch_rack?> }{inventory_hostname}">
       vrfs:
 
           # VRF name.
