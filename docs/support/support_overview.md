@@ -22,7 +22,6 @@ Arista AVD is a network automation framework covering multiple network design do
 ### AVD Ansible Collections
 
 - arista.avd
-- arista.cvp (before AVD 6.0.0)
 
 !!! note
     Red Hat supports “ansible-core” and Ansible Automation Platform. For non-AVD Ansible issues, please contact Red Hat Ansible TAC.
