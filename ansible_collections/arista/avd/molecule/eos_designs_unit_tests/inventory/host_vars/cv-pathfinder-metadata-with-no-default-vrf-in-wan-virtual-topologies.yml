@@ -11,6 +11,8 @@ bgp_peer_groups:
     listen_range_prefixes:
       - 192.168.255.0/24
 
+wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: true
+
 wan_route_servers:
   - hostname: cv-pathfinder-metadata-with-no-default-vrf-in-wan-virtual-topologies
     vtep_ip: 2.2.2.2

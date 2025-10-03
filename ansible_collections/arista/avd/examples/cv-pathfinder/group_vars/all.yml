@@ -17,7 +17,7 @@ management_eapi:
   enabled: true
 # Disabling for virtual devices
 bgp_update_wait_install: false
-
+wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: true
 # define default node types based on hostnames
 default_node_types:
   - node_type: wan_rr
