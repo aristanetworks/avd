@@ -15,9 +15,6 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
     """
     Protocol for the AvdIpAddressing Class which is used to render IP addresses either from custom Jinja2 templates or using default Python Logic.
 
-    Since some templates might contain certain legacy variables (switch_*),
-    those are mapped from the switch.* model
-
     This class is imported adhoc based on the variable `templates.ip_addressing.python_module` so it can
     be overridden by a custom python class.
     """
@@ -479,9 +476,6 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 class AvdIpAddressing(AvdFacts, AvdIpAddressingProtocol):
     """
     Class used to render IP addresses either from custom Jinja2 templates or using default Python Logic.
-
-    Since some templates might contain certain legacy variables (switch_*),
-    those are mapped from the switch.* model
 
     This class is imported adhoc based on the variable `templates.ip_addressing.python_module` so it can
     be overridden by a custom python class.
