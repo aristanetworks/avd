@@ -6,3 +6,6 @@ mgmt_gateway: 172.16.100.1
 
 #### Override for vEOS/cEOS Lab Caveats ####
 p2p_uplinks_mtu: 1500
+
+management_eapi:
+  enabled: true

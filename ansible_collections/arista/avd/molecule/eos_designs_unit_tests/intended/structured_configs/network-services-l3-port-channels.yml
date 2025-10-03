@@ -130,10 +130,6 @@ loopback_interfaces:
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.109/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -255,6 +251,11 @@ port_channel_interfaces:
   ip_address: 1.1.1.12/29
   ospf_network_point_to_point: false
   ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: uVG6QXeIXN+QGY2DP4UCtA==
   peer: inet-cloud-po1112
   peer_interface: Po1112
   peer_type: l3_port_channel
