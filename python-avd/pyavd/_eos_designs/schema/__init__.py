@@ -675,6 +675,8 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    BgpAsNotation: TypeAlias = Literal["auto", "asdot", "asplain"]
+
     class BgpGracefulRestart(AvdModel):
         """Subclass of AvdModel."""
 
@@ -74177,7 +74179,7 @@ class EosDesigns(EosDesignsRootModel):
     For asdot notation in YAML inputs, the value must
     be put in quotes, to prevent it from being interpreted as a float number.
     """
-    bgp_as_notation: Literal["auto", "asdot", "asplain"]
+    bgp_as_notation: BgpAsNotation
     """
     AS number representation.
     asdot - AS number representation in asdot format (Ex. 123.12).
@@ -76044,7 +76046,7 @@ class EosDesigns(EosDesignsRootModel):
             avd_eos_designs_unset_facts: bool | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
-            bgp_as_notation: Literal["auto", "asdot", "asplain"] | UndefinedType = Undefined,
+            bgp_as_notation: BgpAsNotation | UndefinedType = Undefined,
             bgp_default_ipv4_unicast: bool | UndefinedType = Undefined,
             bgp_distance: EosCliConfigGen.RouterBgp.Distance | UndefinedType = Undefined,
             bgp_ecmp: int | None | UndefinedType = Undefined,
