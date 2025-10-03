@@ -55,11 +55,10 @@ jobs:
       pyavd: ${{ steps.filter.outputs.pyavd }}
       cloudvision: ${{ steps.filter.outputs.cloudvision }}
       dhcp: ${{ steps.filter.outputs.dhcp }}
-      plugins: ${{ steps.filter.outputs.plugins }}
       requirements: ${{ steps.filter.outputs.requirements }}
-      docs: ${{ steps.filter.outputs.docs }}
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
       rust_src_or_ci_changed: ${{ steps.filter.outputs.rust_src_or_ci_changed }}
+      validate_state: ${{ steps.filter.outputs.validate_state }}
     steps:
       - uses: actions/checkout@v5
       - uses: dorny/paths-filter@v3
@@ -99,23 +98,12 @@ jobs:
               - 'ansible_collections/arista/avd/roles/dhcp_provisioner/*'
               - 'ansible_collections/arista/avd/roles/dhcp_provisioner/**/*'
               - '.github/workflows/pull-request-management.yml'
-            plugins:
-              - 'ansible_collections/arista/avd/plugins/filter/**'
-              - 'ansible_collections/arista/avd/plugins/test/**'
             requirements:
               - 'ansible_collections/arista/avd/requirements.txt'
               - 'ansible_collections/arista/avd/requirements-dev.txt'
               - 'ansible_collections/arista/avd/meta/runtime.yml'
               - '.github/requirements-ci-dev.txt'
               - '.github/workflows/pull-request-management.yml'
-            docs:
-              - '.github/workflows/pull-request-management.yml'
-              - 'mkdocs.yml'
-              - 'ansible_collections/arista/avd/docs/**'
-              - 'ansible_collections/arista/avd/roles/**/*.md'
-              - 'ansible_collections/arista/avd/**/*.md'
-              - 'ansible_collections/arista/avd/README.md'
-              - 'ansible_collections/arista/avd/**/*.schema.yml'
             pyavd:
               - 'python-avd/*'
               - 'python-avd/**/*'
@@ -210,6 +198,7 @@ jobs:
     name: Validate eos_cli_config_gen
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
+    if: needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     strategy:
       fail-fast: true
       matrix:
@@ -223,7 +212,6 @@ jobs:
         include:
           - avd_scenario: "eos_cli_config_gen"
             ansible_version: "ansible-core==2.16.0"
-    if: needs.file-changes.outputs.config_gen == 'true'
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
@@ -287,6 +275,8 @@ jobs:
   molecule_eos_designs:
     name: Validate eos_designs
     runs-on: ubuntu-latest
+    needs: [build_pyavd, file-changes]
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     strategy:
       fail-fast: true
       matrix:
@@ -318,8 +308,6 @@ jobs:
             ansible_version: "ansible-core<2.18.0"
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.19.0"
-    needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
@@ -342,7 +330,7 @@ jobs:
     name: Validate eos_designs with minimum requirements
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
@@ -419,6 +407,8 @@ jobs:
   molecule_anta_runner:
     name: Validate anta_runner
     runs-on: ubuntu-latest
+    needs: [build_pyavd, file-changes]
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.anta_runner == 'true' || needs.file-changes.outputs.requirements == 'true'
     strategy:
       fail-fast: true
       matrix:
@@ -429,8 +419,6 @@ jobs:
         include:
           - avd_scenario: "anta_runner"
             ansible_version: "ansible-core==2.16.0"
-    needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.anta_runner == 'true'
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
@@ -693,7 +681,8 @@ jobs:
     if: |
       needs.file-changes.outputs.eos_design == 'true' ||
       needs.file-changes.outputs.config_gen == 'true' ||
-      needs.file-changes.outputs.pyavd == 'true'
+      needs.file-changes.outputs.pyavd == 'true' ||
+      needs.file-changes.outputs.requirements == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -803,13 +792,11 @@ jobs:
         # https://github.com/actions/runner-images/issues/13046
         # the next update will be macos-15-intel
         os:
-          [
-            ubuntu-latest,
-            ubuntu-24.04-arm,
-            windows-latest,
-            macos-14,
-            macos-latest,
-          ]
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - windows-latest
+          - macos-14
+          - macos-latest
     steps:
       - uses: actions/checkout@v5
         # This is needed for arm machines since they don't ship with 2024 edition.
@@ -864,13 +851,11 @@ jobs:
         # https://github.com/actions/runner-images/issues/13046
         # the next update will be macos-15-intel
         os:
-          [
-            ubuntu-latest,
-            ubuntu-24.04-arm,
-            windows-latest,
-            macos-14,
-            macos-latest,
-          ]
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - windows-latest
+          - macos-14
+          - macos-latest
         python: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v5
