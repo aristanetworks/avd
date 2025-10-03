@@ -76605,7 +76605,7 @@ class EosDesigns(EosDesignsRootModel):
     `source_peer_asn` method uses the outbound `route-map` towards EVPN route-server to
     filter out BGP routes with the source peer's ASN matching ASN of the route-server.
     `as_path_acl`
-    method uses the outbound `route-map` towards EVPN route-servers to filter out BGP routes containing
+    method uses the outbound `route-map` towards EVPN route-server to filter out BGP routes containing
     the route-server's ASN in the `AS PATH` attribute.
 
     Default value: `"source_peer_asn"`
@@ -78605,7 +78605,7 @@ class EosDesigns(EosDesignsRootModel):
                    `source_peer_asn` method uses the outbound `route-map` towards EVPN route-server to
                    filter out BGP routes with the source peer's ASN matching ASN of the route-server.
                    `as_path_acl`
-                   method uses the outbound `route-map` towards EVPN route-servers to filter out BGP routes containing
+                   method uses the outbound `route-map` towards EVPN route-server to filter out BGP routes containing
                    the route-server's ASN in the `AS PATH` attribute.
                 evpn_short_esi_prefix: Configure prefix for "short_esi" values.
                 evpn_vlan_aware_bundles:

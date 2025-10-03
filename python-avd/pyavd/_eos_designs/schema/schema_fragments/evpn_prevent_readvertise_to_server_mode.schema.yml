@@ -13,7 +13,7 @@ keys:
       `evpn_prevent_readvertise_to_server_mode` controls the method of identifying EVPN routes that should not be advertised to the EVPN route-servers.
       Only used when `evpn_prevent_readvertise_to_server` is set to `true`.
       `source_peer_asn` method uses the outbound `route-map` towards EVPN route-server to filter out BGP routes with the source peer's ASN matching ASN of the route-server.
-      `as_path_acl` method uses the outbound `route-map` towards EVPN route-servers to filter out BGP routes containing the route-server's ASN in the `AS PATH` attribute.
+      `as_path_acl` method uses the outbound `route-map` towards EVPN route-server to filter out BGP routes containing the route-server's ASN in the `AS PATH` attribute.
     type: str
     valid_values:
       - source_peer_asn

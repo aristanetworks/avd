@@ -2122,7 +2122,7 @@ keys:
       `source_peer_asn` method uses the outbound `route-map` towards EVPN route-server
       to filter out BGP routes with the source peer''s ASN matching ASN of the route-server.
 
-      `as_path_acl` method uses the outbound `route-map` towards EVPN route-servers
+      `as_path_acl` method uses the outbound `route-map` towards EVPN route-server
       to filter out BGP routes containing the route-server''s ASN in the `AS PATH`
       attribute.
 
