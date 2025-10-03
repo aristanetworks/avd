@@ -24,10 +24,6 @@ ip_name_servers:
   vrf: other_vrf
 - ip_address: 10.10.10.3
   vrf: INBAND_MGMT
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
