@@ -5182,7 +5182,7 @@ keys:
       location:
         type: bool
         default: false
-        description: Set SNMP location in order to define location_template.
+        description: Enables SNMP location using `location_template` value.
       location_template:
         type: str
         description: "Customize the location description.\nSet `location:true` to

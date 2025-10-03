@@ -17541,7 +17541,7 @@ class EosDesigns(EosDesignsRootModel):
         """SNMP contact."""
         location: bool
         """
-        Set SNMP location in order to define location_template.
+        Enables SNMP location using `location_template` value.
 
         Default value: `False`
         """
@@ -17640,7 +17640,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     contact: SNMP contact.
-                    location: Set SNMP location in order to define location_template.
+                    location: Enables SNMP location using `location_template` value.
                     location_template:
                        Customize the location description.
                        Set `location:true` to set `location_template`.

@@ -21,7 +21,7 @@ keys:
         type: bool
         default: false
         description: |-
-          Set SNMP location in order to define location_template.
+          Enables SNMP location using `location_template` value.
       location_template:
         type: str
         description: |-
