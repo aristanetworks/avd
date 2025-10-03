@@ -23,8 +23,6 @@ Current molecule implementation provides the following scenarios:
 - eos_cli_config_gen
 - eos_cli_config_gen_deprecated_vars
 - eos_cli_config_gen_negative_unit_tests
-- eos_config_deploy_cvp
-- eos_config_deploy_cvp_to_cvaas
 - eos_designs_deprecated_vars
 - eos_designs-l2ls
 - eos_designs-mpls-isis-sr-ldp

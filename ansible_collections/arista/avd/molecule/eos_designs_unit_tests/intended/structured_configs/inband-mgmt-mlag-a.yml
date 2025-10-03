@@ -179,10 +179,6 @@ ip_name_servers:
   vrf: default
 - ip_address: 8.8.8.8
   vrf: default
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -200,9 +196,8 @@ ntp:
   servers:
   - name: 2.2.2.55
     preferred: true
-    vrf: default
   - name: pool.ntp.org
-    vrf: default
+  vrf: default
 port_channel_interfaces:
 - name: Port-Channel11
   description: MLAG_inband-mgmt-mlag-b_Port-Channel11

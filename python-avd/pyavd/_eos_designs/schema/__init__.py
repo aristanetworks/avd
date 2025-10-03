@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Literal
+from typing import TYPE_CHECKING, ClassVar, Literal, TypeAlias
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._schema.coerce_type import coerce_type
@@ -646,6 +646,8 @@ class EosDesigns(EosDesignsRootModel):
                     locked_address: Subclass of AvdModel.
 
                 """
+
+    AvdDataValidationMode: TypeAlias = Literal["error", "warning"]
 
     class BfdMultihop(AvdModel):
         """Subclass of AvdModel."""
@@ -1775,6 +1777,91 @@ class EosDesigns(EosDesignsRootModel):
         class P2pLinksProfilesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Speed: TypeAlias = Literal[
+                "100full",
+                "100g",
+                "100g-1",
+                "100g-2",
+                "100g-4",
+                "100half",
+                "10full",
+                "10g",
+                "10half",
+                "1g",
+                "200g",
+                "200g-2",
+                "200g-4",
+                "25g",
+                "400g",
+                "400g-4",
+                "400g-8",
+                "40g",
+                "50g",
+                "50g-1",
+                "50g-2",
+                "800g-8",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
+                "auto",
+                "auto 10000full",
+                "auto 1000full",
+                "auto 100full",
+                "auto 100g-1",
+                "auto 100g-2",
+                "auto 100g-4",
+                "auto 100gfull",
+                "auto 100half",
+                "auto 10full",
+                "auto 10gfull",
+                "auto 10half",
+                "auto 1gfull",
+                "auto 2.5gfull",
+                "auto 200g-2",
+                "auto 200g-4",
+                "auto 25gfull",
+                "auto 400g-4",
+                "auto 400g-8",
+                "auto 40gfull",
+                "auto 50g-1",
+                "auto 50g-2",
+                "auto 50gfull",
+                "auto 5gfull",
+                "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
+                "forced 10000full",
+                "forced 1000full",
+                "forced 1000half",
+                "forced 100full",
+                "forced 100gfull",
+                "forced 100half",
+                "forced 10full",
+                "forced 10half",
+                "forced 25gfull",
+                "forced 40gfull",
+                "forced 50gfull",
+            ]
+
             class Ip(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -1799,6 +1886,10 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdList with `str` items."""
 
             Descriptions._item_type = str
+
+            IsisCircuitType: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
+            IsisAuthenticationMode: TypeAlias = Literal["md5", "text"]
+            IsisNetworkType: TypeAlias = Literal["point-to-point", "broadcast"]
 
             class Ptp(AvdModel):
                 """Subclass of AvdModel."""
@@ -1888,6 +1979,9 @@ class EosDesigns(EosDesignsRootModel):
             class PortChannel(AvdModel):
                 """Subclass of AvdModel."""
 
+                Mode: TypeAlias = Literal["on", "active", "passive"]
+                ChannelIdAlgorithm: TypeAlias = Literal["first_port", "p2p_link_id"]
+
                 class NodesChildInterfacesItem(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -1976,9 +2070,9 @@ class EosDesigns(EosDesignsRootModel):
                 By default the description is templated from the
                 name and port_channel interface of the peer.
                 """
-                mode: Literal["on", "active", "passive"]
+                mode: Mode
                 """Default value: `"active"`"""
-                channel_id_algorithm: Literal["first_port", "p2p_link_id"]
+                channel_id_algorithm: ChannelIdAlgorithm
                 """
                 Configures how to derive the Port-Channel ID when not set.
                 By default the ID is derived from the
@@ -2002,8 +2096,8 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         description: str | None | UndefinedType = Undefined,
-                        mode: Literal["on", "active", "passive"] | UndefinedType = Undefined,
-                        channel_id_algorithm: Literal["first_port", "p2p_link_id"] | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType = Undefined,
+                        channel_id_algorithm: ChannelIdAlgorithm | UndefinedType = Undefined,
                         channel_id_offset: int | None | UndefinedType = Undefined,
                         nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                     ) -> None:
@@ -2054,6 +2148,7 @@ class EosDesigns(EosDesignsRootModel):
 
             CampusLinkType._item_type = str
 
+            RoutingProtocol: TypeAlias = Literal["ebgp"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "id": {"type": int},
@@ -2103,11 +2198,8 @@ class EosDesigns(EosDesignsRootModel):
             Required with ip_pool. ID starting
             from 1.
             """
-            speed: str | None
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-            <interface_speed>`.
-            """
+            speed: Speed | None
+            """Interface Speed."""
             ip_pool: str | None
             """
             P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
@@ -2164,8 +2256,8 @@ class EosDesigns(EosDesignsRootModel):
             isis_hello_padding: bool
             """Default value: `True`"""
             isis_metric: int | None
-            isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None
-            isis_authentication_mode: Literal["md5", "text"] | None
+            isis_circuit_type: IsisCircuitType | None
+            isis_authentication_mode: IsisAuthenticationMode | None
             isis_authentication_key: str | None
             """
             Type-7 encrypted password.
@@ -2182,7 +2274,7 @@ class EosDesigns(EosDesignsRootModel):
             To protect the
             password at rest it is strongly recommended to make use of a vault or similar.
             """
-            isis_network_type: Literal["point-to-point", "broadcast"]
+            isis_network_type: IsisNetworkType
             """Default value: `"point-to-point"`"""
             mpls_ip: bool | None
             """MPLS parameters. Default value is true if switch.mpls_lsr is true."""
@@ -2256,7 +2348,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
-            routing_protocol: Literal["ebgp"] | None
+            routing_protocol: RoutingProtocol | None
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
@@ -2281,7 +2373,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     id: int | None | UndefinedType = Undefined,
-                    speed: str | None | UndefinedType = Undefined,
+                    speed: Speed | None | UndefinedType = Undefined,
                     ip_pool: str | None | UndefinedType = Undefined,
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
@@ -2293,11 +2385,11 @@ class EosDesigns(EosDesignsRootModel):
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
-                    isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
-                    isis_authentication_mode: Literal["md5", "text"] | None | UndefinedType = Undefined,
+                    isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
+                    isis_authentication_mode: IsisAuthenticationMode | None | UndefinedType = Undefined,
                     isis_authentication_key: str | None | UndefinedType = Undefined,
                     isis_authentication_cleartext_key: str | None | UndefinedType = Undefined,
-                    isis_network_type: Literal["point-to-point", "broadcast"] | UndefinedType = Undefined,
+                    isis_network_type: IsisNetworkType | UndefinedType = Undefined,
                     mpls_ip: bool | None | UndefinedType = Undefined,
                     mpls_ldp: bool | None | UndefinedType = Undefined,
                     mtu: int | None | UndefinedType = Undefined,
@@ -2312,7 +2404,7 @@ class EosDesigns(EosDesignsRootModel):
                     port_channel: PortChannel | UndefinedType = Undefined,
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
-                    routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
+                    routing_protocol: RoutingProtocol | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
@@ -2329,9 +2421,7 @@ class EosDesigns(EosDesignsRootModel):
                            Unique id per subnet_summary. Used to calculate ip addresses.
                            Required with ip_pool. ID starting
                            from 1.
-                        speed:
-                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                           <interface_speed>`.
+                        speed: Interface Speed.
                         ip_pool:
                            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
                            link.
@@ -2461,6 +2551,91 @@ class EosDesigns(EosDesignsRootModel):
 
             Nodes._item_type = str
 
+            Speed: TypeAlias = Literal[
+                "100full",
+                "100g",
+                "100g-1",
+                "100g-2",
+                "100g-4",
+                "100half",
+                "10full",
+                "10g",
+                "10half",
+                "1g",
+                "200g",
+                "200g-2",
+                "200g-4",
+                "25g",
+                "400g",
+                "400g-4",
+                "400g-8",
+                "40g",
+                "50g",
+                "50g-1",
+                "50g-2",
+                "800g-8",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
+                "auto",
+                "auto 10000full",
+                "auto 1000full",
+                "auto 100full",
+                "auto 100g-1",
+                "auto 100g-2",
+                "auto 100g-4",
+                "auto 100gfull",
+                "auto 100half",
+                "auto 10full",
+                "auto 10gfull",
+                "auto 10half",
+                "auto 1gfull",
+                "auto 2.5gfull",
+                "auto 200g-2",
+                "auto 200g-4",
+                "auto 25gfull",
+                "auto 400g-4",
+                "auto 400g-8",
+                "auto 40gfull",
+                "auto 50g-1",
+                "auto 50g-2",
+                "auto 50gfull",
+                "auto 5gfull",
+                "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
+                "forced 10000full",
+                "forced 1000full",
+                "forced 1000half",
+                "forced 100full",
+                "forced 100gfull",
+                "forced 100half",
+                "forced 10full",
+                "forced 10half",
+                "forced 25gfull",
+                "forced 40gfull",
+                "forced 50gfull",
+            ]
+
             class Ip(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -2480,6 +2655,10 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdList with `str` items."""
 
             Descriptions._item_type = str
+
+            IsisCircuitType: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
+            IsisAuthenticationMode: TypeAlias = Literal["md5", "text"]
+            IsisNetworkType: TypeAlias = Literal["point-to-point", "broadcast"]
 
             class Ptp(AvdModel):
                 """Subclass of AvdModel."""
@@ -2569,6 +2748,9 @@ class EosDesigns(EosDesignsRootModel):
             class PortChannel(AvdModel):
                 """Subclass of AvdModel."""
 
+                Mode: TypeAlias = Literal["on", "active", "passive"]
+                ChannelIdAlgorithm: TypeAlias = Literal["first_port", "p2p_link_id"]
+
                 class NodesChildInterfacesItem(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -2657,9 +2839,9 @@ class EosDesigns(EosDesignsRootModel):
                 By default the description is templated from the
                 name and port_channel interface of the peer.
                 """
-                mode: Literal["on", "active", "passive"]
+                mode: Mode
                 """Default value: `"active"`"""
-                channel_id_algorithm: Literal["first_port", "p2p_link_id"]
+                channel_id_algorithm: ChannelIdAlgorithm
                 """
                 Configures how to derive the Port-Channel ID when not set.
                 By default the ID is derived from the
@@ -2683,8 +2865,8 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         description: str | None | UndefinedType = Undefined,
-                        mode: Literal["on", "active", "passive"] | UndefinedType = Undefined,
-                        channel_id_algorithm: Literal["first_port", "p2p_link_id"] | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType = Undefined,
+                        channel_id_algorithm: ChannelIdAlgorithm | UndefinedType = Undefined,
                         channel_id_offset: int | None | UndefinedType = Undefined,
                         nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                     ) -> None:
@@ -2735,6 +2917,7 @@ class EosDesigns(EosDesignsRootModel):
 
             CampusLinkType._item_type = str
 
+            RoutingProtocol: TypeAlias = Literal["ebgp"]
             _fields: ClassVar[dict] = {
                 "nodes": {"type": Nodes},
                 "profile": {"type": str},
@@ -2790,11 +2973,8 @@ class EosDesigns(EosDesignsRootModel):
             Required with ip_pool. ID starting
             from 1.
             """
-            speed: str | None
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-            <interface_speed>`.
-            """
+            speed: Speed | None
+            """Interface Speed."""
             ip_pool: str | None
             """
             P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
@@ -2845,8 +3025,8 @@ class EosDesigns(EosDesignsRootModel):
             isis_hello_padding: bool
             """Default value: `True`"""
             isis_metric: int | None
-            isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None
-            isis_authentication_mode: Literal["md5", "text"] | None
+            isis_circuit_type: IsisCircuitType | None
+            isis_authentication_mode: IsisAuthenticationMode | None
             isis_authentication_key: str | None
             """
             Type-7 encrypted password.
@@ -2863,7 +3043,7 @@ class EosDesigns(EosDesignsRootModel):
             To protect the
             password at rest it is strongly recommended to make use of a vault or similar.
             """
-            isis_network_type: Literal["point-to-point", "broadcast"]
+            isis_network_type: IsisNetworkType
             """Default value: `"point-to-point"`"""
             mpls_ip: bool | None
             """MPLS parameters. Default value is true if switch.mpls_lsr is true."""
@@ -2937,7 +3117,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
-            routing_protocol: Literal["ebgp"] | None
+            routing_protocol: RoutingProtocol | None
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
@@ -2963,7 +3143,7 @@ class EosDesigns(EosDesignsRootModel):
                     nodes: Nodes | UndefinedType = Undefined,
                     profile: str | None | UndefinedType = Undefined,
                     id: int | None | UndefinedType = Undefined,
-                    speed: str | None | UndefinedType = Undefined,
+                    speed: Speed | None | UndefinedType = Undefined,
                     ip_pool: str | None | UndefinedType = Undefined,
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
@@ -2974,11 +3154,11 @@ class EosDesigns(EosDesignsRootModel):
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
-                    isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
-                    isis_authentication_mode: Literal["md5", "text"] | None | UndefinedType = Undefined,
+                    isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
+                    isis_authentication_mode: IsisAuthenticationMode | None | UndefinedType = Undefined,
                     isis_authentication_key: str | None | UndefinedType = Undefined,
                     isis_authentication_cleartext_key: str | None | UndefinedType = Undefined,
-                    isis_network_type: Literal["point-to-point", "broadcast"] | UndefinedType = Undefined,
+                    isis_network_type: IsisNetworkType | UndefinedType = Undefined,
                     mpls_ip: bool | None | UndefinedType = Undefined,
                     mpls_ldp: bool | None | UndefinedType = Undefined,
                     mtu: int | None | UndefinedType = Undefined,
@@ -2993,7 +3173,7 @@ class EosDesigns(EosDesignsRootModel):
                     port_channel: PortChannel | UndefinedType = Undefined,
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
-                    routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
+                    routing_protocol: RoutingProtocol | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
@@ -3014,9 +3194,7 @@ class EosDesigns(EosDesignsRootModel):
                            Unique id per subnet_summary. Used to calculate ip addresses.
                            Required with ip_pool. ID starting
                            from 1.
-                        speed:
-                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                           <interface_speed>`.
+                        speed: Interface Speed.
                         ip_pool:
                            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
                            link.
@@ -3166,6 +3344,8 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    CustomStructuredConfigurationListMerge: TypeAlias = Literal["replace", "append", "keep", "prepend", "append_rp", "prepend_rp"]
+
     class CustomStructuredConfigurationPrefix(AvdList[str]):
         """Subclass of AvdList with `str` items."""
 
@@ -3212,6 +3392,8 @@ class EosDesigns(EosDesignsRootModel):
 
     class CvPathfinderInternetExitPoliciesItem(AvdModel):
         """Subclass of AvdModel."""
+
+        Type: TypeAlias = Literal["direct", "zscaler"]
 
         class Zscaler(AvdModel):
             """Subclass of AvdModel."""
@@ -3336,7 +3518,7 @@ class EosDesigns(EosDesignsRootModel):
         }
         name: str
         """Internet-exit policy name."""
-        type: Literal["direct", "zscaler"]
+        type: Type
         """
         Internet-exit policy type.
         direct: Exit directly over wan interfaces
@@ -3362,7 +3544,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                type: Literal["direct", "zscaler"] | UndefinedType = Undefined,
+                type: Type | UndefinedType = Undefined,
                 fallback_to_system_default: bool | UndefinedType = Undefined,
                 zscaler: Zscaler | UndefinedType = Undefined,
             ) -> None:
@@ -3520,16 +3702,7 @@ class EosDesigns(EosDesignsRootModel):
             class ClustersItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {
-                    "name": {"type": str},
-                    "region": {"type": str, "default": "auto"},
-                    "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
-                    "token_file": {"type": str, "default": "/tmp/cv-onboarding-token"},
-                    "source_interface": {"type": str},
-                }
-                name: str
-                """Short name for the CVaaS cluster. Required here, but only used when configuring multiple clusters."""
-                region: Literal[
+                Region: TypeAlias = Literal[
                     "auto",
                     "us-central1-a",
                     "us-central1-b",
@@ -3544,6 +3717,16 @@ class EosDesigns(EosDesignsRootModel):
                     "dev",
                     "play",
                 ]
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "region": {"type": str, "default": "auto"},
+                    "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
+                    "token_file": {"type": str, "default": "/tmp/cv-onboarding-token"},
+                    "source_interface": {"type": str},
+                }
+                name: str
+                """Short name for the CVaaS cluster. Required here, but only used when configuring multiple clusters."""
+                region: Region
                 """
                 Optionally set the region to stream to.
                 The "auto" region will use 'apiserver.arista.io:443' which
@@ -3595,22 +3778,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        region: Literal[
-                            "auto",
-                            "us-central1-a",
-                            "us-central1-b",
-                            "us-central1-c",
-                            "apnortheast-1",
-                            "euwest-2",
-                            "ausoutheast-1",
-                            "na-northeast1-b",
-                            "uk-1",
-                            "india-1",
-                            "staging",
-                            "dev",
-                            "play",
-                        ]
-                        | UndefinedType = Undefined,
+                        region: Region | UndefinedType = Undefined,
                         vrf: str | UndefinedType = Undefined,
                         token_file: str | UndefinedType = Undefined,
                         source_interface: str | None | UndefinedType = Undefined,
@@ -4050,11 +4218,6 @@ class EosDesigns(EosDesignsRootModel):
 
     CvTopology._item_type = CvTopologyItem
 
-    class CvpInstanceIps(AvdList[str]):
-        """Subclass of AvdList with `str` items."""
-
-    CvpInstanceIps._item_type = str
-
     class DefaultInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -4078,11 +4241,180 @@ class EosDesigns(EosDesignsRootModel):
 
         MlagInterfaces._item_type = str
 
+        MlagInterfacesSpeed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
+
         class DownlinkInterfaces(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
         DownlinkInterfaces._item_type = str
 
+        UplinkInterfaceSpeed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
         _fields: ClassVar[dict] = {
             "types": {"type": Types},
             "platforms": {"type": Platforms},
@@ -4119,19 +4451,15 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdList with `str` items.
         """
-        mlag_interfaces_speed: str | None
-        """
-        Set MLAG interfaces speed.
-        Speed should be set in the format `<interface_speed>` or `forced
-        <interface_speed>` or `auto <interface_speed>`.
-        """
+        mlag_interfaces_speed: MlagInterfacesSpeed | None
+        """Set MLAG interfaces speed."""
         downlink_interfaces: DownlinkInterfaces
         """
         List of downlink interfaces or downlink interface ranges.
 
         Subclass of AvdList with `str` items.
         """
-        uplink_interface_speed: str | None
+        uplink_interface_speed: UplinkInterfaceSpeed | None
         """Set point-to-Point uplink interface speed."""
 
         if TYPE_CHECKING:
@@ -4143,9 +4471,9 @@ class EosDesigns(EosDesignsRootModel):
                 platforms: Platforms | UndefinedType = Undefined,
                 uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                 mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                mlag_interfaces_speed: MlagInterfacesSpeed | None | UndefinedType = Undefined,
                 downlink_interfaces: DownlinkInterfaces | UndefinedType = Undefined,
-                uplink_interface_speed: str | None | UndefinedType = Undefined,
+                uplink_interface_speed: UplinkInterfaceSpeed | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 DefaultInterfacesItem.
@@ -4173,10 +4501,7 @@ class EosDesigns(EosDesignsRootModel):
                        List of MLAG interfaces or MLAG interface ranges.
 
                        Subclass of AvdList with `str` items.
-                    mlag_interfaces_speed:
-                       Set MLAG interfaces speed.
-                       Speed should be set in the format `<interface_speed>` or `forced
-                       <interface_speed>` or `auto <interface_speed>`.
+                    mlag_interfaces_speed: Set MLAG interfaces speed.
                     downlink_interfaces:
                        List of downlink interfaces or downlink interface ranges.
 
@@ -4189,6 +4514,8 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdList with `DefaultInterfacesItem` items."""
 
     DefaultInterfaces._item_type = DefaultInterfacesItem
+
+    DefaultMgmtMethod: TypeAlias = Literal["oob", "inband", "none"]
 
     class DefaultNodeTypesItem(AvdModel):
         """Subclass of AvdModel."""
@@ -4235,6 +4562,8 @@ class EosDesigns(EosDesignsRootModel):
 
     class DigitalTwin(AvdModel):
         """Subclass of AvdModel."""
+
+        Environment: TypeAlias = Literal["act"]
 
         class Fabric(AvdModel):
             """Subclass of AvdModel."""
@@ -4330,7 +4659,7 @@ class EosDesigns(EosDesignsRootModel):
             "fabric": {"type": Fabric},
             "use_default_interfaces_of_digital_twin_platform": {"type": bool, "default": False},
         }
-        environment: Literal["act"]
+        environment: Environment
         """
         Targeted Digital Twin environment.
 
@@ -4355,7 +4684,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
-                environment: Literal["act"] | UndefinedType = Undefined,
+                environment: Environment | UndefinedType = Undefined,
                 fabric: Fabric | UndefinedType = Undefined,
                 use_default_interfaces_of_digital_twin_platform: bool | UndefinedType = Undefined,
             ) -> None:
@@ -4874,6 +5203,8 @@ class EosDesigns(EosDesignsRootModel):
 
     EvpnVlanBundles._item_type = EvpnVlanBundlesItem
 
+    FabricEvpnEncapsulation: TypeAlias = Literal["vxlan", "mpls"]
+
     class FabricFlowTracking(AvdModel):
         """Subclass of AvdModel."""
 
@@ -5300,8 +5631,9 @@ class EosDesigns(EosDesignsRootModel):
         class Loopback(AvdModel):
             """Subclass of AvdModel."""
 
+            Ipv6PrefixLength: TypeAlias = Literal[64, 128]
             _fields: ClassVar[dict] = {"ipv6_prefix_length": {"type": int, "default": 128}}
-            ipv6_prefix_length: Literal[64, 128]
+            ipv6_prefix_length: Ipv6PrefixLength
             """
             IPv6 prefix length used for Router ID, VTEP and diagnostic loopbacks.
 
@@ -5310,7 +5642,7 @@ class EosDesigns(EosDesignsRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, ipv6_prefix_length: Literal[64, 128] | UndefinedType = Undefined) -> None:
+                def __init__(self, *, ipv6_prefix_length: Ipv6PrefixLength | UndefinedType = Undefined) -> None:
                     """
                     Loopback.
 
@@ -5325,12 +5657,13 @@ class EosDesigns(EosDesignsRootModel):
         class Mlag(AvdModel):
             """Subclass of AvdModel."""
 
+            Algorithm: TypeAlias = Literal["first_id", "odd_id", "same_subnet"]
             _fields: ClassVar[dict] = {
                 "algorithm": {"type": str, "default": "first_id"},
                 "ipv4_prefix_length": {"type": int, "default": 31},
                 "ipv6_prefix_length": {"type": int, "default": 64},
             }
-            algorithm: Literal["first_id", "odd_id", "same_subnet"]
+            algorithm: Algorithm
             """
             This variable defines the Multi-chassis Link Aggregation (MLAG) algorithm used.
             Each MLAG link will
@@ -5368,7 +5701,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    algorithm: Literal["first_id", "odd_id", "same_subnet"] | UndefinedType = Undefined,
+                    algorithm: Algorithm | UndefinedType = Undefined,
                     ipv4_prefix_length: int | UndefinedType = Undefined,
                     ipv6_prefix_length: int | UndefinedType = Undefined,
                 ) -> None:
@@ -5504,8 +5837,9 @@ class EosDesigns(EosDesignsRootModel):
         class NodeId(AvdModel):
             """Subclass of AvdModel."""
 
+            Algorithm: TypeAlias = Literal["static", "pool_manager"]
             _fields: ClassVar[dict] = {"algorithm": {"type": str, "default": "static"}, "pools_file": {"type": str}}
-            algorithm: Literal["static", "pool_manager"]
+            algorithm: Algorithm
             """
             IDs will be automatically assigned according to the configured algorithm.
             - `static` will use the
@@ -5532,9 +5866,7 @@ class EosDesigns(EosDesignsRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self, *, algorithm: Literal["static", "pool_manager"] | UndefinedType = Undefined, pools_file: str | None | UndefinedType = Undefined
-                ) -> None:
+                def __init__(self, *, algorithm: Algorithm | UndefinedType = Undefined, pools_file: str | None | UndefinedType = Undefined) -> None:
                     """
                     NodeId.
 
@@ -6307,6 +6639,8 @@ class EosDesigns(EosDesignsRootModel):
     class InternalVlanOrder(AvdModel):
         """Subclass of AvdModel."""
 
+        Allocation: TypeAlias = Literal["ascending", "descending"]
+
         class Range(AvdModel):
             """Subclass of AvdModel."""
 
@@ -6332,13 +6666,13 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         _fields: ClassVar[dict] = {"allocation": {"type": str}, "range": {"type": Range}}
-        allocation: Literal["ascending", "descending"]
+        allocation: Allocation
         range: Range
         """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, allocation: Literal["ascending", "descending"] | UndefinedType = Undefined, range: Range | UndefinedType = Undefined) -> None:
+            def __init__(self, *, allocation: Allocation | UndefinedType = Undefined, range: Range | UndefinedType = Undefined) -> None:
                 """
                 InternalVlanOrder.
 
@@ -6387,10 +6721,15 @@ class EosDesigns(EosDesignsRootModel):
         class EntriesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Action: TypeAlias = Literal["permit", "deny"]
+            SourcePortsMatch: TypeAlias = Literal["eq", "gt", "lt", "neq", "range"]
+
             class SourcePorts(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
             SourcePorts._item_type = str
+
+            DestinationPortsMatch: TypeAlias = Literal["eq", "gt", "lt", "neq", "range"]
 
             class DestinationPorts(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
@@ -6402,6 +6741,7 @@ class EosDesigns(EosDesignsRootModel):
 
             TcpFlags._item_type = str
 
+            TtlMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
             _fields: ClassVar[dict] = {
                 "source": {"type": str},
                 "destination": {"type": str},
@@ -6452,7 +6792,7 @@ class EosDesigns(EosDesignsRootModel):
             Comment up to 100 characters.
             If remark is defined, other keys in the ACL entry will be ignored.
             """
-            action: Literal["permit", "deny"] | None
+            action: Action | None
             """
             ACL action.
             Required except for remarks.
@@ -6462,11 +6802,11 @@ class EosDesigns(EosDesignsRootModel):
             "ip", "tcp", "udp", "icmp" or other protocol name or number.
             Required except for remarks.
             """
-            source_ports_match: Literal["eq", "gt", "lt", "neq", "range"]
+            source_ports_match: SourcePortsMatch
             """Default value: `"eq"`"""
             source_ports: SourcePorts
             """Subclass of AvdList with `str` items."""
-            destination_ports_match: Literal["eq", "gt", "lt", "neq", "range"]
+            destination_ports_match: DestinationPortsMatch
             """Default value: `"eq"`"""
             destination_ports: DestinationPorts
             """Subclass of AvdList with `str` items."""
@@ -6478,7 +6818,7 @@ class EosDesigns(EosDesignsRootModel):
             """Log matches against this rule."""
             ttl: int | None
             """TTL value."""
-            ttl_match: Literal["eq", "gt", "lt", "neq"]
+            ttl_match: TtlMatch
             """Default value: `"eq"`"""
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
@@ -6505,17 +6845,17 @@ class EosDesigns(EosDesignsRootModel):
                     destination: str | None | UndefinedType = Undefined,
                     sequence: int | None | UndefinedType = Undefined,
                     remark: str | None | UndefinedType = Undefined,
-                    action: Literal["permit", "deny"] | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
                     protocol: str | None | UndefinedType = Undefined,
-                    source_ports_match: Literal["eq", "gt", "lt", "neq", "range"] | UndefinedType = Undefined,
+                    source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
                     source_ports: SourcePorts | UndefinedType = Undefined,
-                    destination_ports_match: Literal["eq", "gt", "lt", "neq", "range"] | UndefinedType = Undefined,
+                    destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
                     fragments: bool | None | UndefinedType = Undefined,
                     log: bool | None | UndefinedType = Undefined,
                     ttl: int | None | UndefinedType = Undefined,
-                    ttl_match: Literal["eq", "gt", "lt", "neq"] | UndefinedType = Undefined,
+                    ttl_match: TtlMatch | UndefinedType = Undefined,
                     icmp_type: str | None | UndefinedType = Undefined,
                     icmp_code: str | None | UndefinedType = Undefined,
                     nexthop_group: str | None | UndefinedType = Undefined,
@@ -6581,6 +6921,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Entries._item_type = EntriesItem
 
+        PermitResponseTraffic: TypeAlias = Literal["nat"]
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "entries": {"type": Entries},
@@ -6600,7 +6941,7 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdList with `EntriesItem` items.
         """
         counters_per_entry: bool | None
-        permit_response_traffic: Literal["nat"] | None
+        permit_response_traffic: PermitResponseTraffic | None
         """
         Permit response traffic automatically based on NAT translations.
         Minimum EOS version requirement
@@ -6615,7 +6956,7 @@ class EosDesigns(EosDesignsRootModel):
                 name: str | UndefinedType = Undefined,
                 entries: Entries | UndefinedType = Undefined,
                 counters_per_entry: bool | None | UndefinedType = Undefined,
-                permit_response_traffic: Literal["nat"] | None | UndefinedType = Undefined,
+                permit_response_traffic: PermitResponseTraffic | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Ipv4AclsItem.
@@ -6719,9 +7060,14 @@ class EosDesigns(EosDesignsRootModel):
 
     Ipv6MgmtDestinationNetworks._item_type = str
 
+    IsisDefaultCircuitType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+    IsisDefaultIsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+    IsisSystemIdFormat: TypeAlias = Literal["node_id", "underlay_loopback"]
+
     class IsisTiLfa(AvdModel):
         """Subclass of AvdModel."""
 
+        Protection: TypeAlias = Literal["link", "node"]
         _fields: ClassVar[dict] = {
             "enabled": {"type": bool, "default": False},
             "protection": {"type": str},
@@ -6729,7 +7075,7 @@ class EosDesigns(EosDesignsRootModel):
         }
         enabled: bool
         """Default value: `False`"""
-        protection: Literal["link", "node"] | None
+        protection: Protection | None
         local_convergence_delay: int
         """
         Local convergence delay in milliseconds.
@@ -6743,7 +7089,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 enabled: bool | UndefinedType = Undefined,
-                protection: Literal["link", "node"] | None | UndefinedType = Undefined,
+                protection: Protection | None | UndefinedType = Undefined,
                 local_convergence_delay: int | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -6821,6 +7167,7 @@ class EosDesigns(EosDesignsRootModel):
         class IgmpSnoopingQuerier(AvdModel):
             """Subclass of AvdModel."""
 
+            Version: TypeAlias = Literal[1, 2, 3]
             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}, "fast_leave": {"type": bool}}
             enabled: bool | None
             """Will be enabled automatically if evpn_l2_multicast is enabled."""
@@ -6829,7 +7176,7 @@ class EosDesigns(EosDesignsRootModel):
             IPv4_address
             If not set, IP address of "Loopback0" will be used.
             """
-            version: Literal[1, 2, 3] | None
+            version: Version | None
             """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
             fast_leave: bool | None
             """Enable IGMP snooping fast-leave feature."""
@@ -6841,7 +7188,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     enabled: bool | None | UndefinedType = Undefined,
                     source_address: str | None | UndefinedType = Undefined,
-                    version: Literal[1, 2, 3] | None | UndefinedType = Undefined,
+                    version: Version | None | UndefinedType = Undefined,
                     fast_leave: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -6906,16 +7253,15 @@ class EosDesigns(EosDesignsRootModel):
         class PrivateVlan(AvdModel):
             """Subclass of AvdModel."""
 
+            Type: TypeAlias = Literal["community", "isolated"]
             _fields: ClassVar[dict] = {"type": {"type": str}, "primary_vlan": {"type": int}}
-            type: Literal["community", "isolated"]
+            type: Type
             primary_vlan: int
             """Primary VLAN ID."""
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self, *, type: Literal["community", "isolated"] | UndefinedType = Undefined, primary_vlan: int | UndefinedType = Undefined
-                ) -> None:
+                def __init__(self, *, type: Type | UndefinedType = Undefined, primary_vlan: int | UndefinedType = Undefined) -> None:
                     """
                     PrivateVlan.
 
@@ -7207,6 +7553,91 @@ class EosDesigns(EosDesignsRootModel):
         class P2pLinksProfilesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Speed: TypeAlias = Literal[
+                "100full",
+                "100g",
+                "100g-1",
+                "100g-2",
+                "100g-4",
+                "100half",
+                "10full",
+                "10g",
+                "10half",
+                "1g",
+                "200g",
+                "200g-2",
+                "200g-4",
+                "25g",
+                "400g",
+                "400g-4",
+                "400g-8",
+                "40g",
+                "50g",
+                "50g-1",
+                "50g-2",
+                "800g-8",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
+                "auto",
+                "auto 10000full",
+                "auto 1000full",
+                "auto 100full",
+                "auto 100g-1",
+                "auto 100g-2",
+                "auto 100g-4",
+                "auto 100gfull",
+                "auto 100half",
+                "auto 10full",
+                "auto 10gfull",
+                "auto 10half",
+                "auto 1gfull",
+                "auto 2.5gfull",
+                "auto 200g-2",
+                "auto 200g-4",
+                "auto 25gfull",
+                "auto 400g-4",
+                "auto 400g-8",
+                "auto 40gfull",
+                "auto 50g-1",
+                "auto 50g-2",
+                "auto 50gfull",
+                "auto 5gfull",
+                "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
+                "forced 10000full",
+                "forced 1000full",
+                "forced 1000half",
+                "forced 100full",
+                "forced 100gfull",
+                "forced 100half",
+                "forced 10full",
+                "forced 10half",
+                "forced 25gfull",
+                "forced 40gfull",
+                "forced 50gfull",
+            ]
+
             class Ip(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -7231,6 +7662,10 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdList with `str` items."""
 
             Descriptions._item_type = str
+
+            IsisCircuitType: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
+            IsisAuthenticationMode: TypeAlias = Literal["md5", "text"]
+            IsisNetworkType: TypeAlias = Literal["point-to-point", "broadcast"]
 
             class Ptp(AvdModel):
                 """Subclass of AvdModel."""
@@ -7320,6 +7755,9 @@ class EosDesigns(EosDesignsRootModel):
             class PortChannel(AvdModel):
                 """Subclass of AvdModel."""
 
+                Mode: TypeAlias = Literal["on", "active", "passive"]
+                ChannelIdAlgorithm: TypeAlias = Literal["first_port", "p2p_link_id"]
+
                 class NodesChildInterfacesItem(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -7408,9 +7846,9 @@ class EosDesigns(EosDesignsRootModel):
                 By default the description is templated from the
                 name and port_channel interface of the peer.
                 """
-                mode: Literal["on", "active", "passive"]
+                mode: Mode
                 """Default value: `"active"`"""
-                channel_id_algorithm: Literal["first_port", "p2p_link_id"]
+                channel_id_algorithm: ChannelIdAlgorithm
                 """
                 Configures how to derive the Port-Channel ID when not set.
                 By default the ID is derived from the
@@ -7434,8 +7872,8 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         description: str | None | UndefinedType = Undefined,
-                        mode: Literal["on", "active", "passive"] | UndefinedType = Undefined,
-                        channel_id_algorithm: Literal["first_port", "p2p_link_id"] | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType = Undefined,
+                        channel_id_algorithm: ChannelIdAlgorithm | UndefinedType = Undefined,
                         channel_id_offset: int | None | UndefinedType = Undefined,
                         nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                     ) -> None:
@@ -7486,6 +7924,7 @@ class EosDesigns(EosDesignsRootModel):
 
             CampusLinkType._item_type = str
 
+            RoutingProtocol: TypeAlias = Literal["ebgp"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "id": {"type": int},
@@ -7535,11 +7974,8 @@ class EosDesigns(EosDesignsRootModel):
             Required with ip_pool. ID starting
             from 1.
             """
-            speed: str | None
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-            <interface_speed>`.
-            """
+            speed: Speed | None
+            """Interface Speed."""
             ip_pool: str | None
             """
             P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
@@ -7596,8 +8032,8 @@ class EosDesigns(EosDesignsRootModel):
             isis_hello_padding: bool
             """Default value: `True`"""
             isis_metric: int | None
-            isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None
-            isis_authentication_mode: Literal["md5", "text"] | None
+            isis_circuit_type: IsisCircuitType | None
+            isis_authentication_mode: IsisAuthenticationMode | None
             isis_authentication_key: str | None
             """
             Type-7 encrypted password.
@@ -7614,7 +8050,7 @@ class EosDesigns(EosDesignsRootModel):
             To protect the
             password at rest it is strongly recommended to make use of a vault or similar.
             """
-            isis_network_type: Literal["point-to-point", "broadcast"]
+            isis_network_type: IsisNetworkType
             """Default value: `"point-to-point"`"""
             mpls_ip: bool | None
             """MPLS parameters. Default value is true if switch.mpls_lsr is true."""
@@ -7688,7 +8124,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
-            routing_protocol: Literal["ebgp"] | None
+            routing_protocol: RoutingProtocol | None
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
@@ -7713,7 +8149,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     id: int | None | UndefinedType = Undefined,
-                    speed: str | None | UndefinedType = Undefined,
+                    speed: Speed | None | UndefinedType = Undefined,
                     ip_pool: str | None | UndefinedType = Undefined,
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
@@ -7725,11 +8161,11 @@ class EosDesigns(EosDesignsRootModel):
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
-                    isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
-                    isis_authentication_mode: Literal["md5", "text"] | None | UndefinedType = Undefined,
+                    isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
+                    isis_authentication_mode: IsisAuthenticationMode | None | UndefinedType = Undefined,
                     isis_authentication_key: str | None | UndefinedType = Undefined,
                     isis_authentication_cleartext_key: str | None | UndefinedType = Undefined,
-                    isis_network_type: Literal["point-to-point", "broadcast"] | UndefinedType = Undefined,
+                    isis_network_type: IsisNetworkType | UndefinedType = Undefined,
                     mpls_ip: bool | None | UndefinedType = Undefined,
                     mpls_ldp: bool | None | UndefinedType = Undefined,
                     mtu: int | None | UndefinedType = Undefined,
@@ -7744,7 +8180,7 @@ class EosDesigns(EosDesignsRootModel):
                     port_channel: PortChannel | UndefinedType = Undefined,
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
-                    routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
+                    routing_protocol: RoutingProtocol | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
@@ -7761,9 +8197,7 @@ class EosDesigns(EosDesignsRootModel):
                            Unique id per subnet_summary. Used to calculate ip addresses.
                            Required with ip_pool. ID starting
                            from 1.
-                        speed:
-                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                           <interface_speed>`.
+                        speed: Interface Speed.
                         ip_pool:
                            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
                            link.
@@ -7893,6 +8327,91 @@ class EosDesigns(EosDesignsRootModel):
 
             Nodes._item_type = str
 
+            Speed: TypeAlias = Literal[
+                "100full",
+                "100g",
+                "100g-1",
+                "100g-2",
+                "100g-4",
+                "100half",
+                "10full",
+                "10g",
+                "10half",
+                "1g",
+                "200g",
+                "200g-2",
+                "200g-4",
+                "25g",
+                "400g",
+                "400g-4",
+                "400g-8",
+                "40g",
+                "50g",
+                "50g-1",
+                "50g-2",
+                "800g-8",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
+                "auto",
+                "auto 10000full",
+                "auto 1000full",
+                "auto 100full",
+                "auto 100g-1",
+                "auto 100g-2",
+                "auto 100g-4",
+                "auto 100gfull",
+                "auto 100half",
+                "auto 10full",
+                "auto 10gfull",
+                "auto 10half",
+                "auto 1gfull",
+                "auto 2.5gfull",
+                "auto 200g-2",
+                "auto 200g-4",
+                "auto 25gfull",
+                "auto 400g-4",
+                "auto 400g-8",
+                "auto 40gfull",
+                "auto 50g-1",
+                "auto 50g-2",
+                "auto 50gfull",
+                "auto 5gfull",
+                "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
+                "forced 10000full",
+                "forced 1000full",
+                "forced 1000half",
+                "forced 100full",
+                "forced 100gfull",
+                "forced 100half",
+                "forced 10full",
+                "forced 10half",
+                "forced 25gfull",
+                "forced 40gfull",
+                "forced 50gfull",
+            ]
+
             class Ip(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -7912,6 +8431,10 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdList with `str` items."""
 
             Descriptions._item_type = str
+
+            IsisCircuitType: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
+            IsisAuthenticationMode: TypeAlias = Literal["md5", "text"]
+            IsisNetworkType: TypeAlias = Literal["point-to-point", "broadcast"]
 
             class Ptp(AvdModel):
                 """Subclass of AvdModel."""
@@ -8001,6 +8524,9 @@ class EosDesigns(EosDesignsRootModel):
             class PortChannel(AvdModel):
                 """Subclass of AvdModel."""
 
+                Mode: TypeAlias = Literal["on", "active", "passive"]
+                ChannelIdAlgorithm: TypeAlias = Literal["first_port", "p2p_link_id"]
+
                 class NodesChildInterfacesItem(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -8089,9 +8615,9 @@ class EosDesigns(EosDesignsRootModel):
                 By default the description is templated from the
                 name and port_channel interface of the peer.
                 """
-                mode: Literal["on", "active", "passive"]
+                mode: Mode
                 """Default value: `"active"`"""
-                channel_id_algorithm: Literal["first_port", "p2p_link_id"]
+                channel_id_algorithm: ChannelIdAlgorithm
                 """
                 Configures how to derive the Port-Channel ID when not set.
                 By default the ID is derived from the
@@ -8115,8 +8641,8 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         description: str | None | UndefinedType = Undefined,
-                        mode: Literal["on", "active", "passive"] | UndefinedType = Undefined,
-                        channel_id_algorithm: Literal["first_port", "p2p_link_id"] | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType = Undefined,
+                        channel_id_algorithm: ChannelIdAlgorithm | UndefinedType = Undefined,
                         channel_id_offset: int | None | UndefinedType = Undefined,
                         nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                     ) -> None:
@@ -8167,6 +8693,7 @@ class EosDesigns(EosDesignsRootModel):
 
             CampusLinkType._item_type = str
 
+            RoutingProtocol: TypeAlias = Literal["ebgp"]
             _fields: ClassVar[dict] = {
                 "nodes": {"type": Nodes},
                 "profile": {"type": str},
@@ -8222,11 +8749,8 @@ class EosDesigns(EosDesignsRootModel):
             Required with ip_pool. ID starting
             from 1.
             """
-            speed: str | None
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-            <interface_speed>`.
-            """
+            speed: Speed | None
+            """Interface Speed."""
             ip_pool: str | None
             """
             P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
@@ -8277,8 +8801,8 @@ class EosDesigns(EosDesignsRootModel):
             isis_hello_padding: bool
             """Default value: `True`"""
             isis_metric: int | None
-            isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None
-            isis_authentication_mode: Literal["md5", "text"] | None
+            isis_circuit_type: IsisCircuitType | None
+            isis_authentication_mode: IsisAuthenticationMode | None
             isis_authentication_key: str | None
             """
             Type-7 encrypted password.
@@ -8295,7 +8819,7 @@ class EosDesigns(EosDesignsRootModel):
             To protect the
             password at rest it is strongly recommended to make use of a vault or similar.
             """
-            isis_network_type: Literal["point-to-point", "broadcast"]
+            isis_network_type: IsisNetworkType
             """Default value: `"point-to-point"`"""
             mpls_ip: bool | None
             """MPLS parameters. Default value is true if switch.mpls_lsr is true."""
@@ -8369,7 +8893,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
-            routing_protocol: Literal["ebgp"] | None
+            routing_protocol: RoutingProtocol | None
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
@@ -8395,7 +8919,7 @@ class EosDesigns(EosDesignsRootModel):
                     nodes: Nodes | UndefinedType = Undefined,
                     profile: str | None | UndefinedType = Undefined,
                     id: int | None | UndefinedType = Undefined,
-                    speed: str | None | UndefinedType = Undefined,
+                    speed: Speed | None | UndefinedType = Undefined,
                     ip_pool: str | None | UndefinedType = Undefined,
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
@@ -8406,11 +8930,11 @@ class EosDesigns(EosDesignsRootModel):
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
-                    isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
-                    isis_authentication_mode: Literal["md5", "text"] | None | UndefinedType = Undefined,
+                    isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
+                    isis_authentication_mode: IsisAuthenticationMode | None | UndefinedType = Undefined,
                     isis_authentication_key: str | None | UndefinedType = Undefined,
                     isis_authentication_cleartext_key: str | None | UndefinedType = Undefined,
-                    isis_network_type: Literal["point-to-point", "broadcast"] | UndefinedType = Undefined,
+                    isis_network_type: IsisNetworkType | UndefinedType = Undefined,
                     mpls_ip: bool | None | UndefinedType = Undefined,
                     mpls_ldp: bool | None | UndefinedType = Undefined,
                     mtu: int | None | UndefinedType = Undefined,
@@ -8425,7 +8949,7 @@ class EosDesigns(EosDesignsRootModel):
                     port_channel: PortChannel | UndefinedType = Undefined,
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
-                    routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
+                    routing_protocol: RoutingProtocol | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
@@ -8446,9 +8970,7 @@ class EosDesigns(EosDesignsRootModel):
                            Unique id per subnet_summary. Used to calculate ip addresses.
                            Required with ip_pool. ID starting
                            from 1.
-                        speed:
-                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                           <interface_speed>`.
+                        speed: Interface Speed.
                         ip_pool:
                            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
                            link.
@@ -8600,6 +9122,91 @@ class EosDesigns(EosDesignsRootModel):
 
     class L3InterfaceProfilesItem(AvdModel):
         """Subclass of AvdModel."""
+
+        Speed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
 
         class Bgp(AvdModel):
             """Subclass of AvdModel."""
@@ -8761,6 +9368,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Workers._item_type = str
 
+            Mode: TypeAlias = Literal["shared", "exclusive"]
             _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
             count: int | None
             """
@@ -8771,7 +9379,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             workers: Workers
             """Subclass of AvdList with `str` items."""
-            mode: Literal["shared", "exclusive"] | None
+            mode: Mode | None
             """Mode applicable to the workers."""
 
             if TYPE_CHECKING:
@@ -8781,7 +9389,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     count: int | None | UndefinedType = Undefined,
                     workers: Workers | UndefinedType = Undefined,
-                    mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                    mode: Mode | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     RxQueue.
@@ -8915,11 +9523,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `True`
         """
-        speed: str | None
-        """
-        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-        <interface_speed>`.
-        """
+        speed: Speed | None
+        """Interface Speed."""
         receive_bandwidth: int | None
         """
         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -9030,7 +9635,7 @@ class EosDesigns(EosDesignsRootModel):
                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                 dhcp_accept_default_route: bool | UndefinedType = Undefined,
                 enabled: bool | UndefinedType = Undefined,
-                speed: str | None | UndefinedType = Undefined,
+                speed: Speed | None | UndefinedType = Undefined,
                 receive_bandwidth: int | None | UndefinedType = Undefined,
                 transmit_bandwidth: int | None | UndefinedType = Undefined,
                 peer: str | None | UndefinedType = Undefined,
@@ -9096,9 +9701,7 @@ class EosDesigns(EosDesignsRootModel):
                        specified.
                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                     enabled: Enable or Shutdown the interface.
-                    speed:
-                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                       <interface_speed>`.
+                    speed: Interface Speed.
                     receive_bandwidth:
                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                        This is currently used on
@@ -9176,6 +9779,8 @@ class EosDesigns(EosDesignsRootModel):
         class HostsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Protocol: TypeAlias = Literal["tcp", "udp", "tls"]
+
             class Ports(AvdList[int]):
                 """Subclass of AvdList with `int` items."""
 
@@ -9210,7 +9815,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `"use_default_mgmt_method_vrf"`
             """
-            protocol: Literal["tcp", "udp", "tls"]
+            protocol: Protocol
             """Default value: `"udp"`"""
             ports: Ports
             """Subclass of AvdList with `int` items."""
@@ -9224,7 +9829,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     vrf: str | UndefinedType = Undefined,
-                    protocol: Literal["tcp", "udp", "tls"] | UndefinedType = Undefined,
+                    protocol: Protocol | UndefinedType = Undefined,
                     ports: Ports | UndefinedType = Undefined,
                     ssl_profile: str | None | UndefinedType = Undefined,
                 ) -> None:
@@ -9301,6 +9906,37 @@ class EosDesigns(EosDesignsRootModel):
 
         Vrfs._item_type = VrfsItem
 
+        Console: TypeAlias = Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
+        Monitor: TypeAlias = Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
+        Trap: TypeAlias = Literal[
+            "alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"
+        ]
+        Facility: TypeAlias = Literal[
+            "auth",
+            "cron",
+            "daemon",
+            "kern",
+            "local0",
+            "local1",
+            "local2",
+            "local3",
+            "local4",
+            "local5",
+            "local6",
+            "local7",
+            "lpr",
+            "mail",
+            "news",
+            "sys9",
+            "sys10",
+            "sys11",
+            "sys12",
+            "sys13",
+            "sys14",
+            "syslog",
+            "user",
+            "uucp",
+        ]
         _fields: ClassVar[dict] = {
             "hosts": {"type": Hosts},
             "vrfs": {"type": Vrfs},
@@ -9320,46 +9956,18 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdList with `HostsItem` items."""
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
-        console: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"] | None
+        console: Console | None
         """Console logging severity level."""
-        monitor: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"] | None
+        monitor: Monitor | None
         """Monitor logging severity level."""
         buffered: EosCliConfigGen.Logging.Buffered
         repeat_messages: bool | None
         """Summarize concurrent repeat messages."""
-        trap: Literal["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"] | None
+        trap: Trap | None
         """Trap logging severity level."""
         synchronous: EosCliConfigGen.Logging.Synchronous
         format: EosCliConfigGen.Logging.Format
-        facility: (
-            Literal[
-                "auth",
-                "cron",
-                "daemon",
-                "kern",
-                "local0",
-                "local1",
-                "local2",
-                "local3",
-                "local4",
-                "local5",
-                "local6",
-                "local7",
-                "lpr",
-                "mail",
-                "news",
-                "sys9",
-                "sys10",
-                "sys11",
-                "sys12",
-                "sys13",
-                "sys14",
-                "syslog",
-                "user",
-                "uucp",
-            ]
-            | None
-        )
+        facility: Facility | None
         policy: EosCliConfigGen.Logging.Policy
         event: EosCliConfigGen.Logging.Event
         level: EosCliConfigGen.Logging.Level
@@ -9372,47 +9980,14 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 hosts: Hosts | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
-                console: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
-                | None
-                | UndefinedType = Undefined,
-                monitor: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
-                | None
-                | UndefinedType = Undefined,
+                console: Console | None | UndefinedType = Undefined,
+                monitor: Monitor | None | UndefinedType = Undefined,
                 buffered: EosCliConfigGen.Logging.Buffered | UndefinedType = Undefined,
                 repeat_messages: bool | None | UndefinedType = Undefined,
-                trap: Literal["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"]
-                | None
-                | UndefinedType = Undefined,
+                trap: Trap | None | UndefinedType = Undefined,
                 synchronous: EosCliConfigGen.Logging.Synchronous | UndefinedType = Undefined,
                 format: EosCliConfigGen.Logging.Format | UndefinedType = Undefined,
-                facility: Literal[
-                    "auth",
-                    "cron",
-                    "daemon",
-                    "kern",
-                    "local0",
-                    "local1",
-                    "local2",
-                    "local3",
-                    "local4",
-                    "local5",
-                    "local6",
-                    "local7",
-                    "lpr",
-                    "mail",
-                    "news",
-                    "sys9",
-                    "sys10",
-                    "sys11",
-                    "sys12",
-                    "sys13",
-                    "sys14",
-                    "syslog",
-                    "user",
-                    "uucp",
-                ]
-                | None
-                | UndefinedType = Undefined,
+                facility: Facility | None | UndefinedType = Undefined,
                 policy: EosCliConfigGen.Logging.Policy | UndefinedType = Undefined,
                 event: EosCliConfigGen.Logging.Event | UndefinedType = Undefined,
                 level: EosCliConfigGen.Logging.Level | UndefinedType = Undefined,
@@ -9517,35 +10092,23 @@ class EosDesigns(EosDesignsRootModel):
         Vrfs._item_type = VrfsItem
 
         _fields: ClassVar[dict] = {
-            "enabled": {"type": bool, "default": True},
+            "enabled": {"type": bool},
             "enable_http": {"type": bool},
             "enable_https": {"type": bool, "default": True},
             "default_services": {"type": bool},
-            "vrfs": {"type": Vrfs, "default": lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)},
+            "vrfs": {"type": Vrfs, "default": lambda cls: coerce_type([{"name": "use_default_mgmt_method_vrf", "enabled": True}], target_type=cls)},
         }
-        enabled: bool
-        """
-        Enable/Disable api http-commands.
-
-        Default value: `True`
-        """
+        enabled: bool | None
+        """Enable/Disable api http-commands."""
         enable_http: bool | None
         enable_https: bool
         """Default value: `True`"""
         default_services: bool | None
         vrfs: Vrfs
         """
-        Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not**
-        configured and the default value of `use_mgmt_interface_vrf` is used.
-        To enforce the presence of
-        `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using
-        `name: use_mgmt_interface_vrf`.
-        This behavior will be removed in AVD 6.0.
+        Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
-        Subclass of
-        AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
-
-        Default value: `lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)`
+        Default value: `lambda cls: coerce_type([{"name": "use_default_mgmt_method_vrf", "enabled": True}], target_type=cls)`
         """
 
         if TYPE_CHECKING:
@@ -9553,7 +10116,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
-                enabled: bool | UndefinedType = Undefined,
+                enabled: bool | None | UndefinedType = Undefined,
                 enable_http: bool | None | UndefinedType = Undefined,
                 enable_https: bool | UndefinedType = Undefined,
                 default_services: bool | None | UndefinedType = Undefined,
@@ -9570,16 +10133,7 @@ class EosDesigns(EosDesignsRootModel):
                     enable_http: enable_http
                     enable_https: enable_https
                     default_services: default_services
-                    vrfs:
-                       Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not**
-                       configured and the default value of `use_mgmt_interface_vrf` is used.
-                       To enforce the presence of
-                       `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using
-                       `name: use_mgmt_interface_vrf`.
-                       This behavior will be removed in AVD 6.0.
-
-                       Subclass of
-                       AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
                 """
 
@@ -9627,14 +10181,106 @@ class EosDesigns(EosDesignsRootModel):
 
         SwitchPorts._item_type = str
 
+        Speed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
+        Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
+        PhoneTrunkMode: TypeAlias = Literal["tagged", "untagged", "tagged phone", "untagged phone"]
+
         class TrunkGroups(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
         TrunkGroups._item_type = str
 
+        SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+        SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+        SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+
         class Ptp(AvdModel):
             """Subclass of AvdModel."""
 
+            EndpointRole: TypeAlias = Literal["follower", "dynamic", "bmca", "default"]
             _fields: ClassVar[dict] = {
                 "enabled": {"type": bool, "default": False},
                 "endpoint_role": {"type": str, "default": "follower"},
@@ -9642,7 +10288,7 @@ class EosDesigns(EosDesignsRootModel):
             }
             enabled: bool
             """Default value: `False`"""
-            endpoint_role: Literal["follower", "dynamic", "bmca", "default"]
+            endpoint_role: EndpointRole
             """
             PTP role of the endpoint.
             `follower` will configure the switch port as `ptp role master`.
@@ -9670,7 +10316,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     enabled: bool | UndefinedType = Undefined,
-                    endpoint_role: Literal["follower", "dynamic", "bmca", "default"] | UndefinedType = Undefined,
+                    endpoint_role: EndpointRole | UndefinedType = Undefined,
                     profile: str | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -9760,10 +10406,11 @@ class EosDesigns(EosDesignsRootModel):
             class All(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional variable and is hardware dependent.
 
@@ -9772,7 +10419,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         All.
 
@@ -9788,10 +10435,11 @@ class EosDesigns(EosDesignsRootModel):
             class Broadcast(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional variable and is hardware dependent.
 
@@ -9800,7 +10448,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         Broadcast.
 
@@ -9816,10 +10464,11 @@ class EosDesigns(EosDesignsRootModel):
             class Multicast(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional variable and is hardware dependent.
 
@@ -9828,7 +10477,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         Multicast.
 
@@ -9844,10 +10493,11 @@ class EosDesigns(EosDesignsRootModel):
             class UnknownUnicast(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional variable and is hardware dependent.
 
@@ -9856,7 +10506,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         UnknownUnicast.
 
@@ -9911,14 +10561,19 @@ class EosDesigns(EosDesignsRootModel):
         class MonitorSessionsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Role: TypeAlias = Literal["source", "destination"]
+
             class SourceSettings(AvdModel):
                 """Subclass of AvdModel."""
+
+                Direction: TypeAlias = Literal["rx", "tx", "both"]
 
                 class AccessGroup(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                    type: Literal["ip", "ipv6", "mac"] | None
+                    type: Type | None
                     name: str | None
                     """ACL name."""
                     priority: int | None
@@ -9928,7 +10583,7 @@ class EosDesigns(EosDesignsRootModel):
                         def __init__(
                             self,
                             *,
-                            type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
+                            type: Type | None | UndefinedType = Undefined,
                             name: str | None | UndefinedType = Undefined,
                             priority: int | None | UndefinedType = Undefined,
                         ) -> None:
@@ -9946,7 +10601,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
 
                 _fields: ClassVar[dict] = {"direction": {"type": str}, "access_group": {"type": AccessGroup}}
-                direction: Literal["rx", "tx", "both"] | None
+                direction: Direction | None
                 access_group: AccessGroup
                 """
                 This can only be set when `session_settings.access_group` is not set.
@@ -9957,10 +10612,7 @@ class EosDesigns(EosDesignsRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        direction: Literal["rx", "tx", "both"] | None | UndefinedType = Undefined,
-                        access_group: AccessGroup | UndefinedType = Undefined,
+                        self, *, direction: Direction | None | UndefinedType = Undefined, access_group: AccessGroup | UndefinedType = Undefined
                     ) -> None:
                         """
                         SourceSettings.
@@ -9983,16 +10635,15 @@ class EosDesigns(EosDesignsRootModel):
                 class AccessGroup(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                    type: Literal["ip", "ipv6", "mac"] | None
+                    type: Type | None
                     name: str | None
                     """ACL name."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, type: Type | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
                             """
                             AccessGroup.
 
@@ -10110,7 +10761,7 @@ class EosDesigns(EosDesignsRootModel):
             }
             name: str
             """Session name."""
-            role: Literal["source", "destination"] | None
+            role: Role | None
             source_settings: SourceSettings
             """Subclass of AvdModel."""
             session_settings: SessionSettings
@@ -10129,7 +10780,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    role: Literal["source", "destination"] | None | UndefinedType = Undefined,
+                    role: Role | None | UndefinedType = Undefined,
                     source_settings: SourceSettings | UndefinedType = Undefined,
                     session_settings: SessionSettings | UndefinedType = Undefined,
                 ) -> None:
@@ -10161,6 +10812,9 @@ class EosDesigns(EosDesignsRootModel):
         class EthernetSegment(AvdModel):
             """Subclass of AvdModel."""
 
+            Redundancy: TypeAlias = Literal["all-active", "single-active"]
+            DesignatedForwarderAlgorithm: TypeAlias = Literal["auto", "modulus", "preference"]
+
             class DesignatedForwarderPreferences(AvdList[int]):
                 """Subclass of AvdList with `int` items."""
 
@@ -10181,13 +10835,13 @@ class EosDesigns(EosDesignsRootModel):
             Please see the notes under "EVPN A/A
             ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
             """
-            redundancy: Literal["all-active", "single-active"] | None
+            redundancy: Redundancy | None
             """
             If omitted, Port-Channels use the EOS default of all-active.
             If omitted, Ethernet interfaces are
             configured as single-active.
             """
-            designated_forwarder_algorithm: Literal["auto", "modulus", "preference"] | None
+            designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None
             """
             Configure DF algorithm and preferences.
             - auto: Use preference-based algorithm and assign preference
@@ -10218,8 +10872,8 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     short_esi: str | UndefinedType = Undefined,
-                    redundancy: Literal["all-active", "single-active"] | None | UndefinedType = Undefined,
-                    designated_forwarder_algorithm: Literal["auto", "modulus", "preference"] | None | UndefinedType = Undefined,
+                    redundancy: Redundancy | None | UndefinedType = Undefined,
+                    designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None | UndefinedType = Undefined,
                     designated_forwarder_preferences: DesignatedForwarderPreferences | UndefinedType = Undefined,
                     dont_preempt: bool | None | UndefinedType = Undefined,
                 ) -> None:
@@ -10265,12 +10919,17 @@ class EosDesigns(EosDesignsRootModel):
         class PortChannel(AvdModel):
             """Subclass of AvdModel."""
 
+            Mode: TypeAlias = Literal["active", "passive", "on"]
+
             class LacpFallback(AvdModel):
                 """Subclass of AvdModel."""
+
+                Mode: TypeAlias = Literal["static", "individual"]
 
                 class Individual(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
                     _fields: ClassVar[dict] = {"profile": {"type": str}, "vlans": {"type": str}, "native_vlan": {"type": int}, "mode": {"type": str}}
                     profile: str | None
                     """Port-profile name to inherit configuration."""
@@ -10278,7 +10937,7 @@ class EosDesigns(EosDesignsRootModel):
                     """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
                     native_vlan: int | None
                     """Native VLAN on the port-channel member interfaces when in fallback individual."""
-                    mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+                    mode: Mode | None
                     """Interface mode on the port-channel member interfaces when in fallback individual."""
 
                     if TYPE_CHECKING:
@@ -10289,7 +10948,7 @@ class EosDesigns(EosDesignsRootModel):
                             profile: str | None | UndefinedType = Undefined,
                             vlans: str | None | UndefinedType = Undefined,
                             native_vlan: int | None | UndefinedType = Undefined,
-                            mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                            mode: Mode | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Individual.
@@ -10306,7 +10965,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
 
                 _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
-                mode: Literal["static", "individual"] | None
+                mode: Mode | None
                 """
                 Either static or individual mode is supported.
                 If the mode is set to "individual" either 'profile'
@@ -10331,7 +10990,7 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        mode: Literal["static", "individual"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         individual: Individual | UndefinedType = Undefined,
                         timeout: int | UndefinedType = Undefined,
                     ) -> None:
@@ -10358,17 +11017,16 @@ class EosDesigns(EosDesignsRootModel):
             class LacpTimer(AvdModel):
                 """Subclass of AvdModel."""
 
+                Mode: TypeAlias = Literal["normal", "fast"]
                 _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
-                mode: Literal["normal", "fast"] | None
+                mode: Mode | None
                 """LACP mode for interface members."""
                 multiplier: int | None
                 """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, mode: Literal["normal", "fast"] | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined) -> None:
                         """
                         LacpTimer.
 
@@ -10497,7 +11155,7 @@ class EosDesigns(EosDesignsRootModel):
                 "raw_eos_cli": {"type": str},
                 "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
-            mode: Literal["active", "passive", "on"] | None
+            mode: Mode | None
             """Port-Channel Mode."""
             channel_id: int | None
             """
@@ -10594,7 +11252,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    mode: Literal["active", "passive", "on"] | None | UndefinedType = Undefined,
+                    mode: Mode | None | UndefinedType = Undefined,
                     channel_id: int | None | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     endpoint_port_channel: str | None | UndefinedType = Undefined,
@@ -10797,10 +11455,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         endpoint: str | None
         """Name or description of the endpoints connected to these ports."""
-        speed: str | None
+        speed: Speed | None
         """
-        Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-        <interface_speed>`.
+        Set adapter speed.
         If not specified speed will be auto.
         """
         profile: str | None
@@ -10812,7 +11469,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `True`
         """
-        mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+        mode: Mode | None
         """Interface mode."""
         mtu: int | None
         l2_mtu: int | None
@@ -10832,7 +11489,7 @@ class EosDesigns(EosDesignsRootModel):
         Phone VLAN for a mode `trunk phone` port.
         Requires `mode: trunk phone` to be set.
         """
-        phone_trunk_mode: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None
+        phone_trunk_mode: PhoneTrunkMode | None
         """
         Specify if the phone traffic is tagged or untagged.
         If both data and phone traffic are untagged,
@@ -10852,9 +11509,9 @@ class EosDesigns(EosDesignsRootModel):
         Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
         VLAN 1 will be used for access ports.
         """
-        spanning_tree_portfast: Literal["edge", "network"] | None
-        spanning_tree_bpdufilter: Literal["enabled", "disabled", "True", "False", "true", "false"] | None
-        spanning_tree_bpduguard: Literal["enabled", "disabled", "True", "False", "true", "false"] | None
+        spanning_tree_portfast: SpanningTreePortfast | None
+        spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
+        spanning_tree_bpduguard: SpanningTreeBpduguard | None
         flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol
         qos_profile: str | None
         """QOS profile name."""
@@ -10951,22 +11608,22 @@ class EosDesigns(EosDesignsRootModel):
                 switch_ports: SwitchPorts | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
                 endpoint: str | None | UndefinedType = Undefined,
-                speed: str | None | UndefinedType = Undefined,
+                speed: Speed | None | UndefinedType = Undefined,
                 profile: str | None | UndefinedType = Undefined,
                 enabled: bool | UndefinedType = Undefined,
-                mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                mode: Mode | None | UndefinedType = Undefined,
                 mtu: int | None | UndefinedType = Undefined,
                 l2_mtu: int | None | UndefinedType = Undefined,
                 l2_mru: int | None | UndefinedType = Undefined,
                 native_vlan: int | None | UndefinedType = Undefined,
                 native_vlan_tag: bool | None | UndefinedType = Undefined,
                 phone_vlan: int | None | UndefinedType = Undefined,
-                phone_trunk_mode: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None | UndefinedType = Undefined,
+                phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 vlans: str | None | UndefinedType = Undefined,
-                spanning_tree_portfast: Literal["edge", "network"] | None | UndefinedType = Undefined,
-                spanning_tree_bpdufilter: Literal["enabled", "disabled", "True", "False", "true", "false"] | None | UndefinedType = Undefined,
-                spanning_tree_bpduguard: Literal["enabled", "disabled", "True", "False", "true", "false"] | None | UndefinedType = Undefined,
+                spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
+                spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
                 flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol | UndefinedType = Undefined,
                 qos_profile: str | None | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
@@ -11053,8 +11710,7 @@ class EosDesigns(EosDesignsRootModel):
                        key if set.
                     endpoint: Name or description of the endpoints connected to these ports.
                     speed:
-                       Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                       <interface_speed>`.
+                       Set adapter speed.
                        If not specified speed will be auto.
                     profile: Port-profile name to inherit configuration.
                     enabled:
@@ -11187,10 +11843,19 @@ class EosDesigns(EosDesignsRootModel):
     class CustomNodeTypeKeysItem(AvdModel):
         """Subclass of AvdModel."""
 
+        DefaultEvpnRole: TypeAlias = Literal["none", "client", "server"]
+        DefaultUnderlayRoutingProtocol: TypeAlias = Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
+        DefaultOverlayRoutingProtocol: TypeAlias = Literal["ebgp", "ibgp", "her", "cvx", "none"]
+        DefaultMplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
+
         class DefaultOverlayAddressFamilies(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
         DefaultOverlayAddressFamilies._item_type = str
+
+        DefaultEvpnEncapsulation: TypeAlias = Literal["mpls", "vxlan"]
+        DefaultWanRole: TypeAlias = Literal["client", "server"]
+        DefaultFlowTrackerType: TypeAlias = Literal["sampled", "hardware"]
 
         class NetworkServices(AvdModel):
             """Subclass of AvdModel."""
@@ -11233,6 +11898,8 @@ class EosDesigns(EosDesignsRootModel):
                            Only supported with underlay_router.
 
                     """
+
+        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
 
         class IpAddressing(AvdModel):
             """Subclass of AvdModel."""
@@ -11439,7 +12106,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        default_evpn_role: Literal["none", "client", "server"]
+        default_evpn_role: DefaultEvpnRole
         """
         Default evpn_role. Can be overridden in topology vars.
 
@@ -11451,7 +12118,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `127`
         """
-        default_underlay_routing_protocol: Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
+        default_underlay_routing_protocol: DefaultUnderlayRoutingProtocol
         """
         Set the default underlay routing_protocol.
         Can be overridden by setting "underlay_routing_protocol"
@@ -11459,7 +12126,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `"ebgp"`
         """
-        default_overlay_routing_protocol: Literal["ebgp", "ibgp", "her", "cvx", "none"]
+        default_overlay_routing_protocol: DefaultOverlayRoutingProtocol
         """
         Set the default overlay routing_protocol.
         Can be overridden by setting "overlay_routing_protocol"
@@ -11467,7 +12134,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `"ebgp"`
         """
-        default_mpls_overlay_role: Literal["client", "server", "none"] | None
+        default_mpls_overlay_role: DefaultMplsOverlayRole | None
         """
         Set the default mpls overlay role.
         Acting role in overlay control plane.
@@ -11481,13 +12148,13 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `lambda cls: coerce_type(["evpn"], target_type=cls)`
         """
-        default_evpn_encapsulation: Literal["mpls", "vxlan"]
+        default_evpn_encapsulation: DefaultEvpnEncapsulation
         """
         Set the default evpn encapsulation.
 
         Default value: `"vxlan"`
         """
-        default_wan_role: Literal["client", "server"] | None
+        default_wan_role: DefaultWanRole | None
         """
         Set the default WAN role.
 
@@ -11497,7 +12164,7 @@ class EosDesigns(EosDesignsRootModel):
         `server` indicates that the router is a
         route-reflector.
         """
-        default_flow_tracker_type: Literal["sampled", "hardware"]
+        default_flow_tracker_type: DefaultFlowTrackerType
         """
         Set the default flow tracker type.
 
@@ -11521,7 +12188,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `True`
         """
-        uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+        uplink_type: UplinkType
         """
         `uplink_type` must be `p2p`, `p2p-vrfs` or `lan` if `vtep` or `underlay_router` is true.
 
@@ -11591,20 +12258,19 @@ class EosDesigns(EosDesignsRootModel):
                 key: str | UndefinedType = Undefined,
                 type: str | None | UndefinedType = Undefined,
                 connected_endpoints: bool | UndefinedType = Undefined,
-                default_evpn_role: Literal["none", "client", "server"] | UndefinedType = Undefined,
+                default_evpn_role: DefaultEvpnRole | UndefinedType = Undefined,
                 default_ptp_priority1: int | UndefinedType = Undefined,
-                default_underlay_routing_protocol: Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
-                | UndefinedType = Undefined,
-                default_overlay_routing_protocol: Literal["ebgp", "ibgp", "her", "cvx", "none"] | UndefinedType = Undefined,
-                default_mpls_overlay_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                default_underlay_routing_protocol: DefaultUnderlayRoutingProtocol | UndefinedType = Undefined,
+                default_overlay_routing_protocol: DefaultOverlayRoutingProtocol | UndefinedType = Undefined,
+                default_mpls_overlay_role: DefaultMplsOverlayRole | None | UndefinedType = Undefined,
                 default_overlay_address_families: DefaultOverlayAddressFamilies | UndefinedType = Undefined,
-                default_evpn_encapsulation: Literal["mpls", "vxlan"] | UndefinedType = Undefined,
-                default_wan_role: Literal["client", "server"] | None | UndefinedType = Undefined,
-                default_flow_tracker_type: Literal["sampled", "hardware"] | UndefinedType = Undefined,
+                default_evpn_encapsulation: DefaultEvpnEncapsulation | UndefinedType = Undefined,
+                default_wan_role: DefaultWanRole | None | UndefinedType = Undefined,
+                default_flow_tracker_type: DefaultFlowTrackerType | UndefinedType = Undefined,
                 mlag_support: bool | UndefinedType = Undefined,
                 network_services: NetworkServices | UndefinedType = Undefined,
                 underlay_router: bool | UndefinedType = Undefined,
-                uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | UndefinedType = Undefined,
+                uplink_type: UplinkType | UndefinedType = Undefined,
                 vtep: bool | UndefinedType = Undefined,
                 default_vtep_loopback: str | None | UndefinedType = Undefined,
                 mpls_lsr: bool | UndefinedType = Undefined,
@@ -11709,10 +12375,19 @@ class EosDesigns(EosDesignsRootModel):
     class NodeTypeKeysItem(AvdModel):
         """Subclass of AvdModel."""
 
+        DefaultEvpnRole: TypeAlias = Literal["none", "client", "server"]
+        DefaultUnderlayRoutingProtocol: TypeAlias = Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
+        DefaultOverlayRoutingProtocol: TypeAlias = Literal["ebgp", "ibgp", "her", "cvx", "none"]
+        DefaultMplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
+
         class DefaultOverlayAddressFamilies(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
         DefaultOverlayAddressFamilies._item_type = str
+
+        DefaultEvpnEncapsulation: TypeAlias = Literal["mpls", "vxlan"]
+        DefaultWanRole: TypeAlias = Literal["client", "server"]
+        DefaultFlowTrackerType: TypeAlias = Literal["sampled", "hardware"]
 
         class NetworkServices(AvdModel):
             """Subclass of AvdModel."""
@@ -11755,6 +12430,8 @@ class EosDesigns(EosDesignsRootModel):
                            Only supported with underlay_router.
 
                     """
+
+        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
 
         class IpAddressing(AvdModel):
             """Subclass of AvdModel."""
@@ -11961,7 +12638,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        default_evpn_role: Literal["none", "client", "server"]
+        default_evpn_role: DefaultEvpnRole
         """
         Default evpn_role. Can be overridden in topology vars.
 
@@ -11973,7 +12650,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `127`
         """
-        default_underlay_routing_protocol: Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
+        default_underlay_routing_protocol: DefaultUnderlayRoutingProtocol
         """
         Set the default underlay routing_protocol.
         Can be overridden by setting "underlay_routing_protocol"
@@ -11981,7 +12658,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `"ebgp"`
         """
-        default_overlay_routing_protocol: Literal["ebgp", "ibgp", "her", "cvx", "none"]
+        default_overlay_routing_protocol: DefaultOverlayRoutingProtocol
         """
         Set the default overlay routing_protocol.
         Can be overridden by setting "overlay_routing_protocol"
@@ -11989,7 +12666,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `"ebgp"`
         """
-        default_mpls_overlay_role: Literal["client", "server", "none"] | None
+        default_mpls_overlay_role: DefaultMplsOverlayRole | None
         """
         Set the default mpls overlay role.
         Acting role in overlay control plane.
@@ -12003,13 +12680,13 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `lambda cls: coerce_type(["evpn"], target_type=cls)`
         """
-        default_evpn_encapsulation: Literal["mpls", "vxlan"]
+        default_evpn_encapsulation: DefaultEvpnEncapsulation
         """
         Set the default evpn encapsulation.
 
         Default value: `"vxlan"`
         """
-        default_wan_role: Literal["client", "server"] | None
+        default_wan_role: DefaultWanRole | None
         """
         Set the default WAN role.
 
@@ -12019,7 +12696,7 @@ class EosDesigns(EosDesignsRootModel):
         `server` indicates that the router is a
         route-reflector.
         """
-        default_flow_tracker_type: Literal["sampled", "hardware"]
+        default_flow_tracker_type: DefaultFlowTrackerType
         """
         Set the default flow tracker type.
 
@@ -12043,7 +12720,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `True`
         """
-        uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+        uplink_type: UplinkType
         """
         `uplink_type` must be `p2p`, `p2p-vrfs` or `lan` if `vtep` or `underlay_router` is true.
 
@@ -12113,20 +12790,19 @@ class EosDesigns(EosDesignsRootModel):
                 key: str | UndefinedType = Undefined,
                 type: str | None | UndefinedType = Undefined,
                 connected_endpoints: bool | UndefinedType = Undefined,
-                default_evpn_role: Literal["none", "client", "server"] | UndefinedType = Undefined,
+                default_evpn_role: DefaultEvpnRole | UndefinedType = Undefined,
                 default_ptp_priority1: int | UndefinedType = Undefined,
-                default_underlay_routing_protocol: Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
-                | UndefinedType = Undefined,
-                default_overlay_routing_protocol: Literal["ebgp", "ibgp", "her", "cvx", "none"] | UndefinedType = Undefined,
-                default_mpls_overlay_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                default_underlay_routing_protocol: DefaultUnderlayRoutingProtocol | UndefinedType = Undefined,
+                default_overlay_routing_protocol: DefaultOverlayRoutingProtocol | UndefinedType = Undefined,
+                default_mpls_overlay_role: DefaultMplsOverlayRole | None | UndefinedType = Undefined,
                 default_overlay_address_families: DefaultOverlayAddressFamilies | UndefinedType = Undefined,
-                default_evpn_encapsulation: Literal["mpls", "vxlan"] | UndefinedType = Undefined,
-                default_wan_role: Literal["client", "server"] | None | UndefinedType = Undefined,
-                default_flow_tracker_type: Literal["sampled", "hardware"] | UndefinedType = Undefined,
+                default_evpn_encapsulation: DefaultEvpnEncapsulation | UndefinedType = Undefined,
+                default_wan_role: DefaultWanRole | None | UndefinedType = Undefined,
+                default_flow_tracker_type: DefaultFlowTrackerType | UndefinedType = Undefined,
                 mlag_support: bool | UndefinedType = Undefined,
                 network_services: NetworkServices | UndefinedType = Undefined,
                 underlay_router: bool | UndefinedType = Undefined,
-                uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | UndefinedType = Undefined,
+                uplink_type: UplinkType | UndefinedType = Undefined,
                 vtep: bool | UndefinedType = Undefined,
                 default_vtep_loopback: str | None | UndefinedType = Undefined,
                 mpls_lsr: bool | UndefinedType = Undefined,
@@ -12292,6 +12968,8 @@ class EosDesigns(EosDesignsRootModel):
         class AuthenticationKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
+            KeyType: TypeAlias = Literal["0", "7", "8a"]
+            HashAlgorithm: TypeAlias = Literal["md5", "sha1"]
             _fields: ClassVar[dict] = {
                 "key": {"type": str},
                 "cleartext_key": {"type": str},
@@ -12314,14 +12992,14 @@ class EosDesigns(EosDesignsRootModel):
             To protect the password at rest it is strongly recommended to make use of a
             vault or similar.
             """
-            key_type: Literal["0", "7", "8a"] | None
+            key_type: KeyType | None
             """
             Key type of the `key`.
             Does not have any influence on `cleartext_key`.
             """
             id: int
             """Key identifier."""
-            hash_algorithm: Literal["md5", "sha1"]
+            hash_algorithm: HashAlgorithm
 
             if TYPE_CHECKING:
 
@@ -12330,9 +13008,9 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     key: str | None | UndefinedType = Undefined,
                     cleartext_key: str | None | UndefinedType = Undefined,
-                    key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                    key_type: KeyType | None | UndefinedType = Undefined,
                     id: int | UndefinedType = Undefined,
-                    hash_algorithm: Literal["md5", "sha1"] | UndefinedType = Undefined,
+                    hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AuthenticationKeysItem.
@@ -12457,9 +13135,12 @@ class EosDesigns(EosDesignsRootModel):
 
     OverlayCvxServers._item_type = str
 
+    OverlayHerFloodListScope: TypeAlias = Literal["fabric", "dc"]
+
     class OverlayRdType(AvdModel):
         """Subclass of AvdModel."""
 
+        VlanAssignedNumberSubfield: TypeAlias = Literal["mac_vrf_id", "mac_vrf_vni", "vlan_id"]
         _fields: ClassVar[dict] = {
             "admin_subfield": {"type": str, "default": "router_id"},
             "admin_subfield_offset": {"type": int, "default": 0},
@@ -12522,7 +13203,7 @@ class EosDesigns(EosDesignsRootModel):
         'vrf_admin_subfield_offset' takes precedence for VRF RDs if set. Otherwise the
         'admin_subfield_offset' value will be used.
         """
-        vlan_assigned_number_subfield: Literal["mac_vrf_id", "mac_vrf_vni", "vlan_id"]
+        vlan_assigned_number_subfield: VlanAssignedNumberSubfield
         """
         The method for deriving RD Assigned Number subfield for VLAN services (second part of RD):
         -
@@ -12547,7 +13228,7 @@ class EosDesigns(EosDesignsRootModel):
                 admin_subfield_offset: int | UndefinedType = Undefined,
                 vrf_admin_subfield: str | None | UndefinedType = Undefined,
                 vrf_admin_subfield_offset: int | None | UndefinedType = Undefined,
-                vlan_assigned_number_subfield: Literal["mac_vrf_id", "mac_vrf_vni", "vlan_id"] | UndefinedType = Undefined,
+                vlan_assigned_number_subfield: VlanAssignedNumberSubfield | UndefinedType = Undefined,
             ) -> None:
                 """
                 OverlayRdType.
@@ -12613,9 +13294,13 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    OverlayRoutingProtocol: TypeAlias = Literal["ebgp", "ibgp", "cvx", "her", "none"]
+    OverlayRoutingProtocolAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
+
     class OverlayRtType(AvdModel):
         """Subclass of AvdModel."""
 
+        VlanAssignedNumberSubfield: TypeAlias = Literal["mac_vrf_id", "mac_vrf_vni", "vlan_id"]
         _fields: ClassVar[dict] = {
             "admin_subfield": {"type": str, "default": "vrf_id"},
             "vrf_admin_subfield": {"type": str},
@@ -12660,7 +13345,7 @@ class EosDesigns(EosDesignsRootModel):
         'vrf_admin_subfield' takes precedence for VRF RDs if set. Otherwise the
         'admin_subfield' value will be used.
         """
-        vlan_assigned_number_subfield: Literal["mac_vrf_id", "mac_vrf_vni", "vlan_id"]
+        vlan_assigned_number_subfield: VlanAssignedNumberSubfield
         """
         The method for deriving RT Assigned Number subfield for VLAN services (second part of RT):
         -
@@ -12683,7 +13368,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 admin_subfield: str | UndefinedType = Undefined,
                 vrf_admin_subfield: str | None | UndefinedType = Undefined,
-                vlan_assigned_number_subfield: Literal["mac_vrf_id", "mac_vrf_vni", "vlan_id"] | UndefinedType = Undefined,
+                vlan_assigned_number_subfield: VlanAssignedNumberSubfield | UndefinedType = Undefined,
             ) -> None:
                 """
                 OverlayRtType.
@@ -13332,6 +14017,7 @@ class EosDesigns(EosDesignsRootModel):
         class DigitalTwin(AvdModel):
             """Subclass of AvdModel."""
 
+            ActNodeType: TypeAlias = Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"]
             _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}}
             platform: str | None
             """
@@ -13339,17 +14025,12 @@ class EosDesigns(EosDesignsRootModel):
             The
             `platform_settings` for the regular `platform` is used if this is not set.
             """
-            act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None
+            act_node_type: ActNodeType | None
             """ACT node type."""
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    platform: str | None | UndefinedType = Undefined,
-                    act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, platform: str | None | UndefinedType = Undefined, act_node_type: ActNodeType | None | UndefinedType = Undefined) -> None:
                     """
                     DigitalTwin.
 
@@ -14077,6 +14758,7 @@ class EosDesigns(EosDesignsRootModel):
         class DigitalTwin(AvdModel):
             """Subclass of AvdModel."""
 
+            ActNodeType: TypeAlias = Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"]
             _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}}
             platform: str | None
             """
@@ -14084,17 +14766,12 @@ class EosDesigns(EosDesignsRootModel):
             The
             `platform_settings` for the regular `platform` is used if this is not set.
             """
-            act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None
+            act_node_type: ActNodeType | None
             """ACT node type."""
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    platform: str | None | UndefinedType = Undefined,
-                    act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, platform: str | None | UndefinedType = Undefined, act_node_type: ActNodeType | None | UndefinedType = Undefined) -> None:
                     """
                     DigitalTwin.
 
@@ -14297,14 +14974,106 @@ class EosDesigns(EosDesignsRootModel):
     class PortProfilesItem(AvdModel):
         """Subclass of AvdModel."""
 
+        Speed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
+        Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
+        PhoneTrunkMode: TypeAlias = Literal["tagged", "untagged", "tagged phone", "untagged phone"]
+
         class TrunkGroups(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
         TrunkGroups._item_type = str
 
+        SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+        SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+        SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+
         class Ptp(AvdModel):
             """Subclass of AvdModel."""
 
+            EndpointRole: TypeAlias = Literal["follower", "dynamic", "bmca", "default"]
             _fields: ClassVar[dict] = {
                 "enabled": {"type": bool, "default": False},
                 "endpoint_role": {"type": str, "default": "follower"},
@@ -14312,7 +15081,7 @@ class EosDesigns(EosDesignsRootModel):
             }
             enabled: bool
             """Default value: `False`"""
-            endpoint_role: Literal["follower", "dynamic", "bmca", "default"]
+            endpoint_role: EndpointRole
             """
             PTP role of the endpoint.
             `follower` will configure the switch port as `ptp role master`.
@@ -14340,7 +15109,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     enabled: bool | UndefinedType = Undefined,
-                    endpoint_role: Literal["follower", "dynamic", "bmca", "default"] | UndefinedType = Undefined,
+                    endpoint_role: EndpointRole | UndefinedType = Undefined,
                     profile: str | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -14430,10 +15199,11 @@ class EosDesigns(EosDesignsRootModel):
             class All(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional variable and is hardware dependent.
 
@@ -14442,7 +15212,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         All.
 
@@ -14458,10 +15228,11 @@ class EosDesigns(EosDesignsRootModel):
             class Broadcast(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional variable and is hardware dependent.
 
@@ -14470,7 +15241,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         Broadcast.
 
@@ -14486,10 +15257,11 @@ class EosDesigns(EosDesignsRootModel):
             class Multicast(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional variable and is hardware dependent.
 
@@ -14498,7 +15270,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         Multicast.
 
@@ -14514,10 +15286,11 @@ class EosDesigns(EosDesignsRootModel):
             class UnknownUnicast(AvdModel):
                 """Subclass of AvdModel."""
 
+                Unit: TypeAlias = Literal["percent", "pps"]
                 _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 level: str | None
                 """Configure maximum storm-control level."""
-                unit: Literal["percent", "pps"]
+                unit: Unit
                 """
                 Optional variable and is hardware dependent.
 
@@ -14526,7 +15299,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                         """
                         UnknownUnicast.
 
@@ -14581,14 +15354,19 @@ class EosDesigns(EosDesignsRootModel):
         class MonitorSessionsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Role: TypeAlias = Literal["source", "destination"]
+
             class SourceSettings(AvdModel):
                 """Subclass of AvdModel."""
+
+                Direction: TypeAlias = Literal["rx", "tx", "both"]
 
                 class AccessGroup(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                    type: Literal["ip", "ipv6", "mac"] | None
+                    type: Type | None
                     name: str | None
                     """ACL name."""
                     priority: int | None
@@ -14598,7 +15376,7 @@ class EosDesigns(EosDesignsRootModel):
                         def __init__(
                             self,
                             *,
-                            type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
+                            type: Type | None | UndefinedType = Undefined,
                             name: str | None | UndefinedType = Undefined,
                             priority: int | None | UndefinedType = Undefined,
                         ) -> None:
@@ -14616,7 +15394,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
 
                 _fields: ClassVar[dict] = {"direction": {"type": str}, "access_group": {"type": AccessGroup}}
-                direction: Literal["rx", "tx", "both"] | None
+                direction: Direction | None
                 access_group: AccessGroup
                 """
                 This can only be set when `session_settings.access_group` is not set.
@@ -14627,10 +15405,7 @@ class EosDesigns(EosDesignsRootModel):
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        direction: Literal["rx", "tx", "both"] | None | UndefinedType = Undefined,
-                        access_group: AccessGroup | UndefinedType = Undefined,
+                        self, *, direction: Direction | None | UndefinedType = Undefined, access_group: AccessGroup | UndefinedType = Undefined
                     ) -> None:
                         """
                         SourceSettings.
@@ -14653,16 +15428,15 @@ class EosDesigns(EosDesignsRootModel):
                 class AccessGroup(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                    type: Literal["ip", "ipv6", "mac"] | None
+                    type: Type | None
                     name: str | None
                     """ACL name."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self, *, type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined
-                        ) -> None:
+                        def __init__(self, *, type: Type | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
                             """
                             AccessGroup.
 
@@ -14780,7 +15554,7 @@ class EosDesigns(EosDesignsRootModel):
             }
             name: str
             """Session name."""
-            role: Literal["source", "destination"] | None
+            role: Role | None
             source_settings: SourceSettings
             """Subclass of AvdModel."""
             session_settings: SessionSettings
@@ -14799,7 +15573,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    role: Literal["source", "destination"] | None | UndefinedType = Undefined,
+                    role: Role | None | UndefinedType = Undefined,
                     source_settings: SourceSettings | UndefinedType = Undefined,
                     session_settings: SessionSettings | UndefinedType = Undefined,
                 ) -> None:
@@ -14831,6 +15605,9 @@ class EosDesigns(EosDesignsRootModel):
         class EthernetSegment(AvdModel):
             """Subclass of AvdModel."""
 
+            Redundancy: TypeAlias = Literal["all-active", "single-active"]
+            DesignatedForwarderAlgorithm: TypeAlias = Literal["auto", "modulus", "preference"]
+
             class DesignatedForwarderPreferences(AvdList[int]):
                 """Subclass of AvdList with `int` items."""
 
@@ -14851,13 +15628,13 @@ class EosDesigns(EosDesignsRootModel):
             Please see the notes under "EVPN A/A
             ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
             """
-            redundancy: Literal["all-active", "single-active"] | None
+            redundancy: Redundancy | None
             """
             If omitted, Port-Channels use the EOS default of all-active.
             If omitted, Ethernet interfaces are
             configured as single-active.
             """
-            designated_forwarder_algorithm: Literal["auto", "modulus", "preference"] | None
+            designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None
             """
             Configure DF algorithm and preferences.
             - auto: Use preference-based algorithm and assign preference
@@ -14888,8 +15665,8 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     short_esi: str | UndefinedType = Undefined,
-                    redundancy: Literal["all-active", "single-active"] | None | UndefinedType = Undefined,
-                    designated_forwarder_algorithm: Literal["auto", "modulus", "preference"] | None | UndefinedType = Undefined,
+                    redundancy: Redundancy | None | UndefinedType = Undefined,
+                    designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None | UndefinedType = Undefined,
                     designated_forwarder_preferences: DesignatedForwarderPreferences | UndefinedType = Undefined,
                     dont_preempt: bool | None | UndefinedType = Undefined,
                 ) -> None:
@@ -14935,12 +15712,17 @@ class EosDesigns(EosDesignsRootModel):
         class PortChannel(AvdModel):
             """Subclass of AvdModel."""
 
+            Mode: TypeAlias = Literal["active", "passive", "on"]
+
             class LacpFallback(AvdModel):
                 """Subclass of AvdModel."""
+
+                Mode: TypeAlias = Literal["static", "individual"]
 
                 class Individual(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
                     _fields: ClassVar[dict] = {"profile": {"type": str}, "vlans": {"type": str}, "native_vlan": {"type": int}, "mode": {"type": str}}
                     profile: str | None
                     """Port-profile name to inherit configuration."""
@@ -14948,7 +15730,7 @@ class EosDesigns(EosDesignsRootModel):
                     """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
                     native_vlan: int | None
                     """Native VLAN on the port-channel member interfaces when in fallback individual."""
-                    mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+                    mode: Mode | None
                     """Interface mode on the port-channel member interfaces when in fallback individual."""
 
                     if TYPE_CHECKING:
@@ -14959,7 +15741,7 @@ class EosDesigns(EosDesignsRootModel):
                             profile: str | None | UndefinedType = Undefined,
                             vlans: str | None | UndefinedType = Undefined,
                             native_vlan: int | None | UndefinedType = Undefined,
-                            mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                            mode: Mode | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Individual.
@@ -14976,7 +15758,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
 
                 _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
-                mode: Literal["static", "individual"] | None
+                mode: Mode | None
                 """
                 Either static or individual mode is supported.
                 If the mode is set to "individual" either 'profile'
@@ -15001,7 +15783,7 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        mode: Literal["static", "individual"] | None | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
                         individual: Individual | UndefinedType = Undefined,
                         timeout: int | UndefinedType = Undefined,
                     ) -> None:
@@ -15028,17 +15810,16 @@ class EosDesigns(EosDesignsRootModel):
             class LacpTimer(AvdModel):
                 """Subclass of AvdModel."""
 
+                Mode: TypeAlias = Literal["normal", "fast"]
                 _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
-                mode: Literal["normal", "fast"] | None
+                mode: Mode | None
                 """LACP mode for interface members."""
                 multiplier: int | None
                 """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, mode: Literal["normal", "fast"] | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined) -> None:
                         """
                         LacpTimer.
 
@@ -15167,7 +15948,7 @@ class EosDesigns(EosDesignsRootModel):
                 "raw_eos_cli": {"type": str},
                 "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
-            mode: Literal["active", "passive", "on"] | None
+            mode: Mode | None
             """Port-Channel Mode."""
             channel_id: int | None
             """
@@ -15264,7 +16045,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    mode: Literal["active", "passive", "on"] | None | UndefinedType = Undefined,
+                    mode: Mode | None | UndefinedType = Undefined,
                     channel_id: int | None | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     endpoint_port_channel: str | None | UndefinedType = Undefined,
@@ -15403,10 +16184,9 @@ class EosDesigns(EosDesignsRootModel):
         Port_profiles can refer to another port_profile to inherit settings in
         up to two levels (adapter->profile->parent_profile).
         """
-        speed: str | None
+        speed: Speed | None
         """
-        Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-        <interface_speed>`.
+        Set adapter speed.
         If not specified speed will be auto.
         """
         description: str | None
@@ -15436,7 +16216,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `True`
         """
-        mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+        mode: Mode | None
         """Interface mode."""
         mtu: int | None
         l2_mtu: int | None
@@ -15456,7 +16236,7 @@ class EosDesigns(EosDesignsRootModel):
         Phone VLAN for a mode `trunk phone` port.
         Requires `mode: trunk phone` to be set.
         """
-        phone_trunk_mode: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None
+        phone_trunk_mode: PhoneTrunkMode | None
         """
         Specify if the phone traffic is tagged or untagged.
         If both data and phone traffic are untagged,
@@ -15476,9 +16256,9 @@ class EosDesigns(EosDesignsRootModel):
         Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
         VLAN 1 will be used for access ports.
         """
-        spanning_tree_portfast: Literal["edge", "network"] | None
-        spanning_tree_bpdufilter: Literal["enabled", "disabled", "True", "False", "true", "false"] | None
-        spanning_tree_bpduguard: Literal["enabled", "disabled", "True", "False", "true", "false"] | None
+        spanning_tree_portfast: SpanningTreePortfast | None
+        spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
+        spanning_tree_bpduguard: SpanningTreeBpduguard | None
         flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol
         qos_profile: str | None
         """QOS profile name."""
@@ -15572,22 +16352,22 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 profile: str | UndefinedType = Undefined,
                 parent_profile: str | None | UndefinedType = Undefined,
-                speed: str | None | UndefinedType = Undefined,
+                speed: Speed | None | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
                 enabled: bool | UndefinedType = Undefined,
-                mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                mode: Mode | None | UndefinedType = Undefined,
                 mtu: int | None | UndefinedType = Undefined,
                 l2_mtu: int | None | UndefinedType = Undefined,
                 l2_mru: int | None | UndefinedType = Undefined,
                 native_vlan: int | None | UndefinedType = Undefined,
                 native_vlan_tag: bool | None | UndefinedType = Undefined,
                 phone_vlan: int | None | UndefinedType = Undefined,
-                phone_trunk_mode: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None | UndefinedType = Undefined,
+                phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 vlans: str | None | UndefinedType = Undefined,
-                spanning_tree_portfast: Literal["edge", "network"] | None | UndefinedType = Undefined,
-                spanning_tree_bpdufilter: Literal["enabled", "disabled", "True", "False", "true", "false"] | None | UndefinedType = Undefined,
-                spanning_tree_bpduguard: Literal["enabled", "disabled", "True", "False", "true", "false"] | None | UndefinedType = Undefined,
+                spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
+                spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
                 flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol | UndefinedType = Undefined,
                 qos_profile: str | None | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
@@ -15619,8 +16399,7 @@ class EosDesigns(EosDesignsRootModel):
                        Port_profiles can refer to another port_profile to inherit settings in
                        up to two levels (adapter->profile->parent_profile).
                     speed:
-                       Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                       <interface_speed>`.
+                       Set adapter speed.
                        If not specified speed will be auto.
                     description:
                        Description or description template to be used on all ports.
@@ -15787,6 +16566,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        Transport: TypeAlias = Literal["ipv4"]
         _fields: ClassVar[dict] = {
             "profile": {"type": str},
             "announce": {"type": Announce},
@@ -15809,7 +16589,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        transport: Literal["ipv4"] | None
+        transport: Transport | None
 
         if TYPE_CHECKING:
 
@@ -15820,7 +16600,7 @@ class EosDesigns(EosDesignsRootModel):
                 announce: Announce | UndefinedType = Undefined,
                 delay_req: int | None | UndefinedType = Undefined,
                 sync_message: SyncMessage | UndefinedType = Undefined,
-                transport: Literal["ipv4"] | None | UndefinedType = Undefined,
+                transport: Transport | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 PtpProfilesItem.
@@ -16183,12 +16963,13 @@ class EosDesigns(EosDesignsRootModel):
     class Redundancy(AvdModel):
         """Subclass of AvdModel."""
 
+        Protocol: TypeAlias = Literal["sso", "rpr"]
         _fields: ClassVar[dict] = {"protocol": {"type": str}}
-        protocol: Literal["sso", "rpr"] | None
+        protocol: Protocol | None
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, protocol: Literal["sso", "rpr"] | None | UndefinedType = Undefined) -> None:
+            def __init__(self, *, protocol: Protocol | None | UndefinedType = Undefined) -> None:
                 """
                 Redundancy.
 
@@ -16476,9 +17257,14 @@ class EosDesigns(EosDesignsRootModel):
 
         Vrfs._item_type = VrfsItem
 
+        ComputeLocalEngineidSource: TypeAlias = Literal["hostname_and_ip", "system_mac"]
+
         class UsersItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Version: TypeAlias = Literal["v1", "v2c", "v3"]
+            Auth: TypeAlias = Literal["md5", "sha", "sha256", "sha384", "sha512"]
+            Priv: TypeAlias = Literal["des", "aes", "aes192", "aes256"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "group": {"type": str},
@@ -16492,11 +17278,11 @@ class EosDesigns(EosDesignsRootModel):
             """Username."""
             group: str | None
             """Group name."""
-            version: Literal["v1", "v2c", "v3"] | None
-            auth: Literal["md5", "sha", "sha256", "sha384", "sha512"] | None
+            version: Version | None
+            auth: Auth | None
             auth_passphrase: str | None
             """Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set."""
-            priv: Literal["des", "aes", "aes192", "aes256"] | None
+            priv: Priv | None
             priv_passphrase: str | None
             """Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set."""
 
@@ -16507,10 +17293,10 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | None | UndefinedType = Undefined,
                     group: str | None | UndefinedType = Undefined,
-                    version: Literal["v1", "v2c", "v3"] | None | UndefinedType = Undefined,
-                    auth: Literal["md5", "sha", "sha256", "sha384", "sha512"] | None | UndefinedType = Undefined,
+                    version: Version | None | UndefinedType = Undefined,
+                    auth: Auth | None | UndefinedType = Undefined,
                     auth_passphrase: str | None | UndefinedType = Undefined,
-                    priv: Literal["des", "aes", "aes192", "aes256"] | None | UndefinedType = Undefined,
+                    priv: Priv | None | UndefinedType = Undefined,
                     priv_passphrase: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -16538,20 +17324,20 @@ class EosDesigns(EosDesignsRootModel):
         class HostsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Version: TypeAlias = Literal["1", "2c", "3"]
+
             class UsersItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                AuthenticationLevel: TypeAlias = Literal["auth", "noauth", "priv"]
                 _fields: ClassVar[dict] = {"username": {"type": str}, "authentication_level": {"type": str}}
                 username: str | None
-                authentication_level: Literal["auth", "noauth", "priv"] | None
+                authentication_level: AuthenticationLevel | None
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        username: str | None | UndefinedType = Undefined,
-                        authentication_level: Literal["auth", "noauth", "priv"] | None | UndefinedType = Undefined,
+                        self, *, username: str | None | UndefinedType = Undefined, authentication_level: AuthenticationLevel | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         UsersItem.
@@ -16599,7 +17385,7 @@ class EosDesigns(EosDesignsRootModel):
             other string will be used directly as the VRF name. Remember to set the
             `snmp_settings.vrfs[].source_interface` if needed.
             """
-            version: Literal["1", "2c", "3"] | None
+            version: Version | None
             community: str | None
             """Community name. Required with version "1" or "2c"."""
             users: Users
@@ -16612,7 +17398,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     host: str | None | UndefinedType = Undefined,
                     vrf: str | None | UndefinedType = Undefined,
-                    version: Literal["1", "2c", "3"] | None | UndefinedType = Undefined,
+                    version: Version | None | UndefinedType = Undefined,
                     community: str | None | UndefinedType = Undefined,
                     users: Users | UndefinedType = Undefined,
                 ) -> None:
@@ -16692,6 +17478,8 @@ class EosDesigns(EosDesignsRootModel):
         class GroupsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Version: TypeAlias = Literal["v1", "v2c", "v3"]
+            Authentication: TypeAlias = Literal["auth", "noauth", "priv"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "version": {"type": str},
@@ -16702,8 +17490,8 @@ class EosDesigns(EosDesignsRootModel):
             }
             name: str | None
             """Group name."""
-            version: Literal["v1", "v2c", "v3"] | None
-            authentication: Literal["auth", "noauth", "priv"] | None
+            version: Version | None
+            authentication: Authentication | None
             read: str | None
             """Read view."""
             write: str | None
@@ -16717,8 +17505,8 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     name: str | None | UndefinedType = Undefined,
-                    version: Literal["v1", "v2c", "v3"] | None | UndefinedType = Undefined,
-                    authentication: Literal["auth", "noauth", "priv"] | None | UndefinedType = Undefined,
+                    version: Version | None | UndefinedType = Undefined,
+                    authentication: Authentication | None | UndefinedType = Undefined,
                     read: str | None | UndefinedType = Undefined,
                     write: str | None | UndefinedType = Undefined,
                     notify: str | None | UndefinedType = Undefined,
@@ -16775,7 +17563,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        compute_local_engineid_source: Literal["hostname_and_ip", "system_mac"]
+        compute_local_engineid_source: ComputeLocalEngineidSource
         """
         `compute_local_engineid_source` supports:
         - `hostname_and_ip` generate a local engineId for SNMP by
@@ -16827,7 +17615,7 @@ class EosDesigns(EosDesignsRootModel):
                 location: bool | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 compute_local_engineid: bool | UndefinedType = Undefined,
-                compute_local_engineid_source: Literal["hostname_and_ip", "system_mac"] | UndefinedType = Undefined,
+                compute_local_engineid_source: ComputeLocalEngineidSource | UndefinedType = Undefined,
                 compute_v3_user_localized_key: bool | UndefinedType = Undefined,
                 users: Users | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
@@ -17119,6 +17907,43 @@ class EosDesigns(EosDesignsRootModel):
 
             Ipv6AddressVirtuals._item_type = str
 
+            class Ipv6Nd(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "advertise_ipv6_address_virtuals": {"type": bool},
+                    "valid_lifetime": {"type": str},
+                    "preferred_lifetime": {"type": str},
+                }
+                advertise_ipv6_address_virtuals: bool | None
+                """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+                valid_lifetime: str | None
+                """In seconds <0-4294967295> or infinite."""
+                preferred_lifetime: str | None
+                """In seconds <0-4294967295> or infinite."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ipv6Nd.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                            valid_lifetime: In seconds <0-4294967295> or infinite.
+                            preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                        """
+
             class IpAddressVirtualSecondaries(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -17399,6 +18224,7 @@ class EosDesigns(EosDesignsRootModel):
             class IgmpSnoopingQuerier(AvdModel):
                 """Subclass of AvdModel."""
 
+                Version: TypeAlias = Literal[1, 2, 3]
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}, "fast_leave": {"type": bool}}
                 enabled: bool | None
                 """Will be enabled automatically if evpn_l2_multicast is enabled."""
@@ -17407,7 +18233,7 @@ class EosDesigns(EosDesignsRootModel):
                 IPv4_address
                 If not set, IP address of "Loopback0" will be used.
                 """
-                version: Literal[1, 2, 3] | None
+                version: Version | None
                 """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
                 fast_leave: bool | None
                 """Enable IGMP snooping fast-leave feature."""
@@ -17419,7 +18245,7 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         enabled: bool | None | UndefinedType = Undefined,
                         source_address: str | None | UndefinedType = Undefined,
-                        version: Literal[1, 2, 3] | None | UndefinedType = Undefined,
+                        version: Version | None | UndefinedType = Undefined,
                         fast_leave: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -17441,9 +18267,12 @@ class EosDesigns(EosDesignsRootModel):
             class Ospf(AvdModel):
                 """Subclass of AvdModel."""
 
+                Authentication: TypeAlias = Literal["simple", "message-digest"]
+
                 class MessageDigestKeysItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "hash_algorithm": {"type": str, "default": "sha512"},
@@ -17451,7 +18280,7 @@ class EosDesigns(EosDesignsRootModel):
                         "cleartext_key": {"type": str},
                     }
                     id: int | None
-                    hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+                    hash_algorithm: HashAlgorithm
                     """Default value: `"sha512"`"""
                     key: str | None
                     """
@@ -17471,7 +18300,7 @@ class EosDesigns(EosDesignsRootModel):
                             self,
                             *,
                             id: int | None | UndefinedType = Undefined,
-                            hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                            hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                             key: str | None | UndefinedType = Undefined,
                             cleartext_key: str | None | UndefinedType = Undefined,
                         ) -> None:
@@ -17520,7 +18349,7 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 cost: int | None
                 """OSPF link cost."""
-                authentication: Literal["simple", "message-digest"] | None
+                authentication: Authentication | None
                 simple_auth_key: str | None
                 """
                 Type 7 encrypted key for OSPF simple authentication.
@@ -17545,7 +18374,7 @@ class EosDesigns(EosDesignsRootModel):
                         point_to_point: bool | UndefinedType = Undefined,
                         area: str | UndefinedType = Undefined,
                         cost: int | None | UndefinedType = Undefined,
-                        authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
+                        authentication: Authentication | None | UndefinedType = Undefined,
                         simple_auth_key: str | None | UndefinedType = Undefined,
                         cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                         message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
@@ -17621,6 +18450,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv6_enable": {"type": bool},
                 "ip_address_virtual": {"type": str},
                 "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+                "ipv6_nd": {"type": Ipv6Nd},
                 "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                 "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -17679,6 +18509,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdList with `str` items.
             """
+            ipv6_nd: Ipv6Nd
+            """Subclass of AvdModel."""
             ip_address_virtual_secondaries: IpAddressVirtualSecondaries
             """
             Secondary IPv4 VXLAN Anycast IP addresses.
@@ -17858,6 +18690,7 @@ class EosDesigns(EosDesignsRootModel):
                     ipv6_enable: bool | None | UndefinedType = Undefined,
                     ip_address_virtual: str | None | UndefinedType = Undefined,
                     ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                    ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                     ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                     ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -17911,6 +18744,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                            Subclass of AvdList with `str` items.
+                        ipv6_nd: Subclass of AvdModel.
                         ip_address_virtual_secondaries:
                            Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -18043,6 +18877,39 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `str` items."""
 
         Ipv6AddressVirtuals._item_type = str
+
+        class Ipv6Nd(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"advertise_ipv6_address_virtuals": {"type": bool}, "valid_lifetime": {"type": str}, "preferred_lifetime": {"type": str}}
+            advertise_ipv6_address_virtuals: bool | None
+            """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+            valid_lifetime: str | None
+            """In seconds <0-4294967295> or infinite."""
+            preferred_lifetime: str | None
+            """In seconds <0-4294967295> or infinite."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                    valid_lifetime: str | None | UndefinedType = Undefined,
+                    preferred_lifetime: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6Nd.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                        valid_lifetime: In seconds <0-4294967295> or infinite.
+                        preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                    """
 
         class IpAddressVirtualSecondaries(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -18324,6 +19191,7 @@ class EosDesigns(EosDesignsRootModel):
         class IgmpSnoopingQuerier(AvdModel):
             """Subclass of AvdModel."""
 
+            Version: TypeAlias = Literal[1, 2, 3]
             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}, "fast_leave": {"type": bool}}
             enabled: bool | None
             """Will be enabled automatically if evpn_l2_multicast is enabled."""
@@ -18332,7 +19200,7 @@ class EosDesigns(EosDesignsRootModel):
             IPv4_address
             If not set, IP address of "Loopback0" will be used.
             """
-            version: Literal[1, 2, 3] | None
+            version: Version | None
             """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
             fast_leave: bool | None
             """Enable IGMP snooping fast-leave feature."""
@@ -18344,7 +19212,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     enabled: bool | None | UndefinedType = Undefined,
                     source_address: str | None | UndefinedType = Undefined,
-                    version: Literal[1, 2, 3] | None | UndefinedType = Undefined,
+                    version: Version | None | UndefinedType = Undefined,
                     fast_leave: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -18366,9 +19234,12 @@ class EosDesigns(EosDesignsRootModel):
         class Ospf(AvdModel):
             """Subclass of AvdModel."""
 
+            Authentication: TypeAlias = Literal["simple", "message-digest"]
+
             class MessageDigestKeysItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                 _fields: ClassVar[dict] = {
                     "id": {"type": int},
                     "hash_algorithm": {"type": str, "default": "sha512"},
@@ -18376,7 +19247,7 @@ class EosDesigns(EosDesignsRootModel):
                     "cleartext_key": {"type": str},
                 }
                 id: int | None
-                hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+                hash_algorithm: HashAlgorithm
                 """Default value: `"sha512"`"""
                 key: str | None
                 """
@@ -18396,7 +19267,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         id: int | None | UndefinedType = Undefined,
-                        hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                        hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         cleartext_key: str | None | UndefinedType = Undefined,
                     ) -> None:
@@ -18445,7 +19316,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             cost: int | None
             """OSPF link cost."""
-            authentication: Literal["simple", "message-digest"] | None
+            authentication: Authentication | None
             simple_auth_key: str | None
             """
             Type 7 encrypted key for OSPF simple authentication.
@@ -18470,7 +19341,7 @@ class EosDesigns(EosDesignsRootModel):
                     point_to_point: bool | UndefinedType = Undefined,
                     area: str | UndefinedType = Undefined,
                     cost: int | None | UndefinedType = Undefined,
-                    authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
+                    authentication: Authentication | None | UndefinedType = Undefined,
                     simple_auth_key: str | None | UndefinedType = Undefined,
                     cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
@@ -18548,6 +19419,7 @@ class EosDesigns(EosDesignsRootModel):
             "ipv6_enable": {"type": bool},
             "ip_address_virtual": {"type": str},
             "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+            "ipv6_nd": {"type": Ipv6Nd},
             "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -18622,6 +19494,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdList with `str` items.
         """
+        ipv6_nd: Ipv6Nd
+        """Subclass of AvdModel."""
         ip_address_virtual_secondaries: IpAddressVirtualSecondaries
         """
         Secondary IPv4 VXLAN Anycast IP addresses.
@@ -18803,6 +19677,7 @@ class EosDesigns(EosDesignsRootModel):
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ip_address_virtual: str | None | UndefinedType = Undefined,
                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -18868,6 +19743,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdList with `str` items.
+                    ipv6_nd: Subclass of AvdModel.
                     ip_address_virtual_secondaries:
                        Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -19111,16 +19987,19 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    UnderlayIsisAuthenticationMode: TypeAlias = Literal["md5", "text"]
+
     class UnderlayMulticastAnycastRp(AvdModel):
         """Subclass of AvdModel."""
 
+        Mode: TypeAlias = Literal["pim", "msdp"]
         _fields: ClassVar[dict] = {"mode": {"type": str, "default": "pim"}}
-        mode: Literal["pim", "msdp"]
+        mode: Mode
         """Default value: `"pim"`"""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, mode: Literal["pim", "msdp"] | UndefinedType = Undefined) -> None:
+            def __init__(self, *, mode: Mode | UndefinedType = Undefined) -> None:
                 """
                 UnderlayMulticastAnycastRp.
 
@@ -19258,9 +20137,10 @@ class EosDesigns(EosDesignsRootModel):
         class MessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
+            HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
             _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "cleartext_key": {"type": str}}
             id: int
-            hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+            hash_algorithm: HashAlgorithm
             """Default value: `"sha512"`"""
             cleartext_key: str
             """
@@ -19275,7 +20155,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                    hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                     cleartext_key: str | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -19321,6 +20201,8 @@ class EosDesigns(EosDesignsRootModel):
                     message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
 
                 """
+
+    UnderlayRoutingProtocol: TypeAlias = Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
 
     class UplinkPtp(AvdModel):
         """Subclass of AvdModel."""
@@ -19400,6 +20282,8 @@ class EosDesigns(EosDesignsRootModel):
         _primary_key: ClassVar[str] = "name"
 
     WanCarriers._item_type = WanCarriersItem
+
+    WanEncapsulation: TypeAlias = Literal["path-selection", "vxlan"]
 
     class WanHa(AvdModel):
         """Subclass of AvdModel."""
@@ -19611,6 +20495,8 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdModel.
 
                 """
+
+    WanMode: TypeAlias = Literal["autovpn", "cv-pathfinder"]
 
     class WanPathGroupsItem(AvdModel):
         """Subclass of AvdModel."""
@@ -21188,14 +22074,106 @@ class EosDesigns(EosDesignsRootModel):
 
                     Descriptions._item_type = str
 
+                    Speed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
+                    PhoneTrunkMode: TypeAlias = Literal["tagged", "untagged", "tagged phone", "untagged phone"]
+
                     class TrunkGroups(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
                     TrunkGroups._item_type = str
 
+                    SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+                    SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+                    SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+
                     class Ptp(AvdModel):
                         """Subclass of AvdModel."""
 
+                        EndpointRole: TypeAlias = Literal["follower", "dynamic", "bmca", "default"]
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool, "default": False},
                             "endpoint_role": {"type": str, "default": "follower"},
@@ -21203,7 +22181,7 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         enabled: bool
                         """Default value: `False`"""
-                        endpoint_role: Literal["follower", "dynamic", "bmca", "default"]
+                        endpoint_role: EndpointRole
                         """
                         PTP role of the endpoint.
                         `follower` will configure the switch port as `ptp role master`.
@@ -21231,7 +22209,7 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                endpoint_role: Literal["follower", "dynamic", "bmca", "default"] | UndefinedType = Undefined,
+                                endpoint_role: EndpointRole | UndefinedType = Undefined,
                                 profile: str | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -21321,10 +22299,11 @@ class EosDesigns(EosDesignsRootModel):
                         class All(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Unit: TypeAlias = Literal["percent", "pps"]
                             _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             level: str | None
                             """Configure maximum storm-control level."""
-                            unit: Literal["percent", "pps"]
+                            unit: Unit
                             """
                             Optional variable and is hardware dependent.
 
@@ -21333,9 +22312,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(
-                                    self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined
-                                ) -> None:
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                                     """
                                     All.
 
@@ -21351,10 +22328,11 @@ class EosDesigns(EosDesignsRootModel):
                         class Broadcast(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Unit: TypeAlias = Literal["percent", "pps"]
                             _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             level: str | None
                             """Configure maximum storm-control level."""
-                            unit: Literal["percent", "pps"]
+                            unit: Unit
                             """
                             Optional variable and is hardware dependent.
 
@@ -21363,9 +22341,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(
-                                    self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined
-                                ) -> None:
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                                     """
                                     Broadcast.
 
@@ -21381,10 +22357,11 @@ class EosDesigns(EosDesignsRootModel):
                         class Multicast(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Unit: TypeAlias = Literal["percent", "pps"]
                             _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             level: str | None
                             """Configure maximum storm-control level."""
-                            unit: Literal["percent", "pps"]
+                            unit: Unit
                             """
                             Optional variable and is hardware dependent.
 
@@ -21393,9 +22370,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(
-                                    self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined
-                                ) -> None:
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                                     """
                                     Multicast.
 
@@ -21411,10 +22386,11 @@ class EosDesigns(EosDesignsRootModel):
                         class UnknownUnicast(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Unit: TypeAlias = Literal["percent", "pps"]
                             _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             level: str | None
                             """Configure maximum storm-control level."""
-                            unit: Literal["percent", "pps"]
+                            unit: Unit
                             """
                             Optional variable and is hardware dependent.
 
@@ -21423,9 +22399,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(
-                                    self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined
-                                ) -> None:
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                                     """
                                     UnknownUnicast.
 
@@ -21480,14 +22454,19 @@ class EosDesigns(EosDesignsRootModel):
                     class MonitorSessionsItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Role: TypeAlias = Literal["source", "destination"]
+
                         class SourceSettings(AvdModel):
                             """Subclass of AvdModel."""
+
+                            Direction: TypeAlias = Literal["rx", "tx", "both"]
 
                             class AccessGroup(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                                 _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                                type: Literal["ip", "ipv6", "mac"] | None
+                                type: Type | None
                                 name: str | None
                                 """ACL name."""
                                 priority: int | None
@@ -21497,7 +22476,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
+                                        type: Type | None | UndefinedType = Undefined,
                                         name: str | None | UndefinedType = Undefined,
                                         priority: int | None | UndefinedType = Undefined,
                                     ) -> None:
@@ -21515,7 +22494,7 @@ class EosDesigns(EosDesignsRootModel):
                                         """
 
                             _fields: ClassVar[dict] = {"direction": {"type": str}, "access_group": {"type": AccessGroup}}
-                            direction: Literal["rx", "tx", "both"] | None
+                            direction: Direction | None
                             access_group: AccessGroup
                             """
                             This can only be set when `session_settings.access_group` is not set.
@@ -21526,10 +22505,7 @@ class EosDesigns(EosDesignsRootModel):
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self,
-                                    *,
-                                    direction: Literal["rx", "tx", "both"] | None | UndefinedType = Undefined,
-                                    access_group: AccessGroup | UndefinedType = Undefined,
+                                    self, *, direction: Direction | None | UndefinedType = Undefined, access_group: AccessGroup | UndefinedType = Undefined
                                 ) -> None:
                                     """
                                     SourceSettings.
@@ -21552,19 +22528,15 @@ class EosDesigns(EosDesignsRootModel):
                             class AccessGroup(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                                 _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                                type: Literal["ip", "ipv6", "mac"] | None
+                                type: Type | None
                                 name: str | None
                                 """ACL name."""
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(
-                                        self,
-                                        *,
-                                        type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
-                                        name: str | None | UndefinedType = Undefined,
-                                    ) -> None:
+                                    def __init__(self, *, type: Type | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
                                         """
                                         AccessGroup.
 
@@ -21684,7 +22656,7 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         name: str
                         """Session name."""
-                        role: Literal["source", "destination"] | None
+                        role: Role | None
                         source_settings: SourceSettings
                         """Subclass of AvdModel."""
                         session_settings: SessionSettings
@@ -21703,7 +22675,7 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 name: str | UndefinedType = Undefined,
-                                role: Literal["source", "destination"] | None | UndefinedType = Undefined,
+                                role: Role | None | UndefinedType = Undefined,
                                 source_settings: SourceSettings | UndefinedType = Undefined,
                                 session_settings: SessionSettings | UndefinedType = Undefined,
                             ) -> None:
@@ -21735,6 +22707,9 @@ class EosDesigns(EosDesignsRootModel):
                     class EthernetSegment(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Redundancy: TypeAlias = Literal["all-active", "single-active"]
+                        DesignatedForwarderAlgorithm: TypeAlias = Literal["auto", "modulus", "preference"]
+
                         class DesignatedForwarderPreferences(AvdList[int]):
                             """Subclass of AvdList with `int` items."""
 
@@ -21755,13 +22730,13 @@ class EosDesigns(EosDesignsRootModel):
                         Please see the notes under "EVPN A/A
                         ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
                         """
-                        redundancy: Literal["all-active", "single-active"] | None
+                        redundancy: Redundancy | None
                         """
                         If omitted, Port-Channels use the EOS default of all-active.
                         If omitted, Ethernet interfaces are
                         configured as single-active.
                         """
-                        designated_forwarder_algorithm: Literal["auto", "modulus", "preference"] | None
+                        designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None
                         """
                         Configure DF algorithm and preferences.
                         - auto: Use preference-based algorithm and assign preference
@@ -21792,8 +22767,8 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 short_esi: str | UndefinedType = Undefined,
-                                redundancy: Literal["all-active", "single-active"] | None | UndefinedType = Undefined,
-                                designated_forwarder_algorithm: Literal["auto", "modulus", "preference"] | None | UndefinedType = Undefined,
+                                redundancy: Redundancy | None | UndefinedType = Undefined,
+                                designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None | UndefinedType = Undefined,
                                 designated_forwarder_preferences: DesignatedForwarderPreferences | UndefinedType = Undefined,
                                 dont_preempt: bool | None | UndefinedType = Undefined,
                             ) -> None:
@@ -21839,12 +22814,17 @@ class EosDesigns(EosDesignsRootModel):
                     class PortChannel(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Mode: TypeAlias = Literal["active", "passive", "on"]
+
                         class LacpFallback(AvdModel):
                             """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["static", "individual"]
 
                             class Individual(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
                                 _fields: ClassVar[dict] = {
                                     "profile": {"type": str},
                                     "vlans": {"type": str},
@@ -21857,7 +22837,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
                                 native_vlan: int | None
                                 """Native VLAN on the port-channel member interfaces when in fallback individual."""
-                                mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+                                mode: Mode | None
                                 """Interface mode on the port-channel member interfaces when in fallback individual."""
 
                                 if TYPE_CHECKING:
@@ -21868,7 +22848,7 @@ class EosDesigns(EosDesignsRootModel):
                                         profile: str | None | UndefinedType = Undefined,
                                         vlans: str | None | UndefinedType = Undefined,
                                         native_vlan: int | None | UndefinedType = Undefined,
-                                        mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                                        mode: Mode | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         Individual.
@@ -21885,7 +22865,7 @@ class EosDesigns(EosDesignsRootModel):
                                         """
 
                             _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
-                            mode: Literal["static", "individual"] | None
+                            mode: Mode | None
                             """
                             Either static or individual mode is supported.
                             If the mode is set to "individual" either 'profile'
@@ -21910,7 +22890,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    mode: Literal["static", "individual"] | None | UndefinedType = Undefined,
+                                    mode: Mode | None | UndefinedType = Undefined,
                                     individual: Individual | UndefinedType = Undefined,
                                     timeout: int | UndefinedType = Undefined,
                                 ) -> None:
@@ -21937,8 +22917,9 @@ class EosDesigns(EosDesignsRootModel):
                         class LacpTimer(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Mode: TypeAlias = Literal["normal", "fast"]
                             _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
-                            mode: Literal["normal", "fast"] | None
+                            mode: Mode | None
                             """LACP mode for interface members."""
                             multiplier: int | None
                             """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
@@ -21946,10 +22927,7 @@ class EosDesigns(EosDesignsRootModel):
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self,
-                                    *,
-                                    mode: Literal["normal", "fast"] | None | UndefinedType = Undefined,
-                                    multiplier: int | None | UndefinedType = Undefined,
+                                    self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined
                                 ) -> None:
                                     """
                                     LacpTimer.
@@ -22079,7 +23057,7 @@ class EosDesigns(EosDesignsRootModel):
                             "raw_eos_cli": {"type": str},
                             "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         }
-                        mode: Literal["active", "passive", "on"] | None
+                        mode: Mode | None
                         """Port-Channel Mode."""
                         channel_id: int | None
                         """
@@ -22176,7 +23154,7 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                mode: Literal["active", "passive", "on"] | None | UndefinedType = Undefined,
+                                mode: Mode | None | UndefinedType = Undefined,
                                 channel_id: int | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 endpoint_port_channel: str | None | UndefinedType = Undefined,
@@ -22357,10 +23335,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    speed: str | None
+                    speed: Speed | None
                     """
-                    Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                    <interface_speed>`.
+                    Set adapter speed.
                     If not specified speed will be auto.
                     """
                     description: str | None
@@ -22392,7 +23369,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Default value: `True`
                     """
-                    mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+                    mode: Mode | None
                     """Interface mode."""
                     mtu: int | None
                     l2_mtu: int | None
@@ -22412,7 +23389,7 @@ class EosDesigns(EosDesignsRootModel):
                     Phone VLAN for a mode `trunk phone` port.
                     Requires `mode: trunk phone` to be set.
                     """
-                    phone_trunk_mode: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None
+                    phone_trunk_mode: PhoneTrunkMode | None
                     """
                     Specify if the phone traffic is tagged or untagged.
                     If both data and phone traffic are untagged,
@@ -22432,9 +23409,9 @@ class EosDesigns(EosDesignsRootModel):
                     Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
                     VLAN 1 will be used for access ports.
                     """
-                    spanning_tree_portfast: Literal["edge", "network"] | None
-                    spanning_tree_bpdufilter: Literal["enabled", "disabled", "True", "False", "true", "false"] | None
-                    spanning_tree_bpduguard: Literal["enabled", "disabled", "True", "False", "true", "false"] | None
+                    spanning_tree_portfast: SpanningTreePortfast | None
+                    spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
+                    spanning_tree_bpduguard: SpanningTreeBpduguard | None
                     flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol
                     qos_profile: str | None
                     """QOS profile name."""
@@ -22530,23 +23507,23 @@ class EosDesigns(EosDesignsRootModel):
                             switches: Switches | UndefinedType = Undefined,
                             endpoint_ports: EndpointPorts | UndefinedType = Undefined,
                             descriptions: Descriptions | UndefinedType = Undefined,
-                            speed: str | None | UndefinedType = Undefined,
+                            speed: Speed | None | UndefinedType = Undefined,
                             description: str | None | UndefinedType = Undefined,
                             profile: str | None | UndefinedType = Undefined,
                             enabled: bool | UndefinedType = Undefined,
-                            mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                            mode: Mode | None | UndefinedType = Undefined,
                             mtu: int | None | UndefinedType = Undefined,
                             l2_mtu: int | None | UndefinedType = Undefined,
                             l2_mru: int | None | UndefinedType = Undefined,
                             native_vlan: int | None | UndefinedType = Undefined,
                             native_vlan_tag: bool | None | UndefinedType = Undefined,
                             phone_vlan: int | None | UndefinedType = Undefined,
-                            phone_trunk_mode: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None | UndefinedType = Undefined,
+                            phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
                             trunk_groups: TrunkGroups | UndefinedType = Undefined,
                             vlans: str | None | UndefinedType = Undefined,
-                            spanning_tree_portfast: Literal["edge", "network"] | None | UndefinedType = Undefined,
-                            spanning_tree_bpdufilter: Literal["enabled", "disabled", "True", "False", "true", "false"] | None | UndefinedType = Undefined,
-                            spanning_tree_bpduguard: Literal["enabled", "disabled", "True", "False", "true", "false"] | None | UndefinedType = Undefined,
+                            spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                            spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
+                            spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
                             flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol | UndefinedType = Undefined,
                             qos_profile: str | None | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
@@ -22612,8 +23589,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 speed:
-                                   Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                   <interface_speed>`.
+                                   Set adapter speed.
                                    If not specified speed will be auto.
                                 description:
                                    Description or description template to be used on all ports.
@@ -22833,14 +23809,106 @@ class EosDesigns(EosDesignsRootModel):
 
                     Descriptions._item_type = str
 
+                    Speed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
+                    PhoneTrunkMode: TypeAlias = Literal["tagged", "untagged", "tagged phone", "untagged phone"]
+
                     class TrunkGroups(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
                     TrunkGroups._item_type = str
 
+                    SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+                    SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+                    SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+
                     class Ptp(AvdModel):
                         """Subclass of AvdModel."""
 
+                        EndpointRole: TypeAlias = Literal["follower", "dynamic", "bmca", "default"]
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool, "default": False},
                             "endpoint_role": {"type": str, "default": "follower"},
@@ -22848,7 +23916,7 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         enabled: bool
                         """Default value: `False`"""
-                        endpoint_role: Literal["follower", "dynamic", "bmca", "default"]
+                        endpoint_role: EndpointRole
                         """
                         PTP role of the endpoint.
                         `follower` will configure the switch port as `ptp role master`.
@@ -22876,7 +23944,7 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 enabled: bool | UndefinedType = Undefined,
-                                endpoint_role: Literal["follower", "dynamic", "bmca", "default"] | UndefinedType = Undefined,
+                                endpoint_role: EndpointRole | UndefinedType = Undefined,
                                 profile: str | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -22966,10 +24034,11 @@ class EosDesigns(EosDesignsRootModel):
                         class All(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Unit: TypeAlias = Literal["percent", "pps"]
                             _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             level: str | None
                             """Configure maximum storm-control level."""
-                            unit: Literal["percent", "pps"]
+                            unit: Unit
                             """
                             Optional variable and is hardware dependent.
 
@@ -22978,9 +24047,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(
-                                    self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined
-                                ) -> None:
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                                     """
                                     All.
 
@@ -22996,10 +24063,11 @@ class EosDesigns(EosDesignsRootModel):
                         class Broadcast(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Unit: TypeAlias = Literal["percent", "pps"]
                             _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             level: str | None
                             """Configure maximum storm-control level."""
-                            unit: Literal["percent", "pps"]
+                            unit: Unit
                             """
                             Optional variable and is hardware dependent.
 
@@ -23008,9 +24076,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(
-                                    self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined
-                                ) -> None:
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                                     """
                                     Broadcast.
 
@@ -23026,10 +24092,11 @@ class EosDesigns(EosDesignsRootModel):
                         class Multicast(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Unit: TypeAlias = Literal["percent", "pps"]
                             _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             level: str | None
                             """Configure maximum storm-control level."""
-                            unit: Literal["percent", "pps"]
+                            unit: Unit
                             """
                             Optional variable and is hardware dependent.
 
@@ -23038,9 +24105,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(
-                                    self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined
-                                ) -> None:
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                                     """
                                     Multicast.
 
@@ -23056,10 +24121,11 @@ class EosDesigns(EosDesignsRootModel):
                         class UnknownUnicast(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Unit: TypeAlias = Literal["percent", "pps"]
                             _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             level: str | None
                             """Configure maximum storm-control level."""
-                            unit: Literal["percent", "pps"]
+                            unit: Unit
                             """
                             Optional variable and is hardware dependent.
 
@@ -23068,9 +24134,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(
-                                    self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined
-                                ) -> None:
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
                                     """
                                     UnknownUnicast.
 
@@ -23125,14 +24189,19 @@ class EosDesigns(EosDesignsRootModel):
                     class MonitorSessionsItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Role: TypeAlias = Literal["source", "destination"]
+
                         class SourceSettings(AvdModel):
                             """Subclass of AvdModel."""
+
+                            Direction: TypeAlias = Literal["rx", "tx", "both"]
 
                             class AccessGroup(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                                 _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                                type: Literal["ip", "ipv6", "mac"] | None
+                                type: Type | None
                                 name: str | None
                                 """ACL name."""
                                 priority: int | None
@@ -23142,7 +24211,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
+                                        type: Type | None | UndefinedType = Undefined,
                                         name: str | None | UndefinedType = Undefined,
                                         priority: int | None | UndefinedType = Undefined,
                                     ) -> None:
@@ -23160,7 +24229,7 @@ class EosDesigns(EosDesignsRootModel):
                                         """
 
                             _fields: ClassVar[dict] = {"direction": {"type": str}, "access_group": {"type": AccessGroup}}
-                            direction: Literal["rx", "tx", "both"] | None
+                            direction: Direction | None
                             access_group: AccessGroup
                             """
                             This can only be set when `session_settings.access_group` is not set.
@@ -23171,10 +24240,7 @@ class EosDesigns(EosDesignsRootModel):
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self,
-                                    *,
-                                    direction: Literal["rx", "tx", "both"] | None | UndefinedType = Undefined,
-                                    access_group: AccessGroup | UndefinedType = Undefined,
+                                    self, *, direction: Direction | None | UndefinedType = Undefined, access_group: AccessGroup | UndefinedType = Undefined
                                 ) -> None:
                                     """
                                     SourceSettings.
@@ -23197,19 +24263,15 @@ class EosDesigns(EosDesignsRootModel):
                             class AccessGroup(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                                 _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                                type: Literal["ip", "ipv6", "mac"] | None
+                                type: Type | None
                                 name: str | None
                                 """ACL name."""
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(
-                                        self,
-                                        *,
-                                        type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
-                                        name: str | None | UndefinedType = Undefined,
-                                    ) -> None:
+                                    def __init__(self, *, type: Type | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
                                         """
                                         AccessGroup.
 
@@ -23329,7 +24391,7 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         name: str
                         """Session name."""
-                        role: Literal["source", "destination"] | None
+                        role: Role | None
                         source_settings: SourceSettings
                         """Subclass of AvdModel."""
                         session_settings: SessionSettings
@@ -23348,7 +24410,7 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 name: str | UndefinedType = Undefined,
-                                role: Literal["source", "destination"] | None | UndefinedType = Undefined,
+                                role: Role | None | UndefinedType = Undefined,
                                 source_settings: SourceSettings | UndefinedType = Undefined,
                                 session_settings: SessionSettings | UndefinedType = Undefined,
                             ) -> None:
@@ -23380,6 +24442,9 @@ class EosDesigns(EosDesignsRootModel):
                     class EthernetSegment(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Redundancy: TypeAlias = Literal["all-active", "single-active"]
+                        DesignatedForwarderAlgorithm: TypeAlias = Literal["auto", "modulus", "preference"]
+
                         class DesignatedForwarderPreferences(AvdList[int]):
                             """Subclass of AvdList with `int` items."""
 
@@ -23400,13 +24465,13 @@ class EosDesigns(EosDesignsRootModel):
                         Please see the notes under "EVPN A/A
                         ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
                         """
-                        redundancy: Literal["all-active", "single-active"] | None
+                        redundancy: Redundancy | None
                         """
                         If omitted, Port-Channels use the EOS default of all-active.
                         If omitted, Ethernet interfaces are
                         configured as single-active.
                         """
-                        designated_forwarder_algorithm: Literal["auto", "modulus", "preference"] | None
+                        designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None
                         """
                         Configure DF algorithm and preferences.
                         - auto: Use preference-based algorithm and assign preference
@@ -23437,8 +24502,8 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 short_esi: str | UndefinedType = Undefined,
-                                redundancy: Literal["all-active", "single-active"] | None | UndefinedType = Undefined,
-                                designated_forwarder_algorithm: Literal["auto", "modulus", "preference"] | None | UndefinedType = Undefined,
+                                redundancy: Redundancy | None | UndefinedType = Undefined,
+                                designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None | UndefinedType = Undefined,
                                 designated_forwarder_preferences: DesignatedForwarderPreferences | UndefinedType = Undefined,
                                 dont_preempt: bool | None | UndefinedType = Undefined,
                             ) -> None:
@@ -23484,12 +24549,17 @@ class EosDesigns(EosDesignsRootModel):
                     class PortChannel(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Mode: TypeAlias = Literal["active", "passive", "on"]
+
                         class LacpFallback(AvdModel):
                             """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["static", "individual"]
 
                             class Individual(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
                                 _fields: ClassVar[dict] = {
                                     "profile": {"type": str},
                                     "vlans": {"type": str},
@@ -23502,7 +24572,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
                                 native_vlan: int | None
                                 """Native VLAN on the port-channel member interfaces when in fallback individual."""
-                                mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+                                mode: Mode | None
                                 """Interface mode on the port-channel member interfaces when in fallback individual."""
 
                                 if TYPE_CHECKING:
@@ -23513,7 +24583,7 @@ class EosDesigns(EosDesignsRootModel):
                                         profile: str | None | UndefinedType = Undefined,
                                         vlans: str | None | UndefinedType = Undefined,
                                         native_vlan: int | None | UndefinedType = Undefined,
-                                        mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                                        mode: Mode | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         Individual.
@@ -23530,7 +24600,7 @@ class EosDesigns(EosDesignsRootModel):
                                         """
 
                             _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
-                            mode: Literal["static", "individual"] | None
+                            mode: Mode | None
                             """
                             Either static or individual mode is supported.
                             If the mode is set to "individual" either 'profile'
@@ -23555,7 +24625,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    mode: Literal["static", "individual"] | None | UndefinedType = Undefined,
+                                    mode: Mode | None | UndefinedType = Undefined,
                                     individual: Individual | UndefinedType = Undefined,
                                     timeout: int | UndefinedType = Undefined,
                                 ) -> None:
@@ -23582,8 +24652,9 @@ class EosDesigns(EosDesignsRootModel):
                         class LacpTimer(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Mode: TypeAlias = Literal["normal", "fast"]
                             _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
-                            mode: Literal["normal", "fast"] | None
+                            mode: Mode | None
                             """LACP mode for interface members."""
                             multiplier: int | None
                             """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
@@ -23591,10 +24662,7 @@ class EosDesigns(EosDesignsRootModel):
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self,
-                                    *,
-                                    mode: Literal["normal", "fast"] | None | UndefinedType = Undefined,
-                                    multiplier: int | None | UndefinedType = Undefined,
+                                    self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined
                                 ) -> None:
                                     """
                                     LacpTimer.
@@ -23724,7 +24792,7 @@ class EosDesigns(EosDesignsRootModel):
                             "raw_eos_cli": {"type": str},
                             "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         }
-                        mode: Literal["active", "passive", "on"] | None
+                        mode: Mode | None
                         """Port-Channel Mode."""
                         channel_id: int | None
                         """
@@ -23821,7 +24889,7 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                mode: Literal["active", "passive", "on"] | None | UndefinedType = Undefined,
+                                mode: Mode | None | UndefinedType = Undefined,
                                 channel_id: int | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 endpoint_port_channel: str | None | UndefinedType = Undefined,
@@ -24002,10 +25070,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    speed: str | None
+                    speed: Speed | None
                     """
-                    Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                    <interface_speed>`.
+                    Set adapter speed.
                     If not specified speed will be auto.
                     """
                     description: str | None
@@ -24037,7 +25104,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Default value: `True`
                     """
-                    mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+                    mode: Mode | None
                     """Interface mode."""
                     mtu: int | None
                     l2_mtu: int | None
@@ -24057,7 +25124,7 @@ class EosDesigns(EosDesignsRootModel):
                     Phone VLAN for a mode `trunk phone` port.
                     Requires `mode: trunk phone` to be set.
                     """
-                    phone_trunk_mode: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None
+                    phone_trunk_mode: PhoneTrunkMode | None
                     """
                     Specify if the phone traffic is tagged or untagged.
                     If both data and phone traffic are untagged,
@@ -24077,9 +25144,9 @@ class EosDesigns(EosDesignsRootModel):
                     Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
                     VLAN 1 will be used for access ports.
                     """
-                    spanning_tree_portfast: Literal["edge", "network"] | None
-                    spanning_tree_bpdufilter: Literal["enabled", "disabled", "True", "False", "true", "false"] | None
-                    spanning_tree_bpduguard: Literal["enabled", "disabled", "True", "False", "true", "false"] | None
+                    spanning_tree_portfast: SpanningTreePortfast | None
+                    spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
+                    spanning_tree_bpduguard: SpanningTreeBpduguard | None
                     flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol
                     qos_profile: str | None
                     """QOS profile name."""
@@ -24175,23 +25242,23 @@ class EosDesigns(EosDesignsRootModel):
                             switches: Switches | UndefinedType = Undefined,
                             endpoint_ports: EndpointPorts | UndefinedType = Undefined,
                             descriptions: Descriptions | UndefinedType = Undefined,
-                            speed: str | None | UndefinedType = Undefined,
+                            speed: Speed | None | UndefinedType = Undefined,
                             description: str | None | UndefinedType = Undefined,
                             profile: str | None | UndefinedType = Undefined,
                             enabled: bool | UndefinedType = Undefined,
-                            mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                            mode: Mode | None | UndefinedType = Undefined,
                             mtu: int | None | UndefinedType = Undefined,
                             l2_mtu: int | None | UndefinedType = Undefined,
                             l2_mru: int | None | UndefinedType = Undefined,
                             native_vlan: int | None | UndefinedType = Undefined,
                             native_vlan_tag: bool | None | UndefinedType = Undefined,
                             phone_vlan: int | None | UndefinedType = Undefined,
-                            phone_trunk_mode: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None | UndefinedType = Undefined,
+                            phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
                             trunk_groups: TrunkGroups | UndefinedType = Undefined,
                             vlans: str | None | UndefinedType = Undefined,
-                            spanning_tree_portfast: Literal["edge", "network"] | None | UndefinedType = Undefined,
-                            spanning_tree_bpdufilter: Literal["enabled", "disabled", "True", "False", "true", "false"] | None | UndefinedType = Undefined,
-                            spanning_tree_bpduguard: Literal["enabled", "disabled", "True", "False", "true", "false"] | None | UndefinedType = Undefined,
+                            spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                            spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
+                            spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
                             flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol | UndefinedType = Undefined,
                             qos_profile: str | None | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
@@ -24257,8 +25324,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 speed:
-                                   Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                   <interface_speed>`.
+                                   Set adapter speed.
                                    If not specified speed will be auto.
                                 description:
                                    Description or description template to be used on all ports.
@@ -24591,6 +25657,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -24605,6 +25673,175 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     UplinkSwitches._item_type = str
+
+                    UplinkInterfaceSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    UplinkSwitchInterfaceSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
 
                     class UplinkPtp(AvdModel):
                         """Subclass of AvdModel."""
@@ -24647,10 +25884,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
                     BgpDefaults._item_type = str
+
+                    EvpnRole: TypeAlias = Literal["client", "server", "none"]
 
                     class EvpnRouteServers(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -25215,6 +26456,94 @@ class EosDesigns(EosDesignsRootModel):
 
                     MlagInterfaces._item_type = str
 
+                    MlagInterfacesSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
+                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
+                    MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
+
                     class OverlayAddressFamilies(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -25232,6 +26561,8 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         Uplinks._item_type = str
+
+                        Mode: TypeAlias = Literal["boundary"]
 
                         class Dscp(AvdModel):
                             """Subclass of AvdModel."""
@@ -25529,7 +26860,7 @@ class EosDesigns(EosDesignsRootModel):
                         This can be set manually if required, for example,
                         to a value of "10.1.2.3".
                         """
-                        mode: Literal["boundary"]
+                        mode: Mode
                         """Default value: `"boundary"`"""
                         mode_one_step: bool
                         """Default value: `False`"""
@@ -25563,7 +26894,7 @@ class EosDesigns(EosDesignsRootModel):
                                 clock_identity_prefix: str | UndefinedType = Undefined,
                                 clock_identity: str | None | UndefinedType = Undefined,
                                 source_ip: str | None | UndefinedType = Undefined,
-                                mode: Literal["boundary"] | UndefinedType = Undefined,
+                                mode: Mode | UndefinedType = Undefined,
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
@@ -25617,6 +26948,9 @@ class EosDesigns(EosDesignsRootModel):
                                     monitor: Subclass of AvdModel.
 
                                 """
+
+                    WanRole: TypeAlias = Literal["client", "server"]
+                    CvPathfinderTransitMode: TypeAlias = Literal["region", "zone"]
 
                     class WanHa(AvdModel):
                         """Subclass of AvdModel."""
@@ -25766,6 +27100,91 @@ class EosDesigns(EosDesignsRootModel):
 
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
+
+                        Speed: TypeAlias = Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
 
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
@@ -25929,6 +27348,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Workers._item_type = str
 
+                            Mode: TypeAlias = Literal["shared", "exclusive"]
                             _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                             count: int | None
                             """
@@ -25939,7 +27359,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             workers: Workers
                             """Subclass of AvdList with `str` items."""
-                            mode: Literal["shared", "exclusive"] | None
+                            mode: Mode | None
                             """Mode applicable to the workers."""
 
                             if TYPE_CHECKING:
@@ -25949,7 +27369,7 @@ class EosDesigns(EosDesignsRootModel):
                                     *,
                                     count: int | None | UndefinedType = Undefined,
                                     workers: Workers | UndefinedType = Undefined,
-                                    mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                    mode: Mode | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     RxQueue.
@@ -26080,11 +27500,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `True`
                         """
-                        speed: str | None
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        speed: Speed | None
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -26195,7 +27612,7 @@ class EosDesigns(EosDesignsRootModel):
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
-                                speed: str | None | UndefinedType = Undefined,
+                                speed: Speed | None | UndefinedType = Undefined,
                                 receive_bandwidth: int | None | UndefinedType = Undefined,
                                 transmit_bandwidth: int | None | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -26259,9 +27676,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -26336,8 +27751,95 @@ class EosDesigns(EosDesignsRootModel):
                     class L3PortChannelsItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Mode: TypeAlias = Literal["active", "passive", "on"]
+
                         class MemberInterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
+
+                            Speed: TypeAlias = Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
 
                             class RxQueue(AvdModel):
                                 """Subclass of AvdModel."""
@@ -26347,6 +27849,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Workers._item_type = str
 
+                                Mode: TypeAlias = Literal["shared", "exclusive"]
                                 _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                                 count: int | None
                                 """
@@ -26357,7 +27860,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 workers: Workers
                                 """Subclass of AvdList with `str` items."""
-                                mode: Literal["shared", "exclusive"] | None
+                                mode: Mode | None
                                 """Mode applicable to the workers."""
 
                                 if TYPE_CHECKING:
@@ -26367,7 +27870,7 @@ class EosDesigns(EosDesignsRootModel):
                                         *,
                                         count: int | None | UndefinedType = Undefined,
                                         workers: Workers | UndefinedType = Undefined,
-                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                        mode: Mode | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         RxQueue.
@@ -26414,11 +27917,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             peer_interface: str | None
                             """The peer device interface. Used for description and documentation."""
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: Speed | None
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -26440,7 +27940,7 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Speed | None | UndefinedType = Undefined,
                                     rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
@@ -26463,9 +27963,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -26631,7 +28129,7 @@ class EosDesigns(EosDesignsRootModel):
                         If not set, a default description will be configured with '[<peer>[
                         <peer_port_channel>]]'.
                         """
-                        mode: Literal["active", "passive", "on"]
+                        mode: Mode
                         """
                         Port-Channel mode.
                         Should not be set on Port-Channel subinterfaces.
@@ -26769,7 +28267,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 name: str | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
-                                mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
+                                mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
@@ -26897,6 +28395,8 @@ class EosDesigns(EosDesignsRootModel):
                         _primary_key: ClassVar[str] = "name"
 
                     L3PortChannels._item_type = L3PortChannelsItem
+
+                    FlowTrackerType: TypeAlias = Literal["sampled", "hardware"]
 
                     class UnderlayMulticast(AvdModel):
                         """Subclass of AvdModel."""
@@ -27187,7 +28687,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -27356,7 +28855,7 @@ class EosDesigns(EosDesignsRootModel):
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
                     """Custom structured config for eos_cli_config_gen."""
-                    uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None
+                    uplink_type: UplinkType | None
                     """
                     Override the default `uplink_type` set at the `node_type_key` level.
                     `uplink_type` must be "p2p" if
@@ -27397,7 +28896,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     uplink_switches: UplinkSwitches
                     """Subclass of AvdList with `str` items."""
-                    uplink_interface_speed: str | None
+                    uplink_interface_speed: UplinkInterfaceSpeed | None
                     """
                     Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                     (Uplink switch
@@ -27405,12 +28904,8 @@ class EosDesigns(EosDesignsRootModel):
                     Speed should be set in the
                     format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                     """
-                    uplink_switch_interface_speed: str | None
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -27493,20 +28988,6 @@ class EosDesigns(EosDesignsRootModel):
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
                     """
-                    uplink_structured_config: dict
-                    """
-                    Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                    When
-                    uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                    for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                    When uplink_type ==
-                    "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                    eos_cli_config_gen overrides the settings on the port-channel interface level.
-                    "uplink_structured_config" is applied after "structured_config", so it can override
-                    "structured_config" defined on node-level.
-                    Note! The content of this dictionary is _not_ validated
-                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                    """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
                     uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -27560,7 +29041,7 @@ class EosDesigns(EosDesignsRootModel):
                     """(4.4 hexadecimal)."""
                     isis_maximum_paths: int | None
                     """Number of path to configure in ECMP for ISIS."""
-                    is_type: Literal["level-1-2", "level-1", "level-2"] | None
+                    is_type: IsType | None
                     """Overrides `isis_default_is_type`."""
                     node_sid_base: int
                     """
@@ -27663,7 +29144,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    evpn_role: Literal["client", "server", "none"] | None
+                    evpn_role: EvpnRole | None
                     """
                     Acting role in EVPN control plane.
                     Default is set in node_type definition from node_type_keys.
@@ -27751,12 +29232,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    mlag_interfaces_speed: str | None
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    mlag_interfaces_speed: MlagInterfacesSpeed | None
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -27790,7 +29267,7 @@ class EosDesigns(EosDesignsRootModel):
                     Default value: `4094`
                     """
                     mlag_peer_link_allowed_vlans: str | None
-                    mlag_peer_address_family: Literal["ipv4", "ipv6"]
+                    mlag_peer_address_family: MlagPeerAddressFamily
                     """
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
@@ -27825,7 +29302,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag_domain_id: str | None
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                    spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None
+                    spanning_tree_mode: SpanningTreeMode | None
                     spanning_tree_priority: int
                     """
                     Spanning-tree priority configured for the selected mode.
@@ -28023,7 +29500,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Default value: `30`
                     """
-                    mpls_overlay_role: Literal["client", "server", "none"] | None
+                    mpls_overlay_role: MplsOverlayRole | None
                     """
                     Set the default mpls overlay role.
                     Acting role in overlay control plane.
@@ -28045,7 +29522,7 @@ class EosDesigns(EosDesignsRootModel):
                     """Set BGP cluster id."""
                     ptp: Ptp
                     """Subclass of AvdModel."""
-                    wan_role: Literal["client", "server"] | None
+                    wan_role: WanRole | None
                     """
                     Override the default WAN role.
 
@@ -28055,7 +29532,7 @@ class EosDesigns(EosDesignsRootModel):
                     `server` indicates that the router is a
                     route-reflector.
                     """
-                    cv_pathfinder_transit_mode: Literal["region", "zone"] | None
+                    cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
                     Configure the transit mode for a WAN client for CV Pathfinder designs
                     only when the `wan_mode` root
@@ -28115,7 +29592,7 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is useful on virtual Route
                     Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                     """
-                    flow_tracker_type: Literal["sampled", "hardware"] | None
+                    flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
                     Override the `default_flow_tracker_type`` set at the `node_type_key`
@@ -28181,14 +29658,14 @@ class EosDesigns(EosDesignsRootModel):
                             always_configure_ip_routing: bool | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen | UndefinedType = Undefined,
-                            uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None | UndefinedType = Undefined,
+                            uplink_type: UplinkType | None | UndefinedType = Undefined,
                             uplink_ipv4_pool: str | None | UndefinedType = Undefined,
                             uplink_ipv6_pool: str | None | UndefinedType = Undefined,
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                            uplink_interface_speed: str | None | UndefinedType = Undefined,
-                            uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                            uplink_interface_speed: UplinkInterfaceSpeed | None | UndefinedType = Undefined,
+                            uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None | UndefinedType = Undefined,
                             uplink_mtu: int | None | UndefinedType = Undefined,
                             max_uplink_switches: int | None | UndefinedType = Undefined,
                             max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -28198,7 +29675,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -28209,7 +29685,7 @@ class EosDesigns(EosDesignsRootModel):
                             short_esi: str | None | UndefinedType = Undefined,
                             isis_system_id_prefix: str | None | UndefinedType = Undefined,
                             isis_maximum_paths: int | None | UndefinedType = Undefined,
-                            is_type: Literal["level-1-2", "level-1", "level-2"] | None | UndefinedType = Undefined,
+                            is_type: IsType | None | UndefinedType = Undefined,
                             node_sid_base: int | UndefinedType = Undefined,
                             loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                             loopback_ipv4_address: str | None | UndefinedType = Undefined,
@@ -28225,7 +29701,7 @@ class EosDesigns(EosDesignsRootModel):
                             vtep_loopback: str | None | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
-                            evpn_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                            evpn_role: EvpnRole | None | UndefinedType = Undefined,
                             evpn_route_servers: EvpnRouteServers | UndefinedType = Undefined,
                             evpn_services_l2_only: bool | UndefinedType = Undefined,
                             filter: Filter | UndefinedType = Undefined,
@@ -28236,18 +29712,18 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                            mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                            mlag_interfaces_speed: MlagInterfacesSpeed | None | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_vlan: int | UndefinedType = Undefined,
                             mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
-                            mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+                            mlag_peer_address_family: MlagPeerAddressFamily | UndefinedType = Undefined,
                             mlag_peer_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
-                            spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
+                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
                             spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
@@ -28269,13 +29745,13 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_mtu: int | UndefinedType = Undefined,
                             inband_ztp: bool | UndefinedType = Undefined,
                             inband_ztp_lacp_fallback_delay: int | UndefinedType = Undefined,
-                            mpls_overlay_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                            mpls_overlay_role: MplsOverlayRole | None | UndefinedType = Undefined,
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
-                            wan_role: Literal["client", "server"] | None | UndefinedType = Undefined,
-                            cv_pathfinder_transit_mode: Literal["region", "zone"] | None | UndefinedType = Undefined,
+                            wan_role: WanRole | None | UndefinedType = Undefined,
+                            cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
                             cv_pathfinder_region: str | None | UndefinedType = Undefined,
                             cv_pathfinder_site: str | None | UndefinedType = Undefined,
                             wan_ha: WanHa | UndefinedType = Undefined,
@@ -28283,7 +29759,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
-                            flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            flow_tracker_type: FlowTrackerType | None | UndefinedType = Undefined,
                             underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
@@ -28385,10 +29861,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -28449,18 +29922,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                uplink_structured_config:
-                                   Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                   When
-                                   uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                   for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                   When uplink_type ==
-                                   "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                   eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                   "uplink_structured_config" is applied after "structured_config", so it can override
-                                   "structured_config" defined on node-level.
-                                   Note! The content of this dictionary is _not_ validated
-                                   by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -28622,10 +30083,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -29126,6 +30584,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+
                         class UplinkInterfaces(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
 
@@ -29140,6 +30600,175 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         UplinkSwitches._item_type = str
+
+                        UplinkInterfaceSpeed: TypeAlias = Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        UplinkSwitchInterfaceSpeed: TypeAlias = Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
 
                         class UplinkPtp(AvdModel):
                             """Subclass of AvdModel."""
@@ -29182,10 +30811,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
                         class BgpDefaults(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
 
                         BgpDefaults._item_type = str
+
+                        EvpnRole: TypeAlias = Literal["client", "server", "none"]
 
                         class EvpnRouteServers(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -29750,6 +31383,94 @@ class EosDesigns(EosDesignsRootModel):
 
                         MlagInterfaces._item_type = str
 
+                        MlagInterfacesSpeed: TypeAlias = Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
+                        SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
+                        MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
+
                         class OverlayAddressFamilies(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
 
@@ -29767,6 +31488,8 @@ class EosDesigns(EosDesignsRootModel):
                                 """Subclass of AvdList with `str` items."""
 
                             Uplinks._item_type = str
+
+                            Mode: TypeAlias = Literal["boundary"]
 
                             class Dscp(AvdModel):
                                 """Subclass of AvdModel."""
@@ -30067,7 +31790,7 @@ class EosDesigns(EosDesignsRootModel):
                             This can be set manually if required, for example,
                             to a value of "10.1.2.3".
                             """
-                            mode: Literal["boundary"]
+                            mode: Mode
                             """Default value: `"boundary"`"""
                             mode_one_step: bool
                             """Default value: `False`"""
@@ -30101,7 +31824,7 @@ class EosDesigns(EosDesignsRootModel):
                                     clock_identity_prefix: str | UndefinedType = Undefined,
                                     clock_identity: str | None | UndefinedType = Undefined,
                                     source_ip: str | None | UndefinedType = Undefined,
-                                    mode: Literal["boundary"] | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
                                     mode_one_step: bool | UndefinedType = Undefined,
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
@@ -30155,6 +31878,9 @@ class EosDesigns(EosDesignsRootModel):
                                         monitor: Subclass of AvdModel.
 
                                     """
+
+                        WanRole: TypeAlias = Literal["client", "server"]
+                        CvPathfinderTransitMode: TypeAlias = Literal["region", "zone"]
 
                         class WanHa(AvdModel):
                             """Subclass of AvdModel."""
@@ -30306,6 +32032,91 @@ class EosDesigns(EosDesignsRootModel):
 
                         class L3InterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
+
+                            Speed: TypeAlias = Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
 
                             class Bgp(AvdModel):
                                 """Subclass of AvdModel."""
@@ -30473,6 +32284,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Workers._item_type = str
 
+                                Mode: TypeAlias = Literal["shared", "exclusive"]
                                 _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                                 count: int | None
                                 """
@@ -30483,7 +32295,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 workers: Workers
                                 """Subclass of AvdList with `str` items."""
-                                mode: Literal["shared", "exclusive"] | None
+                                mode: Mode | None
                                 """Mode applicable to the workers."""
 
                                 if TYPE_CHECKING:
@@ -30493,7 +32305,7 @@ class EosDesigns(EosDesignsRootModel):
                                         *,
                                         count: int | None | UndefinedType = Undefined,
                                         workers: Workers | UndefinedType = Undefined,
-                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                        mode: Mode | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         RxQueue.
@@ -30626,11 +32438,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `True`
                             """
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: Speed | None
+                            """Interface Speed."""
                             receive_bandwidth: int | None
                             """
                             Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -30741,7 +32550,7 @@ class EosDesigns(EosDesignsRootModel):
                                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                     dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                     enabled: bool | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Speed | None | UndefinedType = Undefined,
                                     receive_bandwidth: int | None | UndefinedType = Undefined,
                                     transmit_bandwidth: int | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
@@ -30805,9 +32614,7 @@ class EosDesigns(EosDesignsRootModel):
                                            specified.
                                         dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                         enabled: Enable or Shutdown the interface.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         receive_bandwidth:
                                            Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                            This is currently used on
@@ -30882,8 +32689,95 @@ class EosDesigns(EosDesignsRootModel):
                         class L3PortChannelsItem(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Mode: TypeAlias = Literal["active", "passive", "on"]
+
                             class MemberInterfacesItem(AvdModel):
                                 """Subclass of AvdModel."""
+
+                                Speed: TypeAlias = Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
 
                                 class RxQueue(AvdModel):
                                     """Subclass of AvdModel."""
@@ -30893,6 +32787,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Workers._item_type = str
 
+                                    Mode: TypeAlias = Literal["shared", "exclusive"]
                                     _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                                     count: int | None
                                     """
@@ -30903,7 +32798,7 @@ class EosDesigns(EosDesignsRootModel):
                                     """
                                     workers: Workers
                                     """Subclass of AvdList with `str` items."""
-                                    mode: Literal["shared", "exclusive"] | None
+                                    mode: Mode | None
                                     """Mode applicable to the workers."""
 
                                     if TYPE_CHECKING:
@@ -30913,7 +32808,7 @@ class EosDesigns(EosDesignsRootModel):
                                             *,
                                             count: int | None | UndefinedType = Undefined,
                                             workers: Workers | UndefinedType = Undefined,
-                                            mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                            mode: Mode | None | UndefinedType = Undefined,
                                         ) -> None:
                                             """
                                             RxQueue.
@@ -30960,11 +32855,8 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 peer_interface: str | None
                                 """The peer device interface. Used for description and documentation."""
-                                speed: str | None
-                                """
-                                Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                <interface_speed>`.
-                                """
+                                speed: Speed | None
+                                """Interface Speed."""
                                 rx_queue: RxQueue
                                 """
                                 Receive queue parameters for platform SFE interface profile.
@@ -30986,7 +32878,7 @@ class EosDesigns(EosDesignsRootModel):
                                         description: str | None | UndefinedType = Undefined,
                                         peer: str | None | UndefinedType = Undefined,
                                         peer_interface: str | None | UndefinedType = Undefined,
-                                        speed: str | None | UndefinedType = Undefined,
+                                        speed: Speed | None | UndefinedType = Undefined,
                                         rx_queue: RxQueue | UndefinedType = Undefined,
                                         structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                     ) -> None:
@@ -31009,9 +32901,7 @@ class EosDesigns(EosDesignsRootModel):
                                                If not set, this inherits the peer
                                                setting on the port-channel interface.
                                             peer_interface: The peer device interface. Used for description and documentation.
-                                            speed:
-                                               Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                               <interface_speed>`.
+                                            speed: Interface Speed.
                                             rx_queue:
                                                Receive queue parameters for platform SFE interface profile.
                                                This setting is ignored unless the
@@ -31183,7 +33073,7 @@ class EosDesigns(EosDesignsRootModel):
                             If not set, a default description will be configured with '[<peer>[
                             <peer_port_channel>]]'.
                             """
-                            mode: Literal["active", "passive", "on"]
+                            mode: Mode
                             """
                             Port-Channel mode.
                             Should not be set on Port-Channel subinterfaces.
@@ -31321,7 +33211,7 @@ class EosDesigns(EosDesignsRootModel):
                                     *,
                                     name: str | UndefinedType = Undefined,
                                     description: str | None | UndefinedType = Undefined,
-                                    mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
                                     member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
                                     dhcp_ip: str | None | UndefinedType = Undefined,
@@ -31449,6 +33339,8 @@ class EosDesigns(EosDesignsRootModel):
                             _primary_key: ClassVar[str] = "name"
 
                         L3PortChannels._item_type = L3PortChannelsItem
+
+                        FlowTrackerType: TypeAlias = Literal["sampled", "hardware"]
 
                         class UnderlayMulticast(AvdModel):
                             """Subclass of AvdModel."""
@@ -31741,7 +33633,6 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_macsec": {"type": UplinkMacsec},
                             "uplink_port_channel_id": {"type": int},
                             "uplink_switch_port_channel_id": {"type": int},
-                            "uplink_structured_config": {"type": dict},
                             "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -31920,7 +33811,7 @@ class EosDesigns(EosDesignsRootModel):
                         """EOS CLI rendered directly on the root level of the final EOS configuration."""
                         structured_config: EosCliConfigGen
                         """Custom structured config for eos_cli_config_gen."""
-                        uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None
+                        uplink_type: UplinkType | None
                         """
                         Override the default `uplink_type` set at the `node_type_key` level.
                         `uplink_type` must be "p2p" if
@@ -31961,7 +33852,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         uplink_switches: UplinkSwitches
                         """Subclass of AvdList with `str` items."""
-                        uplink_interface_speed: str | None
+                        uplink_interface_speed: UplinkInterfaceSpeed | None
                         """
                         Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                         (Uplink switch
@@ -31969,12 +33860,8 @@ class EosDesigns(EosDesignsRootModel):
                         Speed should be set in the
                         format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                         """
-                        uplink_switch_interface_speed: str | None
-                        """
-                        Set point-to-Point interface speed for the uplink switch interface only.
-                        Speed should be set in the
-                        format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                        """
+                        uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None
+                        """Set point-to-Point interface speed for the uplink switch interface only."""
                         uplink_mtu: int | None
                         """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                         max_uplink_switches: int | None
@@ -32057,20 +33944,6 @@ class EosDesigns(EosDesignsRootModel):
                         Note! For MLAG pairs the ID must be between
                         1 and 2000 and both MLAG switches must have the same value.
                         """
-                        uplink_structured_config: dict
-                        """
-                        Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                        When
-                        uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                        for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                        When uplink_type ==
-                        "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                        eos_cli_config_gen overrides the settings on the port-channel interface level.
-                        "uplink_structured_config" is applied after "structured_config", so it can override
-                        "structured_config" defined on node-level.
-                        Note! The content of this dictionary is _not_ validated
-                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                        """
                         uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                         """Custom structured config applied to `uplink_interfaces`."""
                         uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -32124,7 +33997,7 @@ class EosDesigns(EosDesignsRootModel):
                         """(4.4 hexadecimal)."""
                         isis_maximum_paths: int | None
                         """Number of path to configure in ECMP for ISIS."""
-                        is_type: Literal["level-1-2", "level-1", "level-2"] | None
+                        is_type: IsType | None
                         """Overrides `isis_default_is_type`."""
                         node_sid_base: int
                         """
@@ -32227,7 +34100,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdList with `str` items.
                         """
-                        evpn_role: Literal["client", "server", "none"] | None
+                        evpn_role: EvpnRole | None
                         """
                         Acting role in EVPN control plane.
                         Default is set in node_type definition from node_type_keys.
@@ -32315,12 +34188,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdList with `str` items.
                         """
-                        mlag_interfaces_speed: str | None
-                        """
-                        Set MLAG interface speed.
-                        Speed should be set in the format `<interface_speed>` or `forced
-                        <interface_speed>` or `auto <interface_speed>`.
-                        """
+                        mlag_interfaces_speed: MlagInterfacesSpeed | None
+                        """Set MLAG interface speed."""
                         mlag_peer_l3_vlan: int
                         """
                         Underlay L3 peering SVI interface id.
@@ -32354,7 +34223,7 @@ class EosDesigns(EosDesignsRootModel):
                         Default value: `4094`
                         """
                         mlag_peer_link_allowed_vlans: str | None
-                        mlag_peer_address_family: Literal["ipv4", "ipv6"]
+                        mlag_peer_address_family: MlagPeerAddressFamily
                         """
                         IP address family used to establish MLAG Peer Link (control link).
                         `ipv6` requires EOS version
@@ -32389,7 +34258,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mlag_domain_id: str | None
                         """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                        spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None
+                        spanning_tree_mode: SpanningTreeMode | None
                         spanning_tree_priority: int
                         """
                         Spanning-tree priority configured for the selected mode.
@@ -32587,7 +34456,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `30`
                         """
-                        mpls_overlay_role: Literal["client", "server", "none"] | None
+                        mpls_overlay_role: MplsOverlayRole | None
                         """
                         Set the default mpls overlay role.
                         Acting role in overlay control plane.
@@ -32609,7 +34478,7 @@ class EosDesigns(EosDesignsRootModel):
                         """Set BGP cluster id."""
                         ptp: Ptp
                         """Subclass of AvdModel."""
-                        wan_role: Literal["client", "server"] | None
+                        wan_role: WanRole | None
                         """
                         Override the default WAN role.
 
@@ -32619,7 +34488,7 @@ class EosDesigns(EosDesignsRootModel):
                         `server` indicates that the router is a
                         route-reflector.
                         """
-                        cv_pathfinder_transit_mode: Literal["region", "zone"] | None
+                        cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                         """
                         Configure the transit mode for a WAN client for CV Pathfinder designs
                         only when the `wan_mode` root
@@ -32679,7 +34548,7 @@ class EosDesigns(EosDesignsRootModel):
                         This setting is useful on virtual Route
                         Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                         """
-                        flow_tracker_type: Literal["sampled", "hardware"] | None
+                        flow_tracker_type: FlowTrackerType | None
                         """
                         Set the flow tracker type.
                         Override the `default_flow_tracker_type`` set at the `node_type_key`
@@ -32747,14 +34616,14 @@ class EosDesigns(EosDesignsRootModel):
                                 always_configure_ip_routing: bool | UndefinedType = Undefined,
                                 raw_eos_cli: str | None | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
-                                uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None | UndefinedType = Undefined,
+                                uplink_type: UplinkType | None | UndefinedType = Undefined,
                                 uplink_ipv4_pool: str | None | UndefinedType = Undefined,
                                 uplink_ipv6_pool: str | None | UndefinedType = Undefined,
                                 uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                                 uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                                 uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                                uplink_interface_speed: str | None | UndefinedType = Undefined,
-                                uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                                uplink_interface_speed: UplinkInterfaceSpeed | None | UndefinedType = Undefined,
+                                uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None | UndefinedType = Undefined,
                                 uplink_mtu: int | None | UndefinedType = Undefined,
                                 max_uplink_switches: int | None | UndefinedType = Undefined,
                                 max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -32764,7 +34633,6 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                                uplink_structured_config: dict | UndefinedType = Undefined,
                                 uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -32775,7 +34643,7 @@ class EosDesigns(EosDesignsRootModel):
                                 short_esi: str | None | UndefinedType = Undefined,
                                 isis_system_id_prefix: str | None | UndefinedType = Undefined,
                                 isis_maximum_paths: int | None | UndefinedType = Undefined,
-                                is_type: Literal["level-1-2", "level-1", "level-2"] | None | UndefinedType = Undefined,
+                                is_type: IsType | None | UndefinedType = Undefined,
                                 node_sid_base: int | UndefinedType = Undefined,
                                 loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                                 loopback_ipv4_address: str | None | UndefinedType = Undefined,
@@ -32791,7 +34659,7 @@ class EosDesigns(EosDesignsRootModel):
                                 vtep_loopback: str | None | UndefinedType = Undefined,
                                 bgp_as: str | None | UndefinedType = Undefined,
                                 bgp_defaults: BgpDefaults | UndefinedType = Undefined,
-                                evpn_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                                evpn_role: EvpnRole | None | UndefinedType = Undefined,
                                 evpn_route_servers: EvpnRouteServers | UndefinedType = Undefined,
                                 evpn_services_l2_only: bool | UndefinedType = Undefined,
                                 filter: Filter | UndefinedType = Undefined,
@@ -32802,18 +34670,18 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                                 mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                                 mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                                mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                                mlag_interfaces_speed: MlagInterfacesSpeed | None | UndefinedType = Undefined,
                                 mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                                 mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                                 mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                                 mlag_peer_vlan: int | UndefinedType = Undefined,
                                 mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
-                                mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+                                mlag_peer_address_family: MlagPeerAddressFamily | UndefinedType = Undefined,
                                 mlag_peer_ipv4_pool: str | None | UndefinedType = Undefined,
                                 mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                                 mlag_port_channel_id: int | None | UndefinedType = Undefined,
                                 mlag_domain_id: str | None | UndefinedType = Undefined,
-                                spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
+                                spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                                 spanning_tree_priority: int | UndefinedType = Undefined,
                                 spanning_tree_root_super: bool | UndefinedType = Undefined,
                                 spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
@@ -32835,13 +34703,13 @@ class EosDesigns(EosDesignsRootModel):
                                 inband_mgmt_mtu: int | UndefinedType = Undefined,
                                 inband_ztp: bool | UndefinedType = Undefined,
                                 inband_ztp_lacp_fallback_delay: int | UndefinedType = Undefined,
-                                mpls_overlay_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                                mpls_overlay_role: MplsOverlayRole | None | UndefinedType = Undefined,
                                 overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                                 mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                                 bgp_cluster_id: str | None | UndefinedType = Undefined,
                                 ptp: Ptp | UndefinedType = Undefined,
-                                wan_role: Literal["client", "server"] | None | UndefinedType = Undefined,
-                                cv_pathfinder_transit_mode: Literal["region", "zone"] | None | UndefinedType = Undefined,
+                                wan_role: WanRole | None | UndefinedType = Undefined,
+                                cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
                                 cv_pathfinder_region: str | None | UndefinedType = Undefined,
                                 cv_pathfinder_site: str | None | UndefinedType = Undefined,
                                 wan_ha: WanHa | UndefinedType = Undefined,
@@ -32849,7 +34717,7 @@ class EosDesigns(EosDesignsRootModel):
                                 l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                                 l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                                 data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
-                                flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                                flow_tracker_type: FlowTrackerType | None | UndefinedType = Undefined,
                                 underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                                 campus: str | None | UndefinedType = Undefined,
                                 campus_pod: str | None | UndefinedType = Undefined,
@@ -32958,10 +34826,7 @@ class EosDesigns(EosDesignsRootModel):
                                        interface speed can be overridden with `uplink_switch_interface_speed`).
                                        Speed should be set in the
                                        format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                    uplink_switch_interface_speed:
-                                       Set point-to-Point interface speed for the uplink switch interface only.
-                                       Speed should be set in the
-                                       format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                    uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                     uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                     max_uplink_switches:
                                        Maximum number of uplink switches.
@@ -33022,18 +34887,6 @@ class EosDesigns(EosDesignsRootModel):
                                        autogenerated Port-channel IDs in the Network Services.
                                        Note! For MLAG pairs the ID must be between
                                        1 and 2000 and both MLAG switches must have the same value.
-                                    uplink_structured_config:
-                                       Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                       When
-                                       uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                       for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                       When uplink_type ==
-                                       "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                       eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                       "uplink_structured_config" is applied after "structured_config", so it can override
-                                       "structured_config" defined on node-level.
-                                       Note! The content of this dictionary is _not_ validated
-                                       by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                     uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                     uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                     uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -33195,10 +35048,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
-                                    mlag_interfaces_speed:
-                                       Set MLAG interface speed.
-                                       Speed should be set in the format `<interface_speed>` or `forced
-                                       <interface_speed>` or `auto <interface_speed>`.
+                                    mlag_interfaces_speed: Set MLAG interface speed.
                                     mlag_peer_l3_vlan:
                                        Underlay L3 peering SVI interface id.
                                        If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -33624,6 +35474,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -33638,6 +35490,175 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     UplinkSwitches._item_type = str
+
+                    UplinkInterfaceSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    UplinkSwitchInterfaceSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
 
                     class UplinkPtp(AvdModel):
                         """Subclass of AvdModel."""
@@ -33680,10 +35701,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
                     BgpDefaults._item_type = str
+
+                    EvpnRole: TypeAlias = Literal["client", "server", "none"]
 
                     class EvpnRouteServers(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -34248,6 +36273,94 @@ class EosDesigns(EosDesignsRootModel):
 
                     MlagInterfaces._item_type = str
 
+                    MlagInterfacesSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
+                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
+                    MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
+
                     class OverlayAddressFamilies(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -34265,6 +36378,8 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         Uplinks._item_type = str
+
+                        Mode: TypeAlias = Literal["boundary"]
 
                         class Dscp(AvdModel):
                             """Subclass of AvdModel."""
@@ -34562,7 +36677,7 @@ class EosDesigns(EosDesignsRootModel):
                         This can be set manually if required, for example,
                         to a value of "10.1.2.3".
                         """
-                        mode: Literal["boundary"]
+                        mode: Mode
                         """Default value: `"boundary"`"""
                         mode_one_step: bool
                         """Default value: `False`"""
@@ -34596,7 +36711,7 @@ class EosDesigns(EosDesignsRootModel):
                                 clock_identity_prefix: str | UndefinedType = Undefined,
                                 clock_identity: str | None | UndefinedType = Undefined,
                                 source_ip: str | None | UndefinedType = Undefined,
-                                mode: Literal["boundary"] | UndefinedType = Undefined,
+                                mode: Mode | UndefinedType = Undefined,
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
@@ -34650,6 +36765,9 @@ class EosDesigns(EosDesignsRootModel):
                                     monitor: Subclass of AvdModel.
 
                                 """
+
+                    WanRole: TypeAlias = Literal["client", "server"]
+                    CvPathfinderTransitMode: TypeAlias = Literal["region", "zone"]
 
                     class WanHa(AvdModel):
                         """Subclass of AvdModel."""
@@ -34799,6 +36917,91 @@ class EosDesigns(EosDesignsRootModel):
 
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
+
+                        Speed: TypeAlias = Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
 
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
@@ -34962,6 +37165,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Workers._item_type = str
 
+                            Mode: TypeAlias = Literal["shared", "exclusive"]
                             _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                             count: int | None
                             """
@@ -34972,7 +37176,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             workers: Workers
                             """Subclass of AvdList with `str` items."""
-                            mode: Literal["shared", "exclusive"] | None
+                            mode: Mode | None
                             """Mode applicable to the workers."""
 
                             if TYPE_CHECKING:
@@ -34982,7 +37186,7 @@ class EosDesigns(EosDesignsRootModel):
                                     *,
                                     count: int | None | UndefinedType = Undefined,
                                     workers: Workers | UndefinedType = Undefined,
-                                    mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                    mode: Mode | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     RxQueue.
@@ -35113,11 +37317,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `True`
                         """
-                        speed: str | None
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        speed: Speed | None
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -35228,7 +37429,7 @@ class EosDesigns(EosDesignsRootModel):
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
-                                speed: str | None | UndefinedType = Undefined,
+                                speed: Speed | None | UndefinedType = Undefined,
                                 receive_bandwidth: int | None | UndefinedType = Undefined,
                                 transmit_bandwidth: int | None | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -35292,9 +37493,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -35369,8 +37568,95 @@ class EosDesigns(EosDesignsRootModel):
                     class L3PortChannelsItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Mode: TypeAlias = Literal["active", "passive", "on"]
+
                         class MemberInterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
+
+                            Speed: TypeAlias = Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
 
                             class RxQueue(AvdModel):
                                 """Subclass of AvdModel."""
@@ -35380,6 +37666,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Workers._item_type = str
 
+                                Mode: TypeAlias = Literal["shared", "exclusive"]
                                 _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                                 count: int | None
                                 """
@@ -35390,7 +37677,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 workers: Workers
                                 """Subclass of AvdList with `str` items."""
-                                mode: Literal["shared", "exclusive"] | None
+                                mode: Mode | None
                                 """Mode applicable to the workers."""
 
                                 if TYPE_CHECKING:
@@ -35400,7 +37687,7 @@ class EosDesigns(EosDesignsRootModel):
                                         *,
                                         count: int | None | UndefinedType = Undefined,
                                         workers: Workers | UndefinedType = Undefined,
-                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                        mode: Mode | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         RxQueue.
@@ -35447,11 +37734,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             peer_interface: str | None
                             """The peer device interface. Used for description and documentation."""
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: Speed | None
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -35473,7 +37757,7 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Speed | None | UndefinedType = Undefined,
                                     rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
@@ -35496,9 +37780,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -35664,7 +37946,7 @@ class EosDesigns(EosDesignsRootModel):
                         If not set, a default description will be configured with '[<peer>[
                         <peer_port_channel>]]'.
                         """
-                        mode: Literal["active", "passive", "on"]
+                        mode: Mode
                         """
                         Port-Channel mode.
                         Should not be set on Port-Channel subinterfaces.
@@ -35802,7 +38084,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 name: str | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
-                                mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
+                                mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
@@ -35930,6 +38212,8 @@ class EosDesigns(EosDesignsRootModel):
                         _primary_key: ClassVar[str] = "name"
 
                     L3PortChannels._item_type = L3PortChannelsItem
+
+                    FlowTrackerType: TypeAlias = Literal["sampled", "hardware"]
 
                     class UnderlayMulticast(AvdModel):
                         """Subclass of AvdModel."""
@@ -36222,7 +38506,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -36404,7 +38687,7 @@ class EosDesigns(EosDesignsRootModel):
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
                     """Custom structured config for eos_cli_config_gen."""
-                    uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None
+                    uplink_type: UplinkType | None
                     """
                     Override the default `uplink_type` set at the `node_type_key` level.
                     `uplink_type` must be "p2p" if
@@ -36445,7 +38728,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     uplink_switches: UplinkSwitches
                     """Subclass of AvdList with `str` items."""
-                    uplink_interface_speed: str | None
+                    uplink_interface_speed: UplinkInterfaceSpeed | None
                     """
                     Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                     (Uplink switch
@@ -36453,12 +38736,8 @@ class EosDesigns(EosDesignsRootModel):
                     Speed should be set in the
                     format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                     """
-                    uplink_switch_interface_speed: str | None
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -36541,20 +38820,6 @@ class EosDesigns(EosDesignsRootModel):
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
                     """
-                    uplink_structured_config: dict
-                    """
-                    Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                    When
-                    uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                    for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                    When uplink_type ==
-                    "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                    eos_cli_config_gen overrides the settings on the port-channel interface level.
-                    "uplink_structured_config" is applied after "structured_config", so it can override
-                    "structured_config" defined on node-level.
-                    Note! The content of this dictionary is _not_ validated
-                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                    """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
                     uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -36608,7 +38873,7 @@ class EosDesigns(EosDesignsRootModel):
                     """(4.4 hexadecimal)."""
                     isis_maximum_paths: int | None
                     """Number of path to configure in ECMP for ISIS."""
-                    is_type: Literal["level-1-2", "level-1", "level-2"] | None
+                    is_type: IsType | None
                     """Overrides `isis_default_is_type`."""
                     node_sid_base: int
                     """
@@ -36711,7 +38976,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    evpn_role: Literal["client", "server", "none"] | None
+                    evpn_role: EvpnRole | None
                     """
                     Acting role in EVPN control plane.
                     Default is set in node_type definition from node_type_keys.
@@ -36799,12 +39064,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    mlag_interfaces_speed: str | None
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    mlag_interfaces_speed: MlagInterfacesSpeed | None
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -36838,7 +39099,7 @@ class EosDesigns(EosDesignsRootModel):
                     Default value: `4094`
                     """
                     mlag_peer_link_allowed_vlans: str | None
-                    mlag_peer_address_family: Literal["ipv4", "ipv6"]
+                    mlag_peer_address_family: MlagPeerAddressFamily
                     """
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
@@ -36873,7 +39134,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag_domain_id: str | None
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                    spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None
+                    spanning_tree_mode: SpanningTreeMode | None
                     spanning_tree_priority: int
                     """
                     Spanning-tree priority configured for the selected mode.
@@ -37071,7 +39332,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Default value: `30`
                     """
-                    mpls_overlay_role: Literal["client", "server", "none"] | None
+                    mpls_overlay_role: MplsOverlayRole | None
                     """
                     Set the default mpls overlay role.
                     Acting role in overlay control plane.
@@ -37093,7 +39354,7 @@ class EosDesigns(EosDesignsRootModel):
                     """Set BGP cluster id."""
                     ptp: Ptp
                     """Subclass of AvdModel."""
-                    wan_role: Literal["client", "server"] | None
+                    wan_role: WanRole | None
                     """
                     Override the default WAN role.
 
@@ -37103,7 +39364,7 @@ class EosDesigns(EosDesignsRootModel):
                     `server` indicates that the router is a
                     route-reflector.
                     """
-                    cv_pathfinder_transit_mode: Literal["region", "zone"] | None
+                    cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
                     Configure the transit mode for a WAN client for CV Pathfinder designs
                     only when the `wan_mode` root
@@ -37163,7 +39424,7 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is useful on virtual Route
                     Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                     """
-                    flow_tracker_type: Literal["sampled", "hardware"] | None
+                    flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
                     Override the `default_flow_tracker_type`` set at the `node_type_key`
@@ -37231,14 +39492,14 @@ class EosDesigns(EosDesignsRootModel):
                             always_configure_ip_routing: bool | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen | UndefinedType = Undefined,
-                            uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None | UndefinedType = Undefined,
+                            uplink_type: UplinkType | None | UndefinedType = Undefined,
                             uplink_ipv4_pool: str | None | UndefinedType = Undefined,
                             uplink_ipv6_pool: str | None | UndefinedType = Undefined,
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                            uplink_interface_speed: str | None | UndefinedType = Undefined,
-                            uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                            uplink_interface_speed: UplinkInterfaceSpeed | None | UndefinedType = Undefined,
+                            uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None | UndefinedType = Undefined,
                             uplink_mtu: int | None | UndefinedType = Undefined,
                             max_uplink_switches: int | None | UndefinedType = Undefined,
                             max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -37248,7 +39509,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -37259,7 +39519,7 @@ class EosDesigns(EosDesignsRootModel):
                             short_esi: str | None | UndefinedType = Undefined,
                             isis_system_id_prefix: str | None | UndefinedType = Undefined,
                             isis_maximum_paths: int | None | UndefinedType = Undefined,
-                            is_type: Literal["level-1-2", "level-1", "level-2"] | None | UndefinedType = Undefined,
+                            is_type: IsType | None | UndefinedType = Undefined,
                             node_sid_base: int | UndefinedType = Undefined,
                             loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                             loopback_ipv4_address: str | None | UndefinedType = Undefined,
@@ -37275,7 +39535,7 @@ class EosDesigns(EosDesignsRootModel):
                             vtep_loopback: str | None | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
-                            evpn_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                            evpn_role: EvpnRole | None | UndefinedType = Undefined,
                             evpn_route_servers: EvpnRouteServers | UndefinedType = Undefined,
                             evpn_services_l2_only: bool | UndefinedType = Undefined,
                             filter: Filter | UndefinedType = Undefined,
@@ -37286,18 +39546,18 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                            mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                            mlag_interfaces_speed: MlagInterfacesSpeed | None | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_vlan: int | UndefinedType = Undefined,
                             mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
-                            mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+                            mlag_peer_address_family: MlagPeerAddressFamily | UndefinedType = Undefined,
                             mlag_peer_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
-                            spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
+                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
                             spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
@@ -37319,13 +39579,13 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_mtu: int | UndefinedType = Undefined,
                             inband_ztp: bool | UndefinedType = Undefined,
                             inband_ztp_lacp_fallback_delay: int | UndefinedType = Undefined,
-                            mpls_overlay_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                            mpls_overlay_role: MplsOverlayRole | None | UndefinedType = Undefined,
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
-                            wan_role: Literal["client", "server"] | None | UndefinedType = Undefined,
-                            cv_pathfinder_transit_mode: Literal["region", "zone"] | None | UndefinedType = Undefined,
+                            wan_role: WanRole | None | UndefinedType = Undefined,
+                            cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
                             cv_pathfinder_region: str | None | UndefinedType = Undefined,
                             cv_pathfinder_site: str | None | UndefinedType = Undefined,
                             wan_ha: WanHa | UndefinedType = Undefined,
@@ -37333,7 +39593,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
-                            flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            flow_tracker_type: FlowTrackerType | None | UndefinedType = Undefined,
                             underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
@@ -37444,10 +39704,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -37508,18 +39765,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                uplink_structured_config:
-                                   Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                   When
-                                   uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                   for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                   When uplink_type ==
-                                   "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                   eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                   "uplink_structured_config" is applied after "structured_config", so it can override
-                                   "structured_config" defined on node-level.
-                                   Note! The content of this dictionary is _not_ validated
-                                   by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -37681,10 +39926,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -38185,6 +40427,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -38199,6 +40443,175 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     UplinkSwitches._item_type = str
+
+                    UplinkInterfaceSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    UplinkSwitchInterfaceSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
 
                     class UplinkPtp(AvdModel):
                         """Subclass of AvdModel."""
@@ -38241,10 +40654,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
                     BgpDefaults._item_type = str
+
+                    EvpnRole: TypeAlias = Literal["client", "server", "none"]
 
                     class EvpnRouteServers(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -38809,6 +41226,94 @@ class EosDesigns(EosDesignsRootModel):
 
                     MlagInterfaces._item_type = str
 
+                    MlagInterfacesSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
+                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
+                    MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
+
                     class OverlayAddressFamilies(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -38826,6 +41331,8 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         Uplinks._item_type = str
+
+                        Mode: TypeAlias = Literal["boundary"]
 
                         class Dscp(AvdModel):
                             """Subclass of AvdModel."""
@@ -39123,7 +41630,7 @@ class EosDesigns(EosDesignsRootModel):
                         This can be set manually if required, for example,
                         to a value of "10.1.2.3".
                         """
-                        mode: Literal["boundary"]
+                        mode: Mode
                         """Default value: `"boundary"`"""
                         mode_one_step: bool
                         """Default value: `False`"""
@@ -39157,7 +41664,7 @@ class EosDesigns(EosDesignsRootModel):
                                 clock_identity_prefix: str | UndefinedType = Undefined,
                                 clock_identity: str | None | UndefinedType = Undefined,
                                 source_ip: str | None | UndefinedType = Undefined,
-                                mode: Literal["boundary"] | UndefinedType = Undefined,
+                                mode: Mode | UndefinedType = Undefined,
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
@@ -39211,6 +41718,9 @@ class EosDesigns(EosDesignsRootModel):
                                     monitor: Subclass of AvdModel.
 
                                 """
+
+                    WanRole: TypeAlias = Literal["client", "server"]
+                    CvPathfinderTransitMode: TypeAlias = Literal["region", "zone"]
 
                     class WanHa(AvdModel):
                         """Subclass of AvdModel."""
@@ -39360,6 +41870,91 @@ class EosDesigns(EosDesignsRootModel):
 
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
+
+                        Speed: TypeAlias = Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
 
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
@@ -39523,6 +42118,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Workers._item_type = str
 
+                            Mode: TypeAlias = Literal["shared", "exclusive"]
                             _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                             count: int | None
                             """
@@ -39533,7 +42129,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             workers: Workers
                             """Subclass of AvdList with `str` items."""
-                            mode: Literal["shared", "exclusive"] | None
+                            mode: Mode | None
                             """Mode applicable to the workers."""
 
                             if TYPE_CHECKING:
@@ -39543,7 +42139,7 @@ class EosDesigns(EosDesignsRootModel):
                                     *,
                                     count: int | None | UndefinedType = Undefined,
                                     workers: Workers | UndefinedType = Undefined,
-                                    mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                    mode: Mode | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     RxQueue.
@@ -39674,11 +42270,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `True`
                         """
-                        speed: str | None
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        speed: Speed | None
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -39789,7 +42382,7 @@ class EosDesigns(EosDesignsRootModel):
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
-                                speed: str | None | UndefinedType = Undefined,
+                                speed: Speed | None | UndefinedType = Undefined,
                                 receive_bandwidth: int | None | UndefinedType = Undefined,
                                 transmit_bandwidth: int | None | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -39853,9 +42446,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -39930,8 +42521,95 @@ class EosDesigns(EosDesignsRootModel):
                     class L3PortChannelsItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Mode: TypeAlias = Literal["active", "passive", "on"]
+
                         class MemberInterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
+
+                            Speed: TypeAlias = Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
 
                             class RxQueue(AvdModel):
                                 """Subclass of AvdModel."""
@@ -39941,6 +42619,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Workers._item_type = str
 
+                                Mode: TypeAlias = Literal["shared", "exclusive"]
                                 _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                                 count: int | None
                                 """
@@ -39951,7 +42630,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 workers: Workers
                                 """Subclass of AvdList with `str` items."""
-                                mode: Literal["shared", "exclusive"] | None
+                                mode: Mode | None
                                 """Mode applicable to the workers."""
 
                                 if TYPE_CHECKING:
@@ -39961,7 +42640,7 @@ class EosDesigns(EosDesignsRootModel):
                                         *,
                                         count: int | None | UndefinedType = Undefined,
                                         workers: Workers | UndefinedType = Undefined,
-                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                        mode: Mode | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         RxQueue.
@@ -40008,11 +42687,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             peer_interface: str | None
                             """The peer device interface. Used for description and documentation."""
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: Speed | None
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -40034,7 +42710,7 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Speed | None | UndefinedType = Undefined,
                                     rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
@@ -40057,9 +42733,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -40225,7 +42899,7 @@ class EosDesigns(EosDesignsRootModel):
                         If not set, a default description will be configured with '[<peer>[
                         <peer_port_channel>]]'.
                         """
-                        mode: Literal["active", "passive", "on"]
+                        mode: Mode
                         """
                         Port-Channel mode.
                         Should not be set on Port-Channel subinterfaces.
@@ -40363,7 +43037,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 name: str | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
-                                mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
+                                mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
@@ -40491,6 +43165,8 @@ class EosDesigns(EosDesignsRootModel):
                         _primary_key: ClassVar[str] = "name"
 
                     L3PortChannels._item_type = L3PortChannelsItem
+
+                    FlowTrackerType: TypeAlias = Literal["sampled", "hardware"]
 
                     class UnderlayMulticast(AvdModel):
                         """Subclass of AvdModel."""
@@ -40783,7 +43459,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -40962,7 +43637,7 @@ class EosDesigns(EosDesignsRootModel):
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
                     """Custom structured config for eos_cli_config_gen."""
-                    uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None
+                    uplink_type: UplinkType | None
                     """
                     Override the default `uplink_type` set at the `node_type_key` level.
                     `uplink_type` must be "p2p" if
@@ -41003,7 +43678,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     uplink_switches: UplinkSwitches
                     """Subclass of AvdList with `str` items."""
-                    uplink_interface_speed: str | None
+                    uplink_interface_speed: UplinkInterfaceSpeed | None
                     """
                     Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                     (Uplink switch
@@ -41011,12 +43686,8 @@ class EosDesigns(EosDesignsRootModel):
                     Speed should be set in the
                     format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                     """
-                    uplink_switch_interface_speed: str | None
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -41099,20 +43770,6 @@ class EosDesigns(EosDesignsRootModel):
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
                     """
-                    uplink_structured_config: dict
-                    """
-                    Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                    When
-                    uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                    for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                    When uplink_type ==
-                    "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                    eos_cli_config_gen overrides the settings on the port-channel interface level.
-                    "uplink_structured_config" is applied after "structured_config", so it can override
-                    "structured_config" defined on node-level.
-                    Note! The content of this dictionary is _not_ validated
-                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                    """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
                     uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -41166,7 +43823,7 @@ class EosDesigns(EosDesignsRootModel):
                     """(4.4 hexadecimal)."""
                     isis_maximum_paths: int | None
                     """Number of path to configure in ECMP for ISIS."""
-                    is_type: Literal["level-1-2", "level-1", "level-2"] | None
+                    is_type: IsType | None
                     """Overrides `isis_default_is_type`."""
                     node_sid_base: int
                     """
@@ -41269,7 +43926,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    evpn_role: Literal["client", "server", "none"] | None
+                    evpn_role: EvpnRole | None
                     """
                     Acting role in EVPN control plane.
                     Default is set in node_type definition from node_type_keys.
@@ -41357,12 +44014,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    mlag_interfaces_speed: str | None
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    mlag_interfaces_speed: MlagInterfacesSpeed | None
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -41396,7 +44049,7 @@ class EosDesigns(EosDesignsRootModel):
                     Default value: `4094`
                     """
                     mlag_peer_link_allowed_vlans: str | None
-                    mlag_peer_address_family: Literal["ipv4", "ipv6"]
+                    mlag_peer_address_family: MlagPeerAddressFamily
                     """
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
@@ -41431,7 +44084,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag_domain_id: str | None
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                    spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None
+                    spanning_tree_mode: SpanningTreeMode | None
                     spanning_tree_priority: int
                     """
                     Spanning-tree priority configured for the selected mode.
@@ -41629,7 +44282,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Default value: `30`
                     """
-                    mpls_overlay_role: Literal["client", "server", "none"] | None
+                    mpls_overlay_role: MplsOverlayRole | None
                     """
                     Set the default mpls overlay role.
                     Acting role in overlay control plane.
@@ -41651,7 +44304,7 @@ class EosDesigns(EosDesignsRootModel):
                     """Set BGP cluster id."""
                     ptp: Ptp
                     """Subclass of AvdModel."""
-                    wan_role: Literal["client", "server"] | None
+                    wan_role: WanRole | None
                     """
                     Override the default WAN role.
 
@@ -41661,7 +44314,7 @@ class EosDesigns(EosDesignsRootModel):
                     `server` indicates that the router is a
                     route-reflector.
                     """
-                    cv_pathfinder_transit_mode: Literal["region", "zone"] | None
+                    cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
                     Configure the transit mode for a WAN client for CV Pathfinder designs
                     only when the `wan_mode` root
@@ -41721,7 +44374,7 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is useful on virtual Route
                     Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                     """
-                    flow_tracker_type: Literal["sampled", "hardware"] | None
+                    flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
                     Override the `default_flow_tracker_type`` set at the `node_type_key`
@@ -41789,14 +44442,14 @@ class EosDesigns(EosDesignsRootModel):
                             always_configure_ip_routing: bool | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen | UndefinedType = Undefined,
-                            uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None | UndefinedType = Undefined,
+                            uplink_type: UplinkType | None | UndefinedType = Undefined,
                             uplink_ipv4_pool: str | None | UndefinedType = Undefined,
                             uplink_ipv6_pool: str | None | UndefinedType = Undefined,
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                            uplink_interface_speed: str | None | UndefinedType = Undefined,
-                            uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                            uplink_interface_speed: UplinkInterfaceSpeed | None | UndefinedType = Undefined,
+                            uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None | UndefinedType = Undefined,
                             uplink_mtu: int | None | UndefinedType = Undefined,
                             max_uplink_switches: int | None | UndefinedType = Undefined,
                             max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -41806,7 +44459,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -41817,7 +44469,7 @@ class EosDesigns(EosDesignsRootModel):
                             short_esi: str | None | UndefinedType = Undefined,
                             isis_system_id_prefix: str | None | UndefinedType = Undefined,
                             isis_maximum_paths: int | None | UndefinedType = Undefined,
-                            is_type: Literal["level-1-2", "level-1", "level-2"] | None | UndefinedType = Undefined,
+                            is_type: IsType | None | UndefinedType = Undefined,
                             node_sid_base: int | UndefinedType = Undefined,
                             loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                             loopback_ipv4_address: str | None | UndefinedType = Undefined,
@@ -41833,7 +44485,7 @@ class EosDesigns(EosDesignsRootModel):
                             vtep_loopback: str | None | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
-                            evpn_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                            evpn_role: EvpnRole | None | UndefinedType = Undefined,
                             evpn_route_servers: EvpnRouteServers | UndefinedType = Undefined,
                             evpn_services_l2_only: bool | UndefinedType = Undefined,
                             filter: Filter | UndefinedType = Undefined,
@@ -41844,18 +44496,18 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                            mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                            mlag_interfaces_speed: MlagInterfacesSpeed | None | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_vlan: int | UndefinedType = Undefined,
                             mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
-                            mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+                            mlag_peer_address_family: MlagPeerAddressFamily | UndefinedType = Undefined,
                             mlag_peer_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
-                            spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
+                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
                             spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
@@ -41877,13 +44529,13 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_mtu: int | UndefinedType = Undefined,
                             inband_ztp: bool | UndefinedType = Undefined,
                             inband_ztp_lacp_fallback_delay: int | UndefinedType = Undefined,
-                            mpls_overlay_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                            mpls_overlay_role: MplsOverlayRole | None | UndefinedType = Undefined,
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
-                            wan_role: Literal["client", "server"] | None | UndefinedType = Undefined,
-                            cv_pathfinder_transit_mode: Literal["region", "zone"] | None | UndefinedType = Undefined,
+                            wan_role: WanRole | None | UndefinedType = Undefined,
+                            cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
                             cv_pathfinder_region: str | None | UndefinedType = Undefined,
                             cv_pathfinder_site: str | None | UndefinedType = Undefined,
                             wan_ha: WanHa | UndefinedType = Undefined,
@@ -41891,7 +44543,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
-                            flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            flow_tracker_type: FlowTrackerType | None | UndefinedType = Undefined,
                             underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
@@ -42000,10 +44652,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -42064,18 +44713,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                uplink_structured_config:
-                                   Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                   When
-                                   uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                   for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                   When uplink_type ==
-                                   "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                   eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                   "uplink_structured_config" is applied after "structured_config", so it can override
-                                   "structured_config" defined on node-level.
-                                   Note! The content of this dictionary is _not_ validated
-                                   by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -42237,10 +44874,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -42918,13 +45552,14 @@ class EosDesigns(EosDesignsRootModel):
                         class DirectionIn(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
                             _fields: ClassVar[dict] = {
                                 "action": {"type": str},
                                 "include_community_list": {"type": bool},
                                 "include_prefix_list": {"type": bool},
                                 "include_sub_route_map": {"type": bool},
                             }
-                            action: Literal["deny", "permit", "deny-in-out"]
+                            action: Action
                             """Missing policy action."""
                             include_community_list: bool | None
                             """Include community-list references in missing policy decision."""
@@ -42938,7 +45573,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    action: Literal["deny", "permit", "deny-in-out"] | UndefinedType = Undefined,
+                                    action: Action | UndefinedType = Undefined,
                                     include_community_list: bool | None | UndefinedType = Undefined,
                                     include_prefix_list: bool | None | UndefinedType = Undefined,
                                     include_sub_route_map: bool | None | UndefinedType = Undefined,
@@ -42960,13 +45595,14 @@ class EosDesigns(EosDesignsRootModel):
                         class DirectionOut(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
                             _fields: ClassVar[dict] = {
                                 "action": {"type": str},
                                 "include_community_list": {"type": bool},
                                 "include_prefix_list": {"type": bool},
                                 "include_sub_route_map": {"type": bool},
                             }
-                            action: Literal["deny", "permit", "deny-in-out"]
+                            action: Action
                             """Missing policy action."""
                             include_community_list: bool | None
                             """Include community-list references in missing policy decision."""
@@ -42980,7 +45616,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    action: Literal["deny", "permit", "deny-in-out"] | UndefinedType = Undefined,
+                                    action: Action | UndefinedType = Undefined,
                                     include_community_list: bool | None | UndefinedType = Undefined,
                                     include_prefix_list: bool | None | UndefinedType = Undefined,
                                     include_sub_route_map: bool | None | UndefinedType = Undefined,
@@ -43107,20 +45743,16 @@ class EosDesigns(EosDesignsRootModel):
                     class SharedSecret(AvdModel):
                         """Subclass of AvdModel."""
 
+                        HashAlgorithm: TypeAlias = Literal["aes-128-cmac-96", "hmac-sha-256", "hmac-sha1-96"]
                         _fields: ClassVar[dict] = {"profile": {"type": str}, "hash_algorithm": {"type": str}}
                         profile: str
                         """Name of profile defined under `management_security`."""
-                        hash_algorithm: Literal["aes-128-cmac-96", "hmac-sha-256", "hmac-sha1-96"]
+                        hash_algorithm: HashAlgorithm
                         """Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(
-                                self,
-                                *,
-                                profile: str | UndefinedType = Undefined,
-                                hash_algorithm: Literal["aes-128-cmac-96", "hmac-sha-256", "hmac-sha1-96"] | UndefinedType = Undefined,
-                            ) -> None:
+                            def __init__(self, *, profile: str | UndefinedType = Undefined, hash_algorithm: HashAlgorithm | UndefinedType = Undefined) -> None:
                                 """
                                 SharedSecret.
 
@@ -43191,13 +45823,14 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     nodes: Nodes
                     """
-                    Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                    If not
-                    set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                    peer_group.
+                    List of node names or regular expressions to match against hostnames to configure the peer-group.
+                    The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                    The peer-group
+                    is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                    Subclass of AvdList with `str` items.
+                    Subclass
+                    of AvdList with `str` items.
                     """
                     address_family_ipv4: AddressFamilyIpv4
                     """Subclass of AvdModel."""
@@ -43357,13 +45990,14 @@ class EosDesigns(EosDesignsRootModel):
                                    To protect the password at rest it is strongly recommended to
                                    make use of a vault or similar.
                                 nodes:
-                                   Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                                   If not
-                                   set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                                   peer_group.
+                                   List of node names or regular expressions to match against hostnames to configure the peer-group.
+                                   The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                                   The peer-group
+                                   is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                                   Subclass of AvdList with `str` items.
+                                   Subclass
+                                   of AvdList with `str` items.
                                 address_family_ipv4: Subclass of AvdModel.
                                 address_family_ipv6: Subclass of AvdModel.
                                 type: Key only used for documentation or validation purposes.
@@ -43733,12 +46367,13 @@ class EosDesigns(EosDesignsRootModel):
                 class IgmpSnoopingQuerier(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Version: TypeAlias = Literal[1, 2, 3]
                     _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
                     enabled: bool | None
                     """Will be enabled automatically if "evpn_l2_multicast" is enabled."""
                     source_address: str | None
                     """Default IP address of Loopback0."""
-                    version: Literal[1, 2, 3] | None
+                    version: Version | None
                     """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
 
                     if TYPE_CHECKING:
@@ -43748,7 +46383,7 @@ class EosDesigns(EosDesignsRootModel):
                             *,
                             enabled: bool | None | UndefinedType = Undefined,
                             source_address: str | None | UndefinedType = Undefined,
-                            version: Literal[1, 2, 3] | None | UndefinedType = Undefined,
+                            version: Version | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             IgmpSnoopingQuerier.
@@ -44023,16 +46658,19 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        Authentication: TypeAlias = Literal["simple", "message-digest"]
+
                         class MessageDigestKeysItem(AvdModel):
                             """Subclass of AvdModel."""
 
+                            HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                             _fields: ClassVar[dict] = {
                                 "id": {"type": int},
                                 "hash_algorithm": {"type": str, "default": "sha512"},
                                 "cleartext_key": {"type": str},
                             }
                             id: int
-                            hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+                            hash_algorithm: HashAlgorithm
                             """Default value: `"sha512"`"""
                             cleartext_key: str
                             """
@@ -44049,7 +46687,7 @@ class EosDesigns(EosDesignsRootModel):
                                     self,
                                     *,
                                     id: int | UndefinedType = Undefined,
-                                    hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                                    hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                                     cleartext_key: str | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -44120,7 +46758,7 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         redistribute_connected: RedistributeConnected
                         """Subclass of AvdModel."""
-                        authentication: Literal["simple", "message-digest"] | None
+                        authentication: Authentication | None
                         """
                         Configure OSPF authentication for all interfaces under the VRF.
                         Can be overridden at the interface
@@ -44156,7 +46794,7 @@ class EosDesigns(EosDesignsRootModel):
                                 bfd: bool | UndefinedType = Undefined,
                                 redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
                                 redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
-                                authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
+                                authentication: Authentication | None | UndefinedType = Undefined,
                                 cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                                 message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
@@ -44411,6 +47049,43 @@ class EosDesigns(EosDesignsRootModel):
                                 """Subclass of AvdList with `str` items."""
 
                             Ipv6AddressVirtuals._item_type = str
+
+                            class Ipv6Nd(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {
+                                    "advertise_ipv6_address_virtuals": {"type": bool},
+                                    "valid_lifetime": {"type": str},
+                                    "preferred_lifetime": {"type": str},
+                                }
+                                advertise_ipv6_address_virtuals: bool | None
+                                """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+                                valid_lifetime: str | None
+                                """In seconds <0-4294967295> or infinite."""
+                                preferred_lifetime: str | None
+                                """In seconds <0-4294967295> or infinite."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                                        valid_lifetime: str | None | UndefinedType = Undefined,
+                                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Ipv6Nd.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                                            valid_lifetime: In seconds <0-4294967295> or infinite.
+                                            preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                                        """
 
                             class IpAddressVirtualSecondaries(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
@@ -44698,6 +47373,7 @@ class EosDesigns(EosDesignsRootModel):
                             class IgmpSnoopingQuerier(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                Version: TypeAlias = Literal[1, 2, 3]
                                 _fields: ClassVar[dict] = {
                                     "enabled": {"type": bool},
                                     "source_address": {"type": str},
@@ -44711,7 +47387,7 @@ class EosDesigns(EosDesignsRootModel):
                                 IPv4_address
                                 If not set, IP address of "Loopback0" will be used.
                                 """
-                                version: Literal[1, 2, 3] | None
+                                version: Version | None
                                 """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
                                 fast_leave: bool | None
                                 """Enable IGMP snooping fast-leave feature."""
@@ -44723,7 +47399,7 @@ class EosDesigns(EosDesignsRootModel):
                                         *,
                                         enabled: bool | None | UndefinedType = Undefined,
                                         source_address: str | None | UndefinedType = Undefined,
-                                        version: Literal[1, 2, 3] | None | UndefinedType = Undefined,
+                                        version: Version | None | UndefinedType = Undefined,
                                         fast_leave: bool | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
@@ -44745,9 +47421,12 @@ class EosDesigns(EosDesignsRootModel):
                             class Ospf(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                Authentication: TypeAlias = Literal["simple", "message-digest"]
+
                                 class MessageDigestKeysItem(AvdModel):
                                     """Subclass of AvdModel."""
 
+                                    HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                     _fields: ClassVar[dict] = {
                                         "id": {"type": int},
                                         "hash_algorithm": {"type": str, "default": "sha512"},
@@ -44755,7 +47434,7 @@ class EosDesigns(EosDesignsRootModel):
                                         "cleartext_key": {"type": str},
                                     }
                                     id: int | None
-                                    hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+                                    hash_algorithm: HashAlgorithm
                                     """Default value: `"sha512"`"""
                                     key: str | None
                                     """
@@ -44775,7 +47454,7 @@ class EosDesigns(EosDesignsRootModel):
                                             self,
                                             *,
                                             id: int | None | UndefinedType = Undefined,
-                                            hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                                            hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                                             key: str | None | UndefinedType = Undefined,
                                             cleartext_key: str | None | UndefinedType = Undefined,
                                         ) -> None:
@@ -44824,7 +47503,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 cost: int | None
                                 """OSPF link cost."""
-                                authentication: Literal["simple", "message-digest"] | None
+                                authentication: Authentication | None
                                 simple_auth_key: str | None
                                 """
                                 Type 7 encrypted key for OSPF simple authentication.
@@ -44849,7 +47528,7 @@ class EosDesigns(EosDesignsRootModel):
                                         point_to_point: bool | UndefinedType = Undefined,
                                         area: str | UndefinedType = Undefined,
                                         cost: int | None | UndefinedType = Undefined,
-                                        authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
+                                        authentication: Authentication | None | UndefinedType = Undefined,
                                         simple_auth_key: str | None | UndefinedType = Undefined,
                                         cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                                         message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
@@ -44926,6 +47605,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ipv6_enable": {"type": bool},
                                 "ip_address_virtual": {"type": str},
                                 "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+                                "ipv6_nd": {"type": Ipv6Nd},
                                 "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                                 "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -44994,6 +47674,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
+                            ipv6_nd: Ipv6Nd
+                            """Subclass of AvdModel."""
                             ip_address_virtual_secondaries: IpAddressVirtualSecondaries
                             """
                             Secondary IPv4 VXLAN Anycast IP addresses.
@@ -45174,6 +47856,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_enable: bool | None | UndefinedType = Undefined,
                                     ip_address_virtual: str | None | UndefinedType = Undefined,
                                     ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                                    ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                                     ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                                     ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -45233,6 +47916,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                            Subclass of AvdList with `str` items.
+                                        ipv6_nd: Subclass of AvdModel.
                                         ip_address_virtual_secondaries:
                                            Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -45365,6 +48049,43 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         Ipv6AddressVirtuals._item_type = str
+
+                        class Ipv6Nd(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "advertise_ipv6_address_virtuals": {"type": bool},
+                                "valid_lifetime": {"type": str},
+                                "preferred_lifetime": {"type": str},
+                            }
+                            advertise_ipv6_address_virtuals: bool | None
+                            """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+                            valid_lifetime: str | None
+                            """In seconds <0-4294967295> or infinite."""
+                            preferred_lifetime: str | None
+                            """In seconds <0-4294967295> or infinite."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                                    valid_lifetime: str | None | UndefinedType = Undefined,
+                                    preferred_lifetime: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ipv6Nd.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                                        valid_lifetime: In seconds <0-4294967295> or infinite.
+                                        preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                                    """
 
                         class IpAddressVirtualSecondaries(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -45646,6 +48367,7 @@ class EosDesigns(EosDesignsRootModel):
                         class IgmpSnoopingQuerier(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Version: TypeAlias = Literal[1, 2, 3]
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool},
                                 "source_address": {"type": str},
@@ -45659,7 +48381,7 @@ class EosDesigns(EosDesignsRootModel):
                             IPv4_address
                             If not set, IP address of "Loopback0" will be used.
                             """
-                            version: Literal[1, 2, 3] | None
+                            version: Version | None
                             """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
                             fast_leave: bool | None
                             """Enable IGMP snooping fast-leave feature."""
@@ -45671,7 +48393,7 @@ class EosDesigns(EosDesignsRootModel):
                                     *,
                                     enabled: bool | None | UndefinedType = Undefined,
                                     source_address: str | None | UndefinedType = Undefined,
-                                    version: Literal[1, 2, 3] | None | UndefinedType = Undefined,
+                                    version: Version | None | UndefinedType = Undefined,
                                     fast_leave: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -45693,9 +48415,12 @@ class EosDesigns(EosDesignsRootModel):
                         class Ospf(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Authentication: TypeAlias = Literal["simple", "message-digest"]
+
                             class MessageDigestKeysItem(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                 _fields: ClassVar[dict] = {
                                     "id": {"type": int},
                                     "hash_algorithm": {"type": str, "default": "sha512"},
@@ -45703,7 +48428,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "cleartext_key": {"type": str},
                                 }
                                 id: int | None
-                                hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+                                hash_algorithm: HashAlgorithm
                                 """Default value: `"sha512"`"""
                                 key: str | None
                                 """
@@ -45723,7 +48448,7 @@ class EosDesigns(EosDesignsRootModel):
                                         self,
                                         *,
                                         id: int | None | UndefinedType = Undefined,
-                                        hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                                        hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
                                         cleartext_key: str | None | UndefinedType = Undefined,
                                     ) -> None:
@@ -45772,7 +48497,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             cost: int | None
                             """OSPF link cost."""
-                            authentication: Literal["simple", "message-digest"] | None
+                            authentication: Authentication | None
                             simple_auth_key: str | None
                             """
                             Type 7 encrypted key for OSPF simple authentication.
@@ -45797,7 +48522,7 @@ class EosDesigns(EosDesignsRootModel):
                                     point_to_point: bool | UndefinedType = Undefined,
                                     area: str | UndefinedType = Undefined,
                                     cost: int | None | UndefinedType = Undefined,
-                                    authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
+                                    authentication: Authentication | None | UndefinedType = Undefined,
                                     simple_auth_key: str | None | UndefinedType = Undefined,
                                     cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
@@ -45878,6 +48603,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv6_enable": {"type": bool},
                             "ip_address_virtual": {"type": str},
                             "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+                            "ipv6_nd": {"type": Ipv6Nd},
                             "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -45976,6 +48702,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdList with `str` items.
                         """
+                        ipv6_nd: Ipv6Nd
+                        """Subclass of AvdModel."""
                         ip_address_virtual_secondaries: IpAddressVirtualSecondaries
                         """
                         Secondary IPv4 VXLAN Anycast IP addresses.
@@ -46160,6 +48888,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv6_enable: bool | None | UndefinedType = Undefined,
                                 ip_address_virtual: str | None | UndefinedType = Undefined,
                                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -46241,6 +48970,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
+                                    ipv6_nd: Subclass of AvdModel.
                                     ip_address_virtual_secondaries:
                                        Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -46520,9 +49250,12 @@ class EosDesigns(EosDesignsRootModel):
                         class Ospf(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Authentication: TypeAlias = Literal["simple", "message-digest"]
+
                             class MessageDigestKeysItem(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                 _fields: ClassVar[dict] = {
                                     "id": {"type": int},
                                     "hash_algorithm": {"type": str, "default": "sha512"},
@@ -46530,7 +49263,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "cleartext_key": {"type": str},
                                 }
                                 id: int | None
-                                hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+                                hash_algorithm: HashAlgorithm
                                 """Default value: `"sha512"`"""
                                 key: str | None
                                 """
@@ -46553,7 +49286,7 @@ class EosDesigns(EosDesignsRootModel):
                                         self,
                                         *,
                                         id: int | None | UndefinedType = Undefined,
-                                        hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                                        hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
                                         cleartext_key: str | None | UndefinedType = Undefined,
                                     ) -> None:
@@ -46605,7 +49338,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             cost: int | None
                             """OSPF link cost."""
-                            authentication: Literal["simple", "message-digest"] | None
+                            authentication: Authentication | None
                             simple_auth_key: str | None
                             """
                             Type 7 encrypted key for OSPF simple authentication.
@@ -46634,7 +49367,7 @@ class EosDesigns(EosDesignsRootModel):
                                     point_to_point: bool | UndefinedType = Undefined,
                                     area: str | UndefinedType = Undefined,
                                     cost: int | None | UndefinedType = Undefined,
-                                    authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
+                                    authentication: Authentication | None | UndefinedType = Undefined,
                                     simple_auth_key: str | None | UndefinedType = Undefined,
                                     cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
@@ -46713,14 +49446,19 @@ class EosDesigns(EosDesignsRootModel):
                         class MonitorSessionsItem(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Role: TypeAlias = Literal["source", "destination"]
+
                             class SourceSettings(AvdModel):
                                 """Subclass of AvdModel."""
+
+                                Direction: TypeAlias = Literal["rx", "tx", "both"]
 
                                 class AccessGroup(AvdModel):
                                     """Subclass of AvdModel."""
 
+                                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                                    type: Literal["ip", "ipv6", "mac"] | None
+                                    type: Type | None
                                     name: str | None
                                     """ACL name."""
                                     priority: int | None
@@ -46730,7 +49468,7 @@ class EosDesigns(EosDesignsRootModel):
                                         def __init__(
                                             self,
                                             *,
-                                            type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
+                                            type: Type | None | UndefinedType = Undefined,
                                             name: str | None | UndefinedType = Undefined,
                                             priority: int | None | UndefinedType = Undefined,
                                         ) -> None:
@@ -46748,7 +49486,7 @@ class EosDesigns(EosDesignsRootModel):
                                             """
 
                                 _fields: ClassVar[dict] = {"direction": {"type": str}, "access_group": {"type": AccessGroup}}
-                                direction: Literal["rx", "tx", "both"] | None
+                                direction: Direction | None
                                 access_group: AccessGroup
                                 """
                                 This can only be set when `session_settings.access_group` is not set.
@@ -46759,10 +49497,7 @@ class EosDesigns(EosDesignsRootModel):
                                 if TYPE_CHECKING:
 
                                     def __init__(
-                                        self,
-                                        *,
-                                        direction: Literal["rx", "tx", "both"] | None | UndefinedType = Undefined,
-                                        access_group: AccessGroup | UndefinedType = Undefined,
+                                        self, *, direction: Direction | None | UndefinedType = Undefined, access_group: AccessGroup | UndefinedType = Undefined
                                     ) -> None:
                                         """
                                         SourceSettings.
@@ -46785,18 +49520,16 @@ class EosDesigns(EosDesignsRootModel):
                                 class AccessGroup(AvdModel):
                                     """Subclass of AvdModel."""
 
+                                    Type: TypeAlias = Literal["ip", "ipv6", "mac"]
                                     _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                                    type: Literal["ip", "ipv6", "mac"] | None
+                                    type: Type | None
                                     name: str | None
                                     """ACL name."""
 
                                     if TYPE_CHECKING:
 
                                         def __init__(
-                                            self,
-                                            *,
-                                            type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
-                                            name: str | None | UndefinedType = Undefined,
+                                            self, *, type: Type | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined
                                         ) -> None:
                                             """
                                             AccessGroup.
@@ -46917,7 +49650,7 @@ class EosDesigns(EosDesignsRootModel):
                             }
                             name: str
                             """Session name."""
-                            role: Literal["source", "destination"] | None
+                            role: Role | None
                             source_settings: SourceSettings
                             """Subclass of AvdModel."""
                             session_settings: SessionSettings
@@ -46936,7 +49669,7 @@ class EosDesigns(EosDesignsRootModel):
                                     self,
                                     *,
                                     name: str | UndefinedType = Undefined,
-                                    role: Literal["source", "destination"] | None | UndefinedType = Undefined,
+                                    role: Role | None | UndefinedType = Undefined,
                                     source_settings: SourceSettings | UndefinedType = Undefined,
                                     session_settings: SessionSettings | UndefinedType = Undefined,
                                 ) -> None:
@@ -47192,9 +49925,95 @@ class EosDesigns(EosDesignsRootModel):
                     class L3PortChannelsItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Mode: TypeAlias = Literal["active", "passive", "on"]
+
                         class MemberInterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Speed: TypeAlias = Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
                             _fields: ClassVar[dict] = {
                                 "name": {"type": str},
                                 "description": {"type": str},
@@ -47222,11 +50041,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             peer_interface: str | None
                             """The peer device interface. Used for description and documentation."""
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: Speed | None
+                            """Interface Speed."""
                             structured_config: EosCliConfigGen.EthernetInterfacesItem
                             """Custom structured config for the member ethernet interface."""
 
@@ -47239,7 +50055,7 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Speed | None | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -47261,9 +50077,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         structured_config: Custom structured config for the member ethernet interface.
 
                                     """
@@ -47400,9 +50214,12 @@ class EosDesigns(EosDesignsRootModel):
                         class Ospf(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Authentication: TypeAlias = Literal["simple", "message-digest"]
+
                             class MessageDigestKeysItem(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                 _fields: ClassVar[dict] = {
                                     "id": {"type": int},
                                     "hash_algorithm": {"type": str, "default": "sha512"},
@@ -47410,7 +50227,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "cleartext_key": {"type": str},
                                 }
                                 id: int | None
-                                hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+                                hash_algorithm: HashAlgorithm
                                 """Default value: `"sha512"`"""
                                 key: str | None
                                 """
@@ -47433,7 +50250,7 @@ class EosDesigns(EosDesignsRootModel):
                                         self,
                                         *,
                                         id: int | None | UndefinedType = Undefined,
-                                        hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                                        hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
                                         cleartext_key: str | None | UndefinedType = Undefined,
                                     ) -> None:
@@ -47485,7 +50302,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             cost: int | None
                             """OSPF link cost."""
-                            authentication: Literal["simple", "message-digest"] | None
+                            authentication: Authentication | None
                             simple_auth_key: str | None
                             """
                             Type 7 encrypted key for OSPF simple authentication.
@@ -47514,7 +50331,7 @@ class EosDesigns(EosDesignsRootModel):
                                     point_to_point: bool | UndefinedType = Undefined,
                                     area: str | UndefinedType = Undefined,
                                     cost: int | None | UndefinedType = Undefined,
-                                    authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
+                                    authentication: Authentication | None | UndefinedType = Undefined,
                                     simple_auth_key: str | None | UndefinedType = Undefined,
                                     cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
@@ -47608,7 +50425,7 @@ class EosDesigns(EosDesignsRootModel):
                         If not set, a default description will be configured with '[<peer>[
                         <peer_port_channel>]]'.
                         """
-                        mode: Literal["active", "passive", "on"]
+                        mode: Mode
                         """
                         Port-Channel mode.
                         Should not be set on Port-Channel subinterfaces.
@@ -47686,7 +50503,7 @@ class EosDesigns(EosDesignsRootModel):
                                 node: str | UndefinedType = Undefined,
                                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
-                                mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
+                                mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -48105,7 +50922,12 @@ class EosDesigns(EosDesignsRootModel):
                         """Time-to-live in range of hops."""
                         nodes: Nodes
                         """
-                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+                        List of node names or regular expressions to match against hostnames.
+                        The regexes need to match full
+                        hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                        Nodes is required to restrict configuration
+                        of BGP neighbors to certain nodes in the network.
+
                         Subclass of AvdList with `str` items.
                         """
                         set_ipv4_next_hop: str | None
@@ -48214,7 +51036,12 @@ class EosDesigns(EosDesignsRootModel):
                                     update_source: update_source
                                     ebgp_multihop: Time-to-live in range of hops.
                                     nodes:
-                                       Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+                                       List of node names or regular expressions to match against hostnames.
+                                       The regexes need to match full
+                                       hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                                       Nodes is required to restrict configuration
+                                       of BGP neighbors to certain nodes in the network.
+
                                        Subclass of AvdList with `str` items.
                                     set_ipv4_next_hop:
                                        IPv4_address
@@ -48635,13 +51462,14 @@ class EosDesigns(EosDesignsRootModel):
                             class DirectionIn(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
                                 _fields: ClassVar[dict] = {
                                     "action": {"type": str},
                                     "include_community_list": {"type": bool},
                                     "include_prefix_list": {"type": bool},
                                     "include_sub_route_map": {"type": bool},
                                 }
-                                action: Literal["deny", "permit", "deny-in-out"]
+                                action: Action
                                 """Missing policy action."""
                                 include_community_list: bool | None
                                 """Include community-list references in missing policy decision."""
@@ -48655,7 +51483,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        action: Literal["deny", "permit", "deny-in-out"] | UndefinedType = Undefined,
+                                        action: Action | UndefinedType = Undefined,
                                         include_community_list: bool | None | UndefinedType = Undefined,
                                         include_prefix_list: bool | None | UndefinedType = Undefined,
                                         include_sub_route_map: bool | None | UndefinedType = Undefined,
@@ -48677,13 +51505,14 @@ class EosDesigns(EosDesignsRootModel):
                             class DirectionOut(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                Action: TypeAlias = Literal["deny", "permit", "deny-in-out"]
                                 _fields: ClassVar[dict] = {
                                     "action": {"type": str},
                                     "include_community_list": {"type": bool},
                                     "include_prefix_list": {"type": bool},
                                     "include_sub_route_map": {"type": bool},
                                 }
-                                action: Literal["deny", "permit", "deny-in-out"]
+                                action: Action
                                 """Missing policy action."""
                                 include_community_list: bool | None
                                 """Include community-list references in missing policy decision."""
@@ -48697,7 +51526,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        action: Literal["deny", "permit", "deny-in-out"] | UndefinedType = Undefined,
+                                        action: Action | UndefinedType = Undefined,
                                         include_community_list: bool | None | UndefinedType = Undefined,
                                         include_prefix_list: bool | None | UndefinedType = Undefined,
                                         include_sub_route_map: bool | None | UndefinedType = Undefined,
@@ -48826,19 +51655,17 @@ class EosDesigns(EosDesignsRootModel):
                         class SharedSecret(AvdModel):
                             """Subclass of AvdModel."""
 
+                            HashAlgorithm: TypeAlias = Literal["aes-128-cmac-96", "hmac-sha-256", "hmac-sha1-96"]
                             _fields: ClassVar[dict] = {"profile": {"type": str}, "hash_algorithm": {"type": str}}
                             profile: str
                             """Name of profile defined under `management_security`."""
-                            hash_algorithm: Literal["aes-128-cmac-96", "hmac-sha-256", "hmac-sha1-96"]
+                            hash_algorithm: HashAlgorithm
                             """Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above."""
 
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self,
-                                    *,
-                                    profile: str | UndefinedType = Undefined,
-                                    hash_algorithm: Literal["aes-128-cmac-96", "hmac-sha-256", "hmac-sha1-96"] | UndefinedType = Undefined,
+                                    self, *, profile: str | UndefinedType = Undefined, hash_algorithm: HashAlgorithm | UndefinedType = Undefined
                                 ) -> None:
                                     """
                                     SharedSecret.
@@ -48899,13 +51726,14 @@ class EosDesigns(EosDesignsRootModel):
                         """BGP peer group name."""
                         nodes: Nodes
                         """
-                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                        If not
-                        set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                        peer_group.
+                        List of node names or regular expressions to match against hostnames to configure the peer-group.
+                        The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                        The peer-group
+                        is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                        Subclass of AvdList with `str` items.
+                        Subclass
+                        of AvdList with `str` items.
                         """
                         password: str | None
                         """
@@ -49069,13 +51897,14 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     name: BGP peer group name.
                                     nodes:
-                                       Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                                       If not
-                                       set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                                       peer_group.
+                                       List of node names or regular expressions to match against hostnames to configure the peer-group.
+                                       The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                                       The peer-group
+                                       is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                                       Subclass of AvdList with `str` items.
+                                       Subclass
+                                       of AvdList with `str` items.
                                     password:
                                        Type 7 encrypted password.
                                        Takes precedence over `cleartext_password`.
@@ -49156,6 +51985,8 @@ class EosDesigns(EosDesignsRootModel):
                     class AdditionalRouteTargetsItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Type: TypeAlias = Literal["import", "export"]
+
                         class Nodes(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
 
@@ -49167,7 +51998,7 @@ class EosDesigns(EosDesignsRootModel):
                             "route_target": {"type": str},
                             "nodes": {"type": Nodes},
                         }
-                        type: Literal["import", "export"] | None
+                        type: Type | None
                         address_family: str | None
                         route_target: str | None
                         nodes: Nodes
@@ -49181,7 +52012,7 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                type: Literal["import", "export"] | None | UndefinedType = Undefined,
+                                type: Type | None | UndefinedType = Undefined,
                                 address_family: str | None | UndefinedType = Undefined,
                                 route_target: str | None | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
@@ -49886,6 +52717,7 @@ class EosDesigns(EosDesignsRootModel):
                     class IgmpSnoopingQuerier(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Version: TypeAlias = Literal[1, 2, 3]
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool},
                             "source_address": {"type": str},
@@ -49899,7 +52731,7 @@ class EosDesigns(EosDesignsRootModel):
                         IPv4_address
                         If not set, IP address of "Loopback0" will be used.
                         """
-                        version: Literal[1, 2, 3] | None
+                        version: Version | None
                         """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
                         fast_leave: bool | None
                         """Enable IGMP snooping fast-leave feature."""
@@ -49911,7 +52743,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 enabled: bool | None | UndefinedType = Undefined,
                                 source_address: str | None | UndefinedType = Undefined,
-                                version: Literal[1, 2, 3] | None | UndefinedType = Undefined,
+                                version: Version | None | UndefinedType = Undefined,
                                 fast_leave: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -49976,16 +52808,15 @@ class EosDesigns(EosDesignsRootModel):
                     class PrivateVlan(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Type: TypeAlias = Literal["community", "isolated"]
                         _fields: ClassVar[dict] = {"type": {"type": str}, "primary_vlan": {"type": int}}
-                        type: Literal["community", "isolated"]
+                        type: Type
                         primary_vlan: int
                         """Primary VLAN ID."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(
-                                self, *, type: Literal["community", "isolated"] | UndefinedType = Undefined, primary_vlan: int | UndefinedType = Undefined
-                            ) -> None:
+                            def __init__(self, *, type: Type | UndefinedType = Undefined, primary_vlan: int | UndefinedType = Undefined) -> None:
                                 """
                                 PrivateVlan.
 
@@ -50253,6 +53084,8 @@ class EosDesigns(EosDesignsRootModel):
                 class PointToPointServicesItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    Type: TypeAlias = Literal["vpws-pseudowire"]
+
                     class SubinterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -50354,15 +53187,14 @@ class EosDesigns(EosDesignsRootModel):
                         class PortChannel(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Mode: TypeAlias = Literal["active", "on"]
                             _fields: ClassVar[dict] = {"mode": {"type": str}, "short_esi": {"type": str}}
-                            mode: Literal["active", "on"] | None
+                            mode: Mode | None
                             short_esi: str | None
 
                             if TYPE_CHECKING:
 
-                                def __init__(
-                                    self, *, mode: Literal["active", "on"] | None | UndefinedType = Undefined, short_esi: str | None | UndefinedType = Undefined
-                                ) -> None:
+                                def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, short_esi: str | None | UndefinedType = Undefined) -> None:
                                     """
                                     PortChannel.
 
@@ -50450,7 +53282,7 @@ class EosDesigns(EosDesignsRootModel):
                     }
                     name: str
                     """Pseudowire name."""
-                    type: Literal["vpws-pseudowire"]
+                    type: Type
                     """Default value: `"vpws-pseudowire"`"""
                     subinterfaces: Subinterfaces
                     """
@@ -50476,7 +53308,7 @@ class EosDesigns(EosDesignsRootModel):
                             self,
                             *,
                             name: str | UndefinedType = Undefined,
-                            type: Literal["vpws-pseudowire"] | UndefinedType = Undefined,
+                            type: Type | UndefinedType = Undefined,
                             subinterfaces: Subinterfaces | UndefinedType = Undefined,
                             endpoints: Endpoints | UndefinedType = Undefined,
                             lldp_disable: bool | None | UndefinedType = Undefined,
@@ -51086,6 +53918,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -51100,6 +53934,175 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     UplinkSwitches._item_type = str
+
+                    UplinkInterfaceSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    UplinkSwitchInterfaceSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
 
                     class UplinkPtp(AvdModel):
                         """Subclass of AvdModel."""
@@ -51142,10 +54145,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
                     BgpDefaults._item_type = str
+
+                    EvpnRole: TypeAlias = Literal["client", "server", "none"]
 
                     class EvpnRouteServers(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -51710,6 +54717,94 @@ class EosDesigns(EosDesignsRootModel):
 
                     MlagInterfaces._item_type = str
 
+                    MlagInterfacesSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
+                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
+                    MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
+
                     class OverlayAddressFamilies(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -51727,6 +54822,8 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         Uplinks._item_type = str
+
+                        Mode: TypeAlias = Literal["boundary"]
 
                         class Dscp(AvdModel):
                             """Subclass of AvdModel."""
@@ -52024,7 +55121,7 @@ class EosDesigns(EosDesignsRootModel):
                         This can be set manually if required, for example,
                         to a value of "10.1.2.3".
                         """
-                        mode: Literal["boundary"]
+                        mode: Mode
                         """Default value: `"boundary"`"""
                         mode_one_step: bool
                         """Default value: `False`"""
@@ -52058,7 +55155,7 @@ class EosDesigns(EosDesignsRootModel):
                                 clock_identity_prefix: str | UndefinedType = Undefined,
                                 clock_identity: str | None | UndefinedType = Undefined,
                                 source_ip: str | None | UndefinedType = Undefined,
-                                mode: Literal["boundary"] | UndefinedType = Undefined,
+                                mode: Mode | UndefinedType = Undefined,
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
@@ -52112,6 +55209,9 @@ class EosDesigns(EosDesignsRootModel):
                                     monitor: Subclass of AvdModel.
 
                                 """
+
+                    WanRole: TypeAlias = Literal["client", "server"]
+                    CvPathfinderTransitMode: TypeAlias = Literal["region", "zone"]
 
                     class WanHa(AvdModel):
                         """Subclass of AvdModel."""
@@ -52261,6 +55361,91 @@ class EosDesigns(EosDesignsRootModel):
 
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
+
+                        Speed: TypeAlias = Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
 
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
@@ -52424,6 +55609,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Workers._item_type = str
 
+                            Mode: TypeAlias = Literal["shared", "exclusive"]
                             _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                             count: int | None
                             """
@@ -52434,7 +55620,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             workers: Workers
                             """Subclass of AvdList with `str` items."""
-                            mode: Literal["shared", "exclusive"] | None
+                            mode: Mode | None
                             """Mode applicable to the workers."""
 
                             if TYPE_CHECKING:
@@ -52444,7 +55630,7 @@ class EosDesigns(EosDesignsRootModel):
                                     *,
                                     count: int | None | UndefinedType = Undefined,
                                     workers: Workers | UndefinedType = Undefined,
-                                    mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                    mode: Mode | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     RxQueue.
@@ -52575,11 +55761,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `True`
                         """
-                        speed: str | None
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        speed: Speed | None
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -52690,7 +55873,7 @@ class EosDesigns(EosDesignsRootModel):
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
-                                speed: str | None | UndefinedType = Undefined,
+                                speed: Speed | None | UndefinedType = Undefined,
                                 receive_bandwidth: int | None | UndefinedType = Undefined,
                                 transmit_bandwidth: int | None | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -52754,9 +55937,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -52831,8 +56012,95 @@ class EosDesigns(EosDesignsRootModel):
                     class L3PortChannelsItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Mode: TypeAlias = Literal["active", "passive", "on"]
+
                         class MemberInterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
+
+                            Speed: TypeAlias = Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
 
                             class RxQueue(AvdModel):
                                 """Subclass of AvdModel."""
@@ -52842,6 +56110,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Workers._item_type = str
 
+                                Mode: TypeAlias = Literal["shared", "exclusive"]
                                 _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                                 count: int | None
                                 """
@@ -52852,7 +56121,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 workers: Workers
                                 """Subclass of AvdList with `str` items."""
-                                mode: Literal["shared", "exclusive"] | None
+                                mode: Mode | None
                                 """Mode applicable to the workers."""
 
                                 if TYPE_CHECKING:
@@ -52862,7 +56131,7 @@ class EosDesigns(EosDesignsRootModel):
                                         *,
                                         count: int | None | UndefinedType = Undefined,
                                         workers: Workers | UndefinedType = Undefined,
-                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                        mode: Mode | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         RxQueue.
@@ -52909,11 +56178,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             peer_interface: str | None
                             """The peer device interface. Used for description and documentation."""
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: Speed | None
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -52935,7 +56201,7 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Speed | None | UndefinedType = Undefined,
                                     rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
@@ -52958,9 +56224,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -53126,7 +56390,7 @@ class EosDesigns(EosDesignsRootModel):
                         If not set, a default description will be configured with '[<peer>[
                         <peer_port_channel>]]'.
                         """
-                        mode: Literal["active", "passive", "on"]
+                        mode: Mode
                         """
                         Port-Channel mode.
                         Should not be set on Port-Channel subinterfaces.
@@ -53264,7 +56528,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 name: str | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
-                                mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
+                                mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
@@ -53392,6 +56656,8 @@ class EosDesigns(EosDesignsRootModel):
                         _primary_key: ClassVar[str] = "name"
 
                     L3PortChannels._item_type = L3PortChannelsItem
+
+                    FlowTrackerType: TypeAlias = Literal["sampled", "hardware"]
 
                     class UnderlayMulticast(AvdModel):
                         """Subclass of AvdModel."""
@@ -53682,7 +56948,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -53851,7 +57116,7 @@ class EosDesigns(EosDesignsRootModel):
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
                     """Custom structured config for eos_cli_config_gen."""
-                    uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None
+                    uplink_type: UplinkType | None
                     """
                     Override the default `uplink_type` set at the `node_type_key` level.
                     `uplink_type` must be "p2p" if
@@ -53892,7 +57157,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     uplink_switches: UplinkSwitches
                     """Subclass of AvdList with `str` items."""
-                    uplink_interface_speed: str | None
+                    uplink_interface_speed: UplinkInterfaceSpeed | None
                     """
                     Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                     (Uplink switch
@@ -53900,12 +57165,8 @@ class EosDesigns(EosDesignsRootModel):
                     Speed should be set in the
                     format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                     """
-                    uplink_switch_interface_speed: str | None
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -53988,20 +57249,6 @@ class EosDesigns(EosDesignsRootModel):
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
                     """
-                    uplink_structured_config: dict
-                    """
-                    Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                    When
-                    uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                    for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                    When uplink_type ==
-                    "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                    eos_cli_config_gen overrides the settings on the port-channel interface level.
-                    "uplink_structured_config" is applied after "structured_config", so it can override
-                    "structured_config" defined on node-level.
-                    Note! The content of this dictionary is _not_ validated
-                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                    """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
                     uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -54055,7 +57302,7 @@ class EosDesigns(EosDesignsRootModel):
                     """(4.4 hexadecimal)."""
                     isis_maximum_paths: int | None
                     """Number of path to configure in ECMP for ISIS."""
-                    is_type: Literal["level-1-2", "level-1", "level-2"] | None
+                    is_type: IsType | None
                     """Overrides `isis_default_is_type`."""
                     node_sid_base: int
                     """
@@ -54158,7 +57405,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    evpn_role: Literal["client", "server", "none"] | None
+                    evpn_role: EvpnRole | None
                     """
                     Acting role in EVPN control plane.
                     Default is set in node_type definition from node_type_keys.
@@ -54246,12 +57493,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    mlag_interfaces_speed: str | None
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    mlag_interfaces_speed: MlagInterfacesSpeed | None
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -54285,7 +57528,7 @@ class EosDesigns(EosDesignsRootModel):
                     Default value: `4094`
                     """
                     mlag_peer_link_allowed_vlans: str | None
-                    mlag_peer_address_family: Literal["ipv4", "ipv6"]
+                    mlag_peer_address_family: MlagPeerAddressFamily
                     """
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
@@ -54320,7 +57563,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag_domain_id: str | None
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                    spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None
+                    spanning_tree_mode: SpanningTreeMode | None
                     spanning_tree_priority: int
                     """
                     Spanning-tree priority configured for the selected mode.
@@ -54518,7 +57761,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Default value: `30`
                     """
-                    mpls_overlay_role: Literal["client", "server", "none"] | None
+                    mpls_overlay_role: MplsOverlayRole | None
                     """
                     Set the default mpls overlay role.
                     Acting role in overlay control plane.
@@ -54540,7 +57783,7 @@ class EosDesigns(EosDesignsRootModel):
                     """Set BGP cluster id."""
                     ptp: Ptp
                     """Subclass of AvdModel."""
-                    wan_role: Literal["client", "server"] | None
+                    wan_role: WanRole | None
                     """
                     Override the default WAN role.
 
@@ -54550,7 +57793,7 @@ class EosDesigns(EosDesignsRootModel):
                     `server` indicates that the router is a
                     route-reflector.
                     """
-                    cv_pathfinder_transit_mode: Literal["region", "zone"] | None
+                    cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
                     Configure the transit mode for a WAN client for CV Pathfinder designs
                     only when the `wan_mode` root
@@ -54610,7 +57853,7 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is useful on virtual Route
                     Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                     """
-                    flow_tracker_type: Literal["sampled", "hardware"] | None
+                    flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
                     Override the `default_flow_tracker_type`` set at the `node_type_key`
@@ -54676,14 +57919,14 @@ class EosDesigns(EosDesignsRootModel):
                             always_configure_ip_routing: bool | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen | UndefinedType = Undefined,
-                            uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None | UndefinedType = Undefined,
+                            uplink_type: UplinkType | None | UndefinedType = Undefined,
                             uplink_ipv4_pool: str | None | UndefinedType = Undefined,
                             uplink_ipv6_pool: str | None | UndefinedType = Undefined,
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                            uplink_interface_speed: str | None | UndefinedType = Undefined,
-                            uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                            uplink_interface_speed: UplinkInterfaceSpeed | None | UndefinedType = Undefined,
+                            uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None | UndefinedType = Undefined,
                             uplink_mtu: int | None | UndefinedType = Undefined,
                             max_uplink_switches: int | None | UndefinedType = Undefined,
                             max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -54693,7 +57936,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -54704,7 +57946,7 @@ class EosDesigns(EosDesignsRootModel):
                             short_esi: str | None | UndefinedType = Undefined,
                             isis_system_id_prefix: str | None | UndefinedType = Undefined,
                             isis_maximum_paths: int | None | UndefinedType = Undefined,
-                            is_type: Literal["level-1-2", "level-1", "level-2"] | None | UndefinedType = Undefined,
+                            is_type: IsType | None | UndefinedType = Undefined,
                             node_sid_base: int | UndefinedType = Undefined,
                             loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                             loopback_ipv4_address: str | None | UndefinedType = Undefined,
@@ -54720,7 +57962,7 @@ class EosDesigns(EosDesignsRootModel):
                             vtep_loopback: str | None | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
-                            evpn_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                            evpn_role: EvpnRole | None | UndefinedType = Undefined,
                             evpn_route_servers: EvpnRouteServers | UndefinedType = Undefined,
                             evpn_services_l2_only: bool | UndefinedType = Undefined,
                             filter: Filter | UndefinedType = Undefined,
@@ -54731,18 +57973,18 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                            mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                            mlag_interfaces_speed: MlagInterfacesSpeed | None | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_vlan: int | UndefinedType = Undefined,
                             mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
-                            mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+                            mlag_peer_address_family: MlagPeerAddressFamily | UndefinedType = Undefined,
                             mlag_peer_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
-                            spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
+                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
                             spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
@@ -54764,13 +58006,13 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_mtu: int | UndefinedType = Undefined,
                             inband_ztp: bool | UndefinedType = Undefined,
                             inband_ztp_lacp_fallback_delay: int | UndefinedType = Undefined,
-                            mpls_overlay_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                            mpls_overlay_role: MplsOverlayRole | None | UndefinedType = Undefined,
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
-                            wan_role: Literal["client", "server"] | None | UndefinedType = Undefined,
-                            cv_pathfinder_transit_mode: Literal["region", "zone"] | None | UndefinedType = Undefined,
+                            wan_role: WanRole | None | UndefinedType = Undefined,
+                            cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
                             cv_pathfinder_region: str | None | UndefinedType = Undefined,
                             cv_pathfinder_site: str | None | UndefinedType = Undefined,
                             wan_ha: WanHa | UndefinedType = Undefined,
@@ -54778,7 +58020,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
-                            flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            flow_tracker_type: FlowTrackerType | None | UndefinedType = Undefined,
                             underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
@@ -54880,10 +58122,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -54944,18 +58183,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                uplink_structured_config:
-                                   Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                   When
-                                   uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                   for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                   When uplink_type ==
-                                   "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                   eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                   "uplink_structured_config" is applied after "structured_config", so it can override
-                                   "structured_config" defined on node-level.
-                                   Note! The content of this dictionary is _not_ validated
-                                   by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -55117,10 +58344,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -55621,6 +58845,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+
                         class UplinkInterfaces(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
 
@@ -55635,6 +58861,175 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         UplinkSwitches._item_type = str
+
+                        UplinkInterfaceSpeed: TypeAlias = Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        UplinkSwitchInterfaceSpeed: TypeAlias = Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
 
                         class UplinkPtp(AvdModel):
                             """Subclass of AvdModel."""
@@ -55677,10 +59072,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
                         class BgpDefaults(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
 
                         BgpDefaults._item_type = str
+
+                        EvpnRole: TypeAlias = Literal["client", "server", "none"]
 
                         class EvpnRouteServers(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -56245,6 +59644,94 @@ class EosDesigns(EosDesignsRootModel):
 
                         MlagInterfaces._item_type = str
 
+                        MlagInterfacesSpeed: TypeAlias = Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
+                        MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
+                        SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
+                        MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
+
                         class OverlayAddressFamilies(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
 
@@ -56262,6 +59749,8 @@ class EosDesigns(EosDesignsRootModel):
                                 """Subclass of AvdList with `str` items."""
 
                             Uplinks._item_type = str
+
+                            Mode: TypeAlias = Literal["boundary"]
 
                             class Dscp(AvdModel):
                                 """Subclass of AvdModel."""
@@ -56562,7 +60051,7 @@ class EosDesigns(EosDesignsRootModel):
                             This can be set manually if required, for example,
                             to a value of "10.1.2.3".
                             """
-                            mode: Literal["boundary"]
+                            mode: Mode
                             """Default value: `"boundary"`"""
                             mode_one_step: bool
                             """Default value: `False`"""
@@ -56596,7 +60085,7 @@ class EosDesigns(EosDesignsRootModel):
                                     clock_identity_prefix: str | UndefinedType = Undefined,
                                     clock_identity: str | None | UndefinedType = Undefined,
                                     source_ip: str | None | UndefinedType = Undefined,
-                                    mode: Literal["boundary"] | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
                                     mode_one_step: bool | UndefinedType = Undefined,
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
@@ -56650,6 +60139,9 @@ class EosDesigns(EosDesignsRootModel):
                                         monitor: Subclass of AvdModel.
 
                                     """
+
+                        WanRole: TypeAlias = Literal["client", "server"]
+                        CvPathfinderTransitMode: TypeAlias = Literal["region", "zone"]
 
                         class WanHa(AvdModel):
                             """Subclass of AvdModel."""
@@ -56801,6 +60293,91 @@ class EosDesigns(EosDesignsRootModel):
 
                         class L3InterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
+
+                            Speed: TypeAlias = Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
 
                             class Bgp(AvdModel):
                                 """Subclass of AvdModel."""
@@ -56968,6 +60545,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Workers._item_type = str
 
+                                Mode: TypeAlias = Literal["shared", "exclusive"]
                                 _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                                 count: int | None
                                 """
@@ -56978,7 +60556,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 workers: Workers
                                 """Subclass of AvdList with `str` items."""
-                                mode: Literal["shared", "exclusive"] | None
+                                mode: Mode | None
                                 """Mode applicable to the workers."""
 
                                 if TYPE_CHECKING:
@@ -56988,7 +60566,7 @@ class EosDesigns(EosDesignsRootModel):
                                         *,
                                         count: int | None | UndefinedType = Undefined,
                                         workers: Workers | UndefinedType = Undefined,
-                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                        mode: Mode | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         RxQueue.
@@ -57121,11 +60699,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `True`
                             """
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: Speed | None
+                            """Interface Speed."""
                             receive_bandwidth: int | None
                             """
                             Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -57236,7 +60811,7 @@ class EosDesigns(EosDesignsRootModel):
                                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                     dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                     enabled: bool | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Speed | None | UndefinedType = Undefined,
                                     receive_bandwidth: int | None | UndefinedType = Undefined,
                                     transmit_bandwidth: int | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
@@ -57300,9 +60875,7 @@ class EosDesigns(EosDesignsRootModel):
                                            specified.
                                         dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                         enabled: Enable or Shutdown the interface.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         receive_bandwidth:
                                            Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                            This is currently used on
@@ -57377,8 +60950,95 @@ class EosDesigns(EosDesignsRootModel):
                         class L3PortChannelsItem(AvdModel):
                             """Subclass of AvdModel."""
 
+                            Mode: TypeAlias = Literal["active", "passive", "on"]
+
                             class MemberInterfacesItem(AvdModel):
                                 """Subclass of AvdModel."""
+
+                                Speed: TypeAlias = Literal[
+                                    "100full",
+                                    "100g",
+                                    "100g-1",
+                                    "100g-2",
+                                    "100g-4",
+                                    "100half",
+                                    "10full",
+                                    "10g",
+                                    "10half",
+                                    "1g",
+                                    "200g",
+                                    "200g-2",
+                                    "200g-4",
+                                    "25g",
+                                    "400g",
+                                    "400g-4",
+                                    "400g-8",
+                                    "40g",
+                                    "50g",
+                                    "50g-1",
+                                    "50g-2",
+                                    "800g-8",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
+                                    "auto",
+                                    "auto 10000full",
+                                    "auto 1000full",
+                                    "auto 100full",
+                                    "auto 100g-1",
+                                    "auto 100g-2",
+                                    "auto 100g-4",
+                                    "auto 100gfull",
+                                    "auto 100half",
+                                    "auto 10full",
+                                    "auto 10gfull",
+                                    "auto 10half",
+                                    "auto 1gfull",
+                                    "auto 2.5gfull",
+                                    "auto 200g-2",
+                                    "auto 200g-4",
+                                    "auto 25gfull",
+                                    "auto 400g-4",
+                                    "auto 400g-8",
+                                    "auto 40gfull",
+                                    "auto 50g-1",
+                                    "auto 50g-2",
+                                    "auto 50gfull",
+                                    "auto 5gfull",
+                                    "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
+                                    "forced 10000full",
+                                    "forced 1000full",
+                                    "forced 1000half",
+                                    "forced 100full",
+                                    "forced 100gfull",
+                                    "forced 100half",
+                                    "forced 10full",
+                                    "forced 10half",
+                                    "forced 25gfull",
+                                    "forced 40gfull",
+                                    "forced 50gfull",
+                                ]
 
                                 class RxQueue(AvdModel):
                                     """Subclass of AvdModel."""
@@ -57388,6 +61048,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Workers._item_type = str
 
+                                    Mode: TypeAlias = Literal["shared", "exclusive"]
                                     _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                                     count: int | None
                                     """
@@ -57398,7 +61059,7 @@ class EosDesigns(EosDesignsRootModel):
                                     """
                                     workers: Workers
                                     """Subclass of AvdList with `str` items."""
-                                    mode: Literal["shared", "exclusive"] | None
+                                    mode: Mode | None
                                     """Mode applicable to the workers."""
 
                                     if TYPE_CHECKING:
@@ -57408,7 +61069,7 @@ class EosDesigns(EosDesignsRootModel):
                                             *,
                                             count: int | None | UndefinedType = Undefined,
                                             workers: Workers | UndefinedType = Undefined,
-                                            mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                            mode: Mode | None | UndefinedType = Undefined,
                                         ) -> None:
                                             """
                                             RxQueue.
@@ -57455,11 +61116,8 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 peer_interface: str | None
                                 """The peer device interface. Used for description and documentation."""
-                                speed: str | None
-                                """
-                                Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                <interface_speed>`.
-                                """
+                                speed: Speed | None
+                                """Interface Speed."""
                                 rx_queue: RxQueue
                                 """
                                 Receive queue parameters for platform SFE interface profile.
@@ -57481,7 +61139,7 @@ class EosDesigns(EosDesignsRootModel):
                                         description: str | None | UndefinedType = Undefined,
                                         peer: str | None | UndefinedType = Undefined,
                                         peer_interface: str | None | UndefinedType = Undefined,
-                                        speed: str | None | UndefinedType = Undefined,
+                                        speed: Speed | None | UndefinedType = Undefined,
                                         rx_queue: RxQueue | UndefinedType = Undefined,
                                         structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                     ) -> None:
@@ -57504,9 +61162,7 @@ class EosDesigns(EosDesignsRootModel):
                                                If not set, this inherits the peer
                                                setting on the port-channel interface.
                                             peer_interface: The peer device interface. Used for description and documentation.
-                                            speed:
-                                               Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                               <interface_speed>`.
+                                            speed: Interface Speed.
                                             rx_queue:
                                                Receive queue parameters for platform SFE interface profile.
                                                This setting is ignored unless the
@@ -57678,7 +61334,7 @@ class EosDesigns(EosDesignsRootModel):
                             If not set, a default description will be configured with '[<peer>[
                             <peer_port_channel>]]'.
                             """
-                            mode: Literal["active", "passive", "on"]
+                            mode: Mode
                             """
                             Port-Channel mode.
                             Should not be set on Port-Channel subinterfaces.
@@ -57816,7 +61472,7 @@ class EosDesigns(EosDesignsRootModel):
                                     *,
                                     name: str | UndefinedType = Undefined,
                                     description: str | None | UndefinedType = Undefined,
-                                    mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
                                     member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
                                     dhcp_ip: str | None | UndefinedType = Undefined,
@@ -57944,6 +61600,8 @@ class EosDesigns(EosDesignsRootModel):
                             _primary_key: ClassVar[str] = "name"
 
                         L3PortChannels._item_type = L3PortChannelsItem
+
+                        FlowTrackerType: TypeAlias = Literal["sampled", "hardware"]
 
                         class UnderlayMulticast(AvdModel):
                             """Subclass of AvdModel."""
@@ -58236,7 +61894,6 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_macsec": {"type": UplinkMacsec},
                             "uplink_port_channel_id": {"type": int},
                             "uplink_switch_port_channel_id": {"type": int},
-                            "uplink_structured_config": {"type": dict},
                             "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -58415,7 +62072,7 @@ class EosDesigns(EosDesignsRootModel):
                         """EOS CLI rendered directly on the root level of the final EOS configuration."""
                         structured_config: EosCliConfigGen
                         """Custom structured config for eos_cli_config_gen."""
-                        uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None
+                        uplink_type: UplinkType | None
                         """
                         Override the default `uplink_type` set at the `node_type_key` level.
                         `uplink_type` must be "p2p" if
@@ -58456,7 +62113,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         uplink_switches: UplinkSwitches
                         """Subclass of AvdList with `str` items."""
-                        uplink_interface_speed: str | None
+                        uplink_interface_speed: UplinkInterfaceSpeed | None
                         """
                         Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                         (Uplink switch
@@ -58464,12 +62121,8 @@ class EosDesigns(EosDesignsRootModel):
                         Speed should be set in the
                         format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                         """
-                        uplink_switch_interface_speed: str | None
-                        """
-                        Set point-to-Point interface speed for the uplink switch interface only.
-                        Speed should be set in the
-                        format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                        """
+                        uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None
+                        """Set point-to-Point interface speed for the uplink switch interface only."""
                         uplink_mtu: int | None
                         """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                         max_uplink_switches: int | None
@@ -58552,20 +62205,6 @@ class EosDesigns(EosDesignsRootModel):
                         Note! For MLAG pairs the ID must be between
                         1 and 2000 and both MLAG switches must have the same value.
                         """
-                        uplink_structured_config: dict
-                        """
-                        Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                        When
-                        uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                        for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                        When uplink_type ==
-                        "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                        eos_cli_config_gen overrides the settings on the port-channel interface level.
-                        "uplink_structured_config" is applied after "structured_config", so it can override
-                        "structured_config" defined on node-level.
-                        Note! The content of this dictionary is _not_ validated
-                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                        """
                         uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                         """Custom structured config applied to `uplink_interfaces`."""
                         uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -58619,7 +62258,7 @@ class EosDesigns(EosDesignsRootModel):
                         """(4.4 hexadecimal)."""
                         isis_maximum_paths: int | None
                         """Number of path to configure in ECMP for ISIS."""
-                        is_type: Literal["level-1-2", "level-1", "level-2"] | None
+                        is_type: IsType | None
                         """Overrides `isis_default_is_type`."""
                         node_sid_base: int
                         """
@@ -58722,7 +62361,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdList with `str` items.
                         """
-                        evpn_role: Literal["client", "server", "none"] | None
+                        evpn_role: EvpnRole | None
                         """
                         Acting role in EVPN control plane.
                         Default is set in node_type definition from node_type_keys.
@@ -58810,12 +62449,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdList with `str` items.
                         """
-                        mlag_interfaces_speed: str | None
-                        """
-                        Set MLAG interface speed.
-                        Speed should be set in the format `<interface_speed>` or `forced
-                        <interface_speed>` or `auto <interface_speed>`.
-                        """
+                        mlag_interfaces_speed: MlagInterfacesSpeed | None
+                        """Set MLAG interface speed."""
                         mlag_peer_l3_vlan: int
                         """
                         Underlay L3 peering SVI interface id.
@@ -58849,7 +62484,7 @@ class EosDesigns(EosDesignsRootModel):
                         Default value: `4094`
                         """
                         mlag_peer_link_allowed_vlans: str | None
-                        mlag_peer_address_family: Literal["ipv4", "ipv6"]
+                        mlag_peer_address_family: MlagPeerAddressFamily
                         """
                         IP address family used to establish MLAG Peer Link (control link).
                         `ipv6` requires EOS version
@@ -58884,7 +62519,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mlag_domain_id: str | None
                         """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                        spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None
+                        spanning_tree_mode: SpanningTreeMode | None
                         spanning_tree_priority: int
                         """
                         Spanning-tree priority configured for the selected mode.
@@ -59082,7 +62717,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `30`
                         """
-                        mpls_overlay_role: Literal["client", "server", "none"] | None
+                        mpls_overlay_role: MplsOverlayRole | None
                         """
                         Set the default mpls overlay role.
                         Acting role in overlay control plane.
@@ -59104,7 +62739,7 @@ class EosDesigns(EosDesignsRootModel):
                         """Set BGP cluster id."""
                         ptp: Ptp
                         """Subclass of AvdModel."""
-                        wan_role: Literal["client", "server"] | None
+                        wan_role: WanRole | None
                         """
                         Override the default WAN role.
 
@@ -59114,7 +62749,7 @@ class EosDesigns(EosDesignsRootModel):
                         `server` indicates that the router is a
                         route-reflector.
                         """
-                        cv_pathfinder_transit_mode: Literal["region", "zone"] | None
+                        cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                         """
                         Configure the transit mode for a WAN client for CV Pathfinder designs
                         only when the `wan_mode` root
@@ -59174,7 +62809,7 @@ class EosDesigns(EosDesignsRootModel):
                         This setting is useful on virtual Route
                         Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                         """
-                        flow_tracker_type: Literal["sampled", "hardware"] | None
+                        flow_tracker_type: FlowTrackerType | None
                         """
                         Set the flow tracker type.
                         Override the `default_flow_tracker_type`` set at the `node_type_key`
@@ -59242,14 +62877,14 @@ class EosDesigns(EosDesignsRootModel):
                                 always_configure_ip_routing: bool | UndefinedType = Undefined,
                                 raw_eos_cli: str | None | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
-                                uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None | UndefinedType = Undefined,
+                                uplink_type: UplinkType | None | UndefinedType = Undefined,
                                 uplink_ipv4_pool: str | None | UndefinedType = Undefined,
                                 uplink_ipv6_pool: str | None | UndefinedType = Undefined,
                                 uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                                 uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                                 uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                                uplink_interface_speed: str | None | UndefinedType = Undefined,
-                                uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                                uplink_interface_speed: UplinkInterfaceSpeed | None | UndefinedType = Undefined,
+                                uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None | UndefinedType = Undefined,
                                 uplink_mtu: int | None | UndefinedType = Undefined,
                                 max_uplink_switches: int | None | UndefinedType = Undefined,
                                 max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -59259,7 +62894,6 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                                uplink_structured_config: dict | UndefinedType = Undefined,
                                 uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -59270,7 +62904,7 @@ class EosDesigns(EosDesignsRootModel):
                                 short_esi: str | None | UndefinedType = Undefined,
                                 isis_system_id_prefix: str | None | UndefinedType = Undefined,
                                 isis_maximum_paths: int | None | UndefinedType = Undefined,
-                                is_type: Literal["level-1-2", "level-1", "level-2"] | None | UndefinedType = Undefined,
+                                is_type: IsType | None | UndefinedType = Undefined,
                                 node_sid_base: int | UndefinedType = Undefined,
                                 loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                                 loopback_ipv4_address: str | None | UndefinedType = Undefined,
@@ -59286,7 +62920,7 @@ class EosDesigns(EosDesignsRootModel):
                                 vtep_loopback: str | None | UndefinedType = Undefined,
                                 bgp_as: str | None | UndefinedType = Undefined,
                                 bgp_defaults: BgpDefaults | UndefinedType = Undefined,
-                                evpn_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                                evpn_role: EvpnRole | None | UndefinedType = Undefined,
                                 evpn_route_servers: EvpnRouteServers | UndefinedType = Undefined,
                                 evpn_services_l2_only: bool | UndefinedType = Undefined,
                                 filter: Filter | UndefinedType = Undefined,
@@ -59297,18 +62931,18 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                                 mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                                 mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                                mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                                mlag_interfaces_speed: MlagInterfacesSpeed | None | UndefinedType = Undefined,
                                 mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                                 mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                                 mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                                 mlag_peer_vlan: int | UndefinedType = Undefined,
                                 mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
-                                mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+                                mlag_peer_address_family: MlagPeerAddressFamily | UndefinedType = Undefined,
                                 mlag_peer_ipv4_pool: str | None | UndefinedType = Undefined,
                                 mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                                 mlag_port_channel_id: int | None | UndefinedType = Undefined,
                                 mlag_domain_id: str | None | UndefinedType = Undefined,
-                                spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
+                                spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                                 spanning_tree_priority: int | UndefinedType = Undefined,
                                 spanning_tree_root_super: bool | UndefinedType = Undefined,
                                 spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
@@ -59330,13 +62964,13 @@ class EosDesigns(EosDesignsRootModel):
                                 inband_mgmt_mtu: int | UndefinedType = Undefined,
                                 inband_ztp: bool | UndefinedType = Undefined,
                                 inband_ztp_lacp_fallback_delay: int | UndefinedType = Undefined,
-                                mpls_overlay_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                                mpls_overlay_role: MplsOverlayRole | None | UndefinedType = Undefined,
                                 overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                                 mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                                 bgp_cluster_id: str | None | UndefinedType = Undefined,
                                 ptp: Ptp | UndefinedType = Undefined,
-                                wan_role: Literal["client", "server"] | None | UndefinedType = Undefined,
-                                cv_pathfinder_transit_mode: Literal["region", "zone"] | None | UndefinedType = Undefined,
+                                wan_role: WanRole | None | UndefinedType = Undefined,
+                                cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
                                 cv_pathfinder_region: str | None | UndefinedType = Undefined,
                                 cv_pathfinder_site: str | None | UndefinedType = Undefined,
                                 wan_ha: WanHa | UndefinedType = Undefined,
@@ -59344,7 +62978,7 @@ class EosDesigns(EosDesignsRootModel):
                                 l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                                 l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                                 data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
-                                flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                                flow_tracker_type: FlowTrackerType | None | UndefinedType = Undefined,
                                 underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                                 campus: str | None | UndefinedType = Undefined,
                                 campus_pod: str | None | UndefinedType = Undefined,
@@ -59453,10 +63087,7 @@ class EosDesigns(EosDesignsRootModel):
                                        interface speed can be overridden with `uplink_switch_interface_speed`).
                                        Speed should be set in the
                                        format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                    uplink_switch_interface_speed:
-                                       Set point-to-Point interface speed for the uplink switch interface only.
-                                       Speed should be set in the
-                                       format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                    uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                     uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                     max_uplink_switches:
                                        Maximum number of uplink switches.
@@ -59517,18 +63148,6 @@ class EosDesigns(EosDesignsRootModel):
                                        autogenerated Port-channel IDs in the Network Services.
                                        Note! For MLAG pairs the ID must be between
                                        1 and 2000 and both MLAG switches must have the same value.
-                                    uplink_structured_config:
-                                       Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                       When
-                                       uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                       for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                       When uplink_type ==
-                                       "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                       eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                       "uplink_structured_config" is applied after "structured_config", so it can override
-                                       "structured_config" defined on node-level.
-                                       Note! The content of this dictionary is _not_ validated
-                                       by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                     uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                     uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                     uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -59690,10 +63309,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
-                                    mlag_interfaces_speed:
-                                       Set MLAG interface speed.
-                                       Speed should be set in the format `<interface_speed>` or `forced
-                                       <interface_speed>` or `auto <interface_speed>`.
+                                    mlag_interfaces_speed: Set MLAG interface speed.
                                     mlag_peer_l3_vlan:
                                        Underlay L3 peering SVI interface id.
                                        If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -60119,6 +63735,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -60133,6 +63751,175 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     UplinkSwitches._item_type = str
+
+                    UplinkInterfaceSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    UplinkSwitchInterfaceSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
 
                     class UplinkPtp(AvdModel):
                         """Subclass of AvdModel."""
@@ -60175,10 +63962,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
                     BgpDefaults._item_type = str
+
+                    EvpnRole: TypeAlias = Literal["client", "server", "none"]
 
                     class EvpnRouteServers(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -60743,6 +64534,94 @@ class EosDesigns(EosDesignsRootModel):
 
                     MlagInterfaces._item_type = str
 
+                    MlagInterfacesSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
+                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
+                    MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
+
                     class OverlayAddressFamilies(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -60760,6 +64639,8 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         Uplinks._item_type = str
+
+                        Mode: TypeAlias = Literal["boundary"]
 
                         class Dscp(AvdModel):
                             """Subclass of AvdModel."""
@@ -61057,7 +64938,7 @@ class EosDesigns(EosDesignsRootModel):
                         This can be set manually if required, for example,
                         to a value of "10.1.2.3".
                         """
-                        mode: Literal["boundary"]
+                        mode: Mode
                         """Default value: `"boundary"`"""
                         mode_one_step: bool
                         """Default value: `False`"""
@@ -61091,7 +64972,7 @@ class EosDesigns(EosDesignsRootModel):
                                 clock_identity_prefix: str | UndefinedType = Undefined,
                                 clock_identity: str | None | UndefinedType = Undefined,
                                 source_ip: str | None | UndefinedType = Undefined,
-                                mode: Literal["boundary"] | UndefinedType = Undefined,
+                                mode: Mode | UndefinedType = Undefined,
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
@@ -61145,6 +65026,9 @@ class EosDesigns(EosDesignsRootModel):
                                     monitor: Subclass of AvdModel.
 
                                 """
+
+                    WanRole: TypeAlias = Literal["client", "server"]
+                    CvPathfinderTransitMode: TypeAlias = Literal["region", "zone"]
 
                     class WanHa(AvdModel):
                         """Subclass of AvdModel."""
@@ -61294,6 +65178,91 @@ class EosDesigns(EosDesignsRootModel):
 
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
+
+                        Speed: TypeAlias = Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
 
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
@@ -61457,6 +65426,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Workers._item_type = str
 
+                            Mode: TypeAlias = Literal["shared", "exclusive"]
                             _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                             count: int | None
                             """
@@ -61467,7 +65437,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             workers: Workers
                             """Subclass of AvdList with `str` items."""
-                            mode: Literal["shared", "exclusive"] | None
+                            mode: Mode | None
                             """Mode applicable to the workers."""
 
                             if TYPE_CHECKING:
@@ -61477,7 +65447,7 @@ class EosDesigns(EosDesignsRootModel):
                                     *,
                                     count: int | None | UndefinedType = Undefined,
                                     workers: Workers | UndefinedType = Undefined,
-                                    mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                    mode: Mode | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     RxQueue.
@@ -61608,11 +65578,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `True`
                         """
-                        speed: str | None
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        speed: Speed | None
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -61723,7 +65690,7 @@ class EosDesigns(EosDesignsRootModel):
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
-                                speed: str | None | UndefinedType = Undefined,
+                                speed: Speed | None | UndefinedType = Undefined,
                                 receive_bandwidth: int | None | UndefinedType = Undefined,
                                 transmit_bandwidth: int | None | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -61787,9 +65754,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -61864,8 +65829,95 @@ class EosDesigns(EosDesignsRootModel):
                     class L3PortChannelsItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Mode: TypeAlias = Literal["active", "passive", "on"]
+
                         class MemberInterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
+
+                            Speed: TypeAlias = Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
 
                             class RxQueue(AvdModel):
                                 """Subclass of AvdModel."""
@@ -61875,6 +65927,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Workers._item_type = str
 
+                                Mode: TypeAlias = Literal["shared", "exclusive"]
                                 _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                                 count: int | None
                                 """
@@ -61885,7 +65938,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 workers: Workers
                                 """Subclass of AvdList with `str` items."""
-                                mode: Literal["shared", "exclusive"] | None
+                                mode: Mode | None
                                 """Mode applicable to the workers."""
 
                                 if TYPE_CHECKING:
@@ -61895,7 +65948,7 @@ class EosDesigns(EosDesignsRootModel):
                                         *,
                                         count: int | None | UndefinedType = Undefined,
                                         workers: Workers | UndefinedType = Undefined,
-                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                        mode: Mode | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         RxQueue.
@@ -61942,11 +65995,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             peer_interface: str | None
                             """The peer device interface. Used for description and documentation."""
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: Speed | None
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -61968,7 +66018,7 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Speed | None | UndefinedType = Undefined,
                                     rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
@@ -61991,9 +66041,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -62159,7 +66207,7 @@ class EosDesigns(EosDesignsRootModel):
                         If not set, a default description will be configured with '[<peer>[
                         <peer_port_channel>]]'.
                         """
-                        mode: Literal["active", "passive", "on"]
+                        mode: Mode
                         """
                         Port-Channel mode.
                         Should not be set on Port-Channel subinterfaces.
@@ -62297,7 +66345,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 name: str | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
-                                mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
+                                mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
@@ -62425,6 +66473,8 @@ class EosDesigns(EosDesignsRootModel):
                         _primary_key: ClassVar[str] = "name"
 
                     L3PortChannels._item_type = L3PortChannelsItem
+
+                    FlowTrackerType: TypeAlias = Literal["sampled", "hardware"]
 
                     class UnderlayMulticast(AvdModel):
                         """Subclass of AvdModel."""
@@ -62717,7 +66767,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -62899,7 +66948,7 @@ class EosDesigns(EosDesignsRootModel):
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
                     """Custom structured config for eos_cli_config_gen."""
-                    uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None
+                    uplink_type: UplinkType | None
                     """
                     Override the default `uplink_type` set at the `node_type_key` level.
                     `uplink_type` must be "p2p" if
@@ -62940,7 +66989,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     uplink_switches: UplinkSwitches
                     """Subclass of AvdList with `str` items."""
-                    uplink_interface_speed: str | None
+                    uplink_interface_speed: UplinkInterfaceSpeed | None
                     """
                     Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                     (Uplink switch
@@ -62948,12 +66997,8 @@ class EosDesigns(EosDesignsRootModel):
                     Speed should be set in the
                     format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                     """
-                    uplink_switch_interface_speed: str | None
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -63036,20 +67081,6 @@ class EosDesigns(EosDesignsRootModel):
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
                     """
-                    uplink_structured_config: dict
-                    """
-                    Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                    When
-                    uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                    for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                    When uplink_type ==
-                    "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                    eos_cli_config_gen overrides the settings on the port-channel interface level.
-                    "uplink_structured_config" is applied after "structured_config", so it can override
-                    "structured_config" defined on node-level.
-                    Note! The content of this dictionary is _not_ validated
-                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                    """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
                     uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -63103,7 +67134,7 @@ class EosDesigns(EosDesignsRootModel):
                     """(4.4 hexadecimal)."""
                     isis_maximum_paths: int | None
                     """Number of path to configure in ECMP for ISIS."""
-                    is_type: Literal["level-1-2", "level-1", "level-2"] | None
+                    is_type: IsType | None
                     """Overrides `isis_default_is_type`."""
                     node_sid_base: int
                     """
@@ -63206,7 +67237,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    evpn_role: Literal["client", "server", "none"] | None
+                    evpn_role: EvpnRole | None
                     """
                     Acting role in EVPN control plane.
                     Default is set in node_type definition from node_type_keys.
@@ -63294,12 +67325,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    mlag_interfaces_speed: str | None
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    mlag_interfaces_speed: MlagInterfacesSpeed | None
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -63333,7 +67360,7 @@ class EosDesigns(EosDesignsRootModel):
                     Default value: `4094`
                     """
                     mlag_peer_link_allowed_vlans: str | None
-                    mlag_peer_address_family: Literal["ipv4", "ipv6"]
+                    mlag_peer_address_family: MlagPeerAddressFamily
                     """
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
@@ -63368,7 +67395,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag_domain_id: str | None
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                    spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None
+                    spanning_tree_mode: SpanningTreeMode | None
                     spanning_tree_priority: int
                     """
                     Spanning-tree priority configured for the selected mode.
@@ -63566,7 +67593,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Default value: `30`
                     """
-                    mpls_overlay_role: Literal["client", "server", "none"] | None
+                    mpls_overlay_role: MplsOverlayRole | None
                     """
                     Set the default mpls overlay role.
                     Acting role in overlay control plane.
@@ -63588,7 +67615,7 @@ class EosDesigns(EosDesignsRootModel):
                     """Set BGP cluster id."""
                     ptp: Ptp
                     """Subclass of AvdModel."""
-                    wan_role: Literal["client", "server"] | None
+                    wan_role: WanRole | None
                     """
                     Override the default WAN role.
 
@@ -63598,7 +67625,7 @@ class EosDesigns(EosDesignsRootModel):
                     `server` indicates that the router is a
                     route-reflector.
                     """
-                    cv_pathfinder_transit_mode: Literal["region", "zone"] | None
+                    cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
                     Configure the transit mode for a WAN client for CV Pathfinder designs
                     only when the `wan_mode` root
@@ -63658,7 +67685,7 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is useful on virtual Route
                     Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                     """
-                    flow_tracker_type: Literal["sampled", "hardware"] | None
+                    flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
                     Override the `default_flow_tracker_type`` set at the `node_type_key`
@@ -63726,14 +67753,14 @@ class EosDesigns(EosDesignsRootModel):
                             always_configure_ip_routing: bool | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen | UndefinedType = Undefined,
-                            uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None | UndefinedType = Undefined,
+                            uplink_type: UplinkType | None | UndefinedType = Undefined,
                             uplink_ipv4_pool: str | None | UndefinedType = Undefined,
                             uplink_ipv6_pool: str | None | UndefinedType = Undefined,
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                            uplink_interface_speed: str | None | UndefinedType = Undefined,
-                            uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                            uplink_interface_speed: UplinkInterfaceSpeed | None | UndefinedType = Undefined,
+                            uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None | UndefinedType = Undefined,
                             uplink_mtu: int | None | UndefinedType = Undefined,
                             max_uplink_switches: int | None | UndefinedType = Undefined,
                             max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -63743,7 +67770,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -63754,7 +67780,7 @@ class EosDesigns(EosDesignsRootModel):
                             short_esi: str | None | UndefinedType = Undefined,
                             isis_system_id_prefix: str | None | UndefinedType = Undefined,
                             isis_maximum_paths: int | None | UndefinedType = Undefined,
-                            is_type: Literal["level-1-2", "level-1", "level-2"] | None | UndefinedType = Undefined,
+                            is_type: IsType | None | UndefinedType = Undefined,
                             node_sid_base: int | UndefinedType = Undefined,
                             loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                             loopback_ipv4_address: str | None | UndefinedType = Undefined,
@@ -63770,7 +67796,7 @@ class EosDesigns(EosDesignsRootModel):
                             vtep_loopback: str | None | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
-                            evpn_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                            evpn_role: EvpnRole | None | UndefinedType = Undefined,
                             evpn_route_servers: EvpnRouteServers | UndefinedType = Undefined,
                             evpn_services_l2_only: bool | UndefinedType = Undefined,
                             filter: Filter | UndefinedType = Undefined,
@@ -63781,18 +67807,18 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                            mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                            mlag_interfaces_speed: MlagInterfacesSpeed | None | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_vlan: int | UndefinedType = Undefined,
                             mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
-                            mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+                            mlag_peer_address_family: MlagPeerAddressFamily | UndefinedType = Undefined,
                             mlag_peer_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
-                            spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
+                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
                             spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
@@ -63814,13 +67840,13 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_mtu: int | UndefinedType = Undefined,
                             inband_ztp: bool | UndefinedType = Undefined,
                             inband_ztp_lacp_fallback_delay: int | UndefinedType = Undefined,
-                            mpls_overlay_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                            mpls_overlay_role: MplsOverlayRole | None | UndefinedType = Undefined,
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
-                            wan_role: Literal["client", "server"] | None | UndefinedType = Undefined,
-                            cv_pathfinder_transit_mode: Literal["region", "zone"] | None | UndefinedType = Undefined,
+                            wan_role: WanRole | None | UndefinedType = Undefined,
+                            cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
                             cv_pathfinder_region: str | None | UndefinedType = Undefined,
                             cv_pathfinder_site: str | None | UndefinedType = Undefined,
                             wan_ha: WanHa | UndefinedType = Undefined,
@@ -63828,7 +67854,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
-                            flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            flow_tracker_type: FlowTrackerType | None | UndefinedType = Undefined,
                             underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
@@ -63939,10 +67965,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -64003,18 +68026,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                uplink_structured_config:
-                                   Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                   When
-                                   uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                   for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                   When uplink_type ==
-                                   "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                   eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                   "uplink_structured_config" is applied after "structured_config", so it can override
-                                   "structured_config" defined on node-level.
-                                   Note! The content of this dictionary is _not_ validated
-                                   by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -64176,10 +68187,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -64680,6 +68688,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -64694,6 +68704,175 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
 
                     UplinkSwitches._item_type = str
+
+                    UplinkInterfaceSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    UplinkSwitchInterfaceSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
 
                     class UplinkPtp(AvdModel):
                         """Subclass of AvdModel."""
@@ -64736,10 +68915,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
                     BgpDefaults._item_type = str
+
+                    EvpnRole: TypeAlias = Literal["client", "server", "none"]
 
                     class EvpnRouteServers(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -65304,6 +69487,94 @@ class EosDesigns(EosDesignsRootModel):
 
                     MlagInterfaces._item_type = str
 
+                    MlagInterfacesSpeed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
+                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
+                    MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
+
                     class OverlayAddressFamilies(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -65321,6 +69592,8 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         Uplinks._item_type = str
+
+                        Mode: TypeAlias = Literal["boundary"]
 
                         class Dscp(AvdModel):
                             """Subclass of AvdModel."""
@@ -65618,7 +69891,7 @@ class EosDesigns(EosDesignsRootModel):
                         This can be set manually if required, for example,
                         to a value of "10.1.2.3".
                         """
-                        mode: Literal["boundary"]
+                        mode: Mode
                         """Default value: `"boundary"`"""
                         mode_one_step: bool
                         """Default value: `False`"""
@@ -65652,7 +69925,7 @@ class EosDesigns(EosDesignsRootModel):
                                 clock_identity_prefix: str | UndefinedType = Undefined,
                                 clock_identity: str | None | UndefinedType = Undefined,
                                 source_ip: str | None | UndefinedType = Undefined,
-                                mode: Literal["boundary"] | UndefinedType = Undefined,
+                                mode: Mode | UndefinedType = Undefined,
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
@@ -65706,6 +69979,9 @@ class EosDesigns(EosDesignsRootModel):
                                     monitor: Subclass of AvdModel.
 
                                 """
+
+                    WanRole: TypeAlias = Literal["client", "server"]
+                    CvPathfinderTransitMode: TypeAlias = Literal["region", "zone"]
 
                     class WanHa(AvdModel):
                         """Subclass of AvdModel."""
@@ -65855,6 +70131,91 @@ class EosDesigns(EosDesignsRootModel):
 
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
+
+                        Speed: TypeAlias = Literal[
+                            "100full",
+                            "100g",
+                            "100g-1",
+                            "100g-2",
+                            "100g-4",
+                            "100half",
+                            "10full",
+                            "10g",
+                            "10half",
+                            "1g",
+                            "200g",
+                            "200g-2",
+                            "200g-4",
+                            "25g",
+                            "400g",
+                            "400g-4",
+                            "400g-8",
+                            "40g",
+                            "50g",
+                            "50g-1",
+                            "50g-2",
+                            "800g-8",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
+                            "auto",
+                            "auto 10000full",
+                            "auto 1000full",
+                            "auto 100full",
+                            "auto 100g-1",
+                            "auto 100g-2",
+                            "auto 100g-4",
+                            "auto 100gfull",
+                            "auto 100half",
+                            "auto 10full",
+                            "auto 10gfull",
+                            "auto 10half",
+                            "auto 1gfull",
+                            "auto 2.5gfull",
+                            "auto 200g-2",
+                            "auto 200g-4",
+                            "auto 25gfull",
+                            "auto 400g-4",
+                            "auto 400g-8",
+                            "auto 40gfull",
+                            "auto 50g-1",
+                            "auto 50g-2",
+                            "auto 50gfull",
+                            "auto 5gfull",
+                            "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
+                            "forced 10000full",
+                            "forced 1000full",
+                            "forced 1000half",
+                            "forced 100full",
+                            "forced 100gfull",
+                            "forced 100half",
+                            "forced 10full",
+                            "forced 10half",
+                            "forced 25gfull",
+                            "forced 40gfull",
+                            "forced 50gfull",
+                        ]
 
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
@@ -66018,6 +70379,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Workers._item_type = str
 
+                            Mode: TypeAlias = Literal["shared", "exclusive"]
                             _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                             count: int | None
                             """
@@ -66028,7 +70390,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             workers: Workers
                             """Subclass of AvdList with `str` items."""
-                            mode: Literal["shared", "exclusive"] | None
+                            mode: Mode | None
                             """Mode applicable to the workers."""
 
                             if TYPE_CHECKING:
@@ -66038,7 +70400,7 @@ class EosDesigns(EosDesignsRootModel):
                                     *,
                                     count: int | None | UndefinedType = Undefined,
                                     workers: Workers | UndefinedType = Undefined,
-                                    mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                    mode: Mode | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     RxQueue.
@@ -66169,11 +70531,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `True`
                         """
-                        speed: str | None
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        speed: Speed | None
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -66284,7 +70643,7 @@ class EosDesigns(EosDesignsRootModel):
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 dhcp_accept_default_route: bool | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
-                                speed: str | None | UndefinedType = Undefined,
+                                speed: Speed | None | UndefinedType = Undefined,
                                 receive_bandwidth: int | None | UndefinedType = Undefined,
                                 transmit_bandwidth: int | None | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -66348,9 +70707,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -66425,8 +70782,95 @@ class EosDesigns(EosDesignsRootModel):
                     class L3PortChannelsItem(AvdModel):
                         """Subclass of AvdModel."""
 
+                        Mode: TypeAlias = Literal["active", "passive", "on"]
+
                         class MemberInterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
+
+                            Speed: TypeAlias = Literal[
+                                "100full",
+                                "100g",
+                                "100g-1",
+                                "100g-2",
+                                "100g-4",
+                                "100half",
+                                "10full",
+                                "10g",
+                                "10half",
+                                "1g",
+                                "200g",
+                                "200g-2",
+                                "200g-4",
+                                "25g",
+                                "400g",
+                                "400g-4",
+                                "400g-8",
+                                "40g",
+                                "50g",
+                                "50g-1",
+                                "50g-2",
+                                "800g-8",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
+                                "auto",
+                                "auto 10000full",
+                                "auto 1000full",
+                                "auto 100full",
+                                "auto 100g-1",
+                                "auto 100g-2",
+                                "auto 100g-4",
+                                "auto 100gfull",
+                                "auto 100half",
+                                "auto 10full",
+                                "auto 10gfull",
+                                "auto 10half",
+                                "auto 1gfull",
+                                "auto 2.5gfull",
+                                "auto 200g-2",
+                                "auto 200g-4",
+                                "auto 25gfull",
+                                "auto 400g-4",
+                                "auto 400g-8",
+                                "auto 40gfull",
+                                "auto 50g-1",
+                                "auto 50g-2",
+                                "auto 50gfull",
+                                "auto 5gfull",
+                                "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
+                                "forced 10000full",
+                                "forced 1000full",
+                                "forced 1000half",
+                                "forced 100full",
+                                "forced 100gfull",
+                                "forced 100half",
+                                "forced 10full",
+                                "forced 10half",
+                                "forced 25gfull",
+                                "forced 40gfull",
+                                "forced 50gfull",
+                            ]
 
                             class RxQueue(AvdModel):
                                 """Subclass of AvdModel."""
@@ -66436,6 +70880,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Workers._item_type = str
 
+                                Mode: TypeAlias = Literal["shared", "exclusive"]
                                 _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
                                 count: int | None
                                 """
@@ -66446,7 +70891,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 workers: Workers
                                 """Subclass of AvdList with `str` items."""
-                                mode: Literal["shared", "exclusive"] | None
+                                mode: Mode | None
                                 """Mode applicable to the workers."""
 
                                 if TYPE_CHECKING:
@@ -66456,7 +70901,7 @@ class EosDesigns(EosDesignsRootModel):
                                         *,
                                         count: int | None | UndefinedType = Undefined,
                                         workers: Workers | UndefinedType = Undefined,
-                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                        mode: Mode | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         RxQueue.
@@ -66503,11 +70948,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             peer_interface: str | None
                             """The peer device interface. Used for description and documentation."""
-                            speed: str | None
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            speed: Speed | None
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -66529,7 +70971,7 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
-                                    speed: str | None | UndefinedType = Undefined,
+                                    speed: Speed | None | UndefinedType = Undefined,
                                     rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
@@ -66552,9 +70994,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -66720,7 +71160,7 @@ class EosDesigns(EosDesignsRootModel):
                         If not set, a default description will be configured with '[<peer>[
                         <peer_port_channel>]]'.
                         """
-                        mode: Literal["active", "passive", "on"]
+                        mode: Mode
                         """
                         Port-Channel mode.
                         Should not be set on Port-Channel subinterfaces.
@@ -66858,7 +71298,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 name: str | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
-                                mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
+                                mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
@@ -66986,6 +71426,8 @@ class EosDesigns(EosDesignsRootModel):
                         _primary_key: ClassVar[str] = "name"
 
                     L3PortChannels._item_type = L3PortChannelsItem
+
+                    FlowTrackerType: TypeAlias = Literal["sampled", "hardware"]
 
                     class UnderlayMulticast(AvdModel):
                         """Subclass of AvdModel."""
@@ -67278,7 +71720,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -67457,7 +71898,7 @@ class EosDesigns(EosDesignsRootModel):
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
                     """Custom structured config for eos_cli_config_gen."""
-                    uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None
+                    uplink_type: UplinkType | None
                     """
                     Override the default `uplink_type` set at the `node_type_key` level.
                     `uplink_type` must be "p2p" if
@@ -67498,7 +71939,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     uplink_switches: UplinkSwitches
                     """Subclass of AvdList with `str` items."""
-                    uplink_interface_speed: str | None
+                    uplink_interface_speed: UplinkInterfaceSpeed | None
                     """
                     Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
                     (Uplink switch
@@ -67506,12 +71947,8 @@ class EosDesigns(EosDesignsRootModel):
                     Speed should be set in the
                     format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                     """
-                    uplink_switch_interface_speed: str | None
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -67594,20 +72031,6 @@ class EosDesigns(EosDesignsRootModel):
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
                     """
-                    uplink_structured_config: dict
-                    """
-                    Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                    When
-                    uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                    for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                    When uplink_type ==
-                    "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                    eos_cli_config_gen overrides the settings on the port-channel interface level.
-                    "uplink_structured_config" is applied after "structured_config", so it can override
-                    "structured_config" defined on node-level.
-                    Note! The content of this dictionary is _not_ validated
-                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                    """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
                     uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -67661,7 +72084,7 @@ class EosDesigns(EosDesignsRootModel):
                     """(4.4 hexadecimal)."""
                     isis_maximum_paths: int | None
                     """Number of path to configure in ECMP for ISIS."""
-                    is_type: Literal["level-1-2", "level-1", "level-2"] | None
+                    is_type: IsType | None
                     """Overrides `isis_default_is_type`."""
                     node_sid_base: int
                     """
@@ -67764,7 +72187,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    evpn_role: Literal["client", "server", "none"] | None
+                    evpn_role: EvpnRole | None
                     """
                     Acting role in EVPN control plane.
                     Default is set in node_type definition from node_type_keys.
@@ -67852,12 +72275,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str` items.
                     """
-                    mlag_interfaces_speed: str | None
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    mlag_interfaces_speed: MlagInterfacesSpeed | None
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -67891,7 +72310,7 @@ class EosDesigns(EosDesignsRootModel):
                     Default value: `4094`
                     """
                     mlag_peer_link_allowed_vlans: str | None
-                    mlag_peer_address_family: Literal["ipv4", "ipv6"]
+                    mlag_peer_address_family: MlagPeerAddressFamily
                     """
                     IP address family used to establish MLAG Peer Link (control link).
                     `ipv6` requires EOS version
@@ -67926,7 +72345,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag_domain_id: str | None
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
-                    spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None
+                    spanning_tree_mode: SpanningTreeMode | None
                     spanning_tree_priority: int
                     """
                     Spanning-tree priority configured for the selected mode.
@@ -68124,7 +72543,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Default value: `30`
                     """
-                    mpls_overlay_role: Literal["client", "server", "none"] | None
+                    mpls_overlay_role: MplsOverlayRole | None
                     """
                     Set the default mpls overlay role.
                     Acting role in overlay control plane.
@@ -68146,7 +72565,7 @@ class EosDesigns(EosDesignsRootModel):
                     """Set BGP cluster id."""
                     ptp: Ptp
                     """Subclass of AvdModel."""
-                    wan_role: Literal["client", "server"] | None
+                    wan_role: WanRole | None
                     """
                     Override the default WAN role.
 
@@ -68156,7 +72575,7 @@ class EosDesigns(EosDesignsRootModel):
                     `server` indicates that the router is a
                     route-reflector.
                     """
-                    cv_pathfinder_transit_mode: Literal["region", "zone"] | None
+                    cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
                     Configure the transit mode for a WAN client for CV Pathfinder designs
                     only when the `wan_mode` root
@@ -68216,7 +72635,7 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is useful on virtual Route
                     Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                     """
-                    flow_tracker_type: Literal["sampled", "hardware"] | None
+                    flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
                     Override the `default_flow_tracker_type`` set at the `node_type_key`
@@ -68284,14 +72703,14 @@ class EosDesigns(EosDesignsRootModel):
                             always_configure_ip_routing: bool | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen | UndefinedType = Undefined,
-                            uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | None | UndefinedType = Undefined,
+                            uplink_type: UplinkType | None | UndefinedType = Undefined,
                             uplink_ipv4_pool: str | None | UndefinedType = Undefined,
                             uplink_ipv6_pool: str | None | UndefinedType = Undefined,
                             uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
                             uplink_switches: UplinkSwitches | UndefinedType = Undefined,
-                            uplink_interface_speed: str | None | UndefinedType = Undefined,
-                            uplink_switch_interface_speed: str | None | UndefinedType = Undefined,
+                            uplink_interface_speed: UplinkInterfaceSpeed | None | UndefinedType = Undefined,
+                            uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None | UndefinedType = Undefined,
                             uplink_mtu: int | None | UndefinedType = Undefined,
                             max_uplink_switches: int | None | UndefinedType = Undefined,
                             max_parallel_uplinks: int | UndefinedType = Undefined,
@@ -68301,7 +72720,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -68312,7 +72730,7 @@ class EosDesigns(EosDesignsRootModel):
                             short_esi: str | None | UndefinedType = Undefined,
                             isis_system_id_prefix: str | None | UndefinedType = Undefined,
                             isis_maximum_paths: int | None | UndefinedType = Undefined,
-                            is_type: Literal["level-1-2", "level-1", "level-2"] | None | UndefinedType = Undefined,
+                            is_type: IsType | None | UndefinedType = Undefined,
                             node_sid_base: int | UndefinedType = Undefined,
                             loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                             loopback_ipv4_address: str | None | UndefinedType = Undefined,
@@ -68328,7 +72746,7 @@ class EosDesigns(EosDesignsRootModel):
                             vtep_loopback: str | None | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
-                            evpn_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                            evpn_role: EvpnRole | None | UndefinedType = Undefined,
                             evpn_route_servers: EvpnRouteServers | UndefinedType = Undefined,
                             evpn_services_l2_only: bool | UndefinedType = Undefined,
                             filter: Filter | UndefinedType = Undefined,
@@ -68339,18 +72757,18 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_dual_primary_detection: bool | UndefinedType = Undefined,
                             mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
                             mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
-                            mlag_interfaces_speed: str | None | UndefinedType = Undefined,
+                            mlag_interfaces_speed: MlagInterfacesSpeed | None | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_vlan: int | UndefinedType = Undefined,
                             mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
-                            mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+                            mlag_peer_address_family: MlagPeerAddressFamily | UndefinedType = Undefined,
                             mlag_peer_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
-                            spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
+                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
                             spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
@@ -68372,13 +72790,13 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_mtu: int | UndefinedType = Undefined,
                             inband_ztp: bool | UndefinedType = Undefined,
                             inband_ztp_lacp_fallback_delay: int | UndefinedType = Undefined,
-                            mpls_overlay_role: Literal["client", "server", "none"] | None | UndefinedType = Undefined,
+                            mpls_overlay_role: MplsOverlayRole | None | UndefinedType = Undefined,
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
-                            wan_role: Literal["client", "server"] | None | UndefinedType = Undefined,
-                            cv_pathfinder_transit_mode: Literal["region", "zone"] | None | UndefinedType = Undefined,
+                            wan_role: WanRole | None | UndefinedType = Undefined,
+                            cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
                             cv_pathfinder_region: str | None | UndefinedType = Undefined,
                             cv_pathfinder_site: str | None | UndefinedType = Undefined,
                             wan_ha: WanHa | UndefinedType = Undefined,
@@ -68386,7 +72804,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
-                            flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            flow_tracker_type: FlowTrackerType | None | UndefinedType = Undefined,
                             underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
@@ -68495,10 +72913,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -68559,18 +72974,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                uplink_structured_config:
-                                   Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                                   When
-                                   uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                                   for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                                   When uplink_type ==
-                                   "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                   eos_cli_config_gen overrides the settings on the port-channel interface level.
-                                   "uplink_structured_config" is applied after "structured_config", so it can override
-                                   "structured_config" defined on node-level.
-                                   Note! The content of this dictionary is _not_ validated
-                                   by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -68732,10 +73135,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -69219,9 +73619,6 @@ class EosDesigns(EosDesignsRootModel):
         "cv_tags_topology_type": {"type": str},
         "cv_token": {"type": str},
         "cv_topology": {"type": CvTopology},
-        "cvp_ingestauth_key": {"type": str},
-        "cvp_instance_ips": {"type": CvpInstanceIps},
-        "cvp_token_file": {"type": str},
         "dc_name": {"type": str},
         "default_connected_endpoints_description": {"type": str, "default": "{endpoint_type!u}_{endpoint}{endpoint_port?<_}"},
         "default_connected_endpoints_port_channel_description": {"type": str, "default": "{endpoint_type!u}_{endpoint}{endpoint_port_channel?<_}"},
@@ -69285,7 +73682,6 @@ class EosDesigns(EosDesignsRootModel):
         "l3_edge": {"type": L3Edge},
         "l3_interface_profiles": {"type": L3InterfaceProfiles},
         "load_interval": {"type": EosCliConfigGen.LoadInterval},
-        "local_users": {"type": EosCliConfigGen.LocalUsers},
         "logging_settings": {"type": LoggingSettings},
         "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
@@ -69432,7 +73828,6 @@ class EosDesigns(EosDesignsRootModel):
         "overlay_cvx_servers": {"type": OverlayCvxServers},
         "overlay_her_flood_list_per_vni": {"type": bool, "default": False},
         "overlay_her_flood_list_scope": {"type": str, "default": "fabric"},
-        "overlay_loopback_description": {"type": str},
         "overlay_mlag_rfc5549": {"type": bool, "default": False},
         "overlay_rd_type": {"type": OverlayRdType},
         "overlay_routing_protocol": {"type": str},
@@ -69655,10 +74050,6 @@ class EosDesigns(EosDesignsRootModel):
         "ssh_settings": {"type": SshSettings},
         "svi_profiles": {"type": SviProfiles},
         "system_mac_address": {"type": str},
-        "terminattr_disable_aaa": {"type": bool, "default": False},
-        "terminattr_ingestexclude": {"type": str, "default": "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"},
-        "terminattr_ingestgrpcurl_port": {"type": int, "default": 9910},
-        "terminattr_smashexcludes": {"type": str, "default": "ale,flexCounter,hardware,kni,pulse,strata"},
         "timezone": {"type": str},
         "trunk_groups": {"type": TrunkGroups},
         "type": {"type": str},
@@ -69680,9 +74071,9 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_ospf_area": {"type": str, "default": "0.0.0.0"},
         "underlay_ospf_authentication": {"type": UnderlayOspfAuthentication},
         "underlay_ospf_bfd_enable": {"type": bool, "default": False},
-        "underlay_ospf_graceful_restart": {"type": bool, "default": False},
+        "underlay_ospf_graceful_restart": {"type": bool, "default": True},
         "underlay_ospf_max_lsa": {"type": int, "default": 12000},
-        "underlay_ospf_maximum_paths": {"type": int},
+        "underlay_ospf_maximum_paths": {"type": int, "default": 128},
         "underlay_ospf_process_id": {"type": int, "default": 100},
         "underlay_rfc5549": {"type": bool, "default": False},
         "underlay_routing_protocol": {"type": str},
@@ -69715,7 +74106,7 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
-    avd_data_validation_mode: Literal["error", "warning"]
+    avd_data_validation_mode: AvdDataValidationMode
     """
     Validation Mode for AVD input data validation.
     Input data validation will validate the input
@@ -69920,7 +74311,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     core_interfaces: CoreInterfaces
     """Subclass of AvdModel."""
-    custom_structured_configuration_list_merge: Literal["replace", "append", "keep", "prepend", "append_rp", "prepend_rp"]
+    custom_structured_configuration_list_merge: CustomStructuredConfigurationListMerge
     """
     The List-merge strategy used when merging custom structured configurations.
 
@@ -70063,36 +74454,6 @@ class EosDesigns(EosDesignsRootModel):
     Subclass of
     AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname` (`str`).
     """
-    cvp_ingestauth_key: str | None
-    """
-    On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication
-    for on-premise CVP.
-    If not set, TerminAttr will be configured with certificate based authentication:
-    - On-premise using token onboarding. Default token path is '/tmp/token'.
-    - CVaaS using token-secure
-    onboarding. Default token path is '/tmp/cv-onboarding-token'.
-    Token must be copied to the device
-    first.
-    """
-    cvp_instance_ips: CvpInstanceIps
-    """
-    List of IPv4 addresses or DNS names for CloudVision.
-    For on-premise CloudVision enter all the nodes
-    of the cluster.
-    For CloudVision as a Service enter the DNS name of the instance.
-    `eos_designs` only
-    supports one CloudVision cluster.
-
-
-    Subclass of AvdList with `str` items.
-    """
-    cvp_token_file: str | None
-    """
-    cvp_token_file is the path to the token file on the switch.
-    If not set the default locations for on-
-    premise or CVaaS will be used.
-    See cvp_ingestauth_key for details.
-    """
     dc_name: str | None
     """
     DC Name is used in:
@@ -70168,7 +74529,7 @@ class EosDesigns(EosDesignsRootModel):
     Subclass of AvdList with
     `DefaultInterfacesItem` items.
     """
-    default_mgmt_method: Literal["oob", "inband", "none"]
+    default_mgmt_method: DefaultMgmtMethod
     """
     `default_mgmt_method` controls the default VRF and source interface used for the following
     management and monitoring protocols configured with `eos_designs`:
@@ -70438,7 +74799,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     evpn_vlan_bundles: EvpnVlanBundles
     """Subclass of AvdIndexedList with `EvpnVlanBundlesItem` items. Primary key is `name` (`str`)."""
-    fabric_evpn_encapsulation: Literal["vxlan", "mpls"] | None
+    fabric_evpn_encapsulation: FabricEvpnEncapsulation | None
     """
     Should be set to mpls for evpn-mpls scenario. This overrides the evpn_encapsulation setting under
     node_type_keys.
@@ -70519,11 +74880,9 @@ class EosDesigns(EosDesignsRootModel):
     inband_ztp_bootstrap_file: str | None
     """
     Bootstrap URL configured in DHCP to use for inband ZTP.
-    If not set and `cvp_instance_ips` is set
-    then the bootstrap value will be set to:
-        `https://{cvp_instance_ips[0]}/ztp/bootstrap`
-    Otherwise
-    no value will be configured.
+    By default the URL will be `https://<first
+    cv server>/ztp/bootstrap` if `cv_settings` are used.
+    Otherwise no value will be configured.
     """
     internal_vlan_order: InternalVlanOrder
     """
@@ -70586,10 +74945,15 @@ class EosDesigns(EosDesignsRootModel):
     is_deployed: bool
     """
     If the device is already deployed in the fabric.
-    When set to false, interfaces toward this device
-    may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.
-    Furthermore
-    `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.
+    When set to false:
+      - The `cv_deploy` role will
+    not apply configurations to this device.
+      - Peer interfaces toward this device may be shutdown
+    based on the `shutdown_interfaces_towards_undeployed_peers` setting.
+      - BGP peerings toward this
+    device may be shutdown based on the `shutdown_bgp_towards_undeployed_peers` setting.
+      - Validation
+    tests by the `anta_runner` role are automatically skipped for this device.
 
     Default value: `True`
     """
@@ -70597,14 +74961,14 @@ class EosDesigns(EosDesignsRootModel):
     """Default value: `False`"""
     isis_area_id: str
     """Default value: `"49.0001"`"""
-    isis_default_circuit_type: Literal["level-1-2", "level-1", "level-2"]
+    isis_default_circuit_type: IsisDefaultCircuitType
     """
     These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden
     on link profile or link level.
 
     Default value: `"level-2"`
     """
-    isis_default_is_type: Literal["level-1-2", "level-1", "level-2"]
+    isis_default_is_type: IsisDefaultIsType
     """Default value: `"level-2"`"""
     isis_default_metric: int
     """
@@ -70619,7 +74983,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `4`
     """
-    isis_system_id_format: Literal["node_id", "underlay_loopback"]
+    isis_system_id_format: IsisSystemIdFormat
     """
     Configures source for the system-id within the ISIS net id.
     If this key is set to `node_id`, the
@@ -70651,7 +75015,6 @@ class EosDesigns(EosDesignsRootModel):
     `L3InterfaceProfilesItem` items. Primary key is `profile` (`str`).
     """
     load_interval: EosCliConfigGen.LoadInterval
-    local_users: EosCliConfigGen.LocalUsers
     logging_settings: LoggingSettings
     """
     Logging settings
@@ -71007,7 +75370,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
-    overlay_her_flood_list_scope: Literal["fabric", "dc"]
+    overlay_her_flood_list_scope: OverlayHerFloodListScope
     """
     When using Head-End Replication, set the scope of flood-lists to Fabric or DC.
     By default all VTEPs
@@ -71019,8 +75382,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"fabric"`
     """
-    overlay_loopback_description: str | None
-    """Customize the description on overlay interface Loopback0."""
     overlay_mlag_rfc5549: bool
     """
     IPv6 Unnumbered for MLAG iBGP connections.
@@ -71054,7 +75415,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
-    overlay_routing_protocol: Literal["ebgp", "ibgp", "cvx", "her", "none"] | None
+    overlay_routing_protocol: OverlayRoutingProtocol | None
     """
     - The following overlay routing protocols are supported:
       - ebgp: Configures fabric with eBGP,
@@ -71071,7 +75432,7 @@ class EosDesigns(EosDesignsRootModel):
       If not set, the
     default_overlay_routing_protocol defined under the node_type_keys will be used (default is "ebgp").
     """
-    overlay_routing_protocol_address_family: Literal["ipv4", "ipv6"]
+    overlay_routing_protocol_address_family: OverlayRoutingProtocolAddressFamily
     """
     When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.
     This feature depends on
@@ -71194,9 +75555,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     Serial Number of the device.
     Used for documentation purpose in the fabric documentation as can also
-    be used by the 'eos_config_deploy_cvp' role.
-    "serial_number" can also be set directly under node
-    type settings.
+    be used by the 'cv_deploy' role.
+    "serial_number" can also be set directly under node type settings.
     If both are set, the value under node type settings takes precedence.
     """
     sflow_settings: SflowSettings
@@ -71209,38 +75569,14 @@ class EosDesigns(EosDesignsRootModel):
     """
     shutdown_bgp_towards_undeployed_peers: bool
     """
-    When a device is set undeployed using `is_deployed: false` and
-    `shutdown_bgp_towards_undeployed_peers` key is set to true, the BGP neighborship is shutdown on the
-    peer.
+    Administratively shuts down BGP peerings towards devices marked with `is_deployed: false`.
 
     Default value: `True`
     """
     shutdown_interfaces_towards_undeployed_peers: bool
     """
-    - It is possible to provision configurations for a complete topology but flag devices as undeployed
-    using the host level variable `is_deployed: false`.
-
-    ```yaml
-    # Use at the host level
-    is_deployed: <
-    true or false or default -> true >
-    ```
-
-    - By default, this will have no impact within the
-    `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still
-    be pushed by the `eos_config_deploy_eapi` directly to devices if used.
-    - However, if the
-    `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices
-    flagged  as `is_deployed: false` and not attempt to configure them.
-    - If the device is not present
-    in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail
-    tests on peers of the undeployed device trying to verify that interfaces are up.
-    - To overcome this
-    and shutdown interfaces towards undeployed peers, the variable
-    `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role
-    interface tests.
-    - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices
-    are not present in the network.
+    Administratively shuts down interfaces on deployed devices that connect to a peer marked with
+    `is_deployed: false`.
 
     Default value: `True`
     """
@@ -71296,20 +75632,6 @@ class EosDesigns(EosDesignsRootModel):
     If both are set, the value under node type settings takes
     precedence.
     """
-    terminattr_disable_aaa: bool
-    """Default value: `False`"""
-    terminattr_ingestexclude: str
-    """Default value: `"/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"`"""
-    terminattr_ingestgrpcurl_port: int
-    """
-    Port number used for Terminattr connection to an on-premise CloudVision cluster.
-    The port number is
-    always 443 when using CloudVision as a Service, so this value is ignored.
-
-    Default value: `9910`
-    """
-    terminattr_smashexcludes: str
-    """Default value: `"ale,flexCounter,hardware,kni,pulse,strata"`"""
     timezone: str | None
     """Clock timezone like "CET" or "US/Pacific"."""
     trunk_groups: TrunkGroups
@@ -71391,7 +75713,7 @@ class EosDesigns(EosDesignsRootModel):
     To
     protect the password at rest it is strongly recommended to make use of a vault or similar.
     """
-    underlay_isis_authentication_mode: Literal["md5", "text"] | None
+    underlay_isis_authentication_mode: UnderlayIsisAuthenticationMode | None
     """Underlay ISIS authentication mode."""
     underlay_isis_bfd: bool
     """
@@ -71515,12 +75837,16 @@ class EosDesigns(EosDesignsRootModel):
     """
     Enable graceful restart for OSPF underlay.
 
-    Default value: `False`
+    Default value: `True`
     """
     underlay_ospf_max_lsa: int
     """Default value: `12000`"""
-    underlay_ospf_maximum_paths: int | None
-    """Maximum number of next-hops in an ECMP route."""
+    underlay_ospf_maximum_paths: int
+    """
+    Maximum number of next-hops in an ECMP route.
+
+    Default value: `128`
+    """
     underlay_ospf_process_id: int
     """Default value: `100`"""
     underlay_rfc5549: bool
@@ -71531,7 +75857,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
-    underlay_routing_protocol: Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"] | None
+    underlay_routing_protocol: UnderlayRoutingProtocol | None
     """
     - The following underlay routing protocols are supported:
       - EBGP (default for l3ls-evpn)
@@ -71585,7 +75911,7 @@ class EosDesigns(EosDesignsRootModel):
     Subclass of
     AvdIndexedList with `WanCarriersItem` items. Primary key is `name` (`str`).
     """
-    wan_encapsulation: Literal["path-selection", "vxlan"]
+    wan_encapsulation: WanEncapsulation
     """
     Select the encapsulation to use for EVPN peerings for WAN BGP peers.
 
@@ -71599,7 +75925,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
-    wan_mode: Literal["autovpn", "cv-pathfinder"]
+    wan_mode: WanMode
     """
     Select if the WAN should be run using CV Pathfinder or AutoVPN only.
 
@@ -71707,7 +76033,7 @@ class EosDesigns(EosDesignsRootModel):
             aaa_settings: AaaSettings | UndefinedType = Undefined,
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
-            avd_data_validation_mode: Literal["error", "warning"] | UndefinedType = Undefined,
+            avd_data_validation_mode: AvdDataValidationMode | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_debug: bool | UndefinedType = Undefined,
             avd_eos_designs_enforce_duplication_checks_across_all_models: bool | UndefinedType = Undefined,
@@ -71730,7 +76056,7 @@ class EosDesigns(EosDesignsRootModel):
             custom_connected_endpoints_keys: CustomConnectedEndpointsKeys | UndefinedType = Undefined,
             connected_endpoints_keys: ConnectedEndpointsKeys | UndefinedType = Undefined,
             core_interfaces: CoreInterfaces | UndefinedType = Undefined,
-            custom_structured_configuration_list_merge: Literal["replace", "append", "keep", "prepend", "append_rp", "prepend_rp"] | UndefinedType = Undefined,
+            custom_structured_configuration_list_merge: CustomStructuredConfigurationListMerge | UndefinedType = Undefined,
             custom_structured_configuration_prefix: CustomStructuredConfigurationPrefix | UndefinedType = Undefined,
             cv_pathfinder_global_sites: CvPathfinderGlobalSites | UndefinedType = Undefined,
             cv_pathfinder_internet_exit_policies: CvPathfinderInternetExitPolicies | UndefinedType = Undefined,
@@ -71740,16 +76066,13 @@ class EosDesigns(EosDesignsRootModel):
             cv_tags_topology_type: str | None | UndefinedType = Undefined,
             cv_token: str | None | UndefinedType = Undefined,
             cv_topology: CvTopology | UndefinedType = Undefined,
-            cvp_ingestauth_key: str | None | UndefinedType = Undefined,
-            cvp_instance_ips: CvpInstanceIps | UndefinedType = Undefined,
-            cvp_token_file: str | None | UndefinedType = Undefined,
             dc_name: str | None | UndefinedType = Undefined,
             default_connected_endpoints_description: str | UndefinedType = Undefined,
             default_connected_endpoints_port_channel_description: str | UndefinedType = Undefined,
             default_igmp_snooping_enabled: bool | UndefinedType = Undefined,
             default_interface_mtu: int | None | UndefinedType = Undefined,
             default_interfaces: DefaultInterfaces | UndefinedType = Undefined,
-            default_mgmt_method: Literal["oob", "inband", "none"] | UndefinedType = Undefined,
+            default_mgmt_method: DefaultMgmtMethod | UndefinedType = Undefined,
             default_network_ports_description: str | UndefinedType = Undefined,
             default_network_ports_port_channel_description: str | UndefinedType = Undefined,
             default_node_types: DefaultNodeTypes | UndefinedType = Undefined,
@@ -71773,7 +76096,7 @@ class EosDesigns(EosDesignsRootModel):
             evpn_short_esi_prefix: str | UndefinedType = Undefined,
             evpn_vlan_aware_bundles: bool | UndefinedType = Undefined,
             evpn_vlan_bundles: EvpnVlanBundles | UndefinedType = Undefined,
-            fabric_evpn_encapsulation: Literal["vxlan", "mpls"] | None | UndefinedType = Undefined,
+            fabric_evpn_encapsulation: FabricEvpnEncapsulation | None | UndefinedType = Undefined,
             fabric_flow_tracking: FabricFlowTracking | UndefinedType = Undefined,
             fabric_ip_addressing: FabricIpAddressing | UndefinedType = Undefined,
             fabric_name: str | UndefinedType = Undefined,
@@ -71793,17 +76116,16 @@ class EosDesigns(EosDesignsRootModel):
             is_deployed: bool | UndefinedType = Undefined,
             isis_advertise_passive_only: bool | UndefinedType = Undefined,
             isis_area_id: str | UndefinedType = Undefined,
-            isis_default_circuit_type: Literal["level-1-2", "level-1", "level-2"] | UndefinedType = Undefined,
-            isis_default_is_type: Literal["level-1-2", "level-1", "level-2"] | UndefinedType = Undefined,
+            isis_default_circuit_type: IsisDefaultCircuitType | UndefinedType = Undefined,
+            isis_default_is_type: IsisDefaultIsType | UndefinedType = Undefined,
             isis_default_metric: int | UndefinedType = Undefined,
             isis_maximum_paths: int | UndefinedType = Undefined,
-            isis_system_id_format: Literal["node_id", "underlay_loopback"] | UndefinedType = Undefined,
+            isis_system_id_format: IsisSystemIdFormat | UndefinedType = Undefined,
             isis_ti_lfa: IsisTiLfa | UndefinedType = Undefined,
             l2vlan_profiles: L2vlanProfiles | UndefinedType = Undefined,
             l3_edge: L3Edge | UndefinedType = Undefined,
             l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
             load_interval: EosCliConfigGen.LoadInterval | UndefinedType = Undefined,
-            local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
             logging_settings: LoggingSettings | UndefinedType = Undefined,
             mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
@@ -71834,12 +76156,11 @@ class EosDesigns(EosDesignsRootModel):
             overlay_bgp_peer_description: str | UndefinedType = Undefined,
             overlay_cvx_servers: OverlayCvxServers | UndefinedType = Undefined,
             overlay_her_flood_list_per_vni: bool | UndefinedType = Undefined,
-            overlay_her_flood_list_scope: Literal["fabric", "dc"] | UndefinedType = Undefined,
-            overlay_loopback_description: str | None | UndefinedType = Undefined,
+            overlay_her_flood_list_scope: OverlayHerFloodListScope | UndefinedType = Undefined,
             overlay_mlag_rfc5549: bool | UndefinedType = Undefined,
             overlay_rd_type: OverlayRdType | UndefinedType = Undefined,
-            overlay_routing_protocol: Literal["ebgp", "ibgp", "cvx", "her", "none"] | None | UndefinedType = Undefined,
-            overlay_routing_protocol_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+            overlay_routing_protocol: OverlayRoutingProtocol | None | UndefinedType = Undefined,
+            overlay_routing_protocol_address_family: OverlayRoutingProtocolAddressFamily | UndefinedType = Undefined,
             overlay_rt_type: OverlayRtType | UndefinedType = Undefined,
             p2p_uplinks_mtu: int | UndefinedType = Undefined,
             p2p_uplinks_qos_profile: str | None | UndefinedType = Undefined,
@@ -71863,10 +76184,6 @@ class EosDesigns(EosDesignsRootModel):
             ssh_settings: SshSettings | UndefinedType = Undefined,
             svi_profiles: SviProfiles | UndefinedType = Undefined,
             system_mac_address: str | None | UndefinedType = Undefined,
-            terminattr_disable_aaa: bool | UndefinedType = Undefined,
-            terminattr_ingestexclude: str | UndefinedType = Undefined,
-            terminattr_ingestgrpcurl_port: int | UndefinedType = Undefined,
-            terminattr_smashexcludes: str | UndefinedType = Undefined,
             timezone: str | None | UndefinedType = Undefined,
             trunk_groups: TrunkGroups | UndefinedType = Undefined,
             type: str | None | UndefinedType = Undefined,
@@ -71876,7 +76193,7 @@ class EosDesigns(EosDesignsRootModel):
             underlay_ipv6_numbered: bool | UndefinedType = Undefined,
             underlay_isis_authentication_cleartext_key: str | None | UndefinedType = Undefined,
             underlay_isis_authentication_key: str | None | UndefinedType = Undefined,
-            underlay_isis_authentication_mode: Literal["md5", "text"] | None | UndefinedType = Undefined,
+            underlay_isis_authentication_mode: UnderlayIsisAuthenticationMode | None | UndefinedType = Undefined,
             underlay_isis_bfd: bool | UndefinedType = Undefined,
             underlay_isis_instance_name: str | None | UndefinedType = Undefined,
             underlay_l2_ethernet_description: str | UndefinedType = Undefined,
@@ -71890,12 +76207,10 @@ class EosDesigns(EosDesignsRootModel):
             underlay_ospf_bfd_enable: bool | UndefinedType = Undefined,
             underlay_ospf_graceful_restart: bool | UndefinedType = Undefined,
             underlay_ospf_max_lsa: int | UndefinedType = Undefined,
-            underlay_ospf_maximum_paths: int | None | UndefinedType = Undefined,
+            underlay_ospf_maximum_paths: int | UndefinedType = Undefined,
             underlay_ospf_process_id: int | UndefinedType = Undefined,
             underlay_rfc5549: bool | UndefinedType = Undefined,
-            underlay_routing_protocol: Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
-            | None
-            | UndefinedType = Undefined,
+            underlay_routing_protocol: UnderlayRoutingProtocol | None | UndefinedType = Undefined,
             unsupported_transceiver: EosCliConfigGen.ServiceUnsupportedTransceiver | UndefinedType = Undefined,
             uplink_ptp: UplinkPtp | UndefinedType = Undefined,
             use_cv_topology: bool | None | UndefinedType = Undefined,
@@ -71903,10 +76218,10 @@ class EosDesigns(EosDesignsRootModel):
             vtep_loopback_description: str | UndefinedType = Undefined,
             vtep_vvtep_ip: str | None | UndefinedType = Undefined,
             wan_carriers: WanCarriers | UndefinedType = Undefined,
-            wan_encapsulation: Literal["path-selection", "vxlan"] | UndefinedType = Undefined,
+            wan_encapsulation: WanEncapsulation | UndefinedType = Undefined,
             wan_ha: WanHa | UndefinedType = Undefined,
             wan_ipsec_profiles: WanIpsecProfiles | UndefinedType = Undefined,
-            wan_mode: Literal["autovpn", "cv-pathfinder"] | UndefinedType = Undefined,
+            wan_mode: WanMode | UndefinedType = Undefined,
             wan_path_groups: WanPathGroups | UndefinedType = Undefined,
             wan_route_servers: WanRouteServers | UndefinedType = Undefined,
             wan_stun_dtls_disable: bool | UndefinedType = Undefined,
@@ -72183,30 +76498,6 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of
                    AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname` (`str`).
-                cvp_ingestauth_key:
-                   On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication
-                   for on-premise CVP.
-                   If not set, TerminAttr will be configured with certificate based authentication:
-                   - On-premise using token onboarding. Default token path is '/tmp/token'.
-                   - CVaaS using token-secure
-                   onboarding. Default token path is '/tmp/cv-onboarding-token'.
-                   Token must be copied to the device
-                   first.
-                cvp_instance_ips:
-                   List of IPv4 addresses or DNS names for CloudVision.
-                   For on-premise CloudVision enter all the nodes
-                   of the cluster.
-                   For CloudVision as a Service enter the DNS name of the instance.
-                   `eos_designs` only
-                   supports one CloudVision cluster.
-
-
-                   Subclass of AvdList with `str` items.
-                cvp_token_file:
-                   cvp_token_file is the path to the token file on the switch.
-                   If not set the default locations for on-
-                   premise or CVaaS will be used.
-                   See cvp_ingestauth_key for details.
                 dc_name:
                    DC Name is used in:
                    - Fabric Documentation (Optional, falls back to fabric_name)
@@ -72520,11 +76811,9 @@ class EosDesigns(EosDesignsRootModel):
                 hardware_counters: hardware_counters
                 inband_ztp_bootstrap_file:
                    Bootstrap URL configured in DHCP to use for inband ZTP.
-                   If not set and `cvp_instance_ips` is set
-                   then the bootstrap value will be set to:
-                       `https://{cvp_instance_ips[0]}/ztp/bootstrap`
-                   Otherwise
-                   no value will be configured.
+                   By default the URL will be `https://<first
+                   cv server>/ztp/bootstrap` if `cv_settings` are used.
+                   Otherwise no value will be configured.
                 internal_vlan_order:
                    Internal vlan allocation order and range.
 
@@ -72571,10 +76860,15 @@ class EosDesigns(EosDesignsRootModel):
                    routes defined under 'ipv6_mgmt_destination_networks'.
                 is_deployed:
                    If the device is already deployed in the fabric.
-                   When set to false, interfaces toward this device
-                   may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.
-                   Furthermore
-                   `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.
+                   When set to false:
+                     - The `cv_deploy` role will
+                   not apply configurations to this device.
+                     - Peer interfaces toward this device may be shutdown
+                   based on the `shutdown_interfaces_towards_undeployed_peers` setting.
+                     - BGP peerings toward this
+                   device may be shutdown based on the `shutdown_bgp_towards_undeployed_peers` setting.
+                     - Validation
+                   tests by the `anta_runner` role are automatically skipped for this device.
                 isis_advertise_passive_only: isis_advertise_passive_only
                 isis_area_id: isis_area_id
                 isis_default_circuit_type:
@@ -72607,7 +76901,6 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of AvdIndexedList with
                    `L3InterfaceProfilesItem` items. Primary key is `profile` (`str`).
                 load_interval: load_interval
-                local_users: local_users
                 logging_settings:
                    Logging settings
 
@@ -72870,7 +77163,6 @@ class EosDesigns(EosDesignsRootModel):
                    This can be changed to all VTEPs in the DC (sharing the same "dc_name" value).
                    This is useful
                    if Border Leaf switches are dividing the VXLAN overlay into separate domains.
-                overlay_loopback_description: Customize the description on overlay interface Loopback0.
                 overlay_mlag_rfc5549:
                    IPv6 Unnumbered for MLAG iBGP connections.
                    Requires "underlay_rfc5549: true".
@@ -72997,9 +77289,8 @@ class EosDesigns(EosDesignsRootModel):
                 serial_number:
                    Serial Number of the device.
                    Used for documentation purpose in the fabric documentation as can also
-                   be used by the 'eos_config_deploy_cvp' role.
-                   "serial_number" can also be set directly under node
-                   type settings.
+                   be used by the 'cv_deploy' role.
+                   "serial_number" can also be set directly under node type settings.
                    If both are set, the value under node type settings takes precedence.
                 sflow_settings:
                    sFlow settings.
@@ -73007,35 +77298,10 @@ class EosDesigns(EosDesignsRootModel):
                    For
                    default enabling of sFlow for various interface types across the fabric see `fabric_sflow`.
                    Subclass of AvdModel.
-                shutdown_bgp_towards_undeployed_peers:
-                   When a device is set undeployed using `is_deployed: false` and
-                   `shutdown_bgp_towards_undeployed_peers` key is set to true, the BGP neighborship is shutdown on the
-                   peer.
+                shutdown_bgp_towards_undeployed_peers: Administratively shuts down BGP peerings towards devices marked with `is_deployed: false`.
                 shutdown_interfaces_towards_undeployed_peers:
-                   - It is possible to provision configurations for a complete topology but flag devices as undeployed
-                   using the host level variable `is_deployed: false`.
-
-                   ```yaml
-                   # Use at the host level
-                   is_deployed: <
-                   true or false or default -> true >
-                   ```
-
-                   - By default, this will have no impact within the
-                   `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still
-                   be pushed by the `eos_config_deploy_eapi` directly to devices if used.
-                   - However, if the
-                   `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices
-                   flagged  as `is_deployed: false` and not attempt to configure them.
-                   - If the device is not present
-                   in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail
-                   tests on peers of the undeployed device trying to verify that interfaces are up.
-                   - To overcome this
-                   and shutdown interfaces towards undeployed peers, the variable
-                   `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role
-                   interface tests.
-                   - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices
-                   are not present in the network.
+                   Administratively shuts down interfaces on deployed devices that connect to a peer marked with
+                   `is_deployed: false`.
                 snmp_settings:
                    SNMP settings.
                    Configuration of remote SNMP engine IDs are currently only possible using
@@ -73079,13 +77345,6 @@ class EosDesigns(EosDesignsRootModel):
                    also be set under node type settings.
                    If both are set, the value under node type settings takes
                    precedence.
-                terminattr_disable_aaa: terminattr_disable_aaa
-                terminattr_ingestexclude: terminattr_ingestexclude
-                terminattr_ingestgrpcurl_port:
-                   Port number used for Terminattr connection to an on-premise CloudVision cluster.
-                   The port number is
-                   always 443 when using CloudVision as a Service, so this value is ignored.
-                terminattr_smashexcludes: terminattr_smashexcludes
                 timezone: Clock timezone like "CET" or "US/Pacific".
                 trunk_groups: Subclass of AvdModel.
                 type:

@@ -42,10 +42,6 @@ ip_name_servers:
 ipv6_static_routes:
 - prefix: ::/0
   next_hop: 2a00:105::1
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -56,9 +52,8 @@ ntp:
   servers:
   - name: 2.2.2.55
     preferred: true
-    vrf: default
   - name: pool.ntp.org
-    vrf: default
+  vrf: default
 port_channel_interfaces:
 - name: Port-Channel1
   description: inband-mgmt-parents-dualstack_Po25

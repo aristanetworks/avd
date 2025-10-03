@@ -6,10 +6,6 @@ enable_password:
 hostname: ntp-settings-1
 ip_igmp_snooping:
   globally_enabled: true
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -24,7 +20,6 @@ ntp:
   servers:
   - name: 10.10.10.1
     preferred: true
-    vrf: default
   - name: 10.10.10.2
     burst: true
     iburst: true
@@ -32,7 +27,7 @@ ntp:
     maxpoll: 5
     minpoll: 3
     version: 4
-    vrf: default
+  vrf: default
   authenticate: true
   authenticate_servers_only: true
   authentication_keys:

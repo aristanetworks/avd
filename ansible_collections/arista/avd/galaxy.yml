@@ -9,7 +9,7 @@ namespace: arista
 name: avd
 
 # The version of the collection. Must be compatible with semantic versioning
-version: 6.0.0-dev0
+version: 6.0.0-dev1
 # The path to the Markdown (.md) readme file. This path is relative to the root of the collection
 readme: README.md
 
@@ -67,7 +67,6 @@ manifest:
     - recursive-exclude changelogs/fragments_backup **
     - recursive-include examples **
     - recursive-exclude molecule **
-    - include collections.yml # TODO: remove collections.yml in 6.0.0
     - include requirements.yml
     - include pylintrc
     - include pytest.ini
