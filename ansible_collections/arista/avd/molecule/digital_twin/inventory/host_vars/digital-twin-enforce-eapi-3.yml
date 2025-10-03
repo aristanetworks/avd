@@ -17,6 +17,7 @@ digital_twin:
 
 # Test override of the management api http-commands settings in ACT Digital Twin mode
 management_eapi:
+  enabled: true
   enable_http: true
   vrfs:
     - name: default

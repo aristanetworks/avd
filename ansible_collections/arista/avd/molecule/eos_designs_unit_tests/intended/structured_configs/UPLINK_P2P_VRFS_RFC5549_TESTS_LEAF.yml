@@ -48,10 +48,6 @@ loopback_interfaces:
   shutdown: false
   ip_address: 192.168.42.8/32
   ipv6_address: 2001:2::8/128
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   platform: vEOS-LAB

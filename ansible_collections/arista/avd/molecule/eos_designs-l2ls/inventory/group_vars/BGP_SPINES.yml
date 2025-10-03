@@ -15,8 +15,10 @@ l3spine:
       bgp_as: 65001
       nodes:
         - name: BGP-SPINE1
+          mgmt_ip: 192.168.0.1/24
           id: 1
         - name: BGP-SPINE2
+          mgmt_ip: 192.168.0.2/24
           id: 2
 
 generate_cv_tags:
