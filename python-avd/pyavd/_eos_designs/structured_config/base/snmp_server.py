@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import natural_sort, snmp_hash
 
 if TYPE_CHECKING:
@@ -79,19 +80,9 @@ class SnmpServerMixin(Protocol):
         if not snmp_settings.location:
             return
 
-        if location_template := snmp_settings.location_template:
-            self.structured_config.snmp_server.location = location_template
-            return
-
-        location_elements = [
-            self.shared_utils.fabric_name,
-            self.inputs.dc_name,
-            self.inputs.pod_name,
-            self.shared_utils.node_config.rack,
-            self.shared_utils.hostname,
-        ]
-        location_elements = [location for location in location_elements if location not in [None, ""]]
-        self.structured_config.snmp_server.location = " ".join(location_elements)
+        self.structured_config.snmp_server.location = self.shared_utils.interface_descriptions.snmp_settings_location_template(
+            InterfaceDescriptionData(shared_utils=self.shared_utils, dc_name=self.inputs.dc_name, pod_name=self.inputs.pod_name)
+        )
 
     def _snmp_users(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
         """

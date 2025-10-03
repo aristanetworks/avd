@@ -18235,7 +18235,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "contact": {"type": str},
             "location": {"type": bool, "default": False},
-            "location_template": {"type": str},
+            "location_template": {"type": str, "default": "{fabric_name} {dc_name} {pod_name} {switch_rack} {inventory_hostname}"},
             "vrfs": {"type": Vrfs},
             "compute_local_engineid": {"type": bool, "default": False},
             "compute_local_engineid_source": {"type": str, "default": "hostname_and_ip"},
@@ -18255,7 +18255,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        location_template: str | None
+        location_template: str
         """
         Customize the location description.
         Set `location:true` to set `location_template`.
@@ -18269,7 +18269,8 @@ class EosDesigns(EosDesignsRootModel):
           - switch_rack: Physical rack location of switch.
           - inventory_hostname: Hostname used in
         inventory.
-        Default value: {fabric_name} {dc_name} {pod_name} {switch_rack} {inventory_hostname}
+
+        Default value: `"{fabric_name} {dc_name} {pod_name} {switch_rack} {inventory_hostname}"`
         """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
@@ -18329,7 +18330,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 contact: str | None | UndefinedType = Undefined,
                 location: bool | UndefinedType = Undefined,
-                location_template: str | None | UndefinedType = Undefined,
+                location_template: str | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 compute_local_engineid: bool | UndefinedType = Undefined,
                 compute_local_engineid_source: Literal["hostname_and_ip", "system_mac"] | UndefinedType = Undefined,
@@ -18363,7 +18364,6 @@ class EosDesigns(EosDesignsRootModel):
                          - switch_rack: Physical rack location of switch.
                          - inventory_hostname: Hostname used in
                        inventory.
-                       Default value: {fabric_name} {dc_name} {pod_name} {switch_rack} {inventory_hostname}
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     compute_local_engineid: Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
                     compute_local_engineid_source:

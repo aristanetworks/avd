@@ -347,6 +347,30 @@ class AvdInterfaceDescriptions(AvdFacts):
             ),
         )
 
+    def snmp_settings_location_template(self, data: InterfaceDescriptionData) -> str:
+        """
+        Build a SNMP location template description.
+
+            Available data:
+            - fabric_name
+            - dc_name
+            - pod_name
+            - switch_rack
+            - inventory_hostname
+        """
+        return AvdStringFormatter().format(
+            self.inputs.snmp_settings.location_template,
+            **strip_null_from_data(
+                {
+                    "fabric_name": data.fabric_name,
+                    "dc_name": data.dc_name,
+                    "pod_name": data.pod_name,
+                    "switch_rack": data.switch_rack,
+                    "inventory_hostname": data.inventory_hostname,
+                }
+            ),
+        )
+
     def connected_endpoints_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
         Build a connected endpoint Ethernet interface description.
@@ -567,6 +591,10 @@ class InterfaceDescriptionData:
     """The WAN Circuit ID for this interface."""
     main_interface_wan_carrier: str | None
     """ WAN carrier of parent interface"""
+    dc_name: str | None
+    """ DC name """
+    pod_name: str | None
+    """ POD name """
 
     # We accept more arguments than max-args number for this method.
     def __init__(  # noqa: PLR0913
@@ -587,6 +615,8 @@ class InterfaceDescriptionData:
         wan_carrier: str | None = None,
         wan_circuit_id: str | None = None,
         main_interface_wan_carrier: str | None = None,
+        dc_name: str | None = None,
+        pod_name: str | None = None,
     ) -> None:
         self._shared_utils = shared_utils
         self.description = description
@@ -604,6 +634,8 @@ class InterfaceDescriptionData:
         self.wan_carrier = wan_carrier
         self.wan_circuit_id = wan_circuit_id
         self.main_interface_wan_carrier = main_interface_wan_carrier
+        self.dc_name = dc_name
+        self.pod_name = pod_name
 
     @property
     def mpls_overlay_role(self) -> str | None:
@@ -644,3 +676,15 @@ class InterfaceDescriptionData:
     @property
     def type(self) -> str:
         return self._shared_utils.type
+
+    @property
+    def fabric_name(self) -> str:
+        return self._shared_utils.fabric_name
+
+    @property
+    def switch_rack(self) -> str | None:
+        return self._shared_utils.node_config.rack
+
+    @property
+    def inventory_hostname(self) -> str:
+        return self._shared_utils.hostname

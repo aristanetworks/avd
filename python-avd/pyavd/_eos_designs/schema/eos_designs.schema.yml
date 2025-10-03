@@ -5198,8 +5198,8 @@ keys:
           The logical name of the fabric.\n  - dc_name: The name of the data center
           associated with the fabric.\n  - pod_name: The pod or cluster grouping within
           the data center.\n  - switch_rack: Physical rack location of switch.\n  -
-          inventory_hostname: Hostname used in inventory.\nDefault value: {fabric_name}
-          {dc_name} {pod_name} {switch_rack} {inventory_hostname}"
+          inventory_hostname: Hostname used in inventory."
+        default: '{fabric_name} {dc_name} {pod_name} {switch_rack} {inventory_hostname}'
       vrfs:
         type: list
         primary_key: name
