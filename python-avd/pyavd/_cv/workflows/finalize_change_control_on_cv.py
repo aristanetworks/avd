@@ -30,9 +30,7 @@ def get_change_control_state(cv_change_control: ChangeControl) -> str:
     return (
         CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP[cv_change_control.status]
         or CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP[cv_change_control.approve.value]
-        or "failed"
-        if cv_change_control.error is not None
-        else "pending approval"
+        or ("failed" if cv_change_control.error is not None else "pending approval")
     )
 
 
@@ -49,7 +47,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
 
     # Update missing fields on our local model with data from the CloudVision object.
     change_control.state = get_change_control_state(cv_change_control=cv_change_control)
-    if change_control.description is None:
+    if change_control.name is None:
         change_control.name = cv_change_control.change.name
     if change_control.description is None:
         change_control.description = cv_change_control.change.notes
