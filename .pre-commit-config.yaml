@@ -275,7 +275,7 @@ repos:
         language: python
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=38.0.4', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=43.0.0', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     # Keep v0.18.0 for now as pre-commit.ci fails on v0.18.1

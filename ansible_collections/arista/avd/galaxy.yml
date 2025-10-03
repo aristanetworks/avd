@@ -67,7 +67,6 @@ manifest:
     - recursive-exclude changelogs/fragments_backup **
     - recursive-include examples **
     - recursive-exclude molecule **
-    - include collections.yml # TODO: remove collections.yml in 6.0.0
     - include requirements.yml
     - include pylintrc
     - include pytest.ini
