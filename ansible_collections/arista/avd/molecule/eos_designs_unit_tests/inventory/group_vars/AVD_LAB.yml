@@ -78,6 +78,7 @@ dns_settings:
 
 # Management api-http
 management_eapi:
+  enabled: true
   enable_https: true
   default_services: false
 

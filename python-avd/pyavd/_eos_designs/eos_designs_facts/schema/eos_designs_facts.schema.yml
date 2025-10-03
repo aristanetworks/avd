@@ -205,10 +205,12 @@ keys:
           valid_values: ["underlay_p2p", "underlay_l2"]
         speed:
           type: str
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
         bfd:
           type: bool
         peer_speed:
           type: str
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
         ptp:
           type: dict
           documentation_options:

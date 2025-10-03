@@ -6,10 +6,6 @@ enable_password:
 hostname: SNMP_SYSTEM_MAC_ENGINEID_1
 ip_igmp_snooping:
   globally_enabled: true
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   system_mac_address: '42:42:42:42:42:42'

@@ -14,10 +14,6 @@ ip_igmp_snooping:
 ip_name_servers:
 - ip_address: 8.8.8.8
   vrf: MGMT
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
