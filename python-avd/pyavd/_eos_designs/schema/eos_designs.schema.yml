@@ -2098,8 +2098,9 @@ keys:
   evpn_prevent_readvertise_to_server:
     documentation_options:
       table: evpn-settings
-    description: 'Configure route-map on eBGP sessions towards route-servers, where
-      prefixes with the peer''s ASN in the AS Path are filtered away.
+    description: 'When set to `true`, EVPN BGP routes will not be advertised to an
+      EVPN route-server if they were originated in, or have already traversed, the
+      route-server''s AS.
 
       This is very useful in large-scale networks, where convergence will be quicker
       by not returning all updates received
@@ -2110,6 +2111,27 @@ keys:
       '
     type: bool
     default: false
+  evpn_prevent_readvertise_to_server_mode:
+    documentation_options:
+      table: evpn-settings
+    description: '`evpn_prevent_readvertise_to_server_mode` controls the method of
+      identifying EVPN routes that should not be advertised to the EVPN route-servers.
+
+      Only used when `evpn_prevent_readvertise_to_server` is set to `true`.
+
+      `source_peer_asn` method uses the outbound `route-map` towards EVPN route-server
+      to filter out BGP routes with the source peer''s ASN matching ASN of the route-server.
+
+      `as_path_acl` method uses the outbound `route-map` towards EVPN route-servers
+      to filter out BGP routes containing the route-server''s ASN in the `AS PATH`
+      attribute.
+
+      '
+    type: str
+    valid_values:
+    - source_peer_asn
+    - as_path_acl
+    default: source_peer_asn
   evpn_short_esi_prefix:
     documentation_options:
       table: evpn-settings
