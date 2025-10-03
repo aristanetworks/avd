@@ -140,6 +140,10 @@ jobs:
     name: Python Linting not covered in pre-commit
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v5
+      - name: Install pyavd and Ansible requirements
+        run: |
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
       - name: PyRight static type checker
         # Specific SHA as allowed by github org admins
         uses: jakebailey/pyright-action@6cabc0f01c4994be48fd45cd9dbacdd6e1ee6e5e
