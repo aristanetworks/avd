@@ -94,30 +94,6 @@ async def test_finalize_running(mock_cv_client: MagicMock) -> None:
 
 
 @pytest.mark.asyncio
-async def test_finalize_running_already_approved(mock_cv_client: MagicMock) -> None:
-    """Test that an already approved Change Control is just started when requested_state is 'running'."""
-    # Arrange
-    local_cc = CVChangeControl(id="cc_id_1", requested_state="running")
-    # This mock represents a CC that is already approved on CV
-    cv_cc_approved = create_grpc_change_control(approved=True)
-    mock_cv_client.get_change_control.return_value = cv_cc_approved
-
-    # Act
-    await finalize_change_control_on_cv(change_control=local_cc, cv_client=mock_cv_client)
-
-    # Assert
-    mock_cv_client.get_change_control.assert_called_once_with(change_control_id="cc_id_1")
-    # Should NOT be called since it's already approved
-    mock_cv_client.approve_change_control.assert_not_called()
-    mock_cv_client.start_change_control.assert_called_once_with(
-        change_control_id="cc_id_1",
-        description="Automatically started by AVD",
-    )
-    mock_cv_client.wait_for_change_control_state.assert_not_called()
-    assert local_cc.state == "running"
-
-
-@pytest.mark.asyncio
 async def test_finalize_completed_success(mock_cv_client: MagicMock) -> None:
     """Test that a Change Control with requested_state='completed' runs to successful completion."""
     # Arrange

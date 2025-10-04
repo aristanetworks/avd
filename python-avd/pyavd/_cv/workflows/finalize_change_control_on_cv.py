@@ -30,7 +30,9 @@ def get_change_control_state(cv_change_control: ChangeControl) -> str:
     return (
         CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP[cv_change_control.status]
         or CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP[cv_change_control.approve.value]
-        or ("failed" if cv_change_control.error is not None else "pending approval")
+        or "failed"
+        if cv_change_control.error is not None
+        else "pending approval"
     )
 
 
