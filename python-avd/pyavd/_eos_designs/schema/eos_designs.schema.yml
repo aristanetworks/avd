@@ -8756,6 +8756,7 @@ $defs:
                           max_length: 8
                         message_digest_keys:
                           type: list
+                          primary_key: id
                           items:
                             type: dict
                             keys:
@@ -9018,6 +9019,7 @@ $defs:
                           max_length: 8
                         message_digest_keys:
                           type: list
+                          primary_key: id
                           items:
                             type: dict
                             keys:
@@ -13007,6 +13009,7 @@ $defs:
             max_length: 8
           message_digest_keys:
             type: list
+            primary_key: id
             items:
               type: dict
               keys:

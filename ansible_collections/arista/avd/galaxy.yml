@@ -1,3 +1,4 @@
+---
 ### REQUIRED
 
 # The namespace of the collection. This can be a company/brand/organization or product namespace under which all
@@ -17,7 +18,6 @@ readme: README.md
 # @nicks:irc/im.site#channel'
 authors:
   - Arista Ansible Team <ansible@arista.com>
-
 ### OPTIONAL but strongly recommended
 
 # A short summary description of the collection
@@ -36,10 +36,8 @@ tags: ["arista", "network", "networking", "eos", "avd", "cloudvision", "cvp"]
 # L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
 # range specifiers can be set and are separated by ','
 dependencies:
-  "arista.cvp": ">=3.11.0"
   "arista.eos": ">=7.0.0"
   "ansible.utils": ">=3.0.0"
-
 # The URL of the originating SCM repository
 repository: https://github.com/aristanetworks/avd
 
