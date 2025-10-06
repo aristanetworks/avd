@@ -17477,6 +17477,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "contact": {"type": str},
             "location": {"type": bool, "default": False},
+            "location_template": {"type": str, "default": "{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}"},
             "vrfs": {"type": Vrfs},
             "compute_local_engineid": {"type": bool, "default": False},
             "compute_local_engineid_source": {"type": str, "default": "hostname_and_ip"},
@@ -17492,10 +17493,24 @@ class EosDesigns(EosDesignsRootModel):
         """SNMP contact."""
         location: bool
         """
-        Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack>
-        <inventory_hostname>".
+        Enables SNMP location using `location_template` value.
 
         Default value: `False`
+        """
+        location_template: str
+        """
+        Customize the SNMP location description.
+        The available template fields are:
+          - fabric_name: The
+        logical name of the fabric.
+          - dc_name: The name of the data center associated with the fabric.
+          -
+        pod_name: The pod or cluster grouping within the data center.
+          - rack: Physical rack location of
+        switch.
+          - hostname: Hostname used in inventory.
+
+        Default value: `"{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}"`
         """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
@@ -17555,6 +17570,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 contact: str | None | UndefinedType = Undefined,
                 location: bool | UndefinedType = Undefined,
+                location_template: str | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 compute_local_engineid: bool | UndefinedType = Undefined,
                 compute_local_engineid_source: ComputeLocalEngineidSource | UndefinedType = Undefined,
@@ -17574,9 +17590,18 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     contact: SNMP contact.
-                    location:
-                       Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack>
-                       <inventory_hostname>".
+                    location: Enables SNMP location using `location_template` value.
+                    location_template:
+                       Customize the SNMP location description.
+                       The available template fields are:
+                         - fabric_name: The
+                       logical name of the fabric.
+                         - dc_name: The name of the data center associated with the fabric.
+                         -
+                       pod_name: The pod or cluster grouping within the data center.
+                         - rack: Physical rack location of
+                       switch.
+                         - hostname: Hostname used in inventory.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     compute_local_engineid: Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
                     compute_local_engineid_source:
