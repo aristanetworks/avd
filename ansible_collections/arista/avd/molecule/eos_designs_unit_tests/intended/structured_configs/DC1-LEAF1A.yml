@@ -227,6 +227,7 @@ router_bgp:
     restart_time: 500
   maximum_paths:
     paths: 4
+    ecmp: 4
   bgp_defaults:
   - distance bgp 20 200 200
   bgp:
