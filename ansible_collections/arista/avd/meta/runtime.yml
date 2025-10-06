@@ -45,6 +45,12 @@ plugin_routing:
         warning_text: |-
           The internal 'eos_validate_state_report' action plugin is no longer used by AVD.
           The plugin is released as open source, so it can be copied and reused according to the license and copyright.
+    inventory_to_container:
+      tombstone:
+        removal_version: 6.0.0-dev1
+        warning_text: |-
+          The internal 'inventory_to_container' module is no longer used by AVD.
+          The module is released as open source, so it can be copied and reused according to the license and copyright.
     _emit_warning:
       tombstone:
         removal_version: 5.0.0
