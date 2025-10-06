@@ -109,7 +109,8 @@ class RoutingMixin(Protocol):
     def get_asn(self: SharedUtilsProtocol, asn: str | int | None) -> str | None:
         if asn is None:
             return None
-
+        # TODO: This calculation would not work for -12345.12234 type of input.
+        # Need to handle in schema probably.
         try:
             if self.bgp_as_notation == "asdot" and "." not in str(asn):
                 if (prefix := int(asn) // 65536) != 0:
