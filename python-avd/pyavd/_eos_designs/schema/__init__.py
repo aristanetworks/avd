@@ -25527,7 +25527,8 @@ class EosDesigns(EosDesignsRootModel):
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                             enabled: bool
                             """
-                            Enable link tracking on all downlinks.
+                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                            Tracking Group(s).
 
                             Default value: `False`
                             """
@@ -25542,7 +25543,9 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled: Enable link tracking on all downlinks.
+                                        enabled:
+                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                           Tracking Group(s).
 
                                     """
 
@@ -30489,7 +30492,8 @@ class EosDesigns(EosDesignsRootModel):
                                 _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                                 enabled: bool
                                 """
-                                Enable link tracking on all downlinks.
+                                Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                Tracking Group(s).
 
                                 Default value: `False`
                                 """
@@ -30504,7 +30508,9 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            enabled: Enable link tracking on all downlinks.
+                                            enabled:
+                                               Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                               Tracking Group(s).
 
                                         """
 
@@ -35414,7 +35420,8 @@ class EosDesigns(EosDesignsRootModel):
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                             enabled: bool
                             """
-                            Enable link tracking on all downlinks.
+                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                            Tracking Group(s).
 
                             Default value: `False`
                             """
@@ -35429,7 +35436,9 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled: Enable link tracking on all downlinks.
+                                        enabled:
+                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                           Tracking Group(s).
 
                                     """
 
@@ -40402,7 +40411,8 @@ class EosDesigns(EosDesignsRootModel):
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                             enabled: bool
                             """
-                            Enable link tracking on all downlinks.
+                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                            Tracking Group(s).
 
                             Default value: `False`
                             """
@@ -40417,7 +40427,9 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled: Enable link tracking on all downlinks.
+                                        enabled:
+                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                           Tracking Group(s).
 
                                     """
 
@@ -53936,7 +53948,8 @@ class EosDesigns(EosDesignsRootModel):
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                             enabled: bool
                             """
-                            Enable link tracking on all downlinks.
+                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                            Tracking Group(s).
 
                             Default value: `False`
                             """
@@ -53951,7 +53964,9 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled: Enable link tracking on all downlinks.
+                                        enabled:
+                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                           Tracking Group(s).
 
                                     """
 
@@ -58898,7 +58913,8 @@ class EosDesigns(EosDesignsRootModel):
                                 _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                                 enabled: bool
                                 """
-                                Enable link tracking on all downlinks.
+                                Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                Tracking Group(s).
 
                                 Default value: `False`
                                 """
@@ -58913,7 +58929,9 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            enabled: Enable link tracking on all downlinks.
+                                            enabled:
+                                               Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                               Tracking Group(s).
 
                                         """
 
@@ -63823,7 +63841,8 @@ class EosDesigns(EosDesignsRootModel):
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                             enabled: bool
                             """
-                            Enable link tracking on all downlinks.
+                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                            Tracking Group(s).
 
                             Default value: `False`
                             """
@@ -63838,7 +63857,9 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled: Enable link tracking on all downlinks.
+                                        enabled:
+                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                           Tracking Group(s).
 
                                     """
 
@@ -68811,7 +68832,8 @@ class EosDesigns(EosDesignsRootModel):
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
                             enabled: bool
                             """
-                            Enable link tracking on all downlinks.
+                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                            Tracking Group(s).
 
                             Default value: `False`
                             """
@@ -68826,7 +68848,9 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled: Enable link tracking on all downlinks.
+                                        enabled:
+                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                           Tracking Group(s).
 
                                     """
 

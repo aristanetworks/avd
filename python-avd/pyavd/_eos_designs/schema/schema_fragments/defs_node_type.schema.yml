@@ -102,7 +102,7 @@ $defs:
                 keys:
                   enabled:
                     type: bool
-                    description: Enable link tracking on all downlinks.
+                    description: Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group(s).
                     default: false
               groups:
                 type: list
