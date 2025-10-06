@@ -2,3 +2,5 @@
 collections:
   - name: arista.eos
     version: ">=7.0.0"
+  - name: ansible.utils
+    version: ">=3.0.0"
