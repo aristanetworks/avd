@@ -40,6 +40,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "router_pim_sparse_mode.vrfs.[].ipv4.rp_addresses.[].priority") | Integer |  |  | Min: 0<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hashmask</samp>](## "router_pim_sparse_mode.vrfs.[].ipv4.rp_addresses.[].hashmask") | Integer |  |  | Min: 0<br>Max: 32 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override</samp>](## "router_pim_sparse_mode.vrfs.[].ipv4.rp_addresses.[].override") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssm_range</samp>](## "router_pim_sparse_mode.vrfs.[].ipv4.ssm_range") | String |  |  |  | Standard access list name or use the specific keyword 'standard' as a shortcut to apply<br>a predefined rule that permits the 232.0.0.0/8 range for SSM traffic. |
 
 === "YAML"
 
@@ -97,4 +98,8 @@
                 priority: <int; 0-255>
                 hashmask: <int; 0-32>
                 override: <bool>
+
+            # Standard access list name or use the specific keyword 'standard' as a shortcut to apply
+            # a predefined rule that permits the 232.0.0.0/8 range for SSM traffic.
+            ssm_range: <str>
     ```

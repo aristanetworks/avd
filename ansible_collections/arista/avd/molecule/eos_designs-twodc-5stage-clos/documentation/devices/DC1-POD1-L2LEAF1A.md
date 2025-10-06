@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Management](#management)
-  - [Management API HTTP](#management-api-http)
+  - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [Enable Password](#enable-password)
@@ -37,30 +37,31 @@
 
 ## Management
 
-### Management API HTTP
+### Management Interfaces
 
-#### Management API HTTP Summary
+#### Management Interfaces Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+##### IPv4
 
-#### Management API VRF Access
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.1.10/24 | 192.168.1.254 |
 
-| VRF Name | IPv4 ACL | IPv6 ACL |
-| -------- | -------- | -------- |
-| MGMT | - | - |
+##### IPv6
 
-#### Management API HTTP Device Configuration
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+
+#### Management Interfaces Device Configuration
 
 ```eos
 !
-management api http-commands
-   protocol https
+interface Management1
+   description OOB_MANAGEMENT
    no shutdown
-   !
    vrf MGMT
-      no shutdown
+   ip address 192.168.1.10/24
 ```
 
 ## Authentication
