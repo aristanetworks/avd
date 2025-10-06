@@ -194,8 +194,7 @@ cvp_configlets:
     connected\n   !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.3:31\n      route-target
     import evpn 31:31\n      route-target export evpn 31:31\n      router-id 192.168.255.3\n
     \     neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
-    \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    connected\n!\nend\n"
   AVD_DC1-LEAF1B: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=10.255.0.1:9910
     -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
     -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\ntransceiver
@@ -391,8 +390,7 @@ cvp_configlets:
     connected\n   !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.4:31\n      route-target
     import evpn 31:31\n      route-target export evpn 31:31\n      router-id 192.168.255.4\n
     \     neighbor 10.255.251.0 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
-    \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    connected\n!\nend\n"
   AVD_DC1-LEAF2A: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=10.255.0.1:9910
     -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
     -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\ntransceiver
@@ -588,8 +586,7 @@ cvp_configlets:
     connected\n   !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.5:31\n      route-target
     import evpn 31:31\n      route-target export evpn 31:31\n      router-id 192.168.255.5\n
     \     neighbor 10.255.251.5 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
-    \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    connected\n!\nend\n"
   AVD_DC1-LEAF2B: "!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=10.255.0.1:9910
     -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
     -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\ntransceiver
@@ -785,8 +782,7 @@ cvp_configlets:
     connected\n   !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.6:31\n      route-target
     import evpn 31:31\n      route-target export evpn 31:31\n      router-id 192.168.255.6\n
     \     neighbor 10.255.251.4 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute
-    connected\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
-    \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    connected\n!\nend\n"
 cvp_topology:
   DC1_FABRIC:
     devices: []

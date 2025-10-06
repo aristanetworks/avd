@@ -2,8 +2,6 @@
 
 ## Table of Contents
 
-- [Management](#management)
-  - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [Enable Password](#enable-password)
@@ -31,34 +29,6 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [EOS CLI Device Configuration](#eos-cli-device-configuration)
-
-## Management
-
-### Management API HTTP
-
-#### Management API HTTP Summary
-
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
-
-#### Management API VRF Access
-
-| VRF Name | IPv4 ACL | IPv6 ACL |
-| -------- | -------- | -------- |
-| MGMT | - | - |
-
-#### Management API HTTP Device Configuration
-
-```eos
-!
-management api http-commands
-   protocol https
-   no shutdown
-   !
-   vrf MGMT
-      no shutdown
-```
 
 ## Authentication
 

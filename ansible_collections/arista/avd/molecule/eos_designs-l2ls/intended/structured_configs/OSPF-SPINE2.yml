@@ -67,6 +67,14 @@ management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.6/24
+  type: oob
+  gateway: 172.31.0.1
 metadata:
   is_deployed: true
   pod_name: L2LS_OSPF
