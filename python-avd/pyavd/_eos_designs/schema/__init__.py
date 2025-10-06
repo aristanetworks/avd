@@ -17547,18 +17547,16 @@ class EosDesigns(EosDesignsRootModel):
         """
         location_template: str
         """
-        Customize the location description.
-        Set `location:true` to set `location_template`.
-        The available
-        template fields are:
-          - fabric_name: The logical name of the fabric.
-          - dc_name: The name of the
-        data center associated with the fabric.
-          - pod_name: The pod or cluster grouping within the data
-        center.
-          - switch_rack: Physical rack location of switch.
-          - inventory_hostname: Hostname used in
-        inventory.
+        Customize the SNMP location description.
+        The available template fields are:
+          - fabric_name: The
+        logical name of the fabric.
+          - dc_name: The name of the data center associated with the fabric.
+          -
+        pod_name: The pod or cluster grouping within the data center.
+          - switch_rack: Physical rack
+        location of switch.
+          - inventory_hostname: Hostname used in inventory.
 
         Default value: `"{fabric_name} {dc_name?> }{pod_name?> }{switch_rack?> }{inventory_hostname}"`
         """
@@ -17642,18 +17640,16 @@ class EosDesigns(EosDesignsRootModel):
                     contact: SNMP contact.
                     location: Enables SNMP location using `location_template` value.
                     location_template:
-                       Customize the location description.
-                       Set `location:true` to set `location_template`.
-                       The available
-                       template fields are:
-                         - fabric_name: The logical name of the fabric.
-                         - dc_name: The name of the
-                       data center associated with the fabric.
-                         - pod_name: The pod or cluster grouping within the data
-                       center.
-                         - switch_rack: Physical rack location of switch.
-                         - inventory_hostname: Hostname used in
-                       inventory.
+                       Customize the SNMP location description.
+                       The available template fields are:
+                         - fabric_name: The
+                       logical name of the fabric.
+                         - dc_name: The name of the data center associated with the fabric.
+                         -
+                       pod_name: The pod or cluster grouping within the data center.
+                         - switch_rack: Physical rack
+                       location of switch.
+                         - inventory_hostname: Hostname used in inventory.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     compute_local_engineid: Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
                     compute_local_engineid_source:
