@@ -30,7 +30,7 @@ def create_grpc_container(
 
 
 def create_grpc_change_control(
-    status: ChangeControlStatus = ChangeControlStatus.UNSPECIFIED,
+    status: ChangeControlStatus = ChangeControlStatus.NOT_STARTED,
     approved: bool = False,
     error: str | None = None,
     name: str = "Test CC",
