@@ -30,9 +30,9 @@ keys:
             - fabric_name: The logical name of the fabric.
             - dc_name: The name of the data center associated with the fabric.
             - pod_name: The pod or cluster grouping within the data center.
-            - switch_rack: Physical rack location of switch.
-            - inventory_hostname: Hostname used in inventory.
-        default: "{fabric_name} {dc_name?> }{pod_name?> }{switch_rack?> }{inventory_hostname}"
+            - rack: Physical rack location of switch.
+            - hostname: Hostname used in inventory.
+        default: "{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}"
       vrfs:
         type: list
         primary_key: name

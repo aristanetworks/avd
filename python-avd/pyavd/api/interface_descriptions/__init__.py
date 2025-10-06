@@ -365,8 +365,8 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "fabric_name": data.fabric_name,
                     "dc_name": data.dc_name,
                     "pod_name": data.pod_name,
-                    "switch_rack": data.rack,
-                    "inventory_hostname": data.hostname,
+                    "rack": data.rack,
+                    "hostname": data.hostname,
                 }
             ),
         )
