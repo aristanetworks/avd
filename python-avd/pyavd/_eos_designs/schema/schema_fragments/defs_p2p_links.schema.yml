@@ -11,6 +11,7 @@ $defs:
     items:
       type: dict
       keys:
+        # TODO: AVD 6.0.0 add a min_length of 2 and max_length of 2 to the lists (description, ip, nodes and interfaces).
         id:
           type: int
           convert_types:
