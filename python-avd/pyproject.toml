@@ -122,7 +122,8 @@ parallel = true
 show_missing = true
 fail_under = 85
 include = [
-  "pyavd/*"
+  "pyavd/*",
+  "schema_tools/*"
 ]
 omit = [
   "pyavd/_cv/api/*"
