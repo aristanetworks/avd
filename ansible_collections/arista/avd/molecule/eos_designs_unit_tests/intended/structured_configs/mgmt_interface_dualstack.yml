@@ -13,10 +13,6 @@ ipv6_static_routes:
 - vrf: MGMT
   prefix: 0200:2::/64
   next_hop: 0200::1
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

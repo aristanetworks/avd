@@ -42,10 +42,6 @@ ip_name_servers:
 ipv6_static_routes:
 - prefix: ::/0
   next_hop: 2a00:104::1
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
