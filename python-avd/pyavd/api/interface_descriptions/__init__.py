@@ -365,8 +365,8 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "fabric_name": data.fabric_name,
                     "dc_name": data.dc_name,
                     "pod_name": data.pod_name,
-                    "switch_rack": data.switch_rack,
-                    "inventory_hostname": data.inventory_hostname,
+                    "switch_rack": data.rack,
+                    "inventory_hostname": data.hostname,
                 }
             ),
         )
@@ -682,9 +682,9 @@ class InterfaceDescriptionData:
         return self._shared_utils.fabric_name
 
     @property
-    def switch_rack(self) -> str | None:
+    def rack(self) -> str | None:
         return self._shared_utils.node_config.rack
 
     @property
-    def inventory_hostname(self) -> str:
+    def hostname(self) -> str:
         return self._shared_utils.hostname
