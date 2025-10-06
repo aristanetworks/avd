@@ -48,7 +48,6 @@ All roles input variables follow SemVer. Any breaking changes will, at a minimum
 | Action: `eos_designs_facts` | ✘ | ✘ | Internal plugin, not intended for external use.  |
 | Action: `eos_designs_structured_config` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Action: `anta_workflow` | ✘ | ✘ | Internal plugin, not intended for external use. |
-| Action: `inventory_to_container` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Action: `set_vars` | ✅ | ✅ | |
 | Action: `verify_requirements` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Test: `contains` | ✅ | ✅ | |
