@@ -38,6 +38,7 @@ tags: ["arista", "network", "networking", "eos", "avd", "cloudvision", "cvp"]
 dependencies:
   "arista.eos": ">=7.0.0"
   "ansible.utils": ">=3.0.0"
+
 # The URL of the originating SCM repository
 repository: https://github.com/aristanetworks/avd
 
