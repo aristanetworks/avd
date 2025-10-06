@@ -355,8 +355,8 @@ class AvdInterfaceDescriptions(AvdFacts):
             - fabric_name
             - dc_name
             - pod_name
-            - switch_rack
-            - inventory_hostname
+            - rack
+            - hostname
         """
         return AvdStringFormatter().format(
             self.inputs.snmp_settings.location_template,
