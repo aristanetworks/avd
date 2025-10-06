@@ -88,7 +88,7 @@ class AvdStructuredConfigBaseProtocol(
 
         self.structured_config.router_bgp._update(
             router_id=self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None,
-            field_as=self.shared_utils.get_asn(self.shared_utils.bgp_as),
+            field_as=self.shared_utils.formatted_bgp_as,
         )
 
         if bgp_defaults := self.shared_utils.node_config.bgp_defaults:

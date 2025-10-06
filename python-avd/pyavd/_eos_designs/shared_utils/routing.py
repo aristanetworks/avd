@@ -127,6 +127,11 @@ class RoutingMixin(Protocol):
         return str(asn)
 
     @cached_property
+    def formatted_bgp_as(self: SharedUtilsProtocol) -> str | None:
+        """To reduce the recomputation of properly formatted BGP AS numbers."""
+        return self.get_asn(self.bgp_as)
+
+    @cached_property
     def bgp_as(self: SharedUtilsProtocol) -> str | None:
         """
         Get global bgp_as or fabric_topology bgp_as.
