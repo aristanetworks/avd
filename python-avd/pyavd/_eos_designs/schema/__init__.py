@@ -18274,7 +18274,7 @@ class EosDesigns(EosDesignsRootModel):
                         "key": {"type": str},
                         "cleartext_key": {"type": str},
                     }
-                    id: int | None
+                    id: int
                     hash_algorithm: HashAlgorithm
                     """Default value: `"sha512"`"""
                     key: str | None
@@ -18294,7 +18294,7 @@ class EosDesigns(EosDesignsRootModel):
                         def __init__(
                             self,
                             *,
-                            id: int | None | UndefinedType = Undefined,
+                            id: int | UndefinedType = Undefined,
                             hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                             key: str | None | UndefinedType = Undefined,
                             cleartext_key: str | None | UndefinedType = Undefined,
@@ -18318,8 +18318,10 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
-                class MessageDigestKeys(AvdList[MessageDigestKeysItem]):
-                    """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
+                    """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+                    _primary_key: ClassVar[str] = "id"
 
                 MessageDigestKeys._item_type = MessageDigestKeysItem
 
@@ -18358,7 +18360,7 @@ class EosDesigns(EosDesignsRootModel):
                 recommended to make use of a vault or similar.
                 """
                 message_digest_keys: MessageDigestKeys
-                """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
 
                 if TYPE_CHECKING:
 
@@ -18394,7 +18396,7 @@ class EosDesigns(EosDesignsRootModel):
                                Cleartext key for OSPF simple authentication.
                                To protect the password at rest it is strongly
                                recommended to make use of a vault or similar.
-                            message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
+                            message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
 
                         """
 
@@ -19251,7 +19253,7 @@ class EosDesigns(EosDesignsRootModel):
                     "key": {"type": str},
                     "cleartext_key": {"type": str},
                 }
-                id: int | None
+                id: int
                 hash_algorithm: HashAlgorithm
                 """Default value: `"sha512"`"""
                 key: str | None
@@ -19271,7 +19273,7 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        id: int | None | UndefinedType = Undefined,
+                        id: int | UndefinedType = Undefined,
                         hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         cleartext_key: str | None | UndefinedType = Undefined,
@@ -19295,8 +19297,10 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class MessageDigestKeys(AvdList[MessageDigestKeysItem]):
-                """Subclass of AvdList with `MessageDigestKeysItem` items."""
+            class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
+                """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+                _primary_key: ClassVar[str] = "id"
 
             MessageDigestKeys._item_type = MessageDigestKeysItem
 
@@ -19335,7 +19339,7 @@ class EosDesigns(EosDesignsRootModel):
             recommended to make use of a vault or similar.
             """
             message_digest_keys: MessageDigestKeys
-            """Subclass of AvdList with `MessageDigestKeysItem` items."""
+            """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
 
             if TYPE_CHECKING:
 
@@ -19371,7 +19375,7 @@ class EosDesigns(EosDesignsRootModel):
                            Cleartext key for OSPF simple authentication.
                            To protect the password at rest it is strongly
                            recommended to make use of a vault or similar.
-                        message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
+                        message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
 
                     """
 
@@ -47448,7 +47452,7 @@ class EosDesigns(EosDesignsRootModel):
                                         "key": {"type": str},
                                         "cleartext_key": {"type": str},
                                     }
-                                    id: int | None
+                                    id: int
                                     hash_algorithm: HashAlgorithm
                                     """Default value: `"sha512"`"""
                                     key: str | None
@@ -47468,7 +47472,7 @@ class EosDesigns(EosDesignsRootModel):
                                         def __init__(
                                             self,
                                             *,
-                                            id: int | None | UndefinedType = Undefined,
+                                            id: int | UndefinedType = Undefined,
                                             hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                                             key: str | None | UndefinedType = Undefined,
                                             cleartext_key: str | None | UndefinedType = Undefined,
@@ -47492,8 +47496,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                             """
 
-                                class MessageDigestKeys(AvdList[MessageDigestKeysItem]):
-                                    """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                                class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
+                                    """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+                                    _primary_key: ClassVar[str] = "id"
 
                                 MessageDigestKeys._item_type = MessageDigestKeysItem
 
@@ -47532,7 +47538,7 @@ class EosDesigns(EosDesignsRootModel):
                                 recommended to make use of a vault or similar.
                                 """
                                 message_digest_keys: MessageDigestKeys
-                                """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                                """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
 
                                 if TYPE_CHECKING:
 
@@ -47568,7 +47574,7 @@ class EosDesigns(EosDesignsRootModel):
                                                Cleartext key for OSPF simple authentication.
                                                To protect the password at rest it is strongly
                                                recommended to make use of a vault or similar.
-                                            message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
+                                            message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
 
                                         """
 
@@ -48452,7 +48458,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "key": {"type": str},
                                     "cleartext_key": {"type": str},
                                 }
-                                id: int | None
+                                id: int
                                 hash_algorithm: HashAlgorithm
                                 """Default value: `"sha512"`"""
                                 key: str | None
@@ -48472,7 +48478,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        id: int | None | UndefinedType = Undefined,
+                                        id: int | UndefinedType = Undefined,
                                         hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
                                         cleartext_key: str | None | UndefinedType = Undefined,
@@ -48496,8 +48502,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
-                            class MessageDigestKeys(AvdList[MessageDigestKeysItem]):
-                                """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                            class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
+                                """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+                                _primary_key: ClassVar[str] = "id"
 
                             MessageDigestKeys._item_type = MessageDigestKeysItem
 
@@ -48536,7 +48544,7 @@ class EosDesigns(EosDesignsRootModel):
                             recommended to make use of a vault or similar.
                             """
                             message_digest_keys: MessageDigestKeys
-                            """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                            """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
 
                             if TYPE_CHECKING:
 
@@ -48572,7 +48580,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Cleartext key for OSPF simple authentication.
                                            To protect the password at rest it is strongly
                                            recommended to make use of a vault or similar.
-                                        message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
+                                        message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
 
                                     """
 
@@ -49292,7 +49300,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "key": {"type": str},
                                     "cleartext_key": {"type": str},
                                 }
-                                id: int | None
+                                id: int
                                 hash_algorithm: HashAlgorithm
                                 """Default value: `"sha512"`"""
                                 key: str | None
@@ -49315,7 +49323,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        id: int | None | UndefinedType = Undefined,
+                                        id: int | UndefinedType = Undefined,
                                         hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
                                         cleartext_key: str | None | UndefinedType = Undefined,
@@ -49342,8 +49350,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
-                            class MessageDigestKeys(AvdList[MessageDigestKeysItem]):
-                                """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                            class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
+                                """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+                                _primary_key: ClassVar[str] = "id"
 
                             MessageDigestKeys._item_type = MessageDigestKeysItem
 
@@ -49386,7 +49396,7 @@ class EosDesigns(EosDesignsRootModel):
                             recommended to make use of a vault or similar.
                             """
                             message_digest_keys: MessageDigestKeys
-                            """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                            """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
 
                             if TYPE_CHECKING:
 
@@ -49426,7 +49436,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Cleartext key for OSPF simple authentication.
                                            To protect the password at rest it is strongly
                                            recommended to make use of a vault or similar.
-                                        message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
+                                        message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
 
                                     """
 
@@ -50261,7 +50271,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "key": {"type": str},
                                     "cleartext_key": {"type": str},
                                 }
-                                id: int | None
+                                id: int
                                 hash_algorithm: HashAlgorithm
                                 """Default value: `"sha512"`"""
                                 key: str | None
@@ -50284,7 +50294,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        id: int | None | UndefinedType = Undefined,
+                                        id: int | UndefinedType = Undefined,
                                         hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
                                         cleartext_key: str | None | UndefinedType = Undefined,
@@ -50311,8 +50321,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
-                            class MessageDigestKeys(AvdList[MessageDigestKeysItem]):
-                                """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                            class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
+                                """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+                                _primary_key: ClassVar[str] = "id"
 
                             MessageDigestKeys._item_type = MessageDigestKeysItem
 
@@ -50355,7 +50367,7 @@ class EosDesigns(EosDesignsRootModel):
                             recommended to make use of a vault or similar.
                             """
                             message_digest_keys: MessageDigestKeys
-                            """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                            """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
 
                             if TYPE_CHECKING:
 
@@ -50395,7 +50407,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Cleartext key for OSPF simple authentication.
                                            To protect the password at rest it is strongly
                                            recommended to make use of a vault or similar.
-                                        message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
+                                        message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
 
                                     """
 
