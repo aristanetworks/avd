@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, TypeVar, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get_ip_from_pool
 from pyavd._utils.password_utils.password import isis_encrypt
 
@@ -120,9 +120,13 @@ class UtilsMixin(Protocol):
         # Set descriptions or fallback to list with None values
         descriptions = p2p_link.descriptions or [None, None]
 
-        ip = ips[index]
-        peer_ip = ips[peer_index]
-        description = descriptions[index]
+        try:
+            ip = ips[index]
+            peer_ip = ips[peer_index]
+            description = descriptions[index]
+        except IndexError as exc:
+            msg = "p2p_links model is intended to work for only two devices per entry."
+            raise AristaAvdError(msg) from exc
 
         data = {
             "peer": peer,
@@ -245,6 +249,20 @@ class UtilsMixin(Protocol):
             eos_cli=p2p_link.raw_eos_cli,
         )
         interface.switchport.enabled = False
+        # Remove this block after removing p2p_links[].structured_config from schema.
+        if not (p2p_link.ethernet_structured_config or p2p_link.port_channel_structured_config) and p2p_link.structured_config:
+            if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
+                # Port-channel
+                self.custom_structured_configs.nested.port_channel_interfaces.obtain(interface.name)._deepmerge(
+                    EosCliConfigGen.PortChannelInterfacesItem._from_dict(p2p_link.structured_config),
+                    list_merge=self.custom_structured_configs.list_merge_strategy,
+                )
+            else:
+                # Ethernet
+                self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface.name)._deepmerge(
+                    EosCliConfigGen.EthernetInterfacesItem._from_dict(p2p_link.structured_config),
+                    list_merge=self.custom_structured_configs.list_merge_strategy,
+                )
 
         if p2p_link_data["ip"]:
             interface.ip_address = p2p_link_data["ip"]
