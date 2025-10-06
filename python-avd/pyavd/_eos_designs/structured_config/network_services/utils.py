@@ -68,7 +68,8 @@ class UtilsMixin(Protocol):
 
                 for ip_address_secondary in svi.ip_address_secondaries:
                     subnet = str(ipaddress.ip_network(ip_address_secondary, strict=False))
-                    subnets.append(subnet)
+                    if subnet not in subnets:
+                        subnets.append(subnet)
 
         return subnets
 
