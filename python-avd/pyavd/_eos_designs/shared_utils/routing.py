@@ -110,14 +110,18 @@ class RoutingMixin(Protocol):
         if asn is None:
             return None
 
-        if self.bgp_as_notation == "asdot" and "." not in str(asn):
-            if (prefix := int(asn) // 65536) != 0:
-                return f"{prefix}.{int(asn) % 65536}"
-            return f"{int(asn) % 65536}"
+        try:
+            if self.bgp_as_notation == "asdot" and "." not in str(asn):
+                if (prefix := int(asn) // 65536) != 0:
+                    return f"{prefix}.{int(asn) % 65536}"
+                return f"{int(asn) % 65536}"
 
-        if self.bgp_as_notation == "asplain" and "." in str(asn):
-            prefix, suffix = map(int, str(asn).split("."))
-            return str(int(prefix) * 65536 + int(suffix))
+            if self.bgp_as_notation == "asplain" and "." in str(asn):
+                prefix, suffix = map(int, str(asn).split("."))
+                return str(int(prefix) * 65536 + int(suffix))
+        except ValueError as e:
+            msg = f"The value for 'asn' must be an integer or a float, but received '{asn}'."
+            raise AristaAvdInvalidInputsError(msg) from e
 
         return str(asn)
 
