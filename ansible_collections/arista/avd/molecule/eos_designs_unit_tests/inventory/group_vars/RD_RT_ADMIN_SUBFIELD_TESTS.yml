@@ -20,11 +20,11 @@ l3leaf:
       id: 1
       mgmt_ip: 192.168.200.101/24
     - name: RD-RT-ADMIN-SUBFIELD-L3LEAF2
-      bgp_as: 65002
+      bgp_as: 65552
       id: 2
       mgmt_ip: 192.168.200.102/24
     - name: RD-RT-ADMIN-SUBFIELD-L3LEAF3
-      bgp_as: 65003
+      bgp_as: 65553
       id: 3
       mgmt_ip: 192.168.200.103/24
     - name: RD-RT-ADMIN-SUBFIELD-L3LEAF4

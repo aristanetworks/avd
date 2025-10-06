@@ -49,7 +49,8 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '65003'
+  as: '1.17'
+  as_notation: asdot
   router_id: 192.168.255.3
   maximum_paths:
     paths: 4
@@ -78,7 +79,7 @@ router_bgp:
   vlans:
   - id: 1
     tenant: Tenant_A
-    rd: 65003:10001
+    rd: 1.17:10001
     route_targets:
       both:
       - 15:10001
@@ -86,7 +87,7 @@ router_bgp:
     - learned
   - id: 2
     tenant: Tenant_A
-    rd: 65003:10002
+    rd: 1.17:10002
     route_targets:
       both:
       - 15:10002
@@ -94,7 +95,7 @@ router_bgp:
     - learned
   - id: 3
     tenant: Tenant_A
-    rd: 65003:33333
+    rd: 1.17:33333
     route_targets:
       both:
       - 15:3333
@@ -133,11 +134,11 @@ router_bgp:
       import:
       - address_family: evpn
         route_targets:
-        - '65003:11'
+        - 1.17:11
       export:
       - address_family: evpn
         route_targets:
-        - '65003:11'
+        - 1.17:11
     router_id: 192.168.255.3
     redistribute:
       connected:
@@ -148,11 +149,11 @@ router_bgp:
       import:
       - address_family: evpn
         route_targets:
-        - '65003:12'
+        - 1.17:12
       export:
       - address_family: evpn
         route_targets:
-        - '65003:12'
+        - 1.17:12
     router_id: 10.12.12.12
     redistribute:
       connected:
