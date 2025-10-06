@@ -33,6 +33,7 @@ wan_router:
     loopback_ipv4_pool: 192.168.42.0/24
     vtep_loopback_ipv4_pool: 192.168.255.0/24
     wan_role: client
+    evpn_role: client
   nodes:
     - name: ebgp-overlay-address-families-vpn-ipv4
       cv_pathfinder_region: AVD_Land_West

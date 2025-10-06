@@ -2184,7 +2184,6 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
-                "structured_config": {"type": dict},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -2355,12 +2354,6 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
-            structured_config: dict
-            """
-            Custom structured config for interfaces.
-            Note! The content of this dictionary is _not_ validated by
-            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-            """
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -2405,7 +2398,6 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: RoutingProtocol | None | UndefinedType = Undefined,
-                    structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -2527,10 +2519,6 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
-                        structured_config:
-                           Custom structured config for interfaces.
-                           Note! The content of this dictionary is _not_ validated by
-                           the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 
@@ -2953,7 +2941,6 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
-                "structured_config": {"type": dict},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -3124,12 +3111,6 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
-            structured_config: dict
-            """
-            Custom structured config for interfaces.
-            Note! The content of this dictionary is _not_ validated by
-            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-            """
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -3174,7 +3155,6 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: RoutingProtocol | None | UndefinedType = Undefined,
-                    structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -3296,10 +3276,6 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
-                        structured_config:
-                           Custom structured config for interfaces.
-                           Note! The content of this dictionary is _not_ validated by
-                           the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 
@@ -7960,7 +7936,6 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
-                "structured_config": {"type": dict},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -8131,12 +8106,6 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
-            structured_config: dict
-            """
-            Custom structured config for interfaces.
-            Note! The content of this dictionary is _not_ validated by
-            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-            """
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -8181,7 +8150,6 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: RoutingProtocol | None | UndefinedType = Undefined,
-                    structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -8303,10 +8271,6 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
-                        structured_config:
-                           Custom structured config for interfaces.
-                           Note! The content of this dictionary is _not_ validated by
-                           the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 
@@ -8729,7 +8693,6 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
-                "structured_config": {"type": dict},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -8900,12 +8863,6 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
-            structured_config: dict
-            """
-            Custom structured config for interfaces.
-            Note! The content of this dictionary is _not_ validated by
-            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-            """
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -8950,7 +8907,6 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: RoutingProtocol | None | UndefinedType = Undefined,
-                    structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -9072,10 +9028,6 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
-                        structured_config:
-                           Custom structured config for interfaces.
-                           Note! The content of this dictionary is _not_ validated by
-                           the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 
@@ -17525,6 +17477,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "contact": {"type": str},
             "location": {"type": bool, "default": False},
+            "location_template": {"type": str, "default": "{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}"},
             "vrfs": {"type": Vrfs},
             "compute_local_engineid": {"type": bool, "default": False},
             "compute_local_engineid_source": {"type": str, "default": "hostname_and_ip"},
@@ -17540,10 +17493,24 @@ class EosDesigns(EosDesignsRootModel):
         """SNMP contact."""
         location: bool
         """
-        Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack>
-        <inventory_hostname>".
+        Enables SNMP location using `location_template` value.
 
         Default value: `False`
+        """
+        location_template: str
+        """
+        Customize the SNMP location description.
+        The available template fields are:
+          - fabric_name: The
+        logical name of the fabric.
+          - dc_name: The name of the data center associated with the fabric.
+          -
+        pod_name: The pod or cluster grouping within the data center.
+          - rack: Physical rack location of
+        switch.
+          - hostname: Hostname used in inventory.
+
+        Default value: `"{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}"`
         """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
@@ -17603,6 +17570,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 contact: str | None | UndefinedType = Undefined,
                 location: bool | UndefinedType = Undefined,
+                location_template: str | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 compute_local_engineid: bool | UndefinedType = Undefined,
                 compute_local_engineid_source: ComputeLocalEngineidSource | UndefinedType = Undefined,
@@ -17622,9 +17590,18 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     contact: SNMP contact.
-                    location:
-                       Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack>
-                       <inventory_hostname>".
+                    location: Enables SNMP location using `location_template` value.
+                    location_template:
+                       Customize the SNMP location description.
+                       The available template fields are:
+                         - fabric_name: The
+                       logical name of the fabric.
+                         - dc_name: The name of the data center associated with the fabric.
+                         -
+                       pod_name: The pod or cluster grouping within the data center.
+                         - rack: Physical rack location of
+                       switch.
+                         - hostname: Hostname used in inventory.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     compute_local_engineid: Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
                     compute_local_engineid_source:
@@ -18269,7 +18246,7 @@ class EosDesigns(EosDesignsRootModel):
                         "key": {"type": str},
                         "cleartext_key": {"type": str},
                     }
-                    id: int | None
+                    id: int
                     hash_algorithm: HashAlgorithm
                     """Default value: `"sha512"`"""
                     key: str | None
@@ -18289,7 +18266,7 @@ class EosDesigns(EosDesignsRootModel):
                         def __init__(
                             self,
                             *,
-                            id: int | None | UndefinedType = Undefined,
+                            id: int | UndefinedType = Undefined,
                             hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                             key: str | None | UndefinedType = Undefined,
                             cleartext_key: str | None | UndefinedType = Undefined,
@@ -18313,8 +18290,10 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
-                class MessageDigestKeys(AvdList[MessageDigestKeysItem]):
-                    """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
+                    """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+                    _primary_key: ClassVar[str] = "id"
 
                 MessageDigestKeys._item_type = MessageDigestKeysItem
 
@@ -18353,7 +18332,7 @@ class EosDesigns(EosDesignsRootModel):
                 recommended to make use of a vault or similar.
                 """
                 message_digest_keys: MessageDigestKeys
-                """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
 
                 if TYPE_CHECKING:
 
@@ -18389,7 +18368,7 @@ class EosDesigns(EosDesignsRootModel):
                                Cleartext key for OSPF simple authentication.
                                To protect the password at rest it is strongly
                                recommended to make use of a vault or similar.
-                            message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
+                            message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
 
                         """
 
@@ -19236,7 +19215,7 @@ class EosDesigns(EosDesignsRootModel):
                     "key": {"type": str},
                     "cleartext_key": {"type": str},
                 }
-                id: int | None
+                id: int
                 hash_algorithm: HashAlgorithm
                 """Default value: `"sha512"`"""
                 key: str | None
@@ -19256,7 +19235,7 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        id: int | None | UndefinedType = Undefined,
+                        id: int | UndefinedType = Undefined,
                         hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         cleartext_key: str | None | UndefinedType = Undefined,
@@ -19280,8 +19259,10 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class MessageDigestKeys(AvdList[MessageDigestKeysItem]):
-                """Subclass of AvdList with `MessageDigestKeysItem` items."""
+            class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
+                """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+                _primary_key: ClassVar[str] = "id"
 
             MessageDigestKeys._item_type = MessageDigestKeysItem
 
@@ -19320,7 +19301,7 @@ class EosDesigns(EosDesignsRootModel):
             recommended to make use of a vault or similar.
             """
             message_digest_keys: MessageDigestKeys
-            """Subclass of AvdList with `MessageDigestKeysItem` items."""
+            """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
 
             if TYPE_CHECKING:
 
@@ -19356,7 +19337,7 @@ class EosDesigns(EosDesignsRootModel):
                            Cleartext key for OSPF simple authentication.
                            To protect the password at rest it is strongly
                            recommended to make use of a vault or similar.
-                        message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
+                        message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
 
                     """
 
@@ -47423,7 +47404,7 @@ class EosDesigns(EosDesignsRootModel):
                                         "key": {"type": str},
                                         "cleartext_key": {"type": str},
                                     }
-                                    id: int | None
+                                    id: int
                                     hash_algorithm: HashAlgorithm
                                     """Default value: `"sha512"`"""
                                     key: str | None
@@ -47443,7 +47424,7 @@ class EosDesigns(EosDesignsRootModel):
                                         def __init__(
                                             self,
                                             *,
-                                            id: int | None | UndefinedType = Undefined,
+                                            id: int | UndefinedType = Undefined,
                                             hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                                             key: str | None | UndefinedType = Undefined,
                                             cleartext_key: str | None | UndefinedType = Undefined,
@@ -47467,8 +47448,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                             """
 
-                                class MessageDigestKeys(AvdList[MessageDigestKeysItem]):
-                                    """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                                class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
+                                    """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+                                    _primary_key: ClassVar[str] = "id"
 
                                 MessageDigestKeys._item_type = MessageDigestKeysItem
 
@@ -47507,7 +47490,7 @@ class EosDesigns(EosDesignsRootModel):
                                 recommended to make use of a vault or similar.
                                 """
                                 message_digest_keys: MessageDigestKeys
-                                """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                                """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
 
                                 if TYPE_CHECKING:
 
@@ -47543,7 +47526,7 @@ class EosDesigns(EosDesignsRootModel):
                                                Cleartext key for OSPF simple authentication.
                                                To protect the password at rest it is strongly
                                                recommended to make use of a vault or similar.
-                                            message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
+                                            message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
 
                                         """
 
@@ -48417,7 +48400,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "key": {"type": str},
                                     "cleartext_key": {"type": str},
                                 }
-                                id: int | None
+                                id: int
                                 hash_algorithm: HashAlgorithm
                                 """Default value: `"sha512"`"""
                                 key: str | None
@@ -48437,7 +48420,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        id: int | None | UndefinedType = Undefined,
+                                        id: int | UndefinedType = Undefined,
                                         hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
                                         cleartext_key: str | None | UndefinedType = Undefined,
@@ -48461,8 +48444,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
-                            class MessageDigestKeys(AvdList[MessageDigestKeysItem]):
-                                """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                            class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
+                                """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+                                _primary_key: ClassVar[str] = "id"
 
                             MessageDigestKeys._item_type = MessageDigestKeysItem
 
@@ -48501,7 +48486,7 @@ class EosDesigns(EosDesignsRootModel):
                             recommended to make use of a vault or similar.
                             """
                             message_digest_keys: MessageDigestKeys
-                            """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                            """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
 
                             if TYPE_CHECKING:
 
@@ -48537,7 +48522,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Cleartext key for OSPF simple authentication.
                                            To protect the password at rest it is strongly
                                            recommended to make use of a vault or similar.
-                                        message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
+                                        message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
 
                                     """
 
@@ -49252,7 +49237,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "key": {"type": str},
                                     "cleartext_key": {"type": str},
                                 }
-                                id: int | None
+                                id: int
                                 hash_algorithm: HashAlgorithm
                                 """Default value: `"sha512"`"""
                                 key: str | None
@@ -49275,7 +49260,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        id: int | None | UndefinedType = Undefined,
+                                        id: int | UndefinedType = Undefined,
                                         hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
                                         cleartext_key: str | None | UndefinedType = Undefined,
@@ -49302,8 +49287,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
-                            class MessageDigestKeys(AvdList[MessageDigestKeysItem]):
-                                """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                            class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
+                                """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+                                _primary_key: ClassVar[str] = "id"
 
                             MessageDigestKeys._item_type = MessageDigestKeysItem
 
@@ -49346,7 +49333,7 @@ class EosDesigns(EosDesignsRootModel):
                             recommended to make use of a vault or similar.
                             """
                             message_digest_keys: MessageDigestKeys
-                            """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                            """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
 
                             if TYPE_CHECKING:
 
@@ -49386,7 +49373,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Cleartext key for OSPF simple authentication.
                                            To protect the password at rest it is strongly
                                            recommended to make use of a vault or similar.
-                                        message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
+                                        message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
 
                                     """
 
@@ -50216,7 +50203,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "key": {"type": str},
                                     "cleartext_key": {"type": str},
                                 }
-                                id: int | None
+                                id: int
                                 hash_algorithm: HashAlgorithm
                                 """Default value: `"sha512"`"""
                                 key: str | None
@@ -50239,7 +50226,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        id: int | None | UndefinedType = Undefined,
+                                        id: int | UndefinedType = Undefined,
                                         hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
                                         cleartext_key: str | None | UndefinedType = Undefined,
@@ -50266,8 +50253,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
-                            class MessageDigestKeys(AvdList[MessageDigestKeysItem]):
-                                """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                            class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
+                                """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+                                _primary_key: ClassVar[str] = "id"
 
                             MessageDigestKeys._item_type = MessageDigestKeysItem
 
@@ -50310,7 +50299,7 @@ class EosDesigns(EosDesignsRootModel):
                             recommended to make use of a vault or similar.
                             """
                             message_digest_keys: MessageDigestKeys
-                            """Subclass of AvdList with `MessageDigestKeysItem` items."""
+                            """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
 
                             if TYPE_CHECKING:
 
@@ -50350,7 +50339,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Cleartext key for OSPF simple authentication.
                                            To protect the password at rest it is strongly
                                            recommended to make use of a vault or similar.
-                                        message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
+                                        message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
 
                                     """
 
@@ -73789,10 +73778,10 @@ class EosDesigns(EosDesignsRootModel):
                     {
                         "key": "wan_router",
                         "type": "wan_router",
-                        "default_evpn_role": "client",
+                        "default_evpn_role": "none",
                         "default_wan_role": "client",
                         "default_underlay_routing_protocol": "none",
-                        "default_overlay_routing_protocol": "ibgp",
+                        "default_overlay_routing_protocol": "none",
                         "default_flow_tracker_type": "hardware",
                         "vtep": True,
                         "network_services": {"l3": True},
@@ -73800,10 +73789,10 @@ class EosDesigns(EosDesignsRootModel):
                     {
                         "key": "wan_rr",
                         "type": "wan_rr",
-                        "default_evpn_role": "server",
+                        "default_evpn_role": "none",
                         "default_wan_role": "server",
                         "default_underlay_routing_protocol": "none",
-                        "default_overlay_routing_protocol": "ibgp",
+                        "default_overlay_routing_protocol": "none",
                         "default_flow_tracker_type": "hardware",
                         "vtep": True,
                         "network_services": {"l3": "true,"},
@@ -75303,7 +75292,7 @@ class EosDesigns(EosDesignsRootModel):
     Subclass of AvdIndexedList with `NodeTypeKeysItem` items. Primary key is `key`
     (`str`).
 
-    Default value: `lambda cls: coerce_type([{"key": "spine", "type": "spine", "default_evpn_role": "server", "default_ptp_priority1": 20, "cv_tags_topology_type": "spine"}, {"key": "l3leaf", "type": "l3leaf", "connected_endpoints": True, "default_evpn_role": "client", "mlag_support": True, "network_services": {"l2": True, "l3": True}, "vtep": True, "default_ptp_priority1": 30, "cv_tags_topology_type": "leaf"}, {"key": "l2leaf", "type": "l2leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "p", "type": "p", "mpls_lsr": True, "default_mpls_overlay_role": "none", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr"}, {"key": "pe", "type": "pe", "mpls_lsr": True, "connected_endpoints": True, "default_mpls_overlay_role": "client", "default_evpn_role": "client", "network_services": {"l1": True, "l2": True, "l3": True}, "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "rr", "type": "rr", "mpls_lsr": True, "default_mpls_overlay_role": "server", "default_evpn_role": "server", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "l3spine", "type": "l3spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True, "l3": True}, "default_overlay_routing_protocol": "none", "default_underlay_routing_protocol": "none", "cv_tags_topology_type": "spine"}, {"key": "leaf", "type": "leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": "true,"}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "l2spine", "type": "l2spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "spine"}, {"key": "super_spine", "type": "super-spine", "cv_tags_topology_type": "core"}, {"key": "overlay_controller", "type": "overlay-controller", "default_evpn_role": "server", "cv_tags_topology_type": "spine"}, {"key": "wan_router", "type": "wan_router", "default_evpn_role": "client", "default_wan_role": "client", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "ibgp", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": True}}, {"key": "wan_rr", "type": "wan_rr", "default_evpn_role": "server", "default_wan_role": "server", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "ibgp", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": "true,"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"key": "spine", "type": "spine", "default_evpn_role": "server", "default_ptp_priority1": 20, "cv_tags_topology_type": "spine"}, {"key": "l3leaf", "type": "l3leaf", "connected_endpoints": True, "default_evpn_role": "client", "mlag_support": True, "network_services": {"l2": True, "l3": True}, "vtep": True, "default_ptp_priority1": 30, "cv_tags_topology_type": "leaf"}, {"key": "l2leaf", "type": "l2leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "p", "type": "p", "mpls_lsr": True, "default_mpls_overlay_role": "none", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr"}, {"key": "pe", "type": "pe", "mpls_lsr": True, "connected_endpoints": True, "default_mpls_overlay_role": "client", "default_evpn_role": "client", "network_services": {"l1": True, "l2": True, "l3": True}, "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "rr", "type": "rr", "mpls_lsr": True, "default_mpls_overlay_role": "server", "default_evpn_role": "server", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "l3spine", "type": "l3spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True, "l3": True}, "default_overlay_routing_protocol": "none", "default_underlay_routing_protocol": "none", "cv_tags_topology_type": "spine"}, {"key": "leaf", "type": "leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": "true,"}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "l2spine", "type": "l2spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "spine"}, {"key": "super_spine", "type": "super-spine", "cv_tags_topology_type": "core"}, {"key": "overlay_controller", "type": "overlay-controller", "default_evpn_role": "server", "cv_tags_topology_type": "spine"}, {"key": "wan_router", "type": "wan_router", "default_evpn_role": "none", "default_wan_role": "client", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "none", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": True}}, {"key": "wan_rr", "type": "wan_rr", "default_evpn_role": "none", "default_wan_role": "server", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "none", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": "true,"}}], target_type=cls)`
     """
     ntp_settings: NtpSettings
     """

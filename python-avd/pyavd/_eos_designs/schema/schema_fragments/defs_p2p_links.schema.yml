@@ -256,20 +256,6 @@ $defs:
           description: |-
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             - ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if configured.
-        structured_config:
-          type: dict
-          relaxed_validation: true
-          documentation_options:
-            hide_keys: true
-          description: |-
-            Custom structured config for interfaces.
-            Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-          # Schema ref not implemented since we do not know which of the schemas to look at.
-          # $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
-          deprecation:
-            warning: true
-            remove_in_version: 6.0.0
-            new_key: ethernet_structured_config or port_channel_structured_config
         ethernet_structured_config:
           type: dict
           relaxed_validation: true
@@ -291,3 +277,10 @@ $defs:
             warning: true
             new_key: multicast_pim_sm
             remove_in_version: 6.0.0
+        structured_config:
+          type: dict
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: ethernet_structured_config or port_channel_structured_config
