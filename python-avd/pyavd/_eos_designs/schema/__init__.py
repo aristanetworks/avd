@@ -17527,6 +17527,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "contact": {"type": str},
             "location": {"type": bool, "default": False},
+            "location_template": {"type": str, "default": "{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}"},
             "vrfs": {"type": Vrfs},
             "compute_local_engineid": {"type": bool, "default": False},
             "compute_local_engineid_source": {"type": str, "default": "hostname_and_ip"},
@@ -17542,10 +17543,24 @@ class EosDesigns(EosDesignsRootModel):
         """SNMP contact."""
         location: bool
         """
-        Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack>
-        <inventory_hostname>".
+        Enables SNMP location using `location_template` value.
 
         Default value: `False`
+        """
+        location_template: str
+        """
+        Customize the SNMP location description.
+        The available template fields are:
+          - fabric_name: The
+        logical name of the fabric.
+          - dc_name: The name of the data center associated with the fabric.
+          -
+        pod_name: The pod or cluster grouping within the data center.
+          - rack: Physical rack location of
+        switch.
+          - hostname: Hostname used in inventory.
+
+        Default value: `"{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}"`
         """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
@@ -17605,6 +17620,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 contact: str | None | UndefinedType = Undefined,
                 location: bool | UndefinedType = Undefined,
+                location_template: str | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 compute_local_engineid: bool | UndefinedType = Undefined,
                 compute_local_engineid_source: ComputeLocalEngineidSource | UndefinedType = Undefined,
@@ -17624,9 +17640,18 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     contact: SNMP contact.
-                    location:
-                       Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack>
-                       <inventory_hostname>".
+                    location: Enables SNMP location using `location_template` value.
+                    location_template:
+                       Customize the SNMP location description.
+                       The available template fields are:
+                         - fabric_name: The
+                       logical name of the fabric.
+                         - dc_name: The name of the data center associated with the fabric.
+                         -
+                       pod_name: The pod or cluster grouping within the data center.
+                         - rack: Physical rack location of
+                       switch.
+                         - hostname: Hostname used in inventory.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     compute_local_engineid: Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
                     compute_local_engineid_source:
@@ -73804,10 +73829,10 @@ class EosDesigns(EosDesignsRootModel):
                     {
                         "key": "wan_router",
                         "type": "wan_router",
-                        "default_evpn_role": "client",
+                        "default_evpn_role": "none",
                         "default_wan_role": "client",
                         "default_underlay_routing_protocol": "none",
-                        "default_overlay_routing_protocol": "ibgp",
+                        "default_overlay_routing_protocol": "none",
                         "default_flow_tracker_type": "hardware",
                         "vtep": True,
                         "network_services": {"l3": True},
@@ -73815,10 +73840,10 @@ class EosDesigns(EosDesignsRootModel):
                     {
                         "key": "wan_rr",
                         "type": "wan_rr",
-                        "default_evpn_role": "server",
+                        "default_evpn_role": "none",
                         "default_wan_role": "server",
                         "default_underlay_routing_protocol": "none",
-                        "default_overlay_routing_protocol": "ibgp",
+                        "default_overlay_routing_protocol": "none",
                         "default_flow_tracker_type": "hardware",
                         "vtep": True,
                         "network_services": {"l3": "true,"},
@@ -75330,7 +75355,7 @@ class EosDesigns(EosDesignsRootModel):
     Subclass of AvdIndexedList with `NodeTypeKeysItem` items. Primary key is `key`
     (`str`).
 
-    Default value: `lambda cls: coerce_type([{"key": "spine", "type": "spine", "default_evpn_role": "server", "default_ptp_priority1": 20, "cv_tags_topology_type": "spine"}, {"key": "l3leaf", "type": "l3leaf", "connected_endpoints": True, "default_evpn_role": "client", "mlag_support": True, "network_services": {"l2": True, "l3": True}, "vtep": True, "default_ptp_priority1": 30, "cv_tags_topology_type": "leaf"}, {"key": "l2leaf", "type": "l2leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "p", "type": "p", "mpls_lsr": True, "default_mpls_overlay_role": "none", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr"}, {"key": "pe", "type": "pe", "mpls_lsr": True, "connected_endpoints": True, "default_mpls_overlay_role": "client", "default_evpn_role": "client", "network_services": {"l1": True, "l2": True, "l3": True}, "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "rr", "type": "rr", "mpls_lsr": True, "default_mpls_overlay_role": "server", "default_evpn_role": "server", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "l3spine", "type": "l3spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True, "l3": True}, "default_overlay_routing_protocol": "none", "default_underlay_routing_protocol": "none", "cv_tags_topology_type": "spine"}, {"key": "leaf", "type": "leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": "true,"}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "l2spine", "type": "l2spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "spine"}, {"key": "super_spine", "type": "super-spine", "cv_tags_topology_type": "core"}, {"key": "overlay_controller", "type": "overlay-controller", "default_evpn_role": "server", "cv_tags_topology_type": "spine"}, {"key": "wan_router", "type": "wan_router", "default_evpn_role": "client", "default_wan_role": "client", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "ibgp", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": True}}, {"key": "wan_rr", "type": "wan_rr", "default_evpn_role": "server", "default_wan_role": "server", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "ibgp", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": "true,"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"key": "spine", "type": "spine", "default_evpn_role": "server", "default_ptp_priority1": 20, "cv_tags_topology_type": "spine"}, {"key": "l3leaf", "type": "l3leaf", "connected_endpoints": True, "default_evpn_role": "client", "mlag_support": True, "network_services": {"l2": True, "l3": True}, "vtep": True, "default_ptp_priority1": 30, "cv_tags_topology_type": "leaf"}, {"key": "l2leaf", "type": "l2leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "p", "type": "p", "mpls_lsr": True, "default_mpls_overlay_role": "none", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr"}, {"key": "pe", "type": "pe", "mpls_lsr": True, "connected_endpoints": True, "default_mpls_overlay_role": "client", "default_evpn_role": "client", "network_services": {"l1": True, "l2": True, "l3": True}, "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "rr", "type": "rr", "mpls_lsr": True, "default_mpls_overlay_role": "server", "default_evpn_role": "server", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "l3spine", "type": "l3spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True, "l3": True}, "default_overlay_routing_protocol": "none", "default_underlay_routing_protocol": "none", "cv_tags_topology_type": "spine"}, {"key": "leaf", "type": "leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": "true,"}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "l2spine", "type": "l2spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "spine"}, {"key": "super_spine", "type": "super-spine", "cv_tags_topology_type": "core"}, {"key": "overlay_controller", "type": "overlay-controller", "default_evpn_role": "server", "cv_tags_topology_type": "spine"}, {"key": "wan_router", "type": "wan_router", "default_evpn_role": "none", "default_wan_role": "client", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "none", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": True}}, {"key": "wan_rr", "type": "wan_rr", "default_evpn_role": "none", "default_wan_role": "server", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "none", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": "true,"}}], target_type=cls)`
     """
     ntp_settings: NtpSettings
     """
