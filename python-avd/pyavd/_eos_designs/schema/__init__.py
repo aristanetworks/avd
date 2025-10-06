@@ -17525,7 +17525,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "contact": {"type": str},
             "location": {"type": bool, "default": False},
-            "location_template": {"type": str, "default": "{fabric_name} {dc_name?> }{pod_name?> }{switch_rack?> }{inventory_hostname}"},
+            "location_template": {"type": str, "default": "{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}"},
             "vrfs": {"type": Vrfs},
             "compute_local_engineid": {"type": bool, "default": False},
             "compute_local_engineid_source": {"type": str, "default": "hostname_and_ip"},
@@ -17554,11 +17554,11 @@ class EosDesigns(EosDesignsRootModel):
           - dc_name: The name of the data center associated with the fabric.
           -
         pod_name: The pod or cluster grouping within the data center.
-          - switch_rack: Physical rack
-        location of switch.
-          - inventory_hostname: Hostname used in inventory.
+          - rack: Physical rack location of
+        switch.
+          - hostname: Hostname used in inventory.
 
-        Default value: `"{fabric_name} {dc_name?> }{pod_name?> }{switch_rack?> }{inventory_hostname}"`
+        Default value: `"{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}"`
         """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
@@ -17647,9 +17647,9 @@ class EosDesigns(EosDesignsRootModel):
                          - dc_name: The name of the data center associated with the fabric.
                          -
                        pod_name: The pod or cluster grouping within the data center.
-                         - switch_rack: Physical rack
-                       location of switch.
-                         - inventory_hostname: Hostname used in inventory.
+                         - rack: Physical rack location of
+                       switch.
+                         - hostname: Hostname used in inventory.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     compute_local_engineid: Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
                     compute_local_engineid_source:
