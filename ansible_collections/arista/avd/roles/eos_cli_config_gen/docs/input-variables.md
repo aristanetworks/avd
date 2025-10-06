@@ -605,12 +605,6 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/cvx.md
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/eos-cli.md
 --8<--
 
-### Is deployed
-
---8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/is-deployed.md
---8<--
-
 ### Management CVX
 
 --8<--
