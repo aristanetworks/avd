@@ -39,10 +39,6 @@ loopback_interfaces:
   shutdown: false
   ip_address: 192.168.254.34/32
   ospf_area: 0.0.0.0
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

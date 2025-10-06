@@ -2996,7 +2996,6 @@ keys:
       enabled:
         description: Enable/Disable api http-commands.
         type: bool
-        default: true
       enable_http:
         type: bool
       enable_https:
@@ -3006,18 +3005,10 @@ keys:
         type: bool
       vrfs:
         default:
-        - name: use_mgmt_interface_vrf
+        - name: use_default_mgmt_method_vrf
           enabled: true
         type: list
         primary_key: name
-        description: 'Note: For backward compatibility, `mgmt_ip` presence is not
-          enforced when `vrfs` is **not** configured and the default value of `use_mgmt_interface_vrf`
-          is used.
-
-          To enforce the presence of `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`,
-          explicitly define an entry in `vrfs` using `name: use_mgmt_interface_vrf`.
-
-          This behavior will be removed in AVD 6.0.'
         items:
           type: dict
           keys:

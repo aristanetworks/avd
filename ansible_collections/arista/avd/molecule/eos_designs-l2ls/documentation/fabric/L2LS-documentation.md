@@ -7,18 +7,18 @@
 | L2LS_BGP | l2leaf | BGP-LEAF1 | 172.16.99.1/24 | - | Provisioned | - |
 | L2LS_BGP | l2leaf | BGP-LEAF2 | 172.16.99.2/24 | - | Provisioned | - |
 | L2LS_BGP | l2leaf | BGP-LEAF3 | 172.16.99.3/24 | - | Provisioned | - |
-| L2LS_BGP | l3spine | BGP-SPINE1 | - | - | Provisioned | - |
-| L2LS_BGP | l3spine | BGP-SPINE2 | - | - | Provisioned | - |
+| L2LS_BGP | l3spine | BGP-SPINE1 | 192.168.0.1/24 | - | Provisioned | - |
+| L2LS_BGP | l3spine | BGP-SPINE2 | 192.168.0.2/24 | - | Provisioned | - |
 | L2LS_ISIS | l2leaf | ISIS-LEAF1 | 192.168.200.105/24 | vEOS-LAB | Provisioned | - |
 | L2LS_ISIS | l3spine | ISIS-SPINE1 | 192.168.200.101/24 | vEOS-LAB | Provisioned | - |
 | L2LS_L2ONLY | l2leaf | L2ONLY-LEAF1 | - | - | Provisioned | - |
 | L2LS_L2ONLY | l2leaf | L2ONLY-LEAF2 | - | - | Provisioned | - |
-| L2LS_L2ONLY | l2spine | L2ONLY-SPINE1 | - | - | Provisioned | - |
-| L2LS_L2ONLY | l2spine | L2ONLY-SPINE2 | - | - | Provisioned | - |
+| L2LS_L2ONLY | l2spine | L2ONLY-SPINE1 | 192.168.0.3/24 | - | Provisioned | - |
+| L2LS_L2ONLY | l2spine | L2ONLY-SPINE2 | 192.168.0.4/24 | - | Provisioned | - |
 | L2LS_OSPF | l2leaf | OSPF-LEAF1 | - | - | Provisioned | - |
 | L2LS_OSPF | l2leaf | OSPF-LEAF2 | - | - | Provisioned | - |
-| L2LS_OSPF | l3spine | OSPF-SPINE1 | - | - | Provisioned | - |
-| L2LS_OSPF | l3spine | OSPF-SPINE2 | - | - | Provisioned | - |
+| L2LS_OSPF | l3spine | OSPF-SPINE1 | 192.168.0.5/24 | - | Provisioned | - |
+| L2LS_OSPF | l3spine | OSPF-SPINE2 | 192.168.0.6/24 | - | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
