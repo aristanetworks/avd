@@ -25,8 +25,7 @@ keys:
       location_template:
         type: str
         description: |-
-          Customize the location description.
-          Set `location:true` to set `location_template`.
+          Customize the SNMP location description.
           The available template fields are:
             - fabric_name: The logical name of the fabric.
             - dc_name: The name of the data center associated with the fabric.
