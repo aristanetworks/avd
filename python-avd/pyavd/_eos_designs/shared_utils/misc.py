@@ -419,17 +419,26 @@ class MiscMixin(Protocol):
     ) -> EosDesigns._DynamicKeys.DynamicConnectedEndpoints:
         """Emit the complete list of connected_endpoints and custom_connected_endpoints, prioritizing custom_connected_endpoints."""
         all_connected_endpoints = EosDesigns._DynamicKeys.DynamicConnectedEndpoints()
-        for connected_endpoint in self.inputs._dynamic_keys.custom_connected_endpoints:
-            connected_endpoint_item = connected_endpoint._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem)
-            connected_endpoint_item._internal_data.description = self.inputs.custom_connected_endpoints_keys[connected_endpoint.key].description
-            connected_endpoint_item._internal_data.type = self.inputs.custom_connected_endpoints_keys[connected_endpoint.key].type
-            all_connected_endpoints.append(connected_endpoint_item)
+        if self.inputs.connected_endpoints:
+            dyn_connected_endpoints_item = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem(
+                key="connected_endpoints",
+                value=self.inputs.connected_endpoints._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints),
+            )
+            dyn_connected_endpoints_item._internal_data.description = None
+            dyn_connected_endpoints_item._internal_data.type = None
+            all_connected_endpoints.append(dyn_connected_endpoints_item)
 
-        for connected_endpoint in self.inputs._dynamic_keys.connected_endpoints:
-            if connected_endpoint.key not in all_connected_endpoints:
-                connected_endpoint._internal_data.description = self.inputs.connected_endpoints_keys[connected_endpoint.key].description
-                connected_endpoint._internal_data.type = self.inputs.connected_endpoints_keys[connected_endpoint.key].type
-                all_connected_endpoints.append(connected_endpoint)
+        for dyn_connected_endpoints in self.inputs._dynamic_keys.custom_connected_endpoints:
+            dyn_connected_endpoints_item = dyn_connected_endpoints._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem)
+            dyn_connected_endpoints_item._internal_data.description = self.inputs.custom_connected_endpoints_keys[dyn_connected_endpoints.key].description
+            dyn_connected_endpoints_item._internal_data.type = self.inputs.custom_connected_endpoints_keys[dyn_connected_endpoints.key].type
+            all_connected_endpoints.append(dyn_connected_endpoints_item)
+
+        for dyn_connected_endpoints in self.inputs._dynamic_keys.connected_endpoints:
+            if dyn_connected_endpoints.key not in all_connected_endpoints:
+                dyn_connected_endpoints._internal_data.description = self.inputs.connected_endpoints_keys[dyn_connected_endpoints.key].description
+                dyn_connected_endpoints._internal_data.type = self.inputs.connected_endpoints_keys[dyn_connected_endpoints.key].type
+                all_connected_endpoints.append(dyn_connected_endpoints)
 
         return all_connected_endpoints
 
