@@ -44,6 +44,8 @@ class VlansMixin(Protocol):
                     # TODO: this feels quite dangerous as we could overwrite things from other modules
                     target_vlan = self.structured_config.vlans.obtain(svi.id)
                     # what if we have the same Vlans in different tenant now..
+                    # YAY! WE BROKE ONE NEGATIVE UNIT TESTS WITH THIS - duplicate-vrfs-duplicate-svi-name-conflict
+                    # This is not the right way - we need combine I think
                     target_vlan._deepmerge(self._get_vlan_config(svi, tenant))
 
                 # MLAG IBGP Peering VLANs per VRF
