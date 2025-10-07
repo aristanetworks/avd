@@ -1,4 +1,4 @@
-Node Type,Node,Serial number,Node Interface,Peer Type,Peer Node,Peer Serial Number,Peer Interface,Node Interface Enabled
+Node Type,Node,Serial Number,Node Interface,Peer Type,Peer Node,Peer Serial Number,Peer Interface,Node Interface Enabled
 p,p1,,Ethernet1,pe,pe1,,Ethernet1,True
 p,p1,,Ethernet2,pe,pe2,,Ethernet2,True
 p,p1,,Ethernet3,rr,rr1,,Ethernet3,True

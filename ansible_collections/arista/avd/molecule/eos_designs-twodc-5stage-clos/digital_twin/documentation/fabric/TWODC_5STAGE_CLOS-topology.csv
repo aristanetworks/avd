@@ -1,4 +1,4 @@
-Node Type,Node,Serial number,Node Interface,Peer Type,Peer Node,Peer Serial Number,Peer Interface,Node Interface Enabled
+Node Type,Node,Serial Number,Node Interface,Peer Type,Peer Node,Peer Serial Number,Peer Interface,Node Interface Enabled
 l2leaf,DC1-POD1-L2LEAF1A,,Ethernet1,l3leaf,DC1-POD1-LEAF1A,,Ethernet3,True
 l2leaf,DC1-POD1-L2LEAF1A,,Ethernet2,server,server-1,,Eth9,True
 l2leaf,DC1-POD1-L2LEAF2A,,Ethernet1,l3leaf,DC1.POD1.LEAF2A,,Ethernet3,True
