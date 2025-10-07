@@ -76,6 +76,7 @@ ethernet_interfaces:
   peer: server02_SINGLE_NODE_TRUNK
   peer_interface: Eth1
   peer_type: server
+  peer_key: servers
   port_profile: ALL_WITH_SECURITY
   switchport:
     enabled: true
@@ -88,6 +89,7 @@ ethernet_interfaces:
   peer: server02_SINGLE_NODE
   peer_interface: Eth1
   peer_type: server
+  peer_key: servers
   port_profile: TENANT_A
   switchport:
     enabled: true

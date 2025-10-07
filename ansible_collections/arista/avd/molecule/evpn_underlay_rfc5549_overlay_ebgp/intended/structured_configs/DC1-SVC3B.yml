@@ -112,6 +112,7 @@ ethernet_interfaces:
   peer: server04_inherit_all_from_profile
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: ALL_WITH_SECURITY
   switchport:
     enabled: true
@@ -140,6 +141,7 @@ ethernet_interfaces:
   peer: server05_no_profile
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -167,6 +169,7 @@ ethernet_interfaces:
   peer: server06_override_profile
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: ALL_WITH_SECURITY
   switchport:
     enabled: true
@@ -181,6 +184,7 @@ ethernet_interfaces:
   peer: server07_inherit_all_from_profile_port_channel
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
 - name: Ethernet15
   description: SERVER_server08_no_profile_port_channel_Eth2
@@ -191,6 +195,7 @@ ethernet_interfaces:
   peer: server08_no_profile_port_channel
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
 - name: Ethernet16
   description: SERVER_server09_override_profile_no_port_channel_Eth2
   shutdown: false
@@ -213,6 +218,7 @@ ethernet_interfaces:
   peer: server09_override_profile_no_port_channel
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   switchport:
     enabled: true

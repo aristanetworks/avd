@@ -33,6 +33,7 @@ ethernet_interfaces:
   peer: OLD_SW-1/2
   peer_interface: Endpoint_port1
   peer_type: server
+  peer_key: servers
 - name: Ethernet2
   description: SERVER_OLD_SW-1/2_ENDPOINT_PORT2
   shutdown: false
@@ -42,6 +43,7 @@ ethernet_interfaces:
   peer: OLD_SW-1/2
   peer_interface: ENDPOINT_PORT2
   peer_type: server
+  peer_key: servers
 hostname: host1
 ip_igmp_snooping:
   globally_enabled: true

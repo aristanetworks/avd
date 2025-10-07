@@ -49,6 +49,7 @@ ethernet_interfaces:
   peer: server_with_tg_300
   peer_interface: Nic3
   peer_type: server
+  peer_key: servers
 hostname: trunk-group-tests-l2leaf1a
 ip_igmp_snooping:
   globally_enabled: true

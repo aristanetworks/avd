@@ -71,6 +71,7 @@ ethernet_interfaces:
   peer: dc1-leaf2-server1
   peer_interface: PCI1
   peer_type: server
+  peer_key: servers
 hostname: dc1-leaf2a
 ip_igmp_snooping:
   globally_enabled: true

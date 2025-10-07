@@ -39,6 +39,7 @@ ethernet_interfaces:
   peer: server01_ES1
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: Tenant_X
 - name: Ethernet12
   description: server03_AUTO_ESI_Eth2
@@ -49,6 +50,7 @@ ethernet_interfaces:
   peer: server03_AUTO_ESI
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: Tenant_X
 - name: Ethernet13
   description: server04_AUTO_ESI_Profile_Eth2
@@ -59,6 +61,7 @@ ethernet_interfaces:
   peer: server04_AUTO_ESI_Profile
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: Tenant_ESI_Auto
 - name: Ethernet14
   description: server05_AUTO_ESI_Profile_Override_Eth2
@@ -69,6 +72,7 @@ ethernet_interfaces:
   peer: server05_AUTO_ESI_Profile_Override
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: Tenant_ESI_Auto
 - name: Ethernet15
   description: server06_Single_Active_Port_Channel_Eth2
@@ -79,6 +83,7 @@ ethernet_interfaces:
   peer: server06_Single_Active_Port_Channel
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: Tenant_X_Trunk_Auto
 - name: Ethernet16
   description: server07_Single_Active_Port_Channel_Manual_DF_Eth2
@@ -89,6 +94,7 @@ ethernet_interfaces:
   peer: server07_Single_Active_Port_Channel_Manual_DF
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: Tenant_X_Trunk
 - name: Ethernet17
   description: server08_Single_Active_Ethernet_Eth2
@@ -103,6 +109,7 @@ ethernet_interfaces:
   peer: server08_Single_Active_Ethernet
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: Tenant_X_Trunk_Auto_Eth
   switchport:
     enabled: true
@@ -121,6 +128,7 @@ ethernet_interfaces:
   peer: server09_All_Active_Ethernet
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: Tenant_X_Trunk
   switchport:
     enabled: true
@@ -140,6 +148,7 @@ ethernet_interfaces:
   peer: server10_Single_Active_Ethernet_Manual_DF
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: Tenant_X_Trunk
   switchport:
     enabled: true
@@ -155,6 +164,7 @@ ethernet_interfaces:
   peer: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: Tenant_X_Trunk
 - name: Ethernet21
   description: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt_Eth2
@@ -170,6 +180,7 @@ ethernet_interfaces:
   peer: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: Tenant_X_Trunk
   switchport:
     enabled: true
@@ -185,6 +196,7 @@ ethernet_interfaces:
   peer: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: Tenant_X_Trunk
 - name: Ethernet23
   description: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus_Eth2
@@ -198,6 +210,7 @@ ethernet_interfaces:
   peer: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: Tenant_X_Trunk
   switchport:
     enabled: true
@@ -213,6 +226,7 @@ ethernet_interfaces:
   peer: ROUTER02_WITH_SUBIF
   peer_interface: Eth2
   peer_type: router
+  peer_key: routers
 hostname: MH-LEAF1B
 ip_igmp_snooping:
   globally_enabled: true

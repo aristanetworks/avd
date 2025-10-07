@@ -13,6 +13,7 @@ ethernet_interfaces:
   peer: port-channel-interface-true
   peer_interface: PCI1
   peer_type: server
+  peer_key: servers
 - name: Ethernet12
   description: MLAG_sflow-tests-leaf4_Ethernet12
   shutdown: false
@@ -73,6 +74,7 @@ ethernet_interfaces:
   peer: port-channel-interface-false
   peer_interface: PCI11
   peer_type: server
+  peer_key: servers
 - name: Ethernet15
   description: SERVER_port-channel-interface-no-definition_PCI13
   shutdown: false
@@ -82,6 +84,7 @@ ethernet_interfaces:
   peer: port-channel-interface-no-definition
   peer_interface: PCI13
   peer_type: server
+  peer_key: servers
 hostname: sflow-tests-leaf3
 ip_igmp_snooping:
   globally_enabled: true

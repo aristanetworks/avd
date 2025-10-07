@@ -55,6 +55,7 @@ class EthernetInterfacesMixin(Protocol):
         for network_port in self.shared_utils.filtered_network_ports:
             connected_endpoint = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem(name=network_port.endpoint or Undefined)
             connected_endpoint.type = "network_port"
+            connected_endpoint._internal_data.context = "network_ports"
             network_port_as_adapter = network_port._cast_as(
                 EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem, ignore_extra_keys=True
             )

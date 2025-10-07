@@ -62,6 +62,7 @@ ethernet_interfaces:
   peer: single-interface-true
   peer_interface: eth2
   peer_type: server
+  peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -72,6 +73,7 @@ ethernet_interfaces:
   peer: single-interface-false
   peer_interface: eth12
   peer_type: server
+  peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -84,6 +86,7 @@ ethernet_interfaces:
   peer: single-interface-no-definition
   peer_interface: eth13
   peer_type: server
+  peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -94,6 +97,7 @@ ethernet_interfaces:
   peer: single-interface-true4
   peer_interface: eth1
   peer_type: server
+  peer_key: servers
   switchport:
     enabled: true
     mode: access

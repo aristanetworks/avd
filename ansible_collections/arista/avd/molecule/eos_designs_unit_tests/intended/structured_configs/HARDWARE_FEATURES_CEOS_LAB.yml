@@ -71,6 +71,7 @@ ethernet_interfaces:
   peer: TEST_POE
   peer_interface: ETH2_NO_POE
   peer_type: server
+  peer_key: servers
   sflow:
     enable: true
   switchport:
@@ -83,12 +84,14 @@ ethernet_interfaces:
     mode: active
   peer: TEST_MTU_MRU
   peer_type: server
+  peer_key: servers
 - name: Ethernet6
   description: SERVER_TEST_INTERFACE_STORM_CONTROL_ETH12_NO_STORM_CONTROL
   shutdown: false
   peer: TEST_INTERFACE_STORM_CONTROL
   peer_interface: ETH12_NO_STORM_CONTROL
   peer_type: server
+  peer_key: servers
   sflow:
     enable: true
   switchport:

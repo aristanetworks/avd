@@ -59,6 +59,7 @@ ethernet_interfaces:
   peer: SERVER-2
   peer_interface: Nic1
   peer_type: server
+  peer_key: servers
 - name: Ethernet13
   description: TEST_CUSTOM_PREFIX_SERVER-2_Nic2_data
   shutdown: false
@@ -68,6 +69,7 @@ ethernet_interfaces:
   peer: SERVER-2
   peer_interface: Nic2
   peer_type: server
+  peer_key: servers
 - name: Ethernet14
   description: TEST_CUSTOM_PREFIX_SERVER-3_Nic1_
   shutdown: false
@@ -77,6 +79,7 @@ ethernet_interfaces:
   peer: SERVER-3
   peer_interface: Nic1
   peer_type: server
+  peer_key: servers
 - name: Ethernet15
   description: TEST_CUSTOM_PREFIX_SERVER-3_Nic2_
   shutdown: false
@@ -86,6 +89,7 @@ ethernet_interfaces:
   peer: SERVER-3
   peer_interface: Nic2
   peer_type: server
+  peer_key: servers
 hostname: CUSTOM-TEMPLATES-L3LEAF1B
 ip_igmp_snooping:
   globally_enabled: true

@@ -108,6 +108,7 @@ ethernet_interfaces:
   peer: CAMPUS_EGRESS_FW_1
   peer_interface: Eth0
   peer_type: firewall
+  peer_key: firewalls
   switchport:
     enabled: true
 - name: Ethernet15
@@ -116,6 +117,7 @@ ethernet_interfaces:
   peer: CAMPUS_EGRESS_FW_1
   peer_interface: Eth2
   peer_type: firewall
+  peer_key: firewalls
   port_profile: campus_eggress
   switchport:
     enabled: true
@@ -128,6 +130,7 @@ ethernet_interfaces:
   peer: CAMPUS_EGRESS_FW_1
   peer_interface: Eth4
   peer_type: firewall
+  peer_key: firewalls
 - name: Ethernet17
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth6
   shutdown: false
@@ -137,15 +140,18 @@ ethernet_interfaces:
   peer: CAMPUS_EGRESS_FW_1
   peer_interface: Eth6
   peer_type: firewall
+  peer_key: firewalls
   port_profile: campus_eggress
 - name: Ethernet10
   shutdown: false
   peer_type: network_port
+  peer_key: network_ports
   switchport:
     enabled: true
 - name: Ethernet11
   shutdown: false
   peer_type: network_port
+  peer_key: network_ports
   port_profile: campus_eggress
   switchport:
     enabled: true
@@ -155,12 +161,14 @@ ethernet_interfaces:
     id: 12
     mode: active
   peer_type: network_port
+  peer_key: network_ports
 - name: Ethernet13
   shutdown: false
   channel_group:
     id: 13
     mode: active
   peer_type: network_port
+  peer_key: network_ports
   port_profile: campus_eggress
 hostname: BGP-SPINE1
 ip_igmp_snooping:

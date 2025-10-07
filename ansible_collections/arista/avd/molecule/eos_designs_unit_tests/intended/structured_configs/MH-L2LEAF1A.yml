@@ -34,6 +34,7 @@ ethernet_interfaces:
   peer: server02
   peer_interface: Eth1
   peer_type: server
+  peer_key: servers
   switchport:
     enabled: true
 hostname: MH-L2LEAF1A

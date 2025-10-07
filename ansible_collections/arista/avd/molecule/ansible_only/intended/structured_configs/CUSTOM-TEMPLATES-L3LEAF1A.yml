@@ -74,6 +74,7 @@ ethernet_interfaces:
   peer: SERVER-1
   peer_interface: Nic1
   peer_type: server
+  peer_key: servers
   switchport:
     enabled: true
     mode: trunk
