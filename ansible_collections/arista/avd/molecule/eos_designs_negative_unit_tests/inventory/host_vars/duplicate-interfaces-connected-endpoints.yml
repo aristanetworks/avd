@@ -32,7 +32,7 @@ servers:
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for EthernetInterfaces.
   {'name': 'Ethernet10', 'description': 'SERVER_server02_Eth2', 'shutdown': False, 'peer': 'server02', 'peer_interface': 'Eth2',
-  'peer_type': 'server', 'switchport': {'enabled': True}}
+  'peer_type': 'server', 'peer_key': 'servers', 'switchport': {'enabled': True}}
   conflicts with
   {'name': 'Ethernet10', 'description': 'SERVER_server01_ES1_Eth1', 'shutdown': False, 'peer': 'server01_ES1', 'peer_interface': 'Eth1',
-  'peer_type': 'server', 'switchport': {'enabled': True}}.
+  'peer_type': 'server', 'peer_key': 'servers', 'switchport': {'enabled': True}}.
