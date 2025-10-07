@@ -86,7 +86,7 @@ def _get_topology_csv(fabric_documentation_facts: FabricDocumentationFacts) -> s
     csv_content = StringIO()
     csv_writer = writer(csv_content, lineterminator="\n")
     csv_writer.writerow(
-        ("Node Type", "Node", "Serial number", "Node Interface", "Peer Type", "Peer Node", "Peer Serial Number", "Peer Interface", "Node Interface Enabled")
+        ("Node Type", "Node", "Serial Number", "Node Interface", "Peer Type", "Peer Node", "Peer Serial Number", "Peer Interface", "Node Interface Enabled")
     )
     csv_writer.writerows(fabric_documentation_facts.get_physical_links())
     csv_content.seek(0)
