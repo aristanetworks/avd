@@ -9,13 +9,15 @@ ip_igmp_snooping:
 metadata:
   is_deployed: true
   system_mac_address: 12:34:56:78:90:AB
+  pod_name: Test_pod_2
+  dc_name: Test_dc_2
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 snmp_server:
   engine_ids:
     local: f5717f1234567890ab00
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS SNMP_SYSTEM_MAC_ENGINEID_2
+  location: CUSTOM LOCATION STRING EOS_DESIGNS_UNIT_TESTS SNMP_SYSTEM_MAC_ENGINEID_2
   users:
   - name: usertest-auth-priv
     group: usergroup

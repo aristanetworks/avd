@@ -6,7 +6,11 @@
   vars:
     cv_server: "{{ lookup('env', 'CV_SERVER') }}"
     cv_token: "{{ lookup('env', 'CV_ACCESS_TOKEN') }}"
-    cv_verify_certs: true
+    proxy_host: "{{ lookup('env', 'CV_PROXY_HOST') | default('', true) }}"
+    proxy_port: "{{ lookup('env', 'CV_PROXY_PORT') | default(3128, true) | int }}"
+    proxy_username: "{{ lookup('env', 'CV_PROXY_USERNAME') | default('', true) }}"
+    proxy_password: "{{ lookup('env', 'CV_PROXY_PASSWORD') | default('', true) }}"
+    cv_verify_certs: "{{ lookup('env', 'CV_VERIFY_CERTS') | default(true, true) | bool }}"
     cv_skip_missing_devices: true
     eos_config_dir: "{{ playbook_dir }}/intended/configs/test_configs"
     structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"
@@ -95,7 +99,8 @@
           run_once: true
           ansible.legacy.uri:
             url: https://{{ cv_server }}/api/resources/changecontrol/v1/ChangeControlConfig?key.id={{ cv_deploy_results.change_control.id }}
-            validate_certs: true
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
             return_content: true
             headers:
               Accept: "application/json"
@@ -111,6 +116,10 @@
           delay: 3
           ignore_errors: true
           when: cv_deploy_results.change_control.state | lower in ['pending approval', 'approved']
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
 
         - name: "(ALWAYS) {{ test_id | upper }} Banner"
           tags: ["{{ test_id }}"]

@@ -25,7 +25,11 @@ class CloudVision:
     token: str | None
     username: str | None
     password: str | None
-    verify_certs: bool = True
+    verify_certs: bool
+    proxy_host: str | None
+    proxy_port: int | None
+    proxy_username: str | None
+    proxy_password: str | None
 
 
 @dataclass
