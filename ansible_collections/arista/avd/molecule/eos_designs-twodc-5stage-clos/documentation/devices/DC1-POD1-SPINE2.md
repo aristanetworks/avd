@@ -1,6 +1,6 @@
 # DC1-POD1-SPINE2
 
-# Serial Number: DEADBEEFC0FFEE
+Serial Number: DEADBEEFC0FFEE
 
 ## Table of Contents
 
