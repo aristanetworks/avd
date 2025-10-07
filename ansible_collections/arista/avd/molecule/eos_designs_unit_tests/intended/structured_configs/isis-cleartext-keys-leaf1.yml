@@ -89,7 +89,7 @@ metadata:
   platform: vEOS-LAB
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:
-  domain_id: isis-cleartext-keys-leafs
+  domain_id: ISIS_CLEARTEXT_KEYS_LEAFS
   local_interface: Vlan4094
   peer_address: 10.10.254.7
   peer_link: Port-Channel5

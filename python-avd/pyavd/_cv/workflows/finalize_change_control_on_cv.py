@@ -49,7 +49,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
 
     # Update missing fields on our local model with data from the CloudVision object.
     change_control.state = get_change_control_state(cv_change_control=cv_change_control)
-    if change_control.description is None:
+    if change_control.name is None:
         change_control.name = cv_change_control.change.name
     if change_control.description is None:
         change_control.description = cv_change_control.change.notes
@@ -102,6 +102,6 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
     change_control.state = "completed"
     LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
-    # If requested state is "Completed" we are done.
+    # If requested state is "completed" we are done.
     if change_control.requested_state == "completed":
         return
