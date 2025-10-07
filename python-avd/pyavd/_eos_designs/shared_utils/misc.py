@@ -152,11 +152,11 @@ class MiscMixin(Protocol):
         return self.inputs.fabric_name
 
     @cached_property
-    def uplink_interface_speed(self: SharedUtilsProtocol) -> str | None:
+    def uplink_interface_speed(self: SharedUtilsProtocol) -> EosCliConfigGen.EthernetInterfacesItem.Speed | None:
         return default(self.node_config.uplink_interface_speed, self.default_interfaces.uplink_interface_speed)
 
     @cached_property
-    def uplink_switch_interface_speed(self: SharedUtilsProtocol) -> str | None:
+    def uplink_switch_interface_speed(self: SharedUtilsProtocol) -> EosCliConfigGen.EthernetInterfacesItem.Speed | None:
         # Keeping since we will need it when adding speed support under default interfaces.
         return self.node_config.uplink_switch_interface_speed
 

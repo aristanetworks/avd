@@ -2996,7 +2996,6 @@ keys:
       enabled:
         description: Enable/Disable api http-commands.
         type: bool
-        default: true
       enable_http:
         type: bool
       enable_https:
@@ -3006,18 +3005,10 @@ keys:
         type: bool
       vrfs:
         default:
-        - name: use_mgmt_interface_vrf
+        - name: use_default_mgmt_method_vrf
           enabled: true
         type: list
         primary_key: name
-        description: 'Note: For backward compatibility, `mgmt_ip` presence is not
-          enforced when `vrfs` is **not** configured and the default value of `use_mgmt_interface_vrf`
-          is used.
-
-          To enforce the presence of `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`,
-          explicitly define an entry in `vrfs` using `name: use_mgmt_interface_vrf`.
-
-          This behavior will be removed in AVD 6.0.'
         items:
           type: dict
           keys:
@@ -3267,6 +3258,7 @@ keys:
             '
           items:
             type: str
+          min_length: 1
         platforms:
           type: list
           min_length: 1
@@ -3738,20 +3730,20 @@ keys:
       cv_tags_topology_type: spine
     - key: wan_router
       type: wan_router
-      default_evpn_role: client
+      default_evpn_role: none
       default_wan_role: client
       default_underlay_routing_protocol: none
-      default_overlay_routing_protocol: ibgp
+      default_overlay_routing_protocol: none
       default_flow_tracker_type: hardware
       vtep: true
       network_services:
         l3: true
     - key: wan_rr
       type: wan_rr
-      default_evpn_role: server
+      default_evpn_role: none
       default_wan_role: server
       default_underlay_routing_protocol: none
-      default_overlay_routing_protocol: ibgp
+      default_overlay_routing_protocol: none
       default_flow_tracker_type: hardware
       vtep: true
       network_services:
@@ -5190,8 +5182,15 @@ keys:
       location:
         type: bool
         default: false
-        description: Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name>
-          <switch_rack> <inventory_hostname>".
+        description: Enables SNMP location using `location_template` value.
+      location_template:
+        type: str
+        description: "Customize the SNMP location description.\nThe available template
+          fields are:\n  - fabric_name: The logical name of the fabric.\n  - dc_name:
+          The name of the data center associated with the fabric.\n  - pod_name: The
+          pod or cluster grouping within the data center.\n  - rack: Physical rack
+          location of switch.\n  - hostname: Hostname used in inventory."
+        default: '{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}'
       vrfs:
         type: list
         primary_key: name
@@ -5984,6 +5983,7 @@ keys:
     type: int
     min: 1
     max: 128
+    default: 128
     convert_types:
     - str
   underlay_ospf_process_id:
@@ -8750,6 +8750,7 @@ $defs:
                           max_length: 8
                         message_digest_keys:
                           type: list
+                          primary_key: id
                           items:
                             type: dict
                             keys:
@@ -9012,6 +9013,7 @@ $defs:
                           max_length: 8
                         message_digest_keys:
                           type: list
+                          primary_key: id
                           items:
                             type: dict
                             keys:
@@ -12531,19 +12533,6 @@ $defs:
 
             - ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the
             RFC5549 underlay if configured.'
-        structured_config:
-          type: dict
-          relaxed_validation: true
-          documentation_options:
-            hide_keys: true
-          description: 'Custom structured config for interfaces.
-
-            Note! The content of this dictionary is _not_ validated by the schema,
-            since it can be either ethernet_interfaces or port_channel_interfaces.'
-          deprecation:
-            warning: true
-            remove_in_version: 6.0.0
-            new_key: ethernet_structured_config or port_channel_structured_config
         ethernet_structured_config:
           type: dict
           relaxed_validation: true
@@ -12565,6 +12554,13 @@ $defs:
             warning: true
             new_key: multicast_pim_sm
             remove_in_version: 6.0.0
+        structured_config:
+          type: dict
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: ethernet_structured_config or port_channel_structured_config
   rx_queue_settings:
     type: dict
     description: 'Receive queue parameters for platform SFE interface profile.
@@ -13001,6 +12997,7 @@ $defs:
             max_length: 8
           message_digest_keys:
             type: list
+            primary_key: id
             items:
               type: dict
               keys:

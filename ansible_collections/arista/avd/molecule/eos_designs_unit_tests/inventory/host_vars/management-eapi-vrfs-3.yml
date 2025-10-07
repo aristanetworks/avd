@@ -14,6 +14,7 @@ l3leaf:
       id: 14
 
 management_eapi:
+  enabled: true
   vrfs:
     - name: use_default_mgmt_method_vrf
       enabled: true

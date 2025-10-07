@@ -18,7 +18,7 @@ l3leaf:
     uplink_switches: ["MLAG-ISIS-SPINE"]
     uplink_interfaces: ["Ethernet1"]
   node_groups:
-    - group: isis-cleartext-keys-leafs
+    - group: ISIS_CLEARTEXT_KEYS_LEAFS
       nodes:
         - name: isis-cleartext-keys-leaf1
           id: 4
