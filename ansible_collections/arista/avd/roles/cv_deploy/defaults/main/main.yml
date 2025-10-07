@@ -14,6 +14,15 @@ cv_token: "{{ hostvars[cv_inventory_hostname].ansible_password | arista.avd.defa
 # Verify Certificate for CloudVision (Always use valid certificates for production)
 cv_verify_certs: true
 
+# # Set FQDN/IP of the HTTP CONNECT proxy server.
+# proxy_host: <str>
+# # Set target TCP port of the HTTP CONNECT proxy server.
+proxy_port: 8080
+# # Set authentication username for the HTTP CONNECT proxy server.
+# proxy_username: <str>
+# # Set authentication password for the HTTP CONNECT proxy server.
+# proxy_password: <str>
+
 # Deploy device configs and tags for these devices.
 # Defaults to all hosts in the play.
 # This means the role must be imported/included in a play targeting only the relevant EOS devices - *not* CloudVision.
