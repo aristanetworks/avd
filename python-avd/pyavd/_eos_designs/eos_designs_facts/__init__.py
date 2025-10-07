@@ -188,6 +188,7 @@ class EosDesignsFactsGeneratorProtocol(
             return None
         if self.shared_utils.vtep is True:
             return self.shared_utils.vtep_loopback_ipv4_pool
+        return None
 
     @remove_cached_property_type
     @cached_property
