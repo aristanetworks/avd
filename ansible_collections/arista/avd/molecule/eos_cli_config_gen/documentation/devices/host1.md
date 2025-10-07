@@ -1,8 +1,9 @@
 # hostname-set-via-hostname-var
+# Serial Number: DEADBEEFC0FFEW
 
 ## Table of Contents
 
-- [Serial Number](#serial-number)
+- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Banner](#banner)
   - [Agents](#agents)
@@ -291,10 +292,6 @@
   - [Interface Groups](#interface-groups)
   - [Maintenance](#maintenance)
 - [EOS CLI Device Configuration](#eos-cli-device-configuration)
-
-### Serial Number
-
-Serial Number: DEADBEEFC0FFEW
 
 ## Management
 

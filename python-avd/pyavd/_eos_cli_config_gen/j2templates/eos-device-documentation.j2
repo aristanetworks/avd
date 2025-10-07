@@ -6,6 +6,9 @@
 {# context used to hide password and keys #}
 {% set hide_passwords = eos_cli_config_gen_documentation.hide_passwords | arista.avd.default(true) %}
 # {{ hostname | arista.avd.default(inventory_hostname) }}
+{% if serial_number is arista.avd.defined %}
+# Serial Number: {{ serial_number }}
+{% endif %}
 {% if eos_cli_config_gen_documentation.toc is not arista.avd.defined(false) %}
 
 ## Table of Contents
@@ -13,8 +16,6 @@
 <!-- toc -->
 <!-- toc -->
 {% endif %}
-{# Serial Number #}
-{% include 'documentation/serial_number.j2' %}
 {# Management #}
 {% include 'documentation/management.j2' %}
 {# CVX #}

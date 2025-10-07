@@ -1,8 +1,9 @@
 # DC1-POD1-SPINE2
+# Serial Number: DEADBEEFC0FFEE
 
 ## Table of Contents
 
-- [Serial Number](#serial-number)
+- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
@@ -29,10 +30,6 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [EOS CLI Device Configuration](#eos-cli-device-configuration)
-
-### Serial Number
-
-Serial Number: DEADBEEFC0FFEE
 
 ## Management
 
