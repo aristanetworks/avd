@@ -12275,6 +12275,8 @@ $defs:
         ip:
           type: list
           description: Specific IP addresses used on this P2P link.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: Node IPv4 address/Mask.
@@ -12286,6 +12288,8 @@ $defs:
         nodes:
           type: list
           description: Nodes where this link should be configured.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: 'The values can be < node_a >, < node_b >.
@@ -12297,6 +12301,8 @@ $defs:
           type: list
           description: Interfaces where this link should be configured and Required
             unless using port-channels.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: 'The value can be like < node_a_interface >, < node_b_interface
@@ -12320,6 +12326,8 @@ $defs:
         descriptions:
           type: list
           description: Interface descriptions.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: "Description or description template to be used on the ethernet
