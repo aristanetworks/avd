@@ -14,19 +14,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
-- name: ethernet12
-  description: I come from p2p_links
-  shutdown: false
-  mtu: 9214
-  ip_address: 192.168.0.0/31
-  service_policy:
-    qos:
-      input: TEST_POLICY
-  peer: peer1
-  peer_interface: ethernet1
-  peer_type: other
-  switchport:
-    enabled: false
 hostname: host4
 ip_igmp_snooping:
   globally_enabled: true
