@@ -80,9 +80,7 @@ l3leaf:
               destinations:
                 - destination: 192.168.200.10
                 - destination: 10.0.200.90
-              # Testing custom_structured_configuration using inline jinja with switch.x facts.
-              # Common customer use case, so we should make sure this does not break.
-              source_interface: "{{ switch.mgmt_interface }}"
+              source_interface: Management1
       nodes:
         - name: DC1-BL1A
           id: 6
