@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Management](#management)
+  - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Enable Password](#enable-password)
@@ -34,6 +35,33 @@
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 
 ## Management
+
+### Management Interfaces
+
+#### Management Interfaces Summary
+
+##### IPv4
+
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.0.3/24 | 172.31.0.1 |
+
+##### IPv6
+
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+
+#### Management Interfaces Device Configuration
+
+```eos
+!
+interface Management1
+   description OOB_MANAGEMENT
+   no shutdown
+   vrf MGMT
+   ip address 192.168.0.3/24
+```
 
 ### Management API HTTP
 

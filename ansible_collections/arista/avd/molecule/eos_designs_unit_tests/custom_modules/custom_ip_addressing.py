@@ -38,7 +38,7 @@ class CustomAvdIpAddressing(AvdIpAddressing):
         Implementation of custom code similar to jinja.
 
         {{ vrf.mlag_ibgp_peering_ipv4_pool | ansible.utils.ipaddr('subnet') |
-           ansible.utils.ipmath((switch.mlag_switch_ids.primary - 1) * 2 + ip_offset_10) }}.
+           ansible.utils.ipmath((mlag_primary_id - 1) * 2 + ip_offset_10) }}.
         """
         offset = self._mlag_primary_id - 1 + self._custom_ip_offset_10_subnets
         return self._ip(mlag_ibgp_peering_ipv4_pool, 31, offset, 0)
@@ -48,7 +48,7 @@ class CustomAvdIpAddressing(AvdIpAddressing):
         Implementation of custom code similar to jinja.
 
         {{ vrf.mlag_ibgp_peering_ipv4_pool | ansible.utils.ipaddr('subnet') |
-           ansible.utils.ipmath(((switch.mlag_switch_ids.primary - 1) * 2) + 1 + ip_offset_10) }}.
+           ansible.utils.ipmath(((mlag_primary_id - 1) * 2) + 1 + ip_offset_10) }}.
         """
         offset = self._mlag_primary_id - 1 + self._custom_ip_offset_10_subnets
         return self._ip(mlag_ibgp_peering_ipv4_pool, 31, offset, 1)

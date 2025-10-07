@@ -1,7 +1,10 @@
 # hostname-set-via-hostname-var
 
+Serial Number: DEADBEEFC0FFEW
+
 ## Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Banner](#banner)
   - [Agents](#agents)
@@ -10683,11 +10686,11 @@ Make-before-break: False
 
 ##### IP Sparse Mode VRFs
 
-| VRF Name | BFD Enabled | Make-before-break |
-| -------- | ----------- | ----------------- |
-| MCAST_VRF1 | True | False |
-| MCAST_VRF2_ALL_GROUPS | False | - |
-| Test_RP_ACL | False | True |
+| VRF Name | SSM Range ACL | BFD Enabled | Make-before-break |
+| -------- | ------------- | ----------- | ----------------- |
+| MCAST_VRF1 | SSM-MCAST | True | False |
+| MCAST_VRF2_ALL_GROUPS | - | False | - |
+| Test_RP_ACL | - | False | True |
 
 | VRF Name | Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
 | -------- | ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
@@ -10719,6 +10722,7 @@ router pim sparse-mode
    !
    vrf MCAST_VRF1
       ipv4
+         ssm range SSM-MCAST
          bfd
          make-before-break disabled
          rp address 10.238.2.161 239.12.22.12/32

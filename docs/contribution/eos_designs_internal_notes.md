@@ -8,7 +8,7 @@
 
 !!! Warning
 
-    Anything mentioned here is subject to change without notice. Use of `avd_switch_facts` or `switch.*` facts in custom templates is not supported and should be avoided.
+    Anything mentioned here is subject to change without notice. Use of `avd_switch_facts` in custom templates is not supported and should be avoided.
 
 ## Overview
 
@@ -16,7 +16,6 @@
 flowchart TD
   subgraph role[arista.avd.eos_designs role]
     eos_designs_facts[[arista.avd.eos_designs_facts action plugin]] -->
-    SetSwitchFacts(Set switch.* Facts) -->
     eos_designs_structured_config[[arista.avd.eos_designs_structured_config action plugin]]-->
     RemoveAvdSwitchFacts(Remove AvdSwitchFacts)
   end
@@ -68,7 +67,6 @@ classDiagram
     - Read and validate Hostvars for all devices
     - Instantiate SharedUtils and EosDesignsFacts classes per device
     - Set "avd_switch_facts" referencing all EosDesignsFacts instances
-    - Set "switch" referencing the device's own EosDesignsFacts instance
     - Run "render" method on all EosDesignsFacts instances
     - Build facts from data returned by "render"
   }
@@ -136,7 +134,6 @@ classDiagram
   class EosDesignsFacts{
     shared_utils: SharedUtils
     _hostvars: dict
-    _hostvars["switch"]: self
   }
   class MlagMixin
   class OverlayMixin
@@ -151,7 +148,7 @@ classDiagram
   UplinksMixin <|-- EosDesignsFacts : extends
   VlansMixin <|-- EosDesignsFacts : extends
   EosDesignsFacts --* SharedUtils
-  SharedUtils ..> EosDesignsFacts : hostvars.switch
+  SharedUtils ..> EosDesignsFacts
 ```
 
 ### SharedUtils
@@ -249,141 +246,8 @@ classDiagram
 ### avd_switch_facts
 
 The following model is set as `eos_designs_facts`. Most keys are optional depending on the
-use case and configuration. The use of each key is tracked in the sections below.
+use case and configuration.
 
-```yaml
-avd_switch_facts:
-  <hostname>:
-    switch:
-      bgp_as: <str>
-      dc_name: <str>
-      endpoint_trunk_groups: <list>
-      endpoint_vlans: <str>
-      evpn_multicast: <bool>
-      evpn_role: <str>
-      evpn_route_servers: <list[str]>
-      group: <str>
-      id: <int>
-      inband_mgmt_subnet: <str>
-      inband_mgmt_vlan: <int>
-      is_deployed: <bool>
-      loopback_ipv4_pool: <str>
-      local_endpoint_trunk_groups: <list[str]>
-      max_parallel_uplinks: <int>
-      max_uplink_switches: <int>
-      mlag_interfaces: <list[str]>
-      mlag_ip: <str>
-      mlag_l3_ip: <str>
-      mlag_peer: <str>
-      mlag_port_channel_id: <int>
-      mlag_switch_ids:
-        primary: <int>
-        secondary: <int>
-      mgmt_interface: <str>
-      mgmt_ip: <int>
-      mpls_lsr: <bool>
-      mpls_overlay_role: <str>
-      mpls_route_reflectors: <list[str]>
-      overlay:
-        peering_address: <str>
-        evpn_mpls: <bool>
-      platform: <str>
-      router_id: <str>
-      serial_number: <str>
-      type: <str>
-      underlay_routing_protocol: <str>
-      uplink_ipv4_pool: <str>
-      uplink_peers: <list[str]>
-      uplinks: <list[dict]>
-      vlans: <str>
-      vtep_ip: <str>
-      vtep_loopback_ipv4_pool: <str>
-```
-
-#### avd_switch_facts leveraged in eos_designs python_modules
-
-These variables are read for all or some devices as part of structured_config generation,
-so they must be available in the `avd_switch_facts` object.
-
-| Variable | Used in file |
-| -------- | ------------ |
-| switch.type | core_interfaces/utils.py |
-| switch.type | l3_edge/utils.py |
-| switch.inband_mgmt_subnet | inband_management/avdstructuredconfig.py |
-| switch.inband_mgmt_vlan | inband_management/avdstructuredconfig.py |
-| switch.vlans | network_services/utils_filtered_tenants.py |
-| switch.vtep_ip | network_services/vxlan_interface.py |
-| switch.vlans | network_services/vxlan_interface.py |
-| switch.uplinks | underlay/utils.py |
-| switch.type | underlay/utils.py |
-| switch.is_deployed | underlay/utils.py |
-| switch.bgp_as | underlay/utils.py |
-| switch | overlay/utils.py |
-| switch.evpn_route_servers | overlay/utils.py |
-| switch.evpn_role | overlay/utils.py |
-| switch.mpls_route_reflectors | overlay/utils.py |
-| switch.bgp_as | overlay/utils.py |
-| switch.overlay.peering_address | overlay/utils.py |
-| switch.mpls_overlay_role | overlay/utils.py |
-| switch.overlay.evpn_mpls | overlay/utils.py |
-
-#### switch.* leveraged for Jinja2 templates
-
-These variables are historically used in *builtin* jinja2 templates so they **should not** be removed without warning.
-TODO: Only expose these in the Jinja2 templating environment used for custom templates. They would *not* be available
-outside of that, so any inline Jinja2 could not use these values.
-
-| Variable | Used in file |
-| -------- | ------------ |
-| switch.type | fabric-documentation.j2 |
-| switch.uplink_ipv4_pool | fabric-documentation.j2 |
-| switch.loopback_ipv4_pool | fabric-documentation.j2 |
-| switch.vtep_loopback_ipv4_pool | fabric-documentation.j2 |
-| switch.node | fabric-documentation.j2 |
-| switch.mgmt_ip | fabric-documentation.j2 |
-| switch.platform | fabric-documentation.j2 |
-| switch.serial_number | fabric-documentation.j2 |
-| switch.underlay_routing_protocol | fabric-documentation.j2 |
-| switch.type | fabric-p2p-links.j2 |
-| switch.type | fabric-topology.j2 |
-| switch.mpls_overlay_role |interface_descriptions/loopback_interfaces/overlay-loopback.j2 |
-| switch.mpls_lsr |interface_descriptions/loopback_interfaces/overlay-loopback.j2 |
-| switch.uplink_ipv4_pool | ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2 |
-| switch.id | ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2 |
-| switch.max_parallel_uplinks | ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2 |
-| switch.max_uplink_switches | ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2 |
-| switch.uplink_ipv4_pool | ip_addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2 |
-| switch.id | ip_addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2 |
-| switch.max_parallel_uplinks | ip_addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2 |
-| switch.max_uplink_switches | ip_addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2 |
-| switch.mlag_switch_ids.primary | ip_addressing/mlag-ibgp-peering-ip-primary.j2 |
-| switch.mlag_switch_ids.primary | ip_addressing/mlag-ibgp-peering-ip-secondary.j2 |
-| switch.uplink_ipv4_pool | ip_addressing/p2p-uplinks-ip.j2 |
-| switch.id | ip_addressing/p2p-uplinks-ip.j2 |
-| switch.max_uplink_switches | ip_addressing/p2p-uplinks-ip.j2 |
-| switch.max_parallel_uplinks | ip_addressing/p2p-uplinks-ip.j2 |
-| switch.uplink_ipv4_pool | ip_addressing/p2p-uplinks-peer-ip.j2 |
-| switch.id | ip_addressing/p2p-uplinks-peer-ip.j2 |
-| switch.max_uplink_switches | ip_addressing/p2p-uplinks-peer-ip.j2 |
-| switch.max_parallel_uplinks | ip_addressing/p2p-uplinks-peer-ip.j2 |
-
-#### Other switch.* variables set in eos_designs_facts
-
-| Variable | Reason |
-| -------- | ------------ |
-| switch.evpn_multicast | Since the code behind evpn_multicast has to check the mlag peer facts for 'overlay_rd_type_admin_subfield' we can either expose that field in facts, or perform the check inside eos_designs_facts. |
-| switch.endpoint_trunk_groups | Complex calculations leveraging data from peers leading to compact output, so instead of repeating in multiple areas, we do it once and store the result. |
-| switch.endpoint_vlans | Complex calculations leveraging data from peers leading to compact output, so instead of repeating in multiple areas, we do it once and store the result. |
-| switch.local_endpoint_trunk_groups | Complex calculations leveraging data from peers leading to compact output, so instead of repeating in multiple areas, we do it once and store the result. |
-| switch.mlag_ip | mlag_ip must be available to the mlag peer. |
-| switch.mlag_l3_ip | mlag_l3_ip must be available to the mlag peer. |
-| switch.mgmt_ip | mgmt_ip must be available to the mlag peer. |
-| switch.uplink_peers | These are used to generate the "avd_topology_peers" fact covering downlinks for all devices in eos_designs_facts action plugin. |
-| switch.dc_name | Used for underlay HER flood-list calculations when using scope dc_name |
-| switch.bgp_as | Known use of inline jinja in customer deployments |
-| switch.group | Known use of inline jinja in customer deployments |
-| switch.hostname | Known use of inline jinja in customer deployments |
-| switch.id | Known use of inline jinja in customer deployments |
-| switch.mgmt_interface | Known use of inline jinja in customer deployments |
-| switch.mgmt_ip | Known use of inline jinja in customer deployments |
-| switch.router_id | Known use of inline jinja in customer deployments |
+--8<--
+./eos_designs_facts_internal/tables/eos_designs_facts.md
+--8<--

@@ -167,10 +167,6 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.7/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_security:
   ssl_profiles:
   - name: profileA

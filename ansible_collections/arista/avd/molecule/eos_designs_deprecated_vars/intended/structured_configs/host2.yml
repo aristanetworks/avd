@@ -34,10 +34,6 @@ loopback_interfaces:
   isis_passive: true
   node_segment:
     ipv4_index: 102
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

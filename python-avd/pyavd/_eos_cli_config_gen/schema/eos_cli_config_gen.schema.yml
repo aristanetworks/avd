@@ -7144,11 +7144,6 @@ keys:
             new_key: next_hop
   ipv6_unicast_routing:
     type: bool
-  is_deployed:
-    description: 'Key only used for documentation or validation purposes.
-
-      This key is deprecated and new key is metadata.is_deployed.'
-    type: bool
   kernel:
     type: dict
     keys:
@@ -21789,6 +21784,12 @@ keys:
                         max: 32
                       override:
                         type: bool
+                ssm_range:
+                  type: str
+                  description: 'Standard access list name or use the specific keyword
+                    ''standard'' as a shortcut to apply
+
+                    a predefined rule that permits the 232.0.0.0/8 range for SSM traffic.'
   router_rip:
     type: dict
     description: Routing Information Protocol settings.
