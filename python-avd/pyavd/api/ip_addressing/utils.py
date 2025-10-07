@@ -104,7 +104,7 @@ class UtilsMixin(Protocol):
         return self.shared_utils.node_config.vtep_loopback_ipv4_address
 
     @cached_property
-    def _vtep_loopback_ipv6_address(self: AvdIpAddressingProtocol) -> str:
+    def _vtep_loopback_ipv6_address(self: AvdIpAddressingProtocol) -> str | None:
         return self.shared_utils.node_config.vtep_loopback_ipv6_address
 
     @cached_property
@@ -200,7 +200,7 @@ class UtilsMixin(Protocol):
         )
         raise AristaAvdError(msg)
 
-    def _get_p2p_ipv4_pool_and_offset(self: AvdIpAddressingProtocol, uplink_switch_index: int) -> tuple[str, int]:
+    def _get_p2p_ipv4_pool_and_offset(self: AvdIpAddressingProtocol, uplink_switch_index: int) -> tuple[str | None, int | None]:
         """
         Returns IP pool and offset as a tuple according to the uplink_switch_index.
 
@@ -211,8 +211,6 @@ class UtilsMixin(Protocol):
         One and only one of these pools are required to be set, otherwise an error will be thrown
         """
         uplink_pool = self.shared_utils.node_config.uplink_ipv4_pool
-        if uplink_pool is not None:
-            uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
 
         downlink_pool, downlink_offset = self._get_downlink_ipv4_pool_and_offset(uplink_switch_index)
 
@@ -228,11 +226,12 @@ class UtilsMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         if uplink_pool is not None:
+            uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
             return (uplink_pool, uplink_offset)
 
         return (downlink_pool, downlink_offset)
 
-    def _get_p2p_ipv6_pool_and_offset(self: AvdIpAddressingProtocol, uplink_switch_index: int) -> tuple[str, int]:
+    def _get_p2p_ipv6_pool_and_offset(self: AvdIpAddressingProtocol, uplink_switch_index: int) -> tuple[str | None, int | None]:
         """
         Returns IP pool and offset as a tuple according to the uplink_switch_index.
 
@@ -243,8 +242,6 @@ class UtilsMixin(Protocol):
         One and only one of these pools are required to be set, otherwise an error will be thrown
         """
         uplink_pool = self.shared_utils.node_config.uplink_ipv6_pool
-        if uplink_pool is not None:
-            uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
 
         downlink_pool, downlink_offset = self._get_downlink_ipv6_pool_and_offset(uplink_switch_index)
 
@@ -260,6 +257,7 @@ class UtilsMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         if uplink_pool is not None:
+            uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
             return (uplink_pool, uplink_offset)
 
         return (downlink_pool, downlink_offset)

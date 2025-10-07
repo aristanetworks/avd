@@ -35,8 +35,8 @@ class AvdInterfaceDescriptions(AvdFacts):
     """
 
     def _template(self, template_path: str, **kwargs: Any) -> str:
-        template_vars = ChainMap(kwargs, self._hostvars)
-        return self.shared_utils.template_var(template_path, template_vars)
+        template_vars = ChainMap(kwargs, dict(self._hostvars))
+        return self.shared_utils.template_var(template_path, dict(template_vars))
 
     def underlay_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
@@ -460,7 +460,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             ),
         )
 
-    def router_id_loopback_interface(self, data: InterfaceDescriptionData) -> str:
+    def router_id_loopback_interface(self, data: InterfaceDescriptionData) -> str | None:
         """
         Build Router ID loopback interface description.
 
@@ -476,7 +476,7 @@ class AvdInterfaceDescriptions(AvdFacts):
 
         return data.description
 
-    def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str:
+    def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str | None:
         """
         Build VTEP loopback interface description.
 
