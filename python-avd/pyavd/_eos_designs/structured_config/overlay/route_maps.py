@@ -31,11 +31,17 @@ class RouteMapsMixin(Protocol):
             and self.inputs.evpn_prevent_readvertise_to_server
             and self.inputs.evpn_prevent_readvertise_to_server_mode in ["source_peer_asn", "as_path_acl"]
         ):
-            remote_asns = natural_sort({rs_dict.get("bgp_as") for rs_dict in self._evpn_route_servers.values()})
+            match self.inputs.evpn_prevent_readvertise_to_server_mode:
+                case "source_peer_asn":
+                    match_prefix = "as "
+                case "as_path_acl":
+                    match_prefix = "as-path AS"
+
+            remote_asns = natural_sort({bgp_as for rs_dict in self._evpn_route_servers.values() if (bgp_as := rs_dict.get("bgp_as")) is not None})
             for remote_asn in remote_asns:
                 route_maps_item = EosCliConfigGen.RouteMapsItem(name=f"RM-EVPN-FILTER-AS{remote_asn}")
                 route_maps_item.sequence_numbers.append_new(
-                    sequence=10, type="deny", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match([f"as {remote_asn}"])
+                    sequence=10, type="deny", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match([f"{match_prefix}{remote_asn}"])
                 )
                 route_maps_item.sequence_numbers.append_new(sequence=20, type="permit")
                 self.structured_config.route_maps.append(route_maps_item)
