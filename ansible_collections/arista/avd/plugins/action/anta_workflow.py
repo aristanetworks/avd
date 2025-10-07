@@ -260,30 +260,32 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
             result_manager.add(result)
 
     # Filter the results based on the hide_statuses if provided
-    if hide_statuses:
-        result_manager = result_manager.filter(hide=set(hide_statuses))
-
+    hide_statuses = hide_statuses if hide_statuses else []
+    filtered_result_manager = result_manager.filter(hide=set(hide_statuses))
     # Sort the result manager
-    result_manager.sort(sort_by=["name", "categories", "test", "description", "result", "custom_field"])
+    filtered_result_manager.sort(sort_by=["name", "categories", "test", "description", "result", "custom_field"])
 
     # TODO: Consider using multiprocessing to generate reports in parallel
     if csv_output_path:
         LOGGER.info("Generating CSV report at %s", csv_output_path)
         path = Path(csv_output_path)
         report_csv = ReportCsv()
-        report_csv.generate(result_manager, path)
+        report_csv.generate(filtered_result_manager, path)
 
     if md_output_path:
         LOGGER.info("Generating Markdown report at %s", md_output_path)
         path = Path(md_output_path)
-        md_report = MDReportGenerator()
-        md_report.generate(result_manager, path)
+        sections = [
+            (section, filtered_result_manager) if section.__name__ == "TestResults" else (section, result_manager)
+            for section in MDReportGenerator.DEFAULT_SECTIONS
+        ]
+        MDReportGenerator.generate_sections(md_filename=path, sections=sections)
 
     if json_output_path:
         LOGGER.info("Generating JSON report at %s", json_output_path)
         path = Path(json_output_path)
         with path.open("w", encoding="UTF-8") as file:
-            file.write(result_manager.json)
+            file.write(filtered_result_manager.json)
 
     # Build a summary with ANTA test stats
     tests_summary = {
