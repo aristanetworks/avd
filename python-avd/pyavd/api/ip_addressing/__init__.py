@@ -320,7 +320,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         offset = self._id + self._loopback_ipv6_offset
         return get_ip_from_pool(self._loopback_ipv6_pool, self.inputs.fabric_ip_addressing.loopback.ipv6_prefix_length, offset, 0)
 
-    def vtep_ip_mlag(self) -> str:
+    def vtep_ip_mlag(self) -> str | None:
         """
         Return IP address for VTEP for MLAG Leaf.
 
@@ -330,6 +330,9 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         """
         if self._vtep_loopback_ipv4_address:
             return self._vtep_loopback_ipv4_address
+
+        if not self._vtep_loopback_ipv4_pool:
+            return None
 
         if template_path := self.shared_utils.node_type_key_data.ip_addressing.vtep_ip_mlag:
             return self._template(
@@ -344,7 +347,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         offset = self._mlag_primary_id + self._loopback_ipv4_offset
         return get_ip_from_pool(self._vtep_loopback_ipv4_pool, 32, offset, 0)
 
-    def vtep_ipv6_mlag(self) -> str:
+    def vtep_ipv6_mlag(self) -> str | None:
         """
         Return IP address for VTEP for MLAG Leaf.
 
@@ -355,10 +358,13 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         if self._vtep_loopback_ipv6_address:
             return self._vtep_loopback_ipv6_address
 
+        if not self._vtep_loopback_ipv6_pool:
+            return None
+
         offset = self._mlag_primary_id + self._loopback_ipv6_offset
         return get_ip_from_pool(self._vtep_loopback_ipv6_pool, 64, offset, 0)
 
-    def vtep_ip(self) -> str:
+    def vtep_ip(self) -> str | None:
         """
         Return IP address for VTEP.
 
@@ -368,6 +374,9 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         """
         if self._vtep_loopback_ipv4_address:
             return self._vtep_loopback_ipv4_address
+
+        if self.shared_utils.node_config.vtep_loopback and self.shared_utils.node_config.vtep_loopback.lower() == "loopback0":
+            return
 
         if template_path := self.shared_utils.node_type_key_data.ip_addressing.vtep_ip:
             return self._template(

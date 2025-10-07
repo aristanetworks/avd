@@ -22,6 +22,7 @@ dps_interfaces:
 - name: Dps1
   description: DPS Interface
   mtu: 9194
+  ip_address: 192.168.142.1/32
   flow_tracker:
     hardware: FLOW-TRACKER
 enable_password:
@@ -125,7 +126,7 @@ ip_routing: true
 ip_security:
   ike_policies:
   - name: CP-IKE-POLICY
-    local_id: 192.168.255.1
+    local_id: 192.168.142.1
   sa_policies:
   - name: DP-SA-POLICY
     esp:
@@ -235,7 +236,7 @@ metadata:
     region: AVD_Land_East
     zone: AVD_Land_East-ZONE
     site: Site511
-    vtep_ip: 192.168.255.1
+    vtep_ip: 192.168.142.1
     ssl_profile: STUN-DTLS
     interfaces:
     - name: Port-Channel2
@@ -427,7 +428,7 @@ router_bgp:
   - name: WAN-OVERLAY-PEERS
     type: wan
     remote_as: '65005'
-    update_source: Loopback0
+    update_source: Dps1
     bfd: true
     bfd_timers:
       interval: 1000
@@ -522,7 +523,7 @@ vxlan_interface:
   vxlan1:
     description: node-type-l3-port-channels_VTEP
     vxlan:
-      source_interface: Loopback0
+      source_interface: Dps1
       udp_port: 4789
       vrfs:
       - name: default

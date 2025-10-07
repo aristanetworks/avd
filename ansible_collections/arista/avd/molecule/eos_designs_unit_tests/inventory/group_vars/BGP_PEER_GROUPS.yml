@@ -14,8 +14,6 @@ node_type_keys:
     vtep: true
     default_evpn_encapsulation: vxlan
     default_overlay_address_families: [ vpn-ipv4, evpn ]
-    # Use Loopback0 IP as VTEP IP.
-    default_vtep_loopback: Loopback0
   - key: pe
     type: pe
     mpls_lsr: true
@@ -81,7 +79,8 @@ l3leaf:
   defaults:
     loopback_ipv4_pool: 192.168.255.0/24
     loopback_ipv4_offset: 8
-    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    # vtep_loopback_ipv4_pool: 192.168.254.0/24
+    vtep_loopback: Loopback0
     mlag_peer_l3_vlan: 4094
     mlag_peer_ipv4_pool: 192.168.253.0/24
     mlag_interfaces: [ Ethernet3 ]
