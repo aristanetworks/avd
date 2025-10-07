@@ -316,8 +316,6 @@ class EthernetInterfacesMixin(Protocol):
             self.structured_config.ethernet_interfaces.append(interface)
 
     def set_direct_ie_connection_ethernet_interfaces(self: AvdStructuredConfigNetworkServicesProtocol, source_interface: str) -> None:
-        """
-        This method expects that the source_interface was configuredin the underlay.
-        """
+        """This method expects that the source_interface was configuredin the underlay."""
         interface = self.structured_config.ethernet_interfaces.obtain(source_interface)
         interface.ip_nat.service_profile = self.INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME

@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from functools import cached_property
 from ipaddress import ip_network
-from tokenize import maybe
 from typing import cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen

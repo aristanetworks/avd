@@ -253,7 +253,6 @@ class RouterBgpMixin(Protocol):
                     maybe_existing_vrf = self.structured_config.router_bgp.vrfs.obtain(vrf.name)
                     # TODO: should really be combine
                     maybe_existing_vrf._deepmerge(bgp_vrf)
-                    # self.structured_config.router_bgp.vrfs.append(bgp_vrf)
 
     def _update_router_bgp_vrf_evpn_or_mpls_cfg(
         self: AvdStructuredConfigNetworkServicesProtocol,
