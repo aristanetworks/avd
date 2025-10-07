@@ -58,6 +58,10 @@ ARGUMENT_SPEC = {
     "cv_username": {"type": "str", "required": False},
     "cv_password": {"type": "str", "secret": True, "required": False},
     "cv_verify_certs": {"type": "bool", "default": True},
+    "proxy_host": {"type": "str", "required": False},
+    "proxy_port": {"type": "int", "required": False, "default": 8080},
+    "proxy_username": {"type": "str", "required": False},
+    "proxy_password": {"type": "str", "secret": True, "required": False},
     "workspace": {
         "type": "dict",
         "options": {
@@ -130,6 +134,8 @@ class ActionModule(ActionBase):
             logged_args["cv_token"] = "<removed>"  # noqa: S105
         if "cv_password" in logged_args:
             logged_args["cv_password"] = "<removed>"  # NOSONAR # noqa: S105
+        if "proxy_password" in logged_args:
+            logged_args["proxy_password"] = "<removed>"  # NOSONAR # noqa: S105
         LOGGER.info("deploy: %s", logged_args)
         try:
             # Create CloudVision object
@@ -139,6 +145,10 @@ class ActionModule(ActionBase):
                 username=validated_args.get("cv_username"),
                 password=validated_args.get("cv_password"),
                 verify_certs=validated_args["cv_verify_certs"],
+                proxy_host=validated_args.get("proxy_host"),
+                proxy_port=validated_args.get("proxy_port"),
+                proxy_username=validated_args.get("proxy_username"),
+                proxy_password=validated_args.get("proxy_password"),
             )
             # Build lists of CVEosConfig, CVDeviceTag, CVInterfaceTag and CVPathfinderMetadata objects.
             eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects = await self.build_objects(
@@ -156,7 +166,11 @@ class ActionModule(ActionBase):
             if validated_args["return_details"]:
                 # Objects are converted to JSON compatible dicts.
                 result.update(
-                    cloudvision=dict(asdict(cloudvision), token="<removed>"),  # noqa: S106
+                    cloudvision={
+                        **asdict(cloudvision),
+                        "token": "<removed>",
+                        **({"proxy_password": "<removed>"} if cloudvision.proxy_password is not None else {}),  # NOSONAR
+                    },
                     configs=[asdict(config) for config in eos_config_objects],
                     device_tags=[asdict(device_tag) for device_tag in device_tag_objects],
                     interface_tags=[asdict(interface_tag) for interface_tag in interface_tag_objects],

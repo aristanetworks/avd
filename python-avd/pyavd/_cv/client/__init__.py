@@ -3,16 +3,19 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import asyncio
 import ssl
 from typing import TYPE_CHECKING, Protocol
 
 from grpclib.client import Channel
 from requests import JSONDecodeError, get, post
+from requests.exceptions import HTTPError, RequestException
 
 from .change_control import ChangeControlMixin
 from .configlet import ConfigletMixin
 from .exceptions import CVClientException
 from .inventory import InventoryMixin
+from .proxy import HTTPProxyManager
 from .studio import StudioMixin
 from .swg import SwgMixin
 from .tag import TagMixin
@@ -23,6 +26,7 @@ from .workspace import WorkspaceMixin
 if TYPE_CHECKING:
     from types import TracebackType
 
+    from grpclib.protocol import H2Protocol
     from typing_extensions import Self
 
 
@@ -48,10 +52,11 @@ class CVClientProtocol(
     _username: str | None
     _password: str | None
     _cv_version: CvVersion | None = None
+    _proxy_manager: HTTPProxyManager | None = None
 
     async def __aenter__(self) -> Self:
         """Using asynchronous context manager since grpclib must be initialized inside an asyncio loop."""
-        self._connect()
+        await self._connect()
         return self
 
     async def __aexit__(self, _exc_type: type[BaseException] | None, _exc_val: BaseException | None, _exc_tb: TracebackType | None) -> None:
@@ -59,7 +64,7 @@ class CVClientProtocol(
             self._channel.close()
             self._channel = None
 
-    def _connect(self) -> None:
+    async def _connect(self) -> None:
         # TODO: Verify connection
         # TODO: Handle multinode clusters
 
@@ -72,9 +77,51 @@ class CVClientProtocol(
         self._set_version()
 
         if self._channel is None:
-            self._channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
+            if self._proxy_manager is not None:
+                self._channel = await self._create_proxy_channel(ssl_context)
+            else:
+                self._channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
 
         self._metadata = {"authorization": "Bearer " + self._token}
+
+    async def _create_proxy_channel(self, ssl_context: ssl.SSLContext | bool) -> Channel:
+        """
+        Create a gRPC channel using the proxy manager.
+
+        Args:
+            ssl_context: SSL context for destination server connection.
+
+        Returns:
+            Configured gRPC Channel instance.
+        """
+        # Create the channel first
+        channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
+
+        # Create custom connector that uses proxy
+        async def proxy_connection() -> H2Protocol:
+            loop = asyncio.get_running_loop()
+
+            try:
+                # Create socket through proxy using python-socks
+                proxy_sock = await self._proxy_manager.create_socket_for_grpc()
+
+                # Create the gRPC protocol using the proxy socket
+                _, protocol = await loop.create_connection(
+                    lambda: channel._protocol_factory(),
+                    sock=proxy_sock,
+                    ssl=channel._ssl,
+                    server_hostname=self._servers[0] if ssl_context else None,
+                )
+
+            except Exception as e:
+                msg = f"Failed to create proxy connection: {type(e).__name__}: {e}"
+                raise CVClientException(msg) from e
+
+            return protocol
+
+        # Override the standard method from grpclib with our proxy variant.
+        channel._create_connection = proxy_connection
+        return channel
 
     def _ssl_context(self) -> ssl.SSLContext | bool:
         """
@@ -114,9 +161,15 @@ class CVClientProtocol(
                 "https://" + self._servers[0] + "/cvpservice/login/authenticate.do",
                 auth=(self._username, self._password),
                 verify=self._verify_certs,
+                proxies=self._proxy_manager.get_requests_proxies() if self._proxy_manager is not None else None,
                 json={},
             )
+            response.raise_for_status()
+        except (HTTPError, RequestException) as e:
+            msg = f"Unable to get token from CloudVision server due to the following error: {e.args}."
+            raise CVClientException(msg) from e
 
+        try:
             self._token = response.json()["sessionId"]
         except (KeyError, JSONDecodeError) as e:
             msg = "Unable to get token from CloudVision server. Please supply service account token instead of username/password."
@@ -139,12 +192,18 @@ class CVClientProtocol(
                 "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
                 headers={"Authorization": f"Bearer {self._token}"},
                 verify=self._verify_certs,
+                proxies=self._proxy_manager.get_requests_proxies() if self._proxy_manager is not None else None,
                 json={},
             )
+            response.raise_for_status()
+        except (HTTPError, RequestException) as e:
+            msg = f"Unable to get version from CloudVision server due to the following error: {e.args}."
+            raise CVClientException(msg) from e
 
+        try:
             self._cv_version = CvVersion(response.json()["version"])
         except (KeyError, JSONDecodeError) as e:
-            msg = f"Unable to get version from CloudVision server. Got {response.text}"
+            msg = f"Unable to get version from CloudVision server. Got {response.text if response else 'No response'}"
             raise CVClientException(msg) from e
 
 
@@ -157,6 +216,10 @@ class CVClient(CVClientProtocol):
         password: str | None = None,
         port: int = 443,
         verify_certs: bool = True,
+        proxy_host: str | None = None,
+        proxy_port: int = 8080,
+        proxy_username: str | None = None,
+        proxy_password: str | None = None,
     ) -> None:
         """
         CVClient is a high-level API library for using CloudVision Resource APIs.
@@ -171,6 +234,10 @@ class CVClient(CVClientProtocol):
             password: Password to use for authentication if token is not set.
             port: TCP port to use for the connection.
             verify_certs: Disables SSL certificate verification if set to False. Not recommended for production.
+            proxy_host: HTTP proxy hostname.
+            proxy_port: HTTP proxy port.
+            proxy_username: Proxy authentication username.
+            proxy_password: Proxy authentication password.
         """
         if isinstance(servers, list):
             self._servers = servers
@@ -182,3 +249,15 @@ class CVClient(CVClientProtocol):
         self._username = username
         self._password = password
         self._verify_certs = verify_certs
+        self._proxy_manager = None
+
+        # Initialize proxy manager if proxy is configured
+        if proxy_host is not None:
+            self._proxy_manager = HTTPProxyManager(
+                proxy_host=proxy_host,
+                proxy_port=proxy_port,
+                proxy_username=proxy_username,
+                proxy_password=proxy_password,
+                target_host=self._servers[0],
+                target_port=self._port,
+            )

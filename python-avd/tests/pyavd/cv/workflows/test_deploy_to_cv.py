@@ -115,9 +115,14 @@ async def test_deploy_to_cv(
         result = await deploy_to_cv(
             cloudvision=CloudVision(
                 servers="",
-                token="",
-                username="",
-                password="",
+                token=None,
+                username=None,
+                password=None,
+                verify_certs=False,
+                proxy_host=None,
+                proxy_port=None,
+                proxy_username=None,
+                proxy_password=None,
             ),
             workspace=CVWorkspace(
                 name=MOCKED_WORKSPACE_NAME,

@@ -6,6 +6,8 @@
 # should have precedence
 
 type: l2leaf
+dc_name: Test_dc_1
+pod_name: Test_pod_1
 
 l2leaf:
   nodes:
@@ -13,6 +15,7 @@ l2leaf:
       id: 42
       system_mac_address: "42:42:42:42:42:42"
       serial_number: A37383692F12C7DE733D9A9B8E2B37AE
+      rack: Test_rack
 # This variable below won't have precedence
 system_mac_address: "66:66:66:66:66:66"
 serial_number: 66666666666666666666666666666666
