@@ -376,7 +376,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
             return self._vtep_loopback_ipv4_address
 
         if self.shared_utils.node_config.vtep_loopback and self.shared_utils.node_config.vtep_loopback.lower() == "loopback0":
-            return
+            return None
 
         if template_path := self.shared_utils.node_type_key_data.ip_addressing.vtep_ip:
             return self._template(
