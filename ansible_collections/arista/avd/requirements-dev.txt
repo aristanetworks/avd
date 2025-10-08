@@ -5,6 +5,8 @@ anta==1.5.0
 cryptography>=43.0.0
 netaddr>=0.7.19
 PyYAML>=6.0.0
+# temporarily capping pydantic for CI
+pydantic<2.12
 # dev requirements
 ansible-core>=2.16.0,<2.19.0
 ansible-doc-extractor>=0.1.10
