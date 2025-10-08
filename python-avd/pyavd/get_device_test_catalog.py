@@ -84,13 +84,13 @@ def get_device_test_catalog(
     # Validate that all specified peer devices in filters exist.
     all_filtered_peers = {peer for peer_list in list(run_map.values()) + list(skip_map.values()) for peer in peer_list}
     if unknown_peers := all_filtered_peers - set(minimal_structured_configs.keys()):
-        msg = f"Unknown peer devices found in test filters: {', '.join(sorted(unknown_peers))}"
+        msg = f"Unknown peer devices found in 'run_tests' or 'skip_tests' filters: {', '.join(sorted(unknown_peers))}"
         raise ValueError(msg)
 
     # Validate that all specified test names exist.
     all_filtered_tests = set(run_map.keys()) | set(skip_map.keys())
     if invalid_tests := all_filtered_tests - set(AVD_TEST_NAMES):
-        msg = f"Invalid test names found in filters: {', '.join(sorted(invalid_tests))}"
+        msg = f"Invalid test names found in 'run_tests' or 'skip_tests' filters: {', '.join(sorted(invalid_tests))}"
         raise ValueError(msg)
 
     test_contexts: list[TestContext] = []
