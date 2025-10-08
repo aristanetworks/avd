@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import cached_property
 from ipaddress import IPv4Address, IPv6Address, ip_interface
 from logging import getLogger
@@ -14,7 +14,7 @@ from typing import TYPE_CHECKING
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
 if TYPE_CHECKING:
-    from pyavd.api._anta import InputFactorySettings, MinimalStructuredConfig
+    from pyavd.api._anta import InputFactorySettings, MinimalStructuredConfig, TestSpec
 
 LOGGER = getLogger(__name__)
 
@@ -37,7 +37,34 @@ class BgpNeighborInterface:
 
 
 @dataclass
-class DeviceTestContext:
+class TestContext:
+    """TODO: Docstring."""
+
+    test_spec: TestSpec
+    peers_to_run: set[str] = field(default_factory=set)
+    peers_to_skip: set[str] = field(default_factory=set)
+
+    def run_for_peer(self, peer: str) -> bool:
+        """Determine if a test should run for a specific peer based on the run/skip filters."""
+        # Explicit skip takes highest precedence
+        if peer in self.peers_to_skip:
+            return False
+
+        # If a run filter exists for this test, the peer must be in it
+        if self.peers_to_run:
+            return peer in self.peers_to_run
+
+        # Default case is to run the test if not filtered by the rules above
+        return True
+
+    @property
+    def test_name(self) -> str:
+        """Return the test name."""
+        return self.test_spec.test_class.name
+
+
+@dataclass
+class DeviceContext:
     """Stores device test context data for ANTA test generation."""
 
     hostname: str

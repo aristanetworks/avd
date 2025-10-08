@@ -77,6 +77,7 @@ class LogMessage(Enum):
 
     # Peer-related messages
     PEER_UNAVAILABLE = "{identity} skipped - Peer {peer} not in fabric or not deployed"
+    PEER_FILTERED = "{identity} skipped - Peer {peer} filtered"
     PEER_INTERFACE_NOT_FOUND = "{interface} skipped - peer {peer} interface {peer_interface} not found"
     PEER_INTERFACE_USING_DHCP = "{interface} skipped - peer {peer} interface {peer_interface} using DHCP"
     PEER_INTERFACE_UNNUMBERED = "{interface} skipped - peer {peer} interface {peer_interface} using IP unnumbered"

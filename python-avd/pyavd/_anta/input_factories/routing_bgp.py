@@ -33,7 +33,7 @@ class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory):
                     peer_address=neighbor.ip_address,
                     vrf=neighbor.vrf,
                 )
-                for neighbor in self.device.bgp_neighbors
+                for neighbor in self.device_ctx.bgp_neighbors
             ],
             sort_key="peer_address",
         )
@@ -46,7 +46,7 @@ class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory):
                         interface=neighbor_intf.interface,
                         vrf=neighbor_intf.vrf,
                     )
-                    for neighbor_intf in self.device.bgp_neighbor_interfaces
+                    for neighbor_intf in self.device_ctx.bgp_neighbor_interfaces
                 ],
                 sort_key="interface",
             )

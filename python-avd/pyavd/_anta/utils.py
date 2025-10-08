@@ -28,3 +28,36 @@ def dump_anta_catalog(hostname: str, catalog: AntaCatalog, catalog_dir: str | Pa
     LOGGER.debug("<%s> Dumping ANTA catalog at %s", hostname, catalog_path)
     with catalog_path.open(mode="w", encoding="UTF-8") as stream:
         stream.write(catalog_dump.to_json())
+
+
+def parse_tests(test_list: list[str]) -> dict[str, set[str]]:
+    """
+    Parse a list of test strings into a dictionary mapping test names to a set of filters.
+
+    Args:
+        test_list: A list of strings, where each string is a test name,
+                   optionally with parenthesized, comma-separated arguments.
+
+    Returns:
+        A dictionary mapping each test name to a set of its filters.
+    """
+    parsed_map = {}
+    for item in test_list:
+        name, paren, args = item.partition("(")
+        name = name.strip()
+
+        if not paren:
+            # No parentheses, so no specific filters
+            parsed_map[name] = set()
+            continue
+
+        # If parentheses exist, process the arguments
+        filters_str = args.rstrip(")").strip()
+        if filters_str:
+            # Create a clean set of filters, stripping whitespace from each
+            parsed_map[name] = {f.strip() for f in filters_str.split(",")}
+        else:
+            # Handles cases like "TestName()"
+            parsed_map[name] = set()
+
+    return parsed_map

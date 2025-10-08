@@ -12,7 +12,7 @@ from pyavd._anta.logs import LogMessage, TestLoggerAdapter
 if TYPE_CHECKING:
     from anta.models import AntaTest
 
-    from pyavd._anta.models import DeviceTestContext
+    from pyavd._anta.models import DeviceContext, TestContext
 
 
 class AntaTestInputFactory(ABC):
@@ -24,8 +24,10 @@ class AntaTestInputFactory(ABC):
 
     Attributes:
     ----------
-    device : DeviceTestContext
+    device_ctx : DeviceTestContext
         The device context for the test.
+    test_ctx : TestContext
+        The test context including peer filters if any.
     structured_config : EosCliConfigGen
         The structured configuration model of the device.
     minimal_structured_configs : dict[str, MinimalStructuredConfig]
@@ -34,14 +36,15 @@ class AntaTestInputFactory(ABC):
         Custom logger adapter used for the input factory.
     """
 
-    def __init__(self, device_context: DeviceTestContext, test_name: str) -> None:
+    def __init__(self, device_context: DeviceContext, test_context: TestContext) -> None:
         """Initialize the `AntaTestInputFactory`."""
-        self.device = device_context
+        self.device_ctx = device_context
+        self.test_ctx = test_context
         self.structured_config = device_context.structured_config
         self.minimal_structured_configs = device_context.minimal_structured_configs
 
         # Create the logger adapter for the test input factory
-        self.logger_adapter = TestLoggerAdapter(logger=getLogger(self.__module__), extra={"device": self.device.hostname, "test": test_name})
+        self.logger_adapter = TestLoggerAdapter(logger=getLogger(self.__module__), extra={"device": self.device_ctx.hostname, "test": self.test_ctx.test_name})
 
     @abstractmethod
     def create(self) -> list[AntaTest.Input] | None:
@@ -53,6 +56,13 @@ class AntaTestInputFactory(ABC):
             self.logger_adapter.debug(LogMessage.PEER_UNAVAILABLE, identity=identity, peer=peer)
             return False
         return True
+
+    def is_peer_filtered(self, peer: str, identity: str) -> bool:
+        """Check if a peer is filtered in the test context filters."""
+        if not self.test_ctx.run_for_peer(peer):
+            self.logger_adapter.debug(LogMessage.PEER_FILTERED, identity=identity, peer=peer)
+            return True
+        return False
 
     def get_interface_ip(self, peer: str, peer_interface: str, interface: str) -> str | None:
         """Get the IP address of a peer interface."""

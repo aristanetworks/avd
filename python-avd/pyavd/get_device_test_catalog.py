@@ -56,10 +56,13 @@ def get_device_test_catalog(
     AntaCatalog
         The generated ANTA catalog for the device.
     """
+    from pyavd._eos_cli_config_gen.schema import EosCliConfigGen  # noqa: PLC0415
+
     from ._anta.factories import create_catalog  # noqa: PLC0415
     from ._anta.index import AVD_TEST_INDEX, AVD_TEST_NAMES  # noqa: PLC0415
     from ._anta.lib import AntaCatalog  # noqa: PLC0415
-    from ._anta.utils import dump_anta_catalog  # noqa: PLC0415
+    from ._anta.models import DeviceContext, TestContext  # noqa: PLC0415
+    from ._anta.utils import dump_anta_catalog, parse_tests  # noqa: PLC0415
     from .api._anta import AvdCatalogGenerationSettings  # noqa: PLC0415
 
     settings = settings or AvdCatalogGenerationSettings()
@@ -71,39 +74,58 @@ def get_device_test_catalog(
         LOGGER.info("<%s> Device is not deployed, returning an empty catalog", hostname)
         return AntaCatalog()
 
-    # Check for invalid test names across all filters
-    invalid_tests = {
-        "run_tests": set(settings.run_tests) - set(AVD_TEST_NAMES),
-        "skip_tests": set(settings.skip_tests) - set(AVD_TEST_NAMES),
-    }
+    run_map = parse_tests(settings.run_tests)
+    skip_map = parse_tests(settings.skip_tests)
 
-    for filter_type, invalid_names in invalid_tests.items():
-        if invalid_names:
-            msg = f"Invalid test names in {filter_type}: {', '.join(invalid_names)}"
+    # Validate that all specified peer devices in filters exist.
+    all_filtered_peers = {peer for peer_list in list(run_map.values()) + list(skip_map.values()) for peer in peer_list}
+    if unknown_peers := all_filtered_peers - set(minimal_structured_configs.keys()):
+        msg = f"Unknown peer devices found in test filters: {', '.join(sorted(unknown_peers))}"
+        raise ValueError(msg)
+
+    # Validate that all specified test names exist.
+    all_filtered_tests = set(run_map.keys()) | set(skip_map.keys())
+    if invalid_tests := all_filtered_tests - set(AVD_TEST_NAMES):
+        msg = f"Invalid test names found in filters: {', '.join(sorted(invalid_tests))}"
+        raise ValueError(msg)
+
+    test_contexts: list[TestContext] = []
+
+    # If run_tests is specified, it forms the basis of which tests to consider. Otherwise, consider all AVD tests.
+    test_specs_to_consider = [spec for spec in AVD_TEST_INDEX if spec.test_class.name in run_map] if run_map else AVD_TEST_INDEX
+
+    for test_spec in test_specs_to_consider:
+        test_name = test_spec.test_class.name
+
+        peers_to_run = run_map.get(test_name, set())
+        peers_to_skip = skip_map.get(test_name, set())
+
+        # A global skip (skip_map entry with an empty peer set) always wins.
+        if test_name in skip_map and not peers_to_skip:
+            continue
+
+        # Raise if a test is globally specified in both lists.
+        if not peers_to_run and test_name in run_map and not peers_to_skip and test_name in skip_map:
+            msg = f"Ambiguous configuration for test '{test_name}': it is specified globally in both run_tests and skip_tests."
             raise ValueError(msg)
 
-    # Remove any tests from run_tests that are in skip_tests
-    if settings.run_tests and settings.skip_tests:
-        settings.run_tests = [test for test in settings.run_tests if test not in settings.skip_tests]
-        LOGGER.debug("<%s> Cleaned up run_tests after removing skipped tests: %s", hostname, settings.run_tests)
+        # Raise if peers are specified in both run and skip lists for the same test.
+        if conflicting_peers := peers_to_run & peers_to_skip:
+            msg = f"Conflicting peer filters for test '{test_name}': peers {sorted(conflicting_peers)} are in both run and skip lists."
+            raise ValueError(msg)
 
-    # Filter test specs based on skip_tests and run_tests
-    filtered_test_specs = []
+        test_contexts.append(TestContext(test_spec=test_spec, peers_to_run=peers_to_run, peers_to_skip=peers_to_skip))
 
-    for test in AVD_TEST_INDEX:
-        # Skip tests explicitly mentioned in skip_tests
-        if test.test_class.name in settings.skip_tests:
-            continue
-        # If run_tests is specified, only include tests in that set
-        if settings.run_tests and test.test_class.name not in settings.run_tests:
-            continue
+    # Add custom test specs, which are not subject to DSL filtering.
+    test_contexts.extend([TestContext(test_spec=test_spec) for test_spec in settings.custom_test_specs])
 
-        filtered_test_specs.append(test)
-
-    # Add custom test specs, avoiding duplicates
-    filtered_test_specs.extend([test for test in settings.custom_test_specs if test not in filtered_test_specs])
-
-    catalog = create_catalog(hostname, structured_config, minimal_structured_configs, settings.input_factory_settings, filtered_test_specs)
+    device_context = DeviceContext(
+        hostname=hostname,
+        structured_config=EosCliConfigGen._load(structured_config),
+        minimal_structured_configs=minimal_structured_configs,
+        input_factory_settings=settings.input_factory_settings,
+    )
+    catalog = create_catalog(device_context, test_contexts)
 
     if settings.output_dir:
         dump_anta_catalog(hostname, catalog, settings.output_dir)

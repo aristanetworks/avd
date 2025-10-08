@@ -63,7 +63,7 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory):
         )
 
         # If the device is a VTEP, add the Vxlan1 interface to the list
-        if self.device.is_vtep:
+        if self.device_ctx.is_vtep:
             interfaces.append(InterfaceState(name="Vxlan1", status="up"))
 
         return [VerifyInterfacesStatus.Input(interfaces=natural_sort(interfaces, sort_key="name"))] if interfaces else None

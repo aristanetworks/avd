@@ -131,6 +131,9 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
                 self.logger_adapter.debug(LogMessage.INTERFACE_UNNUMBERED, interface=intf.name)
                 continue
 
+            if not self.is_peer_filtered(intf.peer, identity=intf.name):
+                continue
+
             if (peer_interface_ip := self.get_interface_ip(intf.peer, intf.peer_interface, intf.name)) is None:
                 continue
 
@@ -165,7 +168,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
                 vrf=neighbor.vrf,
                 repeat=1,
             )
-            for neighbor in self.device.bgp_neighbors
+            for neighbor in self.device_ctx.bgp_neighbors
             if neighbor.update_source is not None
         ]
 
