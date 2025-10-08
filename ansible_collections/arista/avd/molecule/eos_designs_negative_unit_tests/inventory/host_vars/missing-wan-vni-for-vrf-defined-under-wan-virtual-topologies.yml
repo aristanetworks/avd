@@ -2,7 +2,6 @@
 wan_mode: cv-pathfinder
 
 underlay_routing_protocol: ebgp
-wan_use_evpn_node_settings_for_lan: false
 
 cv_pathfinder_regions:
   - name: AVD_Land_East

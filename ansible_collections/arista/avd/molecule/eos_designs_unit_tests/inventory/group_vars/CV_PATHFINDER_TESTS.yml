@@ -631,7 +631,6 @@ tenants:
                 ip_address: 10.66.66.1
   - name: TenantD
     # Tenant used to test VRFs
-    # knob wan_use_evpn_node_settings_for_lan: true
     mac_vrf_vni_base: 1000
     vrfs:
       - name: WAN-VRF-NO-AF
@@ -671,6 +670,9 @@ wan_virtual_topologies:
       # Using PROD policy to avoid extra noise
       policy: PROD-AVT-POLICY
       wan_vni: 200
+    - name: VRF-NO-WAN
+      policy: PROD-AVT-POLICY
+      wan_vni: 150
   policies:
     - name: PROD-AVT-POLICY
       default_virtual_topology:

@@ -616,7 +616,7 @@ class WanMixin(Protocol):
         configured_as_wan_vrf = vrf.name in self.inputs.wan_virtual_topologies.vrfs or vrf.name == "default"
 
         # Old behavior where we rely on address_families.
-        if not self.inputs.wan_use_evpn_node_settings_for_lan and "evpn" in vrf.address_families and not configured_as_wan_vrf:
+        if "evpn" in vrf.address_families and not configured_as_wan_vrf:
             msg = (
                 f"The VRF '{vrf.name}' does not have a 'wan_vni' defined under 'wan_virtual_topologies'. "
                 "If this VRF was not intended to be extended over the WAN, but still required to be configured on the WAN router, "
@@ -630,12 +630,7 @@ class WanMixin(Protocol):
     @cached_property
     def evpn_wan_gateway(self: SharedUtilsProtocol) -> bool:
         """Return whether device is running in wan gateway mode."""
-        gateway = (
-            self.wan_role == "client"
-            and self.evpn_role != "none"
-            and self.overlay_routing_protocol != "none"
-            and self.inputs.wan_use_evpn_node_settings_for_lan
-        )
+        gateway = self.wan_role == "client" and self.evpn_role != "none" and self.overlay_routing_protocol != "none"
         if not gateway:
             return False
 
