@@ -4,41 +4,41 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet43
-  description: P2P_host1_Ethernet43
-  shutdown: false
-  mtu: 9214
-  ip_address: 10.42.42.205/31
-  peer: host1
-  peer_interface: Ethernet43
-  peer_type: l3leaf
+- name: Ethernet12
+  description: Structured config for platform matching the regex
   switchport:
-    enabled: false
-hostname: host4
+    enabled: true
+hostname: 7020TX-LEAF1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
-ip_virtual_router_mac_address: cafe:cafe:cafe
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.42.103/32
+  ip_address: 192.168.255.37/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 172.16.0.103/32
+  ip_address: 192.168.254.37/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.201.118/24
+  type: oob
 metadata:
   is_deployed: true
-  platform: vEOS-LAB
-  fabric_name: EOS_DESIGNS_DEPRECATED_VARS
+  platform: 7020TX
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 192.168.42.0/24 eq 32
+    action: permit 192.168.255.0/24 eq 32
   - sequence: 20
-    action: permit 172.16.0.0/24 eq 32
+    action: permit 192.168.254.0/24 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -52,8 +52,8 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '101'
-  router_id: 192.168.42.103
+  as: '924'
+  router_id: 192.168.255.37
   maximum_paths:
     paths: 4
     ecmp: 4
@@ -74,12 +74,6 @@ router_bgp:
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
-  neighbors:
-  - ip_address: 10.42.42.204
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '101'
-    peer: host1
-    description: host1_Ethernet43
   redistribute:
     connected:
       enabled: true
@@ -106,7 +100,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: host4_VTEP
+    description: 7020TX-LEAF1_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

@@ -298,7 +298,7 @@ $defs:
             max_length: 8
           message_digest_keys:
             type: list
-            # TODO: AVD 6.0.0: Make id primary_key and key required.
+            primary_key: id
             items:
               type: dict
               keys:
