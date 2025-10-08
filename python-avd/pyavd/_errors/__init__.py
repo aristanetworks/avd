@@ -2,6 +2,8 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+from collections.abc import Sequence
+
 
 class AristaAvdError(Exception):
     host: str | None
@@ -11,7 +13,7 @@ class AristaAvdError(Exception):
         self.message = message
         super().__init__(self.message)
 
-    def _json_path_to_string(self, json_path: list[str | int]) -> str:
+    def _json_path_to_string(self, json_path: Sequence[str | int]) -> str:
         path = ""
         for index, elem in enumerate(json_path):
             if isinstance(elem, int):
@@ -45,7 +47,7 @@ class AristaAvdMissingVariableError(AristaAvdError):
 
 
 class AvdSchemaError(AristaAvdError):
-    def __init__(self, message: str = "Schema Error", path: list[str | int] | None = None) -> None:
+    def __init__(self, message: str = "Schema Error", path: Sequence[str | int] | None = None) -> None:
         if path is not None:
             self.path = self._json_path_to_string(path)
             message = f"'Validation Error: {self.path}': {message}"
@@ -53,7 +55,7 @@ class AvdSchemaError(AristaAvdError):
 
 
 class AvdValidationError(AristaAvdError):
-    def __init__(self, message: str = "Schema Error", path: list[str | int] | None = None) -> None:
+    def __init__(self, message: str = "Schema Error", path: Sequence[str | int] | None = None) -> None:
         if path is not None:
             self.path = self._json_path_to_string(path)
             message = f"'Validation Error: {self.path}': {message}"
