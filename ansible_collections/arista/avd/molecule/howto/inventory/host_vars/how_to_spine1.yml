@@ -1,0 +1,9 @@
+---
+spine:
+  defaults:
+    loopback_ipv4_pool: 192.168.1.0/24
+    bgp_as: 65001
+  nodes:
+    - name: how_to_spine1
+      id: 1
+      mgmt_ip: 192.168.0.2/24
