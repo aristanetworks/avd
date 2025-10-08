@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, TypeVar, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get_ip_from_pool
 from pyavd._utils.password_utils.password import isis_encrypt
 
@@ -120,13 +120,9 @@ class UtilsMixin(Protocol):
         # Set descriptions or fallback to list with None values
         descriptions = p2p_link.descriptions or [None, None]
 
-        try:
-            ip = ips[index]
-            peer_ip = ips[peer_index]
-            description = descriptions[index]
-        except IndexError as exc:
-            msg = "p2p_links model is intended to work for only two devices per entry."
-            raise AristaAvdError(msg) from exc
+        ip = ips[index]
+        peer_ip = ips[peer_index]
+        description = descriptions[index]
 
         data = {
             "peer": peer,
