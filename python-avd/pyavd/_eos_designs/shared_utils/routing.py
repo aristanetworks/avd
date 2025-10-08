@@ -121,7 +121,7 @@ class RoutingMixin(Protocol):
                 prefix, suffix = map(int, str(asn).split("."))
                 return str(int(prefix) * 65536 + int(suffix))
         except ValueError as e:
-            msg = f"The value for 'asn' must be an integer or a float, but received '{asn}'."
+            msg = f"Failed to convert '{prefix}' or '{suffix} to an integer when converting the BGP AS '{asn}' to asplain notation`."
             raise AristaAvdInvalidInputsError(msg) from e
 
         return str(asn)
