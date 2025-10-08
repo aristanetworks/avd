@@ -50,6 +50,17 @@ Note: node_type are not tied to a design you can use any type within your networ
 
 ## How to Use Node Types
 
+### Concepts
+
+The keys required to use node types are defined in the following table.
+
+| Key | Description |
+| --- | --- |
+| node type | A data model template that defines the behavior and configuration of a group of devices |
+| defaults | Define default variables for all nodes of this type |
+| nodes | Define variables for a specific device |
+| nodes_groups | Define variables for all nodes of this type for a group of devices i.e. MLAG pair |
+
 Using node types is a simple process, you assign the type and AVD handles the rest.
 
 ### Step 1: Assign a Node Type
@@ -76,7 +87,19 @@ Now, create a group variables file for each group and define the type there.
 `group_vars\SPINES.yml`
 
 ```yaml
-type: spine
+spine:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.0.0/27
+    bgp_as: 65100
+  nodes:
+    - name: spine-1
+      id: 1
+      mgmt_ip: 172.16.1.11/24
+
+    - name: spine-2
+      id: 2
+      mgmt_ip: 172.16.1.12/24
 ```
 
 `group_vars\L3_LEAFS.yml`
