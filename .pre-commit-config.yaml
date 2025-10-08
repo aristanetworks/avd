@@ -21,6 +21,7 @@ repos:
         exclude: >-
           (?x)
           (ansible_collections/arista/avd/molecule
+          |ansible_collections/arista/avd/roles/(eos_cli_config_gen|eos_designs)/docs/(eos_cli_config_gen|eos_designs).doc.yml
           |pickle$
           |python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/__init__.py
           |python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py

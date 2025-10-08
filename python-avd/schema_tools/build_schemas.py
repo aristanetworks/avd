@@ -15,6 +15,7 @@ from .constants import LICENSE_HEADER, SCHEMAS
 from .generate_classes.src_generators import FileSrc
 from .generate_classes.utils import generate_class_name
 from .generate_docs.mdtabsgen import get_md_tabs
+from .generate_docs.yamlgen import get_yaml
 from .metaschema.meta_schema_model import AristaAvdSchema
 from .store import create_store
 
@@ -91,6 +92,12 @@ def build_schema_tables(schema_store: dict) -> None:
         for file in remove_files:
             LOGGER.info("Deleting file %s", file.absolute())
             file.unlink()
+
+        # Build a single table/yaml with the full schema
+        LOGGER.debug("Building single yaml file with full schema %s", schema_name)
+        yaml_file = schema_paths.docs_path.joinpath(f"{schema_name}.doc.yml")
+        with Path(yaml_file).open(mode="w", encoding="UTF-8") as file:
+            file.write(get_yaml(schema, None, raw=True))
 
 
 def build_schema_classes() -> None:

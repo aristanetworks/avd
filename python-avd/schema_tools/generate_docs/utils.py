@@ -22,6 +22,9 @@ def render_schema_field(schema: AvdSchemaField, target_table: str | None) -> boo
         # Always render the root dict. Actually the root dict will not be rendered as a field, but we need this to render the children.
         return True
 
+    if target_table is None:
+        return True
+
     if target_table == schema._table:
         # Target table matches the field table name.
         return True

@@ -9,11 +9,13 @@ if TYPE_CHECKING:
     from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
 
 
-def get_yaml(schema: AristaAvdSchema, target_table: str | None = None) -> str:
+def get_yaml(schema: AristaAvdSchema, target_table: str | None = None, raw: bool = False) -> str:
     """
     Returns one markdown codeblock with YAML either containing all keys of the given schema or only a subset if "target_table" is set.
 
     Also adds foot notes for use with mkdocs codeblock annotations as required.
+
+    Raw means we will just return the yaml and now wrap it in markdown with annotations.
     """
     lines = []
     annotations = []
@@ -26,6 +28,8 @@ def get_yaml(schema: AristaAvdSchema, target_table: str | None = None) -> str:
             lines.append(yamlline.line)
     lines.append("")  # Add final newline
     yaml = "\n".join(lines).strip()
+    if raw:
+        return f"{yaml}\n"
     markdown = f"```yaml\n{yaml}\n```\n"
     if annotations:
         markdown += "".join(annotations)

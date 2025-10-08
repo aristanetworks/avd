@@ -46,6 +46,9 @@ rules:
       - /ansible_collections/arista/avd/examples/**/intended/structured_configs/cvp/
       - /ansible_collections/arista/avd/changelogs/fragments_backup/
       - /ansible_collections/arista/avd/tests/inventory/**/expected_output/
+      - /ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/eos_cli_config_gen.doc.yml
+      - /ansible_collections/arista/avd/roles/eos_designs/docs/eos_designs.doc.yml
+      - /docs/contribution/eos_designs_facts_internal/eos_designs_facts_protocol.doc.yml
       - /python-avd/pyavd/**/schema/
       - /python-avd/tests/**/artifacts/
       - /.github/workflows/

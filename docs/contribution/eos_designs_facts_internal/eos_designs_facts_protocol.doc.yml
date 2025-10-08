@@ -1,0 +1,286 @@
+id: <int>
+type: <str; required>
+platform: <str>
+is_deployed: <bool; required>
+serial_number: <str>
+mgmt_interface: <str>
+mgmt_ip: <str>
+mpls_lsr: <bool; required>
+evpn_multicast: <bool>
+loopback_ipv4_pool: <str>
+loopback_ipv6_pool: <str>
+uplink_ipv4_pool: <str>
+uplink_ipv6_pool: <str>
+
+# IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined with `uplink_ipv4_pool` set on the downlink switch.
+downlink_pools:
+
+    # Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+    # IPv4 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'.
+  - ipv4_pool: <str>
+
+    # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+    # IPv6 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'.
+    ipv6_pool: <str>
+
+    # List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool.
+    downlink_interfaces:
+      - <str>
+bgp_as: <str>
+underlay_routing_protocol: <str; required>
+vtep_loopback_ipv4_pool: <str>
+inband_mgmt_subnet: <str>
+inband_mgmt_ipv6_subnet: <str>
+inband_mgmt_vlan: <int>
+inband_ztp: <bool>
+inband_ztp_vlan: <int>
+inband_ztp_lacp_fallback_delay: <int>
+dc_name: <str>
+group: <str>
+router_id: <str>
+
+# Used for fabric docs.
+inband_mgmt_ip: <str>
+
+# Used for fabric docs.
+inband_mgmt_interface: <str>
+
+# Used for fabric docs.
+pod: <str; required>
+
+# List of connected_endpoints_keys in use on this device.
+# Used for fabric docs.
+connected_endpoints_keys: # required
+  - key: <str; required; unique>
+
+    # Type used for documentation.
+    type: <str>
+
+    # Description used for documentation.
+    description: <str>
+
+# List of port_profiles configured - including the ones not in use.
+# Used for fabric docs.
+port_profile_names:
+  - profile: <str; required>
+    parent_profile: <str>
+mlag_peer: <str>
+mlag_port_channel_id: <int>
+mlag_interfaces:
+  - <str>
+mlag_ip: <str>
+mlag_l3_ip: <str>
+
+# The switch ids of both primary and secondary switches for a this node group.
+mlag_switch_ids:
+  primary: <int; required>
+  secondary: <int; required>
+
+# Should multicast be enabled on the mlag peer-l3-vlan.
+mlag_underlay_multicast:
+  pim_sm: <bool; required>
+  static: <bool; required>
+evpn_role: <str>
+mpls_overlay_role: <str>
+
+# For evpn clients the default value for EVPN Route Servers is the content of the uplink_switches variable set elsewhere.
+# For all other evpn roles there is no default.
+evpn_route_servers:
+  - <str>
+
+# List of inventory hostname acting as MPLS route-reflectors.
+mpls_route_reflectors:
+
+    # Inventory_hostname_of_mpls_route_reflectors.
+  - <str>
+overlay:
+  peering_address: <str>
+  evpn_mpls: <bool; required>
+vtep_ip: <str>
+vtep_ipv6: <str>
+
+# Number of parallel links towards uplink switches.
+# Changing this value may change interface naming on uplinks (and corresponding downlinks).
+# Can be used to reserve interfaces for future parallel uplinks.
+max_parallel_uplinks: <int; default=1>
+max_uplink_switches: <int; required>
+
+# List of uplinks with all parameters
+# These facts are leveraged by templates for this device when rendering uplinks
+# and by templates for peer devices when rendering downlinks
+uplinks: # required
+  - interface: <str; required>
+    peer: <str; required>
+    peer_interface: <str; required>
+    peer_type: <str; required>
+    peer_is_deployed: <bool; required>
+    peer_bgp_as: <str>
+    type: <str; "underlay_p2p" | "underlay_l2"; required>
+
+    # Interface Speed.
+    speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
+    bfd: <bool>
+
+    # Interface Speed.
+    peer_speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
+
+    # Enable PTP on all infrastructure links.
+    ptp:
+      enable: <bool; default=False>
+    mac_security:
+      profile: <str; required>
+    underlay_multicast_pim_sm: <bool>
+    underlay_multicast_static: <bool>
+    ipv6_enable: <bool>
+    prefix_length: <int>
+    ip_address: <str>
+    peer_ip_address: <str>
+    link_tracking_groups:
+      - name: <str; required; unique>
+        direction: <str; "upstream" | "downstream"; required>
+    peer_node_group: <str>
+    node_group: <str>
+    mlag: <bool>
+    peer_mlag: <bool>
+    channel_group_id: <int>
+    peer_channel_group_id: <int>
+    trunk_groups:
+      - <str>
+    peer_trunk_groups:
+      - <str>
+    vlans: <str>
+    native_vlan: <int>
+    short_esi: <str>
+    peer_short_esi: <str>
+    spanning_tree_portfast: <str; "edge" | "network">
+    peer_spanning_tree_portfast: <str; "edge" | "network">
+    sflow_enabled: <bool>
+
+    # Enable flow-tracking on all fabric uplinks.
+    flow_tracking:
+      enabled: <bool; default=False>
+
+      # Flow tracker name as defined in flow_tracking_settings.
+      name: <str; default="FLOW-TRACKER">
+    inband_ztp_vlan: <int>
+    inband_ztp_lacp_fallback_delay: <int>
+    dhcp_server: <bool>
+
+    # Custom structured config applied to `uplink_interfaces`.
+    ethernet_structured_config: <dict>
+
+    # Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+    port_channel_structured_config: <dict>
+
+    # Custom structured config applied to `uplink_interfaces`.
+    peer_ethernet_structured_config: <dict>
+
+    # Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+    peer_port_channel_structured_config: <dict>
+    subinterfaces:
+      - interface: <str; required; unique>
+        peer_interface: <str; required>
+        vrf: <str; required>
+        encapsulation_dot1q_vlan: <int; required>
+        ipv6_enable: <bool>
+        prefix_length: <int>
+        ipv6_prefix_length: <int>
+        ip_address: <str>
+        ipv6_address: <str>
+        peer_ip_address: <str>
+        peer_ipv6_address: <str>
+
+        # Custom structured config applied to `uplink_interfaces`.
+        ethernet_structured_config: <dict>
+uplink_peers:
+  - <str>
+uplink_switch_vrfs:
+  - <str>
+
+# Compressed list of vlans to be defined on this switch after filtering network services.
+# The filter is based on filter.tenants, filter.tags but not filter.only_vlans_in_use.
+#
+# Ex. "1-100, 201-202"
+#
+# This excludes the optional "uplink_native_vlan" if that vlan is not used for anything else.
+# This is to ensure that native vlan is not necessarily permitted on the uplink trunk.
+vlans: <str; required>
+
+# Compressed list of vlans in use by endpoints connected to this switch, downstream switches or MLAG peer and it's downstream switches.
+endpoint_vlans: <str>
+
+# List of trunk_groups in use by endpoints connected to this switch.
+local_endpoint_trunk_groups:
+  - <str>
+
+# List of trunk_groups in use by endpoints connected to this switch, downstream switches or MLAG peer and it's downstream switches.
+endpoint_trunk_groups:
+  - <str>
+
+# List of path-groups used for the WAN configuration.
+wan_path_groups:
+  - interfaces:
+      - name: <str; required>
+        public_ip: <str>
+        connected_to_pathfinder: <bool; required>
+        wan_circuit_id: <str>
+
+    # Path-group name.
+    name: <str; required; unique>
+
+    # Path-group id.
+    # Required until an auto ID algorithm is implemented.
+    id: <int; required>
+
+    # Additional information about the path-group for documentation purposes.
+    description: <str>
+
+    # Configuration of IPSec at the path-group level.
+    ipsec:
+
+      # Enable IPSec for dynamic peers.
+      dynamic_peers: <bool; default=True>
+
+      # Enable IPSec for static peers.
+      static_peers: <bool; default=True>
+
+    # List of path-groups to import in this path-group.
+    import_path_groups:
+
+        # Remote path-group to import.
+      - remote: <str>
+
+        # Optional, if not set, the path-group `name` is used as local.
+        local: <str>
+
+    # Preference value used when a preference is not given for a path-group in the `wan_virtual_topologies.policies` input or when
+    # the path-group is used in an auto generated policy except if `excluded_from_default_policy` is set to `true.
+    #
+    # Valid values are 1-65535 | "preferred" | "alternate".
+    #
+    # `preferred` is converted to priority 1.
+    # `alternate` is converted to priority 2.
+    default_preference: <str; default="preferred">
+
+    # When set to `true`, the path-group is excluded from AVD auto generated policies.
+    excluded_from_default_policy: <bool; default=False>
+
+    # Period between the transmission of consecutive keepalive messages, and failure threshold.
+    dps_keepalive:
+
+      # Interval in milliseconds. Valid values are 50-60000 | "auto".
+      #
+      # When auto, the interval and failure_threshold are automatically determined based on
+      # path state.
+      interval: <str>
+
+      # Failure threshold in number of lost keep-alive messages.
+      failure_threshold: <int; 2-100; default=5>
+uplink_switch_interfaces:
+  - <str>
+downlink_switches:
+  - <str>
+evpn_route_server_clients:
+  - <str>
+mpls_route_reflector_clients:
+  - <str>
