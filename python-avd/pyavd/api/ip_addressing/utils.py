@@ -108,8 +108,11 @@ class UtilsMixin(Protocol):
         return self.shared_utils.node_config.vtep_loopback_ipv6_address
 
     @cached_property
-    def _vtep_loopback_ipv4_pool(self: AvdIpAddressingProtocol) -> str | None:
-        return self.shared_utils.vtep_loopback_ipv4_pool
+    def _vtep_loopback_ipv4_pool(self: AvdIpAddressingProtocol) -> str:
+        if (vtep_loopback_ipv4_pool := self.shared_utils.vtep_loopback_ipv4_pool) is None:
+            msg = f"Can't assign IP from `vtep_loopback_ipv4_pool` since `underlay_ipv6_numbered: {self.inputs.underlay_ipv6_numbered}` is defined in inputs"
+            raise AristaAvdError(msg)
+        return vtep_loopback_ipv4_pool
 
     @cached_property
     def _vtep_loopback_ipv6_pool(self: AvdIpAddressingProtocol) -> str:
@@ -200,7 +203,7 @@ class UtilsMixin(Protocol):
         )
         raise AristaAvdError(msg)
 
-    def _get_p2p_ipv4_pool_and_offset(self: AvdIpAddressingProtocol, uplink_switch_index: int) -> tuple[str | None, int | None]:
+    def _get_p2p_ipv4_pool_and_offset(self: AvdIpAddressingProtocol, uplink_switch_index: int) -> tuple[str, int]:
         """
         Returns IP pool and offset as a tuple according to the uplink_switch_index.
 
@@ -221,17 +224,17 @@ class UtilsMixin(Protocol):
             )
             raise AristaAvdError(msg)
 
-        if uplink_pool is None and downlink_pool is None:
-            msg = "Unable to assign IPs for uplinks. Either 'uplink_ipv4_pool' on this switch or 'downlink_pools' on all the uplink switches must be set."
-            raise AristaAvdInvalidInputsError(msg)
-
         if uplink_pool is not None:
             uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
             return (uplink_pool, uplink_offset)
 
-        return (downlink_pool, downlink_offset)
+        if downlink_pool is not None and downlink_offset is not None:
+            return (downlink_pool, downlink_offset)
 
-    def _get_p2p_ipv6_pool_and_offset(self: AvdIpAddressingProtocol, uplink_switch_index: int) -> tuple[str | None, int | None]:
+        msg = "Unable to assign IPs for uplinks. Either 'uplink_ipv4_pool' on this switch or 'downlink_pools' on all the uplink switches must be set."
+        raise AristaAvdInvalidInputsError(msg)
+
+    def _get_p2p_ipv6_pool_and_offset(self: AvdIpAddressingProtocol, uplink_switch_index: int) -> tuple[str, int]:
         """
         Returns IP pool and offset as a tuple according to the uplink_switch_index.
 
@@ -252,12 +255,12 @@ class UtilsMixin(Protocol):
             )
             raise AristaAvdError(msg)
 
-        if uplink_pool is None and downlink_pool is None:
-            msg = "Unable to assign IPs for uplinks. Either 'uplink_ipv6_pool' on this switch or 'downlink_pools' on all the uplink switches must be set."
-            raise AristaAvdInvalidInputsError(msg)
-
         if uplink_pool is not None:
             uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
             return (uplink_pool, uplink_offset)
 
-        return (downlink_pool, downlink_offset)
+        if downlink_pool is not None and downlink_offset is not None:
+            return (downlink_pool, downlink_offset)
+
+        msg = "Unable to assign IPs for uplinks. Either 'uplink_ipv6_pool' on this switch or 'downlink_pools' on all the uplink switches must be set."
+        raise AristaAvdInvalidInputsError(msg)

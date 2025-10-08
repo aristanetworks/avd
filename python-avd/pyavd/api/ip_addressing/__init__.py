@@ -6,7 +6,6 @@ from collections import ChainMap
 from typing import Any, Protocol
 
 from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
-from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils import get_ip_from_pool
 
 from .utils import UtilsMixin
@@ -25,8 +24,8 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         return get_ip_from_pool(pool, prefixlen, subnet_offset, ip_offset)
 
     def _template(self, template_path: str, **kwargs: Any) -> str:
-        template_vars = ChainMap(kwargs, dict(self._hostvars))
-        return self.shared_utils.template_var(template_path, dict(template_vars))
+        template_vars = ChainMap(kwargs, self._hostvars)
+        return self.shared_utils.template_var(template_path, template_vars)
 
     def _mlag_ip(self, pool: str, ip_offset: int, address_family: str = "ipv4") -> str:
         """
@@ -201,9 +200,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         prefixlen = self.inputs.fabric_ip_addressing.p2p_uplinks.ipv4_prefix_length
         p2p_ipv4_pool, offset = self._get_p2p_ipv4_pool_and_offset(uplink_switch_index)
-        if p2p_ipv4_pool is None or offset is None:
-            msg = "Either p2p_ipv4_pool or offset is None"
-            raise AristaAvdMissingVariableError(msg)
+
         return get_ip_from_pool(p2p_ipv4_pool, prefixlen, offset, 1)
 
     def p2p_uplinks_ipv6(self, uplink_switch_index: int) -> str:
@@ -211,9 +208,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         uplink_switch_index = int(uplink_switch_index)
         prefixlen = self.inputs.fabric_ip_addressing.p2p_uplinks.ipv6_prefix_length
         p2p_ipv6_pool, offset = self._get_p2p_ipv6_pool_and_offset(uplink_switch_index)
-        if p2p_ipv6_pool is None or offset is None:
-            msg = "Either p2p_ipv4_pool or offset is None"
-            raise AristaAvdMissingVariableError(msg)
+
         return get_ip_from_pool(p2p_ipv6_pool, prefixlen, offset, 1)
 
     def p2p_uplinks_peer_ip(self, uplink_switch_index: int) -> str:
@@ -233,9 +228,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         prefixlen = self.inputs.fabric_ip_addressing.p2p_uplinks.ipv4_prefix_length
         p2p_ipv4_pool, offset = self._get_p2p_ipv4_pool_and_offset(uplink_switch_index)
-        if p2p_ipv4_pool is None or offset is None:
-            msg = "Either p2p_ipv4_pool or offset is None"
-            raise AristaAvdMissingVariableError(msg)
+
         return get_ip_from_pool(p2p_ipv4_pool, prefixlen, offset, 0)
 
     def p2p_uplinks_peer_ipv6(self, uplink_switch_index: int) -> str:
@@ -243,9 +236,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         uplink_switch_index = int(uplink_switch_index)
         prefixlen = self.inputs.fabric_ip_addressing.p2p_uplinks.ipv6_prefix_length
         p2p_ipv6_pool, offset = self._get_p2p_ipv6_pool_and_offset(uplink_switch_index)
-        if p2p_ipv6_pool is None or offset is None:
-            msg = "Either p2p_ipv4_pool or offset is None"
-            raise AristaAvdMissingVariableError(msg)
+
         return get_ip_from_pool(p2p_ipv6_pool, prefixlen, offset, 0)
 
     def p2p_vrfs_uplinks_ip(
@@ -352,9 +343,6 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
             )
 
         offset = self._mlag_primary_id + self._loopback_ipv4_offset
-        if self._vtep_loopback_ipv4_pool is None:
-            msg = "vtep_loopback_ipv4_pool"
-            raise AristaAvdMissingVariableError(msg)
         return get_ip_from_pool(self._vtep_loopback_ipv4_pool, 32, offset, 0)
 
     def vtep_ipv6_mlag(self) -> str:
@@ -391,9 +379,6 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
             )
 
         offset = self._id + self._loopback_ipv4_offset
-        if self._vtep_loopback_ipv4_pool is None:
-            msg = "vtep_loopback_ipv4_pool"
-            raise AristaAvdMissingVariableError(msg)
         return get_ip_from_pool(self._vtep_loopback_ipv4_pool, 32, offset, 0)
 
     def vtep_ipv6(self) -> str:

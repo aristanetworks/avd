@@ -20,7 +20,7 @@ from .vlans import VlansMixin
 from .wan import WanMixin
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
+    from collections.abc import MutableMapping
 
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
@@ -386,7 +386,9 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
     which is a dict of `EosDesignsfactsGenerator` instances covering all devices.
     """
 
-    def __init__(self, hostvars: Mapping, inputs: EosDesigns, peer_generators: dict[str, EosDesignsFactsGenerator], shared_utils: SharedUtilsProtocol) -> None:
+    def __init__(
+        self, hostvars: MutableMapping, inputs: EosDesigns, peer_generators: dict[str, EosDesignsFactsGenerator], shared_utils: SharedUtilsProtocol
+    ) -> None:
         super().__init__(hostvars, inputs, shared_utils)
         self.peer_generators = peer_generators
 
