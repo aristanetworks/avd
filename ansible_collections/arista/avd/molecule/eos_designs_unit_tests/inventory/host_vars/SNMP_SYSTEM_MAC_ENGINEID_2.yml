@@ -6,6 +6,10 @@
 
 type: l2leaf
 
+# Adding dc_name and pod_name to test location_template
+dc_name: Test_dc_2
+pod_name: Test_pod_2
+
 l2leaf:
   nodes:
     - name: SNMP_SYSTEM_MAC_ENGINEID_2
@@ -17,6 +21,8 @@ system_mac_address: "12:34:56:78:90:AB"
 snmp_settings:
   contact: example@example.com
   location: true
+  # To test location_template other than default
+  location_template: "CUSTOM LOCATION STRING {fabric_name} {hostname}"
   compute_local_engineid: true
   compute_local_engineid_source: system_mac
   compute_v3_user_localized_key: true
