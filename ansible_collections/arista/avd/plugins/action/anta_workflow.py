@@ -260,10 +260,12 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
             result_manager.add(result)
 
     # Filter the results based on the hide_statuses if provided
-    hide_statuses = hide_statuses if hide_statuses else []
-    filtered_result_manager = result_manager.filter(hide=set(hide_statuses))
+    filtered_result_manager = result_manager.filter(hide=set(hide_statuses)) if hide_statuses else result_manager
     # Sort the result manager
     filtered_result_manager.sort(sort_by=["name", "categories", "test", "description", "result", "custom_field"])
+
+    if not filtered_result_manager.results:
+        LOGGER.warning("No tests run/Reports are the empty due to filtered run on the user-defined ANTA catalogs")
 
     # TODO: Consider using multiprocessing to generate reports in parallel
     if csv_output_path:
@@ -275,11 +277,8 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
     if md_output_path:
         LOGGER.info("Generating Markdown report at %s", md_output_path)
         path = Path(md_output_path)
-        sections = [
-            (section, filtered_result_manager) if section.__name__ == "TestResults" else (section, result_manager)
-            for section in MDReportGenerator.DEFAULT_SECTIONS
-        ]
-        MDReportGenerator.generate_sections(md_filename=path, sections=sections)
+        md_report = MDReportGenerator()
+        md_report.generate(filtered_result_manager, path)
 
     if json_output_path:
         LOGGER.info("Generating JSON report at %s", json_output_path)
