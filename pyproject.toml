@@ -127,7 +127,6 @@ exclude = [
   "python-avd/pyavd/_anta",                                              # TODO
   "python-avd/pyavd/_cv",                                                # TODO
   "python-avd/pyavd/_schema",                                            # TODO
-  "python-avd/pyavd/_errors",                                            # TODO
   "python-avd/schema_tools",                                             # TODO
   "python-avd/tests",                                                    # TODO
   # Excluded
