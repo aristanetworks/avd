@@ -29,6 +29,7 @@ class RouteMapsMixin(Protocol):
         if (
             self.shared_utils.overlay_routing_protocol == "ebgp"
             and self.inputs.evpn_prevent_readvertise_to_server
+            # Limit the usage of the route-maps for route filtering towards RSs to source_peer_asn and as_path_acl modes.
             and self.inputs.evpn_prevent_readvertise_to_server_mode in ["source_peer_asn", "as_path_acl"]
         ):
             match self.inputs.evpn_prevent_readvertise_to_server_mode:
