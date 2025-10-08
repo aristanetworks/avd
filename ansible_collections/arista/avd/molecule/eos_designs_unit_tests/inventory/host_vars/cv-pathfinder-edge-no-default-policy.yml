@@ -46,7 +46,6 @@ default_node_types:
     match_hostnames:
       - "cv-pathfinder-edge.*"
 
-
 wan_router:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24

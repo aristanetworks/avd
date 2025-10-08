@@ -28,7 +28,6 @@ wan_ipsec_profiles:
   data_plane:
     shared_key: ABCDEF1234567890666
 
-
 wan_router:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24

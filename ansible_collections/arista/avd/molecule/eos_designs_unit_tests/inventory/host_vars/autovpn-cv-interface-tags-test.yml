@@ -33,7 +33,6 @@ default_node_types:
     match_hostnames:
       - autovpn-cv-interface-tags-test
 
-
 wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.31.0/24

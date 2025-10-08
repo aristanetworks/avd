@@ -25,7 +25,6 @@ wan_ipsec_profiles:
   data_plane:
     shared_key: ABCDEF1234567890666
 
-
 wan_router:
   node_groups:
     - group: Site511

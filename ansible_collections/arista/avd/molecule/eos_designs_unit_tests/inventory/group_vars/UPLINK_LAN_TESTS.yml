@@ -23,7 +23,6 @@ platform_settings:
     # platform settings p2p_uplinks_mtu takes precedence
     p2p_uplinks_mtu: 9218
 
-
 wan_router: # dynamic_key: node_type
   defaults:
     bgp_as: 65100

@@ -27,7 +27,6 @@ default_node_types:
     match_hostnames:
       - autovpn-empty-load-balance-policy
 
-
 wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.31.0/24
