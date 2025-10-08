@@ -89,10 +89,6 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ipv6_address: 2001:db8:1::5/128
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   platform: vEOS-LAB

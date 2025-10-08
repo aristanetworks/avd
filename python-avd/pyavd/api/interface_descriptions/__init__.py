@@ -9,7 +9,7 @@ from collections import ChainMap
 from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.avdfacts import AvdFacts
-from pyavd._utils import AvdStringFormatter, default, strip_null_from_data
+from pyavd._utils import AvdStringFormatter, strip_null_from_data
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
@@ -18,9 +18,6 @@ if TYPE_CHECKING:
 class AvdInterfaceDescriptions(AvdFacts):
     """
     Class used to render Interface Descriptions either from custom Jinja2 templates or using default Python Logic.
-
-    Since some templates might contain certain legacy variables (switch_*),
-    those are mapped from the switch.* model
 
     This class is imported adhoc based on the variable `templates.interface_descriptions.python_module` so it can
     be overridden by a custom python class.
@@ -471,11 +468,8 @@ class AvdInterfaceDescriptions(AvdFacts):
             - overlay_routing_protocol
             - type.
         """
-        if template_path := default(
-            self.shared_utils.node_type_key_data.interface_descriptions.router_id_loopback_interface,
-            self.shared_utils.node_type_key_data.interface_descriptions.overlay_loopback_interface,
-        ):
-            return self._template(template_path, overlay_loopback_description=data.description, router_id_loopback_description=data.description)
+        if template_path := self.shared_utils.node_type_key_data.interface_descriptions.router_id_loopback_interface:
+            return self._template(template_path, router_id_loopback_description=data.description)
 
         return data.description
 

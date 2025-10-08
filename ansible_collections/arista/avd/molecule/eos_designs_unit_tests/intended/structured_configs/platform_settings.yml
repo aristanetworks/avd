@@ -33,10 +33,6 @@ loopback_interfaces:
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.101/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_security:
   entropy_sources:
     hardware: true

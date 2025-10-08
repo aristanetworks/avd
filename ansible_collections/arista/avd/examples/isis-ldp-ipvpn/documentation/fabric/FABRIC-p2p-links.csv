@@ -1,14 +1,14 @@
-Type,Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer IP Address
-p,p1,Ethernet1,10.255.3.1/31,pe,pe1,Ethernet1,10.255.3.0/31
-p,p1,Ethernet2,10.255.3.7/31,pe,pe2,Ethernet2,10.255.3.6/31
-p,p1,Ethernet3,10.255.3.11/31,rr,rr1,Ethernet3,10.255.3.10/31
-p,p1,Ethernet4,10.255.3.8/31,p,p2,Ethernet4,10.255.3.9/31
-p,p2,Ethernet1,10.255.3.5/31,pe,pe2,Ethernet1,10.255.3.4/31
-p,p2,Ethernet2,10.255.3.3/31,pe,pe1,Ethernet2,10.255.3.2/31
-p,p2,Ethernet3,10.255.3.17/31,rr,rr2,Ethernet3,10.255.3.16/31
-p,p3,Ethernet1,10.255.3.23/31,pe,pe3,Ethernet1,10.255.3.22/31
-p,p3,Ethernet2,10.255.3.13/31,rr,rr1,Ethernet2,10.255.3.12/31
-p,p3,Ethernet4,10.255.3.20/31,p,p4,Ethernet4,10.255.3.21/31
-p,p4,Ethernet2,10.255.3.19/31,rr,rr2,Ethernet2,10.255.3.18/31
-p,p4,Ethernet3,10.255.3.25/31,pe,pe3,Ethernet3,10.255.3.24/31
-rr,rr1,Ethernet4,10.255.3.14/31,rr,rr2,Ethernet4,10.255.3.15/31
+Type,Node,Serial Number,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Serial Number,Peer Interface,Peer IP Address
+p,p1,,Ethernet1,10.255.3.1/31,pe,pe1,,Ethernet1,10.255.3.0/31
+p,p1,,Ethernet2,10.255.3.7/31,pe,pe2,,Ethernet2,10.255.3.6/31
+p,p1,,Ethernet3,10.255.3.11/31,rr,rr1,,Ethernet3,10.255.3.10/31
+p,p1,,Ethernet4,10.255.3.8/31,p,p2,,Ethernet4,10.255.3.9/31
+p,p2,,Ethernet1,10.255.3.5/31,pe,pe2,,Ethernet1,10.255.3.4/31
+p,p2,,Ethernet2,10.255.3.3/31,pe,pe1,,Ethernet2,10.255.3.2/31
+p,p2,,Ethernet3,10.255.3.17/31,rr,rr2,,Ethernet3,10.255.3.16/31
+p,p3,,Ethernet1,10.255.3.23/31,pe,pe3,,Ethernet1,10.255.3.22/31
+p,p3,,Ethernet2,10.255.3.13/31,rr,rr1,,Ethernet2,10.255.3.12/31
+p,p3,,Ethernet4,10.255.3.20/31,p,p4,,Ethernet4,10.255.3.21/31
+p,p4,,Ethernet2,10.255.3.19/31,rr,rr2,,Ethernet2,10.255.3.18/31
+p,p4,,Ethernet3,10.255.3.25/31,pe,pe3,,Ethernet3,10.255.3.24/31
+rr,rr1,,Ethernet4,10.255.3.14/31,rr,rr2,,Ethernet4,10.255.3.15/31

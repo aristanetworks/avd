@@ -128,7 +128,7 @@ ntp:
   servers:
   - name: 192.168.200.5
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 route_maps:
 - name: RM-EVPN-SOO-IN
   sequence_numbers:

@@ -12,7 +12,7 @@ title: Input variables for eos_cli_config_gen
 
 This document describes the supported input variables for the role `arista.avd.eos_cli_config_gen`.
 
-Since several data models have changed between AVD versions 4.x and 5.x, it is recommended to study the [Porting Guide for AVD 5.x.x](../../../../../../docs/porting-guides/5.x.x.md) for existing deployments.
+Since several data models have changed between AVD versions 5.x and 6.x, it is recommended to study the [Porting Guide for AVD 6.x.x](../../../../../../docs/porting-guides/6.x.x.md) for existing deployments.
 
 The input variables are documented below in tables and YAML.
 
@@ -220,22 +220,6 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/dynamic-pref
 --8<--
 
 ### IP community lists
-
-AVD currently supports two different data models for community lists:
-
-- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
-- The improved `ip_community_lists` data model.
-
-Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
-Community list names must be unique.
-
-The legacy data model supports simplified community list definition that only allows a single action to be defined as string:
-
---8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/community-lists.md
---8<--
-
-The improved data model has a better design documented below:
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-community-lists.md
@@ -619,12 +603,6 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/cvx.md
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/eos-cli.md
---8<--
-
-### Is deployed
-
---8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/is-deployed.md
 --8<--
 
 ### Management CVX

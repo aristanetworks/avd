@@ -195,8 +195,28 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         if self.shared_utils.node_config.uplink_macsec.profile:
             uplink.mac_security.profile = self.shared_utils.node_config.uplink_macsec.profile
 
-        if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
-            uplink.underlay_multicast = True
+        if (
+            self.shared_utils.underlay_multicast_pim_sm_enabled
+            and uplink_switch_facts.shared_utils.underlay_multicast_pim_sm_enabled
+            and self.shared_utils.node_config.underlay_multicast.pim_sm.uplinks
+            and (
+                not self.shared_utils.node_config.underlay_multicast.pim_sm.uplink_interfaces
+                or uplink_interface in self.shared_utils.node_config.underlay_multicast.pim_sm.uplink_interfaces
+            )
+        ):
+            # means all uplinks are enabled or uplinks are filtered and this uplink interface is accepted
+            uplink.underlay_multicast_pim_sm = True
+        if (
+            self.shared_utils.underlay_multicast_static_enabled
+            and uplink_switch_facts.shared_utils.underlay_multicast_static_enabled
+            and self.shared_utils.node_config.underlay_multicast.static.uplinks
+            and (
+                not self.shared_utils.node_config.underlay_multicast.static.uplink_interfaces
+                or uplink_interface in self.shared_utils.node_config.underlay_multicast.static.uplink_interfaces
+            )
+        ):
+            # means all uplinks are enabled or uplinks are filtered and this uplink interface is accepted
+            uplink.underlay_multicast_static = True
 
         if self.inputs.underlay_rfc5549:
             uplink.ipv6_enable = True
@@ -349,9 +369,6 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     subinterface.ip_address = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_ip(uplink_index, vrf.name)
                     subinterface.peer_ip_address = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_peer_ip(uplink_index, vrf.name)
 
-                if self.shared_utils.node_config.uplink_structured_config is not None:
-                    subinterface.structured_config = self.shared_utils.node_config.uplink_structured_config
-
                 uplink.subinterfaces.append(subinterface)
 
         return uplink
@@ -365,10 +382,6 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         - `uplink_switch_ethernet_structured_config`
         - `uplink_port_channel_structured_config`
         - `uplink_switch_port_channel_structured_config`
-
-        OR
-
-        - `uplink_structured_config` (deprecated) TODO: Remove in AVD 6.0.0
         """
         if ethernet_struct_config := self.shared_utils.node_config.uplink_ethernet_structured_config:
             uplink.ethernet_structured_config = ethernet_struct_config
@@ -378,12 +391,6 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             uplink.port_channel_structured_config = port_channel_struct_config
         if peer_port_channel_struct_config := self.shared_utils.node_config.uplink_switch_port_channel_structured_config:
             uplink.peer_port_channel_structured_config = peer_port_channel_struct_config
-
-        if (
-            not any((ethernet_struct_config, peer_ethernet_struct_config, port_channel_struct_config, peer_port_channel_struct_config))
-            and self.shared_utils.node_config.uplink_structured_config is not None
-        ):
-            uplink.structured_config = self.shared_utils.node_config.uplink_structured_config
 
     @remove_cached_property_type
     @cached_property

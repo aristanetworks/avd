@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -11,8 +11,9 @@ $defs:
     keys:
       speed:
         type: str
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
         description: |
-          Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+          Set adapter speed.
           If not specified speed will be auto.
       description:
         type: str
@@ -425,20 +426,12 @@ $defs:
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
-          short_esi:
-            type: str
-            description: In format xxxx:xxxx:xxxx or "auto".
-            deprecation:
-              removed: true
-              warning: true
-              remove_in_version: "5.0.0"
-              new_key: ethernet_segment.short_esi
       validate_state:
         type: bool
-        description: Set to false to disable interface state and LLDP topology validation performed by the `eos_validate_state` role.
+        description: Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
       validate_lldp:
         type: bool
-        description: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+        description: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
       campus_link_type:
         type: list
         $ref: "eos_designs#/$defs/campus_link_type"

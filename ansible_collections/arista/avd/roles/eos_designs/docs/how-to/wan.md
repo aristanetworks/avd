@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: Ansible Collection Role eos_designs - WAN
+title: WAN
 ---
 <!--
   ~ Copyright (c) 2023-2025 Arista Networks, Inc.
@@ -41,14 +41,12 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 !!! info "CV Pathfinder & CloudVision"
 
     When deploying CV Pathfinder with CloudVision, it is necessary to leverage
-    the `arista.avd.cv_deploy` role and not the `arista.avd.eos_config_deploy_cvp`
-    role, as CloudVision relies on metadata sent by AVD for visualization and to
-    generate and deliver certificates for STUN to devices.
+    the `arista.avd.cv_deploy` role, as CloudVision relies on metadata sent by
+    AVD for visualization and to generate and deliver certificates for STUN to devices.
 
 ### Features in preview
 
 - Internet-exit for Zscaler is in preview
-- `eos_validate_state` is being enriched to support new tests for WAN designs.
 - EVPN WAN gateway is in preview as it requires the use of `wan_use_evpn_node_settings_for_lan`. It is supported only on sites with single WAN Router.
 
 ### Known limitations
@@ -1092,19 +1090,20 @@ wan_virtual_topologies:
 
 ### WAN Validation
 
-`eos_validate_state` is being enriched to support new tests for WAN designs. The tests listed below are validating WAN designs.
+The `anta_runner` role validates WAN designs by executing a series of automated tests. Alongside generic network validations, it runs the following tests specifically designed for WAN deployments:
 
-| AVD Test Class | ANTA Test Class | Description |
-| -------------- | --------------- | ----------- |
-| AvdTestInterfacesState | VerifyInterfacesStatus | Validate the DPS interface status. |
-| AvdTestBGP | VerifyBGPSpecificPeers | Validate the state of BGP Address Family sessions, including `Path-Selection` for AutoVPN, `Link-State` and `IPv4/IPv6 SR-TE` for CV Pathfinder. |
-| AvdTestIPSecurity | VerifySpecificIPSecConn | Validate the establishment of IP security connections for each static peer under the `router path-selection` section of the configuration. |
-| AvdTestStun | VerifyStunClient | Validate the presence of a STUN client translation for a given source IPv4 address and port. The list of expected translations for each device is built by searching local interfaces in each path-group. |
-| AvdTestDpsReachability | VerifyReachability | Validate DPS reachability between devices. |
-| AvdTestAvtPath | VerifyAVTSpecificPath | Validate that the status is active and the type is direct for an Adaptive Virtual Topology (AVT) path in a specified VRF for the static peers. |
-| AvdTestAvtRole | VerifyAVTRole | Validate the Adaptive Virtual Topology (AVT) role of a device. |
+| ANTA Test Class | Description |
+| --------------- | ----------- |
+| VerifyAVTSpecificPath | Validates that **Adaptive Virtual Topology (AVT)** paths are active and using a direct path type for specified static peers within a VRF. |
+| VerifyBGPSpecificPeers | Validates the session state of specific **BGP address families**, such as `Path-Selection` for AutoVPN, `Link-State` and `IPv4/IPv6 SR-TE` for CV Pathfinder. |
+| VerifyInterfacesStatus | Validates the operational status of the **Dynamic Path Selection (DPS)** interface. |
+| VerifySpecificIPSecConn | Validates the establishment of **IPsec connections** for static peers defined under the `router path-selection` configuration. |
+| VerifySpecificPath | Validates that **Dynamic Path Selection (DPS)** paths are healthy and report an active telemetry state for each configured IPv4 peer. |
+
+See the [AVD-generated catalog test index](../../../anta_runner/README.md#avd-generated-catalog-test-index) for more details.
 
 !!! note
 
-    More WAN-related tests are available directly in ANTA and can be added using custom catalogs.
-    They will be progressively added to `eos_validate_state`.
+    Many more tests are available directly in ANTA and can be added using user-defined catalogs. Please refer to the `anta_runner` [role documentation](../../../anta_runner/README.md) for more information.
+
+    If you believe a valuable WAN test is missing, we encourage you to let us know by raising a GitHub issue or submitting a pull request.

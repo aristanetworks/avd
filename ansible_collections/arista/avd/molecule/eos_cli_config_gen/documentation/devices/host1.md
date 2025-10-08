@@ -1,7 +1,10 @@
 # hostname-set-via-hostname-var
 
+Serial Number: DEADBEEFC0FFEW
+
 ## Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Banner](#banner)
   - [Agents](#agents)
@@ -481,25 +484,25 @@ ip domain-list domain2.local
 
 | Name Server | VRF | Priority |
 | ----------- | --- | -------- |
-| 10.10.128.10 | - | - |
-| 10.10.129.10 | - | 0 |
+| 10.10.128.10 | default | - |
+| 10.10.129.10 | default | 0 |
 | 10.10.128.10 | mgmt | - |
 | 10.10.128.10 | TEST | 3 |
-| 2001:db8::1 | - | - |
-| 2001:db8::2 | - | 0 |
+| 2001:db8::1 | default | - |
+| 2001:db8::2 | default | 0 |
 | 2001:db8::1 | mgmt | - |
 | 2001:db8::2 | TEST | 3 |
 
 #### IP Name Servers Device Configuration
 
 ```eos
-ip name-server 10.10.128.10
+ip name-server vrf default 10.10.128.10
 ip name-server vrf mgmt 10.10.128.10
 ip name-server vrf TEST 10.10.128.10 priority 3
-ip name-server 10.10.129.10 priority 0
-ip name-server 2001:db8::1
+ip name-server vrf default 10.10.129.10 priority 0
+ip name-server vrf default 2001:db8::1
 ip name-server vrf mgmt 2001:db8::1
-ip name-server 2001:db8::2 priority 0
+ip name-server vrf default 2001:db8::2 priority 0
 ip name-server vrf TEST 2001:db8::2 priority 3
 ```
 
@@ -617,14 +620,16 @@ clock timezone GMT
 
 ##### NTP Servers
 
-| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 1.2.3.4 | - | - | - | - | - | - | - | lo0 | - |
-| 2.2.2.55 | - | - | - | - | - | - | - | - | - |
-| 10.1.1.1 | - | - | - | - | - | - | - | - | - |
-| 10.1.1.2 | - | True | - | - | - | - | - | - | - |
-| 20.20.20.1 | - | - | - | - | - | - | - | - | 2 |
-| ie.pool.ntp.org | - | - | False | True | - | - | - | - | 1 |
+NTP servers VRF: MGMT
+
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 1.2.3.4 | - | - | - | - | - | - | lo0 | - |
+| 2.2.2.55 | - | - | - | - | - | - | - | - |
+| 10.1.1.1 | - | - | - | - | - | - | - | - |
+| 10.1.1.2 | True | - | - | - | - | - | - | - |
+| 20.20.20.1 | - | - | - | - | - | - | - | 2 |
+| ie.pool.ntp.org | - | False | True | - | - | - | - | 1 |
 
 ##### NTP Authentication
 
@@ -650,12 +655,12 @@ ntp authentication-key 3 sha1 8a <removed>
 ntp trusted-key 1-2
 ntp authenticate servers
 ntp local-interface lo1
-ntp server 1.2.3.4 local-interface lo0
-ntp server 2.2.2.55
-ntp server 10.1.1.1
-ntp server 10.1.1.2 prefer
-ntp server 20.20.20.1 key <removed>
-ntp server ie.pool.ntp.org iburst key <removed>
+ntp server vrf MGMT 1.2.3.4 local-interface lo0
+ntp server vrf MGMT 2.2.2.55
+ntp server vrf MGMT 10.1.1.1
+ntp server vrf MGMT 10.1.1.2 prefer
+ntp server vrf MGMT 20.20.20.1 key <removed>
+ntp server vrf MGMT ie.pool.ntp.org iburst key <removed>
 ntp serve all
 ```
 
@@ -1962,14 +1967,14 @@ dhcp relay
 
 ### DHCP Servers Summary
 
-| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile | IPv6 Lease Time |
-| ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | --------------- | ---------------- | ------------- | --------------- |
-| True | AVRF | - | - | - | - | - | - | - | - |
-| True | defauls | - | - | - | - | - | - | - | - |
-| True | default | - | 10.0.0.1, 192.168.255.254 | https://www.arista.io/ztp/bootstrap | - | - | 2001:db8::1, 2001:db8::2 | https://2001:0db8:fe/ztp/bootstrap | - |
-| True | defaulu | - | - | - | - | - | - | - | - |
-| True | TEST | testv4.com | - | - | 10 days 10 hours 10 minutes | testv6.com | - | - | 12 days 12 hours 12 minutes |
-| False | VRF01 | - | - | - | - | - | - | - | - |
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 TFTP Bootfile URL (Option 59) | IPv6 Lease Time |
+| ------------------- | --- | --------------- | ---------------- | ------------------------------ | ---------------------------- | ---------------------------- | --------------- | --------------- | ---------------- | ---------------------------------- | --------------- |
+| True | AVRF | - | - | - | - | - | - | - | - | - | - |
+| True | defauls | - | - | - | - | - | - | - | - | - | - |
+| True | default | - | 10.0.0.1, 192.168.255.254 | https://www.arista.io/ztp/bootstrap | 192.168.66.22 | 192.166.66.33, 192.161.66.33 | - | - | 2001:db8::1, 2001:db8::2 | https://2001:0db8:fe/ztp/bootstrap | - |
+| True | defaulu | - | - | - | - | - | - | - | - | - | - |
+| True | TEST | testv4.com | - | - | - | - | 10 days 10 hours 10 minutes | testv6.com | - | - | 12 days 12 hours 12 minutes |
+| False | VRF01 | - | - | - | - | - | - | - | - | - | - |
 
 #### VRF AVRF DHCP Server
 
@@ -2048,6 +2053,8 @@ dhcp server vrf defauls
 dhcp server
    dns server ipv4 10.0.0.1 192.168.255.254
    dns server ipv6 2001:db8::1 2001:db8::2
+   tftp server option 66 ipv4 192.168.66.22
+   tftp server option 150 ipv4 192.166.66.33 192.161.66.33
    tftp server file ipv4 https://www.arista.io/ztp/bootstrap
    tftp server file ipv6 https://2001:0db8:fe/ztp/bootstrap
    !
@@ -10679,11 +10686,11 @@ Make-before-break: False
 
 ##### IP Sparse Mode VRFs
 
-| VRF Name | BFD Enabled | Make-before-break |
-| -------- | ----------- | ----------------- |
-| MCAST_VRF1 | True | False |
-| MCAST_VRF2_ALL_GROUPS | False | - |
-| Test_RP_ACL | False | True |
+| VRF Name | SSM Range ACL | BFD Enabled | Make-before-break |
+| -------- | ------------- | ----------- | ----------------- |
+| MCAST_VRF1 | SSM-MCAST | True | False |
+| MCAST_VRF2_ALL_GROUPS | - | False | - |
+| Test_RP_ACL | - | False | True |
 
 | VRF Name | Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
 | -------- | ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
@@ -10715,6 +10722,7 @@ router pim sparse-mode
    !
    vrf MCAST_VRF1
       ipv4
+         ssm range SSM-MCAST
          bfd
          make-before-break disabled
          rp address 10.238.2.161 239.12.22.12/32
@@ -11533,6 +11541,8 @@ ip access-list ACL_SEQUENCE_AND_COUNTERS
    50 permit tcp any range 1000 1100 any range 10 20
    4294967295 deny ip any any
    permit response traffic nat
+!
+ip access-list ACL_WITHOUT_ENTRIES
 ```
 
 ### IPv6 Standard Access-lists
@@ -12854,26 +12864,26 @@ ip hardware fib load-balance distribution dynamic flow-set-size 4
 
 Errdisable recovery timer interval: 300 seconds
 
-|  Cause | Detection Enabled | Recovery Enabled |
-| ------ | ----------------- | ---------------- |
-| acl | True | - |
-| arp-inspection | True | True |
-| bpduguard | - | True |
-| dot1x | True | True |
-| hitless-reload-down | - | True |
-| lacp-rate-limit | - | True |
-| link-change | True | - |
-| link-flap | - | True |
-| no-internal-vlan | - | True |
-| portchannelguard | - | True |
-| portsec | - | True |
-| speed-misconfigured | - | True |
-| tapagg | True | True |
-| uplink-failure-detection | - | True |
-| xcvr-misconfigured | True | True |
-| xcvr-overheat | True | True |
-| xcvr-power-unsupported | True | True |
-| xcvr-unsupported | - | True |
+|  Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
+| ------ | ----------------- | ---------------- | -------------------------- |
+| acl | True | - | - |
+| arp-inspection | True | True | - |
+| bpduguard | - | True | 400 |
+| dot1x | True | True | 500 |
+| hitless-reload-down | - | True | - |
+| lacp-rate-limit | - | True | - |
+| link-change | True | - | - |
+| link-flap | - | True | - |
+| no-internal-vlan | - | True | - |
+| portchannelguard | - | True | - |
+| portsec | - | True | - |
+| speed-misconfigured | - | True | - |
+| tapagg | True | True | - |
+| uplink-failure-detection | - | True | - |
+| xcvr-misconfigured | True | True | - |
+| xcvr-overheat | True | True | - |
+| xcvr-power-unsupported | True | True | - |
+| xcvr-unsupported | - | True | - |
 
 ```eos
 !
@@ -12886,8 +12896,8 @@ errdisable detect cause xcvr-misconfigured
 errdisable detect cause xcvr-overheat
 errdisable detect cause xcvr-power-unsupported
 errdisable recovery cause arp-inspection
-errdisable recovery cause bpduguard
-errdisable recovery cause dot1x
+errdisable recovery cause bpduguard interval 400
+errdisable recovery cause dot1x interval 500
 errdisable recovery cause hitless-reload-down
 errdisable recovery cause lacp-rate-limit
 errdisable recovery cause link-flap
@@ -13016,7 +13026,7 @@ mac security
 
 ##### BLUE-C1-POLICY
 
-Counters: DEMO-TRAFFIC, DROP-PACKETS
+Counters: DROP-PACKETS
 
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
@@ -13089,7 +13099,7 @@ traffic-policies
    counter interface poll interval 10 seconds
    !
    traffic-policy BLUE-C1-POLICY
-      counter DEMO-TRAFFIC DROP-PACKETS
+      counter DROP-PACKETS
       !
       match BLUE-C1-POLICY-01 ipv4
          source prefix 10.0.0.0/8 192.168.0.0/16

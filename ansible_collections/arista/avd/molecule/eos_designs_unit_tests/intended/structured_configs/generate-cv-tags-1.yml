@@ -19,10 +19,6 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 10.10.255.1/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   rack: ABC567
@@ -47,6 +43,8 @@ metadata:
       value: '65000'
     - name: UPPERCASE_DEVICE_TAG
       value: something with spaces
+    - name: Role
+      value: DC23
     interface_tags:
     - interface: Ethernet1
       tags:

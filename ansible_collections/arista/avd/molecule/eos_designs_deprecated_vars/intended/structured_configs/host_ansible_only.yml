@@ -9,17 +9,13 @@ ip_igmp_snooping:
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
-  description: CUSTOM_ROUTER_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.6/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.6/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

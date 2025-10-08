@@ -73,10 +73,6 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 10.0.254.1/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -94,9 +90,8 @@ ntp:
   servers:
   - name: 2.2.2.55
     preferred: true
-    vrf: MGMT
   - name: pool.ntp.org
-    vrf: MGMT
+  vrf: MGMT
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

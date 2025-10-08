@@ -7,7 +7,7 @@ from functools import cached_property
 from keyword import iskeyword
 from typing import TYPE_CHECKING
 
-from .src_generators import ClassVarSrc, FieldSrc, FieldTypeHintSrc, ListSrc, ModelSrc, SrcData
+from .src_generators import ClassVarSrc, FieldSrc, FieldTypeHintSrc, ListSrc, LiteralSrc, ModelSrc, SrcData
 from .utils import generate_class_name, generate_class_name_from_ref
 
 if TYPE_CHECKING:
@@ -76,7 +76,7 @@ class SrcGenBase:
         return generate_class_name(self.get_key())
 
     @cached_property
-    def class_src(self) -> ModelSrc | ListSrc | None:
+    def class_src(self) -> ModelSrc | ListSrc | LiteralSrc | None:
         """Returns ModelSrc for the given schema to be used for the class definition in the parent object."""
         return None
 
@@ -112,14 +112,12 @@ class SrcGenInt(SrcGenBase):
     schema: AvdSchemaInt
 
     @cached_property
-    def type_hints_src(self) -> list[FieldTypeHintSrc]:
-        """Returns a list of FieldTypeHintSrc representing the type hints for this schema."""
-        field_type = cls.name if (cls := self.class_src) else self.schema.type
-
+    def class_src(self) -> LiteralSrc | None:
+        """Returns LiteralSrc for the given schema to be used for the type definition in the parent object."""
         if self.schema.valid_values is None:
-            return [FieldTypeHintSrc(field_type=field_type)]
+            return None
 
-        return [FieldTypeHintSrc(field_type=f"Literal[{', '.join(map(str, self.schema.valid_values))}]")]
+        return LiteralSrc(self.get_class_name(), self.schema.valid_values)
 
 
 class SrcGenBool(SrcGenBase):
@@ -140,17 +138,12 @@ class SrcGenStr(SrcGenBase):
         return None
 
     @cached_property
-    def type_hints_src(self) -> list[FieldTypeHintSrc]:
-        """Returns a list of FieldTypeHintSrc representing the type hints for this schema."""
-        field_type = cls.name if (cls := self.class_src) else self.schema.type
-
+    def class_src(self) -> LiteralSrc | None:
+        """Returns LiteralSrc for the given schema to be used for the type definition in the parent object."""
         if self.schema.valid_values is None:
-            return [FieldTypeHintSrc(field_type=field_type)]
+            return None
 
-        def quote(string: str) -> str:
-            return f'"{string}"'
-
-        return [FieldTypeHintSrc(field_type=f"Literal[{', '.join(map(quote, self.schema.valid_values))}]")]
+        return LiteralSrc(self.get_class_name(), self.schema.valid_values)
 
 
 class SrcGenList(SrcGenBase):

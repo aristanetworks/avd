@@ -125,6 +125,16 @@ keys:
       secondary:
         type: int
         required: true
+  mlag_underlay_multicast:
+    type: dict
+    description: Should multicast be enabled on the mlag peer-l3-vlan.
+    keys:
+      pim_sm:
+        type: bool
+        required: true
+      static:
+        type: bool
+        required: true
   evpn_role:
     type: str
   mpls_overlay_role:
@@ -195,10 +205,12 @@ keys:
           valid_values: ["underlay_p2p", "underlay_l2"]
         speed:
           type: str
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
         bfd:
           type: bool
         peer_speed:
           type: str
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
         ptp:
           type: dict
           documentation_options:
@@ -210,7 +222,9 @@ keys:
             profile:
               type: str
               required: true
-        underlay_multicast:
+        underlay_multicast_pim_sm:
+          type: bool
+        underlay_multicast_static:
           type: bool
         ipv6_enable:
           type: bool
@@ -283,12 +297,6 @@ keys:
           type: int
         dhcp_server:
           type: bool
-        # TODO: AVD6.0.0 - Remove 'structured_config'
-        structured_config:
-          type: dict
-          documentation_options:
-            table: eos_designs_facts
-          $ref: eos_designs#/$defs/node_type/keys/defaults/keys/uplink_structured_config
         ethernet_structured_config:
           type: dict
           documentation_options:
@@ -344,11 +352,6 @@ keys:
                 type: str
               peer_ipv6_address:
                 type: str
-              structured_config:
-                type: dict
-                documentation_options:
-                  table: eos_designs_facts
-                $ref: eos_designs#/$defs/node_type/keys/defaults/keys/uplink_structured_config
               ethernet_structured_config:
                 type: dict
                 documentation_options:

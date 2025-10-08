@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>custom_platform_settings</samp>](## "custom_platform_settings") | List, items: Dictionary |  |  |  | Custom Platform settings to override the default `platform_settings`. This list will be prepended to the list of `platform_settings`. The first entry containing `platforms` matching the `platform` node setting will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. |
+    | [<samp>custom_platform_settings</samp>](## "custom_platform_settings") | List, items: Dictionary |  |  |  | Custom Platform settings to override the default `platform_settings`. This list will be prepended to the list of `platform_settings`. The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. |
     | [<samp>&nbsp;&nbsp;-&nbsp;platforms</samp>](## "custom_platform_settings.[].platforms") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "custom_platform_settings.[].platforms.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trident_forwarding_table_partition</samp>](## "custom_platform_settings.[].trident_forwarding_table_partition") | String |  |  |  | Only applied when evpn_multicast is true. |
@@ -82,7 +82,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_node_type</samp>](## "custom_platform_settings.[].digital_twin.act_node_type") | String |  |  | Valid Values:<br>- <code>cloudeos</code><br>- <code>cvp</code><br>- <code>generic</code><br>- <code>third-party</code><br>- <code>tools-server</code><br>- <code>veos</code> | ACT node type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "custom_platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "custom_platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
-    | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  | Platform settings. The first entry containing `platforms` matching the `platform` node setting will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. The default values will be overridden if `platform_settings` is defined. If you need to replace all the default platforms, it is recommended to copy the defaults and modify them. If you need to add custom platforms, create them under `custom_platform_settings`. Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`. |
+    | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  | Platform settings. The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. The default values will be overridden if `platform_settings` is defined. If you need to replace all the default platforms, it is recommended to copy the defaults and modify them. If you need to add custom platforms, create them under `custom_platform_settings`. Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`. |
     | [<samp>&nbsp;&nbsp;-&nbsp;platforms</samp>](## "platform_settings.[].platforms") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "platform_settings.[].platforms.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trident_forwarding_table_partition</samp>](## "platform_settings.[].trident_forwarding_table_partition") | String |  |  |  | Only applied when evpn_multicast is true. |
@@ -167,7 +167,7 @@
 === "YAML"
 
     ```yaml
-    # Custom Platform settings to override the default `platform_settings`. This list will be prepended to the list of `platform_settings`. The first entry containing `platforms` matching the `platform` node setting will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen.
+    # Custom Platform settings to override the default `platform_settings`. This list will be prepended to the list of `platform_settings`. The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen.
     custom_platform_settings:
       - platforms:
           - <str>
@@ -347,7 +347,7 @@
         # EOS CLI rendered directly on the root level of the final EOS configuration.
         raw_eos_cli: <str>
 
-    # Platform settings. The first entry containing `platforms` matching the `platform` node setting will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. The default values will be overridden if `platform_settings` is defined. If you need to replace all the default platforms, it is recommended to copy the defaults and modify them. If you need to add custom platforms, create them under `custom_platform_settings`. Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
+    # Platform settings. The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. The default values will be overridden if `platform_settings` is defined. If you need to replace all the default platforms, it is recommended to copy the defaults and modify them. If you need to add custom platforms, create them under `custom_platform_settings`. Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
     platform_settings: # (1)!
       - platforms:
           - <str>
@@ -540,236 +540,236 @@
 
         ```yaml
         platform_settings:
-        - digital_twin:
-            platform: vEOS-lab
+        - platforms:
+          - default
           feature_support:
             queue_monitor_length_notify: false
-          platforms:
-          - default
           reload_delay:
             mlag: 300
             non_mlag: 330
-        - digital_twin:
+          digital_twin:
             platform: vEOS-lab
+        - platforms:
+          - 7050X3
           feature_support:
             queue_monitor_length_notify: false
-          platforms:
-          - 7050X3
           reload_delay:
             mlag: 300
             non_mlag: 330
           trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
             131072
-        - digital_twin:
+          digital_twin:
             platform: vEOS-lab
+        - platforms:
+          - 720XP
           feature_support:
             poe: true
             queue_monitor_length_notify: false
-          platforms:
-          - 720XP
           reload_delay:
             mlag: 300
             non_mlag: 330
           trident_forwarding_table_partition: flexible exact-match 16000 l2-shared 18000 l3-shared
             22000
-        - digital_twin:
+          digital_twin:
             platform: vEOS-lab
-          feature_support:
-            poe: true
-            queue_monitor_length_notify: false
-          management_interface: Management0
-          platforms:
+        - platforms:
           - '750'
           - '755'
           - '758'
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-        - digital_twin:
-            platform: vEOS-lab
+          management_interface: Management0
           feature_support:
             poe: true
             queue_monitor_length_notify: false
-          platforms:
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
           - 720DP
           - 722XP
           - 710P
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-        - digital_twin:
-            platform: vEOS-lab
           feature_support:
-            per_interface_mtu: false
+            poe: true
             queue_monitor_length_notify: false
-          platforms:
-          - 7010TX
           reload_delay:
             mlag: 300
             non_mlag: 330
-        - digital_twin:
+          digital_twin:
             platform: vEOS-lab
+        - platforms:
+          - 7010TX
           feature_support:
-            private_vlan: false
-          lag_hardware_only: true
-          platforms:
+            queue_monitor_length_notify: false
+            per_interface_mtu: false
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
           - 7280R
           - 7280R2
           - 7020R
+          lag_hardware_only: true
           reload_delay:
             mlag: 900
             non_mlag: 1020
           tcam_profile: vxlan-routing
-        - digital_twin:
-            platform: vEOS-lab
           feature_support:
-            evpn_gateway_all_active_multihoming: true
             private_vlan: false
-          platforms:
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
           - 7280R3
           reload_delay:
             mlag: 900
             non_mlag: 1020
           tcam_profile: vxlan-routing
-        - digital_twin:
-            platform: vEOS-lab
-          feature_support:
-            private_vlan: false
-          lag_hardware_only: true
-          management_interface: Management0
-          platforms:
-          - 7500R
-          - 7500R2
-          reload_delay:
-            mlag: 900
-            non_mlag: 1020
-          tcam_profile: vxlan-routing
-        - digital_twin:
-            platform: vEOS-lab
           feature_support:
             evpn_gateway_all_active_multihoming: true
             private_vlan: false
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
+          - 7500R
+          - 7500R2
+          lag_hardware_only: true
           management_interface: Management0
-          platforms:
-          - 7500R3
-          - 7800R3
           reload_delay:
             mlag: 900
             non_mlag: 1020
           tcam_profile: vxlan-routing
-        - digital_twin:
-            platform: vEOS-lab
           feature_support:
+            private_vlan: false
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
+          - 7500R3
+          - 7800R3
+          management_interface: Management0
+          reload_delay:
+            mlag: 900
+            non_mlag: 1020
+          tcam_profile: vxlan-routing
+          feature_support:
+            evpn_gateway_all_active_multihoming: true
+            private_vlan: false
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
+          - 7358X4
+          management_interface: Management1/1
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          feature_support:
+            queue_monitor_length_notify: false
+            interface_storm_control: true
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: false
-            interface_storm_control: true
-            queue_monitor_length_notify: false
-          management_interface: Management1/1
-          platforms:
-          - 7358X4
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-        - digital_twin:
+          digital_twin:
             platform: vEOS-lab
-          management_interface: Management0
-          platforms:
+        - platforms:
           - 7368X4
+          management_interface: Management0
           reload_delay:
             mlag: 300
             non_mlag: 330
-        - digital_twin:
+          digital_twin:
             platform: vEOS-lab
-          management_interface: Management0
-          platforms:
+        - platforms:
           - 7300X3
+          management_interface: Management0
           reload_delay:
             mlag: 1200
             non_mlag: 1320
           trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
             131072
-        - digital_twin:
-            act_node_type: veos
-          feature_support:
-            bgp_update_wait_for_convergence: false
-            bgp_update_wait_install: false
-            evpn_gateway_all_active_multihoming: true
-            interface_storm_control: false
-            queue_monitor_length_notify: false
-          platforms:
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
           - VEOS
           - VEOS-LAB
           - vEOS
           - vEOS-lab
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-        - digital_twin:
-            act_node_type: veos
           feature_support:
             bgp_update_wait_for_convergence: false
             bgp_update_wait_install: false
-            evpn_gateway_all_active_multihoming: true
             interface_storm_control: false
             queue_monitor_length_notify: false
-          management_interface: Management0
-          platforms:
+            evpn_gateway_all_active_multihoming: true
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          digital_twin:
+            act_node_type: veos
+        - platforms:
           - CEOS
           - cEOS
           - ceos
           - cEOSLab
+          feature_support:
+            bgp_update_wait_for_convergence: false
+            bgp_update_wait_install: false
+            interface_storm_control: false
+            queue_monitor_length_notify: false
+            evpn_gateway_all_active_multihoming: true
+          management_interface: Management0
           reload_delay:
             mlag: 300
             non_mlag: 330
-        - digital_twin:
-            act_node_type: cloudeos
-          feature_support:
-            bgp_update_wait_install: false
-            interface_storm_control: false
-            queue_monitor_length_notify: false
-          p2p_uplinks_mtu: 9194
-          platforms:
+          digital_twin:
+            act_node_type: veos
+        - platforms:
           - CloudEOS
-        - digital_twin:
-            platform: CloudEOS
           feature_support:
-            bgp_update_wait_for_convergence: true
             bgp_update_wait_install: false
             interface_storm_control: false
-            platform_sfe_interface_profile:
-              max_rx_queues: 6
-              supported: true
             queue_monitor_length_notify: false
-          management_interface: Management1/1
           p2p_uplinks_mtu: 9194
-          platforms:
+          digital_twin:
+            act_node_type: cloudeos
+        - platforms:
           - AWE-5310
           - AWE-7230R
-        - digital_twin:
-            platform: CloudEOS
           feature_support:
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: false
             interface_storm_control: false
-            platform_sfe_interface_profile:
-              max_rx_queues: 16
-              supported: true
             queue_monitor_length_notify: false
+            platform_sfe_interface_profile:
+              supported: true
+              max_rx_queues: 6
           management_interface: Management1/1
           p2p_uplinks_mtu: 9194
-          platforms:
+          digital_twin:
+            platform: CloudEOS
+        - platforms:
           - AWE-5510
           - AWE-7250R
-        - digital_twin:
-            platform: CloudEOS
           feature_support:
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: false
             interface_storm_control: false
-            poe: true
             queue_monitor_length_notify: false
+            platform_sfe_interface_profile:
+              supported: true
+              max_rx_queues: 16
+          management_interface: Management1/1
+          p2p_uplinks_mtu: 9194
+          digital_twin:
+            platform: CloudEOS
+        - platforms:
+          - AWE-7220R
+          feature_support:
+            bgp_update_wait_for_convergence: true
+            bgp_update_wait_install: false
+            interface_storm_control: false
+            queue_monitor_length_notify: false
+            poe: true
           management_interface: Management1
           p2p_uplinks_mtu: 9194
-          platforms:
-          - AWE-7220R
+          digital_twin:
+            platform: CloudEOS
         ```

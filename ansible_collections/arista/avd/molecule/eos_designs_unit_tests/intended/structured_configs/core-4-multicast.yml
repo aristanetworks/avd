@@ -36,6 +36,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1600
   ip_address: 100.64.48.22/31
+  pim:
+    ipv4:
+      sparse_mode: true
   mpls:
     ip: true
   peer: peer3
@@ -57,10 +60,6 @@ loopback_interfaces:
   shutdown: false
   ip_address: 10.0.0.4/32
   ipv6_address: 2000:1234:ffff:ffff::4/128
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS

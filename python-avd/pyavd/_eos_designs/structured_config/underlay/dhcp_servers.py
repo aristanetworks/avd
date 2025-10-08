@@ -39,8 +39,6 @@ class DhcpServersMixin(Protocol):
         if dns_servers := self.inputs.dns_settings.servers:
             for dns_server in dns_servers:
                 dhcp_server.dns_servers_ipv4.append(dns_server.ip_address)
-        elif dns_servers := self.inputs.name_servers:
-            dhcp_server.dns_servers_ipv4 = dns_servers._cast_as(EosCliConfigGen.DhcpServersItem.DnsServersIpv4)
         # Set NTP servers
         self._update_ntp_servers(dhcp_server)
 
@@ -78,9 +76,6 @@ class DhcpServersMixin(Protocol):
 
         if self.inputs.cv_settings.onprem_clusters:
             return next(iter(next(iter(self.inputs.cv_settings.onprem_clusters)).servers)).name
-
-        if self.inputs.cvp_instance_ips:
-            return self.inputs.cvp_instance_ips[0]
 
         return None
 

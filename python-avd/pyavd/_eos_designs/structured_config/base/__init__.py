@@ -13,7 +13,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     structured_config_contributor,
 )
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import Undefined, default, get_v2
+from pyavd._utils import default, get_v2
 from pyavd.j2filters import natural_sort
 
 from .address_locking import AddressLockingMixin
@@ -166,8 +166,8 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def router_multicast(self) -> None:
-        """router_multicast set based on underlay_multicast, underlay_router and switch.evpn_multicast facts."""
-        if not self.shared_utils.underlay_multicast:
+        """router_multicast set based on underlay_multicast_<>, underlay_router and switch.evpn_multicast facts."""
+        if not self.shared_utils.any_multicast_enabled:
             return
 
         self.structured_config.router_multicast.ipv4.routing = True
@@ -310,9 +310,6 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def ip_name_servers(self) -> None:
         """Set ip name servers using old name_servers model and new dns_settings model. Results will be combined."""
-        for name_server in self.inputs.name_servers:
-            self.structured_config.ip_name_servers.append_new(ip_address=name_server, vrf=self.inputs.mgmt_interface_vrf)
-
         if not self.inputs.dns_settings:
             return
 
@@ -433,9 +430,8 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def local_users(self) -> None:
-        """local_users set based on global local_users data model or aaa_settings.local_users data model."""
-        local_users = self.inputs.aaa_settings.local_users or self.inputs.local_users
-        if not local_users:
+        """local_users set based on global aaa_settings.local_users data model."""
+        if not (local_users := self.inputs.aaa_settings.local_users):
             return
 
         self.structured_config.local_users = local_users._natural_sorted()
@@ -516,18 +512,9 @@ class AvdStructuredConfigBaseProtocol(
                 default_services=self.inputs.management_eapi.default_services,
             )
 
-            # TODO: For backward compatibility, checking in advance if we are using the default value
-            # remove in AVD 6.0 as well as the try/except below
-            using_default_vrfs = self.inputs.management_eapi._get_defined_attr("vrfs") == Undefined
-
             for vrf in self.inputs.management_eapi.vrfs:
                 if vrf.enabled:
-                    try:
-                        vrf_name = self.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
-                    except AristaAvdInvalidInputsError:
-                        if not using_default_vrfs:
-                            raise
-                        vrf_name = self.inputs.mgmt_interface_vrf
+                    vrf_name = self.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
                     self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name, access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl)
 
         # Enforce eAPI management access in default VRF for ACT Digital Twin if required
@@ -650,18 +637,6 @@ class AvdStructuredConfigBaseProtocol(
         if eos_cli:
             self.structured_config.eos_cli = eos_cli
 
-    # need to update return type in self._build_source_interfaces() method, then update the below cached_property where this method is used
-    @structured_config_contributor
-    def ip_radius_source_interfaces(self) -> None:
-        """Parse source_interfaces.radius and return list of source_interfaces."""
-        if not (inputs := self.inputs.source_interfaces.radius):
-            return
-
-        if source_interfaces := self._build_source_interfaces(
-            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP Radius", output_type=EosCliConfigGen.IpRadiusSourceInterfaces
-        ):
-            self.structured_config.ip_radius_source_interfaces.extend(source_interfaces)
-
     @structured_config_contributor
     def radius_servers(self) -> None:
         """Parse AAA radius server configurations and update structured config with server and source interface details."""
@@ -687,17 +662,6 @@ class AvdStructuredConfigBaseProtocol(
                 radius_group = self.structured_config.aaa_server_groups.obtain(group)
                 radius_group.type = "radius"
                 radius_group.servers.append_new(server=server.host, vrf=server_vrf)
-
-    @structured_config_contributor
-    def ip_tacacs_source_interfaces(self) -> None:
-        """Parse source_interfaces.tacacs and return list of source_interfaces."""
-        if not (inputs := self.inputs.source_interfaces.tacacs):
-            return
-
-        if source_interfaces := self._build_source_interfaces(
-            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP Tacacs", output_type=EosCliConfigGen.IpTacacsSourceInterfaces
-        ):
-            self.structured_config.ip_tacacs_source_interfaces.extend(source_interfaces)
 
     @structured_config_contributor
     def tacacs_servers(self) -> None:
@@ -770,17 +734,6 @@ class AvdStructuredConfigBaseProtocol(
             inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP SSH Client", output_type=EosCliConfigGen.IpSshClientSourceInterfaces
         ):
             self.structured_config.ip_ssh_client_source_interfaces = source_interfaces
-
-    @structured_config_contributor
-    def ip_domain_lookup(self) -> None:
-        """Parse source_interfaces.domain_lookup and return dict with nested source_interfaces list."""
-        if not (inputs := self.inputs.source_interfaces.domain_lookup):
-            return
-
-        if source_interfaces := self._build_source_interfaces(
-            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP Domain Lookup", output_type=EosCliConfigGen.IpDomainLookup.SourceInterfaces
-        ):
-            self.structured_config.ip_domain_lookup.source_interfaces = source_interfaces
 
     @structured_config_contributor
     def ip_http_client_source_interfaces(self) -> None:

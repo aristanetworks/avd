@@ -15,7 +15,8 @@ description: |-
   - Verify Devices are in the Inventory & Topology Studio.
   - Update the Device hostname in the Inventory & Topology Studio as needed.
   - Create Workspace and build, submit, abandon as needed.
-  - Deploy EOS configurations using "Static Configlet Studio".
+  - Deploy device-specific EOS configurations using Static Configuration Studio.
+  - Deploy a full hierarchy of containers and configlets using Static Configuration Studio.
   - Create and associate Device and Interface Tags.
   - Approve, run, cancel Change Controls as needed.
 options:
@@ -40,6 +41,22 @@ options:
     description: Verifies CloudVison server certificates.
     type: bool
     default: true
+  proxy_host:
+    description: FQDN/IP of the HTTP CONNECT proxy server.
+    type: str
+    required: false
+  proxy_port:
+    description: TCP port of the HTTP CONNECT proxy server.
+    type: int
+    default: 8080
+  proxy_username:
+    description: Authentication username for the HTTP CONNECT proxy server.
+    type: str
+    required: false
+  proxy_password:
+    description: Authentication password for the HTTP CONNECT proxy server. It is strongly recommended to use Vault for this.
+    type: str
+    required: false
   configuration_dir:
     description: Path to directory containing .cfg files with EOS configurations.
     required: true
@@ -58,7 +75,7 @@ options:
   device_list:
     description: List of devices to deploy. The names are used to find AVD structured configuration and EOS configuration files.
     type: list
-    required: true
+    required: false
     elements: str
   strict_tags:
     description: If `true` other tags associated with the devices will get removed. Otherwise other tags will be left as-is.
@@ -78,6 +95,34 @@ options:
     description: Python String Template to use for creating the configlet name for each device configuration.
     type: str
     default: "AVD-${hostname}"
+  static_config_manifest:
+    description: Deploy a manifest of containers and configlets to CloudVision using the Static Configuration Studio.
+    type: dict
+    suboptions:
+      configlets:
+        description: |-
+          A list of dictionaries defining configlets to be pushed to the Configlet Library.
+
+          Each dictionary in the list must follow this data model:
+          - **name** (`str`, required): Unique name for the configlet.
+          - **file** (`str`, required): Filesystem path to the text file containing the configlet body. Relative to the current working directory.
+        type: list
+        elements: dict
+      containers:
+        description: |-
+          A list of dictionaries defining the root containers in the hierarchy.
+
+          Each dictionary in the list must follow this data model:
+          - **name** (`str`, required): Name for the container. Sibling containers must have unique names.
+          - **tag_query** (`str`, required): A query string used to match devices based on their assigned tags.
+          - **description** (`str`, optional): An optional description for the container.
+          - **match_policy** (`str`, optional, default: "match_all"): The match policy to determine how devices with a matching tag inherit
+              a child container configlets. Valid choices are `match_all` or `match_first`.
+          - **configlets** (`list` of `str`, optional): A list of configlet names to apply to this container. Must be defined in the `configlets` section.
+          - **sub_containers** (`list` of `dict`, optional): A nested list of container dictionaries that follow this same data model,
+              allowing for a full hierarchy.
+        type: list
+        elements: dict
   workspace:
     description: CloudVision Workspace to create or use for the deployment.
     type: dict
@@ -175,6 +220,10 @@ EXAMPLES = r"""
         cv_servers: [ "www.arista.io" ]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: true
+        # proxy_host: "proxy.local.domain"
+        # proxy_port: "8080"
+        # proxy_username: "avd_user"
+        # proxy_password: "avd_password"
         configuration_dir: "{{ inventory_dir }}/intended/configs"
         structured_config_dir: "{{ inventory_dir }}/intended/structured_configs"
         # structured_config_suffix: "yml"
@@ -183,6 +232,23 @@ EXAMPLES = r"""
         # skip_missing_devices: false
         # strict_system_mac_address: false
         # configlet_name_template: "AVD-${hostname}"
+        # static_config_manifest:
+        #   configlets:
+        #     - name: "GLOBAL_NTP_SERVERS"
+        #       file: "configlets/global_ntp.txt"
+        #     - name: "CORP_BANNER"
+        #       file: "configlets/corp_banner.txt"
+        #   containers:
+        #     - name: "Global"
+        #       tag_query: "device:*"
+        #       match_policy: "match_all"
+        #       configlets:
+        #         - name: "GLOBAL_NTP_SERVERS"
+        #       sub_containers:
+        #         - name: "Data Centers"
+        #           tag_query: "topology_network_type:datacenter"
+        #           configlets:
+        #             - name: "CORP_BANNER"
         workspace:
         #   name:
         #   description:
