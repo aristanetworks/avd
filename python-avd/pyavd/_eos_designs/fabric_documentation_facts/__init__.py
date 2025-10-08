@@ -161,11 +161,13 @@ class FabricDocumentationFacts(AvdFacts):
                 {
                     "node": hostname,
                     "type": data[0],
+                    "serial_number": self.avd_facts[hostname].serial_number,
                     "node_interface": data[1],
                     "node_ip_address": data[2],
                     "routed": data[4],
                     "peer": peer_name,
                     "peer_type": "mlag_peer" if peer_data[3] else peer_data[0],
+                    "peer_serial_number": self.avd_facts[peer_name].serial_number if peer_name else None,
                     "peer_interface": peer_data[1],
                     "peer_ip_address": peer_data[2],
                 }
@@ -353,9 +355,11 @@ class FabricDocumentationFacts(AvdFacts):
             (
                 self.avd_facts[hostname].type,
                 hostname,
+                self.avd_facts[hostname].serial_number,
                 ethernet_interface["name"],
                 get(ethernet_interface, "peer_type", default=""),
-                get(ethernet_interface, "peer", default=""),
+                (peer_name := get(ethernet_interface, "peer", default="")),
+                self.avd_facts[peer_name].serial_number if get(self.avd_facts, peer_name) else None,
                 get(ethernet_interface, "peer_interface", default=""),
                 not get(ethernet_interface, "shutdown", default=False),
             )
