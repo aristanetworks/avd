@@ -457,8 +457,16 @@ class RouterBgpMixin(Protocol):
                     remote_as=data["bgp_as"],
                     overlay_peering_interface=data.get("overlay_peering_interface"),
                 )
-                if self.inputs.evpn_prevent_readvertise_to_server and self.inputs.evpn_prevent_readvertise_to_server_mode in ["source_peer_asn", "as_path_acl"]:
-                    neighbor.route_map_out = f"RM-EVPN-FILTER-AS{data['bgp_as']}"
+                if self.inputs.evpn_prevent_readvertise_to_server:
+                    match self.inputs.evpn_prevent_readvertise_to_server_mode:
+                        case "source_peer_asn" | "as_path_acl":
+                            neighbor.route_map_out = f"RM-EVPN-FILTER-AS{data['bgp_as']}"
+                        case "peer_tag":
+                            evpn_rs_neighbor = self.structured_config.router_bgp.address_family_evpn.neighbors.obtain(data["ip_address"])
+                            evpn_rs_neighbor._update(peer_tag_in=f"EVPN-PEER-TAG-AS{data['bgp_as']}", peer_tag_out_discard=f"EVPN-PEER-TAG-AS{data['bgp_as']}")
+                        case "rcf":
+                            evpn_rs_neighbor = self.structured_config.router_bgp.address_family_evpn.neighbors.obtain(data["ip_address"])
+                            evpn_rs_neighbor._update(rcf_out=f"EVPN-FILTER-AS{data['bgp_as']}()")
                 neighbors.append(neighbor)
 
             for route_client, data in natural_sort(self._evpn_route_clients.items()):
