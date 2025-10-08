@@ -131,7 +131,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
                 self.logger_adapter.debug(LogMessage.INTERFACE_UNNUMBERED, interface=intf.name)
                 continue
 
-            if not self.is_peer_filtered(intf.peer, identity=intf.name):
+            if self.is_peer_filtered(intf.peer, identity=intf.name):
                 continue
 
             if (peer_interface_ip := self.get_interface_ip(intf.peer, intf.peer_interface, intf.name)) is None:

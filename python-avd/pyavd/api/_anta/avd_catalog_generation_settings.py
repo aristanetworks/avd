@@ -34,9 +34,11 @@ class AvdCatalogGenerationSettings(BaseModel):
         input_factory_settings : InputFactorySettings
             Settings for test input generation.
         run_tests : list[str]
-            List of ANTA test names to run.
+            List of ANTA test names to run. Supports a DSL for peer-specific filtering.
+            - `"VerifyReachability(DC1-SPINE1, DC1-SPINE2)"` -> Run reachability tests only for listed peers.
         skip_tests : list[str]
-            List of ANTA test names to skip. Takes precedence over `run_tests`.
+            List of ANTA test names to skip. Supports the same DSL as `run_tests`.
+            `skip_tests` takes precedence over `run_tests`.
         custom_test_specs : list[TestSpec]
             List of custom test specs.
         output_dir : str | Path | None, optional

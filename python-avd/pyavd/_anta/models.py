@@ -38,7 +38,7 @@ class BgpNeighborInterface:
 
 @dataclass
 class TestContext:
-    """TODO: Docstring."""
+    """Stores test context data for ANTA test generation."""
 
     test_spec: TestSpec
     peers_to_run: set[str] = field(default_factory=set)
@@ -65,7 +65,7 @@ class TestContext:
 
 @dataclass
 class DeviceContext:
-    """Stores device test context data for ANTA test generation."""
+    """Stores device context data for ANTA test generation."""
 
     hostname: str
     structured_config: EosCliConfigGen

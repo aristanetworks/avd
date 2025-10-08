@@ -32,14 +32,14 @@ def dump_anta_catalog(hostname: str, catalog: AntaCatalog, catalog_dir: str | Pa
 
 def parse_tests(test_list: list[str]) -> dict[str, set[str]]:
     """
-    Parse a list of test strings into a dictionary mapping test names to a set of filters.
+    Parse a list of test strings into a dictionary mapping test names to a set of peer names to filter.
 
     Args:
         test_list: A list of strings, where each string is a test name,
-                   optionally with parenthesized, comma-separated arguments.
+                   optionally with parenthesized, comma-separated peer names.
 
     Returns:
-        A dictionary mapping each test name to a set of its filters.
+        A dictionary mapping each test name to a set of peer names to filter.
     """
     parsed_map = {}
     for item in test_list:
@@ -47,17 +47,23 @@ def parse_tests(test_list: list[str]) -> dict[str, set[str]]:
         name = name.strip()
 
         if not paren:
-            # No parentheses, so no specific filters
+            # No parentheses, so no specific filters.
             parsed_map[name] = set()
             continue
 
-        # If parentheses exist, process the arguments
+        # If parentheses exist, process the arguments.
         filters_str = args.rstrip(")").strip()
         if filters_str:
-            # Create a clean set of filters, stripping whitespace from each
-            parsed_map[name] = {f.strip() for f in filters_str.split(",")}
+            # Split the string by commas to get raw peer names.
+            raw_peers = filters_str.split(",")
+
+            # Clean each peer by stripping whitespace and quotes.
+            cleaned_peers = (peer.strip().strip("'\"") for peer in raw_peers)
+
+            # Create the final set, filtering out any empty strings that resulted from the cleaning process.
+            parsed_map[name] = {peer for peer in cleaned_peers if peer}
         else:
-            # Handles cases like "TestName()"
+            # Handles cases like "TestName()".
             parsed_map[name] = set()
 
     return parsed_map

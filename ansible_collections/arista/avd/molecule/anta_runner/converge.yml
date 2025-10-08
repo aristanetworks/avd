@@ -47,13 +47,14 @@
           - device_list: "{{ groups['DC1_SVC_LEAVES'] }}"
             run_tests:
               - VerifyReachability
-          # Skip tests take precedence over run_tests
-          # All tests except VerifyLLDPNeighbors will run on DC2_SPINES devices
+          # Only VerifyReachability towards dc2-leaf1a will run on DC2_SPINES devices
           - device_list: "{{ groups['DC2_SPINES'] }}"
             run_tests:
-              - VerifyLLDPNeighbors
+              - VerifyReachability(dc2-leaf1a)
+          # Run all tests on dc1-leaf2s except VerifyReachability towards dc1-spine1 and dc1-spine2
+          - device_list: [ dc1-leaf2a ]
             skip_tests:
-              - VerifyLLDPNeighbors
+              - VerifyReachability(dc1-spine1, dc1-spine2)
       run_once: true
 
     - name: ANTA User-Defined Catalogs Run

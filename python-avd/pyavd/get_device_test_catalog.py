@@ -76,6 +76,10 @@ def get_device_test_catalog(
 
     run_map = parse_tests(settings.run_tests)
     skip_map = parse_tests(settings.skip_tests)
+    if run_map:
+        LOGGER.debug("<%s> Parsed run_tests filter: %s", hostname, run_map)
+    if skip_map:
+        LOGGER.debug("<%s> Parsed skip_tests filter: %s", hostname, skip_map)
 
     # Validate that all specified peer devices in filters exist.
     all_filtered_peers = {peer for peer_list in list(run_map.values()) + list(skip_map.values()) for peer in peer_list}
@@ -100,19 +104,19 @@ def get_device_test_catalog(
         peers_to_run = run_map.get(test_name, set())
         peers_to_skip = skip_map.get(test_name, set())
 
-        # A global skip (skip_map entry with an empty peer set) always wins.
-        if test_name in skip_map and not peers_to_skip:
-            continue
-
         # Raise if a test is globally specified in both lists.
         if not peers_to_run and test_name in run_map and not peers_to_skip and test_name in skip_map:
-            msg = f"Ambiguous configuration for test '{test_name}': it is specified globally in both run_tests and skip_tests."
+            msg = f"Test '{test_name}' is specified in both run_tests and skip_tests filters, which is a contradiction."
             raise ValueError(msg)
 
         # Raise if peers are specified in both run and skip lists for the same test.
         if conflicting_peers := peers_to_run & peers_to_skip:
-            msg = f"Conflicting peer filters for test '{test_name}': peers {sorted(conflicting_peers)} are in both run and skip lists."
+            msg = f"Test '{test_name}' has conflicting peer filters: peers {sorted(conflicting_peers)} are in both run_tests and skip_tests filters."
             raise ValueError(msg)
+
+        # Skip tests that are present in skip_map with an empty peer set.
+        if test_name in skip_map and not peers_to_skip:
+            continue
 
         test_contexts.append(TestContext(test_spec=test_spec, peers_to_run=peers_to_run, peers_to_skip=peers_to_skip))
 
