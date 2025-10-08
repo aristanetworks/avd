@@ -47,7 +47,7 @@ class AristaAvdMissingVariableError(AristaAvdError):
 
 
 class AvdSchemaError(AristaAvdError):
-    def __init__(self, message: str = "Schema Error", path: list[str | int] | None = None) -> None:
+    def __init__(self, message: str = "Schema Error", path: Sequence[str | int] | None = None) -> None:
         if path is not None:
             self.path = self._json_path_to_string(path)
             message = f"'Validation Error: {self.path}': {message}"
