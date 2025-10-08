@@ -49,7 +49,7 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '1.16'
+  as: '65002'
   as_notation: asdot
   router_id: 192.168.255.2
   maximum_paths:
@@ -82,7 +82,7 @@ router_bgp:
     rd: 192.168.254.2:1
     route_targets:
       both:
-      - 1.16:1
+      - '65002:1'
     redistribute_routes:
     - learned
   - id: 2
@@ -90,7 +90,7 @@ router_bgp:
     rd: 192.168.254.2:2
     route_targets:
       both:
-      - 1.16:2
+      - '65002:2'
     redistribute_routes:
     - learned
   - id: 3
@@ -98,7 +98,7 @@ router_bgp:
     rd: 192.168.254.2:33333
     route_targets:
       both:
-      - 1.16:3333
+      - 65002:3333
     redistribute_routes:
     - learned
   - id: 4
@@ -114,7 +114,7 @@ router_bgp:
     rd: auto
     route_targets:
       both:
-      - 1.16:5
+      - '65002:5'
     redistribute_routes:
     - learned
   address_family_evpn:
@@ -134,11 +134,11 @@ router_bgp:
       import:
       - address_family: evpn
         route_targets:
-        - 1.16:11
+        - '65002:11'
       export:
       - address_family: evpn
         route_targets:
-        - 1.16:11
+        - '65002:11'
     router_id: 192.168.255.2
     redistribute:
       connected:
@@ -149,11 +149,11 @@ router_bgp:
       import:
       - address_family: evpn
         route_targets:
-        - 1.16:12
+        - '65002:12'
       export:
       - address_family: evpn
         route_targets:
-        - 1.16:12
+        - '65002:12'
     router_id: 10.12.12.12
     redistribute:
       connected:

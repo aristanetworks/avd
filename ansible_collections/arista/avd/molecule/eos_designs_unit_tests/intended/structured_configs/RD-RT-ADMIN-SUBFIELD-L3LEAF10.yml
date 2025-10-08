@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: RD-RT-ADMIN-SUBFIELD-L3LEAF3
+hostname: RD-RT-ADMIN-SUBFIELD-L3LEAF10
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -12,17 +12,17 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.255.3/32
+  ip_address: 192.168.255.10/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 192.168.254.3/32
+  ip_address: 192.168.254.10/32
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.200.103/24
+  ip_address: 192.168.200.110/24
   type: oob
   gateway: 192.168.200.1
 metadata:
@@ -49,8 +49,9 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '65003'
-  router_id: 192.168.255.3
+  as: '1.17'
+  as_notation: asdot
+  router_id: 192.168.255.10
   maximum_paths:
     paths: 4
     ecmp: 4
@@ -78,7 +79,7 @@ router_bgp:
   vlans:
   - id: 1
     tenant: Tenant_A
-    rd: 65003:10001
+    rd: 1.17:10001
     route_targets:
       both:
       - 15:10001
@@ -86,7 +87,7 @@ router_bgp:
     - learned
   - id: 2
     tenant: Tenant_A
-    rd: 65003:10002
+    rd: 1.17:10002
     route_targets:
       both:
       - 15:10002
@@ -94,7 +95,7 @@ router_bgp:
     - learned
   - id: 3
     tenant: Tenant_A
-    rd: 65003:33333
+    rd: 1.17:33333
     route_targets:
       both:
       - 15:3333
@@ -133,12 +134,12 @@ router_bgp:
       import:
       - address_family: evpn
         route_targets:
-        - '65003:11'
+        - 1.17:11
       export:
       - address_family: evpn
         route_targets:
-        - '65003:11'
-    router_id: 192.168.255.3
+        - 1.17:11
+    router_id: 192.168.255.10
     redistribute:
       connected:
         enabled: true
@@ -148,11 +149,11 @@ router_bgp:
       import:
       - address_family: evpn
         route_targets:
-        - '65003:12'
+        - 1.17:12
       export:
       - address_family: evpn
         route_targets:
-        - '65003:12'
+        - 1.17:12
     router_id: 10.12.12.12
     redistribute:
       connected:
@@ -238,7 +239,7 @@ vrfs:
   tenant: TENANT_WITH_VRFS_WITHOUT_SVIS
 vxlan_interface:
   vxlan1:
-    description: RD-RT-ADMIN-SUBFIELD-L3LEAF3_VTEP
+    description: RD-RT-ADMIN-SUBFIELD-L3LEAF10_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
