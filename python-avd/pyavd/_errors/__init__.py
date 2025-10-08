@@ -2,7 +2,8 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
-from typing import Sequence
+from collections.abc import Sequence
+
 
 class AristaAvdError(Exception):
     host: str | None
