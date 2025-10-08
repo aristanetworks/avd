@@ -7,9 +7,9 @@ l3leaf:
     loopback_ipv4_offset: 8
     vtep_loopback_ipv4_pool: 192.168.254.0/24
   nodes:
-    - name: invalid-value-bgp-as
+    - name: invalid-value-bgp-as-asdot-notation
       id: 4
       bgp_as: sdf1-4
 
 expected_error_message: >-
-  The value for 'asn' must be an integer or a float, but received 'sdf4'.
+  Failed to convert 'sdf4' to an integer when converting the BGP AS asdot notation`.

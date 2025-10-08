@@ -111,18 +111,22 @@ class RoutingMixin(Protocol):
             return None
         # TODO: This calculation would not work for -12345.12234 type of input.
         # Need to handle in schema probably.
-        try:
-            if self.bgp_as_notation == "asdot" and "." not in str(asn):
+        if self.bgp_as_notation == "asdot" and "." not in str(asn):
+            try:
                 if (prefix := int(asn) // 65536) != 0:
                     return f"{prefix}.{int(asn) % 65536}"
                 return f"{int(asn) % 65536}"
+            except ValueError as e:
+                msg = f"Failed to convert '{asn}' to an integer when converting the BGP AS asdot notation`."
+                raise AristaAvdInvalidInputsError(msg) from e
 
-            if self.bgp_as_notation == "asplain" and "." in str(asn):
-                prefix, suffix = map(int, str(asn).split("."))
+        if self.bgp_as_notation == "asplain" and "." in str(asn):
+            prefix, suffix = str(asn).split(".")
+            try:
                 return str(int(prefix) * 65536 + int(suffix))
-        except ValueError as e:
-            msg = f"Failed to convert '{prefix}' or '{suffix} to an integer when converting the BGP AS '{asn}' to asplain notation`."
-            raise AristaAvdInvalidInputsError(msg) from e
+            except ValueError as e:
+                msg = f"Failed to convert '{prefix}' or '{suffix} to an integer when converting the BGP AS '{asn}' to asplain notation`."
+                raise AristaAvdInvalidInputsError(msg) from e
 
         return str(asn)
 
