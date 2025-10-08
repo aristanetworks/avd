@@ -1,7 +1,5 @@
 type: wan_router
 
-wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: true
-
 wan_router: # dynamic_key: node_type
   defaults:
     bgp_as: 65100

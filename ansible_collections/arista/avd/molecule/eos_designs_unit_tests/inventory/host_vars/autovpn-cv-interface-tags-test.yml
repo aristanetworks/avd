@@ -33,7 +33,6 @@ default_node_types:
     match_hostnames:
       - autovpn-cv-interface-tags-test
 
-wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: true
 
 wan_rr:
   defaults:

@@ -2,7 +2,7 @@
 type: wan_router
 
 overlay_routing_protocol: ibgp
-wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: true
+
 wan_router:
   defaults:
     cv_pathfinder_region: Global

@@ -23,7 +23,6 @@ platform_settings:
     # platform settings p2p_uplinks_mtu takes precedence
     p2p_uplinks_mtu: 9218
 
-wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: true
 
 wan_router: # dynamic_key: node_type
   defaults:
