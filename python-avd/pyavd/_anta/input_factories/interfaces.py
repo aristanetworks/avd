@@ -45,26 +45,28 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
             status = "adminDown" if intf.shutdown or (intf.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown) else "up"
-            interfaces.append(InterfaceState(name=intf.name, status=status))
+
+            # TODO: Remove the pyright warning once fixed in ANTA https://github.com/aristanetworks/anta/issues/1340
+            interfaces.append(InterfaceState(name=intf.name, status=status))  # pyright: ignore[reportCallIssue]
 
         # Add Port-Channel interfaces, considering `validate_state` knob
         for intf in self.structured_config.port_channel_interfaces:
             if intf.validate_state is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
-            interfaces.append(InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up"))
+            interfaces.append(InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up"))  # pyright: ignore[reportCallIssue]
 
         # Add VLAN, Loopback, and DPS interfaces
         interfaces.extend(
             [
-                InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up")
+                InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up")  # pyright: ignore[reportCallIssue]
                 for intf in chain(self.structured_config.vlan_interfaces, self.structured_config.loopback_interfaces, self.structured_config.dps_interfaces)
             ]
         )
 
         # If the device is a VTEP, add the Vxlan1 interface to the list
         if self.device.is_vtep:
-            interfaces.append(InterfaceState(name="Vxlan1", status="up"))
+            interfaces.append(InterfaceState(name="Vxlan1", status="up"))  # pyright: ignore[reportCallIssue]
 
         return [VerifyInterfacesStatus.Input(interfaces=natural_sort(interfaces, sort_key="name"))] if interfaces else None
 
