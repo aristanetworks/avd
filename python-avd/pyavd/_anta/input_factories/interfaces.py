@@ -45,26 +45,26 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
             status = "adminDown" if intf.shutdown or (intf.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown) else "up"
-            interfaces.append(InterfaceState(name=intf.name, status=status, speed=None, lanes=None))
+            interfaces.append(InterfaceState(name=intf.name, status=status))
 
         # Add Port-Channel interfaces, considering `validate_state` knob
         for intf in self.structured_config.port_channel_interfaces:
             if intf.validate_state is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
-            interfaces.append(InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up", speed=None, lanes=None))
+            interfaces.append(InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up"))
 
         # Add VLAN, Loopback, and DPS interfaces
         interfaces.extend(
             [
-                InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up", speed=None, lanes=None)
+                InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up")
                 for intf in chain(self.structured_config.vlan_interfaces, self.structured_config.loopback_interfaces, self.structured_config.dps_interfaces)
             ]
         )
 
         # If the device is a VTEP, add the Vxlan1 interface to the list
         if self.device.is_vtep:
-            interfaces.append(InterfaceState(name="Vxlan1", status="up", speed=None, lanes=None))
+            interfaces.append(InterfaceState(name="Vxlan1", status="up"))
 
         return [VerifyInterfacesStatus.Input(interfaces=natural_sort(interfaces, sort_key="name"))] if interfaces else None
 
