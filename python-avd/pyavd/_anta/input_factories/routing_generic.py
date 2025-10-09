@@ -8,7 +8,7 @@ from anta.tests.routing.generic import VerifyRoutingProtocolModel
 from ._base_classes import AntaTestInputFactory
 
 
-class VerifyRoutingProtocolModelInputFactory(AntaTestInputFactory):
+class VerifyRoutingProtocolModelInputFactory(AntaTestInputFactory[VerifyRoutingProtocolModel.Input]):
     """
     Input factory class for the `VerifyRoutingProtocolModel` test.
 

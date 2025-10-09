@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from ipaddress import ip_interface
+from ipaddress import IPv4Address, ip_interface
 
 from anta.input_models.path_selection import DpsPath
 from anta.tests.path_selection import VerifySpecificPath
@@ -14,7 +14,7 @@ from pyavd.j2filters import natural_sort
 from ._base_classes import AntaTestInputFactory
 
 
-class VerifySpecificPathInputFactory(AntaTestInputFactory):
+class VerifySpecificPathInputFactory(AntaTestInputFactory[VerifySpecificPath.Input]):
     """
     Input factory class for the `VerifySpecificPath` test.
 
@@ -56,7 +56,10 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory):
                 for static_peer in path_group.static_peers:
                     for destination_address in static_peer.ipv4_addresses:
                         dps_path = DpsPath(
-                            peer=static_peer.router_ip, path_group=path_group.name, source_address=source_address, destination_address=destination_address
+                            peer=IPv4Address(static_peer.router_ip),
+                            path_group=path_group.name,
+                            source_address=IPv4Address(source_address),
+                            destination_address=IPv4Address(destination_address),
                         )
                         all_dps_paths.append(dps_path)
 

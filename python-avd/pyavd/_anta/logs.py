@@ -12,7 +12,7 @@ from logging import LoggerAdapter
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from collections.abc import Generator
+    from collections.abc import Generator, MutableMapping
 
 
 class TestLoggerAdapter(LoggerAdapter):
@@ -33,12 +33,15 @@ class TestLoggerAdapter(LoggerAdapter):
     and prepend the message with the device and test names, and optionally the context: `<device> test context message`.
     """
 
-    def process(self, msg: LogMessage, kwargs: dict) -> tuple[str, dict]:
+    def process(self, msg: LogMessage, kwargs: MutableMapping[str, object]) -> tuple[str, MutableMapping[str, object]]:
         """Process the message and kwargs before logging."""
         # Keep the extra dict in kwargs to pass it to the formatter if needed (following the standard LoggerAdapter behavior)
         kwargs["extra"] = self.extra
 
         # Extract the device, test, and context from extra
+        if self.extra is None:
+            return str(msg.value), kwargs
+
         device = self.extra["device"]
         test = self.extra["test"]
         context = self.extra.get("context")
@@ -49,20 +52,27 @@ class TestLoggerAdapter(LoggerAdapter):
 
         # Format the LogMessage using the provided kwargs and extract the fields name from the message string
         fields = [field_name for _, field_name, _, _ in string.Formatter().parse(msg.value) if field_name is not None]
-        msg = msg.value.format(**kwargs)
+        processed_msg = msg.value.format(**kwargs)
 
         # Removing the fields name from kwargs to preserve standard logging kwargs only that should always be passed through (e.g. exc_info, stack_info, etc.)
         for field in fields:
             kwargs.pop(field, None)
 
-        return f"{prefix} {msg}", kwargs
+        return f"{prefix} {processed_msg}", kwargs
 
     @contextmanager
     def context(self, context: str) -> Generator[TestLoggerAdapter, None, None]:
         """Temporarily add context to the logger."""
-        original_extra = dict(self.extra)
+        if self.extra is None:
+            # This should not happen, but as a safeguard
+            self.extra = {}
+
+        original_extra = dict(self.extra).copy()
         try:
-            self.extra["context"] = context
+            # The type of self.extra is Mapping[str, object] but we need a mutable dict here
+            mutable_extra = dict(self.extra)
+            mutable_extra["context"] = context
+            self.extra = mutable_extra
             yield self
         finally:
             self.extra = original_extra
