@@ -138,3 +138,82 @@ exclude = [
   "python-avd/pyavd/_eos_designs/schema/__init__.py",
 ]
 pythonVersion = "3.10"
+
+[tool.bumpversion]
+
+current_version = "6.0.0-dev1"
+
+allow_dirty = true
+commit = false
+tag = false
+parse = """(?x)
+    (?P<major>0|[1-9]\\d*)\\.
+    (?P<minor>0|[1-9]\\d*)\\.
+    (?P<patch>0|[1-9]\\d*)
+    (?:
+        -                             # dash separator for pre-release section
+        (?P<pre_l>[a-zA-Z-]+)         # pre-release label
+        (?P<pre_n>0|[1-9]\\d*)        # pre-release version number
+    )?                                # pre-release section is optional
+"""
+serialize = [
+    "{major}.{minor}.{patch}-{pre_l}{pre_n}",
+    "{major}.{minor}.{patch}",
+]
+
+[tool.bumpversion.parts.pre_l]
+values = [
+  "dev",
+  "final",
+]
+optional_value = "final"
+
+[[tool.bumpversion.files]]
+filename = "ansible_collections/arista/avd/galaxy.yml"
+search = "version: {current_version}"
+replace = "version: {new_version}"
+
+[[tool.bumpversion.files]]
+filename = "Cargo.toml"
+search = 'package.version = "{current_version}"'
+replace = 'package.version = "{new_version}"'
+
+### Bumping version using PEP440 style like x.y.z.dev1
+
+[[tool.bumpversion.files]]
+filename = "ansible_collections/arista/avd/requirements.txt"
+search = "pyavd[ansible-collection]=={current_version}"
+replace = "pyavd[ansible-collection]=={new_version}"
+parse = """(?x)
+    (?P<major>0|[1-9]\\d*)\\.
+    (?P<minor>0|[1-9]\\d*)\\.
+    (?P<patch>0|[1-9]\\d*)
+    (?:
+        \\.                           # dot separator for pre-release section
+        (?P<pre_l>[a-zA-Z-]+)         # pre-release label
+        (?P<pre_n>0|[1-9]\\d*)        # pre-release version number
+    )?                                # pre-release section is optional
+"""
+serialize = [
+    "{major}.{minor}.{patch}.{pre_l}{pre_n}",
+    "{major}.{minor}.{patch}",
+]
+
+[[tool.bumpversion.files]]
+filename = "python-avd/pyavd/__init__.py"
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
+parse = """(?x)
+    (?P<major>0|[1-9]\\d*)\\.
+    (?P<minor>0|[1-9]\\d*)\\.
+    (?P<patch>0|[1-9]\\d*)
+    (?:
+        \\.                           # dot separator for pre-release section
+        (?P<pre_l>[a-zA-Z-]+)         # pre-release label
+        (?P<pre_n>0|[1-9]\\d*)        # pre-release version number
+    )?                                # pre-release section is optional
+"""
+serialize = [
+    "{major}.{minor}.{patch}.{pre_l}{pre_n}",
+    "{major}.{minor}.{patch}",
+]
