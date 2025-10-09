@@ -41,6 +41,22 @@ options:
     description: Verifies CloudVison server certificates.
     type: bool
     default: true
+  proxy_host:
+    description: FQDN/IP of the HTTP CONNECT proxy server.
+    type: str
+    required: false
+  proxy_port:
+    description: TCP port of the HTTP CONNECT proxy server.
+    type: int
+    default: 8080
+  proxy_username:
+    description: Authentication username for the HTTP CONNECT proxy server.
+    type: str
+    required: false
+  proxy_password:
+    description: Authentication password for the HTTP CONNECT proxy server. It is strongly recommended to use Vault for this.
+    type: str
+    required: false
   configuration_dir:
     description: Path to directory containing .cfg files with EOS configurations.
     required: true
@@ -204,6 +220,10 @@ EXAMPLES = r"""
         cv_servers: [ "www.arista.io" ]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: true
+        # proxy_host: "proxy.local.domain"
+        # proxy_port: "8080"
+        # proxy_username: "avd_user"
+        # proxy_password: "avd_password"
         configuration_dir: "{{ inventory_dir }}/intended/configs"
         structured_config_dir: "{{ inventory_dir }}/intended/structured_configs"
         # structured_config_suffix: "yml"

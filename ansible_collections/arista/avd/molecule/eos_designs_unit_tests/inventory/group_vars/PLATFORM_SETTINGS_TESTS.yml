@@ -1,4 +1,23 @@
 ---
+platform_settings:
+  - platforms: [7020.*]
+    structured_config:
+      ethernet_interfaces:
+        - name: Ethernet12
+          switchport:
+            enabled: true
+          description: Structured config for platform matching the regex
+  - platforms:
+      - 7010TX
+    feature_support:
+      queue_monitor_length_notify: false
+      per_interface_mtu: false
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+    digital_twin:
+      platform: vEOS-lab
+
 type: l3leaf
 l3leaf:
   defaults:
@@ -22,3 +41,9 @@ l3leaf:
           id: 4
           platform: 7010TX
           mgmt_ip: 192.168.201.117/24
+  nodes:
+    - name: 7020TX-LEAF1
+      bgp_as: 924
+      id: 5
+      platform: 7020TX
+      mgmt_ip: 192.168.201.118/24

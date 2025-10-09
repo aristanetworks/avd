@@ -176,9 +176,6 @@ tenants:
                   key: ocAzkT2JRNKrbPGT790Geg==
                 - id: 2
                   key: uVG6QXeIXN+QGY2DP4UCtA==
-                # Test when 'id' and 'key' are not set under message-digest keys.
-                # TODO: AVD 6.0.0 Make 'id' a primary key and 'key' required
-                - hash_algorithm: sha384
             raw_eos_cli: |
               logging event storm-control discards
               logging event link-status
@@ -193,7 +190,9 @@ tenants:
               enabled: true
               authentication: "message-digest"
               message_digest_keys:
-                - hash_algorithm: "sha256"
+                - id: 1
+                  key: uVG6QXeIXN+QGY2DP4UCtA==
+                  hash_algorithm: "sha256"
           - name: Port-Channel1113
             description: empty message_digest_keys with authentication set to message-digest
             peer: inet-cloud-po1113
