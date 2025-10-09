@@ -74071,7 +74071,7 @@ class EosDesigns(EosDesignsRootModel):
         "wan_route_servers": {"type": WanRouteServers},
         "wan_stun_dtls_disable": {"type": bool, "default": False},
         "wan_stun_dtls_profile_name": {"type": str, "default": "STUN-DTLS"},
-        "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp": {"type": bool, "default": True},
+        "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp": {"type": bool, "default": False},
         "wan_use_evpn_node_settings_for_lan": {"type": bool, "default": False},
         "wan_virtual_topologies": {"type": WanVirtualTopologies},
         "zscaler_endpoints": {"type": ZscalerEndpoints},
@@ -75967,7 +75967,7 @@ class EosDesigns(EosDesignsRootModel):
     - `false`: For newer EOS versions (starting 4.33.2) use
     the proper CLI.
 
-    Default value: `True`
+    Default value: `False`
     """
     wan_use_evpn_node_settings_for_lan: bool
     """
