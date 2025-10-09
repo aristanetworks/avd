@@ -325,5 +325,4 @@ class AvdIndexedList(Sequence[T_AvdModel], AvdBase, Generic[T_PrimaryKey, T_AvdM
             raise AristaAvdDuplicateDataError(type(self).__name__, str(self._dump()), str(other._dump()))
 
         for item in other:
-            # TODO: Do we need to copy the item to prevent some unsavory things later if other is modified?
             self.append(item)
