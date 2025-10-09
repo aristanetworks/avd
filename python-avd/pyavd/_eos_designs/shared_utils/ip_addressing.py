@@ -69,7 +69,7 @@ class IpAddressingMixin(Protocol):
         return self.node_config.vtep_loopback_ipv4_pool
 
     @cached_property
-    def vtep_ip(self: SharedUtilsProtocol) -> str | None:
+    def vtep_ip(self: SharedUtilsProtocol) -> str:
         """Render ipv4 address for vtep_ip using dynamically loaded python module."""
         if self.mlag is True:
             return self.ip_addressing.vtep_ip_mlag()

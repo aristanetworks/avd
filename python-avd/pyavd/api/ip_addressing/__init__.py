@@ -320,7 +320,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         offset = self._id + self._loopback_ipv6_offset
         return get_ip_from_pool(self._loopback_ipv6_pool, self.inputs.fabric_ip_addressing.loopback.ipv6_prefix_length, offset, 0)
 
-    def vtep_ip_mlag(self) -> str | None:
+    def vtep_ip_mlag(self) -> str:
         """
         Return IP address for VTEP for MLAG Leaf.
 
@@ -341,12 +341,8 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
                 mlag_secondary_id=self._mlag_secondary_id,
             )
 
-        if self.shared_utils.node_config.vtep_loopback and self.shared_utils.node_config.vtep_loopback.lower() == "loopback0":
+        if self.shared_utils.node_config.vtep_loopback and self.shared_utils.node_config.vtep_loopback.lower() == "loopback0" and self.shared_utils.router_id:
             return self.shared_utils.router_id
-
-        # Return None to make type checker happy.
-        if not self._vtep_loopback_ipv4_pool:
-            return None
 
         offset = self._mlag_primary_id + self._loopback_ipv4_offset
         return get_ip_from_pool(self._vtep_loopback_ipv4_pool, 32, offset, 0)
@@ -368,7 +364,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         offset = self._mlag_primary_id + self._loopback_ipv6_offset
         return get_ip_from_pool(self._vtep_loopback_ipv6_pool, 64, offset, 0)
 
-    def vtep_ip(self) -> str | None:
+    def vtep_ip(self) -> str:
         """
         Return IP address for VTEP.
 
@@ -387,7 +383,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
                 loopback_ipv4_offset=self._loopback_ipv4_offset,
             )
 
-        if self.shared_utils.node_config.vtep_loopback and self.shared_utils.node_config.vtep_loopback.lower() == "loopback0":
+        if self.shared_utils.node_config.vtep_loopback and self.shared_utils.node_config.vtep_loopback.lower() == "loopback0" and self.shared_utils.router_id:
             return self.shared_utils.router_id
 
         offset = self._id + self._loopback_ipv4_offset
