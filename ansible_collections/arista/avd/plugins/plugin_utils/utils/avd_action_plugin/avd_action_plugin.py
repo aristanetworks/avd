@@ -6,7 +6,7 @@ import warnings
 from abc import abstractmethod
 from collections.abc import Generator
 from contextlib import contextmanager
-from typing import Any, ClassVar
+from typing import Any, ClassVar, final
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase
@@ -45,12 +45,13 @@ class AvdActionPlugin(ActionBase):
         Update the `self.result` dictionary attribute in-place to return data to Ansible.
         """
 
+    @final
     def run(self, tmp: Any = None, task_vars: dict[str, Any] | None = None) -> dict[str, Any]:
         """Ansible Action entry point."""
         if task_vars is None:
             task_vars = {}
 
-        self.result = super().run(tmp, task_vars)
+        self.result.update(super().run(tmp, task_vars))
         del tmp  # tmp no longer has any effect
 
         # Prepare handlers, filters, and format based on logging config and task arguments
