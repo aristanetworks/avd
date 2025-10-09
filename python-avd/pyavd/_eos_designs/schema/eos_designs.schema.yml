@@ -6334,7 +6334,7 @@ keys:
     type: bool
     documentation_options:
       table: wan-settings
-    default: true
+    default: false
     description: 'For EOS kernel forwarding, ECMP programming can be enabled in two
       different ways depending on the EOS version.
 
