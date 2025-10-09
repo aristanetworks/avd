@@ -70,7 +70,7 @@ jobs:
           python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
           ansible-galaxy install -r "ansible_collections/arista/avd/collections.yml"
       - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
+        working-directory: ansible_collections/arista/avd/extensions
         run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -103,7 +103,7 @@ jobs:
           python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
           ansible-galaxy install -r "ansible_collections/arista/avd/collections.yml"
       - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
+        working-directory: ansible_collections/arista/avd/extensions
         run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status

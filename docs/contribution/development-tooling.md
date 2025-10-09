@@ -164,7 +164,7 @@ The Makefile supports the following targets:
   - This is the recommended way for development, as it is quicker and does not execute idempotency checks.
 - `test`: Execute molecule "test" sequence. Specify scenario name with `MOLECULE=<scenario_name>` (default: `eos_cli_config_gen`) and Ansible options with `ANSIBLE_OPTIONS=<options>` (default: `--forks 5`).
   - This is executed as part of the CI and tests for idempotency.
-- `refresh-facts`: Run all "eos_designs" and "eos_cli_config_gen" [molecule scenarios](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/molecule/MOLECULE_SCENARIOS.txt).
+- `refresh-facts`: Run all "eos_designs" and "eos_cli_config_gen" [molecule scenarios](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/extensions/molecule/MOLECULE_SCENARIOS.txt).
 
 !!! info
     `make refresh-facts` can be useful when you change common template or structured configuration output.

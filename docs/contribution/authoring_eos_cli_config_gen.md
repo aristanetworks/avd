@@ -89,7 +89,7 @@ Run `pre-commit run --all`, this will trigger recompiling the schemas and the te
 
 ### Validate Changes and Test Configurations
 
-1. Add some molecule tests in the `ansible_collections/arista/avd/molecule/eos_cli_config_gen` scenario or other relevant molecule scenario exercising the new knob configuration.
+1. Add some molecule tests in the `ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen` scenario or other relevant molecule scenario exercising the new knob configuration.
 2. Update the `host_vars` files:
    - Modify or add the `molecule/<scenario_name>/host_vars/hostX/<key_name>.yml` file to include the new configuration knobs.
    - If multiple files are required to cover all the test cases:

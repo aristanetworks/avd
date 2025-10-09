@@ -67,16 +67,16 @@ jobs:
               - 'ansible_collections/arista/avd/roles/eos_designs/*'
               - 'ansible_collections/arista/avd/roles/eos_designs/**/*'
               - '.github/workflows/pull-request-management.yml'
-              - 'ansible_collections/arista/avd/molecule/*'
-              - 'ansible_collections/arista/avd/molecule/**/*'
+              - 'ansible_collections/arista/avd/extensions/molecule/*'
+              - 'ansible_collections/arista/avd/extensions/molecule/**/*'
               - 'python-avd/pyavd/_eos_designs/*'
               - 'python-avd/pyavd/_eos_designs/**/*'
             config_gen:
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
               - '.github/workflows/pull-request-management.yml'
-              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/*'
-              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/**/*'
+              - 'ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen*/*'
+              - 'ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen*/**/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/**/*'
             plugins:
@@ -214,7 +214,7 @@ jobs:
         run: |
           python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
       - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
+        working-directory: ansible_collections/arista/avd/extensions
         run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -223,7 +223,7 @@ jobs:
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
-      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+      #     path: ${PWD}/ansible_collections/arista/avd/extensions/molecule/${{ matrix.avd_scenario }}
 
   # ----------------------------------- #
   # EOS Design MOLECULE
@@ -275,7 +275,7 @@ jobs:
         run: |
           python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
       - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
+        working-directory: ansible_collections/arista/avd/extensions
         run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -310,7 +310,7 @@ jobs:
           python -m pip install -r .github/requirements-ci-molecule.txt
           python -m pip install "ansible-core==2.16.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r /tmp/pyavd/min_requirements.txt
       - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
+        working-directory: ansible_collections/arista/avd/extensions
         run: |
           molecule test --scenario-name eos_designs_unit_tests
       - name: Check GIT status
@@ -346,7 +346,7 @@ jobs:
         run: |
           python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
       - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
+        working-directory: ansible_collections/arista/avd/extensions
         run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status

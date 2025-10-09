@@ -1,0 +1,6 @@
+{#
+ Copyright (c) 2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{{ description_prefix }}_MLAG_PEER_{{ mlag_peer }}_Eth{{ mlag_interfaces[0] | regex_findall("\d") | join }}_Eth{{ mlag_interfaces[1] | regex_findall("\d") | join }}_Po{{ mlag_port_channel_id }}
