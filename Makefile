@@ -101,6 +101,30 @@ integration-tests: ## Run integration test cases using ansible-test. Specify `AN
 	cd ansible_collections/arista/avd/ ; \
 	ansible-test integration --requirements --$(ANSIBLE_TEST_MODE)
 
+################
+# Bump version #
+################
+
+.PHONY: bump-dev
+bump-dev: ## Bump dev release. 6.0.0-dev0 -> 6.0.0-dev1
+	bump-my-version bump pre_n
+
+.PHONY: bump-release
+bump-release: ## Bump from dev to final release. 6.2.0-dev2 -> 6.2.0
+	bump-my-version bump pre_l
+
+.PHONY: bump-minor
+bump-minor: ## Bump minor release. 6.1.4 -> 6.2.0-dev0
+	bump-my-version bump minor
+
+.PHONY: bump-major
+bump-major: ## Bump major release. 6.2.4 -> 7.0.0-dev0
+	bump-my-version bump major
+
+.PHONY: bump-patch
+bump-patch: ## Bump patch release. 6.2.4 -> 6.2.5-dev0
+	bump-my-version bump patch
+
 ####################
 # Random shortcuts #
 ####################
