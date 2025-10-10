@@ -4,6 +4,7 @@ wan_mode: cv-pathfinder
 # Have all the router in the examples use eBGP as underlay routing protocol -
 # the default is "none" for WAN routers"
 underlay_routing_protocol: ebgp
+wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: true
 
 ipv4_prefix_list_catalog:
   - name: ALLOW-DEFAULT
@@ -636,16 +637,16 @@ tenants:
       - name: WAN-VRF-NO-AF
         vrf_id: 200
         # Setting address families under tenant to empty list
-        # and checking the VRF is still added on the WAN when the knob is true
+        # and checking the VRF is still added on the WAN
         # and the VRF is defined under wan_virtual_topologies.vrfs
         address_families: []
       - name: VRF-NO-WAN
         vrf_id: 300
-        # keeping default address family "evpn" and verifying we do not raise
-        # when the knob is true. The VRF should be configured.
+        # keeping default address family "evpn" and verifying we do not raise.
+        # The VRF should be configured.
       - name: VRF-NO-WAN-NO-AF
         vrf_id: 400
-        # when the knob is true. The VRF should not be configured under VXLAN and BGP.
+        # The VRF should not be configured under VXLAN and BGP.
         address_families: []
 
 wan_virtual_topologies:
