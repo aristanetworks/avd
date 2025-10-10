@@ -36,8 +36,16 @@ class CvTopology(Protocol):
             msg = "'cv_topology_levels' is required when 'use_cv_topology' is set to 'true'."
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
-        if self.node_config.uplink_switches or self.node_config.uplink_interfaces or self.node_config.uplink_switch_interfaces:
-            msg = "'uplink_switches', 'uplink_interfaces' and 'uplink_switch_interfaces' should be set when 'use_cv_topology' is set to 'true'."
+        if (
+            self.node_config.uplink_switches
+            or self.node_config.uplink_interfaces
+            or self.node_config.uplink_switch_interfaces
+            or self.node_config.mlag_interfaces
+        ):
+            msg = (
+                "'uplink_switches', 'uplink_interfaces', 'uplink_switch_interfaces' and 'mlag_interfaces' "
+                "should be set when 'use_cv_topology' is set to 'true'."
+            )
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         if self.hostname not in self.inputs.cv_topology:
