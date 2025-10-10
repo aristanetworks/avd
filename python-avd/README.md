@@ -6,7 +6,7 @@
 
 # PyAVD
 
-PyAVD is a Python framework that serves as the foundation for the Arista AVD project.
+PyAVD is a Python package that serves as the foundation for the Arista AVD project.
 
 See [avd.arista.com](https://avd.arista.com/stable/docs/pyavd/pyavd.html) for details.
 
