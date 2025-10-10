@@ -8,7 +8,7 @@ ethernet_interfaces:
   description: P2P_DC1-SPINE4_Ethernet17
   shutdown: false
   mtu: 9214
-  ip_address: 10.10.101.5/31
+  ip_address: 10.10.101.9/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   ospf_authentication: message-digest
@@ -22,6 +22,26 @@ ethernet_interfaces:
   peer: DC1-SPINE4
   peer_interface: Ethernet17
   peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet5
+  description: P2P_CV-TOPOLOGY-LEAF3A_Ethernet5
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.101.11/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha512
+    key: Uhsl5qAXT6xLsx53hgKf+C4ZZC7dNOkz
+  - id: 2
+    hash_algorithm: sha512
+    key: cQwO3zZIB9gfaPq24s/jnCarqj3N/HT8
+  peer: CV-TOPOLOGY-LEAF3A
+  peer_interface: Ethernet5
+  peer_type: l3leaf
   switchport:
     enabled: false
 hostname: CV-TOPOLOGY-LEAF3B
@@ -96,6 +116,7 @@ router_ospf:
     bfd_enable: false
     no_passive_interfaces:
     - Ethernet1
+    - Ethernet5
     max_lsa: 12000
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true

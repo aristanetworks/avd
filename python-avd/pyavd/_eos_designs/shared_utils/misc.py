@@ -10,7 +10,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default, get
+from pyavd._utils import default
 from pyavd._utils.password_utils.password import simple_7_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.api.pool_manager import PoolManager
@@ -110,12 +110,12 @@ class MiscMixin(Protocol):
 
     @cached_property
     def uplink_switches(self: SharedUtilsProtocol) -> list[str]:
-        return self.node_config.uplink_switches._as_list() or get(self.cv_topology_config, "uplink_switches") or []
+        return self.node_config.uplink_switches._as_list() or self.cv_topology_config.uplink_switches._as_list()
 
     @cached_property
     def uplink_interfaces(self: SharedUtilsProtocol) -> list[str]:
         return range_expand(
-            self.node_config.uplink_interfaces or get(self.cv_topology_config, "uplink_interfaces") or self.default_interfaces.uplink_interfaces,
+            self.node_config.uplink_interfaces or self.cv_topology_config.uplink_interfaces or self.default_interfaces.uplink_interfaces,
         )
 
     @cached_property

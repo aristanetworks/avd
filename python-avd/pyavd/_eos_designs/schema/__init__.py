@@ -4194,6 +4194,46 @@ class EosDesigns(EosDesignsRootModel):
 
     CvTopology._item_type = CvTopologyItem
 
+    class CvTopologyLevelsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"type": {"type": str}, "level": {"type": int}}
+        type: str
+        """Node type like l3leaf, l2spine etc."""
+        level: int
+        """
+        Level value used to determine the relationship between two devices for a connection.
+        The lower value
+        is the "parent switch" (like Spine).
+        The higher value is the "child switch" (like Leaf).
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, type: str | UndefinedType = Undefined, level: int | UndefinedType = Undefined) -> None:
+                """
+                CvTopologyLevelsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    type: Node type like l3leaf, l2spine etc.
+                    level:
+                       Level value used to determine the relationship between two devices for a connection.
+                       The lower value
+                       is the "parent switch" (like Spine).
+                       The higher value is the "child switch" (like Leaf).
+
+                """
+
+    class CvTopologyLevels(AvdIndexedList[str, CvTopologyLevelsItem]):
+        """Subclass of AvdIndexedList with `CvTopologyLevelsItem` items. Primary key is `type` (`str`)."""
+
+        _primary_key: ClassVar[str] = "type"
+
+    CvTopologyLevels._item_type = CvTopologyLevelsItem
+
     class DefaultInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -73598,6 +73638,7 @@ class EosDesigns(EosDesignsRootModel):
         "cv_tags_topology_type": {"type": str},
         "cv_token": {"type": str},
         "cv_topology": {"type": CvTopology},
+        "cv_topology_levels": {"type": CvTopologyLevels},
         "dc_name": {"type": str},
         "default_connected_endpoints_description": {"type": str, "default": "{endpoint_type!u}_{endpoint}{endpoint_port?<_}"},
         "default_connected_endpoints_port_channel_description": {"type": str, "default": "{endpoint_type!u}_{endpoint}{endpoint_port_channel?<_}"},
@@ -74425,13 +74466,31 @@ class EosDesigns(EosDesignsRootModel):
     Generate AVD configurations directly from the given CloudVision topology.
     Activate this feature by
     setting `use_cv_topology` to `true`.
-    Requires `default_interfaces` to be set for the relevant
-    platforms and node types to detect the proper interface roles automatically.
-    Neighbor hostnames must
-    match the inventory hostnames of the AVD inventory to be taken into consideration.
+    Interfaces are assigned according to the following rules:
+      -
+    All interfaces connected to the MLAG peer (only other device in the same node group) will be
+    `mlag_interfaces`.
+      - For connections between devices with different
+    `cv_topology_levels[type=<type>].level`, the lowest level will be considered the "parent switch"
+    and the highest level will be considered the "child switch".
+      - Connections between devices with
+    the same `cv_topology_levels[type=<type>].level` will be sorted based on device hostname.
+        The
+    first will be considered the "parent switch" and the second the "child switch".
+    Neighbor hostnames
+    must match the inventory hostnames of the AVD inventory to be taken into consideration.
 
     Subclass of
     AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname` (`str`).
+    """
+    cv_topology_levels: CvTopologyLevels
+    """
+    Type to level assignment used for generation of the AVD topology from the CloudVision topology.
+    See
+    `cv_topology` for details.
+
+    Subclass of AvdIndexedList with `CvTopologyLevelsItem` items. Primary
+    key is `type` (`str`).
     """
     dc_name: str | None
     """
@@ -75867,6 +75926,7 @@ class EosDesigns(EosDesignsRootModel):
     Generate AVD configurations directly from a given CloudVision topology.
     See `cv_topology` for
     details.
+    Requires both `cv_topology` and `cv_topology_hierarchy` to be set.
     """
     use_router_general_for_router_id: bool
     """
@@ -76048,6 +76108,7 @@ class EosDesigns(EosDesignsRootModel):
             cv_tags_topology_type: str | None | UndefinedType = Undefined,
             cv_token: str | None | UndefinedType = Undefined,
             cv_topology: CvTopology | UndefinedType = Undefined,
+            cv_topology_levels: CvTopologyLevels | UndefinedType = Undefined,
             dc_name: str | None | UndefinedType = Undefined,
             default_connected_endpoints_description: str | UndefinedType = Undefined,
             default_connected_endpoints_port_channel_description: str | UndefinedType = Undefined,
@@ -76473,13 +76534,29 @@ class EosDesigns(EosDesignsRootModel):
                    Generate AVD configurations directly from the given CloudVision topology.
                    Activate this feature by
                    setting `use_cv_topology` to `true`.
-                   Requires `default_interfaces` to be set for the relevant
-                   platforms and node types to detect the proper interface roles automatically.
-                   Neighbor hostnames must
-                   match the inventory hostnames of the AVD inventory to be taken into consideration.
+                   Interfaces are assigned according to the following rules:
+                     -
+                   All interfaces connected to the MLAG peer (only other device in the same node group) will be
+                   `mlag_interfaces`.
+                     - For connections between devices with different
+                   `cv_topology_levels[type=<type>].level`, the lowest level will be considered the "parent switch"
+                   and the highest level will be considered the "child switch".
+                     - Connections between devices with
+                   the same `cv_topology_levels[type=<type>].level` will be sorted based on device hostname.
+                       The
+                   first will be considered the "parent switch" and the second the "child switch".
+                   Neighbor hostnames
+                   must match the inventory hostnames of the AVD inventory to be taken into consideration.
 
                    Subclass of
                    AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname` (`str`).
+                cv_topology_levels:
+                   Type to level assignment used for generation of the AVD topology from the CloudVision topology.
+                   See
+                   `cv_topology` for details.
+
+                   Subclass of AvdIndexedList with `CvTopologyLevelsItem` items. Primary
+                   key is `type` (`str`).
                 dc_name:
                    DC Name is used in:
                    - Fabric Documentation (Optional, falls back to fabric_name)
@@ -77508,6 +77585,7 @@ class EosDesigns(EosDesignsRootModel):
                    Generate AVD configurations directly from a given CloudVision topology.
                    See `cv_topology` for
                    details.
+                   Requires both `cv_topology` and `cv_topology_hierarchy` to be set.
                 use_router_general_for_router_id: Use `router general` to set router ID for all routing protocols and VRFs.
                 vtep_loopback_description: Customize the description on the VTEP interface, typically Loopback1.
                 vtep_vvtep_ip:
