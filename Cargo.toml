@@ -1,4 +1,7 @@
 [workspace]
+package.version = "6.0.0-dev1"
+package.license = "Apache-2.0"
+
 members = [
     "rust/avdschema",
     "rust/included_store",

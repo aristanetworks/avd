@@ -9,7 +9,13 @@ from ansible.vars.hostvars import HostVarsVars
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPluginVars
 
-from .conftest import MinimalActionPlugin
+
+class MinimalActionPlugin:
+    """Minimal Ansible action plugin for testing."""
+
+    def __init__(self, task: Task) -> None:
+        """Initialize with a dummy Ansible task."""
+        self._task = task
 
 
 class TestActionPluginVars:
