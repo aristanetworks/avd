@@ -54,14 +54,17 @@ class VerifySpecificIPSecConnInputFactory(AntaTestInputFactory[VerifySpecificIPS
             # Add static peers to the list of IP security connections
             for static_peer in path_group.static_peers:
                 peer_ip = ip_interface(static_peer.router_ip).ip
-                if (static_peer.router_ip, "default") not in added_peers and isinstance(peer_ip, IPv4Address):
-                    ip_security_connections.append(
-                        IPSecPeer(
-                            peer=peer_ip,
-                            vrf="default",
-                        ),
-                    )
-                    added_peers.add((static_peer.router_ip, "default"))
+                if (static_peer.router_ip, "default") not in added_peers:
+                    if isinstance(peer_ip, IPv4Address):
+                        ip_security_connections.append(
+                            IPSecPeer(
+                                peer=peer_ip,
+                                vrf="default",
+                            ),
+                        )
+                        added_peers.add((static_peer.router_ip, "default"))
+                    else:
+                        self.logger_adapter.debug(LogMessage.IPv6_STATIC_PEER, peer=peer_ip)
 
         return (
             [VerifySpecificIPSecConn.Input(ip_security_connections=natural_sort(ip_security_connections, sort_key="peer"))] if ip_security_connections else None

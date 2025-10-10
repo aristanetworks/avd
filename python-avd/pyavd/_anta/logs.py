@@ -6,16 +6,17 @@
 from __future__ import annotations
 
 import string
+from collections.abc import Generator
 from contextlib import contextmanager
 from enum import Enum
-from logging import LoggerAdapter
+from logging import Logger, LoggerAdapter
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from collections.abc import Generator, MutableMapping
 
 
-class TestLoggerAdapter(LoggerAdapter):
+class TestLoggerAdapter(LoggerAdapter[Logger]):
     """
     Custom LoggerAdapter used to add device, test, and an optional context information to log messages.
 
@@ -33,44 +34,45 @@ class TestLoggerAdapter(LoggerAdapter):
     and prepend the message with the device and test names, and optionally the context: `<device> test context message`.
     """
 
-    def process(self, msg: LogMessage, kwargs: MutableMapping[str, object]) -> tuple[str, MutableMapping[str, object]]:
+    def process(self, msg: LogMessage | str, kwargs: MutableMapping[str, object]) -> tuple[str, MutableMapping[str, object]]:
         """Process the message and kwargs before logging."""
-        # Keep the extra dict in kwargs to pass it to the formatter if needed (following the standard LoggerAdapter behavior)
-        kwargs["extra"] = self.extra
+        # Ensure we always have a dict[str, object]
+        extra: dict[str, object] = dict(self.extra or {})
+        kwargs["extra"] = extra
 
-        # Extract the device, test, and context from extra
-        if self.extra is None:
-            return str(msg.value), kwargs
-
-        device = self.extra["device"]
-        test = self.extra["test"]
-        context = self.extra.get("context")
+        # Safely extract info
+        device = str(extra.get("device", "unknown"))
+        test = str(extra.get("test", "unknown"))
+        context = extra.get("context")
 
         prefix = f"<{device}> {test}"
-        if context:
+        if isinstance(context, str):
             prefix += f" {context}"
 
-        # Format the LogMessage using the provided kwargs and extract the fields name from the message string
-        fields = [field_name for _, field_name, _, _ in string.Formatter().parse(msg.value) if field_name is not None]
-        processed_msg = msg.value.format(**kwargs)
+        # Support both LogMessage enums and plain strings
+        msg_value: str = msg.value if isinstance(msg, LogMessage) else str(msg)
 
-        # Removing the fields name from kwargs to preserve standard logging kwargs only that should always be passed through (e.g. exc_info, stack_info, etc.)
+        # Find format field names
+        fields = [field_name for _, field_name, _, _ in string.Formatter().parse(msg_value) if field_name is not None]
+
+        # Try formatting; if fails, keep raw text
+        try:
+            formatted_msg = msg_value.format(**kwargs)
+        except Exception:
+            formatted_msg = msg_value
+
+        # Remove used fields to not interfere with logging kwargs
         for field in fields:
             kwargs.pop(field, None)
 
-        return f"{prefix} {processed_msg}", kwargs
+        return f"{prefix} {formatted_msg}", kwargs
 
     @contextmanager
     def context(self, context: str) -> Generator[TestLoggerAdapter, None, None]:
         """Temporarily add context to the logger."""
-        if self.extra is None:
-            # This should not happen, but as a safeguard
-            self.extra = {}
-
-        original_extra = dict(self.extra).copy()
+        original_extra = dict(getattr(self, "extra", {}) or {})
         try:
-            # The type of self.extra is Mapping[str, object] but we need a mutable dict here
-            mutable_extra = dict(self.extra)
+            mutable_extra = dict(original_extra)
             mutable_extra["context"] = context
             self.extra = mutable_extra
             yield self
@@ -105,6 +107,7 @@ class LogMessage(Enum):
     PATH_GROUP_NO_LOCAL_INTERFACES = "path group {path_group} skipped - No local interfaces found"
     PATH_GROUP_NO_STATIC_PEERS = "path group {path_group} skipped - No static peers configured"
     NO_STATIC_PEERS = "skipped - No static peers configured in any path groups"
+    IPv6_STATIC_PEER = "static peer {peer} skipped - ANTA not support IPv6 static peer"
 
     # Input generation messages
     INPUT_NONE_FOUND = "skipped - No inputs available"
