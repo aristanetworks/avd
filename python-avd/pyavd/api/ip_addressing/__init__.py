@@ -403,7 +403,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         Used for "vtep_diagnostic.loopback".
         """
-        offset = (self.shared_utils.id if self.shared_utils.id is not None else 0) + self.shared_utils.node_config.loopback_ipv4_offset
+        offset = (self.shared_utils.id or 0) + self.shared_utils.node_config.loopback_ipv4_offset
         return get_ip_from_pool(pool, 32, offset, 0)
 
     def vrf_loopback_ipv6(self, pool: str) -> str:
