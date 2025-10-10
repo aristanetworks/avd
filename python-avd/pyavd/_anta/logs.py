@@ -9,14 +9,14 @@ import string
 from collections.abc import Generator
 from contextlib import contextmanager
 from enum import Enum
-from logging import Logger, LoggerAdapter
+from logging import LoggerAdapter
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from collections.abc import Generator, MutableMapping
 
 
-class TestLoggerAdapter(LoggerAdapter[Logger]):
+class TestLoggerAdapter(LoggerAdapter):
     """
     Custom LoggerAdapter used to add device, test, and an optional context information to log messages.
 
