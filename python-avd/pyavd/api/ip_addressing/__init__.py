@@ -414,7 +414,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         Used for "vtep_diagnostic.loopback".
         """
-        offset = (self.shared_utils.id if self.shared_utils.id is not None else 0) + self.shared_utils.node_config.loopback_ipv6_offset
+        offset = (self.shared_utils.id or 0) + self.shared_utils.node_config.loopback_ipv6_offset
         return get_ip_from_pool(pool, 128, offset, 0)
 
     def evpn_underlay_l3_multicast_group(
