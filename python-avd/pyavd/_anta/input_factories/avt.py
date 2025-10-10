@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from ipaddress import IPv4Address
+from ipaddress import IPv4Address, ip_address
 
 from anta.input_models.avt import AVTPath
 from anta.tests.avt import VerifyAVTSpecificPath
@@ -33,7 +33,10 @@ class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory[VerifyAVTSpecificPa
                 self.logger_adapter.debug(LogMessage.PATH_GROUP_NO_STATIC_PEERS, path_group=path_group.name)
                 continue
             for static_peer in path_group.static_peers:
-                static_peers.add(IPv4Address(static_peer.router_ip))
+                if isinstance(ip_address(static_peer.router_ip), IPv4Address):
+                    static_peers.add(IPv4Address(static_peer.router_ip))
+                else:
+                    self.logger_adapter.debug(LogMessage.IPv6_STATIC_PEER, peer=static_peer.router_ip)
 
         if not static_peers:
             self.logger_adapter.debug(LogMessage.NO_STATIC_PEERS)
