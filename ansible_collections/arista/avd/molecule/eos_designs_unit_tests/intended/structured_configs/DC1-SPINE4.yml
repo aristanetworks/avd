@@ -97,7 +97,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_CV-TOPOLOGY-LEAF3A_Ethernet1
   shutdown: false
   mtu: 1500
-  ip_address: 10.10.101.2/31
+  ip_address: 10.10.101.4/31
   peer: CV-TOPOLOGY-LEAF3A
   peer_interface: Ethernet1
   peer_type: l3leaf
@@ -107,7 +107,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_CV-TOPOLOGY-LEAF3B_Ethernet1
   shutdown: false
   mtu: 1500
-  ip_address: 10.10.101.4/31
+  ip_address: 10.10.101.8/31
   peer: CV-TOPOLOGY-LEAF3B
   peer_interface: Ethernet1
   peer_type: l3leaf
@@ -118,7 +118,7 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 40gfull
   mtu: 1500
-  ip_address: 10.10.101.6/31
+  ip_address: 10.10.101.12/31
   peer: CV-MLAG-OSPF-L3LEAF1A
   peer_interface: Ethernet1
   peer_type: l3leaf
@@ -129,7 +129,7 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 40gfull
   mtu: 1500
-  ip_address: 10.10.101.8/31
+  ip_address: 10.10.101.16/31
   peer: CV-MLAG-OSPF-L3LEAF1B
   peer_interface: Ethernet1
   peer_type: l3leaf
@@ -354,22 +354,22 @@ router_bgp:
     remote_as: '65103'
     peer: DC1-SVC3B
     description: DC1-SVC3B_Ethernet52/1
-  - ip_address: 10.10.101.3
+  - ip_address: 10.10.101.5
     peer_group: UNDERLAY-PEERS
     remote_as: '65161'
     peer: CV-TOPOLOGY-LEAF3A
     description: CV-TOPOLOGY-LEAF3A_Ethernet1
-  - ip_address: 10.10.101.5
+  - ip_address: 10.10.101.9
     peer_group: UNDERLAY-PEERS
     remote_as: '65161'
     peer: CV-TOPOLOGY-LEAF3B
     description: CV-TOPOLOGY-LEAF3B_Ethernet1
-  - ip_address: 10.10.101.7
+  - ip_address: 10.10.101.13
     peer_group: UNDERLAY-PEERS
     remote_as: '65161'
     peer: CV-MLAG-OSPF-L3LEAF1A
     description: CV-MLAG-OSPF-L3LEAF1A_Ethernet1
-  - ip_address: 10.10.101.9
+  - ip_address: 10.10.101.17
     peer_group: UNDERLAY-PEERS
     remote_as: '65161'
     peer: CV-MLAG-OSPF-L3LEAF1B
