@@ -6206,6 +6206,7 @@ keys:
                 description: VRF name. Use "default" for the default VRF.
               name_servers:
                 type: list
+                required: true
                 primary_key: ip_address
                 items:
                   type: dict
