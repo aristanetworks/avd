@@ -3,6 +3,7 @@ type: spine
 default_mgmt_method: none
 
 ntp_settings:
+  server_vrf: default
   servers:
     - name: pool.ntp.org
 
