@@ -9197,6 +9197,14 @@ keys:
         type: str
       fabric_name:
         type: str
+      serial_number:
+        description: 'Serial Number of the device.
+
+          Used only for documentation and deployment purposes. It is used by the ''cv_deploy''
+          role.'
+        type: str
+        convert_types:
+        - int
       cv_tags:
         type: dict
         keys:
@@ -22185,6 +22193,11 @@ keys:
       Used only for documentation and deployment purposes. It is used by the ''cv_deploy''
       role.'
     type: str
+    deprecation:
+      warning: true
+      removed: true
+      new_key: metadata.serial_number
+      remove_in_version: 6.0.0
     convert_types:
     - int
   service_routing_configuration_bgp:
