@@ -33,6 +33,8 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory):
     For Ethernet and Port-Channel interfaces, `validate_state` knob (default: True) is considered.
 
     For Ethernet interfaces, `interface_defaults.ethernet.shutdown` is considered when `shutdown` is not set
+
+    For VXLAN interfaces, status is down when the interface is shutdown, also considering the L2VNIs, L3VNIs, Source Interface to check the state.
     """
 
     def create(self) -> list[VerifyInterfacesStatus.Input] | None:
@@ -67,13 +69,13 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory):
             l2vnis = self.structured_config.vxlan_interface.vxlan1.vxlan.vlans
             l3vnis = self.structured_config.vxlan_interface.vxlan1.vxlan.vrfs
             skip = False
-            if self.device.vxlan_source_interface.shutdown == True:
+            if self.device.vxlan_source_interface.shutdown:
                 self.logger_adapter.debug(LogMessage.VXLAN_INTERFACE_DOWN_NO_SRC, interface="Vxlan1")
                 skip = True
             if not l2vnis and not l3vnis:
                 self.logger_adapter.debug(LogMessage.VXLAN_INTERFACE_DOWN_NO_VNIs, interface="Vxlan1")
                 skip = True
-            if not skip and self.structured_config.vxlan_interface.vxlan1.vxlan.shutdown == True:
+            if not skip and self.structured_config.vxlan_interface.vxlan1.vxlan.shutdown:
                 interfaces.append(InterfaceState(name="Vxlan1", status="down"))
                 skip = True
             if not skip:

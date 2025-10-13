@@ -5,11 +5,11 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from functools import cached_property
 from ipaddress import IPv4Address, IPv6Address, ip_interface
 from logging import getLogger
-import re
 from typing import TYPE_CHECKING
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -35,6 +35,7 @@ class BgpNeighborInterface:
 
     interface: str
     vrf: str
+
 
 @dataclass(frozen=True)
 class LoopbackInterface:
@@ -192,10 +193,10 @@ class DeviceTestContext:
 
     @cached_property
     def vxlan_source_interface(self) -> LoopbackInterface | None:
-        """Returns the souce interface item from structured configs"""
+        """Returns the source interface item from structured configs."""
         source_interface = self.structured_config.vxlan_interface.vxlan1.vxlan.source_interface
         if source_interface:
-            interface_type = re.match(r'^[a-zA-Z]+', source_interface)[0].lower().replace("-", "_")
+            interface_type = re.match(r"^[a-zA-Z]+", source_interface)[0].lower().replace("-", "_")
             interface_items = getattr(self.structured_config, f"{interface_type}_interfaces")
             return interface_items.__getitem__(source_interface)
         return None
