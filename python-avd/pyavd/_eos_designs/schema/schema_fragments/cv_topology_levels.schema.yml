@@ -23,6 +23,8 @@ keys:
         level:
           type: int
           required: true
+          convert_types:
+              - str
           description: |-
             Level value used to determine the relationship between two devices for a connection.
             The lower value is the "parent switch" (like Spine).
