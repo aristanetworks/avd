@@ -12,6 +12,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "vxlan_interface.vxlan1.description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vxlan</samp>](## "vxlan_interface.vxlan1.vxlan") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "vxlan_interface.vxlan1.vxlan.source_interface") | String |  |  |  | Source Interface Name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "vxlan_interface.vxlan1.vxlan.shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast</samp>](## "vxlan_interface.vxlan1.vxlan.multicast") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;headend_replication</samp>](## "vxlan_interface.vxlan1.vxlan.multicast.headend_replication") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;controller_client</samp>](## "vxlan_interface.vxlan1.vxlan.controller_client") | Dictionary |  |  |  | Client to CVX Controllers. |
@@ -68,6 +69,7 @@
 
           # Source Interface Name.
           source_interface: <str>
+          shutdown: <bool>
           multicast:
             headend_replication: <bool>
 
