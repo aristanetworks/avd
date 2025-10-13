@@ -44,7 +44,7 @@ class CvTopology(Protocol):
         ):
             msg = (
                 "'uplink_switches', 'uplink_interfaces', 'uplink_switch_interfaces' and 'mlag_interfaces' "
-                "should be set when 'use_cv_topology' is set to 'true'."
+                "should not be set when 'use_cv_topology' is set to 'true'."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
