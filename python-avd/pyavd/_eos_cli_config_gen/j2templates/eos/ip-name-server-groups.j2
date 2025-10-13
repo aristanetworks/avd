@@ -6,6 +6,7 @@
 {% for name_server_group in ip_name_server_groups | arista.avd.natural_sort("name") %}
 !
 ip name-server group {{ name_server_group.name }}
+# adding this logic for flattening name-servers to maintain EOS CLI ordering
 {%     set flattened_name_servers = [] %}
 {%     for vrf in name_server_group.vrfs | arista.avd.default([]) %}
 {%         for name_server in vrf.name_servers %}
@@ -16,6 +17,7 @@ ip name-server group {{ name_server_group.name }}
 {%             do flattened_name_servers.append(server) %}
 {%         endfor %}
 {%     endfor %}
+# TODO: Remove this once "name_servers" key is removes
 {%     if not flattened_name_servers and name_server_group.name_servers is arista.avd.defined %}
 {%         set flattened_name_servers = name_server_group.name_servers %}
 {%     endif %}
