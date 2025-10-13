@@ -64,7 +64,20 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory):
 
         # If the device is a VTEP, add the Vxlan1 interface to the list
         if self.device.is_vtep:
-            interfaces.append(InterfaceState(name="Vxlan1", status="up"))
+            l2vnis = self.structured_config.vxlan_interface.vxlan1.vxlan.vlans
+            l3vnis = self.structured_config.vxlan_interface.vxlan1.vxlan.vrfs
+            skip = False
+            if self.device.vxlan_source_interface.shutdown == True:
+                self.logger_adapter.debug(LogMessage.VXLAN_INTERFACE_DOWN_NO_SRC, interface="Vxlan1")
+                skip = True
+            if not l2vnis and not l3vnis:
+                self.logger_adapter.debug(LogMessage.VXLAN_INTERFACE_DOWN_NO_VNIs, interface="Vxlan1")
+                skip = True
+            if not skip and self.structured_config.vxlan_interface.vxlan1.vxlan.shutdown == True:
+                interfaces.append(InterfaceState(name="Vxlan1", status="down"))
+                skip = True
+            if not skip:
+                interfaces.append(InterfaceState(name="Vxlan1", status="up"))
 
         return [VerifyInterfacesStatus.Input(interfaces=natural_sort(interfaces, sort_key="name"))] if interfaces else None
 
