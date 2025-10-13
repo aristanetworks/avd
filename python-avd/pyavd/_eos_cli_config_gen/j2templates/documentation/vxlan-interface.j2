@@ -17,6 +17,9 @@
 {%     if vxlan_config.vxlan.source_interface is arista.avd.defined %}
 | Source Interface | {{ vxlan_config.vxlan.source_interface }} |
 {%     endif %}
+{%     if vxlan_config.vxlan.shutdown is arista.avd.defined %}
+| Shutdown | {{ vxlan_config.vxlan.shutdown }} |
+{%     endif %}
 {%     if vxlan_config.vxlan.controller_client.enabled is arista.avd.defined %}
 | Controller Client | {{ vxlan_config.vxlan.controller_client.enabled }} |
 {%     endif %}
