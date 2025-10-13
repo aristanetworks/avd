@@ -1,7 +1,10 @@
 # hostname-set-via-hostname-var
 
+Serial Number: DEADBEEFC0FFEW
+
 ## Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Banner](#banner)
   - [Agents](#agents)
@@ -617,14 +620,16 @@ clock timezone GMT
 
 ##### NTP Servers
 
-| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 1.2.3.4 | - | - | - | - | - | - | - | lo0 | - |
-| 2.2.2.55 | - | - | - | - | - | - | - | - | - |
-| 10.1.1.1 | - | - | - | - | - | - | - | - | - |
-| 10.1.1.2 | - | True | - | - | - | - | - | - | - |
-| 20.20.20.1 | - | - | - | - | - | - | - | - | 2 |
-| ie.pool.ntp.org | - | - | False | True | - | - | - | - | 1 |
+NTP servers VRF: MGMT
+
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 1.2.3.4 | - | - | - | - | - | - | lo0 | - |
+| 2.2.2.55 | - | - | - | - | - | - | - | - |
+| 10.1.1.1 | - | - | - | - | - | - | - | - |
+| 10.1.1.2 | True | - | - | - | - | - | - | - |
+| 20.20.20.1 | - | - | - | - | - | - | - | 2 |
+| ie.pool.ntp.org | - | False | True | - | - | - | - | 1 |
 
 ##### NTP Authentication
 
@@ -650,12 +655,12 @@ ntp authentication-key 3 sha1 8a <removed>
 ntp trusted-key 1-2
 ntp authenticate servers
 ntp local-interface lo1
-ntp server 1.2.3.4 local-interface lo0
-ntp server 2.2.2.55
-ntp server 10.1.1.1
-ntp server 10.1.1.2 prefer
-ntp server 20.20.20.1 key <removed>
-ntp server ie.pool.ntp.org iburst key <removed>
+ntp server vrf MGMT 1.2.3.4 local-interface lo0
+ntp server vrf MGMT 2.2.2.55
+ntp server vrf MGMT 10.1.1.1
+ntp server vrf MGMT 10.1.1.2 prefer
+ntp server vrf MGMT 20.20.20.1 key <removed>
+ntp server vrf MGMT ie.pool.ntp.org iburst key <removed>
 ntp serve all
 ```
 
@@ -7336,6 +7341,7 @@ interface Vlan4094
 | Setting | Value |
 | ------- | ----- |
 | Source Interface | Loopback0 |
+| Shutdown | False |
 | Controller Client | True |
 | MLAG Source Interface | Loopback1 |
 | UDP port | 4789 |
@@ -7380,6 +7386,7 @@ interface Vlan4094
 !
 interface Vxlan1
    description DC1-LEAF2A_VTEP
+   no shutdown
    vxlan source-interface Loopback0
    vxlan controller-client
    vxlan virtual-router encapsulation mac-address mlag-system-id
@@ -10681,11 +10688,11 @@ Make-before-break: False
 
 ##### IP Sparse Mode VRFs
 
-| VRF Name | BFD Enabled | Make-before-break |
-| -------- | ----------- | ----------------- |
-| MCAST_VRF1 | True | False |
-| MCAST_VRF2_ALL_GROUPS | False | - |
-| Test_RP_ACL | False | True |
+| VRF Name | SSM Range ACL | BFD Enabled | Make-before-break |
+| -------- | ------------- | ----------- | ----------------- |
+| MCAST_VRF1 | SSM-MCAST | True | False |
+| MCAST_VRF2_ALL_GROUPS | - | False | - |
+| Test_RP_ACL | - | False | True |
 
 | VRF Name | Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
 | -------- | ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
@@ -10717,6 +10724,7 @@ router pim sparse-mode
    !
    vrf MCAST_VRF1
       ipv4
+         ssm range SSM-MCAST
          bfd
          make-before-break disabled
          rp address 10.238.2.161 239.12.22.12/32
@@ -13020,7 +13028,7 @@ mac security
 
 ##### BLUE-C1-POLICY
 
-Counters: DEMO-TRAFFIC, DROP-PACKETS
+Counters: DROP-PACKETS
 
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
@@ -13093,7 +13101,7 @@ traffic-policies
    counter interface poll interval 10 seconds
    !
    traffic-policy BLUE-C1-POLICY
-      counter DEMO-TRAFFIC DROP-PACKETS
+      counter DROP-PACKETS
       !
       match BLUE-C1-POLICY-01 ipv4
          source prefix 10.0.0.0/8 192.168.0.0/16

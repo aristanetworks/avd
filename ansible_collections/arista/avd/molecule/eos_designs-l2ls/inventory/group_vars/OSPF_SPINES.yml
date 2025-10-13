@@ -14,5 +14,7 @@ l3spine:
       nodes:
         - name: OSPF-SPINE1
           id: 1
+          mgmt_ip: 192.168.0.5/24
         - name: OSPF-SPINE2
           id: 2
+          mgmt_ip: 192.168.0.6/24

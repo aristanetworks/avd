@@ -387,6 +387,9 @@ router_bgp:
     ebgp_multihop: 15
     send_community: all
     maximum_routes: 0
+  - name: Tenant_C_BGP_PEER_GROUP_RESTRICTED
+    remote_as: '666'
+    description: Tenant C peer group
   neighbors:
   - ip_address: 172.31.254.160
     peer_group: UNDERLAY-PEERS

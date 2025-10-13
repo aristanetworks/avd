@@ -14,6 +14,7 @@ digital_twin:
     act_ensure_eapi_access: true
 
 management_eapi:
+  enabled: true
   enable_http: true
   vrfs:
     - name: default

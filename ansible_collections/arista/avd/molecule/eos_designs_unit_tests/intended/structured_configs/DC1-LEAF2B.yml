@@ -19,7 +19,7 @@ ethernet_interfaces:
 - name: Ethernet7
   description: DC1-L2LEAF1A_Ethernet2
   shutdown: false
-  speed: forced 10000
+  speed: forced 10000full
   channel_group:
     id: 7
     mode: active
@@ -29,7 +29,7 @@ ethernet_interfaces:
 - name: Ethernet8
   description: DC1-L2LEAF1B_Ethernet2
   shutdown: false
-  speed: forced 10000
+  speed: forced 10000full
   channel_group:
     id: 7
     mode: active
@@ -377,9 +377,8 @@ ntp:
   servers:
   - name: 192.168.200.5
     preferred: true
-    vrf: MGMT
   - name: 2001:db8::3
-    vrf: MGMT
+  vrf: MGMT
 platform:
   sand:
     lag:
@@ -1069,6 +1068,16 @@ vlan_interfaces:
   - 2001:db8:310::1/64
   - 2001:db8:311::1/64
   - 2001:db8:312::1/64
+  ipv6_nd_prefixes:
+  - ipv6_prefix: 2001:db8:310::1/64
+    valid_lifetime: '200'
+    preferred_lifetime: '100'
+  - ipv6_prefix: 2001:db8:311::1/64
+    valid_lifetime: '200'
+    preferred_lifetime: '100'
+  - ipv6_prefix: 2001:db8:312::1/64
+    valid_lifetime: '200'
+    preferred_lifetime: '100'
   tenant: Tenant_D
   tags:
   - v6opzone

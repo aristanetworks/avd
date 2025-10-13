@@ -85,7 +85,9 @@ def _get_topology_csv(fabric_documentation_facts: FabricDocumentationFacts) -> s
 
     csv_content = StringIO()
     csv_writer = writer(csv_content, lineterminator="\n")
-    csv_writer.writerow(("Node Type", "Node", "Node Interface", "Peer Type", "Peer Node", "Peer Interface", "Node Interface Enabled"))
+    csv_writer.writerow(
+        ("Node Type", "Node", "Serial Number", "Node Interface", "Peer Type", "Peer Node", "Peer Serial Number", "Peer Interface", "Node Interface Enabled")
+    )
     csv_writer.writerows(fabric_documentation_facts.get_physical_links())
     csv_content.seek(0)
     return csv_content.read()
@@ -97,15 +99,30 @@ def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> 
 
     csv_content = StringIO()
     csv_writer = writer(csv_content, lineterminator="\n")
-    csv_writer.writerow(("Type", "Node", "Node Interface", "Leaf IP Address", "Peer Type", "Peer Node", "Peer Interface", "Peer IP Address"))
+    csv_writer.writerow(
+        (
+            "Type",
+            "Node",
+            "Serial Number",
+            "Node Interface",
+            "Leaf IP Address",
+            "Peer Type",
+            "Peer Node",
+            "Peer Serial Number",
+            "Peer Interface",
+            "Peer IP Address",
+        )
+    )
     csv_writer.writerows(
         (
             topology_link["type"],
             topology_link["node"],
+            topology_link["serial_number"],
             topology_link["node_interface"],
             topology_link["node_ip_address"],
             topology_link["peer_type"],
             topology_link["peer"],
+            topology_link["peer_serial_number"],
             topology_link["peer_interface"],
             topology_link["peer_ip_address"],
         )

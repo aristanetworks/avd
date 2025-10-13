@@ -3,17 +3,23 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from contextlib import AbstractContextManager
 from logging import getLogger
 from os import environ
 from typing import TYPE_CHECKING
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import aristaproto
 import pytest
 import pytest_asyncio
+from requests.exceptions import HTTPError, RequestException
 
 from pyavd._cv.client import CVClient
+from pyavd._cv.client.exceptions import CVClientException
 from tests.pyavd.cv.mockery import mocked_cv_client_aenter, playback_unary_stream, playback_unary_unary, recording_unary_stream, recording_unary_unary
+
+ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
+
 
 if TYPE_CHECKING:
     from collections.abc import AsyncGenerator
@@ -85,3 +91,55 @@ async def test_get_inventory_devices_with_filter(cv_client: CVClient) -> None:
     assert len(result) == 1
     assert hasattr(result[0], "hostname")
     assert result[0].hostname == "avd-ci-spine1"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("cv_token", "exception_to_raise", "expected_cv_exception"),
+    [
+        pytest.param(
+            None,
+            HTTPError,
+            pytest.raises(CVClientException, match="Unable to get token from CloudVision server due to the following error"),
+            id="SET_TOKEN_HTTPERROR",
+        ),
+        pytest.param(
+            None,
+            RequestException,
+            pytest.raises(CVClientException, match="Unable to get token from CloudVision server due to the following error"),
+            id="SET_TOKEN_REQUESTEXCEPTION",
+        ),
+        pytest.param(
+            "cv_token",
+            HTTPError,
+            pytest.raises(CVClientException, match="Unable to get version from CloudVision server due to the following error"),
+            id="SET_VERSION_HTTPERROR",
+        ),
+        pytest.param(
+            "cv_token",
+            RequestException,
+            pytest.raises(CVClientException, match="Unable to get version from CloudVision server due to the following error"),
+            id="SET_VERSION_REQUESTEXCEPTION",
+        ),
+    ],
+)
+async def test_cv_client_set_token_set_version_requests_error(
+    cv_token: str | None,
+    exception_to_raise: Exception,
+    expected_cv_exception: ExpectedExceptionContext,
+) -> None:
+    mocked_response = Mock()
+    mocked_response.raise_for_status.side_effect = exception_to_raise
+
+    with (
+        patch("pyavd._cv.client.get", return_value=mocked_response),
+        patch("pyavd._cv.client.post", return_value=mocked_response),
+        expected_cv_exception,
+    ):
+        async with CVClient(
+            servers="127.0.0.1",
+            token=cv_token,
+            username="avd_user",
+            password="avd_password",  # noqa: S106
+        ) as cvclient:
+            await cvclient.get_inventory_devices([("", "", "spine1")])

@@ -915,6 +915,7 @@ interface Dps1
 
 | Setting | Value |
 | ------- | ----- |
+| Shutdown | True |
 | UDP port | 4789 |
 | Qos dscp propagation encapsulation | Disabled |
 | Qos ECN propagation | Disabled |
@@ -933,6 +934,7 @@ interface Dps1
 ```eos
 !
 interface Vxlan1
+   shutdown
    vxlan vlan 110 vni 10110
    vxlan vlan 111,113,115-118 vni 10111,10113,10115-10118
    vxlan vlan 111 flood vtep 10.1.1.10 10.1.1.11
@@ -1422,9 +1424,9 @@ Make-before-break: True
 
 ##### IP Sparse Mode VRFs
 
-| VRF Name | BFD Enabled | Make-before-break |
-| -------- | ----------- | ----------------- |
-| MCAST_VRF1 | False | True |
+| VRF Name | SSM Range ACL | BFD Enabled | Make-before-break |
+| -------- | ------------- | ----------- | ----------------- |
+| MCAST_VRF1 | standard | False | True |
 
 ##### Router Multicast Device Configuration
 
@@ -1436,6 +1438,7 @@ router pim sparse-mode
    !
    vrf MCAST_VRF1
       ipv4
+         ssm range standard
          make-before-break
 ```
 

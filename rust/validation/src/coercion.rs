@@ -5,7 +5,7 @@
 use avdschema::{
     any::AnySchema, boolean::Bool, dict::Dict, get_dynamic_keys, int::Int, list::List, str::Str,
 };
-use serde_json::{Map, Value};
+use serde_json::Value;
 
 use crate::{
     context::Context,
@@ -13,7 +13,7 @@ use crate::{
     validation::Validation,
 };
 
-pub(crate) trait Coercion<T>
+pub(crate) trait Coercion
 where
     for<'x> &'x Self: TryFrom<&'x AnySchema>,
 {
@@ -26,10 +26,10 @@ where
     ///  TODO: Decide whether we should limit this to only coerce according to `convert_types`.
     fn coerce(&self, input: &mut Value, ctx: &mut Context);
 }
-impl Coercion<bool> for Bool {
+impl Coercion for Bool {
     fn coerce(&self, _input: &mut Value, _ctx: &mut Context) {}
 }
-impl Coercion<Map<String, Value>> for Dict {
+impl Coercion for Dict {
     fn coerce(&self, input: &mut Value, ctx: &mut Context) {
         if let Value::Object(dict) = input {
             if let Some(keys) = &self.keys {
@@ -69,7 +69,7 @@ impl Coercion<Map<String, Value>> for Dict {
     }
 }
 
-impl Coercion<i64> for Int {
+impl Coercion for Int {
     fn coerce(&self, input: &mut Value, ctx: &mut Context) {
         let value = match input {
             Value::Number(number) => match number.as_i64() {
@@ -110,7 +110,7 @@ impl Coercion<i64> for Int {
         }
     }
 }
-impl Coercion<Vec<Value>> for List {
+impl Coercion for List {
     fn coerce(&self, input: &mut Value, ctx: &mut Context) {
         if let Some(item_schema) = &self.items {
             if let Value::Array(list) = input {
@@ -123,7 +123,7 @@ impl Coercion<Vec<Value>> for List {
         }
     }
 }
-impl Coercion<String> for Str {
+impl Coercion for Str {
     fn coerce(&self, input: &mut Value, ctx: &mut Context) {
         let value = match input {
             Value::String(string) => Some(string.to_string()),
@@ -170,7 +170,7 @@ impl Coercion<String> for Str {
         }
     }
 }
-impl Coercion<Value> for AnySchema {
+impl Coercion for AnySchema {
     fn coerce(&self, input: &mut Value, ctx: &mut Context) {
         match self {
             Self::Bool(schema) => schema.coerce(input, ctx),
