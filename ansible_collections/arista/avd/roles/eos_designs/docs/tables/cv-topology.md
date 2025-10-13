@@ -17,7 +17,7 @@
     | [<samp>cv_topology_levels</samp>](## "cv_topology_levels") | List, items: Dictionary |  |  |  | Type to level assignment used for generation of the AVD topology from the CloudVision topology.<br>See `cv_topology` for details. |
     | [<samp>&nbsp;&nbsp;-&nbsp;type</samp>](## "cv_topology_levels.[].type") | String | Required, Unique |  |  | Node type like l3leaf, l2spine etc. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "cv_topology_levels.[].level") | Integer | Required |  |  | Level value used to determine the relationship between two devices for a connection.<br>The lower value is the "parent switch" (like Spine).<br>The higher value is the "child switch" (like Leaf). |
-    | [<samp>use_cv_topology</samp>](## "use_cv_topology") | Boolean |  |  |  | Generate AVD configurations directly from a given CloudVision topology.<br>See `cv_topology` for details.<br>Requires both `cv_topology` and `cv_topology_hierarchy` to be set. |
+    | [<samp>use_cv_topology</samp>](## "use_cv_topology") | Boolean |  |  |  | Generate AVD configurations directly from a given CloudVision topology.<br>See `cv_topology` for details.<br>Requires both `cv_topology` and `cv_topology_levels` to be set. |
 
 === "YAML"
 
@@ -53,6 +53,6 @@
 
     # Generate AVD configurations directly from a given CloudVision topology.
     # See `cv_topology` for details.
-    # Requires both `cv_topology` and `cv_topology_hierarchy` to be set.
+    # Requires both `cv_topology` and `cv_topology_levels` to be set.
     use_cv_topology: <bool>
     ```

@@ -6067,7 +6067,7 @@ keys:
 
       See `cv_topology` for details.
 
-      Requires both `cv_topology` and `cv_topology_hierarchy` to be set.'
+      Requires both `cv_topology` and `cv_topology_levels` to be set.'
   use_router_general_for_router_id:
     documentation_options:
       table: fabric-settings

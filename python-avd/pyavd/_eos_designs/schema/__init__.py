@@ -75926,7 +75926,7 @@ class EosDesigns(EosDesignsRootModel):
     Generate AVD configurations directly from a given CloudVision topology.
     See `cv_topology` for
     details.
-    Requires both `cv_topology` and `cv_topology_hierarchy` to be set.
+    Requires both `cv_topology` and `cv_topology_levels` to be set.
     """
     use_router_general_for_router_id: bool
     """
@@ -77585,7 +77585,7 @@ class EosDesigns(EosDesignsRootModel):
                    Generate AVD configurations directly from a given CloudVision topology.
                    See `cv_topology` for
                    details.
-                   Requires both `cv_topology` and `cv_topology_hierarchy` to be set.
+                   Requires both `cv_topology` and `cv_topology_levels` to be set.
                 use_router_general_for_router_id: Use `router general` to set router ID for all routing protocols and VRFs.
                 vtep_loopback_description: Customize the description on the VTEP interface, typically Loopback1.
                 vtep_vvtep_ip:
