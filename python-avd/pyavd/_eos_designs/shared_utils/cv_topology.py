@@ -62,7 +62,7 @@ class CvTopology(Protocol):
 
     def get_cv_topology_level(self: SharedUtilsProtocol, node_type: str) -> int:
         if not (cv_topology_level := self.inputs.cv_topology_levels.get(node_type)):
-            msg = f"'cv_topology_levels' must include all node types when 'use_cv_topology' is set to 'true'. Missing type '{self.type}'."
+            msg = f"'cv_topology_levels' must include all node types when 'use_cv_topology' is set to 'true'. Missing type '{node_type}'."
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
         return cv_topology_level.level
 
