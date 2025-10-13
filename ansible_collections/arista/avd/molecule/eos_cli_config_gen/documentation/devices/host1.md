@@ -519,14 +519,6 @@ ip name-server vrf TEST 2001:db8::2 priority 3
 | atd.lab.com |
 | avd.lab.com |
 
-###### Name Server
-
-| IP Address | VRF | Priority |
-| ---------- | --- | -------- |
-| 1.1.1.1 | default | 0 |
-| 2.2.2.2 | default | 1 |
-| 8.8.8.8 | default | - |
-
 ##### mynameserver1
 
 DNS Domain: arista.avd.com
@@ -536,18 +528,6 @@ DNS Domain: arista.avd.com
 | IP Domain |
 | --------- |
 | domain-list1 |
-
-###### Name Server
-
-| IP Address | VRF | Priority |
-| ---------- | --- | -------- |
-| 1.1.1.1 | default | - |
-| 2.2.2.1 | vrf1 | - |
-| 2.2.2.2 | vrf1 | 1 |
-| 2.2.2.4 | vrf1 | 4 |
-| 2.2.2.6 | b_vrf | 3 |
-| 2.2.2.7 | a_vrf | 3 |
-| 8.8.8.8 | vrf1 | - |
 
 ##### mynameserver2
 
