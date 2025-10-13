@@ -5,9 +5,15 @@ l2leaf:
     - name: ntp-settings-1
       mgmt_ip: 192.168.0.2/24
 
+# Set local-interface for NTP.
+custom_structured_configuration_ntp:
+  local_interface:
+    name: Ethernet10
+    vrf: default
+
 ntp_settings:
   # use_mgmt_interface_vrf is tested in many other places, so here we try with a hardcoded VRF.
-  # This will _not_ set the local_interface.
+  # This will _not_ set the local_interface. Hence it is set with csc.
   server_vrf: default
   servers:
     - name: 10.10.10.1

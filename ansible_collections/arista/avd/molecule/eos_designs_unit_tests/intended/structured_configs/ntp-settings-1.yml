@@ -17,6 +17,9 @@ metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 ntp:
+  local_interface:
+    name: Ethernet10
+    vrf: default
   servers:
   - name: 10.10.10.1
     preferred: true
