@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from pyavd._utils import default, get
+from pyavd._utils import get
 
 
 @dataclass(frozen=True)
@@ -59,7 +59,7 @@ def get_minimal_structured_configs(structured_configs: dict[str, dict]) -> dict[
         # Create the minimal structured configuration
         minimal_structured_configs[device] = MinimalStructuredConfig(
             hostname=structured_config["hostname"],
-            is_deployed=default(get(structured_config, "metadata.is_deployed"), get(structured_config, "is_deployed", default=False)),
+            is_deployed=get(structured_config, "metadata.is_deployed", default=False),
             dns_domain=get(structured_config, "dns_domain"),
             ethernet_interfaces=minimal_ethernet_interfaces,
         )
