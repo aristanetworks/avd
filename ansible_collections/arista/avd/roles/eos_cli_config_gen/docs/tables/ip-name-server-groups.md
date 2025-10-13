@@ -14,7 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name_servers</samp>](## "ip_name_server_groups.[].vrfs.[].name_servers") | List, items: Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "ip_name_server_groups.[].vrfs.[].name_servers.[].ip_address") | String | Required, Unique |  |  | IPv4 or IPv6 address for DNS server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "ip_name_server_groups.[].vrfs.[].name_servers.[].priority") | Integer |  |  | Min: 0<br>Max: 15 | Priority value (lower is first). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name_servers</samp>](## "ip_name_server_groups.[].name_servers") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name_servers</samp>](## "ip_name_server_groups.[].name_servers") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "ip_name_server_groups.[].name_servers.[].ip_address") | String | Required |  |  | IPv4 or IPv6 address for DNS server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ip_name_server_groups.[].name_servers.[].vrf") | String | Required |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "ip_name_server_groups.[].name_servers.[].priority") | Integer |  |  | Min: 0<br>Max: 15 | Priority value (lower is first). |
@@ -40,7 +40,7 @@
                 # Priority value (lower is first).
                 priority: <int; 0-15>
         # This key is deprecated.
-        # Support will be removed in AVD version 6.0.0.
+        # Support will be removed in AVD version 7.0.0.
         name_servers:
 
             # IPv4 or IPv6 address for DNS server.
