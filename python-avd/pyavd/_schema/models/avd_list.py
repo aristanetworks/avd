@@ -7,7 +7,6 @@ import re
 from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Generic, Literal, cast, overload
 
-from pyavd._errors import AristaAvdDuplicateDataError
 from pyavd._schema.coerce_type import coerce_type
 from pyavd._utils import Undefined, UndefinedType
 
@@ -140,9 +139,7 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
 
         return list(self._items)
 
-    def _dump(self, include_default_values: bool = False) -> list | str:
-        if self._created_from_null:
-            return "null"
+    def _dump(self, include_default_values: bool = False) -> list:
         return self._as_list(include_default_values=include_default_values)
 
     def _natural_sorted(self, sort_key: str | None = None, ignore_case: bool = True) -> Self:
@@ -280,10 +277,6 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
         if not isinstance(other, cls):
             msg = f"Unable to combine type '{type(other)}' into '{cls}'"
             raise TypeError(msg)
-
-        # If the value of _created_from_null are different, consider it as a conflict.
-        if self._created_from_null != other._created_from_null:
-            raise AristaAvdDuplicateDataError(type(self).__name__, str(self._dump()), str(other._dump()))
 
         for item in other._items:
             self.append_unique(item)

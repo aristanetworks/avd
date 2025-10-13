@@ -245,9 +245,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
 
         return as_dict
 
-    def _dump(self, include_default_values: bool = False) -> dict | str:
-        if self._created_from_null:
-            return "null"
+    def _dump(self, include_default_values: bool = False) -> dict:
         return self._as_dict(include_default_values=include_default_values)
 
     def _get(self, name: str, default: Any = None) -> Any:
@@ -484,10 +482,6 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
         if not isinstance(other, cls):
             msg = f"Unable to combine type '{type(other)}' into '{cls}'"
             raise TypeError(msg)
-
-        # If the value of _created_from_null are different, consider it as a conflict.
-        if self._created_from_null != other._created_from_null:
-            raise AristaAvdDuplicateDataError(type(self).__name__, str(self._dump()), str(other._dump()))
 
         for field, new_value in other.items():
             old_value = self._get_defined_attr(field)

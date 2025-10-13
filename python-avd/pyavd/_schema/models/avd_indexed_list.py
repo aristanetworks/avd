@@ -156,9 +156,7 @@ class AvdIndexedList(Sequence[T_AvdModel], AvdBase, Generic[T_PrimaryKey, T_AvdM
         """Returns a list with all the data from this model and any nested models."""
         return [item._as_dict(include_default_values=include_default_values) for item in self._items.values()]
 
-    def _dump(self, include_default_values: bool = False) -> list[dict] | str:
-        if self._created_from_null:
-            return "null"
+    def _dump(self, include_default_values: bool = False) -> list[dict]:
         return self._as_list(include_default_values=include_default_values)
 
     def _natural_sorted(self, ignore_case: bool = True) -> Self:
@@ -319,10 +317,6 @@ class AvdIndexedList(Sequence[T_AvdModel], AvdBase, Generic[T_PrimaryKey, T_AvdM
         if not isinstance(other, cls):
             msg = f"Unable to combine type '{type(other)}' into '{cls}'"
             raise TypeError(msg)
-
-        # If the value of _created_from_null are different, consider it as a conflict.
-        if self._created_from_null != other._created_from_null:
-            raise AristaAvdDuplicateDataError(type(self).__name__, str(self._dump()), str(other._dump()))
 
         for item in other:
             self.append(item)
