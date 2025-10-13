@@ -27,6 +27,7 @@ DNS Domain: {{ group.dns_domain }}
 {%             endfor %}
 {%         endif %}
 {%         if group.vrfs is arista.avd.defined %}
+
 ###### Name Server
 
 | VRF | IP Address | Priority |
