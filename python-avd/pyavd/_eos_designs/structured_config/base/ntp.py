@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils.password_utils import ntp_encrypt
 
 if TYPE_CHECKING:
