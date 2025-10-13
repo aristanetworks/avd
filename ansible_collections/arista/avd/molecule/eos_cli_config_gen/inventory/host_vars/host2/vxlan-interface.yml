@@ -5,6 +5,7 @@
 vxlan_interface:
   vxlan1:
     vxlan:
+      shutdown: true
       qos:
         dscp_propagation_encapsulation: false
         map_dscp_to_traffic_class_decapsulation: false

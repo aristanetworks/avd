@@ -321,10 +321,6 @@
             "status": "up"
           },
           {
-            "name": "Ethernet42",
-            "status": "up"
-          },
-          {
             "name": "Loopback0",
             "status": "up"
           }

@@ -915,6 +915,7 @@ interface Dps1
 
 | Setting | Value |
 | ------- | ----- |
+| Shutdown | True |
 | UDP port | 4789 |
 | Qos dscp propagation encapsulation | Disabled |
 | Qos ECN propagation | Disabled |
@@ -933,6 +934,7 @@ interface Dps1
 ```eos
 !
 interface Vxlan1
+   shutdown
    vxlan vlan 110 vni 10110
    vxlan vlan 111,113,115-118 vni 10111,10113,10115-10118
    vxlan vlan 111 flood vtep 10.1.1.10 10.1.1.11

@@ -106,10 +106,6 @@ loopback_interfaces:
   shutdown: false
   vrf: IGMP_QUERIER_TEST_1
   ip_address: 10.1.1.1/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
