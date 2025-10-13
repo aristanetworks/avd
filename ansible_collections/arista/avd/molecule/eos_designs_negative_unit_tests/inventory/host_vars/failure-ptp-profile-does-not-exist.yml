@@ -10,7 +10,7 @@ l3leaf:
     vtep_loopback_ipv4_pool: 10.254.11.0/27
     uplink_ipv4_pool: 10.254.12.0/24
     uplink_interfaces: ['Ethernet1']
-    uplink_switches: ['failure-p2p-links-more-than-2-nodes']
+    uplink_switches: ['failure-port-channel']
     ptp:
       enabled: true
   nodes:

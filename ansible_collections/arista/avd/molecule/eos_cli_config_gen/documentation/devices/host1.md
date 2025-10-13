@@ -1,7 +1,10 @@
 # hostname-set-via-hostname-var
 
+Serial Number: DEADBEEFC0FFEW
+
 ## Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Banner](#banner)
   - [Agents](#agents)
@@ -7338,6 +7341,7 @@ interface Vlan4094
 | Setting | Value |
 | ------- | ----- |
 | Source Interface | Loopback0 |
+| Shutdown | False |
 | Controller Client | True |
 | MLAG Source Interface | Loopback1 |
 | UDP port | 4789 |
@@ -7382,6 +7386,7 @@ interface Vlan4094
 !
 interface Vxlan1
    description DC1-LEAF2A_VTEP
+   no shutdown
    vxlan source-interface Loopback0
    vxlan controller-client
    vxlan virtual-router encapsulation mac-address mlag-system-id
