@@ -34,7 +34,7 @@ try:
         CVWorkspace,
         DeployToCvResult,
     )
-    from pyavd._utils import default, get, strip_empties_from_dict
+    from pyavd._utils import get, strip_empties_from_dict
 
     HAS_PYAVD = True
 except ImportError:
@@ -348,7 +348,7 @@ class ActionModule(ActionBase):
             # No structured config file.
             structured_config = {}
 
-        if not default(get(structured_config, "metadata.is_deployed"), get(structured_config, "is_deployed", default=True)):
+        if not get(structured_config, "metadata.is_deployed", default=True):
             del structured_config
             return ([], [], [], [])
 

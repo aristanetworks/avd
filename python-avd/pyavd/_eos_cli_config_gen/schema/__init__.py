@@ -67149,6 +67149,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {
                     "source_interface": {"type": str},
+                    "shutdown": {"type": bool},
                     "multicast": {"type": Multicast},
                     "controller_client": {"type": ControllerClient},
                     "mlag_source_interface": {"type": str},
@@ -67166,6 +67167,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 }
                 source_interface: str | None
                 """Source Interface Name."""
+                shutdown: bool | None
                 multicast: Multicast
                 """Subclass of AvdModel."""
                 controller_client: ControllerClient
@@ -67222,6 +67224,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         source_interface: str | None | UndefinedType = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
                         multicast: Multicast | UndefinedType = Undefined,
                         controller_client: ControllerClient | UndefinedType = Undefined,
                         mlag_source_interface: str | None | UndefinedType = Undefined,
@@ -67245,6 +67248,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             source_interface: Source Interface Name.
+                            shutdown: shutdown
                             multicast: Subclass of AvdModel.
                             controller_client:
                                Client to CVX Controllers.
