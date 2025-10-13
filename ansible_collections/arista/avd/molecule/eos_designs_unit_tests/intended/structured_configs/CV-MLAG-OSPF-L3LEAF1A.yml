@@ -27,7 +27,7 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 40gfull
   mtu: 9214
-  ip_address: 10.10.101.13/31
+  ip_address: 10.10.101.7/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   ospf_authentication: message-digest

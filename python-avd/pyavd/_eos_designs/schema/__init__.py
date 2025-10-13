@@ -74474,14 +74474,12 @@ class EosDesigns(EosDesignsRootModel):
     `cv_topology_levels[type=<type>].level`, the lowest level will be considered the "parent switch"
     and the highest level will be considered the "child switch".
       - Connections between devices with
-    the same `cv_topology_levels[type=<type>].level` will be sorted based on device hostname.
-        The
-    first will be considered the "parent switch" and the second the "child switch".
-    Neighbor hostnames
-    must match the inventory hostnames of the AVD inventory to be taken into consideration.
+    the same `cv_topology_levels[type=<type>].level` will be ignored and must be created manually.
+    Neighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into
+    consideration.
 
-    Subclass of
-    AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname` (`str`).
+    Subclass of AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname`
+    (`str`).
     """
     cv_topology_levels: CvTopologyLevels
     """
@@ -76542,14 +76540,12 @@ class EosDesigns(EosDesignsRootModel):
                    `cv_topology_levels[type=<type>].level`, the lowest level will be considered the "parent switch"
                    and the highest level will be considered the "child switch".
                      - Connections between devices with
-                   the same `cv_topology_levels[type=<type>].level` will be sorted based on device hostname.
-                       The
-                   first will be considered the "parent switch" and the second the "child switch".
-                   Neighbor hostnames
-                   must match the inventory hostnames of the AVD inventory to be taken into consideration.
+                   the same `cv_topology_levels[type=<type>].level` will be ignored and must be created manually.
+                   Neighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into
+                   consideration.
 
-                   Subclass of
-                   AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname` (`str`).
+                   Subclass of AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname`
+                   (`str`).
                 cv_topology_levels:
                    Type to level assignment used for generation of the AVD topology from the CloudVision topology.
                    See

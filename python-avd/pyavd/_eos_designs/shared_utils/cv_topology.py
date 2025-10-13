@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
@@ -93,14 +92,13 @@ class CvTopology(Protocol):
 
             neighbor_level = self.get_cv_topology_level(neighbor_facts.type)
 
-            sorted_names = natural_sort((self.hostname, interface.neighbor))
-            if neighbor_level < level or (neighbor_level == level and sorted_names[1] == self.hostname):
+            if neighbor_level < level:
                 # This device is the child.
                 node_config.uplink_switches.append(interface.neighbor)
                 node_config.uplink_interfaces.append(interface.name)
                 node_config.uplink_switch_interfaces.append(interface.neighbor_interface)
                 continue
 
-            # This device is the parent. We expect the child to set up the uplink information, so ignoring here.
+            # Same levels or this device is the parent. We expect the child to set up the uplink information, so ignoring here.
 
         return node_config

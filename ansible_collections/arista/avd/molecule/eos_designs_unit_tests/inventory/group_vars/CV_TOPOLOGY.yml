@@ -47,7 +47,7 @@ cv_topology:
       - name: Ethernet5
         neighbor: CV-TOPOLOGY-LEAF3B
         neighbor_interface: Ethernet5
-  - hostname: CV-TOPOLOGY-LEAF3B
+  - hostname: CV-TOPOLOGY-LEAF3B # Same level, not MLAG so this is ignored.
     platform: vEOS-LAB
     interfaces:
       - name: Ethernet1
@@ -84,7 +84,6 @@ l3leaf:
     loopback_ipv4_offset: 32
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     platform: vEOS-LAB
-    max_uplink_switches: 2
   node_groups:
     - group: CV-MLAG_OSPF_L3LEAF1
       spanning_tree_mst_pvst_boundary: true
