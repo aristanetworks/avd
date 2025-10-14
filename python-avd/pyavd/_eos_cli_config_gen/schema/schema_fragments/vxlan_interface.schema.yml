@@ -20,6 +20,8 @@ keys:
               source_interface:
                 type: str
                 description: Source Interface Name.
+              shutdown:
+                type: bool
               multicast:
                 type: dict
                 keys:

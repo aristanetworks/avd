@@ -268,7 +268,7 @@ ASN Notation: asplain
 | distance bgp 20 200 200 |
 | update wait-install |
 | no bgp default ipv4-unicast |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -296,7 +296,7 @@ router bgp 65200
    router-id 172.16.200.2
    update wait-install
    no bgp default ipv4-unicast
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    distance bgp 20 200 200
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community

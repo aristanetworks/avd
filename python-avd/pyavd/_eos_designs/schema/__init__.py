@@ -74071,7 +74071,7 @@ class EosDesigns(EosDesignsRootModel):
         "wan_route_servers": {"type": WanRouteServers},
         "wan_stun_dtls_disable": {"type": bool, "default": False},
         "wan_stun_dtls_profile_name": {"type": str, "default": "STUN-DTLS"},
-        "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp": {"type": bool, "default": True},
+        "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp": {"type": bool, "default": False},
         "wan_use_evpn_node_settings_for_lan": {"type": bool, "default": False},
         "wan_virtual_topologies": {"type": WanVirtualTopologies},
         "zscaler_endpoints": {"type": ZscalerEndpoints},
@@ -74175,11 +74175,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     bgp_distance: EosCliConfigGen.RouterBgp.Distance
     bgp_ecmp: int | None
-    """
-    Maximum ECMP for BGP multi-path.
-    The default value is 4 except for WAN Routers where the default
-    value is unset (falls back to EOS default).
-    """
+    """Maximum ECMP for BGP multi-path."""
     bgp_graceful_restart: BgpGracefulRestart
     """
     BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to
@@ -75967,7 +75963,7 @@ class EosDesigns(EosDesignsRootModel):
     - `false`: For newer EOS versions (starting 4.33.2) use
     the proper CLI.
 
-    Default value: `True`
+    Default value: `False`
     """
     wan_use_evpn_node_settings_for_lan: bool
     """
@@ -76278,10 +76274,7 @@ class EosDesigns(EosDesignsRootModel):
                    It is best practice to
                    disable activation.
                 bgp_distance: bgp_distance
-                bgp_ecmp:
-                   Maximum ECMP for BGP multi-path.
-                   The default value is 4 except for WAN Routers where the default
-                   value is unset (falls back to EOS default).
+                bgp_ecmp: Maximum ECMP for BGP multi-path.
                 bgp_graceful_restart:
                    BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to
                    continue forwarding traffic during a BGP restart.
