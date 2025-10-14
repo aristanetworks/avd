@@ -12,9 +12,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: EVPN-MULTICAST-SPINE1
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: EVPN-MULTICAST-SPINE1
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 hostname: EVPN-MULTICAST-DISABLED

@@ -214,9 +214,6 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
         for index, mlag_interface in enumerate(self.shared_utils.mlag_interfaces):
             ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
                 name=mlag_interface,
-                peer=self.shared_utils.mlag_peer,
-                peer_interface=mlag_interface,
-                peer_type="mlag_peer",
                 description=self.shared_utils.interface_descriptions.mlag_ethernet_interface(
                     InterfaceDescriptionData(
                         shared_utils=self.shared_utils,
@@ -228,6 +225,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                 shutdown=False,
                 speed=default(self.shared_utils.node_config.mlag_interfaces_speed, self.shared_utils.default_interfaces.mlag_interfaces_speed),
             )
+            ethernet_interface.metadata._update(peer_interface=mlag_interface, peer=self.shared_utils.mlag_peer, peer_type="mlag_peer")
             ethernet_interface.channel_group._update(id=self.shared_utils.mlag_port_channel_id, mode="active")
             if self.shared_utils.mlag and self.shared_utils.mlag_peer_facts.inband_ztp is True:
                 ethernet_interface.switchport._update(enabled=True, mode="access", access_vlan=self.shared_utils.mlag_peer_facts.inband_ztp_vlan)

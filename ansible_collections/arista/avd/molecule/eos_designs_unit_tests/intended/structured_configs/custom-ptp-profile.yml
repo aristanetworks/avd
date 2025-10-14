@@ -17,9 +17,10 @@ ethernet_interfaces:
     sync_message:
       interval: -7
     transport: ipv4
-  peer: not-in-this-fabric
-  peer_interface: Ethernet8
-  peer_type: other
+  metadata:
+    peer: not-in-this-fabric
+    peer_interface: Ethernet8
+    peer_type: other
   switchport:
     enabled: false
 hostname: custom-ptp-profile

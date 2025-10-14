@@ -9955,6 +9955,43 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Metadata(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"peer": {"type": str}, "peer_interface": {"type": str}, "peer_type": {"type": str}, "port_profile": {"type": str}}
+            peer: str | None
+            """Key only used for documentation or validation purposes."""
+            peer_interface: str | None
+            """Key only used for documentation or validation purposes."""
+            peer_type: str | None
+            """Key only used for documentation or validation purposes."""
+            port_profile: str | None
+            """Key only used for documentation or validation purposes."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    peer: str | None | UndefinedType = Undefined,
+                    peer_interface: str | None | UndefinedType = Undefined,
+                    peer_type: str | None | UndefinedType = Undefined,
+                    port_profile: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Metadata.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        peer: Key only used for documentation or validation purposes.
+                        peer_interface: Key only used for documentation or validation purposes.
+                        peer_type: Key only used for documentation or validation purposes.
+                        port_profile: Key only used for documentation or validation purposes.
+
+                    """
+
         class Sflow(AvdModel):
             """Subclass of AvdModel."""
 
@@ -12257,12 +12294,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "traffic_policy": {"type": TrafficPolicy},
             "bgp": {"type": Bgp},
             "ip_igmp_host_proxy": {"type": IpIgmpHostProxy},
-            "peer": {"type": str},
-            "peer_interface": {"type": str},
-            "peer_type": {"type": str},
+            "metadata": {"type": Metadata},
             "sflow": {"type": Sflow},
             "sync_e": {"type": SyncE},
-            "port_profile": {"type": str},
             "uc_tx_queues": {"type": UcTxQueues},
             "tx_queues": {"type": TxQueues},
             "vrrp_ids": {"type": VrrpIds},
@@ -12458,18 +12492,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         ip_igmp_host_proxy: IpIgmpHostProxy
         """Subclass of AvdModel."""
-        peer: str | None
-        """Key only used for documentation or validation purposes."""
-        peer_interface: str | None
-        """Key only used for documentation or validation purposes."""
-        peer_type: str | None
-        """Key only used for documentation or validation purposes."""
+        metadata: Metadata
+        """Subclass of AvdModel."""
         sflow: Sflow
         """Subclass of AvdModel."""
         sync_e: SyncE
         """Subclass of AvdModel."""
-        port_profile: str | None
-        """Key only used for documentation or validation purposes."""
         uc_tx_queues: UcTxQueues
         """Subclass of AvdIndexedList with `UcTxQueuesItem` items. Primary key is `id` (`int`)."""
         tx_queues: TxQueues
@@ -12596,12 +12624,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 traffic_policy: TrafficPolicy | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
                 ip_igmp_host_proxy: IpIgmpHostProxy | UndefinedType = Undefined,
-                peer: str | None | UndefinedType = Undefined,
-                peer_interface: str | None | UndefinedType = Undefined,
-                peer_type: str | None | UndefinedType = Undefined,
+                metadata: Metadata | UndefinedType = Undefined,
                 sflow: Sflow | UndefinedType = Undefined,
                 sync_e: SyncE | UndefinedType = Undefined,
-                port_profile: str | None | UndefinedType = Undefined,
                 uc_tx_queues: UcTxQueues | UndefinedType = Undefined,
                 tx_queues: TxQueues | UndefinedType = Undefined,
                 vrrp_ids: VrrpIds | UndefinedType = Undefined,
@@ -12732,12 +12757,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     traffic_policy: Subclass of AvdModel.
                     bgp: Subclass of AvdModel.
                     ip_igmp_host_proxy: Subclass of AvdModel.
-                    peer: Key only used for documentation or validation purposes.
-                    peer_interface: Key only used for documentation or validation purposes.
-                    peer_type: Key only used for documentation or validation purposes.
+                    metadata: Subclass of AvdModel.
                     sflow: Subclass of AvdModel.
                     sync_e: Subclass of AvdModel.
-                    port_profile: Key only used for documentation or validation purposes.
                     uc_tx_queues: Subclass of AvdIndexedList with `UcTxQueuesItem` items. Primary key is `id` (`int`).
                     tx_queues: Subclass of AvdIndexedList with `TxQueuesItem` items. Primary key is `id` (`int`).
                     vrrp_ids:
@@ -31568,6 +31590,39 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Metadata(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"peer": {"type": str}, "peer_interface": {"type": str}, "peer_type": {"type": str}}
+            peer: str | None
+            """Key only used for documentation or validation purposes."""
+            peer_interface: str | None
+            """Key only used for documentation or validation purposes."""
+            peer_type: str | None
+            """Key only used for documentation or validation purposes."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    peer: str | None | UndefinedType = Undefined,
+                    peer_interface: str | None | UndefinedType = Undefined,
+                    peer_type: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Metadata.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        peer: Key only used for documentation or validation purposes.
+                        peer_interface: Key only used for documentation or validation purposes.
+                        peer_type: Key only used for documentation or validation purposes.
+
+                    """
+
         class Sflow(AvdModel):
             """Subclass of AvdModel."""
 
@@ -33556,9 +33611,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "flow_tracker": {"type": FlowTracker},
             "bgp": {"type": Bgp},
             "ip_igmp_host_proxy": {"type": IpIgmpHostProxy},
-            "peer": {"type": str},
-            "peer_interface": {"type": str},
-            "peer_type": {"type": str},
+            "metadata": {"type": Metadata},
             "sflow": {"type": Sflow},
             "vrrp_ids": {"type": VrrpIds},
             "switchport": {"type": Switchport},
@@ -33702,12 +33755,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         ip_igmp_host_proxy: IpIgmpHostProxy
         """Subclass of AvdModel."""
-        peer: str | None
-        """Key only used for documentation or validation purposes."""
-        peer_interface: str | None
-        """Key only used for documentation or validation purposes."""
-        peer_type: str | None
-        """Key only used for documentation or validation purposes."""
+        metadata: Metadata
+        """Subclass of AvdModel."""
         sflow: Sflow
         """Subclass of AvdModel."""
         vrrp_ids: VrrpIds
@@ -33811,9 +33860,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 flow_tracker: FlowTracker | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
                 ip_igmp_host_proxy: IpIgmpHostProxy | UndefinedType = Undefined,
-                peer: str | None | UndefinedType = Undefined,
-                peer_interface: str | None | UndefinedType = Undefined,
-                peer_type: str | None | UndefinedType = Undefined,
+                metadata: Metadata | UndefinedType = Undefined,
                 sflow: Sflow | UndefinedType = Undefined,
                 vrrp_ids: VrrpIds | UndefinedType = Undefined,
                 switchport: Switchport | UndefinedType = Undefined,
@@ -33911,9 +33958,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     flow_tracker: Subclass of AvdModel.
                     bgp: Subclass of AvdModel.
                     ip_igmp_host_proxy: Subclass of AvdModel.
-                    peer: Key only used for documentation or validation purposes.
-                    peer_interface: Key only used for documentation or validation purposes.
-                    peer_type: Key only used for documentation or validation purposes.
+                    metadata: Subclass of AvdModel.
                     sflow: Subclass of AvdModel.
                     vrrp_ids:
                        VRRP model.

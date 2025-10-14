@@ -49,19 +49,6 @@
 | l2leaf | BGP-LEAF2 | Ethernet3 | l2leaf | BGP-LEAF3 | Ethernet2 |
 | l3spine | BGP-SPINE1 | Ethernet3 | mlag_peer | BGP-SPINE2 | Ethernet3 |
 | l3spine | BGP-SPINE1 | Ethernet4 | mlag_peer | BGP-SPINE2 | Ethernet4 |
-| l2leaf | ISIS-LEAF1 | Ethernet1 | l3spine | ISIS-SPINE1 | Ethernet1 |
-| l2leaf | L2ONLY-LEAF1 | Ethernet1 | l2spine | L2ONLY-SPINE1 | Ethernet1 |
-| l2leaf | L2ONLY-LEAF1 | Ethernet2 | l2spine | L2ONLY-SPINE2 | Ethernet1 |
-| l2leaf | L2ONLY-LEAF2 | Ethernet1 | l2spine | L2ONLY-SPINE1 | Ethernet2 |
-| l2leaf | L2ONLY-LEAF2 | Ethernet2 | l2spine | L2ONLY-SPINE2 | Ethernet2 |
-| l2spine | L2ONLY-SPINE1 | Ethernet3 | mlag_peer | L2ONLY-SPINE2 | Ethernet3 |
-| l2spine | L2ONLY-SPINE1 | Ethernet4 | mlag_peer | L2ONLY-SPINE2 | Ethernet4 |
-| l2leaf | OSPF-LEAF1 | Ethernet1 | l3spine | OSPF-SPINE1 | Ethernet1 |
-| l2leaf | OSPF-LEAF1 | Ethernet2 | l3spine | OSPF-SPINE2 | Ethernet1 |
-| l2leaf | OSPF-LEAF2 | Ethernet1 | l3spine | OSPF-SPINE1 | Ethernet2 |
-| l2leaf | OSPF-LEAF2 | Ethernet2 | l3spine | OSPF-SPINE2 | Ethernet2 |
-| l3spine | OSPF-SPINE1 | Ethernet3 | mlag_peer | OSPF-SPINE2 | Ethernet3 |
-| l3spine | OSPF-SPINE1 | Ethernet4 | mlag_peer | OSPF-SPINE2 | Ethernet4 |
 
 ## Fabric IP Allocation
 

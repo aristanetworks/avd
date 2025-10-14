@@ -7,9 +7,10 @@ ethernet_interfaces:
 - name: Ethernet1
   description: SERVER_testserver_Nic1
   shutdown: false
-  peer: testserver
-  peer_interface: Nic1
-  peer_type: server
+  metadata:
+    peer: testserver
+    peer_interface: Nic1
+    peer_type: server
   switchport:
     enabled: true
     mode: trunk

@@ -12,9 +12,10 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: CUSTOM-PYTHON_MODULES-L3LEAF2
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: CUSTOM-PYTHON_MODULES-L3LEAF2
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4
@@ -23,17 +24,19 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: CUSTOM-PYTHON_MODULES-L3LEAF1B
-  peer_interface: Ethernet4
-  peer_type: mlag_peer
+  metadata:
+    peer: CUSTOM-PYTHON_MODULES-L3LEAF1B
+    peer_interface: Ethernet4
+    peer_type: mlag_peer
 - name: Ethernet1
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-SPINE1_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.21/31
-  peer: CUSTOM-PYTHON_MODULES-SPINE1
-  peer_interface: Ethernet1
-  peer_type: custom_spine
+  metadata:
+    peer: CUSTOM-PYTHON_MODULES-SPINE1
+    peer_interface: Ethernet1
+    peer_type: custom_spine
   switchport:
     enabled: false
 - name: Ethernet3.1
@@ -44,25 +47,28 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1
   ip_address: 172.16.0.24/31
-  peer: CUSTOM-PYTHON_MODULES-L3LEAF2
-  peer_interface: Ethernet1.1
-  peer_type: l3leaf
+  metadata:
+    peer: CUSTOM-PYTHON_MODULES-L3LEAF2
+    peer_interface: Ethernet1.1
+    peer_type: l3leaf
 - name: Ethernet11
   description: TEST_CUSTOM_PREFIX_CORE_INTERFACES_RTR-1_Ethernet2
   shutdown: false
   mtu: 9214
-  peer: RTR-1
-  peer_interface: Ethernet2
-  peer_type: other
+  metadata:
+    peer: RTR-1
+    peer_interface: Ethernet2
+    peer_type: other
   switchport:
     enabled: false
 - name: Ethernet10
   description: TEST_CUSTOM_PREFIX_L3_EDGE_RTR-1_Ethernet1
   shutdown: false
   mtu: 9214
-  peer: RTR-1
-  peer_interface: Ethernet1
-  peer_type: other
+  metadata:
+    peer: RTR-1
+    peer_interface: Ethernet1
+    peer_type: other
   switchport:
     enabled: false
 hostname: CUSTOM-PYTHON_MODULES-L3LEAF1A

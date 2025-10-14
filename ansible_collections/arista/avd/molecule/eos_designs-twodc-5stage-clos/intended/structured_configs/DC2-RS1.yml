@@ -10,9 +10,10 @@ ethernet_interfaces:
   shutdown: false
   ip_address: 172.17.20.1/31
   service_profile: QOS-PROFILE
-  peer: DC2-SUPER-SPINE1
-  peer_interface: Ethernet3
-  peer_type: super-spine
+  metadata:
+    peer: DC2-SUPER-SPINE1
+    peer_interface: Ethernet3
+    peer_type: super-spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -20,9 +21,10 @@ ethernet_interfaces:
   shutdown: false
   ip_address: 172.17.20.3/31
   service_profile: QOS-PROFILE
-  peer: DC2-SUPER-SPINE1
-  peer_interface: Ethernet6
-  peer_type: super-spine
+  metadata:
+    peer: DC2-SUPER-SPINE1
+    peer_interface: Ethernet6
+    peer_type: super-spine
   switchport:
     enabled: false
 hostname: DC2-RS1

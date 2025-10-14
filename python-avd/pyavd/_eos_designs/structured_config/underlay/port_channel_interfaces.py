@@ -185,9 +185,8 @@ class PortChannelInterfacesMixin(Protocol):
         )
         interface._update(
             description=interface_description or None,
-            peer_type="l3_port_channel",
-            peer_interface=l3_port_channel.peer_port_channel,
         )
+        interface.metadata._update(peer_interface=l3_port_channel.peer_port_channel, peer_type="l3_port_channel")
 
         if l3_port_channel.ipv4_acl_in:
             acl = self._get_acl_for_l3_generic_interface(l3_port_channel.ipv4_acl_in, l3_port_channel)
@@ -236,16 +235,19 @@ class PortChannelInterfacesMixin(Protocol):
             ),
         )
 
-        self.structured_config.port_channel_interfaces.append_new(
+        port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
             name=port_channel_name,
             switchport=EosCliConfigGen.PortChannelInterfacesItem.Switchport(enabled=False),
-            peer_type="l3_interface",
-            # TODO: if different interfaces used across nodes it will fail just like for mlag.
-            peer_interface=port_channel_name,
-            peer=self.shared_utils.wan_ha_peer,
             shutdown=False,
             description=description or None,
             ip_address=self.shared_utils.wan_ha_ip_addresses[0],
             flow_tracker=direct_wan_ha_links_flow_tracker,
             mtu=self.shared_utils.node_config.wan_ha.mtu,
         )
+        port_channel_interface.metadata._update(
+            peer_interface=port_channel_name,
+            peer_type="l3_interface",
+            # TODO: if different interfaces used across nodes it will fail just like for mlag.
+            peer=self.shared_utils.wan_ha_peer,
+        )
+        self.structured_config.port_channel_interfaces.append(port_channel_interface)

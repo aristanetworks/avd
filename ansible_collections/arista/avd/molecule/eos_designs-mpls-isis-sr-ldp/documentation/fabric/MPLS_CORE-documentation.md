@@ -41,18 +41,6 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
-| pe | SITE1-LER1 | Ethernet1 | p | SITE1-LSR1 | Ethernet1 |
-| pe | SITE1-LER1 | Ethernet2 | pe | SITE1-LER2 | Ethernet2 |
-| pe | SITE1-LER2 | Ethernet1 | p | SITE1-LSR2 | Ethernet1 |
-| p | SITE1-LSR1 | Ethernet3 | p | SITE2-LSR1 | Ethernet3 |
-| p | SITE1-LSR1 | Ethernet4 | rr | SITE1-RR1 | Ethernet4 |
-| p | SITE1-LSR2 | Ethernet3 | p | SITE2-LSR2 | Ethernet3 |
-| pe | SITE2-LER1 | Ethernet1 | p | SITE2-LSR1 | Ethernet1 |
-| pe | SITE2-LER1 | Ethernet11 | p | SITE2-LSR2 | Ethernet12 |
-| pe | SITE2-LER1 | Ethernet12 | p | SITE2-LSR2 | Ethernet13 |
-| pe | SITE2-LER1 | Ethernet13 | p | SITE2-LSR2 | Ethernet14 |
-| pe | SITE2-LER1 | Ethernet14 | p | SITE2-LSR2 | Ethernet15 |
-| p | SITE2-LSR1 | Ethernet4 | rr | SITE2-RR1 | Ethernet4 |
 
 ## Fabric IP Allocation
 
@@ -65,14 +53,6 @@
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
-| SITE1-LER1 | Ethernet1 | 100.64.48.0/31 | SITE1-LSR1 | Ethernet1 | 100.64.48.1/31 |
-| SITE1-LER1 | Ethernet2 | 100.64.48.4/31 | SITE1-LER2 | Ethernet2 | 100.64.48.5/31 |
-| SITE1-LER2 | Ethernet1 | 100.64.48.2/31 | SITE1-LSR2 | Ethernet1 | 100.64.48.3/31 |
-| SITE1-LSR1 | Ethernet3 | 100.64.48.8/31 | SITE2-LSR1 | Ethernet3 | 100.64.48.9/31 |
-| SITE1-LSR1 | Ethernet4 | 100.64.48.6/31 | SITE1-RR1 | Ethernet4 | 100.64.48.7/31 |
-| SITE1-LSR2 | Ethernet3 | 100.64.48.10/31 | SITE2-LSR2 | Ethernet3 | 100.64.48.11/31 |
-| SITE2-LER1 | Ethernet1 | 100.64.48.15/31 | SITE2-LSR1 | Ethernet1 | 100.64.48.14/31 |
-| SITE2-LSR1 | Ethernet4 | 100.64.48.12/31 | SITE2-RR1 | Ethernet4 | 100.64.48.13/31 |
 
 ### Loopback Interfaces (BGP EVPN Peering)
 

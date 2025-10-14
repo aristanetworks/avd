@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.1/31
-  peer: UNDERLAY_FILTER_PEER_AS_SPINE1
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: UNDERLAY_FILTER_PEER_AS_SPINE1
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -19,9 +20,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.3/31
-  peer: UNDERLAY_FILTER_PEER_AS_SPINE2
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: UNDERLAY_FILTER_PEER_AS_SPINE2
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 hostname: UNDERLAY_FILTER_PEER_AS_L3LEAF1

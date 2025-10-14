@@ -5,10 +5,11 @@ ethernet_interfaces:
 - name: Ethernet12
   description: SERVER_TEST_SERVER_01_Nic1
   shutdown: false
-  peer: TEST_SERVER_01
-  peer_interface: Nic1
-  peer_type: server
-  port_profile: MY_PROFILE
+  metadata:
+    peer: TEST_SERVER_01
+    peer_interface: Nic1
+    peer_type: server
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -21,20 +22,22 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: TEST_SERVER_01
-  peer_interface: Nic1
-  peer_type: server
-  port_profile: MY_PROFILE
+  metadata:
+    peer: TEST_SERVER_01
+    peer_interface: Nic1
+    peer_type: server
+    port_profile: MY_PROFILE
 - name: Ethernet2
   description: SERVER_TEST_SERVER_01_Nic2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: TEST_SERVER_01
-  peer_interface: Nic2
-  peer_type: server
-  port_profile: MY_PROFILE
+  metadata:
+    peer: TEST_SERVER_01
+    peer_interface: Nic2
+    peer_type: server
+    port_profile: MY_PROFILE
 - name: Ethernet20
   description: Network Port
   shutdown: false
@@ -42,9 +45,10 @@ ethernet_interfaces:
     pae:
       mode: supplicant
       supplicant_profile: test_profile_only_connected_endpoints
-  peer: Network Port
-  peer_type: network_port
-  port_profile: MY_PROFILE
+  metadata:
+    peer: Network Port
+    peer_type: network_port
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -58,9 +62,10 @@ ethernet_interfaces:
     pae:
       mode: supplicant
       supplicant_profile: test_profile_only_connected_endpoints
-  peer: Network Port
-  peer_type: network_port
-  port_profile: MY_PROFILE
+  metadata:
+    peer: Network Port
+    peer_type: network_port
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -74,9 +79,10 @@ ethernet_interfaces:
     pae:
       mode: supplicant
       supplicant_profile: test_profile_only_connected_endpoints
-  peer: Network Port
-  peer_type: network_port
-  port_profile: MY_PROFILE
+  metadata:
+    peer: Network Port
+    peer_type: network_port
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -90,9 +96,10 @@ ethernet_interfaces:
     pae:
       mode: supplicant
       supplicant_profile: test_profile_only_connected_endpoints
-  peer: Network Port
-  peer_type: network_port
-  port_profile: MY_PROFILE
+  metadata:
+    peer: Network Port
+    peer_type: network_port
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -106,9 +113,10 @@ ethernet_interfaces:
     pae:
       mode: supplicant
       supplicant_profile: test_profile_only_connected_endpoints
-  peer: Network Port
-  peer_type: network_port
-  port_profile: MY_PROFILE
+  metadata:
+    peer: Network Port
+    peer_type: network_port
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -122,9 +130,10 @@ ethernet_interfaces:
     pae:
       mode: supplicant
       supplicant_profile: test_profile_only_connected_endpoints
-  peer: Network Port
-  peer_type: network_port
-  port_profile: MY_PROFILE
+  metadata:
+    peer: Network Port
+    peer_type: network_port
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -138,9 +147,10 @@ ethernet_interfaces:
     pae:
       mode: supplicant
       supplicant_profile: test_profile_only_connected_endpoints
-  peer: Network Port
-  peer_type: network_port
-  port_profile: MY_PROFILE
+  metadata:
+    peer: Network Port
+    peer_type: network_port
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -154,9 +164,10 @@ ethernet_interfaces:
     pae:
       mode: supplicant
       supplicant_profile: test_profile_only_connected_endpoints
-  peer: Network Port
-  peer_type: network_port
-  port_profile: MY_PROFILE
+  metadata:
+    peer: Network Port
+    peer_type: network_port
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -170,9 +181,10 @@ ethernet_interfaces:
     pae:
       mode: supplicant
       supplicant_profile: test_profile_only_connected_endpoints
-  peer: Network Port
-  peer_type: network_port
-  port_profile: MY_PROFILE
+  metadata:
+    peer: Network Port
+    peer_type: network_port
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -186,9 +198,10 @@ ethernet_interfaces:
     pae:
       mode: supplicant
       supplicant_profile: test_profile_only_connected_endpoints
-  peer: Network Port
-  peer_type: network_port
-  port_profile: MY_PROFILE
+  metadata:
+    peer: Network Port
+    peer_type: network_port
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk

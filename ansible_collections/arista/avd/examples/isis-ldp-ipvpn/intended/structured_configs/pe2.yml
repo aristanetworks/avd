@@ -24,9 +24,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: p2
-  peer_interface: Ethernet1
-  peer_type: p
+  metadata:
+    peer: p2
+    peer_interface: Ethernet1
+    peer_type: p
   switchport:
     enabled: false
 - name: Ethernet2
@@ -49,9 +50,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: p1
-  peer_interface: Ethernet2
-  peer_type: p
+  metadata:
+    peer: p1
+    peer_interface: Ethernet2
+    peer_type: p
   switchport:
     enabled: false
 - name: Ethernet4.10
@@ -63,7 +65,8 @@ ethernet_interfaces:
   ip_address: 10.0.1.2/29
   ospf_network_point_to_point: false
   ospf_area: 0.0.0.0
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet4.20
   description: C2_L3_SERVICE
   shutdown: false
@@ -71,10 +74,12 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 20
   ip_address: 10.1.1.2/29
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet4
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 hostname: pe2

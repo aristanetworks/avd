@@ -10,13 +10,15 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: ISIS-LEAF1
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: ISIS-LEAF1
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet10
   description: Endpoint
   shutdown: false
-  peer_type: network_port
+  metadata:
+    peer_type: network_port
   switchport:
     enabled: true
     mode: access

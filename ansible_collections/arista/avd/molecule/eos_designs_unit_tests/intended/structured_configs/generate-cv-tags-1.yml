@@ -8,8 +8,9 @@ ethernet_interfaces:
   description: Test interface
   shutdown: false
   ip_address: 10.20.30.40/24
-  peer: Someotherdevice
-  peer_type: l3_interface
+  metadata:
+    peer: Someotherdevice
+    peer_type: l3_interface
   switchport:
     enabled: false
 hostname: generate-cv-tags-1
@@ -50,8 +51,6 @@ metadata:
       tags:
       - name: static-interface-tag
         value: myinterfacevalue
-      - name: dynamic_interface_tag
-        value: Someotherdevice
       - name: UPPERCASE_INTERFACE_TAG
         value: something else with spaces
 prefix_lists:

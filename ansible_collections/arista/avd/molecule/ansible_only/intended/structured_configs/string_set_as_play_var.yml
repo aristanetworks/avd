@@ -10,8 +10,9 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  peer: OLD_SW-1/6
-  peer_type: server
+  metadata:
+    peer: OLD_SW-1/6
+    peer_type: server
 hostname: string_set_as_play_var
 ip_igmp_snooping:
   globally_enabled: true

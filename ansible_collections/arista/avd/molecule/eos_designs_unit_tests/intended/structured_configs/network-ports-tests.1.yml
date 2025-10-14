@@ -10,15 +10,17 @@ ethernet_interfaces:
   channel_group:
     id: 101
     mode: active
-  peer: network-ports-tests-2
-  peer_interface: Ethernet10/1
-  peer_type: mlag_peer
+  metadata:
+    peer: network-ports-tests-2
+    peer_interface: Ethernet10/1
+    peer_type: mlag_peer
 - name: Ethernet14
   description: SERVER_CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT_Eth42
   shutdown: false
-  peer: CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT
-  peer_interface: Eth42
-  peer_type: server
+  metadata:
+    peer: CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT
+    peer_interface: Eth42
+    peer_type: server
   switchport:
     enabled: true
 - name: Ethernet1
@@ -26,9 +28,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -38,9 +41,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -50,9 +54,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -62,9 +67,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -74,9 +80,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -86,9 +93,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -98,9 +106,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -110,9 +119,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -122,9 +132,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -134,9 +145,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -146,9 +158,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -158,9 +171,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -170,9 +184,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -182,9 +197,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -194,9 +210,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -206,9 +223,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -218,9 +236,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -230,9 +249,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -242,9 +262,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -254,9 +275,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -266,9 +288,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -278,9 +301,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -290,9 +314,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -302,9 +327,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -314,9 +340,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -326,9 +353,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -338,9 +366,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -350,9 +379,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -362,9 +392,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -374,9 +405,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -386,9 +418,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -398,9 +431,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -410,9 +444,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -422,9 +457,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -434,9 +470,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -446,9 +483,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -458,9 +496,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -470,9 +509,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -482,9 +522,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -494,9 +535,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -506,9 +548,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -518,9 +561,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -530,9 +574,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -542,9 +587,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -554,9 +600,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -566,9 +613,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -578,9 +626,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -590,9 +639,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -602,9 +652,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -614,9 +665,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -626,9 +678,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -638,9 +691,10 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
-  peer: PCs
-  peer_type: network_port
-  port_profile: pc
+  metadata:
+    peer: PCs
+    peer_type: network_port
+    port_profile: pc
   switchport:
     enabled: true
     mode: access
@@ -648,73 +702,85 @@ ethernet_interfaces:
 - name: Ethernet5
   description: 'N: blah'
   shutdown: false
-  peer: blah
-  peer_type: network_port
+  metadata:
+    peer: blah
+    peer_type: network_port
   switchport:
     enabled: true
 - name: Ethernet6
   description: 'N: blah'
   shutdown: false
-  peer: blah
-  peer_type: network_port
+  metadata:
+    peer: blah
+    peer_type: network_port
   switchport:
     enabled: true
 - name: Ethernet11
   description: Base config which may be overwritten
   shutdown: false
-  peer_type: network_port
+  metadata:
+    peer_type: network_port
   switchport:
     enabled: true
 - name: Ethernet12
   description: Config overwriting base config
   shutdown: false
-  peer_type: network_port
+  metadata:
+    peer_type: network_port
   switchport:
     enabled: true
 - name: Ethernet13
   description: Base config which may be overwritten
   shutdown: false
-  peer_type: network_port
+  metadata:
+    peer_type: network_port
   switchport:
     enabled: true
 - name: Ethernet51
   shutdown: true
-  peer_type: network_port
+  metadata:
+    peer_type: network_port
   switchport:
     enabled: true
     access_vlan: 123
 - name: Ethernet52
   shutdown: true
-  peer_type: network_port
+  metadata:
+    peer_type: network_port
   switchport:
     enabled: true
 - name: Ethernet53
   shutdown: true
-  peer_type: network_port
+  metadata:
+    peer_type: network_port
   switchport:
     enabled: true
 - name: Ethernet54
   shutdown: true
-  peer_type: network_port
+  metadata:
+    peer_type: network_port
   switchport:
     enabled: true
 - name: Ethernet48
   description: Matched on all hostnames and 48 port platform
   shutdown: false
-  peer_type: network_port
+  metadata:
+    peer_type: network_port
   switchport:
     enabled: true
 - name: Ethernet20
   description: Single overwrite
   shutdown: false
-  peer_type: network_port
+  metadata:
+    peer_type: network_port
   switchport:
     enabled: true
     access_vlan: 42
 - name: Ethernet21
   description: Range
   shutdown: false
-  peer_type: network_port
+  metadata:
+    peer_type: network_port
   switchport:
     enabled: true
     access_vlan: 666
@@ -724,18 +790,21 @@ ethernet_interfaces:
   channel_group:
     id: 222
     mode: active
-  peer_type: network_port
+  metadata:
+    peer_type: network_port
 - name: Ethernet23
   description: Range
   shutdown: false
   channel_group:
     id: 222
     mode: active
-  peer_type: network_port
+  metadata:
+    peer_type: network_port
 - name: Ethernet25
   description: Add all vlans
   shutdown: false
-  peer_type: network_port
+  metadata:
+    peer_type: network_port
   switchport:
     enabled: true
 hostname: network-ports-tests.1
