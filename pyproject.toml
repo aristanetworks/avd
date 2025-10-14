@@ -137,6 +137,8 @@ exclude = [
   "python-avd/pyavd/_eos_designs/schema/__init__.py",
 ]
 pythonVersion = "3.10"
+# This is to direct pyright where to look for schema_tools
+extraPaths = ["python-avd"]
 
 [tool.bumpversion]
 
