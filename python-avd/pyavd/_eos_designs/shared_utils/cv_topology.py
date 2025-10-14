@@ -75,7 +75,10 @@ class CvTopology(Protocol):
         level = self.get_cv_topology_level(self.type)
         for interface in self.cv_topology.interfaces._natural_sorted():
             if interface.name.startswith("Management"):
-                node_config.mgmt_interface = interface.name
+                # Only set the first management interface we find.
+                # For modulars that would be the alias interface.
+                if not node_config.mgmt_interface:
+                    node_config.mgmt_interface = interface.name
                 continue
 
             if not interface.neighbor or not interface.neighbor_interface:

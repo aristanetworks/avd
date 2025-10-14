@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>cv_topology</samp>](## "cv_topology") | List, items: Dictionary |  |  |  | Generate AVD configurations directly from the given CloudVision topology.<br>Activate this feature by setting `use_cv_topology` to `true`.<br>Interfaces are assigned according to the following rules:<br>  - All interfaces connected to the MLAG peer (only other device in the same node group) will be `mlag_interfaces`.<br>  - For connections between devices with different `cv_topology_levels[type=<type>].level`, the lowest level will be considered the "parent switch"<br>    and the highest level will be considered the "child switch".<br>  - Connections between devices with the same `cv_topology_levels[type=<type>].level` will be ignored and must be created manually.<br>Neighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration. |
+    | [<samp>cv_topology</samp>](## "cv_topology") | List, items: Dictionary |  |  |  | Generate AVD configurations directly from the given CloudVision topology.<br>Activate this feature by setting `use_cv_topology` to `true`.<br>Interfaces are assigned according to the following rules:<br>  - All interfaces connected to the MLAG peer (only other device in the same node group) will be `mlag_interfaces`.<br>  - For connections between devices with different `cv_topology_levels[type=<type>].level`, the lowest level will be considered the "parent switch"<br>    and the highest level will be considered the "child switch".<br>  - Connections between devices with the same `cv_topology_levels[type=<type>].level` will be ignored and must be created manually.<br>  - The first Management interface is assigned as `mgmt_interface` unless it is set for the node or under platform_settings.<br>Neighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration. |
     | [<samp>&nbsp;&nbsp;-&nbsp;hostname</samp>](## "cv_topology.[].hostname") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "cv_topology.[].platform") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "cv_topology.[].interfaces") | List, items: Dictionary | Required |  |  |  |
@@ -29,6 +29,7 @@
     #   - For connections between devices with different `cv_topology_levels[type=<type>].level`, the lowest level will be considered the "parent switch"
     #     and the highest level will be considered the "child switch".
     #   - Connections between devices with the same `cv_topology_levels[type=<type>].level` will be ignored and must be created manually.
+    #   - The first Management interface is assigned as `mgmt_interface` unless it is set for the node or under platform_settings.
     # Neighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration.
     cv_topology:
       - hostname: <str; required; unique>

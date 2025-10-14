@@ -16,6 +16,7 @@ cv_topology:
     platform: vEOS-LAB
     interfaces:
       - name: Management66
+      - name: Management66/1 # Ignored since we only use the first managemetn interface.
       - name: Ethernet1
         neighbor: DC1-SPINE4
         neighbor_interface: Ethernet20

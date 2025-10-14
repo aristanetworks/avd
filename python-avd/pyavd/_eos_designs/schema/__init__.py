@@ -74475,11 +74475,14 @@ class EosDesigns(EosDesignsRootModel):
     and the highest level will be considered the "child switch".
       - Connections between devices with
     the same `cv_topology_levels[type=<type>].level` will be ignored and must be created manually.
-    Neighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into
-    consideration.
+      -
+    The first Management interface is assigned as `mgmt_interface` unless it is set for the node or
+    under platform_settings.
+    Neighbor hostnames must match the inventory hostnames of the AVD inventory
+    to be taken into consideration.
 
-    Subclass of AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname`
-    (`str`).
+    Subclass of AvdIndexedList with `CvTopologyItem` items. Primary key
+    is `hostname` (`str`).
     """
     cv_topology_levels: CvTopologyLevels
     """
@@ -76541,11 +76544,14 @@ class EosDesigns(EosDesignsRootModel):
                    and the highest level will be considered the "child switch".
                      - Connections between devices with
                    the same `cv_topology_levels[type=<type>].level` will be ignored and must be created manually.
-                   Neighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into
-                   consideration.
+                     -
+                   The first Management interface is assigned as `mgmt_interface` unless it is set for the node or
+                   under platform_settings.
+                   Neighbor hostnames must match the inventory hostnames of the AVD inventory
+                   to be taken into consideration.
 
-                   Subclass of AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname`
-                   (`str`).
+                   Subclass of AvdIndexedList with `CvTopologyItem` items. Primary key
+                   is `hostname` (`str`).
                 cv_topology_levels:
                    Type to level assignment used for generation of the AVD topology from the CloudVision topology.
                    See
