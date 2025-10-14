@@ -428,6 +428,13 @@ mlag_l3_ip_primary & mlag_l3_ip_secondary:
 - `{{ switch_data.combined.mlag_peer_l3_ipv4_pool }}`
 - All group/hostvars
 
+mlag_ibgp_peering_ip_primary & mlag_ibgp_peering_ip_secondary:
+
+- `{{ mlag_primary_id }}`
+- `{{ mlag_secondary_id }}`
+- `{{ vrf.mlag_ibgp_peering_ipv4_pool }}`
+- All group/hostvars
+
 p2p_uplinks_ip & p2p_uplinks_peer_ip:
 
 - `{{ switch.uplink_ipv4_pool }}`
@@ -451,13 +458,7 @@ vtep_ip:
 - `{{ loopback_ipv4_offset }}`
 - All group/hostvars
 
-While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
-the values are not part of the officially supported data models, and may change without notice.
-
 ### Context for interface_descriptions templates
-
-!!! warning  "Caveat"
-    In AVD 4.x, it is not possible to completely overwrite the description of the subinterfaces when `uplink_type` is set to `p2p-vrfs`. The string `_vrf_<VRF>` is always appended to the description.
 
 To help format the custom interface descriptions, the following contextual variables are available to the custom templates:
 
@@ -516,9 +517,6 @@ vtep_loopback_interface:
 
 - `{{ vtep_loopback_description }}`
 - All group/hostvars
-
-While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
-the values are not part of the officially supported data models and may change without notice.
 
 ## Type setting
 

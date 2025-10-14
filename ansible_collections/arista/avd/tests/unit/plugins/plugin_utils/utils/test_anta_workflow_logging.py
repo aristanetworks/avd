@@ -1,17 +1,33 @@
 # Copyright (c) 2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-"""Unit tests for the anta_logging_filter module."""
+"""Unit tests for the anta_workflow_logging module."""
 
 import logging
-from unittest.mock import Mock
+from unittest.mock import MagicMock
 
 import pytest
 from ansible.cli import Display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AntaWorkflowFilter, AntaWorkflowHandler
 
-from .conftest import create_log_record
+
+def create_log_record(name: str, level: int, msg: str, unique_id: str | None = None, args: tuple = ()) -> logging.LogRecord:
+    """Helper function to create a LogRecord, optionally adding unique_id."""
+    record = logging.LogRecord(
+        name=name,
+        level=level,
+        pathname="dummy_path",
+        lineno=123,
+        msg=msg,
+        args=args,
+        exc_info=None,
+        func="dummy_func",
+    )
+    # Simulate the filter adding the unique_id *before* it reaches the handler
+    if unique_id:
+        record.unique_id = unique_id
+    return record
 
 
 class TestAntaWorkflowFilter:
@@ -61,7 +77,7 @@ class TestAntaWorkflowHandler:
         ],
     )
     def test_anta_workflow_handler_emit_levels(
-        self, mock_display: Display, level: int, msg: str, expected_display_method_name: str, set_error_true: bool
+        self, mock_display: MagicMock, level: int, msg: str, expected_display_method_name: str, set_error_true: bool
     ) -> None:
         """Test AntaWorkflowHandler emit calls the correct display method and updates errors."""
         unique_context_id = "ctx-123"
@@ -93,7 +109,7 @@ class TestAntaWorkflowHandler:
 
         assert errors_list[0] is set_error_true
 
-    def test_anta_workflow_handler_emit_unknown_unique_id(self, mock_display: Mock) -> None:
+    def test_anta_workflow_handler_emit_unknown_unique_id(self, mock_display: MagicMock) -> None:
         """Test AntaWorkflowHandler emit with a record that has no unique_id attribute."""
         errors_list = [False]
         handler = AntaWorkflowHandler(has_errors_ref=errors_list)
@@ -121,7 +137,7 @@ class TestAntaWorkflowHandler:
         mock_display.v.assert_called_once_with(expected_message)
         assert errors_list[0] is False
 
-    def test_anta_workflow_handler_emit_message_formatting_with_args(self, mock_display: Mock) -> None:
+    def test_anta_workflow_handler_emit_message_formatting_with_args(self, mock_display: MagicMock) -> None:
         """Test that emit correctly formats messages with arguments."""
         unique_context_id = "ctx-format"
         errors_list = [False]

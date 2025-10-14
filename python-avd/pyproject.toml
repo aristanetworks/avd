@@ -26,6 +26,9 @@ dependencies = [
     "Jinja2>=3.0",
     "PyYAML>=6.0.0",
     "requests>=2.27.0",
+    # Pinned grpclib since we patch the connection code to get proxy support
+    "grpclib==0.4.8",
+    "python-socks[asyncio]>=2.7.2",
 ]
 
 [project.urls]
@@ -38,7 +41,7 @@ pytest = [
     "anta>=1.5.0",
     "pytest",
     "pytest-asyncio",
-    "pydantic>=2.3.0",
+    "pydantic>=2.3.0,<2.12",
     "referencing>=0.35.0",
 ]
 coverage = [
@@ -52,11 +55,7 @@ ansible = [
 ]
 ansible-collection = [
     "anta>=1.5.0",
-    "cvprac>=1.4.0",
     "netaddr>=0.7.19",
-    "treelib>=1.5.5",
-    # jsonschema is required for the arista.cvp Ansible collection
-    "jsonschema>=3.2.0",
     # distlib is required to install the collection from source as it is using manifest
     "distlib>=0.3.9",
 ]
@@ -74,7 +73,7 @@ requires = [
     "pydantic>=2.3.0",
     "cryptography>=43.0.0",
     "aristaproto>=0.1.1",
-    "ruff==0.13.3",
+    "ruff==0.14.0",
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]

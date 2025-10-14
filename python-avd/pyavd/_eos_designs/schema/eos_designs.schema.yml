@@ -360,10 +360,7 @@ keys:
   bgp_ecmp:
     documentation_options:
       table: bgp-settings
-    description: 'Maximum ECMP for BGP multi-path.
-
-      The default value is 4 except for WAN Routers where the default value is unset
-      (falls back to EOS default).'
+    description: Maximum ECMP for BGP multi-path.
     type: int
     min: 1
     max: 600
@@ -4235,22 +4232,22 @@ keys:
       table: platform-settings
     description: Custom Platform settings to override the default `platform_settings`.
       This list will be prepended to the list of `platform_settings`. The first entry
-      containing `platforms` matching the `platform` node setting will be chosen.
-      If no matches are found, the first entry containing a platform `default` will
-      be chosen.
+      found where the `platform` node setting is fully matched by any regex in the
+      `platforms` list will be chosen. If no matches are found, the first entry containing
+      a platform `default` will be chosen.
     type: list
   platform_settings:
     type: list
     documentation_options:
       table: platform-settings
-    description: Platform settings. The first entry containing `platforms` matching
-      the `platform` node setting will be chosen. If no matches are found, the first
-      entry containing a platform `default` will be chosen. The default values will
-      be overridden if `platform_settings` is defined. If you need to replace all
-      the default platforms, it is recommended to copy the defaults and modify them.
-      If you need to add custom platforms, create them under `custom_platform_settings`.
-      Entries under `custom_platform_settings` will be matched before the equivalent
-      entries from `platform_settings`.
+    description: Platform settings. The first entry found where the `platform` node
+      setting is fully matched by any regex in the `platforms` list will be chosen.
+      If no matches are found, the first entry containing a platform `default` will
+      be chosen. The default values will be overridden if `platform_settings` is defined.
+      If you need to replace all the default platforms, it is recommended to copy
+      the defaults and modify them. If you need to add custom platforms, create them
+      under `custom_platform_settings`. Entries under `custom_platform_settings` will
+      be matched before the equivalent entries from `platform_settings`.
     items:
       type: dict
       keys:
@@ -6334,7 +6331,7 @@ keys:
     type: bool
     documentation_options:
       table: wan-settings
-    default: true
+    default: false
     description: 'For EOS kernel forwarding, ECMP programming can be enabled in two
       different ways depending on the EOS version.
 
@@ -12275,6 +12272,8 @@ $defs:
         ip:
           type: list
           description: Specific IP addresses used on this P2P link.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: Node IPv4 address/Mask.
@@ -12286,6 +12285,8 @@ $defs:
         nodes:
           type: list
           description: Nodes where this link should be configured.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: 'The values can be < node_a >, < node_b >.
@@ -12297,6 +12298,8 @@ $defs:
           type: list
           description: Interfaces where this link should be configured and Required
             unless using port-channels.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: 'The value can be like < node_a_interface >, < node_b_interface
@@ -12320,6 +12323,8 @@ $defs:
         descriptions:
           type: list
           description: Interface descriptions.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: "Description or description template to be used on the ethernet
@@ -12533,19 +12538,6 @@ $defs:
 
             - ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the
             RFC5549 underlay if configured.'
-        structured_config:
-          type: dict
-          relaxed_validation: true
-          documentation_options:
-            hide_keys: true
-          description: 'Custom structured config for interfaces.
-
-            Note! The content of this dictionary is _not_ validated by the schema,
-            since it can be either ethernet_interfaces or port_channel_interfaces.'
-          deprecation:
-            warning: true
-            remove_in_version: 6.0.0
-            new_key: ethernet_structured_config or port_channel_structured_config
         ethernet_structured_config:
           type: dict
           relaxed_validation: true
@@ -12567,6 +12559,13 @@ $defs:
             warning: true
             new_key: multicast_pim_sm
             remove_in_version: 6.0.0
+        structured_config:
+          type: dict
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: ethernet_structured_config or port_channel_structured_config
   rx_queue_settings:
     type: dict
     description: 'Receive queue parameters for platform SFE interface profile.

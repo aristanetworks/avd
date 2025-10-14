@@ -2184,7 +2184,6 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
-                "structured_config": {"type": dict},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -2355,12 +2354,6 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
-            structured_config: dict
-            """
-            Custom structured config for interfaces.
-            Note! The content of this dictionary is _not_ validated by
-            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-            """
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -2405,7 +2398,6 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: RoutingProtocol | None | UndefinedType = Undefined,
-                    structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -2527,10 +2519,6 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
-                        structured_config:
-                           Custom structured config for interfaces.
-                           Note! The content of this dictionary is _not_ validated by
-                           the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 
@@ -2953,7 +2941,6 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
-                "structured_config": {"type": dict},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -3124,12 +3111,6 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
-            structured_config: dict
-            """
-            Custom structured config for interfaces.
-            Note! The content of this dictionary is _not_ validated by
-            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-            """
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -3174,7 +3155,6 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: RoutingProtocol | None | UndefinedType = Undefined,
-                    structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -3296,10 +3276,6 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
-                        structured_config:
-                           Custom structured config for interfaces.
-                           Note! The content of this dictionary is _not_ validated by
-                           the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 
@@ -7960,7 +7936,6 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
-                "structured_config": {"type": dict},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -8131,12 +8106,6 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
-            structured_config: dict
-            """
-            Custom structured config for interfaces.
-            Note! The content of this dictionary is _not_ validated by
-            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-            """
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -8181,7 +8150,6 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: RoutingProtocol | None | UndefinedType = Undefined,
-                    structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -8303,10 +8271,6 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
-                        structured_config:
-                           Custom structured config for interfaces.
-                           Note! The content of this dictionary is _not_ validated by
-                           the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 
@@ -8729,7 +8693,6 @@ class EosDesigns(EosDesignsRootModel):
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
-                "structured_config": {"type": dict},
                 "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                 "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -8900,12 +8863,6 @@ class EosDesigns(EosDesignsRootModel):
             ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
-            structured_config: dict
-            """
-            Custom structured config for interfaces.
-            Note! The content of this dictionary is _not_ validated by
-            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-            """
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config for ethernet interfaces."""
             port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -8950,7 +8907,6 @@ class EosDesigns(EosDesignsRootModel):
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: RoutingProtocol | None | UndefinedType = Undefined,
-                    structured_config: dict | UndefinedType = Undefined,
                     ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                     port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -9072,10 +9028,6 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
-                        structured_config:
-                           Custom structured config for interfaces.
-                           Note! The content of this dictionary is _not_ validated by
-                           the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         ethernet_structured_config: Custom structured config for ethernet interfaces.
                         port_channel_structured_config: Custom structured config for port-channel links.
 
@@ -74119,7 +74071,7 @@ class EosDesigns(EosDesignsRootModel):
         "wan_route_servers": {"type": WanRouteServers},
         "wan_stun_dtls_disable": {"type": bool, "default": False},
         "wan_stun_dtls_profile_name": {"type": str, "default": "STUN-DTLS"},
-        "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp": {"type": bool, "default": True},
+        "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp": {"type": bool, "default": False},
         "wan_use_evpn_node_settings_for_lan": {"type": bool, "default": False},
         "wan_virtual_topologies": {"type": WanVirtualTopologies},
         "zscaler_endpoints": {"type": ZscalerEndpoints},
@@ -74223,11 +74175,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     bgp_distance: EosCliConfigGen.RouterBgp.Distance
     bgp_ecmp: int | None
-    """
-    Maximum ECMP for BGP multi-path.
-    The default value is 4 except for WAN Routers where the default
-    value is unset (falls back to EOS default).
-    """
+    """Maximum ECMP for BGP multi-path."""
     bgp_graceful_restart: BgpGracefulRestart
     """
     BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to
@@ -75507,20 +75455,23 @@ class EosDesigns(EosDesignsRootModel):
     custom_platform_settings: CustomPlatformSettings
     """
     Custom Platform settings to override the default `platform_settings`. This list will be prepended to
-    the list of `platform_settings`. The first entry containing `platforms` matching the `platform` node
-    setting will be chosen. If no matches are found, the first entry containing a platform `default`
-    will be chosen.
+    the list of `platform_settings`. The first entry found where the `platform` node setting is fully
+    matched by any regex in the `platforms` list will be chosen. If no matches are found, the first
+    entry containing a platform `default` will be chosen.
 
-    Subclass of AvdList with `CustomPlatformSettingsItem` items.
+    Subclass of AvdList with
+    `CustomPlatformSettingsItem` items.
     """
     platform_settings: PlatformSettings
     """
-    Platform settings. The first entry containing `platforms` matching the `platform` node setting will
-    be chosen. If no matches are found, the first entry containing a platform `default` will be chosen.
-    The default values will be overridden if `platform_settings` is defined. If you need to replace all
-    the default platforms, it is recommended to copy the defaults and modify them. If you need to add
-    custom platforms, create them under `custom_platform_settings`. Entries under
-    `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
+    Platform settings. The first entry found where the `platform` node setting is fully matched by any
+    regex in the `platforms` list will be chosen. If no matches are found, the first entry containing a
+    platform `default` will be chosen. The default values will be overridden if `platform_settings` is
+    defined. If you need to replace all the default platforms, it is recommended to copy the defaults
+    and modify them. If you need to add custom platforms, create them under `custom_platform_settings`.
+    Entries under `custom_platform_settings` will be matched before the equivalent entries from
+    `platform_settings`.
+
     Subclass of AvdList with `PlatformSettingsItem` items.
 
     Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
@@ -76012,7 +75963,7 @@ class EosDesigns(EosDesignsRootModel):
     - `false`: For newer EOS versions (starting 4.33.2) use
     the proper CLI.
 
-    Default value: `True`
+    Default value: `False`
     """
     wan_use_evpn_node_settings_for_lan: bool
     """
@@ -76323,10 +76274,7 @@ class EosDesigns(EosDesignsRootModel):
                    It is best practice to
                    disable activation.
                 bgp_distance: bgp_distance
-                bgp_ecmp:
-                   Maximum ECMP for BGP multi-path.
-                   The default value is 4 except for WAN Routers where the default
-                   value is unset (falls back to EOS default).
+                bgp_ecmp: Maximum ECMP for BGP multi-path.
                 bgp_graceful_restart:
                    BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to
                    continue forwarding traffic during a BGP restart.
@@ -77268,18 +77216,21 @@ class EosDesigns(EosDesignsRootModel):
                 p2p_uplinks_qos_profile: QOS Profile assigned on all infrastructure links.
                 custom_platform_settings:
                    Custom Platform settings to override the default `platform_settings`. This list will be prepended to
-                   the list of `platform_settings`. The first entry containing `platforms` matching the `platform` node
-                   setting will be chosen. If no matches are found, the first entry containing a platform `default`
-                   will be chosen.
+                   the list of `platform_settings`. The first entry found where the `platform` node setting is fully
+                   matched by any regex in the `platforms` list will be chosen. If no matches are found, the first
+                   entry containing a platform `default` will be chosen.
 
-                   Subclass of AvdList with `CustomPlatformSettingsItem` items.
+                   Subclass of AvdList with
+                   `CustomPlatformSettingsItem` items.
                 platform_settings:
-                   Platform settings. The first entry containing `platforms` matching the `platform` node setting will
-                   be chosen. If no matches are found, the first entry containing a platform `default` will be chosen.
-                   The default values will be overridden if `platform_settings` is defined. If you need to replace all
-                   the default platforms, it is recommended to copy the defaults and modify them. If you need to add
-                   custom platforms, create them under `custom_platform_settings`. Entries under
-                   `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
+                   Platform settings. The first entry found where the `platform` node setting is fully matched by any
+                   regex in the `platforms` list will be chosen. If no matches are found, the first entry containing a
+                   platform `default` will be chosen. The default values will be overridden if `platform_settings` is
+                   defined. If you need to replace all the default platforms, it is recommended to copy the defaults
+                   and modify them. If you need to add custom platforms, create them under `custom_platform_settings`.
+                   Entries under `custom_platform_settings` will be matched before the equivalent entries from
+                   `platform_settings`.
+
                    Subclass of AvdList with `PlatformSettingsItem` items.
                 platform_speed_groups:
                    Set Hardware Speed Groups per Platform.
