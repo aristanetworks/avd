@@ -452,7 +452,7 @@ ASN Notation: asplain
 | ---------- |
 | no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -498,7 +498,7 @@ router bgp 65001
    router-id 10.255.1.1
    no bgp default ipv4-unicast
    distance bgp 20 200 200
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    neighbor MPLS-OVERLAY-PEERS peer group
    neighbor MPLS-OVERLAY-PEERS remote-as 65001
    neighbor MPLS-OVERLAY-PEERS update-source Loopback0
