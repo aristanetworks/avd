@@ -13008,7 +13008,7 @@ class EosDesigns(EosDesignsRootModel):
         `inband_mgmt_interface` as NTP local-interface.
           An error will be raised if inband management is
         not configured for the device.
-        - `use_default_mgmt_method_vrf` will configure the VRF for  NTP
+        - `use_default_mgmt_method_vrf` will configure the VRF for NTP
         server(s) and local-interface for NTP depending on the value of `default_mgmt_method`.
         - Any other
         string will be used directly as the VRF name but local interface must be set with
@@ -13060,7 +13060,7 @@ class EosDesigns(EosDesignsRootModel):
                        `inband_mgmt_interface` as NTP local-interface.
                          An error will be raised if inband management is
                        not configured for the device.
-                       - `use_default_mgmt_method_vrf` will configure the VRF for  NTP
+                       - `use_default_mgmt_method_vrf` will configure the VRF for NTP
                        server(s) and local-interface for NTP depending on the value of `default_mgmt_method`.
                        - Any other
                        string will be used directly as the VRF name but local interface must be set with
