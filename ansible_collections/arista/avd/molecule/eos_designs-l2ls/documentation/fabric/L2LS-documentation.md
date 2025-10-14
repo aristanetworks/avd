@@ -39,6 +39,16 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
+| l2leaf | BGP-LEAF1 | Ethernet1 | l3spine | BGP-SPINE1 | Ethernet1 |
+| l2leaf | BGP-LEAF1 | Ethernet2 | l3spine | BGP-SPINE2 | Ethernet1 |
+| l2leaf | BGP-LEAF1 | Ethernet3 | l2leaf | BGP-LEAF3 | Ethernet1 |
+| l2leaf | BGP-LEAF1 | Ethernet4 | mlag_peer | BGP-LEAF2 | Ethernet4 |
+| l2leaf | BGP-LEAF1 | Ethernet5 | mlag_peer | BGP-LEAF2 | Ethernet5 |
+| l2leaf | BGP-LEAF2 | Ethernet1 | l3spine | BGP-SPINE1 | Ethernet2 |
+| l2leaf | BGP-LEAF2 | Ethernet2 | l3spine | BGP-SPINE2 | Ethernet2 |
+| l2leaf | BGP-LEAF2 | Ethernet3 | l2leaf | BGP-LEAF3 | Ethernet2 |
+| l3spine | BGP-SPINE1 | Ethernet3 | mlag_peer | BGP-SPINE2 | Ethernet3 |
+| l3spine | BGP-SPINE1 | Ethernet4 | mlag_peer | BGP-SPINE2 | Ethernet4 |
 | l2leaf | ISIS-LEAF1 | Ethernet1 | l3spine | ISIS-SPINE1 | Ethernet1 |
 | l2leaf | L2ONLY-LEAF1 | Ethernet1 | l2spine | L2ONLY-SPINE1 | Ethernet1 |
 | l2leaf | L2ONLY-LEAF1 | Ethernet2 | l2spine | L2ONLY-SPINE2 | Ethernet1 |
