@@ -294,7 +294,7 @@ class FabricDocumentationFacts(AvdFacts):
                         "trunk_allowed_vlan": default(
                             get(ethernet_interface, "switchport.trunk.allowed_vlan"), get(port_channel_interface, "switchport.trunk.allowed_vlan"), "-"
                         ),
-                        "profile": default(get(ethernet_interface, "port_profile"), "-"),
+                        "profile": default(get(ethernet_interface, "metadata.port_profile"), "-"),
                     }
                 )
 
