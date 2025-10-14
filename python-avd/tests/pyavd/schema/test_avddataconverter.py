@@ -79,7 +79,7 @@ def test_deprecation_with_new_key_and_url_and_conflict() -> None:
                 "deprecation": {
                     "warning": True,
                     "new_key": "b or c",
-                    "url": "arista.com",
+                    "url": "avd.arista.com",
                     "remove_in_version": "1.2.3",
                 },
             },
@@ -93,7 +93,7 @@ def test_deprecation_with_new_key_and_url_and_conflict() -> None:
     assert str(warnings[0]) == (
         "The input data model 'a' is deprecated and cannot be used in conjunction with the new data model 'b'. "
         "This usually happens when a data model has been updated and custom structured configuration still uses the old model. "
-        "See arista.com for details."
+        "See avd.arista.com for details."
     )
 
 
