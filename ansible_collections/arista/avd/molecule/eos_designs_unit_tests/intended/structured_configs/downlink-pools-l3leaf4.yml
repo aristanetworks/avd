@@ -84,7 +84,6 @@ router_bgp:
   router_id: 192.168.1.40
   maximum_paths:
     paths: 4
-    ecmp: 4
   updates:
     wait_install: true
   bgp:

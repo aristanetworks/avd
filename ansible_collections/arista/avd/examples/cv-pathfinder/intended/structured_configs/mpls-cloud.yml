@@ -136,7 +136,6 @@ router_bgp:
   router_id: 172.31.255.22
   maximum_paths:
     paths: 4
-    ecmp: 4
   bgp:
     default:
       ipv4_unicast: false
