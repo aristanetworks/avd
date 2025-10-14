@@ -74175,11 +74175,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     bgp_distance: EosCliConfigGen.RouterBgp.Distance
     bgp_ecmp: int | None
-    """
-    Maximum ECMP for BGP multi-path.
-    The default value is 4 except for WAN Routers where the default
-    value is unset (falls back to EOS default).
-    """
+    """Maximum ECMP for BGP multi-path."""
     bgp_graceful_restart: BgpGracefulRestart
     """
     BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to
@@ -76278,10 +76274,7 @@ class EosDesigns(EosDesignsRootModel):
                    It is best practice to
                    disable activation.
                 bgp_distance: bgp_distance
-                bgp_ecmp:
-                   Maximum ECMP for BGP multi-path.
-                   The default value is 4 except for WAN Routers where the default
-                   value is unset (falls back to EOS default).
+                bgp_ecmp: Maximum ECMP for BGP multi-path.
                 bgp_graceful_restart:
                    BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to
                    continue forwarding traffic during a BGP restart.

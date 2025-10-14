@@ -140,7 +140,6 @@ router_bgp:
     local_routes: 200
   maximum_paths:
     paths: 4
-    ecmp: 4
   bgp_cluster_id: 10.255.2.1
   bgp:
     default:
