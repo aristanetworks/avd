@@ -143,7 +143,6 @@ router_bgp:
   router_id: 172.16.110.2
   maximum_paths:
     paths: 4
-    ecmp: 4
   updates:
     wait_install: true
   bgp_defaults:
