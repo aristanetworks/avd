@@ -26,3 +26,7 @@ nodes:
 veos:
   username: cvpadmin
   password: cvp123!
+links:
+- connection:
+  - digital-twin-default-interfaces-digital-twin-platform:Ethernet3
+  - digital-twin-default-interfaces-original-platform:Ethernet2

@@ -13,6 +13,9 @@
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 - [Connected Endpoints](#connected-endpoints)
+  - [Connected Endpoint Keys](#connected-endpoint-keys)
+  - [Firewalls](#firewalls)
+  - [Servers](#servers)
   - [Port Profiles](#port-profiles)
 
 ## Fabric Switches and Management IP
@@ -37,6 +40,20 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
+| l2leaf | LEAF1 | Ethernet1 | l2spine | SPINE1 | Ethernet1 |
+| l2leaf | LEAF1 | Ethernet2 | l2spine | SPINE2 | Ethernet1 |
+| l2leaf | LEAF1 | Ethernet47 | mlag_peer | LEAF2 | Ethernet47 |
+| l2leaf | LEAF1 | Ethernet48 | mlag_peer | LEAF2 | Ethernet48 |
+| l2leaf | LEAF2 | Ethernet1 | l2spine | SPINE1 | Ethernet2 |
+| l2leaf | LEAF2 | Ethernet2 | l2spine | SPINE2 | Ethernet2 |
+| l2leaf | LEAF3 | Ethernet1 | l2spine | SPINE1 | Ethernet3 |
+| l2leaf | LEAF3 | Ethernet2 | l2spine | SPINE2 | Ethernet3 |
+| l2leaf | LEAF3 | Ethernet47 | mlag_peer | LEAF4 | Ethernet47 |
+| l2leaf | LEAF3 | Ethernet48 | mlag_peer | LEAF4 | Ethernet48 |
+| l2leaf | LEAF4 | Ethernet1 | l2spine | SPINE1 | Ethernet4 |
+| l2leaf | LEAF4 | Ethernet2 | l2spine | SPINE2 | Ethernet4 |
+| l2spine | SPINE1 | Ethernet47 | mlag_peer | SPINE2 | Ethernet47 |
+| l2spine | SPINE1 | Ethernet48 | mlag_peer | SPINE2 | Ethernet48 |
 
 ## Fabric IP Allocation
 
@@ -72,7 +89,28 @@
 
 ## Connected Endpoints
 
-No connected endpoint configured!
+### Connected Endpoint Keys
+
+| Key | Type | Description |
+| --- | ---- | ----------- |
+| firewalls | firewall | - |
+| servers | server | - |
+
+### Firewalls
+
+| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
+| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ----------- | ------------------- | ------- |
+| FIREWALL | Eth1 | SPINE1 | Ethernet5 | FIREWALL_FIREWALL_Eth1 | False | trunk | - | 10,20,30 | - |
+| FIREWALL | Eth2 | SPINE2 | Ethernet5 | FIREWALL_FIREWALL_Eth2 | False | trunk | - | 10,20,30 | - |
+
+### Servers
+
+| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
+| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ----------- | ------------------- | ------- |
+| Host2 | Eth1 | LEAF4 | Ethernet3 | SERVER_Host2_Eth1 | False | access | 30 | - | - |
+| HostA | Eth1 | LEAF1 | Ethernet3 | SERVER_HostA_Eth1 | False | access | 10 | - | - |
+| HostB | Eth1 | LEAF2 | Ethernet3 | SERVER_HostB_Eth1 | False | access | 20 | - | - |
+| HostC | Eth1 | LEAF3 | Ethernet3 | SERVER_HostC_Eth1 | False | access | 10 | - | - |
 
 ### Port Profiles
 

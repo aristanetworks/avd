@@ -35,6 +35,7 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
+| l2spine | digital-twin-default-interfaces-digital-twin-platform | Ethernet4 | l2leaf | digital-twin-default-interfaces-original-platform | Ethernet2 |
 
 ## Fabric IP Allocation
 

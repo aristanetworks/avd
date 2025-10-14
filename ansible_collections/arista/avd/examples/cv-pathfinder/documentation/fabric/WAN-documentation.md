@@ -46,6 +46,36 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
+| l3leaf | site1-border1 | Ethernet3 | wan_router | site1-wan1 | Ethernet1 |
+| l3leaf | site1-border1 | Ethernet3.100 | wan_router | site1-wan1 | Ethernet1.100 |
+| l3leaf | site1-border1 | Ethernet3.101 | wan_router | site1-wan1 | Ethernet1.101 |
+| l3leaf | site1-border1 | Ethernet4 | wan_router | site1-wan2 | Ethernet1 |
+| l3leaf | site1-border1 | Ethernet4.100 | wan_router | site1-wan2 | Ethernet1.100 |
+| l3leaf | site1-border1 | Ethernet4.101 | wan_router | site1-wan2 | Ethernet1.101 |
+| l3leaf | site1-border1 | Ethernet5 | mlag_peer | site1-border2 | Ethernet5 |
+| l3leaf | site1-border1 | Ethernet6 | mlag_peer | site1-border2 | Ethernet6 |
+| l3leaf | site1-border2 | Ethernet3 | wan_router | site1-wan1 | Ethernet2 |
+| l3leaf | site1-border2 | Ethernet3.100 | wan_router | site1-wan1 | Ethernet2.100 |
+| l3leaf | site1-border2 | Ethernet3.101 | wan_router | site1-wan1 | Ethernet2.101 |
+| l3leaf | site1-border2 | Ethernet4 | wan_router | site1-wan2 | Ethernet2 |
+| l3leaf | site1-border2 | Ethernet4.100 | wan_router | site1-wan2 | Ethernet2.100 |
+| l3leaf | site1-border2 | Ethernet4.101 | wan_router | site1-wan2 | Ethernet2.101 |
+| l3leaf | site2-leaf1 | Ethernet3 | wan_router | site2-wan1 | Ethernet1 |
+| l3leaf | site2-leaf1 | Ethernet3.100 | wan_router | site2-wan1 | Ethernet1.100 |
+| l3leaf | site2-leaf1 | Ethernet3.101 | wan_router | site2-wan1 | Ethernet1.101 |
+| l3leaf | site2-leaf1 | Ethernet5 | mlag_peer | site2-leaf2 | Ethernet5 |
+| l3leaf | site2-leaf1 | Ethernet6 | mlag_peer | site2-leaf2 | Ethernet6 |
+| l3leaf | site2-leaf2 | Ethernet3 | wan_router | site2-wan2 | Ethernet1 |
+| l3leaf | site2-leaf2 | Ethernet3.100 | wan_router | site2-wan2 | Ethernet1.100 |
+| l3leaf | site2-leaf2 | Ethernet3.101 | wan_router | site2-wan2 | Ethernet1.101 |
+| l2leaf | site3-leaf1 | Ethernet1 VLAN 42 | wan_router | site3-wan1 | Ethernet1.42 |
+| l2leaf | site3-leaf1 | Ethernet1 VLAN 666 | wan_router | site3-wan1 | Ethernet1.666 |
+| l2leaf | site3-leaf1 | Ethernet1 | wan_router | site3-wan1 | Ethernet1 |
+| l2leaf | site3-leaf1 | Ethernet1 | wan_router | site3-wan1 | Ethernet1 |
+| l3leaf | site4-border1 | Ethernet3 | wan_router | site4-wan1 | Ethernet1 |
+| l3leaf | site4-border1 | Ethernet5 | mlag_peer | site4-border2 | Ethernet5 |
+| l3leaf | site4-border1 | Ethernet6 | mlag_peer | site4-border2 | Ethernet6 |
+| l3leaf | site4-border2 | Ethernet3 | wan_router | site4-wan1 | Ethernet2 |
 
 ## Fabric IP Allocation
 
@@ -53,15 +83,35 @@
 
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
-| 10.0.1.0/24 | 256 | 0 | 0.0 % |
-| 10.0.2.0/24 | 256 | 0 | 0.0 % |
+| 10.0.1.0/24 | 256 | 24 | 9.38 % |
+| 10.0.2.0/24 | 256 | 12 | 4.69 % |
 | 10.0.3.0/24 | 256 | 0 | 0.0 % |
-| 10.0.4.0/24 | 256 | 0 | 0.0 % |
+| 10.0.4.0/24 | 256 | 4 | 1.57 % |
 
 ### Point-To-Point Links Node Allocation
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
+| site1-border1 | Ethernet3 | 10.0.1.8/31 | site1-wan1 | Ethernet1 | 10.0.1.9/31 |
+| site1-border1 | Ethernet3.100 | 10.0.1.8/31 | site1-wan1 | Ethernet1.100 | 10.0.1.9/31 |
+| site1-border1 | Ethernet3.101 | 10.0.1.8/31 | site1-wan1 | Ethernet1.101 | 10.0.1.9/31 |
+| site1-border1 | Ethernet4 | 10.0.1.12/31 | site1-wan2 | Ethernet1 | 10.0.1.13/31 |
+| site1-border1 | Ethernet4.100 | 10.0.1.12/31 | site1-wan2 | Ethernet1.100 | 10.0.1.13/31 |
+| site1-border1 | Ethernet4.101 | 10.0.1.12/31 | site1-wan2 | Ethernet1.101 | 10.0.1.13/31 |
+| site1-border2 | Ethernet3 | 10.0.1.10/31 | site1-wan1 | Ethernet2 | 10.0.1.11/31 |
+| site1-border2 | Ethernet3.100 | 10.0.1.10/31 | site1-wan1 | Ethernet2.100 | 10.0.1.11/31 |
+| site1-border2 | Ethernet3.101 | 10.0.1.10/31 | site1-wan1 | Ethernet2.101 | 10.0.1.11/31 |
+| site1-border2 | Ethernet4 | 10.0.1.14/31 | site1-wan2 | Ethernet2 | 10.0.1.15/31 |
+| site1-border2 | Ethernet4.100 | 10.0.1.14/31 | site1-wan2 | Ethernet2.100 | 10.0.1.15/31 |
+| site1-border2 | Ethernet4.101 | 10.0.1.14/31 | site1-wan2 | Ethernet2.101 | 10.0.1.15/31 |
+| site2-leaf1 | Ethernet3 | 10.0.2.12/31 | site2-wan1 | Ethernet1 | 10.0.2.13/31 |
+| site2-leaf1 | Ethernet3.100 | 10.0.2.12/31 | site2-wan1 | Ethernet1.100 | 10.0.2.13/31 |
+| site2-leaf1 | Ethernet3.101 | 10.0.2.12/31 | site2-wan1 | Ethernet1.101 | 10.0.2.13/31 |
+| site2-leaf2 | Ethernet3 | 10.0.2.14/31 | site2-wan2 | Ethernet1 | 10.0.2.15/31 |
+| site2-leaf2 | Ethernet3.100 | 10.0.2.14/31 | site2-wan2 | Ethernet1.100 | 10.0.2.15/31 |
+| site2-leaf2 | Ethernet3.101 | 10.0.2.14/31 | site2-wan2 | Ethernet1.101 | 10.0.2.15/31 |
+| site4-border1 | Ethernet3 | 10.0.4.56/31 | site4-wan1 | Ethernet1 | 10.0.4.57/31 |
+| site4-border2 | Ethernet3 | 10.0.4.58/31 | site4-wan1 | Ethernet2 | 10.0.4.59/31 |
 
 ### Loopback Interfaces (BGP EVPN Peering)
 

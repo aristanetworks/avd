@@ -116,16 +116,16 @@ class FabricDocumentationFacts(AvdFacts):
         topology = Topology()
         for hostname, structured_config in self.structured_configs.items():
             for ethernet_interface in get(structured_config, "ethernet_interfaces", default=[]):
-                if (peer_type := get(ethernet_interface, "peer_type")) not in self._node_types and peer_type != "mlag_peer":
+                if (peer_type := get(ethernet_interface, "metadata.peer_type")) not in self._node_types and peer_type != "mlag_peer":
                     continue
 
-                peer = get(ethernet_interface, "peer", required=True)
+                peer = get(ethernet_interface, "metadata.peer", required=True)
                 if peer_type == "mlag_peer":
                     peer_type = self.avd_facts[peer].type
                     mlag_peer = True
                 else:
                     mlag_peer = False
-                if peer_interface := get(ethernet_interface, "peer_interface"):
+                if peer_interface := get(ethernet_interface, "metadata.peer_interface"):
                     peer_ethernet_interface = get_item(
                         get(self.structured_configs, f"{peer}..ethernet_interfaces", separator="..", default=[]), "name", peer_interface, default={}
                     )
@@ -271,7 +271,7 @@ class FabricDocumentationFacts(AvdFacts):
             connected_endpoints_by_type = {item.type: item for item in connected_endpoints_keys}
             port_channel_interfaces = get(structured_config, "port_channel_interfaces", default=[])
             for ethernet_interface in get(structured_config, "ethernet_interfaces", default=[]):
-                if (peer_type := get(ethernet_interface, "peer_type")) not in connected_endpoints_by_type:
+                if (peer_type := get(ethernet_interface, "metadata.peer_type")) not in connected_endpoints_by_type:
                     continue
 
                 if (channel_group := get(ethernet_interface, "channel_group.id")) is not None:
@@ -282,9 +282,9 @@ class FabricDocumentationFacts(AvdFacts):
 
                 all_connected_endpoints.setdefault(connected_endpoints_by_type[peer_type].key, []).append(
                     {
-                        "peer": get(ethernet_interface, "peer", default="-"),
+                        "peer": get(ethernet_interface, "metadata.peer", default="-"),
                         "peer_type": peer_type,
-                        "peer_interface": get(ethernet_interface, "peer_interface", default="-"),
+                        "peer_interface": get(ethernet_interface, "metadata.peer_interface", default="-"),
                         "fabric_switch": hostname,
                         "fabric_port": ethernet_interface["name"],
                         "description": get(ethernet_interface, "description", default="-"),
@@ -357,10 +357,10 @@ class FabricDocumentationFacts(AvdFacts):
                 hostname,
                 self.avd_facts[hostname].serial_number,
                 ethernet_interface["name"],
-                get(ethernet_interface, "peer_type", default=""),
-                (peer_name := get(ethernet_interface, "peer", default="")),
+                get(ethernet_interface, "metadata.peer_type", default=""),
+                (peer_name := get(ethernet_interface, "metadata.peer", default="")),
                 self.avd_facts[peer_name].serial_number if get(self.avd_facts, peer_name) else None,
-                get(ethernet_interface, "peer_interface", default=""),
+                get(ethernet_interface, "metadata.peer_interface", default=""),
                 not get(ethernet_interface, "shutdown", default=False),
             )
             for hostname in natural_sort(self.structured_configs)

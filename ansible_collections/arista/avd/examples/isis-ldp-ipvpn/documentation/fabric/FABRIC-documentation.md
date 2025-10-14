@@ -39,6 +39,19 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
+| p | p1 | Ethernet1 | pe | pe1 | Ethernet1 |
+| p | p1 | Ethernet2 | pe | pe2 | Ethernet2 |
+| p | p1 | Ethernet3 | rr | rr1 | Ethernet3 |
+| p | p1 | Ethernet4 | p | p2 | Ethernet4 |
+| p | p2 | Ethernet1 | pe | pe2 | Ethernet1 |
+| p | p2 | Ethernet2 | pe | pe1 | Ethernet2 |
+| p | p2 | Ethernet3 | rr | rr2 | Ethernet3 |
+| p | p3 | Ethernet1 | pe | pe3 | Ethernet1 |
+| p | p3 | Ethernet2 | rr | rr1 | Ethernet2 |
+| p | p3 | Ethernet4 | p | p4 | Ethernet4 |
+| p | p4 | Ethernet2 | rr | rr2 | Ethernet2 |
+| p | p4 | Ethernet3 | pe | pe3 | Ethernet3 |
+| rr | rr1 | Ethernet4 | rr | rr2 | Ethernet4 |
 
 ## Fabric IP Allocation
 
@@ -51,6 +64,19 @@
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
+| p1 | Ethernet1 | 10.255.3.1/31 | pe1 | Ethernet1 | 10.255.3.0/31 |
+| p1 | Ethernet2 | 10.255.3.7/31 | pe2 | Ethernet2 | 10.255.3.6/31 |
+| p1 | Ethernet3 | 10.255.3.11/31 | rr1 | Ethernet3 | 10.255.3.10/31 |
+| p1 | Ethernet4 | 10.255.3.8/31 | p2 | Ethernet4 | 10.255.3.9/31 |
+| p2 | Ethernet1 | 10.255.3.5/31 | pe2 | Ethernet1 | 10.255.3.4/31 |
+| p2 | Ethernet2 | 10.255.3.3/31 | pe1 | Ethernet2 | 10.255.3.2/31 |
+| p2 | Ethernet3 | 10.255.3.17/31 | rr2 | Ethernet3 | 10.255.3.16/31 |
+| p3 | Ethernet1 | 10.255.3.23/31 | pe3 | Ethernet1 | 10.255.3.22/31 |
+| p3 | Ethernet2 | 10.255.3.13/31 | rr1 | Ethernet2 | 10.255.3.12/31 |
+| p3 | Ethernet4 | 10.255.3.20/31 | p4 | Ethernet4 | 10.255.3.21/31 |
+| p4 | Ethernet2 | 10.255.3.19/31 | rr2 | Ethernet2 | 10.255.3.18/31 |
+| p4 | Ethernet3 | 10.255.3.25/31 | pe3 | Ethernet3 | 10.255.3.24/31 |
+| rr1 | Ethernet4 | 10.255.3.14/31 | rr2 | Ethernet4 | 10.255.3.15/31 |
 
 ### Loopback Interfaces (BGP EVPN Peering)
 
