@@ -23,9 +23,9 @@ provisioner:
       jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
       duplicate_dict_key: error
   playbooks:
-    converge: '../../examples/campus-fabric/build.yml'
+    converge: '../../../examples/campus-fabric/build.yml'
   ansible_args:
     - --inventory
-    - ${MOLECULE_SCENARIO_DIRECTORY}/../../examples/campus-fabric/inventory.yml
+    - ${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/campus-fabric/inventory.yml
 verifier:
   name: ansible

@@ -26,8 +26,8 @@ provisioner:
     converge: '../../examples/cv-pathfinder/build.yml'
   ansible_args:
     - --inventory
-    - ${MOLECULE_SCENARIO_DIRECTORY}/../../examples/cv-pathfinder/inventory.yml
+    - ${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/cv-pathfinder/inventory.yml
     - --vault-password-file
-    - ${MOLECULE_SCENARIO_DIRECTORY}/../../examples/cv-pathfinder/.vault
+    - ${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/cv-pathfinder/.vault
 verifier:
   name: ansible
