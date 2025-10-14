@@ -2,7 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from collections import ChainMap
-from collections.abc import Generator
+from collections.abc import Generator, Mapping
 from re import fullmatch, match
 from typing import Any, Literal, NoReturn
 
@@ -58,7 +58,7 @@ class AvdValidator:
 
     def type_validator(self, schema_type: str, instance: Any, _schema: dict, path: list[str | int]) -> Generator:
         """Validates the type of `instance` equal to `schema_type`."""
-        if not self.is_type(instance, schema_type):
+        if not is_type(instance, schema_type):
             yield AvdValidationError(
                 f"Invalid type '{type(instance).__name__}'. Expected a '{schema_type}'.",
                 path=path,
@@ -91,7 +91,7 @@ class AvdValidator:
             return
 
         for index, element in enumerate(instance):
-            if self.is_type(element, "dict") and element.get(primary_key) is None:
+            if is_type(element, "dict") and element.get(primary_key) is None:
                 yield AvdValidationError(f"Primary key '{primary_key}' is not set on list item as required.", path=[*path, index])
 
         if not schema.get("allow_duplicate_primary_key"):
@@ -259,18 +259,20 @@ class AvdValidator:
         if match(pattern, instance) is None:
             yield AvdValidationError(f"The value '{instance}' is not matching the pattern '{pattern}'.", path=path)
 
-    def is_type(self, instance: Any, type_str: Literal["dict", "int", "str", "bool", "list"]) -> bool:
-        match type_str:
-            case "int":
-                return isinstance(instance, int)
-            case "str":
-                return isinstance(instance, str)
-            case "bool":
-                return isinstance(instance, bool)
-            case "dict":
-                return isinstance(instance, (dict, ChainMap))
-            case "list":
-                return isinstance(instance, list)
 
-        msg = f"Unable to check type '{type_str}'"
-        raise NotImplementedError(msg)
+def is_type(instance: Any, type_str: Literal["dict", "int", "str", "bool", "list"]) -> bool:
+    match type_str:
+        case "int":
+            return isinstance(instance, int)
+        case "str":
+            return isinstance(instance, str)
+        case "bool":
+            return isinstance(instance, bool)
+        case "dict":
+            # Accepting Ansible's HostVarsVars, ChainMap and regular dicts.
+            return isinstance(instance, Mapping)
+        case "list":
+            return isinstance(instance, list)
+
+    msg = f"Unable to check type '{type_str}'"
+    raise NotImplementedError(msg)

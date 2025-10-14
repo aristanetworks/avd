@@ -8,12 +8,14 @@ from .compile_searchpath import compile_searchpath
 from .cprofile_decorator import cprofile
 from .deprecated_dict import DeprecatedDict
 from .get_templar import get_templar
+from .is_new_ansible import IS_NEW_ANSIBLE
 from .python_to_ansible_logging_handler import PythonToAnsibleContextFilter, PythonToAnsibleHandler
 from .write_file import write_file
 from .yaml_dumper import NoAliasDumper, YamlDumper
 from .yaml_loader import YamlLoader
 
 __all__ = [
+    "IS_NEW_ANSIBLE",
     "ActionPluginVars",
     "AntaWorkflowFilter",
     "AntaWorkflowHandler",

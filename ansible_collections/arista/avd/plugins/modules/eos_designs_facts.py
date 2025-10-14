@@ -23,6 +23,7 @@ options:
     description:
       - If true, the output data will be run through another jinja2 rendering before returning.
         This is to resolve any input values with inline jinja using variables/facts set by the input templates.
+      - Ignored for ansible-core versions >= 2.19, since it is no longer needed.
     required: false
     type: bool
   validation_mode:

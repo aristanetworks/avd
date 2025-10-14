@@ -8,10 +8,19 @@
   arista.avd.eos_designs_structured_config:
     template_output: false
 
-- assert:
+- ansible.builtin.debug:
+    var: ansible_version.major
+
+- ansible.builtin.debug:
+    var: ansible_version.minor
+
+- ansible.builtin.assert:
     that:
       - result is success
       - result.ansible_facts is defined
       - result.ansible_facts._inline_jinja_value_1 == "test"
       - result.ansible_facts._inline_jinja is defined
-      - result.ansible_facts._inline_jinja[2:] == ' _inline_jinja_value_1 }}'
+      - result.ansible_facts._inline_jinja == expected
+  vars:
+    # Expecting the raw template on older ansible-core versions. From 2.19 and above it will get templated automatically by ansible on access.
+    expected: "{{ '\\{\\{ _inline_jinja_value_1 \\}\\}' if ansible_version.major == 2 and ansible_version.minor < 19 else 'test' }}"

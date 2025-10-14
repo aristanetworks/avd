@@ -7,6 +7,8 @@ from typing import TYPE_CHECKING, Any
 
 from ansible.vars.hostvars import HostVarsVars
 
+from .is_new_ansible import IS_NEW_ANSIBLE
+
 if TYPE_CHECKING:  # pragma: no cover
     from ansible.inventory.manager import InventoryManager
     from ansible.parsing.dataloader import DataLoader
@@ -47,7 +49,12 @@ class ActionPluginVars:
             KeyError: If the hostname is not found.
         """
         variables = self._get_raw_variables(hostname)
-        return HostVarsVars(variables=variables, loader=self.loader)
+
+        # TODO: Cleanup once our oldest supported ansible-core version is 2.19. Gotta love breaking signatures.
+        if not IS_NEW_ANSIBLE:
+            return HostVarsVars(variables=variables, loader=self.loader)  # pyright: ignore[reportCallIssue]
+
+        return HostVarsVars(variables=variables, loader=self.loader, host=hostname)  # pyright: ignore[reportCallIssue]
 
     def _get_raw_variables(self, hostname: str) -> dict[str, Any]:
         """
