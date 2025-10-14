@@ -73,7 +73,7 @@ requires = [
     "pydantic>=2.3.0",
     "cryptography>=43.0.0",
     "aristaproto>=0.1.1",
-    "ruff==0.13.3",
+    "ruff==0.14.0",
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]
