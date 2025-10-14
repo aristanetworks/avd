@@ -6,9 +6,9 @@
 
 # PyAVD
 
-Generate Arista AVD with Python.
+PyAVD is a Python package that serves as the foundation for the Arista AVD project.
 
-See [avd.arista.com](https://avd.arista.com/stable/docs/pyavd.html) for details.
+See [avd.arista.com](https://avd.arista.com/stable/docs/pyavd/pyavd.html) for details.
 
 ## License
 

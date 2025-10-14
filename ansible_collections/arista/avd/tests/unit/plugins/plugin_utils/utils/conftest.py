@@ -3,9 +3,8 @@
 # that can be found in the LICENSE file.
 """Fixtures for testing the utils modules."""
 
-import logging
 from pathlib import Path
-from unittest.mock import Mock
+from unittest.mock import MagicMock
 
 import pytest
 from ansible.cli import Display
@@ -24,14 +23,6 @@ DEFAULT_PLAY_DATA = {"name": "Test Play", "hosts": "all", "tasks": [{"name": "Ta
 DEFAULT_BLOCK_DATA = {"name": "Test Block", "block": [{"name": "Task from Block", "debug": {"msg": "Hello from Block"}}]}
 
 DEFAULT_TASK_DATA = {"name": "Test Task", "debug": {"msg": "Hello from Task"}}
-
-
-class MinimalActionPlugin:
-    """Minimal Ansible action plugin for testing."""
-
-    def __init__(self, task: Task) -> None:
-        """Initialize with a dummy Ansible task."""
-        self._task = task
 
 
 @pytest.fixture
@@ -65,25 +56,9 @@ def ansible_task(request: pytest.FixtureRequest) -> Task:
     return Task.load(task_data, block, variable_manager=variable_manager, loader=loader)
 
 
-def create_log_record(name: str, level: int, msg: str, unique_id: str | None = None, args: tuple = ()) -> logging.LogRecord:
-    """Helper function to create a LogRecord, optionally adding unique_id."""
-    record = logging.LogRecord(
-        name=name,
-        level=level,
-        pathname="dummy_path",
-        lineno=123,
-        msg=msg,
-        args=args,
-        exc_info=None,
-        func="dummy_func",
-    )
-    # Simulate the filter adding the unique_id *before* it reaches the handler
-    if unique_id:
-        record.unique_id = unique_id
-    return record
-
-
 @pytest.fixture
-def mock_display() -> Mock:
-    """Fixture for creating a mock Ansible Display object."""
-    return Mock(spec=Display)
+def mock_display() -> MagicMock:
+    """Fixture that provides a mock Ansible Display object."""
+    mock = MagicMock(spec=Display)
+    mock.verbosity = 0
+    return mock

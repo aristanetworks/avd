@@ -816,7 +816,7 @@ ASN Notation: asdot
 | distance bgp 20 200 200 |
 | update wait-install |
 | no bgp default ipv4-unicast |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -927,7 +927,7 @@ router bgp 65112.100
    router-id 172.16.110.4
    update wait-install
    no bgp default ipv4-unicast
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    distance bgp 20 200 200
    neighbor EVPN-OVERLAY-CORE peer group
    neighbor EVPN-OVERLAY-CORE update-source Loopback0

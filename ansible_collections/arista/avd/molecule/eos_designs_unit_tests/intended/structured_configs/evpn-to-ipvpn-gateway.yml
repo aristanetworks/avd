@@ -44,7 +44,6 @@ router_bgp:
   router_id: 10.10.0.1
   maximum_paths:
     paths: 4
-    ecmp: 4
   updates:
     wait_install: true
   bgp:
