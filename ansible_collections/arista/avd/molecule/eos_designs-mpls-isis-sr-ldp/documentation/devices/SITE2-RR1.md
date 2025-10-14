@@ -372,7 +372,7 @@ ASN Notation: asplain
 | bgp route-reflector preserve-attributes always |
 | update wait-install |
 | no bgp default ipv4-unicast |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -451,7 +451,7 @@ router bgp 65000
    update wait-install
    no bgp default ipv4-unicast
    bgp cluster-id 1.1.1.1
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    distance bgp 20 200 200
    bgp route-reflector preserve-attributes always
    neighbor MPLS-OVERLAY-PEERS peer group

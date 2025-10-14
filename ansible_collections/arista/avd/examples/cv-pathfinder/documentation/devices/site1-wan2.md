@@ -3,7 +3,6 @@
 ## Table of Contents
 
 - [Management](#management)
-  - [Agents](#agents)
   - [Management Interfaces](#management-interfaces)
   - [DNS Domain](#dns-domain)
   - [IP Name Servers](#ip-name-servers)
@@ -19,6 +18,9 @@
   - [Management Security SSL Profiles](#management-security-ssl-profiles)
   - [SSL profile STUN-DTLS Certificates Summary](#ssl-profile-stun-dtls-certificates-summary)
   - [Management Security Device Configuration](#management-security-device-configuration)
+- [Kernel Settings](#kernel-settings)
+  - [Kernel Device Summary](#kernel-device-summary)
+  - [Kernel Device configuration](#kernel-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Flow Tracking](#flow-tracking)
@@ -67,23 +69,6 @@
   - [STUN Device Configuration](#stun-device-configuration)
 
 ## Management
-
-### Agents
-
-#### Agent KernelFib
-
-##### Environment Variables
-
-| Name | Value |
-| ---- | ----- |
-| KERNELFIB_PROGRAM_ALL_ECMP | 1 |
-
-#### Agents Device Configuration
-
-```eos
-!
-agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=1
-```
 
 ### Management Interfaces
 
@@ -276,6 +261,19 @@ management security
       tls versions 1.2
       trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
       certificate STUN-DTLS.crt key STUN-DTLS.key
+```
+
+## Kernel Settings
+
+### Kernel Device Summary
+
+- Kernel software forwarding ECMP enabled
+
+### Kernel Device configuration
+
+```eos
+!
+kernel software forwarding ecmp
 ```
 
 ## Monitoring
