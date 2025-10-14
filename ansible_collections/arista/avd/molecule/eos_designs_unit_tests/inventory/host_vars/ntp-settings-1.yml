@@ -13,7 +13,7 @@ custom_structured_configuration_ntp:
 
 ntp_settings:
   # use_mgmt_interface_vrf is tested in many other places, so here we try with a hardcoded VRF.
-  # This will _not_ set the local_interface. Hence it is set with csc.
+  # This will _not_ set the local_interface. Hence it is set with custom_structured_configuration.
   server_vrf: default
   servers:
     - name: 10.10.10.1
