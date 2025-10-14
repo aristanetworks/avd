@@ -141,7 +141,6 @@ router_bgp:
     local_routes: 200
   maximum_paths:
     paths: 4
-    ecmp: 4
   bgp:
     default:
       ipv4_unicast: false
