@@ -1,4 +1,3 @@
-
 # ANTA Report
 
 **Table of Contents:**
