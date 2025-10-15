@@ -263,7 +263,7 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
     if hide_statuses:
         filtered_result_manager = result_manager.filter(hide=set(hide_statuses))
         if not filtered_result_manager.results:
-            msg = f"The reports are empty after filtering by hide_statuses. Hide Status(s): {', '.join(hide_statuses)}"
+            msg = f"The report is empty because all results were hidden by the provided status filters: {', '.join(hide_statuses)}"
             LOGGER.warning(msg)
     else:
         filtered_result_manager = result_manager
