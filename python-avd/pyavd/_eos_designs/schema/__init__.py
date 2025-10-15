@@ -12994,14 +12994,14 @@ class EosDesigns(EosDesignsRootModel):
         AuthenticationKeys._item_type = AuthenticationKeysItem
 
         _fields: ClassVar[dict] = {
-            "server_vrf": {"type": str},
+            "server_vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
             "servers": {"type": Servers},
             "authenticate": {"type": bool},
             "authenticate_servers_only": {"type": bool},
             "authentication_keys": {"type": AuthenticationKeys},
             "trusted_keys": {"type": str},
         }
-        server_vrf: str | None
+        server_vrf: str
         """
         EOS only supports NTP servers in one VRF, so this VRF is used for all NTP servers and one local-
         interface.
@@ -13014,10 +13014,13 @@ class EosDesigns(EosDesignsRootModel):
         `inband_mgmt_interface` as NTP local-interface.
           An error will be raised if inband management is
         not configured for the device.
-        - Any other string will be used directly as the VRF name but local
-        interface must be set with `custom_structured_configuration_ntp` if needed.
-        If not set, the VRF is
-        automatically picked up from the global setting `default_mgmt_method`.
+        - `use_default_mgmt_method_vrf` will configure the VRF for NTP
+        server(s) and local-interface for NTP depending on the value of `default_mgmt_method`.
+        - Any other
+        string will be used directly as the VRF name but local interface must be set with
+        `custom_structured_configuration_ntp` if needed.
+
+        Default value: `"use_default_mgmt_method_vrf"`
         """
         servers: Servers
         """
@@ -13037,7 +13040,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
-                server_vrf: str | None | UndefinedType = Undefined,
+                server_vrf: str | UndefinedType = Undefined,
                 servers: Servers | UndefinedType = Undefined,
                 authenticate: bool | None | UndefinedType = Undefined,
                 authenticate_servers_only: bool | None | UndefinedType = Undefined,
@@ -13063,10 +13066,11 @@ class EosDesigns(EosDesignsRootModel):
                        `inband_mgmt_interface` as NTP local-interface.
                          An error will be raised if inband management is
                        not configured for the device.
-                       - Any other string will be used directly as the VRF name but local
-                       interface must be set with `custom_structured_configuration_ntp` if needed.
-                       If not set, the VRF is
-                       automatically picked up from the global setting `default_mgmt_method`.
+                       - `use_default_mgmt_method_vrf` will configure the VRF for NTP
+                       server(s) and local-interface for NTP depending on the value of `default_mgmt_method`.
+                       - Any other
+                       string will be used directly as the VRF name but local interface must be set with
+                       `custom_structured_configuration_ntp` if needed.
                     servers:
                        The first server is always set as "preferred".
 
@@ -74274,11 +74278,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     bgp_distance: EosCliConfigGen.RouterBgp.Distance
     bgp_ecmp: int | None
-    """
-    Maximum ECMP for BGP multi-path.
-    The default value is 4 except for WAN Routers where the default
-    value is unset (falls back to EOS default).
-    """
+    """Maximum ECMP for BGP multi-path."""
     bgp_graceful_restart: BgpGracefulRestart
     """
     BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to
@@ -76377,10 +76377,7 @@ class EosDesigns(EosDesignsRootModel):
                    It is best practice to
                    disable activation.
                 bgp_distance: bgp_distance
-                bgp_ecmp:
-                   Maximum ECMP for BGP multi-path.
-                   The default value is 4 except for WAN Routers where the default
-                   value is unset (falls back to EOS default).
+                bgp_ecmp: Maximum ECMP for BGP multi-path.
                 bgp_graceful_restart:
                    BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to
                    continue forwarding traffic during a BGP restart.

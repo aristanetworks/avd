@@ -13,7 +13,7 @@ metadata:
   pod_name: Test_pod_1
   dc_name: Test_dc_1
   fabric_name: EOS_DESIGNS_UNIT_TESTS
-serial_number: A37383692F12C7DE733D9A9B8E2B37AE
+  serial_number: A37383692F12C7DE733D9A9B8E2B37AE
 service_routing_protocols_model: multi-agent
 snmp_server:
   engine_ids:
