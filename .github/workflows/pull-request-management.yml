@@ -90,6 +90,7 @@ jobs:
               - '.github/requirements-ci-dev.txt'
               - '.github/workflows/pull-request-management.yml'
               - 'sonar-project.properties'
+              - '.pre-commit-config.yaml'
             pyavd:
               - 'python-avd/*'
               - 'python-avd/**/*'
