@@ -642,8 +642,7 @@ tenants:
         address_families: []
       - name: VRF-NO-WAN
         vrf_id: 300
-        # keeping default address family "evpn" and verifying we do not raise.
-        # The VRF should be configured.
+        # keeping default address family "evpn" and verifying we want no raise and the VRF configured with VNI 300
       - name: VRF-NO-WAN-NO-AF
         vrf_id: 400
         # The VRF should not be configured under VXLAN and BGP.
@@ -671,9 +670,6 @@ wan_virtual_topologies:
       # Using PROD policy to avoid extra noise
       policy: PROD-AVT-POLICY
       wan_vni: 200
-    - name: VRF-NO-WAN
-      policy: PROD-AVT-POLICY
-      wan_vni: 150
   policies:
     - name: PROD-AVT-POLICY
       default_virtual_topology:

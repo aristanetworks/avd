@@ -323,15 +323,6 @@ router_adaptive_virtual_topology:
       id: 4
     - name: PROD-AVT-POLICY-DEFAULT
       id: 1
-  - name: VRF-NO-WAN
-    policy: PROD-AVT-POLICY
-    profiles:
-    - name: PROD-AVT-POLICY-VOICE
-      id: 2
-    - name: PROD-AVT-POLICY-VIDEO
-      id: 4
-    - name: PROD-AVT-POLICY-DEFAULT
-      id: 1
 router_bfd:
   multihop:
     interval: 300
@@ -440,21 +431,6 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
-  - name: VRF-NO-WAN
-    rd: 192.168.42.14:300
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 300:300
-      export:
-      - address_family: evpn
-        route_targets:
-        - 300:300
-    router_id: 192.168.42.14
-    redistribute:
-      connected:
-        enabled: true
   - name: WAN-VRF-NO-AF
     rd: 192.168.42.14:200
     route_targets:
@@ -557,6 +533,6 @@ vxlan_interface:
       - name: PROD
         vni: 42
       - name: VRF-NO-WAN
-        vni: 150
+        vni: 300
       - name: WAN-VRF-NO-AF
         vni: 200

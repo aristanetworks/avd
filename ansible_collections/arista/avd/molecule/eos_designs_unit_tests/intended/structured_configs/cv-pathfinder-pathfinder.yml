@@ -491,56 +491,6 @@ metadata:
           preference: alternate
         - name: LAN_HA
           preference: preferred
-    - name: VRF-NO-WAN
-      vni: 150
-      avts:
-      - constraints:
-          jitter: 42
-          hop_count: lowest
-        id: 2
-        name: PROD-AVT-POLICY-VOICE
-        pathgroups:
-        - name: MPLS
-          preference: preferred
-        - name: INET
-          preference: alternate
-        - name: LAN_HA
-          preference: preferred
-        application_profiles:
-        - VOICE
-      - constraints:
-          lossrate: '42.0'
-        id: 4
-        name: PROD-AVT-POLICY-VIDEO
-        pathgroups:
-        - name: MPLS
-          preference: preferred
-        - name: LTE
-          preference: preferred
-        - name: INET
-          preference: alternate
-        - name: LAN_HA
-          preference: preferred
-        application_profiles:
-        - VIDEO
-      - id: 5
-        name: PROD-AVT-POLICY-MPLS-ONLY
-        pathgroups:
-        - name: MPLS
-          preference: preferred
-        - name: LAN_HA
-          preference: preferred
-        application_profiles:
-        - MPLS-ONLY
-      - id: 1
-        name: PROD-AVT-POLICY-DEFAULT
-        pathgroups:
-        - name: INET
-          preference: preferred
-        - name: MPLS
-          preference: alternate
-        - name: LAN_HA
-          preference: preferred
     applications:
       profiles:
       - name: APP-PROFILE-CONTROL-PLANE
@@ -699,17 +649,6 @@ router_adaptive_virtual_topology:
     - name: DEFAULT-POLICY-DEFAULT
       id: 1
   - name: WAN-VRF-NO-AF
-    policy: PROD-AVT-POLICY
-    profiles:
-    - name: PROD-AVT-POLICY-VOICE
-      id: 2
-    - name: PROD-AVT-POLICY-VIDEO
-      id: 4
-    - name: PROD-AVT-POLICY-MPLS-ONLY
-      id: 5
-    - name: PROD-AVT-POLICY-DEFAULT
-      id: 1
-  - name: VRF-NO-WAN
     policy: PROD-AVT-POLICY
     profiles:
     - name: PROD-AVT-POLICY-VOICE
@@ -955,5 +894,3 @@ vxlan_interface:
         vni: 166
       - name: WAN-VRF-NO-AF
         vni: 200
-      - name: VRF-NO-WAN
-        vni: 150
