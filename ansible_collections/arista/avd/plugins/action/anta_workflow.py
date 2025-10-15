@@ -260,12 +260,16 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
             result_manager.add(result)
 
     # Filter the results based on the hide_statuses if provided
-    filtered_result_manager = result_manager.filter(hide=set(hide_statuses)) if hide_statuses else result_manager
+    if hide_statuses:
+        filtered_result_manager = result_manager.filter(hide=set(hide_statuses))
+        if not filtered_result_manager.results:
+            msg = f"The reports are empty after filtering by hide_statuses. Hide Status(s): {', '.join(hide_statuses)}"
+            LOGGER.warning(msg)
+    else:
+        filtered_result_manager = result_manager
+
     # Sort the result manager
     filtered_result_manager.sort(sort_by=["name", "categories", "test", "description", "result", "custom_field"])
-
-    if not filtered_result_manager.results:
-        LOGGER.warning("No tests run/Reports are the empty due to filtered run on the user-defined ANTA catalogs")
 
     # TODO: Consider using multiprocessing to generate reports in parallel
     if csv_output_path:
