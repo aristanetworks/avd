@@ -130,6 +130,7 @@ metadata:
   pod_name: DC1_POD1
   dc_name: DC1
   fabric_name: TWODC_5STAGE_CLOS
+  serial_number: DEADBEEFC0FFEE
 router_bgp:
   as: '65110.100'
   router_id: 172.16.110.2
@@ -191,7 +192,6 @@ router_bgp:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-serial_number: DEADBEEFC0FFEE
 service_routing_protocols_model: multi-agent
 snmp_server:
   location: TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-SPINE2
