@@ -71,7 +71,6 @@ router_bgp:
   router_id: 192.168.255.1
   maximum_paths:
     paths: 4
-    ecmp: 4
   bgp_cluster_id: 192.168.255.1
   bgp:
     default:
