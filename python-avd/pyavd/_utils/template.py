@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from collections import ChainMap
@@ -13,14 +13,14 @@ if TYPE_CHECKING:
     from ansible.template import Templar
 
 
-def template(template_file: str, template_vars: dict[str, Any] | ChainMap[str, Any], templar: Templar | None) -> str:
+def template(template_file: str, template_vars: dict[str, Any] | ChainMap[str, Any], templar: Templar | None) -> Any:
     """
     Run Ansible Templar with template file.
 
     This function does not support the following Ansible features:
     - No template_* vars (rarely used)
     - The template file path is not inserted into searchpath, so "include" must be absolute from searchpath.
-    - No configurable convert_data (we set it to False)
+    - No configurable convert_data (we set it to True to match Ansible 2.19+)
     - Maybe something else we have not discovered yet...
 
     Parameters
@@ -36,8 +36,8 @@ def template(template_file: str, template_vars: dict[str, Any] | ChainMap[str, A
 
     Returns:
     -------
-    str
-        The rendered template
+    Any
+        The rendered template result. Can be of any type depending on the template.
     """
     if templar is None:
         msg = "Jinja Templating is not implemented in pyavd"
@@ -58,7 +58,7 @@ def template(template_file: str, template_vars: dict[str, Any] | ChainMap[str, A
 
         j2template = trust_as_template(dataloader.get_text_file_contents(template_file_path))  # pyright: ignore [reportAttributeAccessIssue]
         tmp_templar = templar.copy_with_new_env(available_variables=template_vars)
-        output = cast("str", tmp_templar.template(j2template, escape_backslashes=False))
+        output = tmp_templar.template(j2template, escape_backslashes=False)
 
     else:
         # Legacy templar
@@ -69,7 +69,6 @@ def template(template_file: str, template_vars: dict[str, Any] | ChainMap[str, A
         j2template = to_text(j2template)
 
         with templar.set_temporary_context(available_variables=template_vars):
-            # Since convert_data is False, we know the result is a string.
-            output = cast("str", templar.template(j2template, convert_data=False, escape_backslashes=False))
+            output = templar.template(j2template, convert_data=True, escape_backslashes=False)
 
     return output

@@ -132,6 +132,7 @@ class ActionModule(ActionBase):
             # Fetch all templated Ansible vars for this host
             # In Ansible versions <2.19 the vars will be templated best-effort. Ignoring failures.
             # From Ansible version 2.19 the vars will be templated on access and errors will be raised for any undefined vars.
+            # NOTE: We need the dict() for conversion to work below, since it is inplace updating stuff. Otherwise it looses the updates.
             host_hostvars = dict(hostvars[host])
 
             # Set correct hostname in schema tools and perform conversion and validation

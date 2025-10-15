@@ -19,8 +19,8 @@ def template_var(template_file: str, template_vars: Any, templar: Templar | None
 
     The result is forced into a string and leading/trailing newlines and whitespaces are removed.
 
-    As of Ansible 2.19, the templar will return None for an empty result, where it returned "" before.
-    This function returns "" no matter which version of Ansible is used.
+    The templar will return None for an empty result or any other data type depending on the template result.
+    This function returns "" for an empty result.
 
     Args:
         template_file: Path to Jinja2 template file
@@ -31,4 +31,5 @@ def template_var(template_file: str, template_vars: Any, templar: Templar | None
     Returns:
         The rendered template
     """
-    return str(template(template_file, template_vars, templar) or "").strip()
+    result = template(template_file, template_vars, templar)
+    return str(result).strip() if result is not None else ""
