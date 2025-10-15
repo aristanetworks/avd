@@ -410,7 +410,6 @@ class UtilsMixin(Protocol):
             tenant: The Tenant to which the VRF belongs.
             router_id: The router ID type specified for the VRF (e.g., "diagnostic_loopback", "main_router_id", "none", or an IPv4 address).
             error_context: A string indicating the context of the router ID (e.g., "router_id" for BGP or OSPF).
-            none_source_interface: A boolean indicating if the source-interface is 'none' then raise the error.
 
         Returns:
             The resolved router ID as a string, or None if the router ID is not applicable.
