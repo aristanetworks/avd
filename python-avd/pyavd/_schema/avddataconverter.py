@@ -66,7 +66,7 @@ class AvdDataConverter:
             yield from converter(schema[key], data, schema, path, parent_dict)
 
     def convert_keys(
-        self, keys: dict, data: dict, _schema: dict, path: list[str | int], _parent_dict: dict | None
+        self, keys: dict, data: dict, schema: dict, path: list[str | int], _parent_dict: dict | None
     ) -> Generator[AvdDeprecationWarning, None, None]:
         """This function performs conversion on each key with the relevant subschema."""
         if not is_type(data, "dict"):
@@ -86,6 +86,23 @@ class AvdDataConverter:
                 data[key] = data[key].lower()
 
             yield from self.convert_data(data[key], childschema, [*path, key], data)
+
+        # Extra check for root model reffed as structured_config, which by default will accept any variable.
+        # It does not accept any structured_config with custom keys that don't start with _.
+        # This is to prevent any collisions with AVD or other weird corner cases.
+        # This behavior will change in 6.0, where the loader will no longer accept these. At that time we will have the schema enforce the vars.
+        # TODO: Remove this and implement enforcement in validation and loader. Probably easier to do when we do the $ref.
+        if schema.get("allow_other_keys", False) and len(path) > 1:
+            for data_key in data:
+                if data_key in keys or str(data_key).startswith("_"):
+                    continue
+
+                yield AvdDeprecationWarning(
+                    key=[*path, data_key],
+                    new_key=f"_{data_key}",
+                    remove_in_version="6.0.0",
+                    removed=True,
+                )
 
     def convert_dynamic_keys(
         self, dynamic_keys: dict, data: dict, schema: dict, path: list[str | int], parent_dict: dict | None
