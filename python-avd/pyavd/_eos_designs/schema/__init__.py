@@ -76207,8 +76207,8 @@ class EosDesigns(EosDesignsRootModel):
     descriptions-names.html#avd-string-formatter-syntax.
     The available template fields are:
       -
-    `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
-    `connected_endpoints_keys.type` like `server`, `router` etc.
+    `endpoint_type`: The `type` of the connected endpoint either set on the endpoint or taken from
+    `connected_endpoints_keys[].type` like `server`, `router` etc.
       - `endpoint`: The name of the
     connected endpoint
       - `endpoint_port`: The value from `endpoint_ports` for this switch port if set.
@@ -78257,8 +78257,8 @@ class EosDesigns(EosDesignsRootModel):
                    descriptions-names.html#avd-string-formatter-syntax.
                    The available template fields are:
                      -
-                   `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
-                   `connected_endpoints_keys.type` like `server`, `router` etc.
+                   `endpoint_type`: The `type` of the connected endpoint either set on the endpoint or taken from
+                   `connected_endpoints_keys[].type` like `server`, `router` etc.
                      - `endpoint`: The name of the
                    connected endpoint
                      - `endpoint_port`: The value from `endpoint_ports` for this switch port if set.

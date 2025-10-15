@@ -1538,8 +1538,8 @@ keys:
     description: "Default description or description template to be used on all ports
       to connected endpoints.\nThis can be a template using the AVD string formatter
       syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
-      available template fields are:\n  - `endpoint_type` - the `type` of the connected
-      endpoint either set on the endpoint or taken from `connected_endpoints_keys.type`
+      available template fields are:\n  - `endpoint_type`: The `type` of the connected
+      endpoint either set on the endpoint or taken from `connected_endpoints_keys[].type`
       like `server`, `router` etc.\n  - `endpoint`: The name of the connected endpoint\n
       \ - `endpoint_port`: The value from `endpoint_ports` for this switch port if
       set.\n  - `port_channel_id`: The port-channel number for the switch.\n\nBy default
