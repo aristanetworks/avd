@@ -4,10 +4,10 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING, Literal, Protocol, overload
+from typing import TYPE_CHECKING, Literal, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.password_utils.password import bgp_encrypt
 from pyavd.j2filters import range_expand
 
@@ -106,12 +106,6 @@ class RoutingMixin(Protocol):
             return "asdot"
         return "asplain"
 
-    @overload
-    def get_asn(self: SharedUtilsProtocol, asn: None) -> None: ...
-
-    @overload
-    def get_asn(self: SharedUtilsProtocol, asn: int | str) -> str: ...
-
     def get_asn(self: SharedUtilsProtocol, asn: str | int | None) -> str | None:
         if asn is None:
             return None
@@ -136,20 +130,9 @@ class RoutingMixin(Protocol):
 
         return str(asn)
 
-    def as_path_regex_mode_asn_converter(self: SharedUtilsProtocol, asn: str) -> str:
-        """
-        Convert BGP AS to ASN-mode regular expression.
-
-        https://www.arista.com/en/support/toi/eos-4-21-1f/14079-asn-mode-regular-expressions-for-bgp-as-path-attributes
-        """
-        return asn.replace(".", r"\.")
-
     @cached_property
-    def formatted_bgp_as(self: SharedUtilsProtocol) -> str:
+    def formatted_bgp_as(self: SharedUtilsProtocol) -> str | None:
         """To reduce the recomputation of properly formatted BGP AS numbers."""
-        if self.bgp_as is None:
-            msg = "Trying to format None bgp_asn."
-            raise AristaAvdError(msg)
         return self.get_asn(self.bgp_as)
 
     @cached_property

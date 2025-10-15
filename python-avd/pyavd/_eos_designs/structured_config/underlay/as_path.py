@@ -27,5 +27,5 @@ class AsPathMixin(Protocol):
 
         if self.shared_utils.wan_ha and self.shared_utils.use_uplinks_for_wan_ha:
             entries = EosCliConfigGen.AsPath.AccessListsItem.Entries()
-            entries.append_new(type="permit", match=self.shared_utils.as_path_regex_mode_asn_converter(self.shared_utils.formatted_bgp_as))
+            entries.append_new(type="permit", match=self.shared_utils.formatted_bgp_as)
             self.structured_config.as_path.access_lists.append_new(name="ASPATH-WAN", entries=entries)
