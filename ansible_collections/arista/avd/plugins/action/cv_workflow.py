@@ -353,7 +353,7 @@ class ActionModule(ActionBase):
             return ([], [], [], [])
 
         # Build device object to be used in other objects.
-        serial_number = get(structured_config, "serial_number")
+        serial_number = get(structured_config, "metadata.serial_number")
         system_mac_address = get(structured_config, "metadata.system_mac_address")
         device_object = CVDevice(hostname=hostname, serial_number=serial_number, system_mac_address=system_mac_address)
 
