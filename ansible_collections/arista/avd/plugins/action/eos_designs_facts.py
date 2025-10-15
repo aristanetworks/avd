@@ -16,7 +16,7 @@ from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import IS_NEW_ANSIBLE, ActionPluginVars, get_templar
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import ANSIBLE_ABOVE_2_19, ActionPluginVars, get_templar
 
 PLUGIN_NAME = "arista.avd.eos_designs_facts"
 
@@ -51,7 +51,7 @@ class ActionModule(ActionBase):
             profiler.enable()
 
         # Only template output on ansible versions < 2.19.
-        self.template_output = bool(self._task.args.get("template_output", False)) and not IS_NEW_ANSIBLE
+        self.template_output = bool(self._task.args.get("template_output", False)) and not ANSIBLE_ABOVE_2_19
 
         self._validation_mode = self._task.args.get("validation_mode")
         self._digital_twin = self._task.args.get("digital_twin", False)
@@ -132,7 +132,6 @@ class ActionModule(ActionBase):
             # Fetch all templated Ansible vars for this host
             # In Ansible versions <2.19 the vars will be templated best-effort. Ignoring failures.
             # From Ansible version 2.19 the vars will be templated on access and errors will be raised for any undefined vars.
-            # Caveat: Since we force templating of all variables, even non-related variables will trigger undefined errors.
             host_hostvars = dict(hostvars[host])
 
             # Set correct hostname in schema tools and perform conversion and validation

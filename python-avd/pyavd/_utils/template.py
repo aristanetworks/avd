@@ -44,7 +44,7 @@ def template(template_file: str, template_vars: dict[str, Any] | ChainMap[str, A
         raise NotImplementedError(msg)
 
     # We only get here when running from Ansible, so it is safe to import from ansible and jinja2.
-    from ansible_collections.arista.avd.plugins.plugin_utils.utils import IS_NEW_ANSIBLE  # noqa: PLC0415
+    from ansible_collections.arista.avd.plugins.plugin_utils.utils import ANSIBLE_ABOVE_2_19  # noqa: PLC0415
     from jinja2.loaders import FileSystemLoader  # noqa: PLC0415
 
     dataloader: DataLoader = templar._loader
@@ -52,7 +52,7 @@ def template(template_file: str, template_vars: dict[str, Any] | ChainMap[str, A
     searchpath = jinjaloader.searchpath if isinstance(jinjaloader, FileSystemLoader) else []
     template_file_path = dataloader.path_dwim_relative_stack(searchpath, "templates", template_file)
 
-    if IS_NEW_ANSIBLE:
+    if ANSIBLE_ABOVE_2_19:
         # New templar from ansible-core 2.19 and above
         from ansible.template import trust_as_template  # noqa: PLC0415 # pyright: ignore reportAttributeAccessIssue
 

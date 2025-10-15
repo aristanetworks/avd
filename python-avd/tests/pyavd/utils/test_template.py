@@ -27,7 +27,7 @@ def test_template(tmp_path: Path) -> None:
 
     templar = Templar(DataLoader())
 
-    mocked_module = mock.MagicMock(IS_NEW_ANSIBLE=ansible_version.startswith(("2.19", "2.2")))
+    mocked_module = mock.MagicMock(ANSIBLE_ABOVE_2_19=ansible_version.startswith(("2.19", "2.2")))
     with mock.patch.dict(sys.modules, {"ansible_collections.arista.avd.plugins.plugin_utils.utils": mocked_module}):
         result = template(str(file), {"my_var": 42}, templar)
 

@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any
 
 from ansible.vars.hostvars import HostVarsVars
 
-from .is_new_ansible import IS_NEW_ANSIBLE
+from .constants import ANSIBLE_ABOVE_2_19
 
 if TYPE_CHECKING:  # pragma: no cover
     from ansible.inventory.manager import InventoryManager
@@ -51,7 +51,7 @@ class ActionPluginVars:
         variables = self._get_raw_variables(hostname)
 
         # TODO: Cleanup once our oldest supported ansible-core version is 2.19. Gotta love breaking signatures.
-        if not IS_NEW_ANSIBLE:
+        if not ANSIBLE_ABOVE_2_19:
             return HostVarsVars(variables=variables, loader=self.loader)  # pyright: ignore[reportCallIssue]
 
         return HostVarsVars(variables=variables, loader=self.loader, host=hostname)  # pyright: ignore[reportCallIssue]
