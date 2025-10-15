@@ -608,7 +608,7 @@ ASN Notation: asplain
 | ---------- |
 | update wait-install |
 | no bgp default ipv4-unicast |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -648,7 +648,7 @@ router bgp 65001
    router-id 192.168.255.2
    update wait-install
    no bgp default ipv4-unicast
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000

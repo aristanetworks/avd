@@ -47,7 +47,6 @@ router_bgp:
   router_id: 192.168.42.17
   maximum_paths:
     paths: 4
-    ecmp: 4
   bgp:
     default:
       ipv4_unicast: false

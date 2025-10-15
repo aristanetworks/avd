@@ -732,7 +732,7 @@ ASN Notation: asplain
 | distance bgp 20 200 200 |
 | update wait-install |
 | no bgp default ipv4-unicast |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -821,7 +821,7 @@ router bgp 65000
    router-id 100.70.0.7
    update wait-install
    no bgp default ipv4-unicast
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    distance bgp 20 200 200
    neighbor MPLS-OVERLAY-PEERS peer group
    neighbor MPLS-OVERLAY-PEERS remote-as 65000
