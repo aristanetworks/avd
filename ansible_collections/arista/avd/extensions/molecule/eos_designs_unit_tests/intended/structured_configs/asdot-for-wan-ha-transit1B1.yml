@@ -1,0 +1,484 @@
+aaa_root:
+  disabled: true
+application_traffic_recognition:
+  field_sets:
+    ipv4_prefixes:
+    - name: PFX-PATHFINDERS
+  applications:
+    ipv4_applications:
+    - name: APP-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
+  application_profiles:
+  - name: APP-PROFILE-CONTROL-PLANE
+    applications:
+    - name: APP-CONTROL-PLANE
+as_path:
+  access_lists:
+  - name: ASPATH-WAN
+    entries:
+    - type: permit
+      match: 65000\.1
+config_end: true
+dps_interfaces:
+- name: Dps1
+  description: DPS Interface
+  mtu: 9194
+  ip_address: 192.168.142.2/32
+  flow_tracker:
+    hardware: FLOW-TRACKER
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet52
+  description: P2P_asdot-for-wan-ha-leaf11_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 172.17.0.3/31
+  peer: asdot-for-wan-ha-leaf11
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet1.42
+  description: Comcast
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 42
+  ip_address: dhcp
+  dhcp_client_accept_default_route: true
+  peer_type: l3_interface
+- name: Ethernet2.42
+  description: Colt
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 666
+  ip_address: 172.16.7.6/31
+  peer_type: l3_interface
+- name: Ethernet1
+  shutdown: false
+  peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet2
+  shutdown: false
+  peer_type: l3_interface
+  switchport:
+    enabled: false
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collectors:
+        - host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
+hostname: asdot-for-wan-ha-transit1B1
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 192.168.42.1:422
+ip_routing: true
+ip_security:
+  ike_policies:
+  - name: CP-IKE-POLICY
+    local_id: 192.168.142.2
+  sa_policies:
+  - name: DP-SA-POLICY
+    esp:
+      encryption: aes256gcm128
+    pfs_dh_group: 14
+  - name: CP-SA-POLICY
+    esp:
+      encryption: aes256gcm128
+    pfs_dh_group: 14
+  profiles:
+  - name: DP-PROFILE
+    sa_policy: DP-SA-POLICY
+    connection: start
+    shared_key: ABCDEF1234567890666
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  - name: CP-PROFILE
+    ike_policy: CP-IKE-POLICY
+    sa_policy: CP-SA-POLICY
+    connection: start
+    shared_key: ABCDEF1234567890
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  key_controller:
+    profile: DP-PROFILE
+kernel:
+  software_forwarding_ecmp: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.42.2/32
+management_security:
+  ssl_profiles:
+  - name: STUN-DTLS
+    tls_versions: '1.2'
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    certificate:
+      file: STUN-DTLS.crt
+      key: STUN-DTLS.key
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: transit region
+    - name: Region
+      value: AVD_Land_West
+    - name: Zone
+      value: AVD_Land_West-ZONE
+    - name: Site
+      value: Site422
+    interface_tags:
+    - interface: Ethernet52
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet1.42
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Comcast
+    - interface: Ethernet2.42
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Colt
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: lan
+    - interface: Ethernet2
+      tags:
+      - name: Type
+        value: lan
+  cv_pathfinder:
+    role: transit region
+    region: AVD_Land_West
+    zone: AVD_Land_West-ZONE
+    site: Site422
+    vtep_ip: 192.168.142.2
+    ssl_profile: STUN-DTLS
+    interfaces:
+    - name: Ethernet1.42
+      carrier: Comcast
+      pathgroup: INET
+    - name: Ethernet2.42
+      carrier: Colt
+      pathgroup: MPLS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.42.0/24 eq 32
+- name: PL-WAN-HA-PREFIXES
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.17.0.2/31
+- name: PL-WAN-HA-PEER-PREFIXES
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.17.0.0/31
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 192.168.42.1:422 additive
+  - sequence: 50
+    type: permit
+    match:
+    - ip address prefix-list PL-WAN-HA-PREFIXES
+- name: RM-BGP-UNDERLAY-PEERS-IN
+  sequence_numbers:
+  - sequence: 40
+    type: permit
+    description: Mark prefixes originated from the LAN
+    set:
+    - extcommunity soo 192.168.42.1:422 additive
+  - sequence: 10
+    type: permit
+    description: Allow WAN HA peer interface prefixes
+    match:
+    - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
+  - sequence: 20
+    type: deny
+    description: Deny other routes from the HA peer
+    match:
+    - as-path ASPATH-WAN
+- name: RM-BGP-UNDERLAY-PEERS-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make routes learned from WAN HA peer less preferred on LAN routers
+    match:
+    - tag 50
+    - route-type internal
+    set:
+    - metric 50
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-IN
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - extcommunity ECL-EVPN-SOO
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - extcommunity soo 192.168.42.1:422 additive
+- name: RM-WAN-HA-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Set tag 50 on routes received from HA peer over EVPN
+    set:
+    - tag 50
+- name: RM-WAN-HA-PEER-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make EVPN routes learned from WAN less preferred on HA peer
+    match:
+    - route-type internal
+    set:
+    - local-preference 50
+  - sequence: 20
+    type: permit
+    description: Make locally injected routes less preferred on HA peer
+    set:
+    - local-preference 75
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - extcommunity ECL-EVPN-SOO
+router_adaptive_virtual_topology:
+  topology_role: transit region
+  region:
+    name: AVD_Land_West
+    id: 42
+  zone:
+    name: AVD_Land_West-ZONE
+    id: 1
+  site:
+    name: Site422
+    id: 422
+  profiles:
+  - name: DEFAULT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
+  - name: DEFAULT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
+  policies:
+  - name: DEFAULT-POLICY-WITH-CP
+    matches:
+    - application_profile: APP-PROFILE-CONTROL-PLANE
+      avt_profile: DEFAULT-POLICY-CONTROL-PLANE
+    - application_profile: default
+      avt_profile: DEFAULT-POLICY-DEFAULT
+  vrfs:
+  - name: default
+    policy: DEFAULT-POLICY-WITH-CP
+    profiles:
+    - name: DEFAULT-POLICY-CONTROL-PLANE
+      id: 254
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65000.1'
+  router_id: 192.168.42.2
+  maximum_paths:
+    paths: 16
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
+    allowas_in:
+      enabled: true
+      times: 1
+    route_map_in: RM-BGP-UNDERLAY-PEERS-IN
+    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
+  - name: WAN-OVERLAY-PEERS
+    type: wan
+    remote_as: '65000.1'
+    update_source: Dps1
+    bfd: true
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
+    password: htm4AZe9mIQOO1uiMuGgYQ==
+    send_community: all
+    maximum_routes: 0
+    ttl_maximum_hops: 1
+  neighbors:
+  - ip_address: 172.17.0.2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65199'
+    peer: asdot-for-wan-ha-leaf11
+    description: asdot-for-wan-ha-leaf11_Ethernet2
+  - ip_address: 192.168.142.1
+    remote_as: '65000.1'
+    peer: asdot-for-wan-ha-transit1A1
+    description: asdot-for-wan-ha-transit1A1
+    route_reflector_client: true
+    update_source: Dps1
+    route_map_in: RM-WAN-HA-PEER-IN
+    route_map_out: RM-WAN-HA-PEER-OUT
+    send_community: all
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+    neighbors:
+    - ip_address: 192.168.142.1
+      activate: true
+      encapsulation: path-selection
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+      route_map_in: RM-EVPN-SOO-IN
+      route_map_out: RM-EVPN-SOO-OUT
+      encapsulation: path-selection
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: WAN-OVERLAY-PEERS
+      activate: false
+  address_family_ipv4_sr_te:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+  address_family_link_state:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    path_selection:
+      roles:
+        producer: true
+  address_family_path_selection:
+    bgp:
+      additional_paths:
+        receive: true
+        send: any
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+  vrfs:
+  - name: default
+    rd: 192.168.42.2:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
+router_path_selection:
+  path_groups:
+  - name: INET
+    id: 101
+    ipsec_profile: CP-PROFILE
+    local_interfaces:
+    - name: Ethernet1.42
+    dynamic_peers:
+      enabled: true
+  - name: MPLS
+    id: 100
+    ipsec_profile: CP-PROFILE
+    local_interfaces:
+    - name: Ethernet2.42
+    dynamic_peers:
+      enabled: true
+  - name: LAN_HA
+    id: 65535
+    flow_assignment: lan
+    local_interfaces:
+    - name: Ethernet52
+    static_peers:
+    - router_ip: 192.168.142.1
+      name: asdot-for-wan-ha-transit1A1
+      ipv4_addresses:
+      - 172.17.0.1
+  load_balance_policies:
+  - name: LB-DEFAULT-POLICY-CONTROL-PLANE
+    path_groups:
+    - name: INET
+    - name: MPLS
+    - name: LAN_HA
+  - name: LB-DEFAULT-POLICY-DEFAULT
+    path_groups:
+    - name: INET
+    - name: MPLS
+    - name: LAN_HA
+  tcp_mss_ceiling:
+    ipv4: auto
+router_traffic_engineering:
+  enabled: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: false
+vrfs:
+- name: MGMT
+  ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: asdot-for-wan-ha-transit1B1_VTEP
+    vxlan:
+      source_interface: Dps1
+      udp_port: 4789
+      vrfs:
+      - name: default
+        vni: 1

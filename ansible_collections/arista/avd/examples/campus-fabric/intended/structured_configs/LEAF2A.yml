@@ -58,6 +58,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -100,6 +101,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -142,6 +144,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -184,6 +187,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -226,6 +230,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -268,6 +273,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -310,6 +316,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -352,6 +359,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -394,6 +402,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -436,6 +445,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -478,6 +488,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -520,6 +531,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -562,6 +574,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -604,6 +617,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -646,6 +660,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -688,6 +703,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -730,6 +746,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -772,6 +789,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -814,6 +832,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -856,6 +875,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -898,6 +918,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -940,6 +961,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -982,6 +1004,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1024,6 +1047,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1066,6 +1090,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1108,6 +1133,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1150,6 +1176,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1192,6 +1219,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1234,6 +1262,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1276,6 +1305,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1318,6 +1348,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1360,6 +1391,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1402,6 +1434,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1444,6 +1477,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1486,6 +1520,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1528,6 +1563,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1570,6 +1606,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1612,6 +1649,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1654,6 +1692,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1696,6 +1735,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1738,6 +1778,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1780,6 +1821,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1822,6 +1864,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1864,6 +1907,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1906,6 +1950,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1948,6 +1993,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -1990,6 +2036,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2032,6 +2079,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2074,6 +2122,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2116,6 +2165,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2158,6 +2208,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2200,6 +2251,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2242,6 +2294,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2284,6 +2337,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2326,6 +2380,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2368,6 +2423,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2410,6 +2466,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2452,6 +2509,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2494,6 +2552,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2536,6 +2595,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2578,6 +2638,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2620,6 +2681,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2662,6 +2724,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2704,6 +2767,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2746,6 +2810,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2788,6 +2853,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2830,6 +2896,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2872,6 +2939,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2914,6 +2982,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2956,6 +3025,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -2998,6 +3068,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3040,6 +3111,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3082,6 +3154,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3124,6 +3197,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3166,6 +3240,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3208,6 +3283,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3250,6 +3326,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3292,6 +3369,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3334,6 +3412,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3376,6 +3455,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3418,6 +3498,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3460,6 +3541,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3502,6 +3584,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3544,6 +3627,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3586,6 +3670,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3628,6 +3713,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3670,6 +3756,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3712,6 +3799,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3754,6 +3842,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3796,6 +3885,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3838,6 +3928,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3880,6 +3971,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3922,6 +4014,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -3964,6 +4057,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4006,6 +4100,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4048,6 +4143,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4090,6 +4186,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4132,6 +4229,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4174,6 +4272,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4216,6 +4315,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4258,6 +4358,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4300,6 +4401,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4342,6 +4444,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4384,6 +4487,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4426,6 +4530,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4468,6 +4573,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4510,6 +4616,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4552,6 +4659,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4594,6 +4702,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4636,6 +4745,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4678,6 +4788,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4720,6 +4831,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4762,6 +4874,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4804,6 +4917,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4846,6 +4960,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4888,6 +5003,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4930,6 +5046,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -4972,6 +5089,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5014,6 +5132,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5056,6 +5175,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5098,6 +5218,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5140,6 +5261,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5182,6 +5304,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5224,6 +5347,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5266,6 +5390,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5308,6 +5433,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5350,6 +5476,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5392,6 +5519,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5434,6 +5562,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5476,6 +5605,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5518,6 +5648,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5560,6 +5691,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5602,6 +5734,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5644,6 +5777,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5686,6 +5820,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5728,6 +5863,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5770,6 +5906,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5812,6 +5949,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5854,6 +5992,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5896,6 +6035,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5938,6 +6078,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -5980,6 +6121,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6022,6 +6164,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6064,6 +6207,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6106,6 +6250,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6148,6 +6293,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6190,6 +6336,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6232,6 +6379,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6274,6 +6422,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6316,6 +6465,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6358,6 +6508,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6400,6 +6551,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6442,6 +6594,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6484,6 +6637,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6526,6 +6680,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6568,6 +6723,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6610,6 +6766,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6652,6 +6809,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6694,6 +6852,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6736,6 +6895,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6778,6 +6938,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6820,6 +6981,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6862,6 +7024,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6904,6 +7067,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6946,6 +7110,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -6988,6 +7153,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7030,6 +7196,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7072,6 +7239,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7114,6 +7282,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7156,6 +7325,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7198,6 +7368,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7240,6 +7411,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7282,6 +7454,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7324,6 +7497,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7366,6 +7540,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7408,6 +7583,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7450,6 +7626,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7492,6 +7669,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7534,6 +7712,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7576,6 +7755,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7618,6 +7798,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7660,6 +7841,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7702,6 +7884,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7744,6 +7927,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7786,6 +7970,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7828,6 +8013,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7870,6 +8056,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7912,6 +8099,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7954,6 +8142,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -7996,6 +8185,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8038,6 +8228,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8080,6 +8271,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8122,6 +8314,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8164,6 +8357,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8206,6 +8400,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8248,6 +8443,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8290,6 +8486,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8332,6 +8529,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8374,6 +8572,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8416,6 +8615,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8458,6 +8658,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8500,6 +8701,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8542,6 +8744,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8584,6 +8787,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8626,6 +8830,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8668,6 +8873,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8710,6 +8916,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8752,6 +8959,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8794,6 +9002,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8836,6 +9045,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8878,6 +9088,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8920,6 +9131,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -8962,6 +9174,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9004,6 +9217,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9046,6 +9260,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9088,6 +9303,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9130,6 +9346,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9172,6 +9389,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9214,6 +9432,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9256,6 +9475,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9298,6 +9518,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9340,6 +9561,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9382,6 +9604,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9424,6 +9647,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9466,6 +9690,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9508,6 +9733,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9550,6 +9776,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9592,6 +9819,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9634,6 +9862,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9676,6 +9905,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9718,6 +9948,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9760,6 +9991,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9802,6 +10034,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9844,6 +10077,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9886,6 +10120,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9928,6 +10163,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -9970,6 +10206,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -10012,6 +10249,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -10054,6 +10292,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
@@ -10096,6 +10335,7 @@ ethernet_interfaces:
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   port_profile: PP-DOT1X
   switchport:
     enabled: true
