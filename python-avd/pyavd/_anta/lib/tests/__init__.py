@@ -10,6 +10,7 @@ from anta.tests.hardware import (
     VerifyEnvironmentCooling,
     VerifyEnvironmentPower,
     VerifyEnvironmentSystemCooling,
+    VerifyInventory,
     VerifyTemperature,
     VerifyTransceiversTemperature,
 )
@@ -61,6 +62,7 @@ __all__ = [
     "VerifyInterfaceErrors",
     "VerifyInterfaceUtilization",
     "VerifyInterfacesStatus",
+    "VerifyInventory",
     "VerifyLLDPNeighbors",
     "VerifyLoggingErrors",
     "VerifyMaintenance",

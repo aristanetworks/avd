@@ -75,13 +75,7 @@ class AvdStructuredConfigBaseProtocol(
         platform_bgp_update_wait_for_convergence = self.shared_utils.platform_settings.feature_support.bgp_update_wait_for_convergence
         platform_bgp_update_wait_install = self.shared_utils.platform_settings.feature_support.bgp_update_wait_install
 
-        if self.shared_utils.is_wan_router:
-            # Special defaults for WAN routers
-            default_maximum_paths = 16
-            default_ecmp = None
-        else:
-            default_maximum_paths = 4
-            default_ecmp = 4
+        default_maximum_paths = 16 if self.shared_utils.is_wan_router else 4
 
         self.structured_config.router_bgp._update(
             router_id=self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None, field_as=self.shared_utils.bgp_as
@@ -93,9 +87,7 @@ class AvdStructuredConfigBaseProtocol(
             self.structured_config.router_bgp.distance = bgp_distance
 
         self.structured_config.router_bgp.bgp.default.ipv4_unicast = self.inputs.bgp_default_ipv4_unicast
-        self.structured_config.router_bgp.maximum_paths._update(
-            paths=self.inputs.bgp_maximum_paths or default_maximum_paths, ecmp=self.inputs.bgp_ecmp or default_ecmp
-        )
+        self.structured_config.router_bgp.maximum_paths._update(paths=self.inputs.bgp_maximum_paths or default_maximum_paths, ecmp=self.inputs.bgp_ecmp)
 
         if self.shared_utils.underlay_bgp or self.shared_utils.is_wan_router or self.shared_utils.l3_bgp_neighbors:
             self.structured_config.router_bgp.redistribute.connected.enabled = True

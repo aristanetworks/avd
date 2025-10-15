@@ -85,7 +85,6 @@ router_bgp:
   router_id: 100.70.0.9
   maximum_paths:
     paths: 4
-    ecmp: 4
   updates:
     wait_install: true
   bgp_cluster_id: 1.1.1.1
