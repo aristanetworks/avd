@@ -8,7 +8,7 @@ from os import environ
 from pathlib import Path
 
 PYTHON_AVD_PATH = (
-    Path(molecule).parents[4] / "python-avd"
+    Path(molecule).parents[5] / "python-avd"
     if (molecule := environ.get("MOLECULE_SCENARIO_DIRECTORY")) is not None
     else Path(__file__).parents[4] / "python-avd"
 )
