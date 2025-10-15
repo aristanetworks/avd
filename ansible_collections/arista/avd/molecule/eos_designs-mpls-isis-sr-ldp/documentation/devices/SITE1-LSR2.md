@@ -154,6 +154,13 @@ vlan internal order ascending range 1006 1199
 | Ethernet1 | - | CORE | - | 50 | point-to-point | level-1-2 | False | md5 |
 | Ethernet3 | - | CORE | - | 60 | point-to-point | level-2 | False | md5 |
 
+#### Traffic Engineering
+
+| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLG |
+| --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
+| Ethernet1 | True | GRP2,127 | 20 | 90 percent | - | SRLG2 |
+| Ethernet3 | True | TEST_GRP,129 | 10 | 90 percent | - | TEST |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -176,6 +183,11 @@ interface Ethernet1
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 <removed>
+   traffic-engineering
+   traffic-engineering bandwidth 90 percent
+   traffic-engineering administrative-group GRP2,127
+   traffic-engineering srlg SRLG2
+   traffic-engineering metric 20
    link-debounce time 1000
 
 !
@@ -197,6 +209,11 @@ interface Ethernet3
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 <removed>
+   traffic-engineering
+   traffic-engineering bandwidth 90 percent
+   traffic-engineering administrative-group TEST_GRP,129
+   traffic-engineering srlg TEST
+   traffic-engineering metric 10
    link-debounce time 1000
 
 ```

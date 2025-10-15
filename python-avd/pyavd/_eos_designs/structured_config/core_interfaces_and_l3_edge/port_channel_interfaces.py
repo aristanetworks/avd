@@ -33,6 +33,9 @@ class PortChannelInterfacesMixin(Protocol):
             self._update_common_interface_cfg(p2p_link, p2p_link_data, port_channel_interface)
             port_channel_interface.ptp = self._get_ptp_config_interface(p2p_link, output_type=EosCliConfigGen.PortChannelInterfacesItem.Ptp)
             port_channel_interface.description = self._p2p_link_port_channel_description(p2p_link_data)
+            port_channel_interface.traffic_engineering = self._get_te_config_interface(
+                p2p_link, output_type=EosCliConfigGen.PortChannelInterfacesItem.TrafficEngineering
+            )
 
             if p2p_link.port_channel_structured_config:
                 self.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_interface.name)._deepmerge(
