@@ -401,7 +401,6 @@ class UtilsMixin(Protocol):
         tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
         router_id: str,
         error_context: str = "'router_id' is set to 'diagnostic_loopback' on the VRF",
-        none_source_interface: bool = False,
     ) -> str | None:
         """
         Determine the router ID for a given VRF based on its configuration.
@@ -409,7 +408,7 @@ class UtilsMixin(Protocol):
         Args:
             vrf: The VRF object containing OSPF/BGP and vtep_diagnostic details.
             tenant: The Tenant to which the VRF belongs.
-            router_id: The router ID type specified for the VRF (e.g., "vtep_diagnostic", "main_router_id", "none", or an IPv4 address).
+            router_id: The router ID type specified for the VRF (e.g., "diagnostic_loopback", "main_router_id", "none", or an IPv4 address).
             error_context: A string indicating the context of the router ID (e.g., "router_id" for BGP or OSPF).
             none_source_interface: A boolean indicating if the source-interface is 'none' then raise the error.
 
@@ -419,7 +418,6 @@ class UtilsMixin(Protocol):
         Raises:
             AristaAvdInvalidInputsError: If required configuration for "vtep_diagnostic" router ID is missing.
         """
-        # Handle "vtep_diagnostic" router ID case
         if router_id == "diagnostic_loopback":
             # Validate required configuration
             if (interface_data := self._get_vtep_diagnostic_loopback_for_vrf(vrf, tenant)) is None or not interface_data.ip_address:
@@ -432,7 +430,7 @@ class UtilsMixin(Protocol):
             # Resolve router ID from loopback interface
             return get_ip_from_ip_prefix(interface_data.ip_address)
         if router_id == "main_router_id":
-            return self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id or none_source_interface else None
+            return self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None
         # Handle "none" router ID
         if router_id == "none":
             return None

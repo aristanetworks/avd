@@ -28,4 +28,4 @@ tenants:
 
 expected_error_message: >-
   Unable to determine the IGMP snooping querier source address for VLAN 'VLAN_21' in VRF 'IGMP_QUERIER_TEST_3' in Tenant 'Tenant_A'.
-  The configured 'igmp_snooping_querier.source_address' resolved to None.
+  The configured 'igmp_snooping_querier.source_address: none' resolved to None.

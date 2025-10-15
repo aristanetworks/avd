@@ -7416,14 +7416,13 @@ $defs:
               description: Will be enabled automatically if evpn_l2_multicast is enabled.
             source_address:
               type: str
-              description: 'Since there is no VRF tied to an L2VLAN, the values  `vrf_router_id`,
-                `diagnostic_loopback` and `main_router_id` will all configure the
-                Loopback0 IP address.
+              description: 'The value of `source_address` will be interpreted according
+                to these rules:
 
-                If set to an IPv4 address, it will be used directly as the source
-                address.
+                - `vrf_router_id`, `diagnostic_loopback` and `main_router_id` will
+                configure the Loopback0 IP since there is no VRF tied to an L2VLAN.
 
-                Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.'
+                - An IPv4 address will be used directly as the source address.'
             version:
               type: int
               description: IGMP Version (By default EOS uses IGMP version 2 for IGMP
@@ -12952,8 +12951,6 @@ $defs:
               - An IPv4 address will be used directly as the source address.
 
               Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.'
-            convert_types:
-            - int
           version:
             type: int
             description: IGMP Version (By default EOS uses IGMP version 2 for IGMP

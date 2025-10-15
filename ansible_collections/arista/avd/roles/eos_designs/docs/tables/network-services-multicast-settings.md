@@ -98,7 +98,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping_enabled</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping_enabled") | Boolean |  |  |  | Enable or disable IGMP snooping (Enabled by default on EOS). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping_querier</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping_querier") | Dictionary |  |  |  | Enable igmp snooping querier, by default using IP address of Loopback 0.<br>When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping_querier.enabled") | Boolean |  |  |  | Will be enabled automatically if evpn_l2_multicast is enabled. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping_querier.source_address") | String |  |  |  | Since there is no VRF tied to an L2VLAN, the values  `vrf_router_id`, `diagnostic_loopback` and `main_router_id` will all configure the Loopback0 IP address.<br>If set to an IPv4 address, it will be used directly as the source address.<br>Overrides `<network_services_key>[].igmp_snooping_querier.source_address`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping_querier.source_address") | String |  |  |  | The value of `source_address` will be interpreted according to these rules:<br>- `vrf_router_id`, `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF tied to an L2VLAN.<br>- An IPv4 address will be used directly as the source address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping_querier.version") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>3</code> | IGMP Version (By default EOS uses IGMP version 2 for IGMP querier). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping_querier.fast_leave") | Boolean |  |  |  | Enable IGMP snooping fast-leave feature. |
     | [<samp>l2vlan_profiles</samp>](## "l2vlan_profiles") | List, items: Dictionary |  |  |  | Profiles to inherit common settings for l2vlans defined under the network_services key. |
@@ -111,7 +111,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping_enabled</samp>](## "l2vlan_profiles.[].igmp_snooping_enabled") | Boolean |  |  |  | Enable or disable IGMP snooping (Enabled by default on EOS). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping_querier</samp>](## "l2vlan_profiles.[].igmp_snooping_querier") | Dictionary |  |  |  | Enable igmp snooping querier, by default using IP address of Loopback 0.<br>When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l2vlan_profiles.[].igmp_snooping_querier.enabled") | Boolean |  |  |  | Will be enabled automatically if evpn_l2_multicast is enabled. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "l2vlan_profiles.[].igmp_snooping_querier.source_address") | String |  |  |  | Since there is no VRF tied to an L2VLAN, the values  `vrf_router_id`, `diagnostic_loopback` and `main_router_id` will all configure the Loopback0 IP address.<br>If set to an IPv4 address, it will be used directly as the source address.<br>Overrides `<network_services_key>[].igmp_snooping_querier.source_address`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "l2vlan_profiles.[].igmp_snooping_querier.source_address") | String |  |  |  | The value of `source_address` will be interpreted according to these rules:<br>- `vrf_router_id`, `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF tied to an L2VLAN.<br>- An IPv4 address will be used directly as the source address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "l2vlan_profiles.[].igmp_snooping_querier.version") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>3</code> | IGMP Version (By default EOS uses IGMP version 2 for IGMP querier). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "l2vlan_profiles.[].igmp_snooping_querier.fast_leave") | Boolean |  |  |  | Enable IGMP snooping fast-leave feature. |
     | [<samp>svi_profiles</samp>](## "svi_profiles") | List, items: Dictionary |  |  |  | Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.<br>Keys are the same used under SVIs. Keys defined under SVIs take precedence.<br>Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:<br>1. svi.nodes[inventory_hostname].structured_config<br>2. svi_profile.nodes[inventory_hostname].structured_config<br>3. svi_parent_profile.nodes[inventory_hostname].structured_config<br>4. svi.structured_config<br>5. svi_profile.structured_config<br>6. svi_parent_profile.structured_config<br> |
@@ -451,9 +451,9 @@
               # Will be enabled automatically if evpn_l2_multicast is enabled.
               enabled: <bool>
 
-              # Since there is no VRF tied to an L2VLAN, the values  `vrf_router_id`, `diagnostic_loopback` and `main_router_id` will all configure the Loopback0 IP address.
-              # If set to an IPv4 address, it will be used directly as the source address.
-              # Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.
+              # The value of `source_address` will be interpreted according to these rules:
+              # - `vrf_router_id`, `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF tied to an L2VLAN.
+              # - An IPv4 address will be used directly as the source address.
               source_address: <str>
 
               # IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
@@ -491,9 +491,9 @@
           # Will be enabled automatically if evpn_l2_multicast is enabled.
           enabled: <bool>
 
-          # Since there is no VRF tied to an L2VLAN, the values  `vrf_router_id`, `diagnostic_loopback` and `main_router_id` will all configure the Loopback0 IP address.
-          # If set to an IPv4 address, it will be used directly as the source address.
-          # Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.
+          # The value of `source_address` will be interpreted according to these rules:
+          # - `vrf_router_id`, `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF tied to an L2VLAN.
+          # - An IPv4 address will be used directly as the source address.
           source_address: <str>
 
           # IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).

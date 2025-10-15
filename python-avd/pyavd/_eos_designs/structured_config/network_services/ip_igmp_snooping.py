@@ -100,17 +100,18 @@ class IpIgmpSnoopingMixin(Protocol):
         For an L2VLAN, 'vrf_router_id' and 'diagnostic_loopback' are treated as 'main_router_id'.
         """
         source_address_key = default(vlan.igmp_snooping_querier.source_address, tenant.igmp_snooping_querier.source_address)
+        source_address = None
 
         if vrf is not None:
             if source_address_key == "vrf_router_id":
-                source_address = self.get_vrf_router_id(vrf, tenant, vrf.bgp.router_id, none_source_interface=True)
-            else:
+                source_address = (
+                    self.shared_utils.router_id if vrf.bgp.router_id == "main_router_id" else self.get_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
+                )
+            elif source_address_key == "main_router_id":
+                source_address = self.shared_utils.router_id
+            elif source_address_key:
                 source_address = self.get_vrf_router_id(
-                    vrf,
-                    tenant,
-                    source_address_key,
-                    error_context="'igmp_snooping_querier.source_address' is set to 'diagnostic_loopback' on the VLAN",
-                    none_source_interface=True,
+                    vrf, tenant, source_address_key, error_context="'igmp_snooping_querier.source_address' is set to 'diagnostic_loopback' on the VLAN"
                 )
 
         # For L2VLANs, 'vrf_router_id' and 'diagnostic_loopback' are treated as 'main_router_id'.
@@ -125,6 +126,6 @@ class IpIgmpSnoopingMixin(Protocol):
         vrf_info = f" in VRF '{vrf.name}'" if vrf else ""
         msg = (
             f"Unable to determine the IGMP snooping querier source address for VLAN '{vlan.name}'{vrf_info} in Tenant '{tenant.name}'. "
-            "The configured 'igmp_snooping_querier.source_address' resolved to None."
+            f"The configured 'igmp_snooping_querier.source_address: {source_address_key}' resolved to None."
         )
         raise AristaAvdInvalidInputsError(msg)

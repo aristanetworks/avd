@@ -233,8 +233,6 @@ $defs:
               - `main_router_id` will configure the Loopback0 IP address.
               - An IPv4 address will be used directly as the source address.
               Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.
-            convert_types:
-              - int
           version:
             type: int
             description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
