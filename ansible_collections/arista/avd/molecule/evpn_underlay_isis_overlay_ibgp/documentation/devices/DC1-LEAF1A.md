@@ -476,7 +476,7 @@ ASN Notation: asplain
 | distance bgp 20 200 200 |
 | update wait-install |
 | no bgp default ipv4-unicast |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -514,7 +514,7 @@ router bgp 65000
    router-id 192.168.255.5
    update wait-install
    no bgp default ipv4-unicast
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    distance bgp 20 200 200
    neighbor OVERLAY-PEERS peer group
    neighbor OVERLAY-PEERS remote-as 65000
