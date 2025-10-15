@@ -2,11 +2,11 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from .append_if_not_duplicate import append_if_not_duplicate
+from .as_path_list_match_from_bgp_asns import as_path_list_match_from_bgp_asns
 from .batch import batch
 from .compare_dicts import compare_dicts
 from .default import default
 from .ensure_type import ensure_type
-from .format_as_path_list_regex import format_as_path_list_regex
 from .format_string import AvdStringFormatter
 from .get import get, get_v2
 from .get_all import get_all, get_all_with_path
@@ -31,11 +31,11 @@ __all__ = [
     "Undefined",
     "UndefinedType",
     "append_if_not_duplicate",
+    "as_path_list_match_from_bgp_asns",
     "batch",
     "compare_dicts",
     "default",
     "ensure_type",
-    "format_as_path_list_regex",
     "get",
     "get_all",
     "get_all_with_path",
