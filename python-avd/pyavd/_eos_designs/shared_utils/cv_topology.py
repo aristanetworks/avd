@@ -100,7 +100,6 @@ class CvTopology(Protocol):
                 node_config.uplink_switches.append(interface.neighbor)
                 node_config.uplink_interfaces.append(interface.name)
                 node_config.uplink_switch_interfaces.append(interface.neighbor_interface)
-                continue
 
             # Same levels or this device is the parent. We expect the child to set up the uplink information, so ignoring here.
 

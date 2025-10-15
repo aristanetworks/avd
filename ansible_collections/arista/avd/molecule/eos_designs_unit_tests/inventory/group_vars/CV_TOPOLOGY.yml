@@ -26,6 +26,18 @@ cv_topology:
       - name: Ethernet6
         neighbor: CV-MLAG-OSPF-L3LEAF1B
         neighbor_interface: Ethernet6
+      - name: Ethernet100
+        neighbor: some-device-not-in-inventory-getting-ignored
+        neighbor_interface: Ethernet100
+      - name: Ethernet101
+        # Ignoring when missing neighbor and/or neighbor_interface
+        neighbor: some-device-not-in-inventory-getting-ignored
+      - name: Ethernet102
+        # Ignoring when missing neighbor and/or neighbor_interface
+        neighbor_interface: Ethernet100
+      - name: Ethernet103
+        # Ignoring when missing neighbor and/or neighbor_interface
+
   - hostname: CV-MLAG-OSPF-L3LEAF1B
     platform: vEOS-LAB
     interfaces:
