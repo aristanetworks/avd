@@ -149,13 +149,13 @@ The AVD project leverages Molecule for:
   - `cv_deploy`
   - `cv_workflow`
 
-The Molecule scenarios are located under the `molecule` directory at the root of the collection (`ansible_collections/arista/avd/molecule`).
+The Molecule scenarios are located under the `molecule` directory at the root of the collection (`ansible_collections/arista/avd/extensions/molecule`).
 
 The directory name of each Molecule scenario folder is used as the `--scenario-name` when executing Molecule, i.e: `eos_cli_config_gen`, `eos_designs_unit_tests`.
 
 ### Executing Molecule with makefile method
 
-To run the Molecule tests locally to generate the new expected configuration and documentation leverage Makefile located in the `ansible_collections/arista/avd/molecule` directory.
+To run the Molecule tests locally to generate the new expected configuration and documentation leverage Makefile located in the `ansible_collections/arista/avd/extensions/molecule` directory.
 
 The Makefile supports the following targets:
 
@@ -164,7 +164,7 @@ The Makefile supports the following targets:
   - This is the recommended way for development, as it is quicker and does not execute idempotency checks.
 - `test`: Execute molecule "test" sequence. Specify scenario name with `MOLECULE=<scenario_name>` (default: `eos_cli_config_gen`) and Ansible options with `ANSIBLE_OPTIONS=<options>` (default: `--forks 5`).
   - This is executed as part of the CI and tests for idempotency.
-- `refresh-facts`: Run all "eos_designs" and "eos_cli_config_gen" [molecule scenarios](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/molecule/MOLECULE_SCENARIOS.txt).
+- `refresh-facts`: Run all "eos_designs" and "eos_cli_config_gen" [molecule scenarios](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/extensions/molecule/MOLECULE_SCENARIOS.txt).
 
 !!! info
     `make refresh-facts` can be useful when you change common template or structured configuration output.
@@ -178,7 +178,7 @@ In the majority of new features or bug fixes, the process is the following:
 
     ```shell
     # Change to molecule directory
-    cd ansible_collections/arista/avd/molecule
+    cd ansible_collections/arista/avd/extensions/molecule
 
     # Run eos_designs_unit_tests scenario to generate artifacts
     make converge MOLECULE=eos_designs_unit_tests

@@ -58,11 +58,6 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.hostname = self.shared_utils.hostname
 
     @structured_config_contributor
-    def serial_number(self) -> None:
-        """serial_number variable set based on serial_number fact."""
-        self.structured_config.serial_number = self.shared_utils.serial_number
-
-    @structured_config_contributor
     def router_bgp(self) -> None:
         """
         Set the structured config for router_bgp.
