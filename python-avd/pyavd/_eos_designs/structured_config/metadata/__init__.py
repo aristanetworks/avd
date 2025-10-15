@@ -31,6 +31,7 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
             pod_name=self.inputs.pod_name,
             dc_name=self.inputs.dc_name,
             fabric_name=self.shared_utils.fabric_name,
+            serial_number=self.shared_utils.serial_number,
         )
         self._set_cv_tags()
         self._set_cv_pathfinder()
