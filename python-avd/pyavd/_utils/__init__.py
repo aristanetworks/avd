@@ -6,6 +6,7 @@ from .batch import batch
 from .compare_dicts import compare_dicts
 from .default import default
 from .ensure_type import ensure_type
+from .format_as_path_list_regex import format_as_path_list_regex
 from .format_string import AvdStringFormatter
 from .get import get, get_v2
 from .get_all import get_all, get_all_with_path
@@ -34,6 +35,7 @@ __all__ = [
     "compare_dicts",
     "default",
     "ensure_type",
+    "format_as_path_list_regex",
     "get",
     "get_all",
     "get_all_with_path",

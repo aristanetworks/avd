@@ -1,0 +1,167 @@
+---
+# Testing that the generated as-path access-list will have the dotted ASN escaped correctly.
+wan_mode: cv-pathfinder
+underlay_routing_protocol: ebgp
+cv_pathfinder_regions:
+  - name: AVD_Land_West
+    id: 42
+    description: AVD Region
+    sites:
+      - name: Site422
+        id: 422
+        location: Somewhere
+
+wan_virtual_topologies:
+  vrfs:
+    - name: PROD
+      policy: PROD-AVT-POLICY
+      wan_vni: 42
+
+  policies:
+    - name: PROD-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [INET]
+            preference: preferred
+          - names: [MPLS]
+            preference: alternate
+
+tenants:
+  - name: TenantA
+    mac_vrf_vni_base: 1000
+    vrfs:
+      - name: default
+        vrf_id: 1
+        # Checking static route on VRF default is redistributed in a route-map
+        static_routes:
+          - prefix: 66.66.66.0/24
+            next_hop: 172.17.0.0
+            nodes: [cv-pathfinder-edge]
+      - name: PROD
+        # Showing that wan_vni and vrf_id can be different. `vrf_id` influences the subinterface id.
+        vrf_id: 142
+        svis:
+          - id: 100
+            name: VLAN100
+            ip_address_virtual: 10.0.100.1/24
+
+default_node_types:
+  - node_type: wan_router
+    match_hostnames:
+      - "asdot-for-wan-ha-transit.*"
+  - node_type: l3leaf
+    match_hostnames:
+      - ".*leaf.*"
+
+l3leaf:
+  defaults:
+    bgp_as: 65199
+    loopback_ipv4_pool: 192.168.45.0/24
+    vtep_loopback_ipv4_pool: 192.168.255.0/24
+    virtual_router_mac_address: 00:1c:73:00:00:01
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+  nodes:
+    - name: asdot-for-wan-ha-leaf11
+      id: 1
+
+wan_path_groups:
+  - name: MPLS
+    ipsec:
+      static_peers: false
+      dynamic_peers: false
+    # TODO remove one once auto-id is implemented - for now required in schema
+    id: 100
+    dps_keepalive:
+      interval: 300
+  - name: INET
+    id: 101
+  - name: Equinix
+    id: 103
+    default_preference: alternate
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+    # Making sure shared_key has precedence
+    cleartext_shared_key: arista
+  data_plane:
+    shared_key: ABCDEF1234567890666
+    # Making sure shared_key has precedence
+    cleartext_shared_key: arista
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.142.0/24
+      - 192.168.143.0/24
+
+wan_carriers:
+  - name: Comcast
+    path_group: INET
+    trusted: true
+  - name: Colt
+    path_group: MPLS
+    trusted: true
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.142.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+    uplink_ipv4_pool: 172.17.0.0/16
+    bgp_as: 65000.100
+  # Testing HA and disabling HA
+  node_groups:
+    # TRANSIT_SITE_HA_ENABLED1
+    - group: TRANSIT_SITE_HA_ENABLED1
+      loopback_ipv4_pool: 192.168.43.0/24
+      vtep_loopback_ipv4_pool: 192.168.143.0/24
+      filter:
+        always_include_vrfs_in_tenants: [TenantA, TenantB]
+      uplink_ipv4_pool: 172.17.0.0/16
+      uplink_type: p2p-vrfs
+      uplink_switches: [asdot-for-wan-ha-leaf11]
+      uplink_interfaces: [Ethernet52]
+      cv_pathfinder_transit_mode: region
+      # Disable HA IPsec
+      wan_ha:
+        enabled: true # TODO AVD4.8.0: Remove once WAN HA is GA.
+        ipsec: false
+      nodes:
+        - name: asdot-for-wan-ha-transit1A1
+          cv_pathfinder_region: AVD_Land_West
+          cv_pathfinder_site: Site422
+          id: 1
+          uplink_switch_interfaces: [Ethernet1]
+          l3_interfaces:
+            - name: Ethernet1.42
+              wan_carrier: Comcast
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+            - name: Ethernet2.42
+              peer_ip: 123.12.3.4
+              encapsulation_dot1q_vlan: 666
+              wan_carrier: Colt
+              wan_circuit_id: 10666
+              ip_address: 172.16.6.6/31
+              cv_pathfinder_internet_exit:
+                policies:
+                  - name: DIRECT-EXIT-POLICY-2
+        - name: asdot-for-wan-ha-transit1B1
+          cv_pathfinder_region: AVD_Land_West
+          cv_pathfinder_site: Site422
+          id: 2
+          uplink_switch_interfaces: [Ethernet2]
+          l3_interfaces:
+            - name: Ethernet1.42
+              wan_carrier: Comcast
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+            - name: Ethernet2.42
+              encapsulation_dot1q_vlan: 666
+              wan_carrier: Colt
+              wan_circuit_id: 10666
+              ip_address: 172.16.6.6/31
