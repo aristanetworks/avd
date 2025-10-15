@@ -23,7 +23,7 @@ dps_interfaces:
 - name: Dps1
   description: DPS Interface
   mtu: 9194
-  ip_address: 192.168.143.2/32
+  ip_address: 192.168.142.2/32
   flow_tracker:
     hardware: FLOW-TRACKER
 enable_password:
@@ -39,17 +39,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
-- name: Ethernet52.142
-  description: P2P_asdot-for-wan-ha-leaf11_Ethernet2.142_VRF_PROD
-  shutdown: false
-  mtu: 9214
-  vrf: PROD
-  encapsulation_dot1q:
-    vlan: 142
-  ip_address: 172.17.0.3/31
-  peer: asdot-for-wan-ha-leaf11
-  peer_interface: Ethernet2.142
-  peer_type: l3leaf
 - name: Ethernet1.42
   description: Comcast
   shutdown: false
@@ -59,11 +48,11 @@ ethernet_interfaces:
   dhcp_client_accept_default_route: true
   peer_type: l3_interface
 - name: Ethernet2.42
-  description: Colt_10666
+  description: Colt
   shutdown: false
   encapsulation_dot1q:
     vlan: 666
-  ip_address: 172.16.6.6/31
+  ip_address: 172.16.7.6/31
   peer_type: l3_interface
 - name: Ethernet1
   shutdown: false
@@ -94,12 +83,12 @@ ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
   - type: permit
-    extcommunities: soo 192.168.43.1:422
+    extcommunities: soo 192.168.42.1:422
 ip_routing: true
 ip_security:
   ike_policies:
   - name: CP-IKE-POLICY
-    local_id: 192.168.143.2
+    local_id: 192.168.142.2
   sa_policies:
   - name: DP-SA-POLICY
     esp:
@@ -137,7 +126,7 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.43.2/32
+  ip_address: 192.168.42.2/32
 management_security:
   ssl_profiles:
   - name: STUN-DTLS
@@ -166,10 +155,6 @@ metadata:
       tags:
       - name: Type
         value: lan
-    - interface: Ethernet52.142
-      tags:
-      - name: Type
-        value: lan
     - interface: Ethernet1.42
       tags:
       - name: Type
@@ -182,8 +167,6 @@ metadata:
         value: wan
       - name: Carrier
         value: Colt
-      - name: Circuit
-        value: '10666'
     - interface: Ethernet1
       tags:
       - name: Type
@@ -197,7 +180,7 @@ metadata:
     region: AVD_Land_West
     zone: AVD_Land_West-ZONE
     site: Site422
-    vtep_ip: 192.168.143.2
+    vtep_ip: 192.168.142.2
     ssl_profile: STUN-DTLS
     interfaces:
     - name: Ethernet1.42
@@ -205,13 +188,12 @@ metadata:
       pathgroup: INET
     - name: Ethernet2.42
       carrier: Colt
-      circuit_id: '10666'
       pathgroup: MPLS
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 192.168.43.0/24 eq 32
+    action: permit 192.168.42.0/24 eq 32
 - name: PL-WAN-HA-PREFIXES
   sequence_numbers:
   - sequence: 10
@@ -228,7 +210,7 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
-    - extcommunity soo 192.168.43.1:422 additive
+    - extcommunity soo 192.168.42.1:422 additive
   - sequence: 50
     type: permit
     match:
@@ -239,7 +221,7 @@ route_maps:
     type: permit
     description: Mark prefixes originated from the LAN
     set:
-    - extcommunity soo 192.168.43.1:422 additive
+    - extcommunity soo 192.168.42.1:422 additive
   - sequence: 10
     type: permit
     description: Allow WAN HA peer interface prefixes
@@ -275,7 +257,7 @@ route_maps:
   - sequence: 10
     type: permit
     set:
-    - extcommunity soo 192.168.43.1:422 additive
+    - extcommunity soo 192.168.42.1:422 additive
 - name: RM-WAN-HA-PEER-IN
   sequence_numbers:
   - sequence: 10
@@ -315,17 +297,11 @@ router_adaptive_virtual_topology:
     name: Site422
     id: 422
   profiles:
-  - name: PROD-AVT-POLICY-DEFAULT
-    load_balance_policy: LB-PROD-AVT-POLICY-DEFAULT
   - name: DEFAULT-POLICY-CONTROL-PLANE
     load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
   - name: DEFAULT-POLICY-DEFAULT
     load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
   policies:
-  - name: PROD-AVT-POLICY
-    matches:
-    - application_profile: default
-      avt_profile: PROD-AVT-POLICY-DEFAULT
   - name: DEFAULT-POLICY-WITH-CP
     matches:
     - application_profile: APP-PROFILE-CONTROL-PLANE
@@ -333,11 +309,6 @@ router_adaptive_virtual_topology:
     - application_profile: default
       avt_profile: DEFAULT-POLICY-DEFAULT
   vrfs:
-  - name: PROD
-    policy: PROD-AVT-POLICY
-    profiles:
-    - name: PROD-AVT-POLICY-DEFAULT
-      id: 1
   - name: default
     policy: DEFAULT-POLICY-WITH-CP
     profiles:
@@ -352,7 +323,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65000.1'
-  router_id: 192.168.43.2
+  router_id: 192.168.42.2
   maximum_paths:
     paths: 16
   updates:
@@ -389,7 +360,7 @@ router_bgp:
     remote_as: '65199'
     peer: asdot-for-wan-ha-leaf11
     description: asdot-for-wan-ha-leaf11_Ethernet2
-  - ip_address: 192.168.143.1
+  - ip_address: 192.168.142.1
     remote_as: '65000.1'
     peer: asdot-for-wan-ha-transit1A1
     description: asdot-for-wan-ha-transit1A1
@@ -407,7 +378,7 @@ router_bgp:
       next_hop_self_received_evpn_routes:
         enable: true
     neighbors:
-    - ip_address: 192.168.143.1
+    - ip_address: 192.168.142.1
       activate: true
       encapsulation: path-selection
     peer_groups:
@@ -442,28 +413,8 @@ router_bgp:
     - name: WAN-OVERLAY-PEERS
       activate: true
   vrfs:
-  - name: PROD
-    rd: 192.168.43.2:142
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 142:142
-      export:
-      - address_family: evpn
-        route_targets:
-        - 142:142
-    router_id: 192.168.43.2
-    neighbors:
-    - ip_address: 172.17.0.2
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65199'
-      description: asdot-for-wan-ha-leaf11_Ethernet2.142_vrf_PROD
-    redistribute:
-      connected:
-        enabled: true
   - name: default
-    rd: 192.168.43.2:1
+    rd: 192.168.42.2:1
     route_targets:
       import:
       - address_family: evpn
@@ -485,31 +436,22 @@ router_path_selection:
       enabled: true
   - name: MPLS
     id: 100
+    ipsec_profile: CP-PROFILE
     local_interfaces:
     - name: Ethernet2.42
     dynamic_peers:
       enabled: true
-      ipsec: false
-    keepalive:
-      interval: 300
-      failure_threshold: 5
   - name: LAN_HA
     id: 65535
     flow_assignment: lan
     local_interfaces:
     - name: Ethernet52
     static_peers:
-    - router_ip: 192.168.143.1
+    - router_ip: 192.168.142.1
       name: asdot-for-wan-ha-transit1A1
       ipv4_addresses:
       - 172.17.0.1
   load_balance_policies:
-  - name: LB-PROD-AVT-POLICY-DEFAULT
-    path_groups:
-    - name: INET
-    - name: MPLS
-      priority: 2
-    - name: LAN_HA
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
@@ -531,9 +473,6 @@ transceiver_qsfp_default_mode_4x10: false
 vrfs:
 - name: MGMT
   ip_routing: false
-- name: PROD
-  ip_routing: true
-  tenant: TenantA
 vxlan_interface:
   vxlan1:
     description: asdot-for-wan-ha-transit1B1_VTEP
@@ -543,5 +482,3 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
-      - name: PROD
-        vni: 42
