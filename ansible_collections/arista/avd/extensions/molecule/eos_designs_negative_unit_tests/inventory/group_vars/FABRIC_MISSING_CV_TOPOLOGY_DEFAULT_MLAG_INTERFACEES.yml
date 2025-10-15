@@ -1,0 +1,41 @@
+---
+fabric_name: FABRIC_MISSING_CV_TOPOLOGY_DEFAULT_MLAG_INTERFACEES
+# Fabric node type keys
+mlag_support: true
+type: l3leaf
+fabric_ip_addressing:
+  mlag:
+    algorithm: "same_subnet"
+l3leaf:
+  defaults:
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    mlag_peer_l3_ipv4_pool: 10.10.224.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+    mlag_interfaces: [Ethernet5, Ethernet6]
+  node_groups:
+    - group: missing-cv-topology-default-mlag-interfaces
+      bgp_as: 923
+      nodes:
+        - name: missing-cv-topology-default-mlag-interfaces-peer2
+          id: 1
+          mgmt_ip: 192.168.201.116/24
+        - name: missing-cv-topology-default-mlag-interfaces-peer1
+          id: 2
+          mgmt_ip: 192.168.201.117/24
+use_cv_topology: true
+default_interfaces:
+  - platforms: [ vEOS-LAB ]
+    types: [ l3leaf ]
+    uplink_interfaces: [ Ethernet1-10 ]
+cv_topology:
+  - hostname: missing-cv-topology-default-mlag-interfaces-peer1
+    platform: vEOS-LAB
+    interfaces:
+      - name: Ethernet1
+        neighbor: missing-cv-topology-default-mlag-interfaces-peer2
+        neighbor_interface: Ethernet5
+
+expected_error_message: "Found 'use_cv_topology:true' so 'default_interfaces.[].mlag_interfaces' is required."
