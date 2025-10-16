@@ -74,6 +74,7 @@ ethernet_interfaces:
   peer: FIREWALL
   peer_interface: Eth2
   peer_type: firewall
+  peer_key: firewalls
   port_profile: PP-FIREWALL
 hostname: SPINE2
 ip_domain_lookup:

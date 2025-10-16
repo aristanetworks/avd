@@ -15,6 +15,7 @@
     | [<samp>&nbsp;&nbsp;pod_name</samp>](## "metadata.pod_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;dc_name</samp>](## "metadata.dc_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;fabric_name</samp>](## "metadata.fabric_name") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;serial_number</samp>](## "metadata.serial_number") | String |  |  |  | Serial Number of the device.<br>Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role. |
     | [<samp>&nbsp;&nbsp;cv_tags</samp>](## "metadata.cv_tags") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;device_tags</samp>](## "metadata.cv_tags.device_tags") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_tags.device_tags.[].name") | String | Required |  |  |  |
@@ -131,7 +132,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "metadata.digital_twin.username") | String |  |  |  | Local username assigned to a replica of the fabric device within the Digital Twin environment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "metadata.digital_twin.password") | String |  |  |  | Local password assigned to a replica of the fabric device within the Digital Twin environment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;internet_access</samp>](## "metadata.digital_twin.internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default. |
-    | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  | Serial Number of the device.<br>Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role. |
 
 === "YAML"
 
@@ -148,6 +148,10 @@
       pod_name: <str>
       dc_name: <str>
       fabric_name: <str>
+
+      # Serial Number of the device.
+      # Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role.
+      serial_number: <str>
       cv_tags:
         device_tags:
           - name: <str; required>
@@ -285,8 +289,4 @@
         # This option applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node types.
         # ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
         internet_access: <bool>
-
-    # Serial Number of the device.
-    # Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role.
-    serial_number: <str>
     ```
