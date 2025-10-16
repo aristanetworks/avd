@@ -60,6 +60,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: PP-BLUE
+  peer_key: servers
   switchport:
     enabled: true
     mode: access

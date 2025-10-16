@@ -6,12 +6,10 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
+from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.schema import EosDesigns
-
     from . import SharedUtilsProtocol
 
 
@@ -25,27 +23,29 @@ class CvTopology(Protocol):
 
     @cached_property
     def cv_topology(self: SharedUtilsProtocol) -> EosDesigns.CvTopologyItem | None:
-        """
-        Returns the cv_topology for this device.
-
-        {
-            hostname: <str>,
-            platform: <str | None>,
-            interfaces: [
-                {
-                    name: <str>
-                    neighbor: <str>
-                    neighbor_interface: <str>
-                }
-            ].
-        }
-        """
+        """Returns the cv_topology for this device after checking other dependencies."""
         if not self.inputs.use_cv_topology:
             return None
 
         if not self.inputs.cv_topology:
             msg = "'cv_topology' is required when 'use_cv_topology' is set to 'true'."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+
+        if not self.inputs.cv_topology_levels:
+            msg = "'cv_topology_levels' is required when 'use_cv_topology' is set to 'true'."
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+
+        if (
+            self.node_config.uplink_switches
+            or self.node_config.uplink_interfaces
+            or self.node_config.uplink_switch_interfaces
+            or self.node_config.mlag_interfaces
+        ):
+            msg = (
+                "'uplink_switches', 'uplink_interfaces', 'uplink_switch_interfaces' and 'mlag_interfaces' "
+                "should not be set when 'use_cv_topology' is set to 'true'."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         if self.hostname not in self.inputs.cv_topology:
             # Ignoring missing data for this device in cv_topology. Historic behavior and needed for hybrid scenarios.
@@ -59,51 +59,48 @@ class CvTopology(Protocol):
             return self.cv_topology.platform
         return None
 
+    def get_cv_topology_level(self: SharedUtilsProtocol, node_type: str) -> int:
+        if not (cv_topology_level := self.inputs.cv_topology_levels.get(node_type)):
+            msg = f"'cv_topology_levels' must include all node types when 'use_cv_topology' is set to 'true'. Missing type '{node_type}'."
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+        return cv_topology_level.level
+
     @cached_property
-    def cv_topology_config(self: SharedUtilsProtocol) -> dict:
-        """
-        Returns dict with keys derived from cv topology (or empty dict).
-
-        {
-            uplink_interfaces: list[str]
-            uplink_switches: list[str]
-            uplink_switch_interfaces: list[str]
-            mlag_interfaces: list[str]
-            mlag_peer: <str>
-            mgmt_interface: <str>
-        }
-        """
+    def cv_topology_config(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem:
+        """Returns node config derived from cv_topology to make it easy to merge on top of other node config."""
+        node_config = EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem()
         if self.cv_topology is None:
-            return {}
+            return node_config
 
-        cv_interfaces = self.cv_topology.interfaces
+        level = self.get_cv_topology_level(self.type)
+        for interface in self.cv_topology.interfaces._natural_sorted():
+            if interface.name.startswith("Management"):
+                # Only set the first management interface we find.
+                # For modulars that would be the alias interface.
+                if not node_config.mgmt_interface:
+                    node_config.mgmt_interface = interface.name
+                continue
 
-        if not self.default_interfaces.uplink_interfaces:
-            msg = "Found 'use_cv_topology:true' so 'default_interfaces.[].uplink_interfaces' is required."
-            raise AristaAvdInvalidInputsError(msg)
+            if not interface.neighbor or not interface.neighbor_interface:
+                # Silently ignore missing/incomplete peering information.
+                continue
 
-        config = {}
-        for uplink_interface in range_expand(self.default_interfaces.uplink_interfaces):
-            if cv_interface := cv_interfaces.get(uplink_interface):
-                config.setdefault("uplink_interfaces", []).append(cv_interface.name)
-                config.setdefault("uplink_switches", []).append(cv_interface.neighbor)
-                config.setdefault("uplink_switch_interfaces", []).append(cv_interface.neighbor_interface)
+            if self.mlag and interface.neighbor == self.mlag_peer:
+                node_config.mlag_interfaces.append(interface.name)
+                continue
 
-        if not self.mlag:
-            return config
+            if not (neighbor_facts := self.get_peer_facts(interface.neighbor, required=False)):
+                # Ignoring neighbors that are not part of the inventory.
+                continue
 
-        if not self.default_interfaces.mlag_interfaces:
-            msg = "Found 'use_cv_topology:true' so 'default_interfaces.[].mlag_interfaces' is required."
-            raise AristaAvdInvalidInputsError(msg)
+            neighbor_level = self.get_cv_topology_level(neighbor_facts.type)
 
-        for mlag_interface in range_expand(self.default_interfaces.mlag_interfaces):
-            if cv_interface := cv_interfaces.get(mlag_interface, default=None):
-                config.setdefault("mlag_interfaces", []).append(cv_interface.name)
-                # TODO: Set mlag_peer once we get a user-defined var for that.
-                # TODO: config["mlag_peer"] = cv_interface["neighbor"]
+            if neighbor_level < level:
+                # This device is the child.
+                node_config.uplink_switches.append(interface.neighbor)
+                node_config.uplink_interfaces.append(interface.name)
+                node_config.uplink_switch_interfaces.append(interface.neighbor_interface)
 
-        for cv_interface in cv_interfaces:
-            if cv_interface.name.startswith("Management"):
-                config["mgmt_interface"] = cv_interface.name
+            # Same levels or this device is the parent. We expect the child to set up the uplink information, so ignoring here.
 
-        return config
+        return node_config
