@@ -84,7 +84,7 @@ plugins:
         - ansible_collections/arista/avd/playbooks/*
         - ansible_collections/arista/avd/plugins/*
         - ansible_collections/arista/avd/changelogs/*
-        - ansible_collections/arista/avd/molecule/*
+        - ansible_collections/arista/avd/extensions/molecule/*
         - ansible_collections/arista/avd/tests/*
         - ansible_collections/arista/avd/plugins/README.md
         - docs/release-notes/1.0.x.md

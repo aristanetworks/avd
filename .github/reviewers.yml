@@ -19,7 +19,7 @@ ansible_collections/arista/avd/plugins/filter/**/*:
 ansible_collections/arista/avd/plugins/modules/**/*:
   - guillaumeVilar
   - noredistribution
-ansible_collections/arista/avd/molecule/**/*:
+ansible_collections/arista/avd/extensions/molecule/**/*:
   - carlbuchmann
 ansible_collections/arista/avd/docs/**/*:
   - carlbuchmann

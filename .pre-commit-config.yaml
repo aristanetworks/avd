@@ -11,23 +11,23 @@ repos:
     hooks:
       - id: trailing-whitespace
         name: Trims trailing whitespace.
-        exclude: ansible_collections/arista/avd/molecule
+        exclude: ansible_collections/arista/avd/extensions/molecule
       - id: end-of-file-fixer
         name: Ensures that a file is either empty, or ends with one newline.
         exclude_types: [svg, json]
-        exclude: ansible_collections/arista/avd/molecule
+        exclude: ansible_collections/arista/avd/extensions/molecule
       - id: check-added-large-files
         name: Prevents giant files from being committed.
         exclude: >-
           (?x)
-          (ansible_collections/arista/avd/molecule
+          (ansible_collections/arista/avd/extensions/molecule
           |pickle$
           |python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/__init__.py
           |python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py
           )
       - id: check-merge-conflict
         name: Checks for files that contain merge conflict strings.
-        exclude: ansible_collections/arista/avd/molecule
+        exclude: ansible_collections/arista/avd/extensions/molecule
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
     rev: v1.5.5
@@ -64,7 +64,7 @@ repos:
       - id: insert-license
         name: Check and insert license on Jinja2 files.
         files: .*\.j2$
-        exclude: ansible_collections/arista/avd/molecule.*
+        exclude: ansible_collections/arista/avd/extensions/molecule.*
         args:
           - --license-filepath
           - development/license-short.txt
@@ -78,7 +78,7 @@ repos:
       - id: insert-license
         name: Check and insert license on Markdown files.
         files: .*\.md$
-        exclude: (ansible_collections/arista/avd/molecule|.github|ansible_collections/arista/avd/examples/.+/documentation/).*
+        exclude: (ansible_collections/arista/avd/extensions/molecule|.github|ansible_collections/arista/avd/examples/.+/documentation/).*
         args:
           - --license-filepath
           - development/license-short.txt

@@ -1,0 +1,125 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_asdot-for-wan-ha-transit1A1_Ethernet52
+  shutdown: false
+  mtu: 9214
+  ip_address: 172.17.0.0/31
+  peer: asdot-for-wan-ha-transit1A1
+  peer_interface: Ethernet52
+  peer_type: wan_router
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_asdot-for-wan-ha-transit1B1_Ethernet52
+  shutdown: false
+  mtu: 9214
+  ip_address: 172.17.0.2/31
+  peer: asdot-for-wan-ha-transit1B1
+  peer_interface: Ethernet52
+  peer_type: wan_router
+  switchport:
+    enabled: false
+hostname: asdot-for-wan-ha-leaf11
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:00:01
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.45.1/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.255.1/32
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.45.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.255.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65199'
+  router_id: 192.168.45.1
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 172.17.0.1
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000.1'
+    peer: asdot-for-wan-ha-transit1A1
+    description: asdot-for-wan-ha-transit1A1_Ethernet52
+  - ip_address: 172.17.0.3
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000.1'
+    peer: asdot-for-wan-ha-transit1B1
+    description: asdot-for-wan-ha-transit1B1_Ethernet52
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: asdot-for-wan-ha-leaf11_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
