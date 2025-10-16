@@ -25,6 +25,5 @@ aaa authorization commands all default {{ aaa_authorization.commands.all_default
 {%     endif %}
 {%     for command_level in aaa_authorization.commands.privilege | arista.avd.natural_sort %}
 aaa authorization commands {{ command_level.level }} default {{ command_level.default }}
-{%         endif %}
 {%     endfor %}
 {% endif %}
