@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default, get, get_ip_from_ip_prefix
+from pyavd._utils import default, get_ip_from_ip_prefix
 from pyavd._utils.format_string import AvdStringFormatter
 from pyavd.j2filters import range_expand
 
@@ -44,7 +44,7 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_interfaces(self: SharedUtilsProtocol) -> list[str]:
-        return range_expand(self.node_config.mlag_interfaces or get(self.cv_topology_config, "mlag_interfaces") or self.default_interfaces.mlag_interfaces)
+        return range_expand(self.node_config.mlag_interfaces or self.cv_topology_config.mlag_interfaces or self.default_interfaces.mlag_interfaces)
 
     @cached_property
     def mlag_peer_ipv4_pool(self: SharedUtilsProtocol) -> str:
