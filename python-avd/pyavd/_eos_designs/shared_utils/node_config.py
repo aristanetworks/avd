@@ -63,11 +63,7 @@ class NodeConfigMixin(Protocol):
                 <node_type_key>.node_groups.[<node_group>].nodes.[<node>] ->
                     <node_type_key>.nodes.[<node>]
         """
-        node_config = (
-            self.node_type_config.nodes[self.hostname]
-            if self.hostname in self.node_type_config.nodes
-            else EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem()
-        )
+        node_config = self.node_type_config.nodes.get(self.hostname, default=EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem())
 
         if self.node_group_config is not None:
             node_config._deepinherit(
