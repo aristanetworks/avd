@@ -41,8 +41,8 @@ rules:
   line-length:
     max: 160
     ignore:
-      - /ansible_collections/arista/avd/molecule/**/intended/structured_configs/
-      - /ansible_collections/arista/avd/molecule/**/intended/structured_configs/cvp/
+      - /ansible_collections/arista/avd/extensions/molecule/**/intended/structured_configs/
+      - /ansible_collections/arista/avd/extensions/molecule/**/intended/structured_configs/cvp/
       - /ansible_collections/arista/avd/examples/**/intended/structured_configs/cvp/
       - /ansible_collections/arista/avd/changelogs/fragments_backup/
       - /ansible_collections/arista/avd/tests/inventory/**/expected_output/

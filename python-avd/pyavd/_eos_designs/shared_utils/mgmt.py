@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default, get
+from pyavd._utils import default
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
@@ -37,7 +37,7 @@ class MgmtMixin(Protocol):
             # TODO: Evaluate if we should remove the default values from either or both.
             self.platform_settings._get("management_interface", None),
             self.inputs._get("mgmt_interface", None),
-            get(self.cv_topology_config, "mgmt_interface"),
+            self.cv_topology_config.mgmt_interface,
             "Management1",
         )
 

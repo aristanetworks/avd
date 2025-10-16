@@ -1,0 +1,31 @@
+# Copyright (c) 2025 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  cv_topology_levels:
+    documentation_options:
+      table: cv-topology
+    type: list
+    primary_key: type
+    description: |-
+      Type to level assignment used for generation of the AVD topology from the CloudVision topology.
+      See `cv_topology` for details.
+    items:
+      type: dict
+      keys:
+        type:
+          type: str
+          description: Node type like l3leaf, l2spine etc.
+        level:
+          type: int
+          required: true
+          convert_types:
+            - str
+          description: |-
+            Level value used to determine the relationship between two devices for a connection.
+            The lower value is the "parent switch" (like Spine).
+            The higher value is the "child switch" (like Leaf).

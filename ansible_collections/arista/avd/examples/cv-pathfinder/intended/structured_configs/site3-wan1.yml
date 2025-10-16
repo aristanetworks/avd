@@ -3,11 +3,6 @@ aaa_authorization:
     default: local
 aaa_root:
   disabled: true
-agents:
-- name: KernelFib
-  environment_variables:
-  - name: KERNELFIB_PROGRAM_ALL_ECMP
-    value: '1'
 application_traffic_recognition:
   field_sets:
     l4_ports:
@@ -216,6 +211,8 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+kernel:
+  software_forwarding_ecmp: true
 local_users:
 - name: admin
   privilege: 15
