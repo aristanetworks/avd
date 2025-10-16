@@ -10,4 +10,5 @@ keys:
     type: dict
     keys:
       enabled:
+        required: true
         type: bool

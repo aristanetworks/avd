@@ -300,12 +300,14 @@ keys:
                 max: 255
                 convert_types:
                 - str
+                required: true
               duration:
                 type: int
                 min: 1
                 max: 4294967295
                 convert_types:
                 - str
+                required: true
               window:
                 type: int
                 min: 1
@@ -374,8 +376,10 @@ keys:
                   description: Privilege level(s) 0-15.
                   convert_types:
                   - int
+                  required: true
                 default:
                   type: str
+                  required: true
                   description: 'Command authorization method(s) as a string.
 
                     Examples:
@@ -413,6 +417,7 @@ keys:
           - tacacs+
           - radius
           - ldap
+          required: true
         servers:
           type: list
           items:
@@ -835,9 +840,11 @@ keys:
                     valid_values:
                     - permit
                     - deny
+                    required: true
                   match:
                     type: str
                     description: Regex To Match.
+                    required: true
                   origin:
                     type: str
                     valid_values:
@@ -1386,6 +1393,7 @@ keys:
               description: Cluster Name.
             cvaddrs:
               type: list
+              required: true
               description: 'Streaming address(es) for CloudVision cluster.
 
                 - TCP 9910 is used for CV on-prem
@@ -1681,6 +1689,7 @@ keys:
           type: str
           description: VRF in which to configure the DHCP server, use `default` to
             indicate default VRF.
+          required: true
           convert_types:
           - int
         lease_time_ipv4:
@@ -2065,6 +2074,7 @@ keys:
                     keys:
                       time_duration:
                         type: int
+                        required: true
                         convert_types:
                         - str
                         min: 1
@@ -2113,6 +2123,7 @@ keys:
                     keys:
                       time_duration:
                         type: int
+                        required: true
                         convert_types:
                         - str
                         min: 1
@@ -2298,6 +2309,7 @@ keys:
             interface in the final EOS configuration.
   dynamic_prefix_lists:
     type: list
+    primary_key: name
     items:
       type: dict
       keys:
@@ -2306,6 +2318,7 @@ keys:
           description: Dynamic prefix-list name.
         match_map:
           type: str
+          required: true
           description: Route-map name.
         prefix_list:
           type: dict
@@ -4097,6 +4110,7 @@ keys:
                               values.
                           min:
                             type: int
+                            required: true
                             min: 1
                             max: 256000000
                             convert_types:
@@ -5253,6 +5267,7 @@ keys:
     type: dict
     keys:
       enabled:
+        required: true
         type: bool
   flow_tracking:
     type: dict

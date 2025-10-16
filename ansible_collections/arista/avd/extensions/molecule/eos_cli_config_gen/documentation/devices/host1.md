@@ -1,10 +1,7 @@
 # hostname-set-via-hostname-var
 
-Serial Number: DEADBEEFC0FFEW
-
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Banner](#banner)
   - [Agents](#agents)

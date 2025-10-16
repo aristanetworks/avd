@@ -38,6 +38,7 @@ keys:
               description: Cluster Name.
             cvaddrs:
               type: list
+              required: true
               description: |
                 Streaming address(es) for CloudVision cluster.
                 - TCP 9910 is used for CV on-prem

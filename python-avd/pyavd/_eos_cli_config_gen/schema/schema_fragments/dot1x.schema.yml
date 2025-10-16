@@ -156,6 +156,7 @@ keys:
                     keys:
                       time_duration:
                         type: int
+                        required: true
                         convert_types:
                           - str
                         min: 1
@@ -199,6 +200,7 @@ keys:
                     keys:
                       time_duration:
                         type: int
+                        required: true
                         convert_types:
                           - str
                         min: 1

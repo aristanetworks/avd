@@ -375,9 +375,12 @@ radius-server attribute 32 include-in-access-req format myformat
 | Type | Sub-type | User Stores |
 | ---- | -------- | ---------- |
 
+Policy lockout has been enabled. After **3** failed login attempts within **1440** minutes, you'll be locked out for **300** minutes.
+
 #### AAA Authentication Device Configuration
 
 ```eos
+aaa authentication policy lockout failure 3 duration 300
 !
 ```
 

@@ -8,11 +8,11 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>event_monitor</samp>](## "event_monitor") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;enabled</samp>](## "event_monitor.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "event_monitor.enabled") | Boolean | Required |  |  |  |
 
 === "YAML"
 
     ```yaml
     event_monitor:
-      enabled: <bool>
+      enabled: <bool; required>
     ```

@@ -8,6 +8,7 @@ type: dict
 keys:
   dynamic_prefix_lists:
     type: list
+    primary_key: name
     items:
       type: dict
       keys:
@@ -16,6 +17,7 @@ keys:
           description: Dynamic prefix-list name.
         match_map:
           type: str
+          required: true
           description: Route-map name.
         prefix_list:
           type: dict
