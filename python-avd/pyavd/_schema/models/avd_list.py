@@ -265,7 +265,7 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
         Combining is different from merging in the sense that it will raise if there is a conflict
         between one of our elements and the other elements.
 
-        for AvdList this is simply an append_unique, if any conflict occurs a duplicate error will be raised.
+        For AvdList this is simply an append_unique, if any conflict occurs a duplicate error will be raised.
 
         Args:
             other: The other instance of the same type to combine into this instance.
