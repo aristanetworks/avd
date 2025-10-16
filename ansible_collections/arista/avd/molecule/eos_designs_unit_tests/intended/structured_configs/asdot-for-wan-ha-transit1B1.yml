@@ -1,5 +1,10 @@
 aaa_root:
   disabled: true
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 application_traffic_recognition:
   field_sets:
     ipv4_prefixes:
@@ -120,13 +125,15 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
-kernel:
-  software_forwarding_ecmp: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.2/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
 management_security:
   ssl_profiles:
   - name: STUN-DTLS
