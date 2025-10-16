@@ -17,7 +17,7 @@ from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import IS_NEW_ANSIBLE, ActionPluginVars, AvdSwitchFactsDefaultDict, get_templar, write_file
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import ANSIBLE_ABOVE_2_19, ActionPluginVars, AvdSwitchFactsDefaultDict, get_templar, write_file
 
 PLUGIN_NAME = "arista.avd.eos_designs_structured_config"
 try:
@@ -63,7 +63,7 @@ class ActionModule(ActionBase):
         file_mode = str(self._task.args.get("mode", "0o664"))
 
         # Only template output on ansible versions < 2.19.
-        template_output = bool(self._task.args.get("template_output", False)) and not IS_NEW_ANSIBLE
+        template_output = bool(self._task.args.get("template_output", False)) and not ANSIBLE_ABOVE_2_19
 
         validation_mode = self._task.args.get("validation_mode")
         digital_twin = self._task.args.get("digital_twin", False)
