@@ -84,8 +84,8 @@ def inventory() -> Any:
     with INVENTORY_FILE.open(encoding="utf8") as stream:
         try:
             inventory_content = yaml.safe_load(stream)
-        except yaml.YAMLError as e:
-            LOGGER.exception("Failed to load YAML file: %s", exc_info=e)
+        except yaml.YAMLError:
+            LOGGER.exception("Failed to load YAML file")
             return None
         return inventory_content
 
