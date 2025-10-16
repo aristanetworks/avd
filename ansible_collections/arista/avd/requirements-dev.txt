@@ -25,7 +25,7 @@ pylint>=3.2.6
 pre-commit>=3.2.0
 pre-commit-hooks>=3.3.0
 referencing>=0.35.0
-ruff==0.13.3
+ruff==0.14.0
 tox
 twine
 yamllint
