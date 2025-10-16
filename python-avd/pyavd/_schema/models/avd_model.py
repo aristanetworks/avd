@@ -471,7 +471,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
 
         Combining is different from merging in the sense that it will raise if there is a conflict
         between one of our properties and the same property of the other.
-        
+
         Properties of types AvdModel, AvdList and AvdIndexedList are recursively combined.
 
         Args:
