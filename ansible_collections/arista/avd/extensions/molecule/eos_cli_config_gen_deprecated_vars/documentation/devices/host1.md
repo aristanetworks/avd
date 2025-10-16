@@ -1,9 +1,9 @@
-# ip-name-server-groups
+# host1
 
 ## Table of Contents
 
 - [Management](#management)
-  - [IP Name Server Groups](#ip-name-server-groups-1)
+  - [IP Name Server Groups](#ip-name-server-groups)
 
 ## Management
 
