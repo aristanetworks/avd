@@ -10,8 +10,8 @@
             "gateway": "10.73.255.2"
         }
     ],
-    "inventory_file": "/home/holbech/avd/ansible_collections/arista/avd/molecule/eos_cli_config_gen/inventory/hosts.ini",
-    "inventory_dir": "/home/holbech/avd/ansible_collections/arista/avd/molecule/eos_cli_config_gen/inventory",
+    "inventory_file": "/home/holbech/avd/ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen/inventory/hosts.ini",
+    "inventory_dir": "/home/holbech/avd/ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen/inventory",
     "inventory_hostname": "ethernet-interfaces",
     "inventory_hostname_short": "ethernet-interfaces",
     "group_names": [
@@ -2457,7 +2457,7 @@
     "ansible_diff_mode": false,
     "ansible_forks": 10,
     "ansible_inventory_sources": [
-        "/home/holbech/avd/ansible_collections/arista/avd/molecule/eos_cli_config_gen/inventory/hosts.ini"
+        "/home/holbech/avd/ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen/inventory/hosts.ini"
     ],
     "ansible_skip_tags": [],
     "ansible_limit": "all:!prompt:!custom-templates",
