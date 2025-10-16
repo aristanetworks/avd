@@ -7,7 +7,7 @@
 
   arista.avd.eos_designs_structured_config:
     template_output: false
-  skip: ansible_version.major == 2 and ansible_version.minor >= 19
+  when: ansible_version.major == 2 and ansible_version.minor < 19
 - ansible.builtin.assert:
     that:
       - result is success
@@ -18,4 +18,4 @@
   vars:
     # Expecting the raw template on older ansible-core versions. From 2.19 and above it will get templated automatically by ansible on access.
     expected: "\\{\\{ _inline_jinja_value_1 \\}\\}"
-  skip: ansible_version.major == 2 and ansible_version.minor >= 19
+  when: ansible_version.major == 2 and ansible_version.minor < 19
