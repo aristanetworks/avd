@@ -65,6 +65,7 @@ ethernet_interfaces:
   peer: server03_ESI_L2LEAF
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: TENANT_A_B
 hostname: DC1-L2LEAF1B
 ip_igmp_snooping:

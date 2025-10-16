@@ -11,7 +11,11 @@ l3spine:
 l3_edge:
   p2p_links:
     - ip: [10.10.10.0/31, 10.10.10.1/31]
-      nodes: [avd_eos_designs_enforce_duplication_checks_across_all_models, somethingelse]
+      nodes:
+        [
+          avd_eos_designs_enforce_duplication_checks_across_all_models,
+          somethingelse,
+        ]
       interfaces: [Ethernet1, Ethernet1]
 
 servers:
@@ -23,7 +27,7 @@ servers:
 
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for EthernetInterfaces.
-  {'name': 'Ethernet1', 'description': 'SERVER_Myserver', 'shutdown': False, 'peer': 'Myserver', 'peer_type': 'server', 'switchport': {'enabled': True}}
-  conflicts with
+  {'name': 'Ethernet1', 'description': 'SERVER_Myserver', 'shutdown': False, 'peer': 'Myserver', 'peer_type': 'server', 'peer_key': 'servers',
+  'switchport': {'enabled': True}} conflicts with
   {'name': 'Ethernet1', 'description': 'P2P_somethingelse_Ethernet1', 'shutdown': False, 'mtu': 9214, 'ip_address': '10.10.10.0/31', 'peer': 'somethingelse',
   'peer_interface': 'Ethernet1', 'peer_type': 'other', 'switchport': {'enabled': False}}.

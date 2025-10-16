@@ -99,6 +99,7 @@ ethernet_interfaces:
   peer: CPE_TENANT_A_SITE1
   peer_interface: Ethernet2
   peer_type: cpe
+  peer_key: cpes
   port_profile: TENANT_A_WAN_SERVICE_10
 hostname: SITE1-LER2
 ip_igmp_snooping:

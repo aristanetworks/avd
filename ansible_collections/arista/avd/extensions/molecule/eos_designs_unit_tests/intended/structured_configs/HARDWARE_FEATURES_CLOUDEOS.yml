@@ -77,6 +77,7 @@ ethernet_interfaces:
   peer: TEST_POE
   peer_interface: ETH3_NO_POE
   peer_type: server
+  peer_key: servers
   switchport:
     enabled: true
 - name: Ethernet8
@@ -87,12 +88,14 @@ ethernet_interfaces:
     mode: active
   peer: TEST_MTU_MRU
   peer_type: server
+  peer_key: servers
 - name: Ethernet6
   description: SERVER_TEST_INTERFACE_STORM_CONTROL_ETH13_NO_STORM_CONTROL
   shutdown: false
   peer: TEST_INTERFACE_STORM_CONTROL
   peer_interface: ETH13_NO_STORM_CONTROL
   peer_type: server
+  peer_key: servers
   switchport:
     enabled: true
 hardware_counters: null

@@ -46,6 +46,7 @@ ethernet_interfaces:
   peer: server_with_tg_200
   peer_interface: Nic1
   peer_type: server
+  peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -62,6 +63,7 @@ ethernet_interfaces:
   peer: server_with_tg_300
   peer_interface: Nic4
   peer_type: server
+  peer_key: servers
 hostname: trunk-group-tests-l2leaf1b
 ip_igmp_snooping:
   globally_enabled: true

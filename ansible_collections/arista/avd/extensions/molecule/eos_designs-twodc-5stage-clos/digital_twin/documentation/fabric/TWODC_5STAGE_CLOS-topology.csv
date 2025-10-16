@@ -41,6 +41,9 @@ l3leaf,DC1-POD1-LEAF2B,,Ethernet16,server,server-1,,Eth2,True
 l3leaf,DC1-POD1-LEAF2B,,Ethernet17,server,server-1,,Eth4,True
 l3leaf,DC1-POD1-LEAF2B,,Ethernet18,server,server-1,,Eth6,True
 l3leaf,DC1-POD1-LEAF2B,,Ethernet19,server,server-1,,Eth8,True
+l3leaf,DC1-POD1-LEAF2B,,Ethernet26,SpecialServer,server-2,,Eth2,True
+l3leaf,DC1-POD1-LEAF2B,,Ethernet27,,server-3,,Eth2,True
+l3leaf,DC1-POD1-LEAF2B,,Ethernet28,SpecialEndpoint,server-4,,Eth6,True
 spine,DC1-POD1-SPINE1,,Ethernet1,super-spine,DC1-SUPER-SPINE1,,Ethernet1,True
 spine,DC1-POD1-SPINE1,,Ethernet2,super-spine,DC1-SUPER-SPINE2,,Ethernet1,True
 spine,DC1-POD1-SPINE1,,Ethernet3,l3leaf,DC1-POD1-LEAF1A,,Ethernet1,True
@@ -104,6 +107,9 @@ l3leaf,DC1.POD1.LEAF2A,,Ethernet16,server,server-1,,Eth1,True
 l3leaf,DC1.POD1.LEAF2A,,Ethernet17,server,server-1,,Eth3,True
 l3leaf,DC1.POD1.LEAF2A,,Ethernet18,server,server-1,,Eth5,True
 l3leaf,DC1.POD1.LEAF2A,,Ethernet19,server,server-1,,Eth7,True
+l3leaf,DC1.POD1.LEAF2A,,Ethernet26,SpecialServer,server-2,,Eth1,True
+l3leaf,DC1.POD1.LEAF2A,,Ethernet27,,server-3,,Eth1,True
+l3leaf,DC1.POD1.LEAF2A,,Ethernet28,SpecialEndpoint,server-4,,Eth5,True
 l2leaf,DC2-POD1-L2LEAF1A,,Ethernet1,l3leaf,DC2-POD1-LEAF1A,,Ethernet3,True
 l2leaf,DC2-POD1-L2LEAF2A,,Ethernet1,l3leaf,DC2-POD1-LEAF2A,,Ethernet3,True
 l3leaf,DC2-POD1-LEAF1A,,Ethernet1,spine,DC2-POD1-SPINE1,,Ethernet3,True

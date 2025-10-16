@@ -73,6 +73,7 @@ ethernet_interfaces:
   peer: TEST_POE
   peer_interface: ETH7_NO_POE
   peer_type: server
+  peer_key: servers
   switchport:
     enabled: true
 hardware_counters:

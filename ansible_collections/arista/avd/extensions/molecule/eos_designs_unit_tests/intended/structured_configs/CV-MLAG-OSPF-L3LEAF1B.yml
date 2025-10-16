@@ -59,7 +59,7 @@ loopback_interfaces:
   ip_address: 192.168.254.36/32
   ospf_area: 0.0.0.0
 management_interfaces:
-- name: Management1
+- name: Management67
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
