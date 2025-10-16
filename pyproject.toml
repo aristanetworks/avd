@@ -53,7 +53,7 @@ convention = "google"
   "E402",   # Ansible plugins require a layout with imports below the docs
   "INP001", # implicit namespace package. Add an `__init__.py` - Ansible plugins are not in packages
 ]
-"ansible_collections/arista/avd/molecule/eos_designs_unit_tests/custom_modules/*.py" = [
+"ansible_collections/arista/avd/extensions/molecule/eos_designs_unit_tests/custom_modules/*.py" = [
   "INP001", # implicit namespace package. Add an `__init__.py` - TODO: Evaluate or see if it is a false positive
 ]
 "python-avd/scripts/**/*.py" = [

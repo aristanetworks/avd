@@ -25,7 +25,7 @@ if TYPE_CHECKING:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 
 REPO_ROOT = Path(__file__).parents[2]
-MOLECULE_PATH = REPO_ROOT / "ansible_collections/arista/avd/molecule"
+MOLECULE_PATH = REPO_ROOT / "ansible_collections/arista/avd/extensions/molecule"
 EXAMPLE_PATH = REPO_ROOT / "ansible_collections/arista/avd/examples"
 
 
