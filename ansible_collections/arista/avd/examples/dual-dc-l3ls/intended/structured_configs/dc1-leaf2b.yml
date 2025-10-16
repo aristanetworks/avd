@@ -70,6 +70,7 @@ ethernet_interfaces:
   peer: dc1-leaf2-server1
   peer_interface: PCI2
   peer_type: server
+  peer_key: servers
 hostname: dc1-leaf2b
 ip_igmp_snooping:
   globally_enabled: true
@@ -199,7 +200,6 @@ router_bgp:
   router_id: 10.255.0.6
   maximum_paths:
     paths: 4
-    ecmp: 4
   bgp:
     default:
       ipv4_unicast: false

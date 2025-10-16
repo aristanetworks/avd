@@ -54,6 +54,7 @@ ethernet_interfaces:
   peer: HostA
   peer_interface: Eth1
   peer_type: server
+  peer_key: servers
   port_profile: PP-BLUE
   switchport:
     enabled: true

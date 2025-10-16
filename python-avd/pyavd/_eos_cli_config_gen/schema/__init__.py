@@ -12260,6 +12260,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "peer": {"type": str},
             "peer_interface": {"type": str},
             "peer_type": {"type": str},
+            "peer_key": {"type": str},
             "sflow": {"type": Sflow},
             "sync_e": {"type": SyncE},
             "port_profile": {"type": str},
@@ -12464,6 +12465,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Key only used for documentation or validation purposes."""
         peer_type: str | None
         """Key only used for documentation or validation purposes."""
+        peer_key: str | None
+        """Key only used for documentation or validation purposes."""
         sflow: Sflow
         """Subclass of AvdModel."""
         sync_e: SyncE
@@ -12599,6 +12602,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 peer: str | None | UndefinedType = Undefined,
                 peer_interface: str | None | UndefinedType = Undefined,
                 peer_type: str | None | UndefinedType = Undefined,
+                peer_key: str | None | UndefinedType = Undefined,
                 sflow: Sflow | UndefinedType = Undefined,
                 sync_e: SyncE | UndefinedType = Undefined,
                 port_profile: str | None | UndefinedType = Undefined,
@@ -12735,6 +12739,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer: Key only used for documentation or validation purposes.
                     peer_interface: Key only used for documentation or validation purposes.
                     peer_type: Key only used for documentation or validation purposes.
+                    peer_key: Key only used for documentation or validation purposes.
                     sflow: Subclass of AvdModel.
                     sync_e: Subclass of AvdModel.
                     port_profile: Key only used for documentation or validation purposes.
@@ -24399,6 +24404,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "pod_name": {"type": str},
             "dc_name": {"type": str},
             "fabric_name": {"type": str},
+            "serial_number": {"type": str},
             "cv_tags": {"type": CvTags},
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
@@ -24411,6 +24417,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         pod_name: str | None
         dc_name: str | None
         fabric_name: str | None
+        serial_number: str | None
+        """
+        Serial Number of the device.
+        Used only for documentation and deployment purposes. It is used by the
+        'cv_deploy' role.
+        """
         cv_tags: CvTags
         """Subclass of AvdModel."""
         cv_pathfinder: CvPathfinder
@@ -24438,6 +24450,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 pod_name: str | None | UndefinedType = Undefined,
                 dc_name: str | None | UndefinedType = Undefined,
                 fabric_name: str | None | UndefinedType = Undefined,
+                serial_number: str | None | UndefinedType = Undefined,
                 cv_tags: CvTags | UndefinedType = Undefined,
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
@@ -24456,6 +24469,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     pod_name: pod_name
                     dc_name: dc_name
                     fabric_name: fabric_name
+                    serial_number:
+                       Serial Number of the device.
+                       Used only for documentation and deployment purposes. It is used by the
+                       'cv_deploy' role.
                     cv_tags: Subclass of AvdModel.
                     cv_pathfinder:
                        Metadata used for CV Pathfinder visualization on CloudVision.
@@ -33559,6 +33576,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "peer": {"type": str},
             "peer_interface": {"type": str},
             "peer_type": {"type": str},
+            "peer_key": {"type": str},
             "sflow": {"type": Sflow},
             "vrrp_ids": {"type": VrrpIds},
             "switchport": {"type": Switchport},
@@ -33708,6 +33726,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Key only used for documentation or validation purposes."""
         peer_type: str | None
         """Key only used for documentation or validation purposes."""
+        peer_key: str | None
+        """Key only used for documentation or validation purposes."""
         sflow: Sflow
         """Subclass of AvdModel."""
         vrrp_ids: VrrpIds
@@ -33814,6 +33834,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 peer: str | None | UndefinedType = Undefined,
                 peer_interface: str | None | UndefinedType = Undefined,
                 peer_type: str | None | UndefinedType = Undefined,
+                peer_key: str | None | UndefinedType = Undefined,
                 sflow: Sflow | UndefinedType = Undefined,
                 vrrp_ids: VrrpIds | UndefinedType = Undefined,
                 switchport: Switchport | UndefinedType = Undefined,
@@ -33914,6 +33935,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer: Key only used for documentation or validation purposes.
                     peer_interface: Key only used for documentation or validation purposes.
                     peer_type: Key only used for documentation or validation purposes.
+                    peer_key: Key only used for documentation or validation purposes.
                     sflow: Subclass of AvdModel.
                     vrrp_ids:
                        VRRP model.
@@ -67139,6 +67161,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {
                     "source_interface": {"type": str},
+                    "shutdown": {"type": bool},
                     "multicast": {"type": Multicast},
                     "controller_client": {"type": ControllerClient},
                     "mlag_source_interface": {"type": str},
@@ -67156,6 +67179,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 }
                 source_interface: str | None
                 """Source Interface Name."""
+                shutdown: bool | None
                 multicast: Multicast
                 """Subclass of AvdModel."""
                 controller_client: ControllerClient
@@ -67212,6 +67236,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         source_interface: str | None | UndefinedType = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
                         multicast: Multicast | UndefinedType = Undefined,
                         controller_client: ControllerClient | UndefinedType = Undefined,
                         mlag_source_interface: str | None | UndefinedType = Undefined,
@@ -67235,6 +67260,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             source_interface: Source Interface Name.
+                            shutdown: shutdown
                             multicast: Subclass of AvdModel.
                             controller_client:
                                Client to CVX Controllers.
@@ -67410,7 +67436,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ipv6_standard_access_lists": {"type": Ipv6StandardAccessLists},
         "ipv6_static_routes": {"type": Ipv6StaticRoutes},
         "ipv6_unicast_routing": {"type": bool},
-        "is_deployed": {"type": bool},
         "kernel": {"type": Kernel},
         "l2_protocol": {"type": L2Protocol},
         "lacp": {"type": Lacp},
@@ -67487,7 +67512,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "router_segment_security": {"type": RouterSegmentSecurity},
         "router_service_insertion": {"type": RouterServiceInsertion},
         "router_traffic_engineering": {"type": RouterTrafficEngineering},
-        "serial_number": {"type": str},
         "service_routing_configuration_bgp": {"type": ServiceRoutingConfigurationBgp},
         "service_routing_protocols_model": {"type": str},
         "service_unsupported_transceiver": {"type": ServiceUnsupportedTransceiver},
@@ -67796,12 +67820,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ipv6_static_routes: Ipv6StaticRoutes
     """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
     ipv6_unicast_routing: bool | None
-    is_deployed: bool | None
-    """
-    Key only used for documentation or validation purposes.
-    This key is deprecated and new key is
-    metadata.is_deployed.
-    """
     kernel: Kernel
     """Subclass of AvdModel."""
     l2_protocol: L2Protocol
@@ -68006,12 +68024,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     router_traffic_engineering: RouterTrafficEngineering
     """Subclass of AvdModel."""
-    serial_number: str | None
-    """
-    Serial Number of the device.
-    Used only for documentation and deployment purposes. It is used by the
-    'cv_deploy' role.
-    """
     service_routing_configuration_bgp: ServiceRoutingConfigurationBgp
     """Subclass of AvdModel."""
     service_routing_protocols_model: ServiceRoutingProtocolsModel | None
@@ -68180,7 +68192,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ipv6_standard_access_lists: Ipv6StandardAccessLists | UndefinedType = Undefined,
             ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
             ipv6_unicast_routing: bool | None | UndefinedType = Undefined,
-            is_deployed: bool | None | UndefinedType = Undefined,
             kernel: Kernel | UndefinedType = Undefined,
             l2_protocol: L2Protocol | UndefinedType = Undefined,
             lacp: Lacp | UndefinedType = Undefined,
@@ -68257,7 +68268,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             router_segment_security: RouterSegmentSecurity | UndefinedType = Undefined,
             router_service_insertion: RouterServiceInsertion | UndefinedType = Undefined,
             router_traffic_engineering: RouterTrafficEngineering | UndefinedType = Undefined,
-            serial_number: str | None | UndefinedType = Undefined,
             service_routing_configuration_bgp: ServiceRoutingConfigurationBgp | UndefinedType = Undefined,
             service_routing_protocols_model: ServiceRoutingProtocolsModel | None | UndefinedType = Undefined,
             service_unsupported_transceiver: ServiceUnsupportedTransceiver | UndefinedType = Undefined,
@@ -68473,10 +68483,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_standard_access_lists: Subclass of AvdIndexedList with `Ipv6StandardAccessListsItem` items. Primary key is `name` (`str`).
                 ipv6_static_routes: Subclass of AvdList with `Ipv6StaticRoutesItem` items.
                 ipv6_unicast_routing: ipv6_unicast_routing
-                is_deployed:
-                   Key only used for documentation or validation purposes.
-                   This key is deprecated and new key is
-                   metadata.is_deployed.
                 kernel: Subclass of AvdModel.
                 l2_protocol: Subclass of AvdModel.
                 lacp:
@@ -68594,10 +68600,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 router_traffic_engineering: Subclass of AvdModel.
-                serial_number:
-                   Serial Number of the device.
-                   Used only for documentation and deployment purposes. It is used by the
-                   'cv_deploy' role.
                 service_routing_configuration_bgp: Subclass of AvdModel.
                 service_routing_protocols_model: service_routing_protocols_model
                 service_unsupported_transceiver: Subclass of AvdModel.

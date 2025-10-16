@@ -7,7 +7,7 @@ from logging import getLogger
 from time import perf_counter
 from typing import TYPE_CHECKING
 
-from pyavd._utils import default, get
+from pyavd._utils import get
 
 if TYPE_CHECKING:
     from ._anta.lib import AntaCatalog
@@ -67,7 +67,7 @@ def get_device_test_catalog(
     start_time = perf_counter()
     LOGGER.debug("<%s> Generating ANTA catalog with settings: %s", hostname, settings.model_dump(mode="json"))
 
-    if settings.ignore_is_deployed is False and not default(get(structured_config, "metadata.is_deployed", get(structured_config, "is_deployed", False))):
+    if settings.ignore_is_deployed is False and not get(structured_config, "metadata.is_deployed", default=False):
         LOGGER.info("<%s> Device is not deployed, returning an empty catalog", hostname)
         return AntaCatalog()
 
