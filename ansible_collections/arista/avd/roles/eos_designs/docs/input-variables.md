@@ -1620,7 +1620,7 @@ This feature is intended to be used for the integration of AVD and CloudVision S
 
 The topology should be pulled from the CloudVision "Inventory and Topology Studio" inputs. Device IDs must be translated to hostnames.
 
-This feature currently provides the following configurations based on the given CloudVision topology and `default_interfaces`:
+This feature currently provides the following configurations based on the given CloudVision topology:
 
 - `uplink_switches`
 - `uplink_interfaces`
@@ -1630,18 +1630,28 @@ This feature currently provides the following configurations based on the given 
 - `mgmt_interface` (if interface "ManagementX" is found in the list)
 
 !!! note
-    Any derived configuration can be overridden by setting the key manually.
-    Even keys set under node type `defaults` will take precedence over these derived configurations.
+    `cv_topology` can not be combined with manually set `uplink_switches`, `uplink_interfaces`, `uplink_switch_interfaces` and `mlag_interfaces`.
 
     When using parallel links between the same devices for L3 uplinks it is important to set
     `max_uplink_switches` and `max_parallel_uplinks` to ensure consistent IP addressing.
 
 ??? example "`cv_topology` example"
-    To use this feature set `default_interfaces` according to the intended design (see [default_interfaces](#default-interface-settings) for details) and set `use_cv_topology` to `true`.
+    To use this feature set `cv_topology_levels` according to the intended design and set `use_cv_topology` to `true`.
     Provide a full topology under `cv_topology` like this example:
 
     ```yaml
     use_cv_topology: true
+    cv_topology_levels:
+      - type: super-spine
+        level: 1
+      - type: spine
+        level: 2
+      - type: l3leaf
+        level: 3
+      - type: l2leaf
+        level: 4
+      - type: overlay-controller
+        level: 5
     cv_topology:
       - hostname: s2-spine2
         platform: vEOS-LAB
