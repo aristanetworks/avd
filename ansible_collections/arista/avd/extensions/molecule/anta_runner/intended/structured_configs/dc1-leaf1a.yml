@@ -81,6 +81,7 @@ ethernet_interfaces:
   peer: dc1-leaf1-server1
   peer_interface: PCI1
   peer_type: server
+  peer_key: servers
   validate_state: false
 - name: Ethernet31
   description: WORKSTATION_dc1-leaf1-workstation1_e1
@@ -89,6 +90,7 @@ ethernet_interfaces:
   peer: dc1-leaf1-workstation1
   peer_interface: e1
   peer_type: workstation
+  peer_key: workstations
   port_profile: Workstations
   validate_state: false
   switchport:
@@ -102,6 +104,7 @@ ethernet_interfaces:
   peer: dc1-leaf1-workstation2
   peer_interface: e1
   peer_type: workstation
+  peer_key: workstations
   port_profile: Workstations
   validate_state: false
   switchport:
@@ -115,6 +118,7 @@ ethernet_interfaces:
   peer: dc1-leaf1-workstationNoLLDP
   peer_interface: e1
   peer_type: workstation
+  peer_key: workstations
   port_profile: Workstations_NoLLDP
   validate_lldp: false
   switchport:

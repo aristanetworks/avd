@@ -158,7 +158,7 @@ node_type_keys:
   - key: overlay_controller
     type: overlay-controller
 
-use_cv_topology: true
+# use_cv_topology: true  # This is set in hostvars only for the devices mentioned below.
 cv_topology:
   - hostname: DC1-RS1
     platform: vEOS-LAB
@@ -214,20 +214,17 @@ cv_topology:
       - name: Ethernet6
         neighbor: DC1.POD1.LEAF2A
         neighbor_interface: Ethernet6
-
-# Providing select default interfaces to be used by `use_cv_topology`
-# for automatically deriving the topology from the given `cv_topology`
-default_interfaces:
-  - platforms: [ vEOS-LAB ]
-    types: [ overlay-controller ]
-    uplink_interfaces: [ Ethernet1-10 ]
-  - platforms: [ vEOS-LAB ]
-    types: [ overlay-controller ]
-    uplink_interfaces: [ Ethernet1-10 ]
-  - platforms: [ vEOS-LAB ]
-    types: [ l3leaf ]
-    uplink_interfaces: [ Ethernet1-2, Ethernet11-12 ]
-    mlag_interfaces: [ Ethernet5-6 ]
+cv_topology_levels:
+  - type: super-spine
+    level: 1
+  - type: spine
+    level: 2
+  - type: l3leaf
+    level: 3
+  - type: l2leaf
+    level: 4
+  - type: overlay-controller
+    level: 5
 
 # Documentation
 eos_designs_documentation:

@@ -165,6 +165,43 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet27
+  description: server-3_Eth1
+  shutdown: false
+  service_profile: foo
+  peer: server-3
+  peer_interface: Eth1
+  peer_key: connected_endpoints
+  port_profile: TENANT_A
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 110
+  eos_cli: 'comment
+
+    Comment created from raw_eos_cli under profile TENANT_A
+
+    EOF
+
+    '
+- name: Ethernet28
+  description: SPECIALENDPOINT_server-4_Eth5
+  shutdown: false
+  channel_group:
+    id: 28
+    mode: active
+  peer: server-4
+  peer_interface: Eth5
+  peer_type: SpecialEndpoint
+  peer_key: connected_endpoints
+  port_profile: NESTED_TENANT_A
+  eos_cli: 'comment
+
+    Comment created from raw_eos_cli under profile NESTED_TENANT_A
+
+    EOF
+
+    '
 - name: Ethernet16
   description: SERVER_server-1_Eth1
   shutdown: false
@@ -174,6 +211,7 @@ ethernet_interfaces:
   peer: server-1
   peer_interface: Eth1
   peer_type: server
+  peer_key: servers
   port_profile: TENANT_A
   eos_cli: 'comment
 
@@ -191,6 +229,7 @@ ethernet_interfaces:
   peer: server-1
   peer_interface: Eth3
   peer_type: server
+  peer_key: servers
   port_profile: TENANT_A
   eos_cli: 'comment
 
@@ -208,6 +247,7 @@ ethernet_interfaces:
   peer: server-1
   peer_interface: Eth5
   peer_type: server
+  peer_key: servers
   port_profile: NESTED_TENANT_A
   eos_cli: 'comment
 
@@ -225,10 +265,31 @@ ethernet_interfaces:
   peer: server-1
   peer_interface: Eth7
   peer_type: server
+  peer_key: servers
   port_profile: NESTED_TENANT_A
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
+
+    EOF
+
+    '
+- name: Ethernet26
+  description: SPECIALSERVER_server-2_Eth1
+  shutdown: false
+  service_profile: foo
+  peer: server-2
+  peer_interface: Eth1
+  peer_type: SpecialServer
+  peer_key: servers
+  port_profile: TENANT_A
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 110
+  eos_cli: 'comment
+
+    Comment created from raw_eos_cli under profile TENANT_A
 
     EOF
 
@@ -322,6 +383,22 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: 110-113,1100-1102,2500,2600-2601,4085
+- name: Port-Channel28
+  description: PortChannel
+  shutdown: false
+  mlag: 28
+  service_profile: foo
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 110
+  eos_cli: 'comment
+
+    Comment created from raw_eos_cli under port_channel on profile NESTED_TENANT_A
+
+    EOF
+
+    '
 - name: Port-Channel16
   description: PortChannel
   shutdown: false

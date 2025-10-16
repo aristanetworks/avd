@@ -124,6 +124,7 @@ ethernet_interfaces:
   peer: server04_inherit_all_from_profile
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: ALL_WITH_SECURITY
   switchport:
     enabled: true
@@ -152,6 +153,7 @@ ethernet_interfaces:
   peer: server05_no_profile
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -181,6 +183,7 @@ ethernet_interfaces:
   peer: server06_override_profile
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: ALL_WITH_SECURITY
   switchport:
     enabled: true
@@ -195,6 +198,7 @@ ethernet_interfaces:
   peer: server07_inherit_all_from_profile_port_channel
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
 - name: Ethernet15
   description: server08_no_profile_port_channel_Eth2
@@ -205,6 +209,7 @@ ethernet_interfaces:
   peer: server08_no_profile_port_channel
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
 - name: Ethernet16
   description: server09_override_profile_no_port_channel_Eth2
   shutdown: false
@@ -229,6 +234,7 @@ ethernet_interfaces:
   peer: server09_override_profile_no_port_channel
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   switchport:
     enabled: true
@@ -244,6 +250,7 @@ ethernet_interfaces:
   peer: server10_no_profile_port_channel_lacp_fallback
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
 - name: Ethernet18
   description: server11_inherit_profile_port_channel_lacp_fallback_Eth2
   shutdown: false
@@ -254,6 +261,7 @@ ethernet_interfaces:
   peer: server11_inherit_profile_port_channel_lacp_fallback
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
 - name: Ethernet19
   description: server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2
@@ -265,6 +273,7 @@ ethernet_interfaces:
   peer: server12_inherit_nested_profile_port_channel_lacp_fallback
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: NESTED_PORT_PROFILE
 - name: Ethernet20
   description: server13_disabled_interfaces_Eth2
@@ -272,6 +281,7 @@ ethernet_interfaces:
   peer: server13_disabled_interfaces
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: TENANT_A
   switchport:
     enabled: true
@@ -283,6 +293,7 @@ ethernet_interfaces:
   peer: server14_explicitly_enabled_interfaces
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: TENANT_A
   switchport:
     enabled: true
@@ -297,6 +308,7 @@ ethernet_interfaces:
   peer: server15_port_channel_with_disabled_phy_interfaces
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: TENANT_A
 - name: Ethernet23
   description: server16_port_channel_with_disabled_port_channel_Eth2
@@ -307,6 +319,7 @@ ethernet_interfaces:
   peer: server16_port_channel_with_disabled_port_channel
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: TENANT_A
 - name: Ethernet24
   description: server17_port_channel_with_disabled_phy_and_po_interfaces_Eth2
@@ -317,6 +330,7 @@ ethernet_interfaces:
   peer: server17_port_channel_with_disabled_phy_and_po_interfaces
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: TENANT_A
 - name: Ethernet25
   description: server18_monitoring_session_source_phys_interfaces_Eth2
@@ -324,6 +338,7 @@ ethernet_interfaces:
   peer: server18_monitoring_session_source_phys_interfaces
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: TENANT_A
   switchport:
     enabled: true
@@ -338,6 +353,7 @@ ethernet_interfaces:
   peer: server18_monitoring_session_source_po
   peer_interface: Eth4
   peer_type: server
+  peer_key: servers
   port_profile: TENANT_A
 - name: Ethernet26
   description: server19_monitoring_session_destination_phys_Eth2
@@ -345,6 +361,7 @@ ethernet_interfaces:
   peer: server19_monitoring_session_destination_phys
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   switchport:
     enabled: true
 - name: Ethernet42
@@ -356,6 +373,7 @@ ethernet_interfaces:
   peer: server21_monitoring_session_destination_po
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: TENANT_A
 - name: Ethernet29
   description: SERVER_server22_port_channel_with_custom_id_Po1291
@@ -366,6 +384,7 @@ ethernet_interfaces:
   peer: server22_port_channel_with_custom_id
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: TENANT_A
 - name: Ethernet31
   description: server24_port_channel_lacp_timer_profile_Eth2
@@ -379,6 +398,7 @@ ethernet_interfaces:
   peer: server24_port_channel_lacp_timer_profile
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: PORT_CHANNEL_LACP_TIMER
 - name: Ethernet32
   description: server25_port_channel_lacp_timer_Eth2
@@ -392,6 +412,7 @@ ethernet_interfaces:
   peer: server25_port_channel_lacp_timer
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
 - name: Ethernet33
   description: server26_port_channel_lacp_timer_profile_Eth2
   shutdown: false
@@ -404,6 +425,7 @@ ethernet_interfaces:
   peer: server26_port_channel_lacp_timer_profile
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
   port_profile: PORT_CHANNEL_LACP_TIMER_NORMAL
 - name: Ethernet34
   description: server27_port_channel_lacp_timer_Eth2
@@ -417,6 +439,7 @@ ethernet_interfaces:
   peer: server27_port_channel_lacp_timer
   peer_interface: Eth2
   peer_type: server
+  peer_key: servers
 - name: Ethernet44
   description: server28_monitoring_session_source_settings_access_group_Eth4
   shutdown: false
@@ -426,6 +449,7 @@ ethernet_interfaces:
   peer: server28_monitoring_session_source_settings_access_group
   peer_interface: Eth4
   peer_type: server
+  peer_key: servers
   port_profile: TENANT_A
 hostname: DC1-SVC3B
 ip_access_lists:

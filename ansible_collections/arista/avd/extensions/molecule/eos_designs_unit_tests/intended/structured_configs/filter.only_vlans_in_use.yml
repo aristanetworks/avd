@@ -10,6 +10,7 @@ ethernet_interfaces:
   peer: testserver
   peer_interface: Nic1
   peer_type: server
+  peer_key: servers
   switchport:
     enabled: true
     mode: trunk
