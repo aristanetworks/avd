@@ -2055,6 +2055,9 @@ ethernet_interfaces:
 
     # Key only used for documentation or validation purposes.
     peer_type: <str>
+
+    # Key only used for documentation or validation purposes.
+    peer_key: <str>
     sflow:
       enable: <bool>
       egress:
@@ -4548,6 +4551,10 @@ metadata:
   pod_name: <str>
   dc_name: <str>
   fabric_name: <str>
+
+  # Serial Number of the device.
+  # Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role.
+  serial_number: <str>
   cv_tags:
     device_tags:
       - name: <str; required>
@@ -6129,6 +6136,9 @@ port_channel_interfaces:
 
     # Key only used for documentation or validation purposes.
     peer_type: <str>
+
+    # Key only used for documentation or validation purposes.
+    peer_key: <str>
     sflow:
       enable: <bool>
       egress:
@@ -11453,10 +11463,6 @@ router_traffic_engineering:
 
       # Comma-separated list of individual SRLG numbers in decimal (0-4294967295), named or decimal range (A-B, where value of A must be less than the value of B) formats. Example. 30-34,55,RED
       srlg_exclude: <str>
-
-# Serial Number of the device.
-# Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role.
-serial_number: <str>
 service_routing_configuration_bgp:
   no_equals_default: <bool>
 service_routing_protocols_model: <str; "multi-agent" | "ribd">
@@ -12793,6 +12799,7 @@ vxlan_interface:
 
       # Source Interface Name.
       source_interface: <str>
+      shutdown: <bool>
       multicast:
         headend_replication: <bool>
 
