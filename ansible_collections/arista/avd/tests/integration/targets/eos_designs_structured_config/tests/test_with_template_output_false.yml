@@ -1,3 +1,4 @@
+---
 - name: Test with template_output false
   ignore_errors: false
   register: result
@@ -8,6 +9,8 @@
   arista.avd.eos_designs_structured_config:
     template_output: false
   when: ansible_version.major == 2 and ansible_version.minor < 19
+- ansible.builtin.debug:
+    var: result.ansible_facts._inline_jinja
 - ansible.builtin.assert:
     that:
       - result is success
@@ -17,5 +20,5 @@
       - result.ansible_facts._inline_jinja == expected
   vars:
     # Expecting the raw template on older ansible-core versions. From 2.19 and above it will get templated automatically by ansible on access.
-    expected: "\\{\\{ _inline_jinja_value_1 \\}\\}"
+    expected: "{{'{{ _inline_jinja_value_1 }}'}}"
   when: ansible_version.major == 2 and ansible_version.minor < 19

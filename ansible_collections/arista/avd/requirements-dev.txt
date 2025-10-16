@@ -5,6 +5,7 @@ anta==1.5.0
 cryptography>=43.0.0
 netaddr>=0.7.19
 PyYAML>=6.0.0
+python-socks[asyncio]>=2.7.2
 # temporarily capping pydantic for CI
 pydantic<2.12
 # dev requirements
