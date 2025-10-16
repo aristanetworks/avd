@@ -12260,6 +12260,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "peer": {"type": str},
             "peer_interface": {"type": str},
             "peer_type": {"type": str},
+            "peer_key": {"type": str},
             "sflow": {"type": Sflow},
             "sync_e": {"type": SyncE},
             "port_profile": {"type": str},
@@ -12464,6 +12465,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Key only used for documentation or validation purposes."""
         peer_type: str | None
         """Key only used for documentation or validation purposes."""
+        peer_key: str | None
+        """Key only used for documentation or validation purposes."""
         sflow: Sflow
         """Subclass of AvdModel."""
         sync_e: SyncE
@@ -12599,6 +12602,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 peer: str | None | UndefinedType = Undefined,
                 peer_interface: str | None | UndefinedType = Undefined,
                 peer_type: str | None | UndefinedType = Undefined,
+                peer_key: str | None | UndefinedType = Undefined,
                 sflow: Sflow | UndefinedType = Undefined,
                 sync_e: SyncE | UndefinedType = Undefined,
                 port_profile: str | None | UndefinedType = Undefined,
@@ -12735,6 +12739,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer: Key only used for documentation or validation purposes.
                     peer_interface: Key only used for documentation or validation purposes.
                     peer_type: Key only used for documentation or validation purposes.
+                    peer_key: Key only used for documentation or validation purposes.
                     sflow: Subclass of AvdModel.
                     sync_e: Subclass of AvdModel.
                     port_profile: Key only used for documentation or validation purposes.
@@ -33571,6 +33576,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "peer": {"type": str},
             "peer_interface": {"type": str},
             "peer_type": {"type": str},
+            "peer_key": {"type": str},
             "sflow": {"type": Sflow},
             "vrrp_ids": {"type": VrrpIds},
             "switchport": {"type": Switchport},
@@ -33720,6 +33726,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Key only used for documentation or validation purposes."""
         peer_type: str | None
         """Key only used for documentation or validation purposes."""
+        peer_key: str | None
+        """Key only used for documentation or validation purposes."""
         sflow: Sflow
         """Subclass of AvdModel."""
         vrrp_ids: VrrpIds
@@ -33826,6 +33834,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 peer: str | None | UndefinedType = Undefined,
                 peer_interface: str | None | UndefinedType = Undefined,
                 peer_type: str | None | UndefinedType = Undefined,
+                peer_key: str | None | UndefinedType = Undefined,
                 sflow: Sflow | UndefinedType = Undefined,
                 vrrp_ids: VrrpIds | UndefinedType = Undefined,
                 switchport: Switchport | UndefinedType = Undefined,
@@ -33926,6 +33935,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer: Key only used for documentation or validation purposes.
                     peer_interface: Key only used for documentation or validation purposes.
                     peer_type: Key only used for documentation or validation purposes.
+                    peer_key: Key only used for documentation or validation purposes.
                     sflow: Subclass of AvdModel.
                     vrrp_ids:
                        VRRP model.

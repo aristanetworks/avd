@@ -93,5 +93,5 @@
 "state: CI Updated":
   - changed-files:
       - any-glob-to-any-file:
-          - ansible_collections/arista/avd/molecule/*
-          - ansible_collections/arista/avd/molecule/**/*
+          - ansible_collections/arista/avd/extensions/molecule/*
+          - ansible_collections/arista/avd/extensions/molecule/**/*
