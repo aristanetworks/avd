@@ -524,7 +524,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### Router BGP
 
-ASN Notation: asplain
+ASN Notation: asdot
 
 #### Router BGP Summary
 
@@ -578,6 +578,7 @@ ASN Notation: asplain
 ```eos
 !
 router bgp 65111.100
+   bgp asn notation asdot
    router-id 172.16.110.6
    update wait-install
    no bgp default ipv4-unicast

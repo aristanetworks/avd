@@ -39,8 +39,8 @@ repository = "https://github.com/aristanetworks/avd"
 pytest = [
     "ansible-core>=2.16.0,<2.19.0",
     "anta>=1.5.0",
-    "pytest",
-    "pytest-asyncio",
+    "pytest>=8.2.0",
+    "pytest-asyncio>=1.2.0",
     "pydantic>=2.3.0,<2.12",
     "referencing>=0.35.0",
 ]

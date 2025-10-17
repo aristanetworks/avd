@@ -1,0 +1,24 @@
+---
+# Testing using different as_notation on MLAG peers.
+# First one is using asplain in host_vars, and second one using asdot.
+type: l3leaf
+l3leaf:
+  defaults:
+    mlag_peer_ipv4_pool: 10.10.255.0/30
+    mlag_peer_l3_ipv4_pool: 10.10.224.0/30
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+    mlag_interfaces: [Ethernet5, Ethernet6]
+    virtual_router_mac_address: 00:1c:73:00:00:99
+  node_groups:
+    - group: MLAG_BGP_DIFFERENT_AS_NOTATION
+      bgp_as: 923.923
+      nodes:
+        - name: MLAG_BGP_DIFFERENT_AS_NOTATION_1
+          id: 0
+          mgmt_ip: 192.168.201.116/24
+        - name: MLAG_BGP_DIFFERENT_AS_NOTATION_2
+          id: 1
+          mgmt_ip: 192.168.201.117/24

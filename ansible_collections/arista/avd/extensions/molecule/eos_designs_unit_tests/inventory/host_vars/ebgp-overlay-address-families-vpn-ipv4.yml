@@ -3,7 +3,6 @@
 type: wan_router
 
 overlay_routing_protocol: ebgp
-wan_use_evpn_node_settings_for_lan: true
 
 bgp_as: 65000
 
