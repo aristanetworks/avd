@@ -199,13 +199,13 @@ class DeviceTestContext:
         interface_item = None
         if dps_item := self.structured_config.dps_interfaces.get(source_interface, None):
             interface_item = dps_item
-        if loopback_item := self.structured_config.loopback_interfaces.get(source_interface, None):
+        elif loopback_item := self.structured_config.loopback_interfaces.get(source_interface, None):
             interface_item = loopback_item
 
         # Add interface details
         if self.structured_config.vxlan_interface.vxlan1.vxlan.shutdown:
             return InterfaceItem(name="Vxlan1", status="down")
-        if interface_item.shutdown:
+        if not interface_item or interface_item.shutdown:
             LOGGER.debug("<Vxlan1> skipped - Interface is down due to source interface is operationally down")
             return None
         if not l2vnis and not l3vnis:
