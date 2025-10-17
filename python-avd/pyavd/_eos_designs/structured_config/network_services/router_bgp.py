@@ -199,7 +199,7 @@ class RouterBgpMixin(Protocol):
                         # We need to add redistribute connected for the default VRF when underlay_routing_protocol is "none"
                         bgp_vrf.redistribute.connected.enabled = True
 
-                    # Common things but need it repeated between default and non-defualt since type checker gets too confused
+                    # Common things but need it repeated between default and non-default since type checker gets too confused
                     # about the type of bgp_vrf vs. bgp_peer_config.
                     for aggregate_address in vrf.aggregate_addresses:
                         # Below we recast directly to eos_cli_config_gen. Losing incompatible keys, but relaying everything else.
