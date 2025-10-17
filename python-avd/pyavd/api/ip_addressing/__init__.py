@@ -342,7 +342,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
                 mlag_secondary_id=self._mlag_secondary_id,
             )
 
-        if self.shared_utils.node_config.vtep_loopback and self.shared_utils.node_config.vtep_loopback.lower() == "loopback0" and self.shared_utils.router_id:
+        if self.shared_utils.node_config.vtep_loopback and self.shared_utils.node_config.vtep_loopback == "Loopback0" and self.shared_utils.router_id:
             return self.shared_utils.router_id
 
         offset = self._mlag_primary_id + self._loopback_ipv4_offset
@@ -358,6 +358,13 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         """
         if self._vtep_loopback_ipv6_address:
             return self._vtep_loopback_ipv6_address
+
+        if (
+            self.shared_utils.node_config.vtep_loopback
+            and self.shared_utils.node_config.vtep_loopback == "Loopback0"
+            and self.shared_utils.ipv6_router_id
+        ):
+            return self.shared_utils.ipv6_router_id
 
         offset = self._mlag_primary_id + self._loopback_ipv6_offset
         return get_ip_from_pool(self._vtep_loopback_ipv6_pool, 64, offset, 0)
@@ -381,7 +388,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
                 loopback_ipv4_offset=self._loopback_ipv4_offset,
             )
 
-        if self.shared_utils.node_config.vtep_loopback and self.shared_utils.node_config.vtep_loopback.lower() == "loopback0" and self.shared_utils.router_id:
+        if self.shared_utils.node_config.vtep_loopback and self.shared_utils.node_config.vtep_loopback == "Loopback0" and self.shared_utils.router_id:
             return self.shared_utils.router_id
 
         offset = self._id + self._loopback_ipv4_offset
@@ -400,7 +407,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         if (
             self.shared_utils.node_config.vtep_loopback
-            and self.shared_utils.node_config.vtep_loopback.lower() == "loopback0"
+            and self.shared_utils.node_config.vtep_loopback == "Loopback0"
             and self.shared_utils.ipv6_router_id
         ):
             return self.shared_utils.ipv6_router_id
