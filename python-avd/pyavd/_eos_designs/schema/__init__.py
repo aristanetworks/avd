@@ -75868,7 +75868,6 @@ class EosDesigns(EosDesignsRootModel):
         "wan_stun_dtls_disable": {"type": bool, "default": False},
         "wan_stun_dtls_profile_name": {"type": str, "default": "STUN-DTLS"},
         "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp": {"type": bool, "default": False},
-        "wan_use_evpn_node_settings_for_lan": {"type": bool, "default": False},
         "wan_virtual_topologies": {"type": WanVirtualTopologies},
         "zscaler_endpoints": {"type": ZscalerEndpoints},
         "_custom_structured_configurations": {"type": _CustomStructuredConfigurations},
@@ -77791,18 +77790,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
-    wan_use_evpn_node_settings_for_lan: bool
-    """
-    PREVIEW: This key is currently not supported and may produce invalid configuration.
-    When true,
-    `eos_designs` will use `overlay_routing_protocol`, `evpn_role` and `vtep`
-    node settings for LAN side
-    on WAN devices. Otherwise these will be ignored for WAN.
-    This will be the default in AVD version
-    6.0.0 and this option will be removed.
-
-    Default value: `False`
-    """
     wan_virtual_topologies: WanVirtualTopologies
     """
     Configure Virtual Topologies for CV Pathfinder and AutoVPN.
@@ -78033,7 +78020,6 @@ class EosDesigns(EosDesignsRootModel):
             wan_stun_dtls_disable: bool | UndefinedType = Undefined,
             wan_stun_dtls_profile_name: str | UndefinedType = Undefined,
             wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: bool | UndefinedType = Undefined,
-            wan_use_evpn_node_settings_for_lan: bool | UndefinedType = Undefined,
             wan_virtual_topologies: WanVirtualTopologies | UndefinedType = Undefined,
             zscaler_endpoints: ZscalerEndpoints | UndefinedType = Undefined,
             _custom_structured_configurations: _CustomStructuredConfigurations | UndefinedType = Undefined,
@@ -79413,14 +79399,6 @@ class EosDesigns(EosDesignsRootModel):
                    requires a restart of the KernelFib agent.
                    - `false`: For newer EOS versions (starting 4.33.2) use
                    the proper CLI.
-                wan_use_evpn_node_settings_for_lan:
-                   PREVIEW: This key is currently not supported and may produce invalid configuration.
-                   When true,
-                   `eos_designs` will use `overlay_routing_protocol`, `evpn_role` and `vtep`
-                   node settings for LAN side
-                   on WAN devices. Otherwise these will be ignored for WAN.
-                   This will be the default in AVD version
-                   6.0.0 and this option will be removed.
                 wan_virtual_topologies:
                    Configure Virtual Topologies for CV Pathfinder and AutoVPN.
                    Auto create a control plane
