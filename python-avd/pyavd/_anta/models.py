@@ -5,7 +5,6 @@
 
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
 from functools import cached_property
 from ipaddress import IPv4Address, IPv6Address, ip_interface
@@ -38,13 +37,11 @@ class BgpNeighborInterface:
 
 
 @dataclass(frozen=True)
-class LoopbackInterface:
-    """Represents a Loopback Interface from the structured configuration."""
+class InterfaceItem:
+    """Represents a VXLAN source interface from the structured configuration."""
 
     name: str
-    description: str
-    shutdow: bool
-    ip_address: IPv4Address | IPv6Address
+    status: str
 
 
 @dataclass
@@ -192,11 +189,26 @@ class DeviceTestContext:
         return BgpNeighbor(ip_address=ip_interface(neighbor.ip_address).ip, vrf=vrf, update_source=update_source)
 
     @cached_property
-    def vxlan_source_interface(self) -> LoopbackInterface | None:
+    def vxlan_interface_item(self) -> InterfaceItem | None:
         """Returns the source interface item from structured configs."""
         source_interface = self.structured_config.vxlan_interface.vxlan1.vxlan.source_interface
-        if source_interface:
-            interface_type = re.match(r"^[a-zA-Z]+", source_interface)[0].lower().replace("-", "_")
-            interface_items = getattr(self.structured_config, f"{interface_type}_interfaces")
-            return interface_items.__getitem__(source_interface)
-        return None
+        l2vnis = self.structured_config.vxlan_interface.vxlan1.vxlan.vlans
+        l3vnis = self.structured_config.vxlan_interface.vxlan1.vxlan.vrfs
+
+        # Fetch the source interface details from structured config
+        interface_item = None
+        if dps_item := self.structured_config.dps_interfaces.get(source_interface, None):
+            interface_item = dps_item
+        if loopback_item := self.structured_config.loopback_interfaces.get(source_interface, None):
+            interface_item = loopback_item
+
+        # Add interface details
+        if self.structured_config.vxlan_interface.vxlan1.vxlan.shutdown:
+            return InterfaceItem(name="Vxlan1", status="down")
+        if interface_item.shutdown:
+            LOGGER.debug("<Vxlan1> skipped - Interface is down due to source interface is operationally down")
+            return None
+        if not l2vnis and not l3vnis:
+            LOGGER.debug("<Vxlan1> skipped - Interface is down due to no L2VNIs and L3VNIs configured")
+            return None
+        return InterfaceItem(name="Vxlan1", status="up")
