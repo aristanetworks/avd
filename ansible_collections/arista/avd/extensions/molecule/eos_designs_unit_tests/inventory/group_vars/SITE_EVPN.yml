@@ -1,6 +1,4 @@
 ---
-# Testing CV pathfinder edge using new toggle wan_use_evpn_node_settings_for_lan
-wan_use_evpn_node_settings_for_lan: true
 # enabling EVPN on LAN
 overlay_routing_protocol: ebgp
 
