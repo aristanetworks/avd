@@ -10,7 +10,7 @@ from collections.abc import Generator
 from contextlib import contextmanager
 from enum import Enum
 from logging import LoggerAdapter
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from collections.abc import Generator, MutableMapping
@@ -34,47 +34,40 @@ class TestLoggerAdapter(LoggerAdapter):
     and prepend the message with the device and test names, and optionally the context: `<device> test context message`.
     """
 
-    def process(self, msg: LogMessage | str, kwargs: MutableMapping[str, object]) -> tuple[str, MutableMapping[str, object]]:
+    def process(self, msg: LogMessage, kwargs: MutableMapping[str, Any]) -> tuple[str, MutableMapping[str, Any]]:
         """Process the message and kwargs before logging."""
-        # Ensure we always have a dict[str, object]
-        extra: dict[str, object] = dict(self.extra or {})
-        kwargs["extra"] = extra
+        # Keep the extra dict in kwargs to pass it to the formatter if needed (following the standard LoggerAdapter behavior)
+        kwargs["extra"] = self.extra
 
-        # Safely extract info
-        device = str(extra.get("device", "unknown"))
-        test = str(extra.get("test", "unknown"))
-        context = extra.get("context")
+        # Format the LogMessage using the provided kwargs and extract the fields name from the message string
+        fields = [field_name for _, field_name, _, _ in string.Formatter().parse(msg.value) if field_name is not None]
+        formatted_msg = msg.value.format(**kwargs)
 
-        prefix = f"<{device}> {test}"
-        if isinstance(context, str):
-            prefix += f" {context}"
-
-        # Support both LogMessage enums and plain strings
-        msg_value: str = msg.value if isinstance(msg, LogMessage) else str(msg)
-
-        # Find format field names
-        fields = [field_name for _, field_name, _, _ in string.Formatter().parse(msg_value) if field_name is not None]
-
-        # Try formatting; if fails, keep raw text
-        try:
-            formatted_msg = msg_value.format(**kwargs)
-        except Exception:
-            formatted_msg = msg_value
-
-        # Remove used fields to not interfere with logging kwargs
+        # Removing the fields name from kwargs to preserve standard logging kwargs only that should always be passed through (e.g. exc_info, stack_info, etc.)
         for field in fields:
             kwargs.pop(field, None)
+
+        if self.extra is None:
+            return formatted_msg, kwargs
+
+        # Extract the device, test, and context from extra
+        device = self.extra["device"]
+        test = self.extra["test"]
+        context = self.extra.get("context")
+
+        prefix = f"<{device}> {test}"
+        if context:
+            prefix += f" {context}"
 
         return f"{prefix} {formatted_msg}", kwargs
 
     @contextmanager
     def context(self, context: str) -> Generator[TestLoggerAdapter, None, None]:
         """Temporarily add context to the logger."""
-        original_extra = dict(getattr(self, "extra", {}) or {})
+        original_extra = dict(self.extra) if self.extra is not None else None
         try:
-            mutable_extra = dict(original_extra)
-            mutable_extra["context"] = context
-            self.extra = mutable_extra
+            new_extra = dict(self.extra, context=context) if self.extra is not None else {"context": context}
+            self.extra = new_extra
             yield self
         finally:
             self.extra = original_extra
@@ -107,7 +100,7 @@ class LogMessage(Enum):
     PATH_GROUP_NO_LOCAL_INTERFACES = "path group {path_group} skipped - No local interfaces found"
     PATH_GROUP_NO_STATIC_PEERS = "path group {path_group} skipped - No static peers configured"
     NO_STATIC_PEERS = "skipped - No static peers configured in any path groups"
-    IPv6_STATIC_PEER = "static peer {peer} skipped - ANTA does not support IPv6 static peer"
+    PATH_GROUP_IPV6_STATIC_PEER = "static peer {peer} skipped - ANTA does not support IPv6 static peer"
 
     # Input generation messages
     INPUT_NONE_FOUND = "skipped - No inputs available"
