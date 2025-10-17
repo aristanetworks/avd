@@ -179,7 +179,7 @@ ethernet_interfaces:
     peer_interface: eth0
     peer_type: cpe
     port_profile: TENANT_A_WAN_SERVICE_10
-  peer_key: cpes
+    peer_key: cpes
   switchport:
     enabled: true
     mode: trunk

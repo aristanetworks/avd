@@ -29,7 +29,7 @@ ethernet_interfaces:
   shutdown: false
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -39,7 +39,7 @@ ethernet_interfaces:
   shutdown: false
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access

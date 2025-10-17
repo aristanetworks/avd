@@ -205,7 +205,7 @@ ethernet_interfaces:
     peer_interface: Eth3
     peer_type: server
     port_profile: TENANT_B
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet11
   description: server01_MTU_PROFILE_MLAG_Eth5
   shutdown: false
@@ -217,7 +217,7 @@ ethernet_interfaces:
     peer_interface: Eth5
     peer_type: server
     port_profile: TENANT_A_MTU
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet12
   description: server01_MTU_ADAPTOR_MLAG_Eth7
   shutdown: false
@@ -228,7 +228,7 @@ ethernet_interfaces:
     peer: server01_MTU_ADAPTOR_MLAG
     peer_interface: Eth7
     peer_type: server
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet20
   description: FIREWALL01_E1
   shutdown: false
@@ -240,7 +240,7 @@ ethernet_interfaces:
     peer_interface: E1
     peer_type: firewall
     port_profile: TENANT_A_B
-  peer_key: firewalls
+    peer_key: firewalls
 - name: Ethernet21
   description: ROUTER01_Eth1
   shutdown: false
@@ -249,7 +249,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: router
     port_profile: TENANT_A
-  peer_key: routers
+    peer_key: routers
   switchport:
     enabled: true
     mode: access
@@ -265,7 +265,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: phone
     port_profile: PHONE_WITH_PC
-  peer_key: phones
+    peer_key: phones
 hardware:
   speed_groups:
   - speed_group: '1'

@@ -21,7 +21,7 @@ ethernet_interfaces:
     peer: CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT
     peer_interface: Eth42
     peer_type: server
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
 - name: Ethernet1
@@ -33,7 +33,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -47,7 +47,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -61,7 +61,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -75,7 +75,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -89,7 +89,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -103,7 +103,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -117,7 +117,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -131,7 +131,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -145,7 +145,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -159,7 +159,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -173,7 +173,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -187,7 +187,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -201,7 +201,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -215,7 +215,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -229,7 +229,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -243,7 +243,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -257,7 +257,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -271,7 +271,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -285,7 +285,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -299,7 +299,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -313,7 +313,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -327,7 +327,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -341,7 +341,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -355,7 +355,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -369,7 +369,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -383,7 +383,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -397,7 +397,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -411,7 +411,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -425,7 +425,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -439,7 +439,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -453,7 +453,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -467,7 +467,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -481,7 +481,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -495,7 +495,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -509,7 +509,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -523,7 +523,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -537,7 +537,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -551,7 +551,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -565,7 +565,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -579,7 +579,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -593,7 +593,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -607,7 +607,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -621,7 +621,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -635,7 +635,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -649,7 +649,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -663,7 +663,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -677,7 +677,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -691,7 +691,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -705,7 +705,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -719,7 +719,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -733,7 +733,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -747,7 +747,7 @@ ethernet_interfaces:
     peer: PCs
     peer_type: network_port
     port_profile: pc
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -758,7 +758,7 @@ ethernet_interfaces:
   metadata:
     peer: blah
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
 - name: Ethernet6
@@ -767,7 +767,7 @@ ethernet_interfaces:
   metadata:
     peer: blah
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
 - name: Ethernet11
@@ -775,7 +775,7 @@ ethernet_interfaces:
   shutdown: false
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
 - name: Ethernet12
@@ -783,7 +783,7 @@ ethernet_interfaces:
   shutdown: false
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
 - name: Ethernet13
@@ -791,14 +791,14 @@ ethernet_interfaces:
   shutdown: false
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
 - name: Ethernet51
   shutdown: true
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     access_vlan: 123
@@ -806,21 +806,21 @@ ethernet_interfaces:
   shutdown: true
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
 - name: Ethernet53
   shutdown: true
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
 - name: Ethernet54
   shutdown: true
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
 - name: Ethernet48
@@ -828,7 +828,7 @@ ethernet_interfaces:
   shutdown: false
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
 - name: Ethernet20
@@ -836,7 +836,7 @@ ethernet_interfaces:
   shutdown: false
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     access_vlan: 42
@@ -845,7 +845,7 @@ ethernet_interfaces:
   shutdown: false
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     access_vlan: 666
@@ -857,7 +857,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
 - name: Ethernet23
   description: Range
   shutdown: false
@@ -866,13 +866,13 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
 - name: Ethernet25
   description: Add all vlans
   shutdown: false
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
 hostname: network-ports-tests.1

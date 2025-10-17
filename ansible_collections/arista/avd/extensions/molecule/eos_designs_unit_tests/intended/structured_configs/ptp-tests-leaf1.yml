@@ -111,7 +111,7 @@ ethernet_interfaces:
     peer_interface: eth1
     peer_type: server
     port_profile: PTP-profile-dynamic
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -134,7 +134,7 @@ ethernet_interfaces:
     peer: video-endpoint
     peer_interface: PCI1
     peer_type: server
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -149,7 +149,7 @@ ethernet_interfaces:
     peer: Endpoint-with-mpass
     peer_interface: PCI1
     peer_type: server
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet3
   description: SERVER_Endpoint-with-specific-PTP-profile_eth3
   shutdown: false
@@ -167,7 +167,7 @@ ethernet_interfaces:
     peer: Endpoint-with-specific-PTP-profile
     peer_interface: eth3
     peer_type: server
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: access

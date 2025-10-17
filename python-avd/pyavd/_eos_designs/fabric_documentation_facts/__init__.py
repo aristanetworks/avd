@@ -271,7 +271,7 @@ class FabricDocumentationFacts(AvdFacts):
             connected_endpoints_by_key = {item.key: item for item in connected_endpoints_keys}
             port_channel_interfaces = get(structured_config, "port_channel_interfaces", default=[])
             for ethernet_interface in get(structured_config, "ethernet_interfaces", default=[]):
-                if (peer_key := get(ethernet_interface, "peer_key")) not in connected_endpoints_by_key:
+                if (peer_key := get(ethernet_interface, "metadata.peer_key")) not in connected_endpoints_by_key:
                     continue
 
                 if (channel_group := get(ethernet_interface, "channel_group.id")) is not None:

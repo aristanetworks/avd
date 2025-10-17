@@ -113,7 +113,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: TENANT_A_B
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet11
   description: CUSTOM_server04_inherit_all_from_profile_Eth1
   shutdown: false
@@ -139,7 +139,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: ALL_WITH_SECURITY
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -168,7 +168,7 @@ ethernet_interfaces:
     peer: server05_no_profile
     peer_interface: Eth1
     peer_type: server
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -199,7 +199,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: ALL_WITH_SECURITY
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -215,7 +215,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet15
   description: CUSTOM_server08_no_profile_port_channel_Eth1
   shutdown: false
@@ -226,7 +226,7 @@ ethernet_interfaces:
     peer: server08_no_profile_port_channel
     peer_interface: Eth1
     peer_type: server
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet16
   description: CUSTOM_server09_override_profile_no_port_channel_Eth1
   shutdown: false
@@ -252,7 +252,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -268,7 +268,7 @@ ethernet_interfaces:
     peer: server10_no_profile_port_channel_lacp_fallback
     peer_interface: Eth1
     peer_type: server
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet18
   description: CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_Eth1
   shutdown: false
@@ -281,7 +281,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet19
   description: CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_Eth1
   shutdown: false
@@ -294,7 +294,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: NESTED_PORT_PROFILE
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet20
   description: CUSTOM_server13_disabled_interfaces_Eth1
   shutdown: true
@@ -303,7 +303,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: TENANT_A
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -316,7 +316,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: TENANT_A
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -332,7 +332,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: TENANT_A
-  peer_key: servers
+    peer_key: servers
 hostname: DC1-SVC3A
 ip_igmp_snooping:
   globally_enabled: true

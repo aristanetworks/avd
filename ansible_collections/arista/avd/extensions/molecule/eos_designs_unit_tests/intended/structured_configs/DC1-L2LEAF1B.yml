@@ -71,7 +71,7 @@ ethernet_interfaces:
     peer_interface: Eth2
     peer_type: server
     port_profile: TENANT_A_B
-  peer_key: servers
+    peer_key: servers
 hostname: DC1-L2LEAF1B
 ip_igmp_snooping:
   globally_enabled: true

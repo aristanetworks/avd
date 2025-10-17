@@ -82,7 +82,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: ALL_WITH_SECURITY
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -96,7 +96,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: TENANT_A
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: access

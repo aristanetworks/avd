@@ -37,7 +37,7 @@ ethernet_interfaces:
     peer: single-interface-true
     peer_interface: eth1
     peer_type: server
-  peer_key: servers
+    peer_key: servers
   sflow:
     enable: true
   switchport:
@@ -51,7 +51,7 @@ ethernet_interfaces:
     peer: single-interface-false
     peer_interface: eth11
     peer_type: server
-  peer_key: servers
+    peer_key: servers
   sflow:
     enable: false
   switchport:
@@ -65,7 +65,7 @@ ethernet_interfaces:
     peer: single-interface-no-definition
     peer_interface: eth12
     peer_type: server
-  peer_key: servers
+    peer_key: servers
   sflow:
     enable: true
   switchport:

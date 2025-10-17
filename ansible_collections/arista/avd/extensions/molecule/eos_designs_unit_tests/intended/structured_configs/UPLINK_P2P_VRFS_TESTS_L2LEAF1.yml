@@ -28,7 +28,7 @@ ethernet_interfaces:
   shutdown: false
   metadata:
     peer_type: network_port
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
 hostname: UPLINK_P2P_VRFS_TESTS_L2LEAF1

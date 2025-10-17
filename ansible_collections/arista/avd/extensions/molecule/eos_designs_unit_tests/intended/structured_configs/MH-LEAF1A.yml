@@ -42,7 +42,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: Tenant_X
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet12
   description: server03_AUTO_ESI_Eth1
   shutdown: false
@@ -54,7 +54,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: Tenant_X
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet13
   description: server04_AUTO_ESI_Profile_Eth1
   shutdown: false
@@ -66,7 +66,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: Tenant_ESI_Auto
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet14
   description: server05_AUTO_ESI_Profile_Override_Eth1
   shutdown: false
@@ -78,7 +78,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: Tenant_ESI_Auto
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet15
   description: server06_Single_Active_Port_Channel_Eth1
   shutdown: false
@@ -90,7 +90,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: Tenant_X_Trunk_Auto
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet16
   description: server07_Single_Active_Port_Channel_Manual_DF_Eth1
   shutdown: false
@@ -102,7 +102,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: Tenant_X_Trunk
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet17
   description: server08_Single_Active_Ethernet_Eth1
   shutdown: false
@@ -118,7 +118,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: Tenant_X_Trunk_Auto_Eth
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -138,7 +138,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: Tenant_X_Trunk
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -159,7 +159,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: Tenant_X_Trunk
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -176,7 +176,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: Tenant_X_Trunk
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet21
   description: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt_Eth1
   shutdown: false
@@ -193,7 +193,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: Tenant_X_Trunk
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -210,7 +210,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: Tenant_X_Trunk
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet23
   description: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus_Eth1
   shutdown: false
@@ -225,7 +225,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: Tenant_X_Trunk
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -241,7 +241,7 @@ ethernet_interfaces:
     peer: ROUTER02_WITH_SUBIF
     peer_interface: Eth1
     peer_type: router
-  peer_key: routers
+    peer_key: routers
 hostname: MH-LEAF1A
 ip_igmp_snooping:
   globally_enabled: true

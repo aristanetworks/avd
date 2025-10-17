@@ -31,7 +31,7 @@ ethernet_interfaces:
     peer: server_with_tg_200
     peer_interface: Nic3
     peer_type: server
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk

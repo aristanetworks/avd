@@ -109,7 +109,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: TENANT_A_B
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet11
   description: SERVER_server04_inherit_all_from_profile_Eth1
   shutdown: false
@@ -134,7 +134,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: ALL_WITH_SECURITY
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -163,7 +163,7 @@ ethernet_interfaces:
     peer: server05_no_profile
     peer_interface: Eth1
     peer_type: server
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -193,7 +193,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: ALL_WITH_SECURITY
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -209,7 +209,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet15
   description: SERVER_server08_no_profile_port_channel_Eth1
   shutdown: false
@@ -220,7 +220,7 @@ ethernet_interfaces:
     peer: server08_no_profile_port_channel
     peer_interface: Eth1
     peer_type: server
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet16
   description: SERVER_server09_override_profile_no_port_channel_Eth1
   shutdown: false
@@ -245,7 +245,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: access

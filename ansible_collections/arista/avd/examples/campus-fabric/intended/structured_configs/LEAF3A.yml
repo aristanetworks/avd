@@ -102,7 +102,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -136,7 +136,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -170,7 +170,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -204,7 +204,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -238,7 +238,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -272,7 +272,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -306,7 +306,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -340,7 +340,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -374,7 +374,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -408,7 +408,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -442,7 +442,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -476,7 +476,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -510,7 +510,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -544,7 +544,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -578,7 +578,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -612,7 +612,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -646,7 +646,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -680,7 +680,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -714,7 +714,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -748,7 +748,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -782,7 +782,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -816,7 +816,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -850,7 +850,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -884,7 +884,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -918,7 +918,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -952,7 +952,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -986,7 +986,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1020,7 +1020,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1054,7 +1054,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1088,7 +1088,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1122,7 +1122,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1156,7 +1156,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1190,7 +1190,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1224,7 +1224,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1258,7 +1258,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1292,7 +1292,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1326,7 +1326,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1360,7 +1360,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1394,7 +1394,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1428,7 +1428,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1462,7 +1462,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1496,7 +1496,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1530,7 +1530,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1564,7 +1564,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1598,7 +1598,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1632,7 +1632,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1666,7 +1666,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1700,7 +1700,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1734,7 +1734,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1768,7 +1768,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1802,7 +1802,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1836,7 +1836,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1870,7 +1870,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1904,7 +1904,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1938,7 +1938,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -1972,7 +1972,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2006,7 +2006,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2040,7 +2040,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2074,7 +2074,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2108,7 +2108,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2142,7 +2142,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2176,7 +2176,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2210,7 +2210,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2244,7 +2244,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2278,7 +2278,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2312,7 +2312,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2346,7 +2346,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2380,7 +2380,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2414,7 +2414,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2448,7 +2448,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2482,7 +2482,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2516,7 +2516,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2550,7 +2550,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2584,7 +2584,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2618,7 +2618,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2652,7 +2652,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2686,7 +2686,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2720,7 +2720,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2754,7 +2754,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2788,7 +2788,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2822,7 +2822,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2856,7 +2856,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2890,7 +2890,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2924,7 +2924,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2958,7 +2958,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -2992,7 +2992,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -3026,7 +3026,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -3060,7 +3060,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -3094,7 +3094,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -3128,7 +3128,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -3162,7 +3162,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -3196,7 +3196,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -3230,7 +3230,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -3264,7 +3264,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -3298,7 +3298,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone
@@ -3332,7 +3332,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     port_profile: PP-DOT1X
-  peer_key: network_ports
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: trunk phone

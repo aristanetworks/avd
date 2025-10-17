@@ -80,7 +80,7 @@ ethernet_interfaces:
     peer: port-channel-interface-true
     peer_interface: PCI2
     peer_type: server
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet15
   description: SERVER_port-channel-interface-false_PCI12
   shutdown: false
@@ -91,7 +91,7 @@ ethernet_interfaces:
     peer: port-channel-interface-false
     peer_interface: PCI12
     peer_type: server
-  peer_key: servers
+    peer_key: servers
 - name: Ethernet16
   description: SERVER_port-channel-interface-no-definition_PCI14
   shutdown: false
@@ -102,7 +102,7 @@ ethernet_interfaces:
     peer: port-channel-interface-no-definition
     peer_interface: PCI14
     peer_type: server
-  peer_key: servers
+    peer_key: servers
 flow_tracking:
   hardware:
     trackers:

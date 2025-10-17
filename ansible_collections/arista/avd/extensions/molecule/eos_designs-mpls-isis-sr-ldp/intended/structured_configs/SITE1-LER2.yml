@@ -107,7 +107,7 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: cpe
     port_profile: TENANT_A_WAN_SERVICE_10
-  peer_key: cpes
+    peer_key: cpes
 hostname: SITE1-LER2
 ip_igmp_snooping:
   globally_enabled: true

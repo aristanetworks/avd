@@ -3962,9 +3962,9 @@ keys:
             port_profile:
               type: str
               description: Key only used for documentation or validation purposes.
-        peer_key:
-          type: str
-          description: Key only used for documentation or validation purposes.
+            peer_key:
+              type: str
+              description: Key only used for documentation or validation purposes.
         sflow:
           type: dict
           keys:
@@ -12432,9 +12432,9 @@ keys:
             peer_type:
               type: str
               description: Key only used for documentation or validation purposes.
-        peer_key:
-          type: str
-          description: Key only used for documentation or validation purposes.
+            peer_key:
+              type: str
+              description: Key only used for documentation or validation purposes.
         sflow:
           type: dict
           keys:

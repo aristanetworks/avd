@@ -82,7 +82,7 @@ ethernet_interfaces:
     peer_interface: Eth2
     peer_type: firewall
     port_profile: PP-FIREWALL
-  peer_key: firewalls
+    peer_key: firewalls
 hostname: SPINE2
 ip_domain_lookup:
   source_interfaces:

@@ -187,7 +187,7 @@ ethernet_interfaces:
     peer: server-3
     peer_interface: Eth1
     port_profile: TENANT_A
-  peer_key: connected_endpoints
+    peer_key: connected_endpoints
   switchport:
     enabled: true
     mode: access
@@ -210,7 +210,7 @@ ethernet_interfaces:
     peer_interface: Eth5
     peer_type: SpecialEndpoint
     port_profile: NESTED_TENANT_A
-  peer_key: connected_endpoints
+    peer_key: connected_endpoints
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
@@ -229,7 +229,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     port_profile: TENANT_A
-  peer_key: servers
+    peer_key: servers
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile TENANT_A
@@ -248,7 +248,7 @@ ethernet_interfaces:
     peer_interface: Eth3
     peer_type: server
     port_profile: TENANT_A
-  peer_key: servers
+    peer_key: servers
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under adapter for switch Eth17
@@ -267,7 +267,7 @@ ethernet_interfaces:
     peer_interface: Eth5
     peer_type: server
     port_profile: NESTED_TENANT_A
-  peer_key: servers
+    peer_key: servers
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
@@ -286,7 +286,7 @@ ethernet_interfaces:
     peer_interface: Eth7
     peer_type: server
     port_profile: NESTED_TENANT_A
-  peer_key: servers
+    peer_key: servers
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
@@ -303,7 +303,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: SpecialServer
     port_profile: TENANT_A
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: access

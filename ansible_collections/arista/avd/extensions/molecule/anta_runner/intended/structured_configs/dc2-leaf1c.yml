@@ -32,7 +32,7 @@ ethernet_interfaces:
     peer: dc2-leaf1-server1
     peer_interface: iLO
     peer_type: server
-  peer_key: servers
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
