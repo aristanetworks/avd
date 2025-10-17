@@ -34,7 +34,7 @@ try:
         CVWorkspace,
         DeployToCvResult,
     )
-    from pyavd._utils import default, get, strip_empties_from_dict
+    from pyavd._utils import get, strip_empties_from_dict
 
     HAS_PYAVD = True
 except ImportError:
@@ -348,12 +348,12 @@ class ActionModule(ActionBase):
             # No structured config file.
             structured_config = {}
 
-        if not default(get(structured_config, "metadata.is_deployed"), get(structured_config, "is_deployed", default=True)):
+        if not get(structured_config, "metadata.is_deployed", default=True):
             del structured_config
             return ([], [], [], [])
 
         # Build device object to be used in other objects.
-        serial_number = get(structured_config, "serial_number")
+        serial_number = get(structured_config, "metadata.serial_number")
         system_mac_address = get(structured_config, "metadata.system_mac_address")
         device_object = CVDevice(hostname=hostname, serial_number=serial_number, system_mac_address=system_mac_address)
 
