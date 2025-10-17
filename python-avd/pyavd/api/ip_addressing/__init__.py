@@ -359,11 +359,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         if self._vtep_loopback_ipv6_address:
             return self._vtep_loopback_ipv6_address
 
-        if (
-            self.shared_utils.node_config.vtep_loopback
-            and self.shared_utils.node_config.vtep_loopback == "Loopback0"
-            and self.shared_utils.ipv6_router_id
-        ):
+        if self.shared_utils.node_config.vtep_loopback and self.shared_utils.node_config.vtep_loopback == "Loopback0" and self.shared_utils.ipv6_router_id:
             return self.shared_utils.ipv6_router_id
 
         offset = self._mlag_primary_id + self._loopback_ipv6_offset
@@ -405,11 +401,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         if self._vtep_loopback_ipv6_address:
             return self._vtep_loopback_ipv6_address
 
-        if (
-            self.shared_utils.node_config.vtep_loopback
-            and self.shared_utils.node_config.vtep_loopback == "Loopback0"
-            and self.shared_utils.ipv6_router_id
-        ):
+        if self.shared_utils.node_config.vtep_loopback and self.shared_utils.node_config.vtep_loopback == "Loopback0" and self.shared_utils.ipv6_router_id:
             return self.shared_utils.ipv6_router_id
 
         offset = self._id + self._loopback_ipv6_offset
