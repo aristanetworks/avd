@@ -110,7 +110,7 @@ class UtilsMixin(Protocol):
     @cached_property
     def _vtep_loopback_ipv4_pool(self: AvdIpAddressingProtocol) -> str:
         if (vtep_loopback_ipv4_pool := self.shared_utils.vtep_loopback_ipv4_pool) is None:
-            msg = f"Can't assign IP from `vtep_loopback_ipv4_pool` since `underlay_ipv6_numbered: {self.inputs.underlay_ipv6_numbered}` is defined in inputs"
+            msg = "Can not assign IP from `vtep_loopback_ipv4_pool` either it is not defined or `underlay_ipv6_numbered` is defined in inputs."
             raise AristaAvdError(msg)
         return vtep_loopback_ipv4_pool
 
