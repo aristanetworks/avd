@@ -19,6 +19,8 @@ scenario:
   test_sequence:
     - converge
     - idempotence
+  cleanup_sequence:
+    - cleanup
 
 verifier:
   name: ansible
