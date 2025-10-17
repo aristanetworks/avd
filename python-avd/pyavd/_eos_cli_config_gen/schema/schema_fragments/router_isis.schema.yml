@@ -334,6 +334,9 @@ keys:
           bfd_all_interfaces:
             type: bool
             description: Enable BFD on all interfaces.
+          multi_topology:
+            type: bool
+            description: Enable ISIS multi-topology for ipv6 address family. This is needed for ipv6 adjacencies to form on ISIS interfaces where there is no ipv4 address.
           fast_reroute_ti_lfa:
             type: dict
             keys:

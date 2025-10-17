@@ -70,6 +70,7 @@ router_isis:
       rcf: lu_2_sr_pfx()
   address_family_ipv6:
     enabled: true
+    multi_topology: true
     fast_reroute_ti_lfa:
       mode: node-protection
       level: level-1

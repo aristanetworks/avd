@@ -56059,12 +56059,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "enabled": {"type": bool},
                 "maximum_paths": {"type": int},
                 "bfd_all_interfaces": {"type": bool},
+                "multi_topology": {"type": bool},
                 "fast_reroute_ti_lfa": {"type": FastRerouteTiLfa},
             }
             enabled: bool
             maximum_paths: int | None
             bfd_all_interfaces: bool | None
             """Enable BFD on all interfaces."""
+            multi_topology: bool | None
+            """
+            Enable ISIS multi-topology for ipv6 address family. This is needed for ipv6 adjacencies to form on
+            ISIS interfaces where there is no ipv4 address.
+            """
             fast_reroute_ti_lfa: FastRerouteTiLfa
             """Subclass of AvdModel."""
 
@@ -56076,6 +56082,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     enabled: bool | UndefinedType = Undefined,
                     maximum_paths: int | None | UndefinedType = Undefined,
                     bfd_all_interfaces: bool | None | UndefinedType = Undefined,
+                    multi_topology: bool | None | UndefinedType = Undefined,
                     fast_reroute_ti_lfa: FastRerouteTiLfa | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -56088,6 +56095,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         enabled: enabled
                         maximum_paths: maximum_paths
                         bfd_all_interfaces: Enable BFD on all interfaces.
+                        multi_topology:
+                           Enable ISIS multi-topology for ipv6 address family. This is needed for ipv6 adjacencies to form on
+                           ISIS interfaces where there is no ipv4 address.
                         fast_reroute_ti_lfa: Subclass of AvdModel.
 
                     """
