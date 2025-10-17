@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Literal, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
@@ -95,6 +95,42 @@ class RoutingMixin(Protocol):
             return self.inputs.underlay_isis_instance_name or default_isis_instance_name
         # This point cannot be reached because the function won't be called if either of the conditions in the if-block is not satisfied.
         return None
+
+    @cached_property
+    def bgp_as_notation(self: SharedUtilsProtocol) -> Literal["asdot", "asplain"]:
+        bgp_as_notation = self.inputs.bgp_as_notation
+        if bgp_as_notation == "asdot" or (bgp_as_notation == "auto" and "." in str(self.bgp_as)):
+            return "asdot"
+        return "asplain"
+
+    def get_asn(self: SharedUtilsProtocol, asn: str | int | None) -> str | None:
+        if asn is None:
+            return None
+        # TODO: This calculation would not work for -12345.12234 type of input.
+        # Need to handle in schema probably.
+        if self.bgp_as_notation == "asdot" and "." not in str(asn):
+            try:
+                if (prefix := int(asn) // 65536) != 0:
+                    return f"{prefix}.{int(asn) % 65536}"
+                return f"{int(asn) % 65536}"
+            except ValueError as e:
+                msg = f"Failed to convert '{asn}' to an integer when converting the BGP AS asdot notation`."
+                raise AristaAvdInvalidInputsError(msg) from e
+
+        if self.bgp_as_notation == "asplain" and "." in str(asn):
+            prefix, suffix = str(asn).split(".")
+            try:
+                return str(int(prefix) * 65536 + int(suffix))
+            except ValueError as e:
+                msg = f"Failed to convert '{prefix}' or '{suffix} to an integer when converting the BGP AS '{asn}' to asplain notation`."
+                raise AristaAvdInvalidInputsError(msg) from e
+
+        return str(asn)
+
+    @cached_property
+    def formatted_bgp_as(self: SharedUtilsProtocol) -> str | None:
+        """To reduce the recomputation of properly formatted BGP AS numbers."""
+        return self.get_asn(self.bgp_as)
 
     @cached_property
     def bgp_as(self: SharedUtilsProtocol) -> str | None:
