@@ -1,4 +1,16 @@
 ---
+ansible:
+  executor:
+    backend: ansible-playbook
+    args:
+      ansible_playbook:
+        - --inventory=inventory/inventory.yml
+  env:
+    ANSIBLE_FORCE_COLOR: true
+  cfg:
+    defaults:
+      jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
+
 scenario:
   converge_sequence:
     - syntax
@@ -11,25 +23,10 @@ scenario:
     - cleanup
   cleanup_sequence:
     - destroy
+
 dependency:
   name: galaxy
   enabled: false
-driver:
-  name: default
-  options:
-    managed: false
-platforms:
-  - name: dummy
-provisioner:
-  name: ansible
-  config_options:
-    defaults:
-      jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
-      gathering: explicit
-  playbooks:
-    converge: converge.yml
-  ansible_args:
-    - --inventory
-    - ${MOLECULE_SCENARIO_DIRECTORY}/inventory/inventory.yml
+
 verifier:
   name: ansible
