@@ -2,7 +2,6 @@
 
 # Test overlay_rd and overlay_rt values.
 type: l3leaf
-
 mgmt_gateway: 192.168.200.1
 
 l3leaf:
@@ -47,6 +46,14 @@ l3leaf:
       bgp_as: 65008
       id: 8
       mgmt_ip: 192.168.200.108/24
+    - name: RD-RT-ADMIN-SUBFIELD-L3LEAF9
+      bgp_as: 65552
+      id: 9
+      mgmt_ip: 192.168.200.109/24
+    - name: RD-RT-ADMIN-SUBFIELD-L3LEAF10
+      bgp_as: 65553
+      id: 10
+      mgmt_ip: 192.168.200.110/24
 
 tenants:
 # igmp_snooping_querier enable on Tenant
