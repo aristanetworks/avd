@@ -457,10 +457,8 @@ class RouterBgpMixin(Protocol):
                     remote_as=self.shared_utils.get_asn(data["bgp_as"]),
                     overlay_peering_interface=data.get("overlay_peering_interface"),
                 )
-                if self.inputs.evpn_prevent_readvertise_to_server:
-                    match self.inputs.evpn_prevent_readvertise_to_server_mode:
-                        case "source_peer_asn" | "as_path_acl":
-                            neighbor.route_map_out = f"RM-EVPN-FILTER-AS{data['bgp_as']}"
+                if self.inputs.evpn_prevent_readvertise_to_server and self.inputs.evpn_prevent_readvertise_to_server_mode in ["source_peer_asn", "as_path_acl"]:
+                    neighbor.route_map_out = f"RM-EVPN-FILTER-AS{self.shared_utils.get_asn(data['bgp_as'])}"
                 neighbors.append(neighbor)
 
             for route_client, data in natural_sort(self._evpn_route_clients.items()):
