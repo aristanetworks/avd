@@ -14,7 +14,7 @@ STRING_TO_ELEMENT_TYPE_MAP = {
     "unspecified": ElementType.UNSPECIFIED,
 }
 
-ELEMENT_TYPE_TO_STRING = {
+ELEMENT_TYPE_TO_STRING_MAP = {
     ElementType.DEVICE: "device",
     ElementType.INTERFACE: "interface",
     ElementType.UNSPECIFIED: "unspecified",
@@ -42,7 +42,7 @@ class CVTag:
     @classmethod
     def from_api(cls, tag: Tag) -> Self:
         """Create a CVTag from a raw API Tag object."""
-        element_type = ELEMENT_TYPE_TO_STRING.get(tag.key.element_type, "unspecified")
+        element_type = ELEMENT_TYPE_TO_STRING_MAP.get(tag.key.element_type, "unspecified")
 
         return cls(
             element_type=element_type,
@@ -79,7 +79,7 @@ class CVTagAssignment:
         # The API may return a complex interface ID like 'Ethernet1@<serial>', so we parse it to get just the interface name.
         interface_id = str(tag_assignment.key.interface_id).rsplit("@", maxsplit=1)[0] if tag_assignment.key.interface_id is not None else None
 
-        element_type = ELEMENT_TYPE_TO_STRING.get(tag_assignment.key.element_type, "unspecified")
+        element_type = ELEMENT_TYPE_TO_STRING_MAP.get(tag_assignment.key.element_type, "unspecified")
 
         return cls(
             element_type=element_type,
