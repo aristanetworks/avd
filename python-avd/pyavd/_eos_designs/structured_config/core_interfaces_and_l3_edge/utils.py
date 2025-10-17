@@ -129,8 +129,8 @@ class UtilsMixin(Protocol):
             "peer_type": peer_type,
             "ip": ip,
             "peer_ip": peer_ip,
-            "bgp_as": str(bgp_as[index]) if index < len(bgp_as) and bgp_as[index] else None,
-            "peer_bgp_as": str(bgp_as[peer_index]) if peer_index < len(bgp_as) and bgp_as[peer_index] else None,
+            "bgp_as": self.shared_utils.get_asn(str(bgp_as[index])) if index < len(bgp_as) and bgp_as[index] else None,
+            "peer_bgp_as": self.shared_utils.get_asn(str(bgp_as[peer_index])) if peer_index < len(bgp_as) and bgp_as[peer_index] else None,
             "description": description,
         }
 
