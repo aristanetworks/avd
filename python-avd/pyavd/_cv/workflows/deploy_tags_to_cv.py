@@ -91,7 +91,7 @@ async def deploy_tags_to_cv(
 
     # Now we start removing assignments depending on strict_tags or not.
 
-    # Build set of serial numbers for devices.
+    # Build a mapping of device serial number to CVDevice.
     devices_by_serial_number = {
         tag.device.serial_number: tag.device for tag in deployed_tags if tag.device is not None and tag.device.serial_number is not None
     }
@@ -115,10 +115,10 @@ async def deploy_tags_to_cv(
         LOGGER.info("deploy_tags_to_cv: Deleting %s tag assignments", len(assignments_to_unassign))
         await cv_client.delete_tag_assignments(workspace_id=workspace.id, tag_assignments=assignments_to_unassign)
 
-        # Sort the results for deterministic output for testing.
+        # Sort the assignments for deterministic output for testing.
         sorted_assignments_to_unassign = sorted(
             assignments_to_unassign,
-            key=lambda x: (x.label, x.value, x.device_id, x.interface_id or "", x.element_type),
+            key=lambda assignment: (assignment.label, assignment.value, assignment.device_id, assignment.interface_id or "", assignment.element_type),
         )
 
         if tag_type == "interface":

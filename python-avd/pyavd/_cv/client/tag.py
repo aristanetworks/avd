@@ -144,7 +144,7 @@ class TagMixin(Protocol):
                 TagConfig(
                     key=TagKey(
                         workspace_id=workspace_id,
-                        element_type=tag.as_element_type(),
+                        element_type=tag.to_element_type(),
                         label=tag.label,
                         value=tag.value,
                     ),
@@ -243,7 +243,7 @@ class TagMixin(Protocol):
                 TagAssignmentConfig(
                     key=TagAssignmentKey(
                         workspace_id=workspace_id,
-                        element_type=tag_assignment.as_element_type(),
+                        element_type=tag_assignment.to_element_type(),
                         label=tag_assignment.label,
                         value=tag_assignment.value,
                         device_id=tag_assignment.device_id,
@@ -281,7 +281,7 @@ class TagMixin(Protocol):
                 TagAssignmentConfig(
                     key=TagAssignmentKey(
                         workspace_id=workspace_id,
-                        element_type=tag_assignment.as_element_type(),
+                        element_type=tag_assignment.to_element_type(),
                         label=tag_assignment.label,
                         value=tag_assignment.value,
                         device_id=tag_assignment.device_id,
