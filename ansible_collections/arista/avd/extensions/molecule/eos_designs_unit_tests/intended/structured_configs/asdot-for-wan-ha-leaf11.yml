@@ -85,12 +85,12 @@ router_bgp:
   neighbors:
   - ip_address: 172.17.0.1
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65000.1'
+    remote_as: '4259840001'
     peer: asdot-for-wan-ha-transit1A1
     description: asdot-for-wan-ha-transit1A1_Ethernet52
   - ip_address: 172.17.0.3
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65000.1'
+    remote_as: '4259840001'
     peer: asdot-for-wan-ha-transit1B1
     description: asdot-for-wan-ha-transit1B1_Ethernet52
   redistribute:
