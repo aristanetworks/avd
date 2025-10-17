@@ -1,7 +1,8 @@
 # Copyright (c) 2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from typing import Literal, NamedTuple
+from dataclasses import dataclass
+from typing import Literal
 
 from typing_extensions import Self
 
@@ -20,7 +21,8 @@ REVERSED_ELEMENT_TYPE_MAP = {
 }
 
 
-class CVTag(NamedTuple):
+@dataclass(frozen=True)
+class CVTag:
     """
     Represent the input model for a CloudVision Tag.
 
@@ -38,8 +40,8 @@ class CVTag(NamedTuple):
         return ELEMENT_TYPE_MAP.get(self.element_type, ElementType.UNSPECIFIED)
 
     @classmethod
-    def from_cv_api_tag(cls, tag: Tag) -> Self:
-        """Create a CVTag from a CV API Tag object."""
+    def from_api(cls, tag: Tag) -> Self:
+        """Create a CVTag from a raw API Tag object."""
         element_type = REVERSED_ELEMENT_TYPE_MAP.get(tag.key.element_type, "unspecified")
 
         return cls(
@@ -49,7 +51,8 @@ class CVTag(NamedTuple):
         )
 
 
-class CVTagAssignment(NamedTuple):
+@dataclass(frozen=True)
+class CVTagAssignment:
     """
     Represent the input model for a CloudVision Tag Assignment.
 
@@ -71,8 +74,8 @@ class CVTagAssignment(NamedTuple):
         return ELEMENT_TYPE_MAP.get(self.element_type, ElementType.UNSPECIFIED)
 
     @classmethod
-    def from_cv_api_tag_assignment(cls, tag_assignment: TagAssignment) -> Self:
-        """Create a TagAssignmentTuple from a CV TagAssignment object."""
+    def from_api(cls, tag_assignment: TagAssignment) -> Self:
+        """Create a TagAssignmentTuple from a raw API TagAssignment object."""
         # The API may return a complex interface ID like 'Ethernet1@<serial>', so we parse it to get just the interface name.
         interface_id = str(tag_assignment.key.interface_id).rsplit("@", maxsplit=1)[0] if tag_assignment.key.interface_id is not None else None
 
