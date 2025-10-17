@@ -8,6 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>bgp_as</samp>](## "bgp_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>" to use to configure overlay when "overlay_routing_protocol" == ibgp.<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>bgp_as_notation</samp>](## "bgp_as_notation") | String |  | `auto` | Valid Values:<br>- <code>auto</code><br>- <code>asdot</code><br>- <code>asplain</code> | AS number representation.<br>asdot - AS number representation in asdot format (Ex. 123.12).<br>asplain - AS number representation in asplain format (Ex. 12312).<br>auto - Will look at the configured ASN and if there is a dot in it,<br>       it will use asdot otherwise asplain. |
     | [<samp>bgp_default_ipv4_unicast</samp>](## "bgp_default_ipv4_unicast") | Boolean |  | `False` |  | Default activation of IPv4 unicast address-family on all IPv4 neighbors.<br>It is best practice to disable activation.<br> |
     | [<samp>bgp_distance</samp>](## "bgp_distance") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;external_routes</samp>](## "bgp_distance.external_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
@@ -100,6 +101,13 @@
     # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>" to use to configure overlay when "overlay_routing_protocol" == ibgp.
     # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
     bgp_as: <str>
+
+    # AS number representation.
+    # asdot - AS number representation in asdot format (Ex. 123.12).
+    # asplain - AS number representation in asplain format (Ex. 12312).
+    # auto - Will look at the configured ASN and if there is a dot in it,
+    #        it will use asdot otherwise asplain.
+    bgp_as_notation: <str; "auto" | "asdot" | "asplain"; default="auto">
 
     # Default activation of IPv4 unicast address-family on all IPv4 neighbors.
     # It is best practice to disable activation.

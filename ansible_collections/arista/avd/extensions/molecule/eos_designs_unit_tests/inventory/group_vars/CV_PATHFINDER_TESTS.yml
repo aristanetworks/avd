@@ -632,22 +632,20 @@ tenants:
                 ip_address: 10.66.66.1
   - name: TenantD
     # Tenant used to test VRFs
-    # knob wan_use_evpn_node_settings_for_lan: true
     mac_vrf_vni_base: 1000
     vrfs:
       - name: WAN-VRF-NO-AF
         vrf_id: 200
         # Setting address families under tenant to empty list
-        # and checking the VRF is still added on the WAN when the knob is true
+        # and checking the VRF is still added on the WAN
         # and the VRF is defined under wan_virtual_topologies.vrfs
         address_families: []
       - name: VRF-NO-WAN
         vrf_id: 300
-        # keeping default address family "evpn" and verifying we do not raise
-        # when the knob is true. The VRF should be configured.
+        # keeping default address family "evpn" and verifying we want no raise and the VRF configured with VNI 300
       - name: VRF-NO-WAN-NO-AF
         vrf_id: 400
-        # when the knob is true. The VRF should not be configured under VXLAN and BGP.
+        # The VRF should not be configured under VXLAN and BGP.
         address_families: []
 
 wan_virtual_topologies:

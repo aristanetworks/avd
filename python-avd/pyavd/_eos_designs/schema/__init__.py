@@ -675,6 +675,8 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    BgpAsNotation: TypeAlias = Literal["auto", "asdot", "asplain"]
+
     class BgpGracefulRestart(AvdModel):
         """Subclass of AvdModel."""
 
@@ -75345,6 +75347,7 @@ class EosDesigns(EosDesignsRootModel):
         "avd_eos_designs_unset_facts": {"type": bool, "default": True},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
+        "bgp_as_notation": {"type": str, "default": "auto"},
         "bgp_default_ipv4_unicast": {"type": bool, "default": False},
         "bgp_distance": {"type": EosCliConfigGen.RouterBgp.Distance},
         "bgp_ecmp": {"type": int},
@@ -75868,7 +75871,6 @@ class EosDesigns(EosDesignsRootModel):
         "wan_stun_dtls_disable": {"type": bool, "default": False},
         "wan_stun_dtls_profile_name": {"type": str, "default": "STUN-DTLS"},
         "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp": {"type": bool, "default": False},
-        "wan_use_evpn_node_settings_for_lan": {"type": bool, "default": False},
         "wan_virtual_topologies": {"type": WanVirtualTopologies},
         "zscaler_endpoints": {"type": ZscalerEndpoints},
         "_custom_structured_configurations": {"type": _CustomStructuredConfigurations},
@@ -75960,6 +75962,18 @@ class EosDesigns(EosDesignsRootModel):
     overlay when "overlay_routing_protocol" == ibgp.
     For asdot notation in YAML inputs, the value must
     be put in quotes, to prevent it from being interpreted as a float number.
+    """
+    bgp_as_notation: BgpAsNotation
+    """
+    AS number representation.
+    asdot - AS number representation in asdot format (Ex. 123.12).
+    asplain -
+    AS number representation in asplain format (Ex. 12312).
+    auto - Will look at the configured ASN and
+    if there is a dot in it,
+           it will use asdot otherwise asplain.
+
+    Default value: `"auto"`
     """
     bgp_default_ipv4_unicast: bool
     """
@@ -77791,18 +77805,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
-    wan_use_evpn_node_settings_for_lan: bool
-    """
-    PREVIEW: This key is currently not supported and may produce invalid configuration.
-    When true,
-    `eos_designs` will use `overlay_routing_protocol`, `evpn_role` and `vtep`
-    node settings for LAN side
-    on WAN devices. Otherwise these will be ignored for WAN.
-    This will be the default in AVD version
-    6.0.0 and this option will be removed.
-
-    Default value: `False`
-    """
     wan_virtual_topologies: WanVirtualTopologies
     """
     Configure Virtual Topologies for CV Pathfinder and AutoVPN.
@@ -77845,6 +77847,7 @@ class EosDesigns(EosDesignsRootModel):
             avd_eos_designs_unset_facts: bool | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
+            bgp_as_notation: BgpAsNotation | UndefinedType = Undefined,
             bgp_default_ipv4_unicast: bool | UndefinedType = Undefined,
             bgp_distance: EosCliConfigGen.RouterBgp.Distance | UndefinedType = Undefined,
             bgp_ecmp: int | None | UndefinedType = Undefined,
@@ -78033,7 +78036,6 @@ class EosDesigns(EosDesignsRootModel):
             wan_stun_dtls_disable: bool | UndefinedType = Undefined,
             wan_stun_dtls_profile_name: str | UndefinedType = Undefined,
             wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: bool | UndefinedType = Undefined,
-            wan_use_evpn_node_settings_for_lan: bool | UndefinedType = Undefined,
             wan_virtual_topologies: WanVirtualTopologies | UndefinedType = Undefined,
             zscaler_endpoints: ZscalerEndpoints | UndefinedType = Undefined,
             _custom_structured_configurations: _CustomStructuredConfigurations | UndefinedType = Undefined,
@@ -78097,6 +78099,14 @@ class EosDesigns(EosDesignsRootModel):
                    overlay when "overlay_routing_protocol" == ibgp.
                    For asdot notation in YAML inputs, the value must
                    be put in quotes, to prevent it from being interpreted as a float number.
+                bgp_as_notation:
+                   AS number representation.
+                   asdot - AS number representation in asdot format (Ex. 123.12).
+                   asplain -
+                   AS number representation in asplain format (Ex. 12312).
+                   auto - Will look at the configured ASN and
+                   if there is a dot in it,
+                          it will use asdot otherwise asplain.
                 bgp_default_ipv4_unicast:
                    Default activation of IPv4 unicast address-family on all IPv4 neighbors.
                    It is best practice to
@@ -79413,14 +79423,6 @@ class EosDesigns(EosDesignsRootModel):
                    requires a restart of the KernelFib agent.
                    - `false`: For newer EOS versions (starting 4.33.2) use
                    the proper CLI.
-                wan_use_evpn_node_settings_for_lan:
-                   PREVIEW: This key is currently not supported and may produce invalid configuration.
-                   When true,
-                   `eos_designs` will use `overlay_routing_protocol`, `evpn_role` and `vtep`
-                   node settings for LAN side
-                   on WAN devices. Otherwise these will be ignored for WAN.
-                   This will be the default in AVD version
-                   6.0.0 and this option will be removed.
                 wan_virtual_topologies:
                    Configure Virtual Topologies for CV Pathfinder and AutoVPN.
                    Auto create a control plane

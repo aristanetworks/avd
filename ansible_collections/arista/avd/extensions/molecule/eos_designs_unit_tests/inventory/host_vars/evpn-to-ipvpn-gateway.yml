@@ -1,5 +1,7 @@
 type: l3leaf
 
+bgp_as_notation: asplain
+
 l3leaf:
   defaults:
     loopback_ipv4_pool: 10.10.0.0/24

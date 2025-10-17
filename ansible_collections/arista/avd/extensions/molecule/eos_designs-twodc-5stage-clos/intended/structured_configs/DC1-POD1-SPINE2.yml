@@ -133,6 +133,7 @@ metadata:
   serial_number: DEADBEEFC0FFEE
 router_bgp:
   as: '65110.100'
+  as_notation: asdot
   router_id: 172.16.110.2
   maximum_paths:
     paths: 4
