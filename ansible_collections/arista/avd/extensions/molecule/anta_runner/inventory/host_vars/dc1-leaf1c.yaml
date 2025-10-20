@@ -13,7 +13,7 @@ custom_structured_configuration_vxlan_interface:
         vni: 10
 
 custom_structured_configuration_loopback_interfaces:
-  - name: Loopback0
-    description: ROUTER_ID
-    shutdown: true
-    ip_address: 10.255.0.3/32
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: true
+  ip_address: 10.255.0.3/32
