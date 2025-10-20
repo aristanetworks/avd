@@ -64,7 +64,7 @@ class VerifySpecificIPSecConnInputFactory(AntaTestInputFactory[VerifySpecificIPS
                         )
                         added_peers.add((static_peer.router_ip, "default"))
                     else:
-                        self.logger_adapter.debug(LogMessage.PATH_GROUP_IPV6_STATIC_PEER, peer=peer_ip)
+                        self.logger_adapter.debug(LogMessage.PATH_GROUP_IPV6_STATIC_PEER, peer=peer_ip, path_group=path_group.name)
 
         return (
             [VerifySpecificIPSecConn.Input(ip_security_connections=natural_sort(ip_security_connections, sort_key="peer"))] if ip_security_connections else None

@@ -100,7 +100,7 @@ class LogMessage(Enum):
     PATH_GROUP_NO_LOCAL_INTERFACES = "path group {path_group} skipped - No local interfaces found"
     PATH_GROUP_NO_STATIC_PEERS = "path group {path_group} skipped - No static peers configured"
     NO_STATIC_PEERS = "skipped - No static peers configured in any path groups"
-    PATH_GROUP_IPV6_STATIC_PEER = "static peer {peer} skipped - ANTA does not support IPv6 static peer"
+    PATH_GROUP_IPV6_STATIC_PEER = "static peer {peer} under path group {path_group} skipped - ANTA does not support IPv6 static peer"
 
     # Input generation messages
     INPUT_NONE_FOUND = "skipped - No inputs available"

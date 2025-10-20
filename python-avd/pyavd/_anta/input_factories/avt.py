@@ -37,7 +37,7 @@ class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory[VerifyAVTSpecificPa
                 if isinstance(static_peer_ip, IPv4Address):
                     static_peers.add(static_peer_ip)
                 else:
-                    self.logger_adapter.debug(LogMessage.PATH_GROUP_IPV6_STATIC_PEER, peer=static_peer.router_ip)
+                    self.logger_adapter.debug(LogMessage.PATH_GROUP_IPV6_STATIC_PEER, peer=static_peer.router_ip, path_group=path_group.name)
 
         if not static_peers:
             self.logger_adapter.debug(LogMessage.NO_STATIC_PEERS)

@@ -53,6 +53,8 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory[VerifySpecificPath.Inp
                     continue
 
                 source_address = ip_interface(interface_ip_address).ip
+                if not isinstance(source_address, IPv4Address):
+                    continue
                 for static_peer in path_group.static_peers:
                     static_peer_ip = ip_address(static_peer.router_ip)
                     if isinstance(static_peer_ip, IPv4Address):
@@ -65,6 +67,6 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory[VerifySpecificPath.Inp
                             )
                             all_dps_paths.append(dps_path)
                     else:
-                        self.logger_adapter.debug(LogMessage.PATH_GROUP_IPV6_STATIC_PEER, peer=static_peer.router_ip)
+                        self.logger_adapter.debug(LogMessage.PATH_GROUP_IPV6_STATIC_PEER, peer=static_peer.router_ip, path_group=path_group.name)
 
         return [VerifySpecificPath.Input(paths=natural_sort(all_dps_paths, sort_key="peer"))] if all_dps_paths else None
