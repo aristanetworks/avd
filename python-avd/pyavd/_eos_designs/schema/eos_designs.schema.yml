@@ -10476,7 +10476,6 @@ $defs:
             type: str
             convert_types:
             - int
-            - float
           bgp_defaults:
             documentation_options:
               table: node-type-bgp-configuration
@@ -10646,7 +10645,6 @@ $defs:
                       type: str
                       convert_types:
                       - int
-                      - float
               evpn_l2:
                 description: Enable EVPN Gateway functionality for route-types 2 (MAC-IP)
                   and 3 (IMET).
@@ -10780,7 +10778,6 @@ $defs:
                       required: true
                       convert_types:
                       - int
-                      - float
           mlag:
             documentation_options:
               table: node-type-l2-mlag-configuration
