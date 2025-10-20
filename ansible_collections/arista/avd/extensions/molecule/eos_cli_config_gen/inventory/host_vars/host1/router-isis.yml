@@ -149,8 +149,6 @@ router_isis:
           key_type: 0
           key: password2
   eos_cli: |-
-    address-family ipv6 unicast
-      multi-topology
     traffic-engineering
       no shutdown
       is-type level-2
