@@ -130,8 +130,6 @@ aaa_authorization:
       default: group tacacs+ local
     - level: '5'
       default: group radius
-    - level: '6'
-    - default: group radius
 aaa_root:
   disabled: false
   secret:
