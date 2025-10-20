@@ -13235,7 +13235,7 @@ traffic-policies
          actions
       !
       match BLUE-C2-POLICY-08 ipv6
-         protocol icmpv6 type echo echo-reply code all
+         protocol icmpv6 type echo-reply echo-request code all
       !
       match ipv4-all-default ipv4
          actions

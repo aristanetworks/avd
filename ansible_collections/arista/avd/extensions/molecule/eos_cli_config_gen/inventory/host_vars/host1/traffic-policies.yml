@@ -279,8 +279,8 @@ traffic_policies:
           protocols:
             - protocol: icmpv6
               icmp_type:
-                - echo
                 - echo-reply
+                - echo-request
     - name: BLUE-C3-POLICY
       default_actions:
         ipv4:
