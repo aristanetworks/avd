@@ -1,0 +1,6 @@
+{
+    "raise": {
+        "status": "NOT_FOUND",
+        "message": "Requested entity was not found."
+    }
+}
