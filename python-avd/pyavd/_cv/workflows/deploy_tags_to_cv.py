@@ -51,7 +51,7 @@ async def deploy_tags_to_cv(
 
     tag_type = "interface" if isinstance(tags[0], CVInterfaceTag) else "device"
 
-    # Build toto tags with CVDevice/CVInterfaceTag objects that exist on CloudVision. Add the rest to skipped.
+    # Build todo tags with CVDevice/CVInterfaceTag objects that exist on CloudVision. Add the rest to skipped.
     skipped_tags.extend(tag for tag in tags if tag.device is not None and not tag.device._exists_on_cv)
     todo_tags = [tag for tag in tags if tag.device is None or tag.device._exists_on_cv]
 
