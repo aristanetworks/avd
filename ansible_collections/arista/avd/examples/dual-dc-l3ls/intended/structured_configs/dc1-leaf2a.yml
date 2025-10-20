@@ -276,7 +276,7 @@ router_bgp:
     metadata:
       peer: dc1-spine2
     description: dc1-spine2_Loopback0
-  - ip_address: 10.255.128.15
+  - ip_address: 10.255.128.5
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65202'
     metadata:
