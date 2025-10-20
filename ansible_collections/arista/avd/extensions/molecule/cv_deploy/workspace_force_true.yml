@@ -77,6 +77,7 @@
             that:
               # errors and warnings
               - cv_deploy_results.errors == []
+              - "'Inactive devices present' in cv_deploy_results.warnings[0]"
               # Change control
               - cv_deploy_results.change_control.name == cv_change_control_name
               - cv_deploy_results.change_control.description == cv_change_control_description

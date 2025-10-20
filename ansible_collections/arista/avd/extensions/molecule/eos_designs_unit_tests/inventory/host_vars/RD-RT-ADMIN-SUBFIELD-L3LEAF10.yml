@@ -1,0 +1,18 @@
+---
+
+# Expected result:
+# VLAN rd 1.17:*
+# VRF rd 123:*
+bgp_as_notation: asdot
+overlay_rd_type:
+  admin_subfield: bgp_as
+  admin_subfield_offset: 111 # Ignored for bgp_as and overridden by vrf_admin_subfield_offset
+  vrf_admin_subfield: 123
+  vrf_admin_subfield_offset: 0
+
+# Expected result:
+# VLAN rt 15:*
+# VRF rt 1.17:*
+overlay_rt_type:
+  admin_subfield: 15
+  vrf_admin_subfield: bgp_as

@@ -98,7 +98,7 @@
           ansible.builtin.assert:
             that:
               # errors and warnings
-              - "'Failed to submit workspace' in cv_deploy_results.errors[0]"
+              - "'Failed to submit CloudVision Workspace due to the presence of inactive devices' in cv_deploy_results.errors[0]"
               - cv_deploy_results.workspace.state == "submit failed"
 
       always:

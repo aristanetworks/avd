@@ -39,7 +39,7 @@ class RouterBgpMixin(Protocol):
             if self.inputs.underlay_rfc5549 and p2p_link.include_in_underlay_protocol and p2p_link.routing_protocol != "ebgp":
                 self.structured_config.router_bgp.neighbor_interfaces.append_new(
                     name=p2p_link_data["interface"],
-                    remote_as=p2p_link_data["peer_bgp_as"],
+                    remote_as=self.shared_utils.get_asn(p2p_link_data["peer_bgp_as"]),
                     peer=p2p_link_data["peer"],
                     description=p2p_link_data["peer"],
                     peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
@@ -53,12 +53,14 @@ class RouterBgpMixin(Protocol):
 
             self.structured_config.router_bgp.neighbors.append_new(
                 ip_address=get_ip_from_ip_prefix(p2p_link_data["peer_ip"]),
-                remote_as=p2p_link_data["peer_bgp_as"],
+                remote_as=self.shared_utils.get_asn(p2p_link_data["peer_bgp_as"]),
                 peer=p2p_link_data["peer"],
                 description=p2p_link_data["peer"],
                 peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name if p2p_link.include_in_underlay_protocol else Undefined,
                 bfd=p2p_link.bfd,
-                local_as=p2p_link_data["bgp_as"] if p2p_link_data["bgp_as"] != self.shared_utils.bgp_as else None,
+                local_as=self.shared_utils.get_asn(p2p_link_data["bgp_as"])
+                if self.shared_utils.get_asn(p2p_link_data["bgp_as"]) != self.shared_utils.formatted_bgp_as
+                else None,
             )
 
             # For the combination of underlay-routing, rfc5549 and ebgp we will add the neighbor using the regular logic above,
