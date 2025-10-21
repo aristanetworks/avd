@@ -55,7 +55,7 @@
           run_once: true
           delegate_to: localhost
           arista.avd.cv_workflow:
-            cv_servers: [ "{{ cv_server }}" ]
+            cv_servers: ["{{ cv_server }}"]
             cv_token: "{{ cv_token }}"
             cv_verify_certs: "{{ cv_verify_certs }}"
             configuration_dir: "{{ eos_config_dir }}"
