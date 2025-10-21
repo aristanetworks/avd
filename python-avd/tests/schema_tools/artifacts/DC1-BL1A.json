@@ -3537,8 +3537,8 @@
     "overlay_rt_type": {
         "admin_subfield": "bgp_as"
     },
-    "inventory_file": "/home/holbech/avd/ansible_collections/arista/avd/molecule/eos_designs_unit_tests/inventory/hosts.yml",
-    "inventory_dir": "/home/holbech/avd/ansible_collections/arista/avd/molecule/eos_designs_unit_tests/inventory",
+    "inventory_file": "/home/holbech/avd/ansible_collections/arista/avd/extensions/molecule/eos_designs_unit_tests/inventory/hosts.yml",
+    "inventory_dir": "/home/holbech/avd/ansible_collections/arista/avd/extensions/molecule/eos_designs_unit_tests/inventory",
     "ansible_host": "192.168.200.110",
     "inventory_hostname": "DC1-BL1A",
     "inventory_hostname_short": "DC1-BL1A",
@@ -5031,7 +5031,7 @@
     "ansible_diff_mode": false,
     "ansible_forks": 10,
     "ansible_inventory_sources": [
-        "/home/holbech/avd/ansible_collections/arista/avd/molecule/eos_designs_unit_tests/inventory/hosts.yml"
+        "/home/holbech/avd/ansible_collections/arista/avd/extensions/molecule/eos_designs_unit_tests/inventory/hosts.yml"
     ],
     "ansible_skip_tags": [],
     "ansible_run_tags": [

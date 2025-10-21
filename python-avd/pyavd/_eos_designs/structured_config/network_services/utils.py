@@ -188,7 +188,7 @@ class UtilsMixin(Protocol):
             return None
 
         if admin_subfield == "bgp_as":
-            return self.shared_utils.bgp_as
+            return self.shared_utils.formatted_bgp_as
 
         if re_fullmatch(r"\d+", str(admin_subfield)):
             return admin_subfield
@@ -292,7 +292,7 @@ class UtilsMixin(Protocol):
         """
         admin_subfield: str = default(self.inputs.overlay_rt_type.vrf_admin_subfield, self.inputs.overlay_rt_type.admin_subfield)
         if admin_subfield == "bgp_as":
-            return self.shared_utils.bgp_as
+            return self.shared_utils.formatted_bgp_as
 
         if re_fullmatch(r"\d+", admin_subfield):
             return admin_subfield

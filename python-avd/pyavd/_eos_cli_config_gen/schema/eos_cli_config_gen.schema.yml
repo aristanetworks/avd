@@ -3956,6 +3956,9 @@ keys:
         peer_type:
           type: str
           description: Key only used for documentation or validation purposes.
+        peer_key:
+          type: str
+          description: Key only used for documentation or validation purposes.
         sflow:
           type: dict
           keys:
@@ -9197,6 +9200,14 @@ keys:
         type: str
       fabric_name:
         type: str
+      serial_number:
+        description: 'Serial Number of the device.
+
+          Used only for documentation and deployment purposes. It is used by the ''cv_deploy''
+          role.'
+        type: str
+        convert_types:
+        - int
       cv_tags:
         type: dict
         keys:
@@ -12413,6 +12424,9 @@ keys:
           type: str
           description: Key only used for documentation or validation purposes.
         peer_type:
+          type: str
+          description: Key only used for documentation or validation purposes.
+        peer_key:
           type: str
           description: Key only used for documentation or validation purposes.
         sflow:
@@ -22177,16 +22191,6 @@ keys:
                 be less than the value of B) formats. Example. 30-34,55,RED
               convert_types:
               - int
-  serial_number:
-    documentation_options:
-      table: metadata
-    description: 'Serial Number of the device.
-
-      Used only for documentation and deployment purposes. It is used by the ''cv_deploy''
-      role.'
-    type: str
-    convert_types:
-    - int
   service_routing_configuration_bgp:
     type: dict
     keys:

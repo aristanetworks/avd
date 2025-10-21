@@ -162,6 +162,11 @@ class CVDevice:
     system_mac_address: str | None = None
     _exists_on_cv: bool | None = None
     """ Do not set this manually. """
+    _streaming: bool | None = None
+    """
+    Device's streaming status.
+    Do not set this manually.
+    """
 
 
 @dataclass
