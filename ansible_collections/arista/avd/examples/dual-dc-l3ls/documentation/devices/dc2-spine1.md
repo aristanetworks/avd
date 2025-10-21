@@ -284,7 +284,7 @@ ASN Notation: asplain
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -336,7 +336,7 @@ ASN Notation: asplain
 router bgp 65200
    router-id 10.255.128.11
    no bgp default ipv4-unicast
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0

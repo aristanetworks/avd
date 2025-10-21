@@ -174,6 +174,14 @@ class RouterBgpMixin(Protocol):
                     if self.shared_utils.inband_mgmt_vrf == vrf.name and self.shared_utils.inband_management_parent_vlans:
                         bgp_vrf.redistribute.attached_host.enabled = True
 
+                    # Common things but need it repeated between default and non-default since type checker gets too confused
+                    # about the type of bgp_vrf vs. bgp_peer_config.
+                    for aggregate_address in vrf.aggregate_addresses:
+                        # Below we recast directly to eos_cli_config_gen. Losing incompatible keys, but relaying everything else.
+                        bgp_vrf.aggregate_addresses.append(
+                            aggregate_address._cast_as(EosCliConfigGen.RouterBgp.VrfsItem.AggregateAddressesItem, ignore_extra_keys=True)
+                        )
+
                 else:
                     # VRF default
 
@@ -190,10 +198,11 @@ class RouterBgpMixin(Protocol):
                         # We need to add redistribute connected for the default VRF when underlay_routing_protocol is "none"
                         bgp_vrf.redistribute.connected.enabled = True
 
-                for address in vrf.aggregate_addresses:
-                    self.structured_config.router_bgp.aggregate_addresses.append(
-                        address._cast_as(EosCliConfigGen.RouterBgp.AggregateAddressesItem, ignore_extra_keys=True)
-                    )
+                    # Common things but need it repeated between default and non-default since type checker gets too confused
+                    # about the type of bgp_vrf vs. bgp_peer_config.
+                    for aggregate_address in vrf.aggregate_addresses:
+                        # Below we recast directly to eos_cli_config_gen. Losing incompatible keys, but relaying everything else.
+                        bgp_vrf.aggregate_addresses.append(aggregate_address._cast_as(EosCliConfigGen.RouterBgp.AggregateAddressesItem, ignore_extra_keys=True))
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
@@ -319,7 +328,7 @@ class RouterBgpMixin(Protocol):
             bgp_vrf.neighbor_interfaces.append_new(
                 name=interface_name,
                 peer_group=self.shared_utils.mlag_vrfs_peer_group_name,
-                remote_as=self.shared_utils.bgp_as,
+                remote_as=self.shared_utils.formatted_bgp_as,
                 description=AvdStringFormatter().format(
                     self.inputs.mlag_bgp_peer_description,
                     mlag_peer=self.shared_utils.mlag_peer,

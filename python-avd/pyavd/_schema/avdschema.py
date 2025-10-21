@@ -65,12 +65,8 @@ class AvdSchema:
             schema = DEFAULT_SCHEMA
 
         self._schema = schema
-        try:
-            self._validator = AvdValidator(schema)
-            self._dataconverter = AvdDataConverter(schema)
-        except Exception as e:
-            msg = "An error occurred during creation of the validator"
-            raise AristaAvdError(msg) from e
+        self._validator = AvdValidator(schema)
+        self._dataconverter = AvdDataConverter(schema)
 
     def validate(self, data: Any) -> Generator:
         yield from self._validator.validate(data)
@@ -163,6 +159,8 @@ class AvdSchema:
         Raises:
         -------
           AvdSchemaError if no default value is defined.
+
+        TODO: Remove this method since it seems like it is not used any longer.
         """
         if "default" not in (subschema := self.subschema(datapath)):
             msg = f"The datapath '{datapath}' does not have a default value"
