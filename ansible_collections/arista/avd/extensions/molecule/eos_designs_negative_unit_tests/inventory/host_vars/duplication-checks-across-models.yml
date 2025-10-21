@@ -9,15 +9,7 @@ l3spine:
 l3_edge:
   p2p_links:
     - ip: [10.10.10.0/31, 10.10.10.1/31]
-<<<<<<<< HEAD:ansible_collections/arista/avd/extensions/molecule/eos_designs_negative_unit_tests/inventory/host_vars/duplication-checks-across-models.yml
       nodes: [duplication-checks-across-models, somethingelse]
-========
-      nodes:
-        [
-          avd_eos_designs_enforce_duplication_checks_across_all_models,
-          somethingelse,
-        ]
->>>>>>>> devel:ansible_collections/arista/avd/extensions/molecule/eos_designs_negative_unit_tests/inventory/host_vars/avd_eos_designs_enforce_duplication_checks_across_all_models.yml
       interfaces: [Ethernet1, Ethernet1]
 
 servers:
@@ -26,7 +18,6 @@ servers:
       - switches: [duplication-checks-across-models]
         switch_ports: [Ethernet1]
         vlans: 100
-
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for EthernetInterfaces.
   {'name': 'Ethernet1', 'description': 'SERVER_Myserver', 'shutdown': False, 'peer': 'Myserver', 'peer_type': 'server', 'peer_key': 'servers',
