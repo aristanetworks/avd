@@ -1,17 +1,17 @@
 devices:
-  # - name: dc1-leaf1a
-  #   profile: DC1_L3_LEAF1
-  #   id: 1
-  #   mgmt_ip: 172.16.1.101/24
-  #   # Definition of the port to be used in the uplink device facing this device.
-  #   # Note that the number of elements in this list must match the length of 'uplink_switches' as well as 'uplink_interfaces'
-  #   uplink_switch_interfaces: [Ethernet1, Ethernet1]
+  - name: dc1-leaf1a
+    profile: DC1_L3_LEAF1
+    id: 1
+    mgmt_ip: 172.16.1.101/24
+    # Definition of the port to be used in the uplink device facing this device.
+    # Note that the number of elements in this list must match the length of 'uplink_switches' as well as 'uplink_interfaces'
+    uplink_switch_interfaces: [Ethernet1, Ethernet1]
 
-  # - name: dc1-leaf1b
-  #   profile: DC1_L3_LEAF1
-  #   id: 2
-  #   mgmt_ip: 172.16.1.102/24
-  #   uplink_switch_interfaces: [Ethernet2, Ethernet2]
+  - name: dc1-leaf1b
+    profile: DC1_L3_LEAF1
+    id: 2
+    mgmt_ip: 172.16.1.102/24
+    uplink_switch_interfaces: [Ethernet2, Ethernet2]
 
   - name: dc1-leaf1c
     profile: dc1-l2leaf

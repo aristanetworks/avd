@@ -71,9 +71,9 @@ device_profiles:
     platform: vEOS-lab
     spanning_tree_mode: mstp
 
-match_devices:
-  - hostname_pattern: dc1-leaf1[ab]
-    profile: dc1-l3leaf
-    mlag_group: DC1_L3_LEAF1
-    # ASN to be used by BGP for the group. Both devices in the MLAG pair will use the same BGP ASN
-    bgp_as: 65101
+# match_devices:
+#   - hostname_pattern: dc1-leaf1[ab]
+#     profile: dc1-l3leaf
+#     mlag_group: DC1_L3_LEAF1
+#     # ASN to be used by BGP for the group. Both devices in the MLAG pair will use the same BGP ASN
+#     bgp_as: 65101
