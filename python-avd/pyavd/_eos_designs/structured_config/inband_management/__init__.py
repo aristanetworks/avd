@@ -178,7 +178,6 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             )
 
         maybe_existing_route_map = self.structured_config.route_maps.obtain("RM-CONN-2-BGP")
-        # TODO: if any number is clashing this will overwrite
         maybe_existing_route_map.sequence_numbers.extend(sequence_numbers)
 
     def get_parent_svi_cfg(self, vlan: int, subnet: str | None, ipv6_subnet: str | None) -> EosCliConfigGen.VlanInterfacesItem:
