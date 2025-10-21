@@ -15,7 +15,7 @@ from pyavd.j2filters import natural_sort
 from ._base_classes import AntaTestInputFactory
 
 
-class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory):
+class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.Input]):
     """
     Input factory class for the `VerifyLLDPNeighbors` test.
 
@@ -32,7 +32,7 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory):
 
     def create(self) -> list[VerifyLLDPNeighbors.Input] | None:
         """Create a list of inputs for the `VerifyLLDPNeighbors` test."""
-        neighbors = []
+        neighbors: list[LLDPNeighbor] = []
         for intf in self.structured_config.ethernet_interfaces:
             if intf.validate_state is False or intf.validate_lldp is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
@@ -70,7 +70,7 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory):
         return [VerifyLLDPNeighbors.Input(neighbors=natural_sort(neighbors, sort_key="port"))] if neighbors else None
 
 
-class VerifyReachabilityInputFactory(AntaTestInputFactory):
+class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Input]):
     """
     Input factory class for the `VerifyReachability` test.
 
@@ -111,7 +111,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
     def _get_p2p_inputs(self) -> VerifyReachability.Input:
         """Generate the inputs for the point-to-point reachability test."""
         description = "Verifies point-to-point reachability between Ethernet interfaces."
-        hosts = []
+        hosts: list[Host] = []
 
         for intf in self.structured_config.ethernet_interfaces:
             if intf.shutdown or (intf.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown):
