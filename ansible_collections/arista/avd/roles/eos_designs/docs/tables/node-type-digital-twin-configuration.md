@@ -31,6 +31,30 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_os_version</samp>](## "<node_type_keys.key>.nodes.[].digital_twin.act_os_version") | String |  |  |  | Desired ACT Digital Twin OS version.<br>Overrides global `digital_twin.fabric.act_os_version` flag. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.nodes.[].digital_twin.mgmt_ip") | String |  |  | Format: cidr | Desired management interface IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_internet_access</samp>](## "<node_type_keys.key>.nodes.[].digital_twin.act_internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to cloudeos or veos devices by default.<br>Overrides global `digital_twin.fabric.act_internet_access` flag. |
+    | [<samp>device_profiles</samp>](## "device_profiles") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "device_profiles.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Set the OS version and management IP address for the digital twin of the associated node(s). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_os_version</samp>](## "device_profiles.[].digital_twin.act_os_version") | String |  |  |  | Desired ACT Digital Twin OS version.<br>Overrides global `digital_twin.fabric.act_os_version` flag. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "device_profiles.[].digital_twin.mgmt_ip") | String |  |  | Format: cidr | Desired management interface IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_internet_access</samp>](## "device_profiles.[].digital_twin.act_internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to cloudeos or veos devices by default.<br>Overrides global `digital_twin.fabric.act_internet_access` flag. |
+    | [<samp>device_roles</samp>](## "device_roles") | List, items: Dictionary |  | See (+) on YAML tab |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_roles.[].name") | String | Required, Unique |  |  | Role Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "device_roles.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Set the OS version and management IP address for the digital twin of the associated node(s). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_os_version</samp>](## "device_roles.[].digital_twin.act_os_version") | String |  |  |  | Desired ACT Digital Twin OS version.<br>Overrides global `digital_twin.fabric.act_os_version` flag. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "device_roles.[].digital_twin.mgmt_ip") | String |  |  | Format: cidr | Desired management interface IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_internet_access</samp>](## "device_roles.[].digital_twin.act_internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to cloudeos or veos devices by default.<br>Overrides global `digital_twin.fabric.act_internet_access` flag. |
+    | [<samp>devices</samp>](## "devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "devices.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Set the OS version and management IP address for the digital twin of the associated node(s). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_os_version</samp>](## "devices.[].digital_twin.act_os_version") | String |  |  |  | Desired ACT Digital Twin OS version.<br>Overrides global `digital_twin.fabric.act_os_version` flag. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "devices.[].digital_twin.mgmt_ip") | String |  |  | Format: cidr | Desired management interface IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_internet_access</samp>](## "devices.[].digital_twin.act_internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to cloudeos or veos devices by default.<br>Overrides global `digital_twin.fabric.act_internet_access` flag. |
+    | [<samp>match_devices</samp>](## "match_devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time.<br>If a device is not defined under `devices`, AVD will check for a matching entry here, and apply the device settings for the first match. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;hostname_pattern</samp>](## "match_devices.[].hostname_pattern") | String | Required, Unique |  |  | Regex pattern matching the full inventory hostname of one or more devices. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "match_devices.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Set the OS version and management IP address for the digital twin of the associated node(s). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_os_version</samp>](## "match_devices.[].digital_twin.act_os_version") | String |  |  |  | Desired ACT Digital Twin OS version.<br>Overrides global `digital_twin.fabric.act_os_version` flag. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "match_devices.[].digital_twin.mgmt_ip") | String |  |  | Format: cidr | Desired management interface IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_internet_access</samp>](## "match_devices.[].digital_twin.act_internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to cloudeos or veos devices by default.<br>Overrides global `digital_twin.fabric.act_internet_access` flag. |
 
 === "YAML"
 
@@ -126,4 +150,127 @@
             # ACT does not provide direct Internet access to cloudeos or veos devices by default.
             # Overrides global `digital_twin.fabric.act_internet_access` flag.
             act_internet_access: <bool>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    device_profiles:
+
+        # Profile Name
+      - name: <str; required; unique>
+
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        # Set the OS version and management IP address for the digital twin of the associated node(s).
+        digital_twin:
+
+          # Desired ACT Digital Twin OS version.
+          # Overrides global `digital_twin.fabric.act_os_version` flag.
+          act_os_version: <str>
+
+          # Desired management interface IPv4 address.
+          mgmt_ip: <str>
+
+          # Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+          # This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
+          # ACT does not provide direct Internet access to cloudeos or veos devices by default.
+          # Overrides global `digital_twin.fabric.act_internet_access` flag.
+          act_internet_access: <bool>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    device_roles: # (1)!
+
+        # Role Name
+      - name: <str; required; unique>
+
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        # Set the OS version and management IP address for the digital twin of the associated node(s).
+        digital_twin:
+
+          # Desired ACT Digital Twin OS version.
+          # Overrides global `digital_twin.fabric.act_os_version` flag.
+          act_os_version: <str>
+
+          # Desired management interface IPv4 address.
+          mgmt_ip: <str>
+
+          # Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+          # This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
+          # ACT does not provide direct Internet access to cloudeos or veos devices by default.
+          # Overrides global `digital_twin.fabric.act_internet_access` flag.
+          act_internet_access: <bool>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    devices:
+
+        # The Node Name is used as "hostname".
+        name: <str; required; unique>
+
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        # Set the OS version and management IP address for the digital twin of the associated node(s).
+        digital_twin:
+
+          # Desired ACT Digital Twin OS version.
+          # Overrides global `digital_twin.fabric.act_os_version` flag.
+          act_os_version: <str>
+
+          # Desired management interface IPv4 address.
+          mgmt_ip: <str>
+
+          # Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+          # This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
+          # ACT does not provide direct Internet access to cloudeos or veos devices by default.
+          # Overrides global `digital_twin.fabric.act_internet_access` flag.
+          act_internet_access: <bool>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    # If a device is not defined under `devices`, AVD will check for a matching entry here, and apply the device settings for the first match.
+    match_devices:
+
+        # Regex pattern matching the full inventory hostname of one or more devices.
+      - hostname_pattern: <str; required; unique>
+
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        # Set the OS version and management IP address for the digital twin of the associated node(s).
+        digital_twin:
+
+          # Desired ACT Digital Twin OS version.
+          # Overrides global `digital_twin.fabric.act_os_version` flag.
+          act_os_version: <str>
+
+          # Desired management interface IPv4 address.
+          mgmt_ip: <str>
+
+          # Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+          # This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
+          # ACT does not provide direct Internet access to cloudeos or veos devices by default.
+          # Overrides global `digital_twin.fabric.act_internet_access` flag.
+          act_internet_access: <bool>
     ```
+
+    1. Default Value
+
+        ```yaml
+        device_roles:
+        - name: spine
+          evpn_role: server
+          ptp:
+            priority1: 20
+          cv_tags_topology_type: spine
+        - name: l3leaf
+          connected_endpoints: true
+          evpn_role: client
+          mlag_support: true
+          network_services:
+            l2: true
+            l3: true
+          vtep: true
+          ptp:
+            priority1: 30
+          cv_tags_topology_type: leaf
+        - name: l2leaf
+          connected_endpoints: true
+          mlag_support: true
+          network_services:
+            l2: true
+          underlay_router: false
+          uplink_type: port-channel
+          cv_tags_topology_type: leaf
+        ```

@@ -13,7 +13,7 @@ documentation_options:
 keys:
   id:
     type: int
-  type:
+  type_or_role:
     type: str
     required: true
   platform:

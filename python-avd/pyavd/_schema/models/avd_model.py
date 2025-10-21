@@ -228,9 +228,12 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
                 if field in self.__dict__:
                     continue
 
-                default_value = self._get_field_default_value(field)
+                if (default_value := self._get_field_default_value(field)) is None:
+                    continue
 
                 if issubclass(self._fields[field]["type"], AvdBase):
+                    if not default_value:
+                        continue
                     default_value = cast("AvdBase", default_value)
                     default_value = default_value._dump(include_default_values=include_default_values)
 

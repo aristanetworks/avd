@@ -7,6 +7,9 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>device_roles</samp>](## "device_roles") | List, items: Dictionary |  | See (+) on YAML tab |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_roles.[].name") | String | Required, Unique |  |  | Role Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_routing_protocol</samp>](## "device_roles.[].underlay_routing_protocol") | String |  | `ebgp` | Value is converted to lower case.<br>Valid Values:<br>- <code>ebgp</code><br>- <code>ospf</code><br>- <code>ospf-ldp</code><br>- <code>isis</code><br>- <code>isis-sr</code><br>- <code>isis-ldp</code><br>- <code>isis-sr-ldp</code><br>- <code>none</code> | Set the default underlay routing_protocol.<br>Can be overridden by setting "underlay_routing_protocol" host/group_vars.<br> |
     | [<samp>custom_node_type_keys</samp>](## "custom_node_type_keys") | List, items: Dictionary |  |  |  | Define Custom Node Type Keys, to specify the properties of each node type in the fabric.<br>This allows for complete customization of the fabric layout and functionality.<br>`custom_node_type_keys` should be defined in top level group_var for the fabric.<br>These values will be combined with the defaults; custom node type keys named the same as a<br>default node_type_key will replace the default. |
     | [<samp>&nbsp;&nbsp;-&nbsp;key</samp>](## "custom_node_type_keys.[].key") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "custom_node_type_keys.[].type") | String |  |  |  | Type value matching this node_type_key. |
@@ -111,6 +114,16 @@
 === "YAML"
 
     ```yaml
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    device_roles: # (1)!
+
+        # Role Name
+      - name: <str; required; unique>
+
+        # Set the default underlay routing_protocol.
+        # Can be overridden by setting "underlay_routing_protocol" host/group_vars.
+        underlay_routing_protocol: <str; "ebgp" | "ospf" | "ospf-ldp" | "isis" | "isis-sr" | "isis-ldp" | "isis-sr-ldp" | "none"; default="ebgp">
+
     # Define Custom Node Type Keys, to specify the properties of each node type in the fabric.
     # This allows for complete customization of the fabric layout and functionality.
     # `custom_node_type_keys` should be defined in top level group_var for the fabric.
@@ -288,7 +301,7 @@
     # If you need to change all the existing `node_type_keys`, it is recommended to copy the defaults and modify them.
     # If you need to add custom `node_type_keys`, create them under `custom_node_type_keys` - if named identically to default `node_type_keys` entries,
     # custom entries will replace the equivalent default entry.
-    node_type_keys: # (1)!
+    node_type_keys: # (2)!
       - key: <str; required; unique>
 
         # Type value matching this node_type_key.
@@ -454,6 +467,36 @@
     ```
 
     1. Default Value
+
+        ```yaml
+        device_roles:
+        - name: spine
+          evpn_role: server
+          ptp:
+            priority1: 20
+          cv_tags_topology_type: spine
+        - name: l3leaf
+          connected_endpoints: true
+          evpn_role: client
+          mlag_support: true
+          network_services:
+            l2: true
+            l3: true
+          vtep: true
+          ptp:
+            priority1: 30
+          cv_tags_topology_type: leaf
+        - name: l2leaf
+          connected_endpoints: true
+          mlag_support: true
+          network_services:
+            l2: true
+          underlay_router: false
+          uplink_type: port-channel
+          cv_tags_topology_type: leaf
+        ```
+
+    2. Default Value
 
         ```yaml
         node_type_keys:

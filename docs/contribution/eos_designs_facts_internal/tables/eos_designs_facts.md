@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>id</samp>](## "id") | Integer |  |  |  |  |
-    | [<samp>type</samp>](## "type") | String | Required |  |  |  |
+    | [<samp>type_or_role</samp>](## "type_or_role") | String | Required |  |  |  |
     | [<samp>platform</samp>](## "platform") | String |  |  |  |  |
     | [<samp>is_deployed</samp>](## "is_deployed") | Boolean | Required |  |  |  |
     | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  |  |
@@ -179,7 +179,7 @@
 
     ```yaml
     id: <int>
-    type: <str; required>
+    type_or_role: <str; required>
     platform: <str>
     is_deployed: <bool; required>
     serial_number: <str>

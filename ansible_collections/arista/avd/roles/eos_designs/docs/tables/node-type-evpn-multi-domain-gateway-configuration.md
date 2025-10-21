@@ -87,6 +87,86 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_ethernet_segment</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identifier</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier") | String | Required |  |  | EVPN Ethernet Segment Identifier (Type 1 format) |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_import</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import") | String | Required |  |  | Low-order 6 bytes of ES-Import Route Target. |
+    | [<samp>device_profiles</samp>](## "device_profiles") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway</samp>](## "device_profiles.[].evpn_gateway") | Dictionary |  |  |  | Node is acting as EVPN Multi-Domain Gateway.<br>New BGP peer-group is generated between EVPN GWs in different domains or between GWs and Route Servers.<br>Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable.<br>L3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_peers</samp>](## "device_profiles.[].evpn_gateway.remote_peers") | List, items: Dictionary |  |  |  | Define remote peers of the EVPN VXLAN Gateway.<br>If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence.<br>If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;hostname</samp>](## "device_profiles.[].evpn_gateway.remote_peers.[].hostname") | String | Required, Unique |  |  | Hostname of remote EVPN GW server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "device_profiles.[].evpn_gateway.remote_peers.[].ip_address") | String |  |  | Format: ipv4 | Peering IP of remote Route Server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "device_profiles.[].evpn_gateway.remote_peers.[].bgp_as") | String |  |  |  | Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2</samp>](## "device_profiles.[].evpn_gateway.evpn_l2") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].evpn_gateway.evpn_l2.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "device_profiles.[].evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "device_profiles.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.evpn_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.evpn_domain_id_remote") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_ethernet_segment</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identifier</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier") | String | Required |  |  | EVPN Ethernet Segment Identifier (Type 1 format) |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_import</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import") | String | Required |  |  | Low-order 6 bytes of ES-Import Route Target. |
+    | [<samp>device_roles</samp>](## "device_roles") | List, items: Dictionary |  | See (+) on YAML tab |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_roles.[].name") | String | Required, Unique |  |  | Role Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway</samp>](## "device_roles.[].evpn_gateway") | Dictionary |  |  |  | Node is acting as EVPN Multi-Domain Gateway.<br>New BGP peer-group is generated between EVPN GWs in different domains or between GWs and Route Servers.<br>Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable.<br>L3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_peers</samp>](## "device_roles.[].evpn_gateway.remote_peers") | List, items: Dictionary |  |  |  | Define remote peers of the EVPN VXLAN Gateway.<br>If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence.<br>If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;hostname</samp>](## "device_roles.[].evpn_gateway.remote_peers.[].hostname") | String | Required, Unique |  |  | Hostname of remote EVPN GW server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "device_roles.[].evpn_gateway.remote_peers.[].ip_address") | String |  |  | Format: ipv4 | Peering IP of remote Route Server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "device_roles.[].evpn_gateway.remote_peers.[].bgp_as") | String |  |  |  | Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2</samp>](## "device_roles.[].evpn_gateway.evpn_l2") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_roles.[].evpn_gateway.evpn_l2.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "device_roles.[].evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_roles.[].evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "device_roles.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "device_roles.[].evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_roles.[].evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "device_roles.[].evpn_gateway.all_active_multihoming.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "device_roles.[].evpn_gateway.all_active_multihoming.evpn_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "device_roles.[].evpn_gateway.all_active_multihoming.evpn_domain_id_remote") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_ethernet_segment</samp>](## "device_roles.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identifier</samp>](## "device_roles.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier") | String | Required |  |  | EVPN Ethernet Segment Identifier (Type 1 format) |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_import</samp>](## "device_roles.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import") | String | Required |  |  | Low-order 6 bytes of ES-Import Route Target. |
+    | [<samp>devices</samp>](## "devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway</samp>](## "devices.[].evpn_gateway") | Dictionary |  |  |  | Node is acting as EVPN Multi-Domain Gateway.<br>New BGP peer-group is generated between EVPN GWs in different domains or between GWs and Route Servers.<br>Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable.<br>L3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_peers</samp>](## "devices.[].evpn_gateway.remote_peers") | List, items: Dictionary |  |  |  | Define remote peers of the EVPN VXLAN Gateway.<br>If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence.<br>If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;hostname</samp>](## "devices.[].evpn_gateway.remote_peers.[].hostname") | String | Required, Unique |  |  | Hostname of remote EVPN GW server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "devices.[].evpn_gateway.remote_peers.[].ip_address") | String |  |  | Format: ipv4 | Peering IP of remote Route Server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "devices.[].evpn_gateway.remote_peers.[].bgp_as") | String |  |  |  | Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2</samp>](## "devices.[].evpn_gateway.evpn_l2") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].evpn_gateway.evpn_l2.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "devices.[].evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "devices.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "devices.[].evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "devices.[].evpn_gateway.all_active_multihoming.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "devices.[].evpn_gateway.all_active_multihoming.evpn_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "devices.[].evpn_gateway.all_active_multihoming.evpn_domain_id_remote") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_ethernet_segment</samp>](## "devices.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identifier</samp>](## "devices.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier") | String | Required |  |  | EVPN Ethernet Segment Identifier (Type 1 format) |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_import</samp>](## "devices.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import") | String | Required |  |  | Low-order 6 bytes of ES-Import Route Target. |
+    | [<samp>match_devices</samp>](## "match_devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time.<br>If a device is not defined under `devices`, AVD will check for a matching entry here, and apply the device settings for the first match. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;hostname_pattern</samp>](## "match_devices.[].hostname_pattern") | String | Required, Unique |  |  | Regex pattern matching the full inventory hostname of one or more devices. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway</samp>](## "match_devices.[].evpn_gateway") | Dictionary |  |  |  | Node is acting as EVPN Multi-Domain Gateway.<br>New BGP peer-group is generated between EVPN GWs in different domains or between GWs and Route Servers.<br>Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable.<br>L3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_peers</samp>](## "match_devices.[].evpn_gateway.remote_peers") | List, items: Dictionary |  |  |  | Define remote peers of the EVPN VXLAN Gateway.<br>If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence.<br>If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;hostname</samp>](## "match_devices.[].evpn_gateway.remote_peers.[].hostname") | String | Required, Unique |  |  | Hostname of remote EVPN GW server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "match_devices.[].evpn_gateway.remote_peers.[].ip_address") | String |  |  | Format: ipv4 | Peering IP of remote Route Server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "match_devices.[].evpn_gateway.remote_peers.[].bgp_as") | String |  |  |  | Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2</samp>](## "match_devices.[].evpn_gateway.evpn_l2") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "match_devices.[].evpn_gateway.evpn_l2.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "match_devices.[].evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "match_devices.[].evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "match_devices.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "match_devices.[].evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "match_devices.[].evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "match_devices.[].evpn_gateway.all_active_multihoming.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "match_devices.[].evpn_gateway.all_active_multihoming.evpn_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "match_devices.[].evpn_gateway.all_active_multihoming.evpn_domain_id_remote") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_ethernet_segment</samp>](## "match_devices.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment") | Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identifier</samp>](## "match_devices.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier") | String | Required |  |  | EVPN Ethernet Segment Identifier (Type 1 format) |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_import</samp>](## "match_devices.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import") | String | Required |  |  | Low-order 6 bytes of ES-Import Route Target. |
 
 === "YAML"
 
@@ -326,4 +406,271 @@
 
                 # Low-order 6 bytes of ES-Import Route Target.
                 rt_import: <str; required>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    device_profiles:
+
+        # Profile Name
+      - name: <str; required; unique>
+
+        # Node is acting as EVPN Multi-Domain Gateway.
+        # New BGP peer-group is generated between EVPN GWs in different domains or between GWs and Route Servers.
+        # Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable.
+        # L3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.
+        evpn_gateway:
+
+          # Define remote peers of the EVPN VXLAN Gateway.
+          # If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
+          # If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+          remote_peers:
+
+              # Hostname of remote EVPN GW server.
+            - hostname: <str; required; unique>
+
+              # Peering IP of remote Route Server.
+              ip_address: <str>
+
+              # Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+              # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+              bgp_as: <str>
+
+          # Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
+          evpn_l2:
+            enabled: <bool; default=False>
+
+          # Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+          evpn_l3:
+            enabled: <bool; default=False>
+            inter_domain: <bool; default=True>
+
+          # Enable Active Active Multihoming architecture for EVPN Gateways.
+          # Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
+          all_active_multihoming:
+
+            # Enable Active Active Multihoming resiliency model.
+            enabled: <bool; required>
+
+            # Enable D-path for use with BGP bestpath selection algorithm.
+            enable_d_path: <bool; default=True>
+
+            # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+            evpn_domain_id_local: <str; required>
+
+            # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+            evpn_domain_id_remote: <str; required>
+            evpn_ethernet_segment: # required
+
+              # EVPN Ethernet Segment Identifier (Type 1 format)
+              identifier: <str; required>
+
+              # Low-order 6 bytes of ES-Import Route Target.
+              rt_import: <str; required>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    device_roles: # (1)!
+
+        # Role Name
+      - name: <str; required; unique>
+
+        # Node is acting as EVPN Multi-Domain Gateway.
+        # New BGP peer-group is generated between EVPN GWs in different domains or between GWs and Route Servers.
+        # Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable.
+        # L3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.
+        evpn_gateway:
+
+          # Define remote peers of the EVPN VXLAN Gateway.
+          # If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
+          # If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+          remote_peers:
+
+              # Hostname of remote EVPN GW server.
+            - hostname: <str; required; unique>
+
+              # Peering IP of remote Route Server.
+              ip_address: <str>
+
+              # Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+              # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+              bgp_as: <str>
+
+          # Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
+          evpn_l2:
+            enabled: <bool; default=False>
+
+          # Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+          evpn_l3:
+            enabled: <bool; default=False>
+            inter_domain: <bool; default=True>
+
+          # Enable Active Active Multihoming architecture for EVPN Gateways.
+          # Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
+          all_active_multihoming:
+
+            # Enable Active Active Multihoming resiliency model.
+            enabled: <bool; required>
+
+            # Enable D-path for use with BGP bestpath selection algorithm.
+            enable_d_path: <bool; default=True>
+
+            # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+            evpn_domain_id_local: <str; required>
+
+            # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+            evpn_domain_id_remote: <str; required>
+            evpn_ethernet_segment: # required
+
+              # EVPN Ethernet Segment Identifier (Type 1 format)
+              identifier: <str; required>
+
+              # Low-order 6 bytes of ES-Import Route Target.
+              rt_import: <str; required>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    devices:
+
+        # The Node Name is used as "hostname".
+        name: <str; required; unique>
+
+        # Node is acting as EVPN Multi-Domain Gateway.
+        # New BGP peer-group is generated between EVPN GWs in different domains or between GWs and Route Servers.
+        # Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable.
+        # L3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.
+        evpn_gateway:
+
+          # Define remote peers of the EVPN VXLAN Gateway.
+          # If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
+          # If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+          remote_peers:
+
+              # Hostname of remote EVPN GW server.
+            - hostname: <str; required; unique>
+
+              # Peering IP of remote Route Server.
+              ip_address: <str>
+
+              # Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+              # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+              bgp_as: <str>
+
+          # Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
+          evpn_l2:
+            enabled: <bool; default=False>
+
+          # Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+          evpn_l3:
+            enabled: <bool; default=False>
+            inter_domain: <bool; default=True>
+
+          # Enable Active Active Multihoming architecture for EVPN Gateways.
+          # Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
+          all_active_multihoming:
+
+            # Enable Active Active Multihoming resiliency model.
+            enabled: <bool; required>
+
+            # Enable D-path for use with BGP bestpath selection algorithm.
+            enable_d_path: <bool; default=True>
+
+            # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+            evpn_domain_id_local: <str; required>
+
+            # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+            evpn_domain_id_remote: <str; required>
+            evpn_ethernet_segment: # required
+
+              # EVPN Ethernet Segment Identifier (Type 1 format)
+              identifier: <str; required>
+
+              # Low-order 6 bytes of ES-Import Route Target.
+              rt_import: <str; required>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    # If a device is not defined under `devices`, AVD will check for a matching entry here, and apply the device settings for the first match.
+    match_devices:
+
+        # Regex pattern matching the full inventory hostname of one or more devices.
+      - hostname_pattern: <str; required; unique>
+
+        # Node is acting as EVPN Multi-Domain Gateway.
+        # New BGP peer-group is generated between EVPN GWs in different domains or between GWs and Route Servers.
+        # Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable.
+        # L3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.
+        evpn_gateway:
+
+          # Define remote peers of the EVPN VXLAN Gateway.
+          # If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
+          # If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+          remote_peers:
+
+              # Hostname of remote EVPN GW server.
+            - hostname: <str; required; unique>
+
+              # Peering IP of remote Route Server.
+              ip_address: <str>
+
+              # Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+              # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+              bgp_as: <str>
+
+          # Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
+          evpn_l2:
+            enabled: <bool; default=False>
+
+          # Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+          evpn_l3:
+            enabled: <bool; default=False>
+            inter_domain: <bool; default=True>
+
+          # Enable Active Active Multihoming architecture for EVPN Gateways.
+          # Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
+          all_active_multihoming:
+
+            # Enable Active Active Multihoming resiliency model.
+            enabled: <bool; required>
+
+            # Enable D-path for use with BGP bestpath selection algorithm.
+            enable_d_path: <bool; default=True>
+
+            # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+            evpn_domain_id_local: <str; required>
+
+            # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+            evpn_domain_id_remote: <str; required>
+            evpn_ethernet_segment: # required
+
+              # EVPN Ethernet Segment Identifier (Type 1 format)
+              identifier: <str; required>
+
+              # Low-order 6 bytes of ES-Import Route Target.
+              rt_import: <str; required>
     ```
+
+    1. Default Value
+
+        ```yaml
+        device_roles:
+        - name: spine
+          evpn_role: server
+          ptp:
+            priority1: 20
+          cv_tags_topology_type: spine
+        - name: l3leaf
+          connected_endpoints: true
+          evpn_role: client
+          mlag_support: true
+          network_services:
+            l2: true
+            l3: true
+          vtep: true
+          ptp:
+            priority1: 30
+          cv_tags_topology_type: leaf
+        - name: l2leaf
+          connected_endpoints: true
+          mlag_support: true
+          network_services:
+            l2: true
+          underlay_router: false
+          uplink_type: port-channel
+          cv_tags_topology_type: leaf
+        ```

@@ -60,7 +60,7 @@ class UtilsMixin(Protocol):
                     interface=uplink.peer_interface,
                     peer=peer,
                     peer_interface=uplink.interface,
-                    peer_type=peer_facts.type,
+                    peer_type=peer_facts.type_or_role,
                     peer_is_deployed=peer_facts.is_deployed,
                     peer_bgp_as=peer_facts.bgp_as,
                     type=uplink.type,

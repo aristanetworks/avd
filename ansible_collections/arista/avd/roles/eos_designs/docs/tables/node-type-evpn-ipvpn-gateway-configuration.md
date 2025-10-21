@@ -67,6 +67,66 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;hostname</samp>](## "<node_type_keys.key>.nodes.[].ipvpn_gateway.remote_peers.[].hostname") | String | Required, Unique |  |  | Hostname of remote IPVPN Peer. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.nodes.[].ipvpn_gateway.remote_peers.[].ip_address") | String | Required |  | Format: ipv4 | Peering IP of remote IPVPN Peer. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "<node_type_keys.key>.nodes.[].ipvpn_gateway.remote_peers.[].bgp_as") | String | Required |  |  | Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>device_profiles</samp>](## "device_profiles") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_gateway</samp>](## "device_profiles.[].ipvpn_gateway") | Dictionary |  |  |  | Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".<br>L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].ipvpn_gateway.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id</samp>](## "device_profiles.[].ipvpn_gateway.evpn_domain_id") | String |  | `65535:1` |  | Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "device_profiles.[].ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "device_profiles.[].ipvpn_gateway.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "device_profiles.[].ipvpn_gateway.maximum_routes") | Integer |  | `0` |  | Maximum routes to accept from IPVPN remote peers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "device_profiles.[].ipvpn_gateway.local_as") | String |  |  |  | Local BGP AS applied to peering with IPVPN remote peers.<br>BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "device_profiles.[].ipvpn_gateway.address_families") | List, items: String |  | `['vpn-ipv4']` |  | IPVPN address families to enable for remote peers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].ipvpn_gateway.address_families.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_peers</samp>](## "device_profiles.[].ipvpn_gateway.remote_peers") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;hostname</samp>](## "device_profiles.[].ipvpn_gateway.remote_peers.[].hostname") | String | Required, Unique |  |  | Hostname of remote IPVPN Peer. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "device_profiles.[].ipvpn_gateway.remote_peers.[].ip_address") | String | Required |  | Format: ipv4 | Peering IP of remote IPVPN Peer. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "device_profiles.[].ipvpn_gateway.remote_peers.[].bgp_as") | String | Required |  |  | Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>device_roles</samp>](## "device_roles") | List, items: Dictionary |  | See (+) on YAML tab |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_roles.[].name") | String | Required, Unique |  |  | Role Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_gateway</samp>](## "device_roles.[].ipvpn_gateway") | Dictionary |  |  |  | Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".<br>L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_roles.[].ipvpn_gateway.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id</samp>](## "device_roles.[].ipvpn_gateway.evpn_domain_id") | String |  | `65535:1` |  | Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "device_roles.[].ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "device_roles.[].ipvpn_gateway.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "device_roles.[].ipvpn_gateway.maximum_routes") | Integer |  | `0` |  | Maximum routes to accept from IPVPN remote peers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "device_roles.[].ipvpn_gateway.local_as") | String |  |  |  | Local BGP AS applied to peering with IPVPN remote peers.<br>BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "device_roles.[].ipvpn_gateway.address_families") | List, items: String |  | `['vpn-ipv4']` |  | IPVPN address families to enable for remote peers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_roles.[].ipvpn_gateway.address_families.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_peers</samp>](## "device_roles.[].ipvpn_gateway.remote_peers") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;hostname</samp>](## "device_roles.[].ipvpn_gateway.remote_peers.[].hostname") | String | Required, Unique |  |  | Hostname of remote IPVPN Peer. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "device_roles.[].ipvpn_gateway.remote_peers.[].ip_address") | String | Required |  | Format: ipv4 | Peering IP of remote IPVPN Peer. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "device_roles.[].ipvpn_gateway.remote_peers.[].bgp_as") | String | Required |  |  | Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>devices</samp>](## "devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_gateway</samp>](## "devices.[].ipvpn_gateway") | Dictionary |  |  |  | Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".<br>L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].ipvpn_gateway.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id</samp>](## "devices.[].ipvpn_gateway.evpn_domain_id") | String |  | `65535:1` |  | Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "devices.[].ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "devices.[].ipvpn_gateway.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "devices.[].ipvpn_gateway.maximum_routes") | Integer |  | `0` |  | Maximum routes to accept from IPVPN remote peers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "devices.[].ipvpn_gateway.local_as") | String |  |  |  | Local BGP AS applied to peering with IPVPN remote peers.<br>BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "devices.[].ipvpn_gateway.address_families") | List, items: String |  | `['vpn-ipv4']` |  | IPVPN address families to enable for remote peers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].ipvpn_gateway.address_families.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_peers</samp>](## "devices.[].ipvpn_gateway.remote_peers") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;hostname</samp>](## "devices.[].ipvpn_gateway.remote_peers.[].hostname") | String | Required, Unique |  |  | Hostname of remote IPVPN Peer. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "devices.[].ipvpn_gateway.remote_peers.[].ip_address") | String | Required |  | Format: ipv4 | Peering IP of remote IPVPN Peer. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "devices.[].ipvpn_gateway.remote_peers.[].bgp_as") | String | Required |  |  | Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>match_devices</samp>](## "match_devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time.<br>If a device is not defined under `devices`, AVD will check for a matching entry here, and apply the device settings for the first match. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;hostname_pattern</samp>](## "match_devices.[].hostname_pattern") | String | Required, Unique |  |  | Regex pattern matching the full inventory hostname of one or more devices. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_gateway</samp>](## "match_devices.[].ipvpn_gateway") | Dictionary |  |  |  | Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".<br>L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "match_devices.[].ipvpn_gateway.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id</samp>](## "match_devices.[].ipvpn_gateway.evpn_domain_id") | String |  | `65535:1` |  | Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "match_devices.[].ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "match_devices.[].ipvpn_gateway.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "match_devices.[].ipvpn_gateway.maximum_routes") | Integer |  | `0` |  | Maximum routes to accept from IPVPN remote peers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "match_devices.[].ipvpn_gateway.local_as") | String |  |  |  | Local BGP AS applied to peering with IPVPN remote peers.<br>BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "match_devices.[].ipvpn_gateway.address_families") | List, items: String |  | `['vpn-ipv4']` |  | IPVPN address families to enable for remote peers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "match_devices.[].ipvpn_gateway.address_families.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_peers</samp>](## "match_devices.[].ipvpn_gateway.remote_peers") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;hostname</samp>](## "match_devices.[].ipvpn_gateway.remote_peers.[].hostname") | String | Required, Unique |  |  | Hostname of remote IPVPN Peer. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "match_devices.[].ipvpn_gateway.remote_peers.[].ip_address") | String | Required |  | Format: ipv4 | Peering IP of remote IPVPN Peer. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "match_devices.[].ipvpn_gateway.remote_peers.[].bgp_as") | String | Required |  |  | Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
 
 === "YAML"
 
@@ -242,4 +302,207 @@
                 # Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                 # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                 bgp_as: <str; required>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    device_profiles:
+
+        # Profile Name
+      - name: <str; required; unique>
+
+        # Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+        # L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.
+        ipvpn_gateway:
+          enabled: <bool; required>
+
+          # Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+          evpn_domain_id: <str; default="65535:1">
+
+          # Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+          ipvpn_domain_id: <str; default="65535:2">
+
+          # Enable D-path for use with BGP bestpath selection algorithm.
+          enable_d_path: <bool; default=True>
+
+          # Maximum routes to accept from IPVPN remote peers.
+          maximum_routes: <int; default=0>
+
+          # Local BGP AS applied to peering with IPVPN remote peers.
+          # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+          # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+          local_as: <str>
+
+          # IPVPN address families to enable for remote peers.
+          address_families: # default=['vpn-ipv4']
+            - <str>
+          remote_peers:
+
+              # Hostname of remote IPVPN Peer.
+            - hostname: <str; required; unique>
+
+              # Peering IP of remote IPVPN Peer.
+              ip_address: <str; required>
+
+              # Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+              # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+              bgp_as: <str; required>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    device_roles: # (1)!
+
+        # Role Name
+      - name: <str; required; unique>
+
+        # Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+        # L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.
+        ipvpn_gateway:
+          enabled: <bool; required>
+
+          # Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+          evpn_domain_id: <str; default="65535:1">
+
+          # Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+          ipvpn_domain_id: <str; default="65535:2">
+
+          # Enable D-path for use with BGP bestpath selection algorithm.
+          enable_d_path: <bool; default=True>
+
+          # Maximum routes to accept from IPVPN remote peers.
+          maximum_routes: <int; default=0>
+
+          # Local BGP AS applied to peering with IPVPN remote peers.
+          # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+          # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+          local_as: <str>
+
+          # IPVPN address families to enable for remote peers.
+          address_families: # default=['vpn-ipv4']
+            - <str>
+          remote_peers:
+
+              # Hostname of remote IPVPN Peer.
+            - hostname: <str; required; unique>
+
+              # Peering IP of remote IPVPN Peer.
+              ip_address: <str; required>
+
+              # Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+              # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+              bgp_as: <str; required>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    devices:
+
+        # The Node Name is used as "hostname".
+        name: <str; required; unique>
+
+        # Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+        # L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.
+        ipvpn_gateway:
+          enabled: <bool; required>
+
+          # Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+          evpn_domain_id: <str; default="65535:1">
+
+          # Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+          ipvpn_domain_id: <str; default="65535:2">
+
+          # Enable D-path for use with BGP bestpath selection algorithm.
+          enable_d_path: <bool; default=True>
+
+          # Maximum routes to accept from IPVPN remote peers.
+          maximum_routes: <int; default=0>
+
+          # Local BGP AS applied to peering with IPVPN remote peers.
+          # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+          # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+          local_as: <str>
+
+          # IPVPN address families to enable for remote peers.
+          address_families: # default=['vpn-ipv4']
+            - <str>
+          remote_peers:
+
+              # Hostname of remote IPVPN Peer.
+            - hostname: <str; required; unique>
+
+              # Peering IP of remote IPVPN Peer.
+              ip_address: <str; required>
+
+              # Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+              # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+              bgp_as: <str; required>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    # If a device is not defined under `devices`, AVD will check for a matching entry here, and apply the device settings for the first match.
+    match_devices:
+
+        # Regex pattern matching the full inventory hostname of one or more devices.
+      - hostname_pattern: <str; required; unique>
+
+        # Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+        # L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.
+        ipvpn_gateway:
+          enabled: <bool; required>
+
+          # Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+          evpn_domain_id: <str; default="65535:1">
+
+          # Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+          ipvpn_domain_id: <str; default="65535:2">
+
+          # Enable D-path for use with BGP bestpath selection algorithm.
+          enable_d_path: <bool; default=True>
+
+          # Maximum routes to accept from IPVPN remote peers.
+          maximum_routes: <int; default=0>
+
+          # Local BGP AS applied to peering with IPVPN remote peers.
+          # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+          # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+          local_as: <str>
+
+          # IPVPN address families to enable for remote peers.
+          address_families: # default=['vpn-ipv4']
+            - <str>
+          remote_peers:
+
+              # Hostname of remote IPVPN Peer.
+            - hostname: <str; required; unique>
+
+              # Peering IP of remote IPVPN Peer.
+              ip_address: <str; required>
+
+              # Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+              # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+              bgp_as: <str; required>
     ```
+
+    1. Default Value
+
+        ```yaml
+        device_roles:
+        - name: spine
+          evpn_role: server
+          ptp:
+            priority1: 20
+          cv_tags_topology_type: spine
+        - name: l3leaf
+          connected_endpoints: true
+          evpn_role: client
+          mlag_support: true
+          network_services:
+            l2: true
+            l3: true
+          vtep: true
+          ptp:
+            priority1: 30
+          cv_tags_topology_type: leaf
+        - name: l2leaf
+          connected_endpoints: true
+          mlag_support: true
+          network_services:
+            l2: true
+          underlay_router: false
+          uplink_type: port-channel
+          cv_tags_topology_type: leaf
+        ```

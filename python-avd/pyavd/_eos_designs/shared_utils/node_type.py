@@ -7,7 +7,6 @@ from functools import cached_property
 from re import search
 from typing import TYPE_CHECKING, Literal, Protocol
 
-from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default
 
 if TYPE_CHECKING:
@@ -23,15 +22,12 @@ class NodeTypeMixin(Protocol):
     """
 
     @cached_property
-    def type(self: SharedUtilsProtocol) -> str:
-        """Type fact set based on type variable."""
+    def type(self: SharedUtilsProtocol) -> str | None:
+        """Type fact set based on the type variable or default_node_type."""
         if (node_type := self.inputs.type) is not None:
             return node_type
-        if self.default_node_type:
-            return self.default_node_type
 
-        msg = f"'type' for host {self.hostname}"
-        raise AristaAvdInvalidInputsError(msg)
+        return self.default_node_type
 
     @cached_property
     def default_node_type(self: SharedUtilsProtocol) -> str | None:

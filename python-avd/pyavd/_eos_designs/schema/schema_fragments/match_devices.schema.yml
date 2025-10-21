@@ -1,0 +1,27 @@
+# Copyright (c) 2025 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  match_devices:
+    $ref: "eos_designs#/keys/devices"
+    documentation_options:
+      table: devices
+    primary_key: hostname_pattern
+    description: |-
+      PREVIEW - This datamodel is still under development and may change or get removed at any time.
+      If a device is not defined under `devices`, AVD will check for a matching entry here, and apply the device settings for the first match.
+    type: list
+    items:
+      type: dict
+      keys:
+        hostname_pattern:
+          type: str
+          description: Regex pattern matching the full inventory hostname of one or more devices.
+        name:
+          type: str
+          description: |-
+            Do not set. T O D O: Rearrange schema so we can remove name

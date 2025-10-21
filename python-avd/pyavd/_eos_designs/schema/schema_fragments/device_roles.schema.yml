@@ -1,0 +1,186 @@
+# Copyright (c) 2025 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  device_roles:
+    type: list
+    description: |-
+      PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    documentation_options:
+      table: devices
+    primary_key: name
+    items:
+      $ref: "eos_designs#/$defs/node_type/keys/defaults"
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Role Name
+        evpn_role:
+          type: str
+          default: "none"
+        flow_tracker_type:
+          type: str
+          default: "sampled"
+        mpls_lsr:
+          $ref: "eos_designs#/keys/node_type_keys/items/keys/mpls_lsr"
+          type: bool
+        connected_endpoints:
+          $ref: "eos_designs#/keys/node_type_keys/items/keys/connected_endpoints"
+          type: bool
+        evpn_encapsulation:
+          $ref: "eos_designs#/keys/node_type_keys/items/keys/default_evpn_encapsulation"
+          type: str
+        mlag_support:
+          $ref: "eos_designs#/keys/node_type_keys/items/keys/mlag_support"
+          type: bool
+        network_services:
+          $ref: "eos_designs#/keys/node_type_keys/items/keys/network_services"
+          type: dict
+        underlay_router:
+          $ref: "eos_designs#/keys/node_type_keys/items/keys/underlay_router"
+          type: bool
+        underlay_routing_protocol:
+          $ref: "eos_designs#/keys/node_type_keys/items/keys/default_underlay_routing_protocol"
+          type: str
+        overlay_routing_protocol:
+          $ref: "eos_designs#/keys/node_type_keys/items/keys/default_overlay_routing_protocol"
+          type: str
+        overlay_address_families:
+          type: list
+          default:
+            - evpn
+          items:
+            type: str
+        ptp:
+          type: dict
+          keys:
+            priority1:
+              type: int
+              default: 127
+        uplink_type:
+          type: str
+          default: p2p
+        vtep:
+          type: bool
+          default: false
+        custom_ip_addressing:
+          $ref: "eos_designs#/keys/node_type_keys/items/keys/ip_addressing"
+          type: dict
+        custom_interface_descriptions:
+          $ref: "eos_designs#/keys/node_type_keys/items/keys/interface_descriptions"
+          type: dict
+    default:
+      - name: spine
+        evpn_role: server
+        ptp:
+          priority1: 20
+        cv_tags_topology_type: spine
+      - name: l3leaf
+        connected_endpoints: true
+        evpn_role: client
+        mlag_support: true
+        network_services:
+          l2: true
+          l3: true
+        vtep: true
+        ptp:
+          priority1: 30
+        cv_tags_topology_type: leaf
+      - name: l2leaf
+        connected_endpoints: true
+        mlag_support: true
+        network_services:
+          l2: true
+        underlay_router: false
+        uplink_type: port-channel
+        cv_tags_topology_type: leaf
+      # - "key": "p"
+      #   "type": "p"
+      #   "mpls_lsr": true
+      #   "default_mpls_overlay_role": "none"
+      #   "default_overlay_routing_protocol": "ibgp"
+      #   "default_underlay_routing_protocol": "isis-sr"
+      # - "key": "pe"
+      #   "type": "pe"
+      #   "mpls_lsr": true
+      #   "connected_endpoints": true
+      #   "default_mpls_overlay_role": "client"
+      #   "default_evpn_role": "client"
+      #   "network_services":
+      #     "l1": true
+      #     "l2": true
+      #     "l3": true
+      #   "default_overlay_routing_protocol": "ibgp"
+      #   "default_underlay_routing_protocol": "isis-sr"
+      #   "default_overlay_address_families": ["vpn-ipv4"]
+      #   "default_evpn_encapsulation": "mpls"
+      # - "key": "rr"
+      #   "type": "rr"
+      #   "mpls_lsr": true
+      #   "default_mpls_overlay_role": "server"
+      #   "default_evpn_role": "server"
+      #   "default_overlay_routing_protocol": "ibgp"
+      #   "default_underlay_routing_protocol": "isis-sr"
+      #   "default_overlay_address_families": ["vpn-ipv4"]
+      #   "default_evpn_encapsulation": "mpls"
+      # - "key": "l3spine"
+      #   "type": "l3spine"
+      #   "connected_endpoints": true
+      #   "mlag_support": true
+      #   "network_services":
+      #     "l2": true
+      #     "l3": true
+      #   "default_overlay_routing_protocol": "none"
+      #   "default_underlay_routing_protocol": "none"
+      #   "cv_tags_topology_type": "spine"
+      # - "key": "leaf"
+      #   "type": "leaf"
+      #   "connected_endpoints": true
+      #   "mlag_support": true
+      #   "network_services":
+      #     "l2": true,
+      #   "underlay_router": false
+      #   "uplink_type": "port-channel"
+      #   "cv_tags_topology_type": "leaf"
+      # - "key": "l2spine"
+      #   "type": "l2spine"
+      #   "connected_endpoints": true
+      #   "mlag_support": true
+      #   "network_services":
+      #     "l2": true
+      #   "underlay_router": false
+      #   "uplink_type": "port-channel"
+      #   "cv_tags_topology_type": "spine"
+      # - "key": "super_spine"
+      #   "type": "super-spine"
+      #   "cv_tags_topology_type": "core"
+      # - "key": "overlay_controller"
+      #   "type": "overlay-controller"
+      #   "default_evpn_role": "server"
+      #   "cv_tags_topology_type": "spine"
+      # # TODO: AVD 6.0 change default overlay_routing_protocol and evpn_role to none and vtep to false for wan_router and wan_rr.
+      # - "key": "wan_router"
+      #   "type": "wan_router"
+      #   "default_evpn_role": "client"
+      #   "default_wan_role": "client"
+      #   "default_underlay_routing_protocol": "none"
+      #   "default_overlay_routing_protocol": "ibgp"
+      #   "default_flow_tracker_type": "hardware"
+      #   "vtep": true
+      #   "network_services":
+      #     "l3": true
+      # - "key": "wan_rr"
+      #   "type": "wan_rr"
+      #   "default_evpn_role": "server"
+      #   "default_wan_role": "server"
+      #   "default_underlay_routing_protocol": "none"
+      #   "default_overlay_routing_protocol": "ibgp"
+      #   "default_flow_tracker_type": "hardware"
+      #   "vtep": true
+      #   "network_services":
+      #     "l3": true,

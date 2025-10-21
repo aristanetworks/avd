@@ -1101,7 +1101,7 @@ class EosDesignsFactsProtocol(Protocol):
 
     _fields: ClassVar[dict] = {
         "id": {"type": int},
-        "type": {"type": str},
+        "type_or_role": {"type": str},
         "platform": {"type": str},
         "is_deployed": {"type": bool},
         "serial_number": {"type": str},
@@ -1161,7 +1161,7 @@ class EosDesignsFactsProtocol(Protocol):
         "mpls_route_reflector_clients": {"type": MplsRouteReflectorClients},
     }
     id: int | None
-    type: str
+    type_or_role: str
     platform: str | None
     is_deployed: bool
     serial_number: str | None
@@ -1331,7 +1331,7 @@ class EosDesignsFactsProtocol(Protocol):
             self,
             *,
             id: int | None | UndefinedType = Undefined,
-            type: str | UndefinedType = Undefined,
+            type_or_role: str | UndefinedType = Undefined,
             platform: str | None | UndefinedType = Undefined,
             is_deployed: bool | UndefinedType = Undefined,
             serial_number: str | None | UndefinedType = Undefined,
@@ -1398,7 +1398,7 @@ class EosDesignsFactsProtocol(Protocol):
 
             Args:
                 id: id
-                type: type
+                type_or_role: type_or_role
                 platform: platform
                 is_deployed: is_deployed
                 serial_number: serial_number

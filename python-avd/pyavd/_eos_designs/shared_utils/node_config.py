@@ -22,12 +22,15 @@ class NodeConfigMixin(Protocol):
     """
 
     @cached_property
-    def node_type_config(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes:
+    def node_type_config(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes | None:
         """
         The object representing the `<node_type_key like l3leaf, spine etc>:` containing the `defaults`, `nodes`, `node_groups` etc.
 
         The relevant dynamic key is found in self.inputs._dynamic_keys which is populated by the _from_dict() loader on the EosDesigns class.
         """
+        if not self.type:
+            return None
+
         node_type_key = self.node_type_key_data.key
 
         if node_type_key in self.inputs._dynamic_keys.custom_node_types:
@@ -46,9 +49,10 @@ class NodeConfigMixin(Protocol):
 
         Used by MLAG and WAN HA logic to find out who our MLAG / WAN HA peer is.
         """
-        for node_group in self.node_type_config.node_groups:
-            if self.hostname in node_group.nodes:
-                return node_group
+        if self.node_type_config:
+            for node_group in self.node_type_config.node_groups:
+                if self.hostname in node_group.nodes:
+                    return node_group
 
         return None
 
@@ -63,9 +67,12 @@ class NodeConfigMixin(Protocol):
                 <node_type_key>.node_groups.[<node_group>].nodes.[<node>] ->
                     <node_type_key>.nodes.[<node>]
         """
+        if self.device_config:
+            return self.device_config._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True)
+
         node_config = (
             self.node_type_config.nodes[self.hostname]
-            if self.hostname in self.node_type_config.nodes
+            if self.node_type_config and self.hostname in self.node_type_config.nodes
             else EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem()
         )
 
@@ -75,9 +82,10 @@ class NodeConfigMixin(Protocol):
             )
             node_config._deepinherit(self.node_group_config._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True))
 
-        node_config._deepinherit(
-            self.node_type_config.defaults._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True)
-        )
+        if self.node_type_config:
+            node_config._deepinherit(
+                self.node_type_config.defaults._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True)
+            )
 
         return node_config
 
@@ -90,10 +98,13 @@ class NodeConfigMixin(Protocol):
         Returns True, <peer> if this device is the first one in the node_group.
         Returns False, <peer> if this device is the second one in the node_group.
         """
-        if self.node_group_config is None or len(self.node_group_config.nodes) != 2:
-            return None
+        if self.node_group_config:
+            if len(self.node_group_config.nodes) != 2:
+                return None
 
-        nodes = list(self.node_group_config.nodes.keys())
-        index = nodes.index(self.hostname)
-        peer_index = not index  # (0->1 and 1>0)
-        return index == 0, nodes[peer_index]
+            nodes = list(self.node_group_config.nodes.keys())
+            index = nodes.index(self.hostname)
+            peer_index = not index  # (0->1 and 1>0)
+            return index == 0, nodes[peer_index]
+
+        return None

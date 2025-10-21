@@ -172,7 +172,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             interface=uplink_interface,
             peer=uplink_switch,
             peer_interface=uplink_switch_interface,
-            peer_type=uplink_switch_facts.type,
+            peer_type=uplink_switch_facts.type_or_role,
             peer_is_deployed=uplink_switch_facts.is_deployed,
             peer_bgp_as=uplink_switch_facts.bgp_as,
             type="underlay_p2p",
@@ -281,7 +281,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             interface=uplink_interface,
             peer=uplink_switch,
             peer_interface=uplink_switch_interface,
-            peer_type=uplink_switch_facts.type,
+            peer_type=uplink_switch_facts.type_or_role,
             peer_is_deployed=uplink_switch_facts.is_deployed,
             type="underlay_l2",
         )

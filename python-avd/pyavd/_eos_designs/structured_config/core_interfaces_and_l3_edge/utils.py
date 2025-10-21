@@ -111,7 +111,7 @@ class UtilsMixin(Protocol):
         peer_index = (index + 1) % 2
         peer = p2p_link.nodes[peer_index]
         peer_facts = self.shared_utils.get_peer_facts(peer, required=False)
-        peer_type = "other" if peer_facts is None else peer_facts.type
+        peer_type = "other" if peer_facts is None else peer_facts.type_or_role
 
         # Set ip or fallback to list with None values
         ips = p2p_link.ip or [None, None]

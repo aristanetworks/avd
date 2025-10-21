@@ -643,4 +643,4 @@ class InterfaceDescriptionData:
 
     @property
     def type(self) -> str:
-        return self._shared_utils.type
+        return self._shared_utils.type_or_role

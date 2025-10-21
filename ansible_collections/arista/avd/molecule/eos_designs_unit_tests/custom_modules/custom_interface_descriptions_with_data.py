@@ -145,5 +145,5 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
 
     def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str:  # noqa: ARG002
         """Implementation of custom code similar to jinja."""
-        switch_type = str(self.shared_utils.type).upper()
+        switch_type = str(self.shared_utils.type_or_role).upper()
         return f"{self._custom_description_prefix}_VTEP_VXLAN_Tunnel_Source_{switch_type}"

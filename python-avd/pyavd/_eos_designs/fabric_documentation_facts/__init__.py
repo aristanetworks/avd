@@ -69,7 +69,7 @@ class FabricDocumentationFacts(AvdFacts):
             [
                 {
                     "node": hostname,
-                    "type": self.avd_facts[hostname].type,
+                    "type": self.avd_facts[hostname].type_or_role,
                     "pod": self.avd_facts[hostname].pod,
                     "mgmt_ip": self.avd_facts[hostname].mgmt_ip or "-",
                     "platform": self.avd_facts[hostname].platform or "-",
@@ -121,7 +121,7 @@ class FabricDocumentationFacts(AvdFacts):
 
                 peer = get(ethernet_interface, "peer", required=True)
                 if peer_type == "mlag_peer":
-                    peer_type = self.avd_facts[peer].type
+                    peer_type = self.avd_facts[peer].type_or_role
                     mlag_peer = True
                 else:
                     mlag_peer = False
@@ -136,7 +136,7 @@ class FabricDocumentationFacts(AvdFacts):
                 routed = get(ethernet_interface, "switchport.enabled") is False
 
                 data = (
-                    self.avd_facts[hostname].type,  # type
+                    self.avd_facts[hostname].type_or_role,  # type
                     get(ethernet_interface, "name"),  # interface
                     get(ethernet_interface, "ip_address"),  # ip_address
                     mlag_peer,  # is_mlag_peer
@@ -351,7 +351,7 @@ class FabricDocumentationFacts(AvdFacts):
         """
         return [
             (
-                self.avd_facts[hostname].type,
+                self.avd_facts[hostname].type_or_role,
                 hostname,
                 ethernet_interface["name"],
                 get(ethernet_interface, "peer_type", default=""),

@@ -1,0 +1,55 @@
+devices:
+  # - name: dc1-leaf1a
+  #   profile: DC1_L3_LEAF1
+  #   id: 1
+  #   mgmt_ip: 172.16.1.101/24
+  #   # Definition of the port to be used in the uplink device facing this device.
+  #   # Note that the number of elements in this list must match the length of 'uplink_switches' as well as 'uplink_interfaces'
+  #   uplink_switch_interfaces: [Ethernet1, Ethernet1]
+
+  # - name: dc1-leaf1b
+  #   profile: DC1_L3_LEAF1
+  #   id: 2
+  #   mgmt_ip: 172.16.1.102/24
+  #   uplink_switch_interfaces: [Ethernet2, Ethernet2]
+
+  - name: dc1-leaf1c
+    profile: dc1-l2leaf
+    id: 1
+    mgmt_ip: 172.16.1.151/24
+    uplink_switches: [dc1-leaf1a, dc1-leaf1b]
+    uplink_switch_interfaces: [Ethernet8, Ethernet8]
+
+# Definition of connected endpoints in the rack.
+servers:
+  # Name of the defined server.
+  - name: dc1-leaf1-server1
+    # Definition of adapters on the server.
+    adapters:
+      # Name of the server interfaces that will be used in the description of each interface
+      - endpoint_ports: [PCI1, PCI2]
+        # Device ports where the server ports are connected.
+        switch_ports: [Ethernet5, Ethernet5]
+        # Device names where the server ports are connected.
+        switches: [dc1-leaf1a, dc1-leaf1b]
+        # VLANs that will be configured on these ports.
+        vlans: 11-12,21-22
+        # Native VLAN to be used on these ports.
+        native_vlan: 4092
+        # L2 mode of the port.
+        mode: trunk
+        # Spanning tree portfast configuration on this port.
+        spanning_tree_portfast: edge
+        # Definition of the pair of ports as port channel.
+        port_channel:
+          # Optionally override the description of the port channel interface.
+          description: PortChannel dc1-leaf1-server1
+          # Port channel mode for LACP.
+          mode: active
+
+      - endpoint_ports: [iLO]
+        switch_ports: [Ethernet5]
+        switches: [dc1-leaf1c]
+        vlans: 11
+        mode: access
+        spanning_tree_portfast: edge
