@@ -53,6 +53,12 @@ device_profiles:
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
 
+  - name: DC1_L3_LEAF1
+    parent_profile: dc1-l3leaf
+    mlag_group: DC1_L3_LEAF1
+    # ASN to be used by BGP for the group. Both devices in the MLAG pair will use the same BGP ASN
+    bgp_as: 65101
+
   - name: DC1_L3_LEAF2
     parent_profile: dc1-l3leaf
     mlag_group: DC1_L3_LEAF2
