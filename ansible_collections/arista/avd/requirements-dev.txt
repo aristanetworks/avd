@@ -8,7 +8,7 @@ PyYAML>=6.0.0
 # temporarily capping pydantic for CI
 pydantic<2.12
 # dev requirements
-ansible-core>=2.16.0,<2.20.0
+ansible-core>=2.16.0,<2.19.0
 ansible-doc-extractor>=0.1.10
 ansible-lint>=25.1.3
 aristaproto[compiler]>=0.1.1
