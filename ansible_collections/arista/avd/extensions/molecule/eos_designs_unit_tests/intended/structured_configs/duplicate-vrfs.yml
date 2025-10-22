@@ -131,7 +131,7 @@ vlan_internal_order:
 vlans:
 - id: 100
   name: VLAN100
-  tenant: TENANT1
+  tenant: DUPLICATE_TENANT1
 - id: 200
   name: VLAN200
   tenant: DUPLICATE_TENANT1

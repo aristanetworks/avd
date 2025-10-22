@@ -21,6 +21,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             return
 
         if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
+            # TODO: inject from filtered_tenants instead
             if self.shared_utils.node_config.inband_mgmt_vlan not in self.structured_config.vlans:
                 # The VLAN was not added by an SVI in network_services
                 self.structured_config.vlans.append_new(
@@ -177,8 +178,8 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                 match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT"]),
             )
 
-        maybe_existing_route_map = self.structured_config.route_maps.obtain("RM-CONN-2-BGP")
-        maybe_existing_route_map.sequence_numbers.extend(sequence_numbers)
+        route_map = self.structured_config.route_maps.obtain("RM-CONN-2-BGP")
+        route_map.sequence_numbers.extend(sequence_numbers)
 
     def get_parent_svi_cfg(self, vlan: int, subnet: str | None, ipv6_subnet: str | None) -> EosCliConfigGen.VlanInterfacesItem:
         svi = EosCliConfigGen.VlanInterfacesItem(

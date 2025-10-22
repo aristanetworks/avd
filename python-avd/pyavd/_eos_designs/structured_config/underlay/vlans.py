@@ -25,9 +25,8 @@ class VlansMixin(Protocol):
         """
         Set the structured config for vlans.
 
-        This function goes through all the underlay trunk groups and returns an
-        inverted dict where the key is the vlan ID and the value is the list of
-        the unique trunk groups that should be configured under this vlan.
+        This function goes through all the underlay trunk groups set the trunk groups
+        on the vlans in the structured config.
 
         The function also creates uplink_native_vlan for this switch or downstream switches.
         """

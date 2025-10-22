@@ -7,7 +7,7 @@ import re
 from collections.abc import Iterable, Iterator, Sequence
 from typing import TYPE_CHECKING, ClassVar, Generic, Literal, cast, overload
 
-from pyavd._errors import AristaAvdDuplicateDataError
+from pyavd._errors import AristaAvdDuplicateDataError, AristaAvdError
 from pyavd._schema.coerce_type import coerce_type
 from pyavd._utils import Undefined, UndefinedType
 
@@ -115,9 +115,13 @@ class AvdIndexedList(Sequence[T_AvdModel], AvdBase, Generic[T_PrimaryKey, T_AvdM
     def values(self) -> Iterable[T_AvdModel]:
         return self._items.values()
 
-    def obtain(self, key: T_PrimaryKey) -> T_AvdModel:
-        """Return item with given primary key, autocreating if missing."""
+    def obtain(self, key: T_PrimaryKey, required: bool = False) -> T_AvdModel:
+        """Return item with given primary key, autocreating if missing except if required is True."""
         if key not in self._items:
+            if required:
+                # TODO: discuss with reviewers and write tests if we keep.
+                msg = f"Failed to obtain required key '{key}' from {self}."
+                raise AristaAvdError(msg)
             item_type = cast("T_AvdModel", self._item_type)
             self._items[key] = item_type._from_dict({self._primary_key: key})
         return self._items[key]
