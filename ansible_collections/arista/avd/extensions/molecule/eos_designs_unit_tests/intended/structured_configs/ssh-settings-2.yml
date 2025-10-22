@@ -8,6 +8,7 @@ ip_igmp_snooping:
   globally_enabled: true
 management_ssh:
   ip_access_group_in: ACL-SSH-INBAND-MGMT
+  idle_timeout: 0
   enable: true
   vrfs:
   - name: default

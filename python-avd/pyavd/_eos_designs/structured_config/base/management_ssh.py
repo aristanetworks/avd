@@ -26,7 +26,7 @@ class ManagementSshMixin(Protocol):
         if not (ssh_settings := self.inputs.ssh_settings):
             return
 
-        if ssh_settings.idle_timeout:
+        if ssh_settings.idle_timeout is not None:
             self.structured_config.management_ssh.idle_timeout = ssh_settings.idle_timeout
 
         self._set_vrfs_and_acls(ssh_settings)
