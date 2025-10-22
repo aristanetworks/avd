@@ -29,9 +29,10 @@ class ManagementSshMixin(Protocol):
         if ssh_settings.idle_timeout is not None:
             self.structured_config.management_ssh.idle_timeout = ssh_settings.idle_timeout
 
-        self._set_vrfs_and_acls(ssh_settings)
+        if ssh_settings.enabled is not None:
+            self.structured_config.management_ssh.enable = ssh_settings.enabled
 
-        self.structured_config.management_ssh.enable = ssh_settings.enabled
+        self._set_vrfs_and_acls(ssh_settings)
 
     def _set_vrfs_and_acls(self: AvdStructuredConfigBaseProtocol, ssh_settings: EosDesigns.SshSettings) -> None:
         """SSH IPv4/IPv6 ACLs with VRFs. Resolves VRF from management VRFs."""
