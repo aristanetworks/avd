@@ -54,7 +54,7 @@ class VlansMixin(Protocol):
                     trunk_groups=EosCliConfigGen.VlansItem.TrunkGroups([self.inputs.trunk_groups.mlag_l3.name]),
                     tenant=tenant.name,
                 )
-                self.structured_config.vlans.append(vlan, ignore_fields=("tenant","trunk_groups", "name"))
+                self.structured_config.vlans.append(vlan, ignore_fields=("tenant", "trunk_groups", "name"))
 
             # L2 Vlans per Tenant
             for l2vlan in tenant.l2vlans:
