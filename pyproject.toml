@@ -123,7 +123,6 @@ runtime-evaluated-base-classes = ["pydantic.BaseModel"]
 exclude = [
   "ansible_collections/arista/avd",                                      # TODO
   "python-avd/pyavd/api",                                                # TODO
-  "python-avd/pyavd/_anta",                                              # TODO
   "python-avd/pyavd/_cv",                                                # TODO
   "python-avd/pyavd/_schema",                                            # TODO
   "python-avd/schema_tools",                                             # TODO

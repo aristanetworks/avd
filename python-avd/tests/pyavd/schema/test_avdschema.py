@@ -8,7 +8,7 @@ import pytest
 import yaml
 from deepmerge import always_merger
 
-from pyavd._errors import AvdValidationError
+from pyavd._errors import AristaAvdError, AvdSchemaError, AvdValidationError
 from pyavd._schema.avdschema import DEFAULT_SCHEMA, AvdSchema
 
 script_dir = Path(__file__).parent
@@ -167,3 +167,34 @@ class TestAvdSchema:
         assert len(validation_errors) > 0
         for validation_error in validation_errors:
             assert isinstance(validation_error, AvdValidationError)
+
+    def test_avd_schema_invalid_name(self) -> None:
+        with pytest.raises(AristaAvdError, match=r"invalid_schema"):
+            AvdSchema(schema_id="invalid_schema")
+
+    def test_invalid_path_to_subschema(self) -> None:
+        avdschema = AvdSchema(combined_schema)
+        with pytest.raises(AvdSchemaError, match=r"The datapath argument must be a list. Got <class 'str'>"):
+            avdschema.subschema("path_should_have_been_a_list")  # pyright: ignore[reportArgumentType]
+
+    def test_invalid_path_element_to_subschema(self) -> None:
+        avdschema = AvdSchema(combined_schema)
+        with pytest.raises(AvdSchemaError, match=r"All datapath items must be strings. Got <class 'tuple'>"):
+            avdschema.subschema([("tuple_but_should_have_been_a_str_or_int",)])
+
+    def test_subschema_with_dynamic_keys(self) -> None:
+        avdschema = AvdSchema(schema_id="eos_designs")
+        subschema = avdschema.subschema(["node_type_keys.key"])
+        assert isinstance(subschema, dict)
+        assert subschema["type"] == "dict"
+        assert set(subschema["keys"]) == {"defaults", "node_groups", "nodes"}
+
+    def test_subschema_path_not_found(self) -> None:
+        avdschema = AvdSchema(combined_schema)
+        with pytest.raises(AvdSchemaError, match=r"non-existing-key': The datapath '\['non-existing-key'\]' could not be found in the schema"):
+            avdschema.subschema(["non-existing-key"])
+
+    def test_is_type_with_unsupported_type(self) -> None:
+        avdschema = AvdSchema(combined_schema)
+        with pytest.raises(NotImplementedError, match=r"Unable to check type 'tuple'"):
+            avdschema._validator.is_type("foo", "tuple")  # pyright: ignore[reportArgumentType]
