@@ -25,6 +25,8 @@ class PtpMixin(Protocol):
 
     @cached_property
     def ptp_enabled(self: SharedUtilsProtocol) -> bool:
+        if not self.platform_settings.feature_support.ptp:
+            return False
         default_ptp_enabled = self.inputs.ptp_settings.enabled
         return bool(default(self.node_config.ptp.enabled, default_ptp_enabled))
 

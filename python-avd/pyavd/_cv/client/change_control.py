@@ -24,8 +24,9 @@ from pyavd._cv.api.arista.changecontrol.v1 import (
     FlagConfig,
 )
 
+from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
-from .exceptions import get_cv_client_exception
+from .exceptions import CVChangeControlFailed
 
 if TYPE_CHECKING:
     from datetime import datetime
@@ -50,6 +51,7 @@ class ChangeControlMixin(Protocol):
 
     workspace_api_version: Literal["v1"] = "v1"
 
+    @GRPCRequestHandler()
     async def get_change_control(
         self: CVClientProtocol,
         change_control_id: str,
@@ -73,13 +75,11 @@ class ChangeControlMixin(Protocol):
         )
         client = ChangeControlServiceStub(self._channel)
 
-        try:
-            response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Change Control ID '{change_control_id}'") or e
+        response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
 
+    @GRPCRequestHandler()
     async def set_change_control(
         self: CVClientProtocol,
         change_control_id: str,
@@ -108,13 +108,11 @@ class ChangeControlMixin(Protocol):
         )
         client = ChangeControlConfigServiceStub(self._channel)
 
-        try:
-            response = await client.set(request, metadata=self._metadata, timeout=timeout)
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Change Control ID '{change_control_id}'") or e
+        response = await client.set(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
 
+    @GRPCRequestHandler()
     async def approve_change_control(
         self: CVClientProtocol,
         change_control_id: str,
@@ -145,13 +143,11 @@ class ChangeControlMixin(Protocol):
         )
         client = ApproveConfigServiceStub(self._channel)
 
-        try:
-            response = await client.set(request, metadata=self._metadata, timeout=timeout)
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Approving Change Control ID '{change_control_id}' for timestamp '{timestamp}'") or e
+        response = await client.set(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
 
+    @GRPCRequestHandler()
     async def start_change_control(
         self: CVClientProtocol,
         change_control_id: str,
@@ -177,13 +173,11 @@ class ChangeControlMixin(Protocol):
         )
         client = ChangeControlConfigServiceStub(self._channel)
 
-        try:
-            response = await client.set(request, metadata=self._metadata, timeout=timeout)
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Change Control ID '{change_control_id}'") or e
+        response = await client.set(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
 
+    @GRPCRequestHandler()
     async def wait_for_change_control_state(
         self: CVClientProtocol,
         cc_id: str,
@@ -211,13 +205,13 @@ class ChangeControlMixin(Protocol):
             ],
         )
         client = ChangeControlServiceStub(self._channel)
-        try:
-            responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
-            async for response in responses:
-                LOGGER.debug("wait_for_change_control_complete: Response is '%s.'", response)
-                if hasattr(response, "value") and response.value.status == CHANGE_CONTROL_STATUS_MAP[state]:
-                    LOGGER.info("wait_for_change_control_complete: Got response for request '%s': %s", cc_id, response.value.status)
-                    return response.value
+        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+        async for response in responses:
+            LOGGER.debug("wait_for_change_control_complete: Response is '%s.'", response)
+            if hasattr(response, "value") and response.value.status == CHANGE_CONTROL_STATUS_MAP[state]:
+                LOGGER.info("wait_for_change_control_complete: Got response for request '%s': %s", cc_id, response.value.status)
+                return response.value
 
-        except Exception as e:
-            raise get_cv_client_exception(e, f"CC ID '{cc_id}')") or e
+        # Use case where stream completed without getting ChangeControl update in the desired state
+        msg = f"Change control '{cc_id}' has not reached desired state '{state}'."
+        raise CVChangeControlFailed(msg)

@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import re
 from collections.abc import Iterable, Iterator, Sequence
-from typing import TYPE_CHECKING, ClassVar, Generic, Literal, cast
+from typing import TYPE_CHECKING, ClassVar, Generic, Literal, cast, overload
 
 from pyavd._errors import AristaAvdDuplicateDataError
 from pyavd._schema.coerce_type import coerce_type
@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 NATURAL_SORT_PATTERN = re.compile(r"(\d+)")
 
 
-class AvdIndexedList(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], AvdBase):
+class AvdIndexedList(Sequence[T_AvdModel], AvdBase, Generic[T_PrimaryKey, T_AvdModel]):  # noqa: PLW1641 - __hash__ will be set to None.
     """
     Base class used for schema-based data classes holding lists-of-dictionaries-with-primary-key loaded from AVD inputs.
 
@@ -96,6 +96,12 @@ class AvdIndexedList(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], Av
 
     def __eq__(self, other: object) -> bool:
         return self._compare(other)
+
+    @overload
+    def get(self, key: T_PrimaryKey) -> T_AvdModel | UndefinedType: ...
+
+    @overload
+    def get(self, key: T_PrimaryKey, default: T) -> T_AvdModel | T: ...
 
     def get(self, key: T_PrimaryKey, default: T | UndefinedType = Undefined) -> T_AvdModel | T | UndefinedType:
         return self._items.get(key, default)

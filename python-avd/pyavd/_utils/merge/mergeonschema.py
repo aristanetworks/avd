@@ -6,9 +6,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from deepmerge.merger import Merger
+
     from pyavd._schema.avdschema import AvdSchema
 
-from deepmerge import STRATEGY_END
+from deepmerge.strategy.core import STRATEGY_END
 
 
 class MergeOnSchema:
@@ -18,15 +20,11 @@ class MergeOnSchema:
     The class is needed to allow a schema to be passed along to the method.
     """
 
-    def __init__(self, schema: AvdSchema = None) -> None:
+    def __init__(self, schema: AvdSchema | None = None) -> None:
         self.schema = schema
 
-    def strategy(self, config: object, path: list, base: list, nxt: list) -> list:
-        """
-        Custom strategy to merge lists on schema primary key.
-
-        The argument "config" should be an instance of deepmerge.Merger, but Ansible sanity test breaks type hinting with imported libs.
-        """
+    def strategy(self, config: Merger, path: list, base: list, nxt: list) -> object:
+        """Custom strategy to merge lists on schema primary key."""
         # Skip if no schema is supplied
         if not self.schema:
             return STRATEGY_END

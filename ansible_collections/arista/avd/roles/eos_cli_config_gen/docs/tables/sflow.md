@@ -9,6 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>sflow</samp>](## "sflow") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;sample</samp>](## "sflow.sample") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;sample_truncate_size</samp>](## "sflow.sample_truncate_size") | Integer |  |  | Min: 128<br>Max: 512 | Maximum sample size, in bytes. |
     | [<samp>&nbsp;&nbsp;sample_input_subinterface</samp>](## "sflow.sample_input_subinterface") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;sample_output_subinterface</samp>](## "sflow.sample_output_subinterface") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;dangerous</samp>](## "sflow.dangerous") | Boolean |  |  |  |  |
@@ -47,6 +48,9 @@
     ```yaml
     sflow:
       sample: <int>
+
+      # Maximum sample size, in bytes.
+      sample_truncate_size: <int; 128-512>
       sample_input_subinterface: <bool>
       sample_output_subinterface: <bool>
       dangerous: <bool>

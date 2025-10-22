@@ -25,9 +25,9 @@ author: Arista Ansible Team (@aristanetworks)
 version_added: "3.8.0"
 short_description: Encrypt supported EOS passwords
 description: |-
-  The filter encrypts a clear text password into EOS passwords.
-  To be used with Ansible Vault to load a password and have it encrypted on the fly by AVD in `eos_designs`.
-  Note - For now this filter only supports encryption from type `7` and not type `8a` for OSPF and BGP passwords.
+  - The filter encrypts a clear text password into EOS passwords.
+  - It is intended to be used with Ansible Vault to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+  - The filter only supports encryption for type `7` and not type `8a` for BGP, ISIS, NTP, OSPF, RADIUS and TACACS+ passwords.
 positional: _input
 options:
   _input:
@@ -39,9 +39,10 @@ options:
     description: |-
       Type of password to encrypt.
       `bgp` and `ospf_simple` requires the `password` and `key` inputs.
+      `isis` requires the `password`, `key` and `mode` inputs.
       `ospf_message_digest` requires the `password`, `key`, `hash_algorithm`, `key_id` inputs.
-      `isis` requires the `password`, `key` and `isis_mode` inputs.
-    choices: ["bgp", "ospf_simple", "ospf_message_digest", "isis"]
+      `ntp`, `radius` and `tacacs` require the `password` and `salt` inputs.
+    choices: ["bgp", "isis", "ntp", "ospf_message_digest", "ospf_simple", "radius", "tacacs"]
     required: true
   key:
     type: string
@@ -50,7 +51,6 @@ options:
       For BGP passwords, the key is the Neighbor IP or the BGP Peer Group Name in EOS.
       For OSPF passwords, the key is the interface name (e.g., `Ethernet1`).
       For ISIS passwords the key is the ISIS instance name (from `router isis <instance name>` or `isis enable <instance name>`).
-    required: true
   hash_algorithm:
     type: string
     description: |-
@@ -62,10 +62,16 @@ options:
       Key ID to use with `passwd_type=ospf_message_digest`.
     min: 1
     max: 255
-  isis_mode:
+  mode:
     type: string
     description: ISIS encryption mode (`none`, `text`, `md5`, `sha`) or shared-secret algorithm (`sha-1`, `sha-224`, `sha-256`, `sha-384`, `sha1-512`).
     choices: ["none", "text", "md5", "sha", "sha-1", "sha-224", "sha-256", "sha-384", "sha1-512"]
+  salt:
+    type: integer
+    description: |-
+      Salt used for simple type-7 obfuscation. Required when `passwd_type` is `ntp`, `radius` or `tacacs`.
+    min: 0
+    max: 15
 """
 
 EXAMPLES = r"""
@@ -90,6 +96,38 @@ EXAMPLES = r"""
         - id: 1
           hash_algorithm: md5
           key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_message_digest', key='Ethernet1', hash_algorithm='md5', key_id='1') }}"
+
+- # Encrypt the vaulted ISIS password for instance EVPN-UNDERLAY using sha-512
+  router_isis:
+    instance: EVPN_UNDERLAY
+    authentication:
+      both:
+        key_ids:
+          - id: 1
+            algorithm: sha-512
+            key_type: 7
+            key: "{{ isis_vault_password | arista.avd.encrypt(passwd_type='isis', key='EVPN_UNDERLAY', mode='sha-512') }}"
+
+- # Encrypt the vaulted NTP password for NTP authentication key
+  ntp:
+    authentication_keys:
+      - id: 1
+        hash_algorithm: "md5"
+        key: "{{ ntp_vault_key | arista.avd.encrypt(passwd_type='ntp', salt=12) }}"
+
+- # Encrypt the vaulted TACACS+ password
+  tacacs_servers:
+    hosts:
+      - host: 10.10.10.159
+        vrf: default
+        key: "{{ tacacs_vault_password | arista.avd.encrypt(passwd_type='tacacs', salt = 6) }}"
+
+- # Encrypt the vaulted RADIUS password
+  radius_servers:
+    hosts:
+      - host: 10.10.10.159
+        vrf: default
+        key: "{{ radius_vault_password | arista.avd.encrypt(passwd_type='radius', salt = 6) }}"
 """
 
 RETURN = r"""

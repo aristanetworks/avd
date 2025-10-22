@@ -9,11 +9,12 @@ import pytest
 
 from pyavd import get_fabric_documentation
 from pyavd._utils import get
-from pyavd.api.fabric_documentation import FabricDocumentation
+from pyavd.api.fabric_documentation import ACTDigitalTwin, FabricDocumentation
 from tests.models import MoleculeScenario
 
 
 @pytest.mark.molecule_scenarios(
+    "digital_twin",
     "eos_designs_unit_tests",
     "eos_designs_deprecated_vars",
     "eos_designs-l2ls",
@@ -29,7 +30,9 @@ from tests.models import MoleculeScenario
     "example-isis-ldp-ipvpn",
     "example-l2ls-fabric",
     "example-single-dc-l3ls",
+    "example-single-dc-l3ls-ipv6",
 )
+@pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos", "digital_twin")
 def test_get_fabric_documentation(molecule_scenario: MoleculeScenario) -> None:
     """Test get_fabric_documentation."""
     with patch("sys.path", [*sys.path, *molecule_scenario.extra_python_paths]):
@@ -54,6 +57,7 @@ def test_get_fabric_documentation(molecule_scenario: MoleculeScenario) -> None:
             topology_csv=topology_csv,
             p2p_links_csv=p2p_links_csv,
             toc=toc,
+            digital_twin=molecule_scenario.digital_twin,
         )
 
     assert isinstance(fabric_documentation_obj, FabricDocumentation)
@@ -84,3 +88,11 @@ def test_get_fabric_documentation(molecule_scenario: MoleculeScenario) -> None:
         # No p2p links csv
         assert molecule_scenario.p2p_links_csv is None
         assert fabric_documentation_obj.p2p_links_csv == ""
+
+    if molecule_scenario.digital_twin:
+        # We expect digital twin topology
+        assert isinstance(fabric_documentation_obj.digital_twin, ACTDigitalTwin)
+        # TODO: add shortcut to the digital twin topology file contents in the MoleculeScenario object and assert that it matches.
+    else:
+        # No digital twin topology
+        assert fabric_documentation_obj.digital_twin is None

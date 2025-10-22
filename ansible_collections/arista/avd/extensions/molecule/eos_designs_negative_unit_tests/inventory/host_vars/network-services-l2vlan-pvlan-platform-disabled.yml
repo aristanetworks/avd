@@ -1,0 +1,29 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: network-services-l2vlan-pvlan-platform-disabled
+      platform: 7280R3
+      id: 101
+      bgp_as: 101
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      - id: 2
+        name: primary1
+      - id: 90
+        name: secondary_isolated
+        private_vlan:
+          type: isolated
+          primary_vlan: 2
+
+expected_error_message: >-
+  The private VLAN feature is not enabled by default for this platform. It can be enabled in the platform settings, but might need additional configurations
+  to work.

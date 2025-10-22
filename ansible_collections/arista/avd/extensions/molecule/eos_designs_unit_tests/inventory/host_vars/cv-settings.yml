@@ -1,0 +1,50 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: cv-settings
+      mgmt_ip: 192.168.0.2/24
+      inband_mgmt_vrf: INBAND_MGMT_VRF
+      inband_mgmt_ip: 172.17.0.2/24
+
+default_mgmt_method: inband
+
+cv_settings:
+  cvaas:
+    enabled: true
+    clusters:
+      - name: cvaas-oob  # Name with dash
+        vrf: use_mgmt_interface_vrf
+        # no region - defaulting to "auto"
+      - name: cvaas_inband_1  # Name with underscore and number
+        vrf: use_inband_mgmt_vrf
+        region: euwest-2
+      - name: cvaas_mgmt_intf
+        region: auto
+        source_interface: Loopback0
+      - name: cvaas_inband_2
+        region: apnortheast-1
+        # No VRF, so we use default_mgmt_method by default, inband mgmt here.
+        source_interface: Loopback123
+        token_file: /tmp/anothercvaastoken
+  onprem_clusters:
+    - name: onprem-oob
+      vrf: use_mgmt_interface_vrf
+      servers:
+        - name: onprem_oob_server_1
+          port: 9911
+        - name: onprem_oob_server_2
+        - name: onprem_oob_server_3
+    - name: onprem_inband
+      vrf: use_inband_mgmt_vrf
+      servers:
+        - name: onprem_inband_server_1
+      token_file: /tmp/anothertoken
+      source_interface: Management1/1
+    - name: onprem_inband_two
+      servers:
+        - name: onprem_inband_server_2
+      # No VRF, so we use default_mgmt_method by default, inband mgmt here.
+  terminattr:
+    disable_aaa: true
+    ingestexclude: this_is_ingest_excluded
+    smashexcludes: this_is_smash_excluded

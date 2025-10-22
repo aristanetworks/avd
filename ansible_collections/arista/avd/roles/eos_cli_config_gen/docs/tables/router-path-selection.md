@@ -9,6 +9,10 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>router_path_selection</samp>](## "router_path_selection") | Dictionary |  |  |  | Dynamic path selection configuration. |
     | [<samp>&nbsp;&nbsp;peer_dynamic_source</samp>](## "router_path_selection.peer_dynamic_source") | String |  |  | Valid Values:<br>- <code>stun</code> | Source of dynamic peer discovery. |
+    | [<samp>&nbsp;&nbsp;mtu_discovery_interval</samp>](## "router_path_selection.mtu_discovery_interval") | Integer |  |  | Min: 60<br>Max: 600 | MTU discovery interval in seconds. |
+    | [<samp>&nbsp;&nbsp;mtu_discovery_hosts</samp>](## "router_path_selection.mtu_discovery_hosts") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_path_selection.mtu_discovery_hosts.enabled") | Boolean |  |  |  | Enable MTU discovery for hosts. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fragmentation_needed_rate_limit</samp>](## "router_path_selection.mtu_discovery_hosts.fragmentation_needed_rate_limit") | Integer |  |  | Min: 1<br>Max: 500 | Maximum rate of ICMP packet generation per CPU core(packets per second). |
     | [<samp>&nbsp;&nbsp;path_groups</samp>](## "router_path_selection.path_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.path_groups.[].name") | String | Required, Unique |  |  | Path group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "router_path_selection.path_groups.[].id") | Integer |  |  | Min: 1<br>Max: 65535 | Path group ID. |
@@ -60,8 +64,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_selection_policy</samp>](## "router_path_selection.vrfs.[].path_selection_policy") | String |  |  |  | DPS policy name to use for this VRF. |
     | [<samp>&nbsp;&nbsp;tcp_mss_ceiling</samp>](## "router_path_selection.tcp_mss_ceiling") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_segment_size</samp>](## "router_path_selection.tcp_mss_ceiling.ipv4_segment_size") | String |  |  |  | Segment Size for IPv4.<br>Can be an integer in the range 64-65515 or "auto".<br>"auto" will enable auto-discovery which clamps the TCP MSS value to the minimum of all the direct paths<br>and multi-hop path MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "router_path_selection.tcp_mss_ceiling.ipv4") | String |  |  |  | Segment Size for IPv4.<br>Can be an integer in the range 64-65515 or "auto".<br>"auto" will enable auto-discovery which clamps the TCP MSS value to the minimum of all the direct paths<br>and multi-hop path MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "router_path_selection.tcp_mss_ceiling.direction") | String |  | `ingress` | Valid Values:<br>- <code>ingress</code> | Enforce on packets through DPS tunnel for a specific direction.<br>Only 'ingress' direction is supported. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_segment_size</samp>](## "router_path_selection.tcp_mss_ceiling.ipv4_segment_size") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ipv4</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;interfaces</samp>](## "router_path_selection.interfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.interfaces.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric_bandwidth</samp>](## "router_path_selection.interfaces.[].metric_bandwidth") | Dictionary |  |  |  |  |
@@ -76,6 +81,16 @@
 
       # Source of dynamic peer discovery.
       peer_dynamic_source: <str; "stun">
+
+      # MTU discovery interval in seconds.
+      mtu_discovery_interval: <int; 60-600>
+      mtu_discovery_hosts:
+
+        # Enable MTU discovery for hosts.
+        enabled: <bool>
+
+        # Maximum rate of ICMP packet generation per CPU core(packets per second).
+        fragmentation_needed_rate_limit: <int; 1-500>
       path_groups:
 
           # Path group name.
@@ -200,7 +215,7 @@
         # Can be an integer in the range 64-65515 or "auto".
         # "auto" will enable auto-discovery which clamps the TCP MSS value to the minimum of all the direct paths
         # and multi-hop path MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).
-        ipv4_segment_size: <str>
+        ipv4: <str>
 
         # Enforce on packets through DPS tunnel for a specific direction.
         # Only 'ingress' direction is supported.

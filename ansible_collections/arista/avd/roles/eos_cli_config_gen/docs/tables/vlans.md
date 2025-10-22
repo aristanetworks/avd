@@ -18,6 +18,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_enforcement_disabled</samp>](## "vlans.[].address_locking.ipv4_enforcement_disabled") | Boolean |  |  |  | Disable enforcement for IPv4 locked addresses. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "vlans.[].trunk_groups") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vlans.[].trunk_groups.[]") | String |  |  |  | Trunk Group Name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;e_tree</samp>](## "vlans.[].e_tree") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;leaf_role</samp>](## "vlans.[].e_tree.leaf_role") | Boolean |  |  |  | Set the VLAN into the E-Tree leaf role. By default all VLANs are in root role. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_leaf_host_drop</samp>](## "vlans.[].e_tree.remote_leaf_host_drop") | Boolean |  |  |  | Enables remote leaf hosts to instead be installed as explicit drop routes in the local FDB. This is only applicable for VLANs operating in the 'Leaf' role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;private_vlan</samp>](## "vlans.[].private_vlan") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "vlans.[].private_vlan.type") | String |  |  | Valid Values:<br>- <code>community</code><br>- <code>isolated</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_vlan</samp>](## "vlans.[].private_vlan.primary_vlan") | Integer |  |  |  | Primary VLAN ID. |
@@ -49,6 +52,13 @@
 
             # Trunk Group Name.
           - <str>
+        e_tree:
+
+          # Set the VLAN into the E-Tree leaf role. By default all VLANs are in root role.
+          leaf_role: <bool>
+
+          # Enables remote leaf hosts to instead be installed as explicit drop routes in the local FDB. This is only applicable for VLANs operating in the 'Leaf' role.
+          remote_leaf_host_drop: <bool>
         private_vlan:
           type: <str; "community" | "isolated">
 

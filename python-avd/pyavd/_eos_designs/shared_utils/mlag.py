@@ -5,11 +5,11 @@ from __future__ import annotations
 
 from functools import cached_property
 from re import findall
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default, get, get_ip_from_ip_prefix
+from pyavd._utils import default, get_ip_from_ip_prefix
 from pyavd._utils.format_string import AvdStringFormatter
 from pyavd.j2filters import range_expand
 
@@ -43,8 +43,8 @@ class MlagMixin(Protocol):
         return None
 
     @cached_property
-    def mlag_interfaces(self: SharedUtilsProtocol) -> list:
-        return range_expand(self.node_config.mlag_interfaces or get(self.cv_topology_config, "mlag_interfaces") or self.default_interfaces.mlag_interfaces)
+    def mlag_interfaces(self: SharedUtilsProtocol) -> list[str]:
+        return range_expand(self.node_config.mlag_interfaces or self.cv_topology_config.mlag_interfaces or self.default_interfaces.mlag_interfaces)
 
     @cached_property
     def mlag_peer_ipv4_pool(self: SharedUtilsProtocol) -> str:
@@ -66,6 +66,13 @@ class MlagMixin(Protocol):
             msg = "mlag_peer_l3_ipv4_pool"
             raise AristaAvdMissingVariableError(msg)
         return self.node_config.mlag_peer_l3_ipv4_pool
+
+    @cached_property
+    def mlag_peer_l3_ipv6_pool(self: SharedUtilsProtocol) -> str:
+        if not self.node_config.mlag_peer_l3_ipv6_pool:
+            msg = "mlag_peer_l3_ipv6_pool"
+            raise AristaAvdMissingVariableError(msg)
+        return self.node_config.mlag_peer_l3_ipv6_pool
 
     @cached_property
     def mlag_role(self: SharedUtilsProtocol) -> Literal["primary", "secondary"] | None:
@@ -97,7 +104,7 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_peer_ip(self: SharedUtilsProtocol) -> str:
-        return self.mlag_peer_facts.mlag_ip
+        return cast("str", self.mlag_peer_facts.mlag_ip)
 
     @cached_property
     def mlag_peer_l3_ip(self: SharedUtilsProtocol) -> str | None:
@@ -107,7 +114,7 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_peer_id(self: SharedUtilsProtocol) -> int:
-        return self.mlag_peer_facts.id
+        return cast("int", self.mlag_peer_facts.id)
 
     @cached_property
     def mlag_peer_facts(self: SharedUtilsProtocol) -> EosDesignsFactsProtocol:
@@ -131,17 +138,21 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_l3_ip(self: SharedUtilsProtocol) -> str | None:
-        """Render ipv4 address for mlag_l3_ip using dynamically loaded python module."""
+        """Render ipv4 or ipv6 address for mlag_l3_ip using dynamically loaded python module."""
         if self.mlag_peer_l3_vlan is None:
             return None
         if self.mlag_role == "primary":
+            if self.underlay_ipv6_numbered:
+                return self.ip_addressing.mlag_l3_ipv6_primary()
             return self.ip_addressing.mlag_l3_ip_primary()
         if self.mlag_role == "secondary":
+            if self.underlay_ipv6_numbered:
+                return self.ip_addressing.mlag_l3_ipv6_secondary()
             return self.ip_addressing.mlag_l3_ip_secondary()
         return None
 
     @cached_property
-    def mlag_switch_ids(self: SharedUtilsProtocol) -> dict | None:
+    def mlag_switch_ids(self: SharedUtilsProtocol) -> dict[str, int] | None:
         """
         Returns the switch id's of both primary and secondary switches for a given node group.
 
@@ -172,7 +183,7 @@ class MlagMixin(Protocol):
         return self.mlag_peer_facts.mlag_port_channel_id or self.mlag_port_channel_id
 
     @cached_property
-    def mlag_peer_interfaces(self: SharedUtilsProtocol) -> list:
+    def mlag_peer_interfaces(self: SharedUtilsProtocol) -> list[str]:
         return list(self.mlag_peer_facts.mlag_interfaces) or self.mlag_interfaces
 
     @cached_property
@@ -180,7 +191,7 @@ class MlagMixin(Protocol):
         if self.mlag_l3_ip is not None:
             return self.mlag_l3_ip
 
-        return self.mlag_ip
+        return cast("str", self.mlag_ip)
 
     @cached_property
     def mlag_peer_ibgp_ip(self: SharedUtilsProtocol) -> str:
@@ -215,7 +226,8 @@ class MlagMixin(Protocol):
         if self.underlay_bgp or not self.use_separate_peer_group_for_mlag_vrfs:
             bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer
             router_bgp.peer_groups.append(self.get_mlag_peer_group(bgp_peer_group, custom_structured_configs))
-            router_bgp.address_family_ipv4.peer_groups.append(self.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.underlay_rfc5549))
+            if not self.underlay_ipv6_numbered:
+                router_bgp.address_family_ipv4.peer_groups.append(self.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.underlay_rfc5549))
             if self.underlay_ipv6:
                 router_bgp.address_family_ipv6.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
 
@@ -234,10 +246,10 @@ class MlagMixin(Protocol):
         peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
             name=peer_group_name,
             type="ipv4",
-            remote_as=self.bgp_as,
+            remote_as=self.formatted_bgp_as,
             next_hop_self=True,
             description=AvdStringFormatter().format(self.inputs.mlag_bgp_peer_group_description, mlag_peer=self.mlag_peer),
-            password=bgp_peer_group.password,
+            password=self.get_bgp_password(bgp_peer_group),
             bfd=bgp_peer_group.bfd or None,
             maximum_routes=12000,
             send_community="all",
@@ -263,3 +275,25 @@ class MlagMixin(Protocol):
         if rfc5549:
             address_family_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
         return address_family_peer_group
+
+    @cached_property
+    def underlay_multicast_pim_mlag_enabled(self: SharedUtilsProtocol) -> bool:
+        """
+        Return whether PIM should be enabled on MLAG L3 interface.
+
+        Requires PIM SM to be enabled on the router.
+        """
+        if self.underlay_multicast_pim_sm_enabled:
+            return self.node_config.underlay_multicast.pim_sm.mlag
+        return False
+
+    @cached_property
+    def underlay_multicast_static_mlag_enabled(self: SharedUtilsProtocol) -> bool:
+        """
+        Return whether static multicast should be enabled on MLAG L3 interface.
+
+        Requires static multicast to be enabled on the router.
+        """
+        if self.underlay_multicast_static_enabled:
+            return self.node_config.underlay_multicast.static.mlag
+        return False

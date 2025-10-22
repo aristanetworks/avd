@@ -18,8 +18,9 @@ from pyavd._cv.api.arista.swg.v1 import (
     SwgKey,
 )
 
+from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
-from .exceptions import get_cv_client_exception
+from .exceptions import CVResourceNotFound
 
 if TYPE_CHECKING:
     from . import CVClientProtocol
@@ -37,6 +38,7 @@ class SwgMixin(Protocol):
 
     swg_api_version: Literal["v1"] = "v1"
 
+    @GRPCRequestHandler()
     async def set_swg_device(
         self: CVClientProtocol,
         device_id: str,
@@ -65,14 +67,12 @@ class SwgMixin(Protocol):
         )
         client = EndpointConfigServiceStub(self._channel)
 
-        try:
-            LOGGER.info("set_swg_device: Setting location for '%s': %s", device_id, location)
-            response = await client.set(request, metadata=self._metadata, timeout=timeout)
-        except Exception as e:
-            raise get_cv_client_exception(e, f"set_swg_device: Device ID '{device_id}', service '{service}', location '{location}'") or e
+        LOGGER.info("set_swg_device: Setting location for '%s': %s", device_id, location)
+        response = await client.set(request, metadata=self._metadata, timeout=timeout)
 
         return response.time, response.value
 
+    @GRPCRequestHandler()
     async def wait_for_swg_endpoint_status(
         self: CVClientProtocol,
         device_id: str,
@@ -103,15 +103,15 @@ class SwgMixin(Protocol):
         )
         client = EndpointStatusServiceStub(self._channel)
 
-        try:
-            responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
-            async for response in responses:
-                if response.time < start_time:
-                    LOGGER.info("wait_for_swg_endpoint_status: Got stale SWG endpoints from a previous lookup.")
-                    continue
+        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+        async for response in responses:
+            if response.time < start_time:
+                LOGGER.info("wait_for_swg_endpoint_status: Got stale SWG endpoints from a previous lookup.")
+                continue
 
-                LOGGER.info("wait_for_swg_endpoint_status: Got SWG endpoints: %s", response.value)
-                return response.value
+            LOGGER.info("wait_for_swg_endpoint_status: Got SWG endpoints: %s", response.value)
+            return response.value
 
-        except Exception as e:
-            raise get_cv_client_exception(e, f"wait_for_swg_endpoint_status: Device ID '{device_id}', service '{service}") or e
+        # Use case where stream completed without getting an Endpoint
+        msg = f"Failed to get SWG endpoint '{device_id}' for service '{service}' with start time of '{start_time}'."
+        raise CVResourceNotFound(msg)

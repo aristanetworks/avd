@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
 if TYPE_CHECKING:
@@ -36,15 +35,17 @@ class LoopbackInterfacesMixin(Protocol):
                 InterfaceDescriptionData(
                     shared_utils=self.shared_utils,
                     interface="Loopback0",
-                    description=default(self.inputs.overlay_loopback_description, self.inputs.router_id_loopback_description),
+                    description=self.inputs.router_id_loopback_description,
                 ),
             ),
             shutdown=False,
-            ip_address=f"{self.shared_utils.router_id}/32",
         )
 
-        if self.shared_utils.ipv6_router_id is not None:
-            loopback0.ipv6_address = f"{self.shared_utils.ipv6_router_id}/128"
+        if self.shared_utils.ipv6_router_id:
+            loopback0.ipv6_address = f"{self.shared_utils.ipv6_router_id}/{self.inputs.fabric_ip_addressing.loopback.ipv6_prefix_length}"
+
+        if not self.shared_utils.underlay_ipv6_numbered:
+            loopback0.ip_address = f"{self.shared_utils.router_id}/32"
 
         if self.shared_utils.underlay_ospf:
             loopback0.ospf_area = self.inputs.underlay_ospf_area
@@ -76,11 +77,14 @@ class LoopbackInterfacesMixin(Protocol):
                 )
                 or None,
                 shutdown=False,
-                ip_address=f"{self.shared_utils.vtep_ip}/32",
             )
 
-            if self.shared_utils.network_services_l3 is True and self.inputs.vtep_vvtep_ip is not None:
-                vtep_loopback.ip_address_secondaries.append_new(self.inputs.vtep_vvtep_ip)
+            if self.shared_utils.underlay_ipv6_numbered:
+                vtep_loopback.ipv6_address = f"{self.shared_utils.vtep_ipv6}/{self.inputs.fabric_ip_addressing.loopback.ipv6_prefix_length}"
+            else:
+                vtep_loopback.ip_address = f"{self.shared_utils.vtep_ip}/32"
+                if self.shared_utils.network_services_l3 is True and self.inputs.vtep_vvtep_ip is not None:
+                    vtep_loopback.ip_address_secondaries.append_new(self.inputs.vtep_vvtep_ip)
 
             if self.shared_utils.underlay_ospf is True:
                 vtep_loopback.ospf_area = self.inputs.underlay_ospf_area

@@ -88,7 +88,7 @@ class RouteMapsMixin(Protocol):
         if not self.inputs.underlay_filter_redistribute_connected:
             return False
 
-        return self.shared_utils.wan_role and self._vrf_default_ipv4_static_routes["redistribute_in_overlay"]
+        return bool(self.shared_utils.wan_role and self._vrf_default_ipv4_static_routes["redistribute_in_overlay"])
 
     def _bgp_mlag_peer_group_route_map(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """

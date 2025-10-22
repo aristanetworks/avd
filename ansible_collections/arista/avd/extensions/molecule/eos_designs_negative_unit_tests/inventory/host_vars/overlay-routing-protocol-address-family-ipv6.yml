@@ -1,0 +1,20 @@
+---
+# Minimum config to only test the specific feature.
+# Test when 'underlay_ipv6: true' and 'underlay_rfc5549: true' are not defined with 'overlay_routing_protocol_address_family: ipv6'
+fabric_name: FAILURE_OVERLAY_ROUTING_PROTOCOL_ADDRESS_FAMILY_IPV6
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+  nodes:
+    - name: overlay-routing-protocol-address-family-ipv6
+      id: 42
+
+overlay_routing_protocol_address_family: ipv6
+
+expected_error_message: >-
+  'overlay_routing_protocol_address_family: ipv6' is only supported in combination with 'underlay_ipv6: True'
+  and 'underlay_rfc5549: True' for host 'overlay-routing-protocol-address-family-ipv6'.

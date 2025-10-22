@@ -21,10 +21,7 @@ def validate_inputs(inputs: dict) -> ValidationResult:
     Returns:
         Validation result object with any validation errors or deprecation warnings.
     """
-    # pylint: disable=import-outside-toplevel
-    from .avd_schema_tools import EosDesignsAvdSchemaTools
-
-    # pylint: enable=import-outside-toplevel
+    from .avd_schema_tools import EosDesignsAvdSchemaTools  # noqa: PLC0415
 
     eos_designs_schema_tools = EosDesignsAvdSchemaTools()
 

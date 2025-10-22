@@ -21,7 +21,11 @@ if TYPE_CHECKING:
 
 
 def get_facts(
-    all_inputs: dict[str, EosDesigns], all_hostvars: Mapping[str, Mapping], templar: Templar | None = None, pool_manager: PoolManager | None = None
+    all_inputs: dict[str, EosDesigns],
+    all_hostvars: Mapping[str, Mapping],
+    templar: Templar | None = None,
+    pool_manager: PoolManager | None = None,
+    digital_twin: bool = False,
 ) -> dict[str, EosDesignsFacts]:
     """
     Generate facts for all devices.
@@ -31,6 +35,7 @@ def get_facts(
         all_hostvars: Dictionaries with validated input vars.
         templar: Templater used to render custom jinja templates.
         pool_manager: instance of pool-manager used for dynamic assignments like node ids.
+        digital_twin: Optional flag to enable avd_digital_twin_mode.
 
     Returns:
         EosDesignsFacts instances for each device.
@@ -43,7 +48,7 @@ def get_facts(
 
     for hostname, inputs in all_inputs.items():
         hostvars = all_hostvars.get(hostname, {})
-        peer_facts_generators[hostname] = _create_generator_instance(hostname, inputs, hostvars, templar, pool_manager, peer_facts_generators)
+        peer_facts_generators[hostname] = _create_generator_instance(hostname, inputs, hostvars, templar, pool_manager, digital_twin, peer_facts_generators)
 
     for generator in peer_facts_generators.values():
         generator.cross_pollinate()
@@ -52,10 +57,11 @@ def get_facts(
         try:
             all_facts[hostname] = generator.render()
         except AristaAvdMissingVariableError as e:  # noqa: PERF203
-            raise AristaAvdMissingVariableError(variable=e.variable, host=hostname) from e
+            raise AristaAvdMissingVariableError(variable=e.variable, host=e.host or hostname) from e
         except AristaAvdError as e:
-            msg = f"{str(e).removesuffix('.')} for host '{hostname}'."
-            raise type(e)(msg) from e
+            host = e.host if hasattr(e, "host") and e.host else hostname
+            msg = f"{str(e).removesuffix('.')} for host '{host}'."
+            raise type(e)(msg, host=host) from e
 
     return all_facts
 
@@ -66,10 +72,17 @@ def _create_generator_instance(
     hostvars: Mapping,
     templar: Templar | None,
     pool_manager: PoolManager | None,
+    digital_twin: bool,
     peer_facts_generators: dict[str, EosDesignsFactsGenerator],
 ) -> EosDesignsFactsGenerator:
     """Initialize SharedUtils and EosDesignsFactsGenerator and return the instance of the generator."""
     shared_utils = SharedUtils(
-        hostname=hostname, hostvars=hostvars, inputs=inputs, templar=templar, peer_facts=peer_facts_generators, pool_manager=pool_manager
+        hostname=hostname,
+        hostvars=hostvars,
+        inputs=inputs,
+        templar=templar,
+        peer_facts=peer_facts_generators,
+        pool_manager=pool_manager,
+        digital_twin=digital_twin,
     )
     return EosDesignsFactsGenerator(hostvars=hostvars, inputs=inputs, peer_generators=peer_facts_generators, shared_utils=shared_utils)

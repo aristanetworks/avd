@@ -31,9 +31,8 @@ from pyavd._cv.api.arista.time import TimeBounds
 from pyavd._cv.api.fmp import RepeatedString
 from pyavd._utils import batch
 
-from .async_decorators import LimitCvVersion, grpc_msg_size_handler
+from .async_decorators import GRPCRequestHandler, LimitCvVersion
 from .constants import DEFAULT_API_TIMEOUT
-from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
     from datetime import datetime
@@ -56,6 +55,7 @@ class ConfigletMixin(Protocol):
 
     configlet_api_version: Literal["v1"] = "v1"
 
+    @GRPCRequestHandler()
     async def get_configlet_containers(
         self: CVClientProtocol,
         workspace_id: str,
@@ -85,14 +85,11 @@ class ConfigletMixin(Protocol):
             request.partial_eq_filter.append(ConfigletAssignment(key=ConfigletAssignmentKey(workspace_id=workspace_id)))
 
         client = ConfigletAssignmentServiceStub(self._channel)
-        try:
-            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            configlet_assignments = [response.value async for response in responses]
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', ConfigletAssignment ID '{container_ids}'") or e
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
 
-        return configlet_assignments
+        return [response.value async for response in responses]
 
+    @GRPCRequestHandler()
     async def set_configlet_container(
         self: CVClientProtocol,
         workspace_id: str,
@@ -130,15 +127,12 @@ class ConfigletMixin(Protocol):
             ),
         )
         client = ConfigletAssignmentConfigServiceStub(self._channel)
-        try:
-            response = await client.set(request, metadata=self._metadata, timeout=timeout)
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', ConfigletAssignment ID '{container_id}'") or e
+        response = await client.set(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
 
     @LimitCvVersion(min_ver="2024.2.0")
-    @grpc_msg_size_handler("containers")
+    @GRPCRequestHandler(list_field="containers")
     async def set_configlet_containers(
         self: CVClientProtocol,
         workspace_id: str,
@@ -172,16 +166,13 @@ class ConfigletMixin(Protocol):
             ],
         )
         client = ConfigletAssignmentConfigServiceStub(self._channel)
-        try:
-            responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
-            assignment_keys = [response.key async for response in responses]
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Containers '{containers}'") or e
+        responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
 
-        return assignment_keys
+        return [response.key async for response in responses]
 
     # Use this variant for versions below 2024.2.0 (still respecting overall min version)
     @LimitCvVersion(max_ver="2024.1.99")
+    @GRPCRequestHandler()
     async def set_configlet_containers(  # noqa: F811 - Redefining with decorator.
         self: CVClientProtocol,
         workspace_id: str,
@@ -229,6 +220,7 @@ class ConfigletMixin(Protocol):
             for container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy in containers
         ]
 
+    @GRPCRequestHandler()
     async def delete_configlet_container(
         self: CVClientProtocol,
         workspace_id: str,
@@ -252,14 +244,11 @@ class ConfigletMixin(Protocol):
             ),
         )
         client = ConfigletAssignmentConfigServiceStub(self._channel)
-        try:
-            response = await client.set(request, metadata=self._metadata, timeout=timeout)
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', ConfigletAssignment ID '{assignment_id}'") or e
+        response = await client.set(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
 
-    @grpc_msg_size_handler("configlet_ids")
+    @GRPCRequestHandler(list_field="configlet_ids")
     async def get_configlets(
         self: CVClientProtocol,
         workspace_id: str,
@@ -290,14 +279,11 @@ class ConfigletMixin(Protocol):
 
         client = ConfigletServiceStub(self._channel)
 
-        try:
-            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            configlets = [response.value async for response in responses]
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Configlet IDs '{configlet_ids}'") or e
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
 
-        return configlets
+        return [response.value async for response in responses]
 
+    @GRPCRequestHandler()
     async def set_configlet(
         self: CVClientProtocol,
         workspace_id: str,
@@ -330,13 +316,11 @@ class ConfigletMixin(Protocol):
             ),
         )
         client = ConfigletConfigServiceStub(self._channel)
-        try:
-            response = await client.set(request, metadata=self._metadata, timeout=timeout)
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Configlet ID '{configlet_id}'") or e
+        response = await client.set(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
 
+    @GRPCRequestHandler()
     async def set_configlet_from_file(
         self: CVClientProtocol,
         workspace_id: str,
@@ -369,15 +353,12 @@ class ConfigletMixin(Protocol):
             ),
         )
         client = ConfigletConfigServiceStub(self._channel)
-        try:
-            response = await client.set(request, metadata=self._metadata, timeout=timeout)
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Configlet ID '{configlet_id}', File '{file}'") or e
+        response = await client.set(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
 
     @LimitCvVersion(min_ver="2024.2.0")
-    @grpc_msg_size_handler("configlets")
+    @GRPCRequestHandler(list_field="configlets")
     async def set_configlets_from_files(
         self: CVClientProtocol,
         workspace_id: str,
@@ -408,17 +389,13 @@ class ConfigletMixin(Protocol):
             )
         client = ConfigletConfigServiceStub(self._channel)
 
-        try:
-            responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
-            configlet_configs = [response.key async for response in responses]
+        responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
 
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Configlets '{configlets}'") or e
-
-        return configlet_configs
+        return [response.key async for response in responses]
 
     # Use this variant for versions below 2024.2.0 (still respecting overall min version)
     @LimitCvVersion(max_ver="2024.1.99")
+    @GRPCRequestHandler()
     async def set_configlets_from_files(  # noqa: F811 - Redefining with decorator.
         self: CVClientProtocol,
         workspace_id: str,
@@ -455,7 +432,7 @@ class ConfigletMixin(Protocol):
             LOGGER.info("set_configlets_from_files: Batch %s", index)
             configlet_configs.extend(await gather(*batch_coroutines))
 
-    @grpc_msg_size_handler("configlet_ids")
+    @GRPCRequestHandler(list_field="configlet_ids")
     async def delete_configlets(
         self: CVClientProtocol,
         workspace_id: str,
@@ -483,10 +460,6 @@ class ConfigletMixin(Protocol):
             )
         client = ConfigletConfigServiceStub(self._channel)
 
-        try:
-            responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
-            configlet_configs = [response.key async for response in responses]
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Configlet IDs '{configlet_ids}'") or e
+        responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
 
-        return configlet_configs
+        return [response.key async for response in responses]

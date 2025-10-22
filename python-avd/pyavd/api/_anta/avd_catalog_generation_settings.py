@@ -27,7 +27,7 @@ class AvdCatalogGenerationSettings(BaseModel):
     """
     Model defining settings for the AVD-generated ANTA catalog.
 
-    Used in `pyavd.get_device_anta_catalog` to customize the AVD test catalog generation.
+    Used in `pyavd.get_device_test_catalog` to customize the AVD test catalog generation.
 
     Attributes:
     ----------

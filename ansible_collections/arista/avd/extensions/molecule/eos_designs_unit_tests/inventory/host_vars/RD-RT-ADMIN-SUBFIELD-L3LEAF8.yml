@@ -1,0 +1,6 @@
+---
+
+overlay_rd_type:
+# Invalid ipv4 address in admin_subfield, it will return router_id
+# Expected result: rd 192.168.255.8:*
+  admin_subfield: 10.1.1.256

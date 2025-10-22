@@ -28,9 +28,10 @@ mgmt_interface_vrf: MGMT
 mgmt_gateway: 10.255.0.1
 
 # dns servers.
-name_servers:
-  - 192.168.2.1
-  - 8.8.8.8
+dns_settings:
+  servers:
+    - ip_address: 192.168.2.1
+    - ip_address: 8.8.8.8
 
 # NTP Servers IP or DNS name, first NTP server will be preferred and sourced from Management VRF
 ntp_settings:

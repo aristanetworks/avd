@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, overload
 
 if TYPE_CHECKING:
     from typing import TypeVar
@@ -14,7 +14,15 @@ if TYPE_CHECKING:
     T = TypeVar("T")
 
 
-def default(*values: Unpack[tuple[Unpack[tuple[T | None, ...]], T]]) -> T:
+@overload
+def default(*values: Unpack[tuple[Unpack[tuple[T | None, ...]], None]]) -> T | None: ...
+
+
+@overload
+def default(*values: Unpack[tuple[Unpack[tuple[T | None, ...]], T]]) -> T: ...
+
+
+def default(*values: Unpack[tuple[Unpack[tuple[T | None, ...]], T | None]]) -> T | None:
     """
     Accepts any number of arguments. Return the first value which is not None.
 

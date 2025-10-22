@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# doc - ip virtual router mac address #}
-{% if ip_virtual_router_mac_address is arista.avd.defined or ip_virtual_router_mac_address_advertisement_interval is arista.avd.defined %}
+{% if ip_virtual_router_mac_address is arista.avd.defined or ip_virtual_router_mac_address_advertisement_interval is arista.avd.defined or ip_virtual_router_mac_address_mlag_peer is arista.avd.defined(true) %}
 
 ### Virtual Router MAC Address
 
@@ -16,10 +16,14 @@ Virtual Router MAC Address: {{ ip_virtual_router_mac_address }}
 {%     if ip_virtual_router_mac_address_advertisement_interval is arista.avd.defined %}
 Virtual Router MAC Address Advertisement Interval: {{ ip_virtual_router_mac_address_advertisement_interval }}
 {%     endif %}
+{%     if ip_virtual_router_mac_address_mlag_peer is arista.avd.defined(true) %}
+Virtual Router MAC Address MLAG Peer: Enabled
+{%     endif %}
 
 #### Virtual Router MAC Address Device Configuration
 
 ```eos
 {%     include 'eos/ip-virtual-router-mac-address.j2' %}
+{%     include 'eos/ip-virtual-router-mac-address-mlag-peer.j2' %}
 ```
 {% endif %}

@@ -16,7 +16,7 @@
 - name: Generate eos intended configuration and device documentation
   when: >-
       eos_cli_config_gen_configuration.enable | arista.avd.default(true) or
-      (eos_cli_config_gen_documentation.enable | arista.avd.default(generate_device_documentation, true))
+      (eos_cli_config_gen_documentation.enable | arista.avd.default(true))
   arista.avd.eos_cli_config_gen:
     structured_config_filename: "{{ structured_config_filename }}"
     config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
@@ -24,7 +24,7 @@
     read_structured_config_from_file: "{{ structured_config is not arista.avd.defined or structured_config.skipped is arista.avd.defined(true) }}"
     validation_mode: "{{ avd_data_validation_mode }}"
     generate_device_config: "{{ eos_cli_config_gen_configuration.enable | arista.avd.default(true) }}"
-    generate_device_doc: "{{ eos_cli_config_gen_documentation.enable | arista.avd.default(generate_device_documentation, true) }}"
+    generate_device_doc: "{{ eos_cli_config_gen_documentation.enable | arista.avd.default(true) }}"
     device_doc_toc: "{{ eos_cli_config_gen_documentation.toc | arista.avd.default(true) }}"
     cprofile_file: "{{ eos_cli_config_gen_cprofile_file | default(omit) }}"
   delegate_to: localhost

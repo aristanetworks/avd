@@ -1,12 +1,11 @@
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-import ipaddress
+
 from collections import ChainMap
 from typing import Any, Protocol
 
 from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
-from pyavd._errors import AristaAvdError
 from pyavd._utils import get_ip_from_pool
 
 from .utils import UtilsMixin
@@ -15,9 +14,6 @@ from .utils import UtilsMixin
 class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
     """
     Protocol for the AvdIpAddressing Class which is used to render IP addresses either from custom Jinja2 templates or using default Python Logic.
-
-    Since some templates might contain certain legacy variables (switch_*),
-    those are mapped from the switch.* model
 
     This class is imported adhoc based on the variable `templates.ip_addressing.python_module` so it can
     be overridden by a custom python class.
@@ -37,8 +33,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
             - first_id: offset from pool is `(mlag_primary_id - 1) * 2`
             - odd_id: offset from pool is `(odd_id - 1) * 2`. Requires MLAG pair to have a node with odd and a node with an even ID
-            - same_subnet: offset from pool is always 0. All MLAG pairs will be using the same subnet (default /31).
-              Requires the pool to have the same prefix length.
+            - same_subnet: offset from pool is always 0. All MLAG peer links will use the first subnet of the pool.
         """
         prefixlen = (
             self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length if address_family == "ipv6" else self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length
@@ -48,10 +43,6 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
             return get_ip_from_pool(pool, prefixlen, offset, ip_offset)
 
         if self.inputs.fabric_ip_addressing.mlag.algorithm == "same_subnet":
-            pool_network = ipaddress.ip_network(pool, strict=False)
-            if pool_network.prefixlen != prefixlen:
-                msg = f"MLAG same_subnet addressing requires the pool to be a /{prefixlen}"
-                raise AristaAvdError(msg)
             return get_ip_from_pool(pool, prefixlen, 0, ip_offset)
 
         # Use default first_id
@@ -63,6 +54,8 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_ibgp_peering_ip_primary:
             return self._template(
                 template_path,
+                mlag_primary_id=self._mlag_primary_id,
+                mlag_secondary_id=self._mlag_secondary_id,
                 vrf={"mlag_ibgp_peering_ipv4_pool": mlag_ibgp_peering_ipv4_pool},
             )
 
@@ -73,10 +66,20 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_ibgp_peering_ip_secondary:
             return self._template(
                 template_path,
+                mlag_primary_id=self._mlag_primary_id,
+                mlag_secondary_id=self._mlag_secondary_id,
                 vrf={"mlag_ibgp_peering_ipv4_pool": mlag_ibgp_peering_ipv4_pool},
             )
 
         return self._mlag_ip(mlag_ibgp_peering_ipv4_pool, 1)
+
+    def mlag_ibgp_peering_ipv6_primary(self, mlag_ibgp_peering_ipv6_pool: str) -> str:
+        """Return IP for L3 Peerings in VRFs for MLAG Primary."""
+        return self._mlag_ip(mlag_ibgp_peering_ipv6_pool, 0, address_family="ipv6")
+
+    def mlag_ibgp_peering_ipv6_secondary(self, mlag_ibgp_peering_ipv6_pool: str) -> str:
+        """Return IP for L3 Peerings in VRFs for MLAG Secondary."""
+        return self._mlag_ip(mlag_ibgp_peering_ipv6_pool, 1, address_family="ipv6")
 
     def mlag_ip_primary(self) -> str:
         """
@@ -148,6 +151,14 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         return self._mlag_ip(self._mlag_peer_l3_ipv4_pool, 0)
 
+    def mlag_l3_ipv6_primary(self) -> str:
+        """
+        Return IP for L3 Peerings for MLAG Primary.
+
+        Default pool is "mlag_peer_l3_ipv4_pool"
+        """
+        return self._mlag_ip(self._mlag_peer_l3_ipv6_pool, 0, address_family="ipv6")
+
     def mlag_l3_ip_secondary(self) -> str:
         """
         Return IP for L3 Peerings for MLAG Secondary.
@@ -163,6 +174,14 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
             )
 
         return self._mlag_ip(self._mlag_peer_l3_ipv4_pool, 1)
+
+    def mlag_l3_ipv6_secondary(self) -> str:
+        """
+        Return IP for L3 Peerings for MLAG Secondary.
+
+        Default pool is "mlag_peer_l3_ipv4_pool"
+        """
+        return self._mlag_ip(self._mlag_peer_l3_ipv6_pool, 1, address_family="ipv6")
 
     def p2p_uplinks_ip(self, uplink_switch_index: int) -> str:
         """Return Child IP for P2P Uplinks."""
@@ -184,6 +203,14 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         return get_ip_from_pool(p2p_ipv4_pool, prefixlen, offset, 1)
 
+    def p2p_uplinks_ipv6(self, uplink_switch_index: int) -> str:
+        """Return Child IP for P2P Uplinks."""
+        uplink_switch_index = int(uplink_switch_index)
+        prefixlen = self.inputs.fabric_ip_addressing.p2p_uplinks.ipv6_prefix_length
+        p2p_ipv6_pool, offset = self._get_p2p_ipv6_pool_and_offset(uplink_switch_index)
+
+        return get_ip_from_pool(p2p_ipv6_pool, prefixlen, offset, 1)
+
     def p2p_uplinks_peer_ip(self, uplink_switch_index: int) -> str:
         """Return Parent IP for P2P Uplinks."""
         uplink_switch_index = int(uplink_switch_index)
@@ -204,6 +231,14 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         return get_ip_from_pool(p2p_ipv4_pool, prefixlen, offset, 0)
 
+    def p2p_uplinks_peer_ipv6(self, uplink_switch_index: int) -> str:
+        """Return Parent IP for P2P Uplinks."""
+        uplink_switch_index = int(uplink_switch_index)
+        prefixlen = self.inputs.fabric_ip_addressing.p2p_uplinks.ipv6_prefix_length
+        p2p_ipv6_pool, offset = self._get_p2p_ipv6_pool_and_offset(uplink_switch_index)
+
+        return get_ip_from_pool(p2p_ipv6_pool, prefixlen, offset, 0)
+
     def p2p_vrfs_uplinks_ip(
         self,
         uplink_switch_index: int,
@@ -215,6 +250,18 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         Unless overridden in a custom IP addressing module, this will just reuse the regular ip addressing logic.
         """
         return self.p2p_uplinks_ip(uplink_switch_index)
+
+    def p2p_vrfs_uplinks_ipv6(
+        self,
+        uplink_switch_index: int,
+        vrf: str,  # pylint: disable=unused-argument # NOSONAR # noqa: ARG002
+    ) -> str:
+        """
+        Return Child IP for P2P-VRFs Uplinks.
+
+        Unless overridden in a custom IP addressing module, this will just reuse the regular ip addressing logic.
+        """
+        return self.p2p_uplinks_ipv6(uplink_switch_index)
 
     def p2p_vrfs_uplinks_peer_ip(
         self,
@@ -228,6 +275,18 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         """
         return self.p2p_uplinks_peer_ip(uplink_switch_index)
 
+    def p2p_vrfs_uplinks_peer_ipv6(
+        self,
+        uplink_switch_index: int,
+        vrf: str,  # pylint: disable=unused-argument # NOSONAR # noqa: ARG002
+    ) -> str:
+        """
+        Return Parent IP for P2P-VRFs Uplinks.
+
+        Unless overridden in a custom IP addressing module, this will just reuse the regular ip addressing logic.
+        """
+        return self.p2p_uplinks_peer_ipv6(uplink_switch_index)
+
     def router_id(self) -> str:
         """
         Return IP address for Router ID.
@@ -239,6 +298,8 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         if self._loopback_ipv4_address:
             return self._loopback_ipv4_address
 
+        loopback_pool = self._loopback_ipv4_pool if not self.shared_utils.underlay_ipv6_numbered else self._router_id_pool
+
         if template_path := self.shared_utils.node_type_key_data.ip_addressing.router_id:
             return self._template(
                 template_path,
@@ -248,7 +309,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
             )
 
         offset = self._id + self._loopback_ipv4_offset
-        return get_ip_from_pool(self._loopback_ipv4_pool, 32, offset, 0)
+        return get_ip_from_pool(loopback_pool, 32, offset, 0)
 
     def ipv6_router_id(self) -> str:
         """
@@ -258,7 +319,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         Default offset from pool is `id + loopback_ipv6_offset`
         """
         offset = self._id + self._loopback_ipv6_offset
-        return get_ip_from_pool(self._loopback_ipv6_pool, 128, offset, 0)
+        return get_ip_from_pool(self._loopback_ipv6_pool, self.inputs.fabric_ip_addressing.loopback.ipv6_prefix_length, offset, 0)
 
     def vtep_ip_mlag(self) -> str:
         """
@@ -284,6 +345,20 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         offset = self._mlag_primary_id + self._loopback_ipv4_offset
         return get_ip_from_pool(self._vtep_loopback_ipv4_pool, 32, offset, 0)
 
+    def vtep_ipv6_mlag(self) -> str:
+        """
+        Return IP address for VTEP for MLAG Leaf.
+
+        If "vtep_loopback_ipv6_address" is set, it is used.
+        Default pool is "vtep_loopback_ipv6_pool"
+        Default offset from pool is `mlag_primary_id + loopback_ipv6_offset`
+        """
+        if self._vtep_loopback_ipv6_address:
+            return self._vtep_loopback_ipv6_address
+
+        offset = self._mlag_primary_id + self._loopback_ipv6_offset
+        return get_ip_from_pool(self._vtep_loopback_ipv6_pool, 64, offset, 0)
+
     def vtep_ip(self) -> str:
         """
         Return IP address for VTEP.
@@ -305,6 +380,20 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         offset = self._id + self._loopback_ipv4_offset
         return get_ip_from_pool(self._vtep_loopback_ipv4_pool, 32, offset, 0)
+
+    def vtep_ipv6(self) -> str:
+        """
+        Return IP address for VTEP.
+
+        If "vtep_loopback_ipv6_address" is set, it is used.
+        Default pool is "vtep_loopback_ipv6_pool"
+        Default offset from pool is `id + loopback_ipv6_offset`
+        """
+        if self._vtep_loopback_ipv6_address:
+            return self._vtep_loopback_ipv6_address
+
+        offset = self._id + self._loopback_ipv6_offset
+        return get_ip_from_pool(self._vtep_loopback_ipv6_pool, self.inputs.fabric_ip_addressing.loopback.ipv6_prefix_length, offset, 0)
 
     def vrf_loopback_ip(self, pool: str) -> str:
         """
@@ -349,6 +438,16 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         offset = vlan_id - 1 + underlay_l2_multicast_group_ipv4_pool_offset
         return get_ip_from_pool(underlay_l2_multicast_group_ipv4_pool, 32, offset, 0)
 
+    def evpn_underlay_l2_flood_group(
+        self,
+        underlay_l2_flood_ipv4_pool: str,
+        vlan_id: int,
+        underlay_l2_flood_ipv4_pool_offset: int,
+    ) -> str:
+        """Return IP address to be used for EVPN underlay L2 flood group."""
+        offset = vlan_id - 1 + underlay_l2_flood_ipv4_pool_offset
+        return get_ip_from_pool(underlay_l2_flood_ipv4_pool, 32, offset, 0)
+
     def wan_ha_ip(self) -> str:
         """Return the WAN HA local IP address."""
         wan_ha_ipv4_pool = self.shared_utils.wan_ha_ipv4_pool
@@ -377,9 +476,6 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 class AvdIpAddressing(AvdFacts, AvdIpAddressingProtocol):
     """
     Class used to render IP addresses either from custom Jinja2 templates or using default Python Logic.
-
-    Since some templates might contain certain legacy variables (switch_*),
-    those are mapped from the switch.* model
 
     This class is imported adhoc based on the variable `templates.ip_addressing.python_module` so it can
     be overridden by a custom python class.

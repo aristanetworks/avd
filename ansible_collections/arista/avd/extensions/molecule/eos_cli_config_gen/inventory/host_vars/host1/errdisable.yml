@@ -1,0 +1,35 @@
+---
+### Errdisable ###
+
+errdisable:
+  detect:
+    causes:
+      - arp-inspection
+      - dot1x
+      - link-change
+      - tapagg
+      - xcvr-misconfigured
+      - xcvr-overheat
+      - xcvr-power-unsupported
+      - acl
+  recovery:
+    causes:
+      - name: bpduguard
+        interval: 400
+      - name: dot1x
+        interval: 500
+      - name: hitless-reload-down
+      - name: lacp-rate-limit
+      - name: link-flap
+      - name: no-internal-vlan
+      - name: portchannelguard
+      - name: portsec
+      - name: speed-misconfigured
+      - name: tapagg
+      - name: uplink-failure-detection
+      - name: xcvr-misconfigured
+      - name: xcvr-overheat
+      - name: xcvr-power-unsupported
+      - name: xcvr-unsupported
+      - name: arp-inspection
+    interval: 300

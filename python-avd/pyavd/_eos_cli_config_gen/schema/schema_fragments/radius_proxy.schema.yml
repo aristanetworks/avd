@@ -1,0 +1,92 @@
+# Copyright (c) 2025 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  radius_proxy:
+    type: dict
+    description: Configure RADIUS proxy parameters.
+    keys:
+      client_key:
+        type: str
+        description: |-
+          Set client secret key, allowed max size is 128.
+          Only type 7 supported.
+      client_session_idle_timeout:
+        type: int
+        description: Idle timeout in seconds.
+        min: 1
+        max: 86400
+        convert_types:
+          - str
+      dynamic_authorization:
+        type: bool
+        description: Enable/Disable dynamic authorization.
+      client_groups:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            server_groups:
+              type: list
+              items:
+                type: str
+                description: RADIUS server-group names.
+            vrfs:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  ipv4_clients:
+                    type: list
+                    primary_key: address
+                    items:
+                      type: dict
+                      keys:
+                        address:
+                          type: str
+                          format: ipv4
+                          description: IPv4 address "A.B.C.D" or prefix "A.B.C.D/E".
+                        key:
+                          type: str
+                          description: |-
+                            Key for this client. Overrides`radius_proxy.client_key`.
+                            Only type 7 supported.
+                  ipv6_clients:
+                    type: list
+                    primary_key: address
+                    items:
+                      type: dict
+                      keys:
+                        address:
+                          type: str
+                          format: ipv6
+                          description: IPv6 address "A:B:C:D:E:F:G:H" prefix "A:B:C:D:E:F:G:H/I".
+                        key:
+                          type: str
+                          description: |-
+                            Key for this client. Overrides`radius_proxy.client_key`.
+                            Only type 7 supported.
+                  host_clients:
+                    type: list
+                    primary_key: name
+                    items:
+                      type: dict
+                      keys:
+                        name:
+                          type: str
+                          description: Hostname.
+                        key:
+                          type: str
+                          description: |-
+                            Key for this client. Overrides`radius_proxy.client_key`.
+                            Only type 7 supported.

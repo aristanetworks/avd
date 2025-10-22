@@ -7,3 +7,9 @@
 {% if ip_hardware.fib.optimize.prefixes.profile is arista.avd.defined %}
 ip hardware fib optimize prefixes profile {{ ip_hardware.fib.optimize.prefixes.profile }}
 {% endif %}
+{% if ip_hardware.fib.load_balance_distribution.dynamic.enabled is arista.avd.defined(true) %}
+ip hardware fib load-balance distribution dynamic
+{%     if ip_hardware.fib.load_balance_distribution.dynamic.flow_set_size is arista.avd.defined %}
+ip hardware fib load-balance distribution dynamic flow-set-size {{ ip_hardware.fib.load_balance_distribution.dynamic.flow_set_size }}
+{%     endif %}
+{% endif %}

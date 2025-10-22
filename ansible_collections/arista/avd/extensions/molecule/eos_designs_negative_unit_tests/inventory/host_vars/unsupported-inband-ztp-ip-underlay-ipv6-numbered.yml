@@ -1,0 +1,21 @@
+---
+type: spine
+fabric_name: FABRIC_INBAND_ZTP_UNDERLAY_IPV6_UNMBERED
+
+underlay_routing_protocol: ebgp
+underlay_ipv6_numbered: true
+
+spine:
+  defaults:
+    loopback_ipv6_pool: 2001:DB8:1::/48
+    router_id_pool: 10.255.1.0/24
+    bgp_as: 65000
+  node_groups:
+    - group: Site511
+      nodes:
+        - name: unsupported-inband-ztp-ip-underlay-ipv6-numbered
+          id: 1
+          inband_ztp: true
+
+expected_error_message: >-
+  Invalid combination of inputs. inband_ztp is not supported with numbered IPv6 underlay for host 'unsupported-inband-ztp-ip-underlay-ipv6-numbered'.

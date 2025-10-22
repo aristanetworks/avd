@@ -1,0 +1,13 @@
+---
+# Test the deprecation message for direct usage of `eos_cli_config_gen` keys
+# when using `eos_designs`
+dns_domain: this.should.warn.test
+# adding dns_settings to trick our pytest and have the domain generated no matter what
+# by the key above. DO NOT REMOVE.
+dns_settings:
+  domain: this.should.warn.test
+  servers:
+    - ip_address: 8.8.8.8
+# below should warn as well and is not generating any config
+enable_password:
+  disabled: true

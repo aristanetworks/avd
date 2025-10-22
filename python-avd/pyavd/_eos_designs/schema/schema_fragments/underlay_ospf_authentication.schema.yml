@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -27,24 +27,30 @@ keys:
             id:
               type: int
               convert_types:
-              - str
+                - str
             hash_algorithm:
               type: str
               valid_values:
-              - md5
-              - sha1
-              - sha256
-              - sha384
-              - sha512
+                - md5
+                - sha1
+                - sha256
+                - sha384
+                - sha512
               default: sha512
-            key:
+            cleartext_key:
               type: str
               required: true
-              max_length: 16
-              min_length: 1
               convert_types:
-              - int
+                - int
               description: |-
-                Key password.
-                Only plaintext passwords are supported here as `eos_designs` will encrypt the password for each individual underlay interface.
-                To protect the password at rest it is strongly recommended to make use of Ansible Vault or similar.
+                Cleartext key for OSPF message-digest authentication
+                To protect the password at rest it is strongly recommended to make use of a vault or similar.
+              min_length: 1
+              max_length: 16
+            key:
+              type: str
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 6.0.0
+                new_key: cleartext_key

@@ -1,0 +1,92 @@
+---
+# Common AVD group variables
+fabric_name: FABRIC
+
+# Generate CSVs with fabric link info.
+eos_designs_documentation:
+  topology_csv: true
+  p2p_links_csv: true
+
+# Define underlay and overlay routing protocol to be used
+underlay_routing_protocol: ebgp
+overlay_routing_protocol: ebgp
+
+# Local users
+aaa_settings:
+  local_users:
+    # Define a new user, which is called "ansible"
+    - name: ansible
+      privilege: 15
+      role: network-admin
+      # Password set to "ansible". Same string as the device generates when configuring a username.
+      sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+    - name: admin
+      privilege: 15
+      role: network-admin
+      no_password: true
+
+# BGP peer groups passwords
+bgp_peer_groups:
+  # all passwords set to "arista"
+  evpn_overlay_peers:
+    password: Q4fqtbqcZ7oQuKfuWtNGRQ==
+  ipv4_underlay_peers:
+    name: IPv6-UNDERLAY-PEERS
+    password: F0bdF6JLcJtagc6PCN8W0Q==
+  mlag_ipv4_underlay_peer:
+    name: MLAG-IPv6-UNDERLAY-PEER
+    password: GNtuK+/vTwZwSZiwj1FK/Q==
+
+# P2P interfaces MTU, includes VLANs 4093 and 4094 that are over peer-link
+# If you're running vEOS-lab or cEOS, you should use MTU of 1500 instead as shown in the following line
+# p2p_uplinks_mtu: 9214
+p2p_uplinks_mtu: 1500
+
+# Set default uplink, downlink, and MLAG interfaces based on node type
+default_interfaces:
+  - types: [spine]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-2]
+    downlink_interfaces: [Ethernet1-8]
+  - types: [l3leaf]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-2]
+    mlag_interfaces: [Ethernet3-4]
+    downlink_interfaces: [Ethernet8]
+  - types: [l2leaf]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-2]
+
+# CloudVision Portal definitions
+cv_settings:
+  onprem_clusters:
+    - name: primary
+      servers:
+        - name: 192.168.1.12
+  terminattr:
+    disable_aaa: true
+
+# DNS Server
+dns_settings:
+  servers:
+    - ip_address: 192.168.1.1
+
+underlay_ipv6: true
+underlay_ipv6_numbered: true
+
+fabric_ip_addressing:
+  mlag:
+    # Modifies the default MLAG peer-link prefix length of 64.
+    ipv6_prefix_length: 64
+  loopback:
+    # Modifies the default loopback prefix length of 128
+    ipv6_prefix_length: 64
+  p2p_uplinks:
+    # Modifies the default p2p uplink prefix length of 64
+    ipv6_prefix_length: 64
+
+# NTP Servers IP or DNS name, first NTP server will be preferred, and sourced from Management VRF
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
+  servers:
+    - name: 0.pool.ntp.org

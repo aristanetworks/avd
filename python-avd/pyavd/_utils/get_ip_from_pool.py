@@ -48,6 +48,7 @@ def get_ip_from_pool(pool: str, prefixlen: int, subnet_offset: int, ip_offset: i
         AristaAvdError: If the pool string is invalid or if the requested offset is not available in the pool.
     """
     subnet = None
+    subnet_size = 0
     remaining_subnet_offset = subnet_offset
     for pool_network in get_networks_from_pool(pool):
         # Storing these since they involve calculations:

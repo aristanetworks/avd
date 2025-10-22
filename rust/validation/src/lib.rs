@@ -13,3 +13,4 @@ mod validation_result;
 mod python_bindings;
 
 pub use self::validation::store::StoreValidate;
+pub use self::context::Configuration;

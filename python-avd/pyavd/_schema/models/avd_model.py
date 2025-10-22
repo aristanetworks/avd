@@ -24,10 +24,10 @@ if TYPE_CHECKING:
 LOGGER = getLogger(__name__)
 
 
-class AvdModel(AvdBase):
+class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
     """Base class used for schema-based data classes holding dictionaries loaded from AVD inputs."""
 
-    __slots__ = ("_custom_data",)
+    __slots__ = ("_custom_data", "_skipped_keys")
 
     _allow_other_keys: ClassVar[bool] = False
     """Attribute telling if this class should fail or ignore unknown keys found during loading in _from_dict()."""
@@ -44,7 +44,12 @@ class AvdModel(AvdBase):
     _custom_data: dict[str, Any]
     """
     Dictionary holding extra keys given in _from_dict.
-    These keys are either keys starting with underscore or any non-schema key if _from_dict was called with 'keep_extra_keys'.
+    These keys start with an underscore.
+    """
+    _skipped_keys: set[str]
+    """
+    Set holding the skipped keys given in _from_dict.
+    These are useful to detect ignored eos_cli_config_gen keys.
     """
 
     @classmethod
@@ -53,27 +58,25 @@ class AvdModel(AvdBase):
         return cls._from_dict(data)
 
     @classmethod
-    def _from_dict(cls: type[T_AvdModel], data: Mapping, keep_extra_keys: bool = False) -> T_AvdModel:
-        """
-        Returns a new instance loaded with the data from the given dict.
-
-        TODO: AVD6.0.0 remove the keep_extra_keys option so we no longer support custom keys without _ in structured config.
-        """
+    def _from_dict(cls: type[T_AvdModel], data: Mapping) -> T_AvdModel:
+        """Returns a new instance loaded with the data from the given dict."""
         if not isinstance(data, Mapping):
             msg = f"Expecting 'data' as a 'Mapping' when loading data into '{cls.__name__}'. Got '{type(data)}"
             raise TypeError(msg)
 
         cls_args = {}
         custom_data = {}
+        skipped_keys = set()
 
         for key in data:
             if not (field := cls._get_field_name(key)):
-                if keep_extra_keys or str(key).startswith("_"):
+                if str(key).startswith("_"):
                     custom_data[key] = data[key]
                     continue
 
                 if cls._allow_other_keys:
                     # Ignore unknown keys.
+                    skipped_keys.add(key)
                     continue
 
                 msg = f"Invalid key '{key}'. Not available on '{cls.__name__}'."
@@ -83,6 +86,8 @@ class AvdModel(AvdBase):
 
         if custom_data:
             cls_args["_custom_data"] = custom_data
+        if skipped_keys:
+            cls_args["_skipped_keys"] = skipped_keys
 
         return cls(**cls_args)
 
@@ -129,6 +134,7 @@ class AvdModel(AvdBase):
         This method is typically overridden when TYPE_CHECKING is True, to provide proper suggestions and type hints for the arguments.
         """
         self._custom_data = {}
+        self._skipped_keys = set()
         [setattr(self, arg, arg_value) for arg, arg_value in kwargs.items() if arg_value is not Undefined]
 
         super().__init__()

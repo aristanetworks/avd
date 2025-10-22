@@ -4,11 +4,11 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError
 from pyavd._utils import get, get_ip_from_ip_prefix
 
 if TYPE_CHECKING:
@@ -28,7 +28,7 @@ class RouterPathSelectionMixin(Protocol):
         if not self.shared_utils.is_wan_router:
             return
 
-        self.structured_config.router_path_selection.tcp_mss_ceiling.ipv4_segment_size = self.shared_utils.node_config.dps_mss_ipv4
+        self.structured_config.router_path_selection.tcp_mss_ceiling.ipv4 = self.shared_utils.node_config.dps_mss_ipv4
         self._set_path_groups()
 
         if self.shared_utils.is_wan_server:
@@ -108,7 +108,7 @@ class RouterPathSelectionMixin(Protocol):
                 path_group.local_interfaces.append_new(name=interface)
         # not a pathfinder device
         path_group.static_peers.append_new(
-            router_ip=self._wan_ha_peer_vtep_ip(),
+            router_ip=self.shared_utils._wan_ha_peer_vtep_ip,
             name=self.shared_utils.wan_ha_peer,
             ipv4_addresses=EosCliConfigGen.RouterPathSelection.PathGroupsItem.StaticPeersItem.Ipv4Addresses(
                 [get_ip_from_ip_prefix(ip_address) for ip_address in self.shared_utils.wan_ha_peer_ip_addresses]
@@ -119,13 +119,6 @@ class RouterPathSelectionMixin(Protocol):
             path_group.ipsec_profile = self._dp_ipsec_profile_name
 
         self.structured_config.router_path_selection.path_groups.append(path_group)
-
-    def _wan_ha_peer_vtep_ip(self: AvdStructuredConfigOverlayProtocol) -> str:
-        peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.wan_ha_peer)
-        if not peer_facts.vtep_ip:
-            msg = f"'vtep_ip' is required but was not found for host '{self.shared_utils.wan_ha_peer}'"
-            raise AristaAvdInvalidInputsError(msg)
-        return peer_facts.vtep_ip
 
     def _get_path_group_id(self: AvdStructuredConfigOverlayProtocol, path_group_name: str, config_id: int | None = None) -> int:
         """
@@ -209,7 +202,7 @@ class RouterPathSelectionMixin(Protocol):
             ]
 
             path_group.static_peers.append_new(
-                router_ip=wan_route_server.vtep_ip,
+                router_ip=cast("str", wan_route_server.vtep_ip),
                 name=wan_route_server.hostname,
                 ipv4_addresses=EosCliConfigGen.RouterPathSelection.PathGroupsItem.StaticPeersItem.Ipv4Addresses(ipv4_addresses),
             )

@@ -3,11 +3,35 @@
 # that can be found in the LICENSE file.
 
 import hashlib
+from typing import Protocol, runtime_checkable
 
 _PRIV_KEY_LENGTH = {"des": 128, "aes": 128, "aes192": 192, "aes256": 256}
 
 
-def _get_hash_object(auth_type: str) -> object:
+# Define the common interface that all hash objects provide - this is required
+# because hashlib real return type is hashlib._hashlib.HASH which pyright cannot understand.
+@runtime_checkable
+class HashObject(Protocol):  # pragma: no cover
+    """
+    A Protocol defining the common interface for hash objects returned by hashlib.
+
+    It specifies the methods and properties that a hash object is expected to have.
+    """
+
+    def update(self, data: bytes, /) -> None: ...
+    def digest(self) -> bytes: ...
+    def hexdigest(self) -> str: ...
+    def copy(self) -> "HashObject": ...
+
+    @property
+    def block_size(self) -> int: ...
+    @property
+    def digest_size(self) -> int: ...
+    @property
+    def name(self) -> str: ...
+
+
+def _get_hash_object(auth_type: str) -> HashObject:
     """
     :param auth_type: a string in [md5|sha|sha224|sha256|sha384|sha512]
 
@@ -50,7 +74,7 @@ def _key_from_passphrase(passphrase: str, auth_type: str) -> str:
         for _ in range(64):
             cp.append(b_passphrase[password_index % password_length])
             password_index += 1
-        hash_object.update(cp)
+        hash_object.update(bytes(cp))
         count += 64
     return hash_object.hexdigest()
 
@@ -99,7 +123,7 @@ def _localize_passphrase(passphrase: str, auth_type: str, engine_id: str, priv_t
     return localized_key
 
 
-def snmp_hash(input_dict: dict) -> str:
+def snmp_hash(input_dict: dict[str, str]) -> str:
     passphrase = input_dict["passphrase"]
     auth_type = input_dict["auth"]
     engine_id = input_dict["engine_id"]

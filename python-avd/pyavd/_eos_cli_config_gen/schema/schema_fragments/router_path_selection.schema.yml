@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -15,6 +15,26 @@ keys:
         valid_values:
           - stun
         description: Source of dynamic peer discovery.
+      mtu_discovery_interval:
+        type: int
+        description: MTU discovery interval in seconds.
+        min: 60
+        max: 600
+        convert_types:
+          - str
+      mtu_discovery_hosts:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: Enable MTU discovery for hosts.
+          fragmentation_needed_rate_limit:
+            type: int
+            convert_types:
+              - str
+            description: Maximum rate of ICMP packet generation per CPU core(packets per second).
+            min: 1
+            max: 500
       path_groups:
         type: list
         primary_key: name
@@ -240,7 +260,7 @@ keys:
       tcp_mss_ceiling:
         type: dict
         keys:
-          ipv4_segment_size:
+          ipv4:
             type: str
             description: |-
               Segment Size for IPv4.
@@ -256,6 +276,13 @@ keys:
             description: |-
               Enforce on packets through DPS tunnel for a specific direction.
               Only 'ingress' direction is supported.
+          ipv4_segment_size:
+            type: str
+            deprecation:
+              warning: true
+              removed: true
+              remove_in_version: 6.0.0
+              new_key: ipv4
       interfaces:
         type: list
         primary_key: name

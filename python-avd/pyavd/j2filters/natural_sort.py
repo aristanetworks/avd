@@ -6,15 +6,22 @@ from __future__ import annotations
 import re
 from collections.abc import Iterable, Mapping
 from functools import partial
-from typing import Any
+from typing import TYPE_CHECKING
 
 from jinja2.runtime import Undefined
 from jinja2.utils import Namespace
 
+if TYPE_CHECKING:
+    from typing import Any, TypeVar
+
+    T = TypeVar("T")
+
 SPLIT_PATTERN = re.compile(r"(\d+)")
 
 
-def natural_sort(iterable: Iterable | None, sort_key: str | None = None, *, strict: bool = True, ignore_case: bool = True, default_value: Any = None) -> list:
+def natural_sort(
+    iterable: Iterable[T] | None, sort_key: str | None = None, *, strict: bool = True, ignore_case: bool = True, default_value: Any = None
+) -> list[T]:
     """
     Sorts an iterable in a natural (alphanumeric) order.
 

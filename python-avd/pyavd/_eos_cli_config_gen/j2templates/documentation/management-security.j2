@@ -30,6 +30,12 @@
 {%     if management_security.password.minimum_length is arista.avd.defined %}
 | Minimum password length | {{ management_security.password.minimum_length }} |
 {%     endif %}
+{%     if management_security.signature_verification.enabled is arista.avd.defined(true) %}
+| Signature verification | Enabled |
+{%         if management_security.signature_verification.ssl_profile is arista.avd.defined %}
+| Signature verification SSL profile | {{ management_security.signature_verification.ssl_profile }} |
+{%         endif %}
+{%     endif %}
 {%     if management_security.ssl_profiles is arista.avd.defined %}
 
 ### Management Security SSL Profiles

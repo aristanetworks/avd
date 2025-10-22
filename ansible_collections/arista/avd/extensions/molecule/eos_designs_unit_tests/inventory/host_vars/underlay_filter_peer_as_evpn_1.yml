@@ -1,0 +1,2 @@
+# Test evpn_overlay_bgp_rtc enabled with evpn_role set as client
+evpn_overlay_bgp_rtc: true

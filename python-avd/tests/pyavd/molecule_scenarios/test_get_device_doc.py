@@ -26,7 +26,9 @@ from tests.models import MoleculeHost
     "example-isis-ldp-ipvpn",
     "example-l2ls-fabric",
     "example-single-dc-l3ls",
+    "example-single-dc-l3ls-ipv6",
 )
+@pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos")
 def test_get_device_doc(molecule_host: MoleculeHost) -> None:
     """Test get_device_config."""
     # For eos_designs scenarios, only load structured config, so this will fail if any inputs are not covered by eos_designs schemas.
@@ -36,10 +38,6 @@ def test_get_device_doc(molecule_host: MoleculeHost) -> None:
         structured_config = deepcopy(molecule_host.structured_config)
 
     if not get(structured_config, "eos_cli_config_gen_documentation.enable", default=True):
-        return
-
-    # TODO: Deprecated, remove in 6.0.0
-    if not get(structured_config, "generate_device_documentation", default=True):
         return
 
     # run validation on structured_config to ensure it is covered

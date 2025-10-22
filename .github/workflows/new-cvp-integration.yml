@@ -25,8 +25,8 @@ jobs:
     outputs:
       wheel_file: ${{ steps.build_step.outputs.wheel_file }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: |
             3.12
@@ -59,9 +59,9 @@ jobs:
         ansible_version:
           - "ansible-core<2.19.0 --upgrade"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -92,9 +92,9 @@ jobs:
         ansible_version:
           - "ansible-core<2.19.0 --upgrade"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/

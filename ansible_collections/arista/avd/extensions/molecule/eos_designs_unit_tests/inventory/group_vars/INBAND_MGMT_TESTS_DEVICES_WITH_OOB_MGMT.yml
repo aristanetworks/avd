@@ -1,0 +1,3 @@
+---
+# Overriding the inband mgmt method set for all the L2 devices.
+default_mgmt_method: oob

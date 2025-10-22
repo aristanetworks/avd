@@ -108,8 +108,11 @@ class EosDesignsFactsGeneratorProtocol(
         if "evpn" not in self.shared_utils.overlay_address_families:
             return None
         if self.inputs.evpn_multicast and self.shared_utils.vtep:
-            if not (self.shared_utils.underlay_multicast and self.shared_utils.igmp_snooping_enabled):
-                msg = "'evpn_multicast: True' is only supported in combination with 'underlay_multicast: True' and 'igmp_snooping_enabled : True'"
+            if not (self.shared_utils.underlay_multicast_pim_sm_enabled and self.shared_utils.igmp_snooping_enabled):
+                msg = (
+                    "'evpn_multicast: True' is only supported in combination with and 'igmp_snooping_enabled : true' "
+                    "and either node_settings 'underlay_multicast.pim_sm.enabled: true' or 'underlay_multicast_pim_sm: true'."
+                )
                 raise AristaAvdError(msg)
 
             if (
@@ -125,8 +128,18 @@ class EosDesignsFactsGeneratorProtocol(
     @cached_property
     def loopback_ipv4_pool(self) -> str | None:
         """Exposed in avd_switch_facts."""
+        if self.shared_utils.underlay_ipv6_numbered:
+            return None
         if self.shared_utils.underlay_router:
             return self.shared_utils.loopback_ipv4_pool
+        return None
+
+    @remove_cached_property_type
+    @cached_property
+    def loopback_ipv6_pool(self) -> str | None:
+        """Exposed in avd_switch_facts."""
+        if self.shared_utils.underlay_router and self.shared_utils.underlay_ipv6_numbered:
+            return self.shared_utils.loopback_ipv6_pool
         return None
 
     @remove_cached_property_type
@@ -135,6 +148,14 @@ class EosDesignsFactsGeneratorProtocol(
         """Exposed in avd_switch_facts."""
         if self.shared_utils.underlay_router:
             return self.shared_utils.node_config.uplink_ipv4_pool
+        return None
+
+    @remove_cached_property_type
+    @cached_property
+    def uplink_ipv6_pool(self) -> str | None:
+        """Exposed in avd_switch_facts."""
+        if self.shared_utils.underlay_router:
+            return self.shared_utils.node_config.uplink_ipv6_pool
         return None
 
     @remove_cached_property_type
@@ -163,6 +184,8 @@ class EosDesignsFactsGeneratorProtocol(
     @cached_property
     def vtep_loopback_ipv4_pool(self) -> str | None:
         """Exposed in avd_switch_facts."""
+        if self.shared_utils.underlay_ipv6_numbered:
+            return None
         if self.shared_utils.vtep is True:
             return self.shared_utils.vtep_loopback_ipv4_pool
         return None
@@ -271,11 +294,13 @@ class EosDesignsFactsGeneratorProtocol(
 
         Used for fabric docs
         """
-        return EosDesignsFactsProtocol.ConnectedEndpointsKeys(
-            EosDesignsFactsProtocol.ConnectedEndpointsKeysItem(key=entry.key, type=entry.type, description=entry.description)
-            for entry in self.inputs.connected_endpoints_keys
-            if entry.key in self.inputs._dynamic_keys.connected_endpoints
-        )
+        connected_endpoints_keys = EosDesignsFactsProtocol.ConnectedEndpointsKeys()
+        for connected_endpoints in self.shared_utils.all_connected_endpoints:
+            connected_endpoints_keys.append_new(
+                key=connected_endpoints.key, type=connected_endpoints._internal_data.type, description=connected_endpoints._internal_data.description
+            )
+
+        return connected_endpoints_keys
 
     @remove_cached_property_type
     @cached_property

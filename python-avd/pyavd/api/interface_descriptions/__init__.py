@@ -9,7 +9,7 @@ from collections import ChainMap
 from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.avdfacts import AvdFacts
-from pyavd._utils import AvdStringFormatter, default, strip_null_from_data
+from pyavd._utils import AvdStringFormatter, strip_null_from_data
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
@@ -18,9 +18,6 @@ if TYPE_CHECKING:
 class AvdInterfaceDescriptions(AvdFacts):
     """
     Class used to render Interface Descriptions either from custom Jinja2 templates or using default Python Logic.
-
-    Since some templates might contain certain legacy variables (switch_*),
-    those are mapped from the switch.* model
 
     This class is imported adhoc based on the variable `templates.interface_descriptions.python_module` so it can
     be overridden by a custom python class.
@@ -55,7 +52,8 @@ class AvdInterfaceDescriptions(AvdFacts):
             - type
             - vrf
             - wan_carrier
-            - wan_circuit_id.
+            - wan_circuit_id
+            - main_interface_wan_carrier
         """
         # This is historic behavior for these two modules where the defined description
         # should take precedence over anything. This was broken from AVD 5.0 to 5.3
@@ -78,6 +76,9 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "type": data.link_type,
                     "peer": data.peer,
                     "peer_interface": data.peer_interface,
+                    "wan_carrier": data.wan_carrier,
+                    "wan_circuit_id": data.wan_circuit_id,
+                    "main_interface_wan_carrier": data.main_interface_wan_carrier,
                 },
             )
 
@@ -99,6 +100,9 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "peer": data.peer,
                     "peer_interface": data.peer_interface,
                     "vrf": data.vrf,
+                    "wan_carrier": data.wan_carrier,
+                    "wan_circuit_id": data.wan_circuit_id,
+                    "main_interface_wan_carrier": data.main_interface_wan_carrier,
                 }
             ),
         )
@@ -121,7 +125,8 @@ class AvdInterfaceDescriptions(AvdFacts):
             - overlay_routing_protocol
             - type
             - wan_carrier
-            - wan_circuit_id.
+            - wan_circuit_id
+            - main_interface_wan_carrier.
         """
         # This is historic behavior for these two modules where the defined description
         # should take precedence over anything. This was broken from AVD 5.0 to 5.3
@@ -151,6 +156,9 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "peer_channel_group_id": data.peer_channel_group_id,
                     "channel_description": data.port_channel_description,
                     "peer_node_group": data.peer_node_group,
+                    "wan_carrier": data.wan_carrier,
+                    "wan_circuit_id": data.wan_circuit_id,
+                    "main_interface_wan_carrier": data.main_interface_wan_carrier,
                 },
             )
 
@@ -178,6 +186,9 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "peer_node_group": data.peer_node_group,
                     "peer_node_group_or_peer": data.peer_node_group or data.peer,
                     "peer_node_group_or_uppercase_peer": data.peer_node_group or str(data.peer or "").upper() or None,
+                    "wan_carrier": data.wan_carrier,
+                    "wan_circuit_id": data.wan_circuit_id,
+                    "main_interface_wan_carrier": data.main_interface_wan_carrier,
                 }
             ),
         )
@@ -403,6 +414,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             return self._template(
                 template_path,
                 peer=data.peer,
+                peer_interface=data.peer_interface,
                 adapter_port_channel_id=data.port_channel_id,
                 adapter_port_channel_description=data.port_channel_description,
                 adapter_description=data.description,
@@ -456,11 +468,8 @@ class AvdInterfaceDescriptions(AvdFacts):
             - overlay_routing_protocol
             - type.
         """
-        if template_path := default(
-            self.shared_utils.node_type_key_data.interface_descriptions.router_id_loopback_interface,
-            self.shared_utils.node_type_key_data.interface_descriptions.overlay_loopback_interface,
-        ):
-            return self._template(template_path, overlay_loopback_description=data.description, router_id_loopback_description=data.description)
+        if template_path := self.shared_utils.node_type_key_data.interface_descriptions.router_id_loopback_interface:
+            return self._template(template_path, router_id_loopback_description=data.description)
 
         return data.description
 
@@ -553,8 +562,11 @@ class InterfaceDescriptionData:
     """The WAN Carrier this interface is connected to"""
     wan_circuit_id: str | None
     """The WAN Circuit ID for this interface."""
+    main_interface_wan_carrier: str | None
+    """ WAN carrier of parent interface"""
 
-    def __init__(
+    # We accept more arguments than max-args number for this method.
+    def __init__(  # noqa: PLR0913
         self,
         shared_utils: SharedUtilsProtocol,
         description: str | None = None,
@@ -571,6 +583,7 @@ class InterfaceDescriptionData:
         vrf: str | None = None,
         wan_carrier: str | None = None,
         wan_circuit_id: str | None = None,
+        main_interface_wan_carrier: str | None = None,
     ) -> None:
         self._shared_utils = shared_utils
         self.description = description
@@ -587,6 +600,7 @@ class InterfaceDescriptionData:
         self.vrf = vrf
         self.wan_carrier = wan_carrier
         self.wan_circuit_id = wan_circuit_id
+        self.main_interface_wan_carrier = main_interface_wan_carrier
 
     @property
     def mpls_overlay_role(self) -> str | None:

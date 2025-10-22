@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -11,13 +11,11 @@ keys:
       table: management-settings
     description: |
       Default is HTTPS management eAPI enabled.
-      The VRF is set to < mgmt_interface_vrf >.
     type: dict
     keys:
       enabled:
         description: Enable/Disable api http-commands.
         type: bool
-        default: true
       enable_http:
         type: bool
       enable_https:
@@ -25,3 +23,40 @@ keys:
         default: true
       default_services:
         type: bool
+      vrfs:
+        default:
+          - name: use_default_mgmt_method_vrf
+            enabled: true
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: |-
+                VRF name.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will configure the eAPI under the VRF set with `mgmt_interface_vrf`.
+                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure the eAPI under the VRF set with `inband_mgmt_vrf`.
+                  An error will be raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure the eAPI under VRF for one of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be used directly as the VRF name.
+              convert_types:
+                - int
+            enabled:
+              type: bool
+              required: true
+              description: |-
+                Enable/disable Management eAPI for this VRF.
+            ipv4_acl:
+              type: str
+              description: IPv4 access-list name.
+              convert_types:
+                - int
+            ipv6_acl:
+              type: str
+              description: IPv6 access-list name.
+              convert_types:
+                - int

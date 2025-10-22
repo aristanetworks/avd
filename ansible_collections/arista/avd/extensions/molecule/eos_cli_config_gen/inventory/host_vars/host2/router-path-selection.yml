@@ -1,0 +1,4 @@
+---
+router_path_selection:
+  mtu_discovery_hosts:
+    enabled: true

@@ -7,14 +7,16 @@ import cProfile
 import logging
 import re
 from collections.abc import Callable
+from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 
 import pytest
-from _pytest.python_api import RaisesContext
 
 from pyavd._cv.client.exceptions import CVDuplicatedDevices
 from pyavd._cv.workflows.models import CVDevice
 from pyavd._cv.workflows.verify_inputs import identify_duplicated_devices, verify_device_inputs
+
+ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
 
 TWO_DUPED_SERIAL_PATTERNS = [
     "\\('Duplicated devices found in inventory.*\\{"
@@ -567,7 +569,7 @@ def test_verify_device_inputs(
     logs_qty: int,
     expected_logs_patterns: list[str],
     expected_exception_patterns: list[str],
-    expected_exception: RaisesContext | does_not_raise,
+    expected_exception: ExpectedExceptionContext,
     *,
     strict_system_mac_address: bool,
 ) -> None:

@@ -79,6 +79,12 @@ options:
       - Running cprofile will slow down performance in it self, so only set this while troubleshooting.
     required: false
     type: str
+  digital_twin:
+    description: |-
+      PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+      Generate Digital Twin topology information.
+    default: false
+    type: bool
 """
 
 EXAMPLES = r"""

@@ -1,0 +1,34 @@
+---
+# Testing with oob management
+
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: dns-settings-1
+      mgmt_ip: 192.168.0.2/24
+
+dns_settings:
+  domain: testfabric.local
+  servers:
+    - ip_address: 10.10.10.1
+      priority: 1
+      vrf: default
+
+    - ip_address: 10.10.10.1
+      priority: 1
+      vrf: use_mgmt_interface_vrf
+
+    - ip_address: 10.10.10.2
+      vrf: MGMT
+
+    - ip_address: 10.10.10.2
+      vrf: other_vrf
+
+    - ip_address: 10.10.10.3
+      # No VRF, so it should honor default_mgmt_method which is oob in this case
+
+  vrfs:
+    # Testing override of source for VRF default - no VRF in output source interface model.
+    - name: default
+      source_interface: Vlan123

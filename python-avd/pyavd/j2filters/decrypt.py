@@ -8,7 +8,7 @@ from typing import Any
 from pyavd._utils.password_utils import METHODS_DIR
 
 
-def decrypt(value: Any, passwd_type: str | None = None, key: str | None = None, **kwargs: dict[str, Any]) -> str:
+def decrypt(value: Any, passwd_type: str | None = None, key: str | None = None, **kwargs: Any) -> str:
     """
     Umbrella function to execute the correct decrypt method based on the input type.
 
@@ -33,4 +33,6 @@ def decrypt(value: Any, passwd_type: str | None = None, key: str | None = None, 
     except KeyError as exc:
         msg = f"Type {passwd_type} is not supported for the decrypt filter"
         raise KeyError(msg) from exc
-    return decrypt_method(str(value), key=key, **kwargs)
+    if key is not None:
+        kwargs["key"] = key
+    return decrypt_method(str(value), **kwargs)

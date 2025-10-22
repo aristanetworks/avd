@@ -1,0 +1,34 @@
+---
+fabric_name: FABRIC_MISSING_VTEP_LOOPBACK_IPV6_POOL
+underlay_ipv6: true
+underlay_ipv6_numbered: true
+
+default_interfaces:
+  - types: [ l3leaf ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet1-2 ]
+    mlag_interfaces: [ Ethernet11-12 ]
+    downlink_interfaces: [ Ethernet8 ]
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv6_pool: 2001:DB8:1::/48
+    router_id_pool: 10.255.1.0/24
+    mlag_peer_address_family: ipv6
+    mlag_peer_ipv6_pool: 2001:DB8:3::/48
+    mlag_peer_l3_ipv6_pool: 2001:DB8:4::/48
+  node_groups:
+    - group: fabric_missing_vtep_loopback_ipv6_pool
+      bgp_as: 923
+      nodes:
+        - name: missing-vtep-loopback-ipv6-pool
+          id: 1
+          mgmt_ip: 192.168.201.116/24
+        - name: missing-vtep-loopback-ipv6-pool-host2
+          id: 2
+          mgmt_ip: 192.168.201.115/24
+
+expected_error_message: >-
+  'vtep_loopback_ipv6_pool' is required but was not found for host 'missing-vtep-loopback-ipv6-pool'.

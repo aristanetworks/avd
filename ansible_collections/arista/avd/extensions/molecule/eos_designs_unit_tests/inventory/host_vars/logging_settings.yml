@@ -1,0 +1,87 @@
+---
+type: spine
+
+spine:
+  nodes:
+    - name: logging_settings
+      mgmt_ip: 192.168.66.22/24
+      id: 1
+      loopback_ipv4_pool: 1.2.3.4/24
+      bgp_as: 65000
+      inband_mgmt_vrf: inband_mgmt_vrf
+      inband_mgmt_interface: Vlan123
+
+logging_settings:
+  console: errors
+  monitor: disabled
+  buffered:
+    size: 1000000
+    level: warnings
+  repeat_messages: true
+  trap: disabled
+  synchronous:
+    level: warnings
+  format:
+    timestamp: traditional year timezone
+    rfc5424: true
+    hostname: fqdn
+  hosts:
+    # Test: No VRF specified; should use VRF from default_mgmt_method
+    - name: 30.30.30.7
+      protocol: tcp
+      ports:
+        - 100
+        - 200
+    # Test: Explicitly set a VRF other than default, use_mgmt_interface_vrf and use_inband_mgmt_vrf; this VRF has source interface
+    - name: 10.10.10.7
+      vrf: mgt0
+    # Test: Explicitly set a VRF other than default, use_mgmt_interface_vrf and use_inband_mgmt_vrf; this VRF has no source interface
+    - name: 40.40.40.7
+      vrf: vrf_with_no_source_interface
+      ports:
+        - 300
+        - 400
+    # Test: Explicitly set VRF to "default"
+    - name: 2001:db8::40:7
+      vrf: default
+      ports:
+        - 300
+        - 400
+    # Test: Use VRF from management interface (use_mgmt_interface_vrf) with TLS protocol and SSL profile
+    - name: sslhost.local
+      vrf: use_mgmt_interface_vrf
+      protocol: tls
+      ssl_profile: logging-ssl
+      ports:
+        - 6515
+    # Test: Use VRF from inband management (use_inband_mgmt_vrf)
+    - name: syslog.server.local
+      vrf: use_inband_mgmt_vrf
+    # Test: Additional host to verify multiple entries with use_inband_mgmt_vrf
+    - name: syslog2.server.local
+      vrf: use_inband_mgmt_vrf
+  vrfs:
+    - name: mgt0
+      source_interface: Management0
+    - name: vrf_with_no_source_interface
+    - name: default
+      source_interface: Loopback0
+  event:
+    congestion_drops_interval: 10
+    global_link_status: false
+    storm_control:
+      discards:
+        global: true
+        interval: 10
+  level:
+    - facility: BGP
+      severity: 0
+    - facility: AAA
+      severity: warnings
+    - facility: ACL
+      severity: critical
+  policy:
+    match:
+      match_lists:
+        - name: molecule
+          action: discard

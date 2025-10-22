@@ -1,0 +1,31 @@
+---
+node_type_keys:
+  - key: l2leaf
+    type: l2leaf
+    connected_endpoints: true
+    network_services:
+      l2: false
+    underlay_router: false
+    mlag_support: false
+
+enabled_trunk_groups: true
+only_local_vlan_trunk_groups: true
+
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: connected_endpoints_no_network_services
+      mgmt_ip: 192.168.0.2/24
+      filter:
+        only_vlans_in_use: true
+
+# Added this to improve coverage for eos_designs_facts/vlan.py
+servers:
+  - name: OLD_SW-1/8
+    adapters:
+      - switches: [connected_endpoints_no_network_services]
+        switch_ports: [ Ethernet19 ]
+        endpoint_ports: [ Endpoint_port4 ]
+        mode: trunk
+        trunk_groups: [group1, group2]

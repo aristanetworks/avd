@@ -1,0 +1,19 @@
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: missing-system-mac-address-in-snmp-settings
+      id: 42
+      serial_number: A37383692F12C7DE733D9A9B8E2B37AE
+
+serial_number: 66666666666666666666666666666666
+
+snmp_settings:
+  contact: example@example.com
+  location: true
+  compute_local_engineid: true
+  compute_local_engineid_source: system_mac
+  compute_v3_user_localized_key: true
+
+expected_error_message: >-
+  'compute_local_engineid_source: system_mac' requires 'system_mac_address' to be set.

@@ -127,12 +127,11 @@ mod tests {
     use super::Load;
     use crate::Store;
     use crate::any::AnySchema;
-    use crate::utils::dump::tests::{dump_gz, dump_json, dump_store_yaml, dump_xz2, dump_yaml};
     use crate::utils::test_utils::{get_test_dict_schema, get_test_store, get_tmp_file};
 
     #[test]
     fn load_yaml() {
-        dump_yaml();
+        crate::utils::dump::tests::dump_yaml();
         let file_path = get_tmp_file("test_dump.yml");
         let schema = get_test_dict_schema();
         let result = AnySchema::from_file(Some(file_path));
@@ -141,16 +140,17 @@ mod tests {
     }
     #[test]
     fn load_json() {
-        dump_json();
+        crate::utils::dump::tests::dump_json();
         let file_path = get_tmp_file("test_dump.json");
         let schema = get_test_dict_schema();
         let result = AnySchema::from_file(Some(file_path));
         assert!(result.is_ok());
         assert_eq!(result.unwrap(), schema);
     }
+    #[cfg(feature = "xz2")]
     #[test]
     fn load_xz2() {
-        dump_xz2();
+        crate::utils::dump::tests::dump_xz2();
         let file_path = get_tmp_file("test_dump.xz2");
         let schema = get_test_dict_schema();
         let result = AnySchema::from_file(Some(file_path));
@@ -159,7 +159,7 @@ mod tests {
     }
     #[test]
     fn load_gz() {
-        dump_gz();
+        crate::utils::dump::tests::dump_gz();
         let file_path = get_tmp_file("test_dump.gz");
         let schema = get_test_dict_schema();
         let result = AnySchema::from_file(Some(file_path));
@@ -168,7 +168,7 @@ mod tests {
     }
     #[test]
     fn load_store_yaml() {
-        dump_store_yaml();
+        crate::utils::dump::tests::dump_store_yaml();
         let file_path = get_tmp_file("test_dump_store.yml");
         let store = get_test_store();
         let result = Store::from_file(Some(file_path));

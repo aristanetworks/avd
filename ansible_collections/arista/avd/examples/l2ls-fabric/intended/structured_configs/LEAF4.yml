@@ -54,12 +54,17 @@ ethernet_interfaces:
   peer: Host2
   peer_interface: Eth1
   peer_type: server
+  peer_key: servers
   port_profile: PP-ORANGE
   switchport:
     enabled: true
     mode: access
     access_vlan: 30
 hostname: LEAF4
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management0
+    vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_servers:
@@ -67,16 +72,15 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
   role: network-admin
-  sha512_password: $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
+  no_password: true
 - name: arista
   privilege: 15
   role: network-admin
-  no_password: true
+  sha512_password: $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -90,8 +94,9 @@ management_interfaces:
   type: oob
   gateway: 172.16.100.1
 metadata:
-  platform: cEOS-LAB
-  fabric_name: DC1_FABRIC
+  is_deployed: true
+  platform: cEOSLab
+  fabric_name: DC1
 mlag_configuration:
   domain_id: RACK2
   local_interface: Vlan4094
@@ -106,9 +111,8 @@ ntp:
   servers:
   - name: time.google.com
     preferred: true
-    vrf: MGMT
   - name: pool.ntp.org
-    vrf: MGMT
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel47
   description: MLAG_LEAF3_Port-Channel47

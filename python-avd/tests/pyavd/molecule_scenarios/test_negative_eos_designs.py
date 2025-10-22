@@ -32,7 +32,7 @@ def test_negative_eos_designs(molecule_scenario: MoleculeScenario, molecule_host
     if molecule_host.name in host_inputs["groups"].get("EOS_DESIGNS_FACTS_FAILURES"):
         # Run get_avd_facts and expecting an error to be raised.
         # Patching the expected error message since the suffix is added by the ansible action plugin which we are not using here...
-        expected_error_message = re.sub(r" for host '[a-zA-Z1-9-_]+'.", "", host_inputs["expected_error_message"])
+        expected_error_message = re.sub(r" for host '[a-zA-Z0-9-_]+'.", "", host_inputs["expected_error_message"])
         validation_result = validate_inputs(host_inputs)
         if expected_error_message.endswith(" errors found during schema validation of input vars."):
             assert validation_result.failed
@@ -41,8 +41,9 @@ def test_negative_eos_designs(molecule_scenario: MoleculeScenario, molecule_host
             with pytest.raises(AristaAvdError, match=re.escape(expected_error_message)):
                 _ = get_avd_facts(fabric_inputs, pool_manager=molecule_scenario.pool_manager)
     else:
+        _is_digital_twin_host = molecule_host.hostvars.get("avd_digital_twin_mode", False)
         # Run get_avd_facts with no errors
-        avd_facts = get_avd_facts(fabric_inputs, pool_manager=molecule_scenario.pool_manager)
+        avd_facts = get_avd_facts(fabric_inputs, pool_manager=molecule_scenario.pool_manager, digital_twin=_is_digital_twin_host)
         # Run get_device_structured_config excepting an error to be raised.
         with pytest.raises(Exception, match=re.escape(host_inputs["expected_error_message"])):
-            _ = get_device_structured_config(molecule_host.name, host_inputs, avd_facts)
+            _ = get_device_structured_config(molecule_host.name, host_inputs, avd_facts, digital_twin=_is_digital_twin_host)

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -26,12 +26,6 @@ keys:
           profile_name:
             type: str
             default: CP-PROFILE
-          shared_key:
-            type: str
-            required: true
-            description: |-
-              The IPSec shared key.
-              This variable is sensitive and SHOULD be configured using some vault mechanism.
       data_plane:
         type: dict
         $ref: "eos_designs#/$defs/ipsec_profile"

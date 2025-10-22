@@ -1,0 +1,70 @@
+---
+radius_proxy:
+  client_key: 14121C081E1D3A3F1B3A32312B0614291313594141
+  client_session_idle_timeout: 46
+  dynamic_authorization: true
+  client_groups:
+    - name: CG_1
+      server_groups:
+        - aaa
+          bbb
+          ccc
+      vrfs:
+        - name: vrf_2
+          ipv4_clients:
+            - address: 1.1.10.10
+              key: 00171605165E1F395E611C0E1A1C0605171F3355
+            - address: 1.1.10.6
+            - address: 2.1.1.1
+            - address: 1.1.10.8
+              key: 00171605165E1F395E611C0E1A1C0605171F3355
+        - name: vrf_1
+          ipv4_clients:
+            - address: 1.2.10.10
+              key: 00171605165E1F395E611C0E1A1C0605171F3355
+            - address: 1.1.10.10
+            - address: 1.2.10.6
+            - address: 2.2.1.1
+            - address: 1.2.10.8
+              key: 13161211190910157A6478732627101513173E04
+          ipv6_clients:
+            - address: 2001:db8::1
+              key: 06150A225E4B1D265457424B1F012939213C0C3C3205512952
+            - address: ::1
+            - address: fd00::1234
+              key: 0832494D1B1C1128434B5C44392E273A36211D1A1700553E04
+          host_clients:
+            - name: host1
+              key: 06150A225E4B1D265457424B1F012939213C0C3C3205512952
+            - name: host2
+            - name: host3
+              key: 00171605165E1F395E611C0E1A1C0605171F3355
+    - name: CG_3
+      server_groups: [ ddd ]
+    - name: CG_2
+    - name: CG_4
+      vrfs:
+        - name: vrf_only_host
+          host_clients:
+            - name: host11
+              key: 00171605165E1F395E611C0E1A1C0605171F3355
+            - name: host12
+            - name: host13
+              key: 06150A225E4B1D265457424B1F012939213C0C3C3205512952
+        - name: vrf_only_ipv4
+          ipv4_clients:
+            - address: 1.2.10.11
+              key: 06150A225E4B1D265457424B1F012939213C0C3C3205512952
+            - address: 1.2.10.16
+            - address: 2.2.1.11
+            - address: 1.2.10.18
+              key: 00171605165E1F395E611C0E1A1C0605171F3355
+    - name: CG_5
+      vrfs:
+        - name: vrf_only_ipv6
+          ipv6_clients:
+            - address: 2001:db8::11
+              key: 06150A225E4B1D265457424B1F012939213C0C3C3205512952
+            - address: ::12
+            - address: fd0::1234
+              key: 00171605165E1F395E611C0E1A1C0605171F3355

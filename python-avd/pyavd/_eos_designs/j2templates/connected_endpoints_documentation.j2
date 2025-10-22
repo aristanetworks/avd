@@ -11,22 +11,23 @@ No connected endpoint configured!
 
 ### Connected Endpoint Keys
 
-| Key | Type | Description |
-| --- | ---- | ----------- |
+| Key | Default Type | Description |
+| --- | ------------ | ----------- |
 {%     for connected_endpoints_key in all_connected_endpoints_keys %}
 {%         set key = connected_endpoints_key.key %}
-{%         set type = connected_endpoints_key.type %}
+{%         set type = connected_endpoints_key.type | arista.avd.default("-") %}
 {%         set description = connected_endpoints_key.description | arista.avd.default("-") %}
 | {{ key }} | {{ type }} | {{ description }} |
 {%     endfor %}
 {%     for key in all_connected_endpoints %}
 
-### {{ key | replace("_", " ") | capitalize }}
+### {{ key | replace("_", " ") | title }}
 
-| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
-| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ----------- | ------------------- | ------- |
+| Name | Type | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
+| ---- | ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ----------- | ------------------- | ------- |
 {%         for connected_endpoint in all_connected_endpoints[key] %}
 {%             set port = connected_endpoint.peer_interface %}
+{%             set type = connected_endpoint.peer_type | arista.avd.default("-") %}
 {%             set fabric_port = connected_endpoint.fabric_port %}
 {%             set profile = connected_endpoint.profile | arista.avd.default("-") %}
 {%             set description = connected_endpoint.description | arista.avd.default("-") %}
@@ -34,7 +35,7 @@ No connected endpoint configured!
 {%             set mode = connected_endpoint.mode | arista.avd.default("-") %}
 {%             set access_vlan = connected_endpoint.access_vlan | arista.avd.default("-") %}
 {%             set trunk_allowed_vlan = connected_endpoint.trunk_allowed_vlan | arista.avd.default("-") %}
-| {{ connected_endpoint.peer }} | {{ port }} | {{ connected_endpoint.fabric_switch }} | {{ fabric_port }} | {{ description }} | {{ shutdown }} | {{ mode }} | {{ access_vlan }} | {{ trunk_allowed_vlan }} | {{ profile }} |
+| {{ connected_endpoint.peer }} | {{ type }} | {{ port }} | {{ connected_endpoint.fabric_switch }} | {{ fabric_port }} | {{ description }} | {{ shutdown }} | {{ mode }} | {{ access_vlan }} | {{ trunk_allowed_vlan }} | {{ profile }} |
 {%         endfor %}
 {%     endfor %}
 {% endif %}

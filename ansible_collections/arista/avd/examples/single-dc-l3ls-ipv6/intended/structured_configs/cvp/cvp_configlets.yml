@@ -1,0 +1,707 @@
+cvp_configlets:
+  AVD-FABRIC-_dc1-leaf1a: "!\nno enable password\nno aaa root\n!\nusername admin privilege
+    15 role network-admin nopassword\nusername ansible privilege 15 role network-admin
+    secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\ndaemon
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.1.12:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname dc1-leaf1a\nip name-server vrf
+    MGMT 192.168.1.1\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree
+    mst 0 priority 4096\n!\nvlan 11\n   name VRF10_VLAN11\n!\nvlan 12\n   name VRF10_VLAN12\n!\nvlan
+    21\n   name VRF11_VLAN21\n!\nvlan 22\n   name VRF11_VLAN22\n!\nvlan 31\n   name
+    VRF12_VLAN31\n!\nvlan 32\n   name VRF12_VLAN32\n!\nvlan 3009\n   name MLAG_L3_VRF_VRF10\n
+    \  trunk group MLAG\n!\nvlan 3010\n   name MLAG_L3_VRF_VRF11\n   trunk group MLAG\n!\nvlan
+    3011\n   name MLAG_L3_VRF_VRF12\n   trunk group MLAG\n!\nvlan 3401\n   name L2_VLAN3401\n!\nvlan
+    3402\n   name L2_VLAN3402\n!\nvlan 4093\n   name MLAG_L3\n   trunk group MLAG\n!\nvlan
+    4094\n   name MLAG\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance
+    VRF10\n!\nvrf instance VRF11\n!\nvrf instance VRF12\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\ninterface
+    Port-Channel3\n   description MLAG_dc1-leaf1b_Port-Channel3\n   no shutdown\n
+    \  switchport mode trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface
+    Port-Channel5\n   description SERVER_dc1-leaf1-server1_Bond1\n   no shutdown\n
+    \  switchport trunk native vlan 4092\n   switchport trunk allowed vlan 11-12,21-22\n
+    \  switchport mode trunk\n   switchport\n   mlag 5\n   spanning-tree portfast\n!\ninterface
+    Port-Channel8\n   description L2_dc1-leaf1c_Port-Channel1\n   no shutdown\n   switchport
+    trunk allowed vlan 11-12,21-22,31-32,3401-3402\n   switchport mode trunk\n   switchport\n
+    \  mlag 8\n!\ninterface Ethernet1\n   description P2P_dc1-spine1_Ethernet1\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ipv6 address 2001:db8:2::2/64\n!\ninterface
+    Ethernet2\n   description P2P_dc1-spine2_Ethernet1\n   no shutdown\n   mtu 1500\n
+    \  no switchport\n   ipv6 address 2001:db8:2:1::2/64\n!\ninterface Ethernet3\n
+    \  description MLAG_dc1-leaf1b_Ethernet3\n   no shutdown\n   channel-group 3 mode
+    active\n!\ninterface Ethernet4\n   description MLAG_dc1-leaf1b_Ethernet4\n   no
+    shutdown\n   channel-group 3 mode active\n!\ninterface Ethernet5\n   description
+    SERVER_dc1-leaf1-server1_PCI1\n   no shutdown\n   channel-group 5 mode active\n!\ninterface
+    Ethernet8\n   description L2_dc1-leaf1c_Ethernet1\n   no shutdown\n   channel-group
+    8 mode active\n!\ninterface Loopback0\n   description ROUTER_ID\n   no shutdown\n
+    \  ipv6 address 2001:db8:1:1::1/64\n!\ninterface Loopback1\n   description VXLAN_TUNNEL_SOURCE\n
+    \  no shutdown\n   ipv6 address 2001:db8:5:1::1/64\n!\ninterface Loopback10\n
+    \  description DIAG_VRF_VRF10\n   no shutdown\n   vrf VRF10\n   ip address 10.255.10.1/32\n!\ninterface
+    Loopback11\n   description DIAG_VRF_VRF11\n   no shutdown\n   vrf VRF11\n   ip
+    address 10.255.11.1/32\n!\ninterface Loopback12\n   description DIAG_VRF_VRF12\n
+    \  no shutdown\n   vrf VRF12\n   ip address 10.255.12.1/32\n!\ninterface Management1\n
+    \  description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip address 172.16.1.101/24\n!\ninterface
+    Vlan11\n   description VRF10_VLAN11\n   no shutdown\n   vrf VRF10\n   ip address
+    virtual 10.10.11.1/24\n!\ninterface Vlan12\n   description VRF10_VLAN12\n   no
+    shutdown\n   vrf VRF10\n   ip address virtual 10.10.12.1/24\n!\ninterface Vlan21\n
+    \  description VRF11_VLAN21\n   no shutdown\n   vrf VRF11\n   ipv6 enable\n   ipv6
+    address virtual 2001:DB8:21::1/48\n!\ninterface Vlan22\n   description VRF11_VLAN22\n
+    \  no shutdown\n   vrf VRF11\n   ip address virtual 10.10.22.1/24\n!\ninterface
+    Vlan31\n   description VRF12_VLAN31\n   no shutdown\n   vrf VRF12\n   ipv6 enable\n
+    \  ipv6 address virtual 2001:DB8:31::1/48\n!\ninterface Vlan32\n   description
+    VRF12_VLAN32\n   no shutdown\n   vrf VRF12\n   ipv6 enable\n   ipv6 address virtual
+    2001:DB8:32::1/48\n!\ninterface Vlan3009\n   description MLAG_L3_VRF_VRF10\n   no
+    shutdown\n   mtu 1500\n   vrf VRF10\n   ipv6 address 2001:db8:4::1/64\n!\ninterface
+    Vlan3010\n   description MLAG_L3_VRF_VRF11\n   no shutdown\n   mtu 1500\n   vrf
+    VRF11\n   ipv6 address 2001:db8:4::1/64\n!\ninterface Vlan3011\n   description
+    MLAG_L3_VRF_VRF12\n   no shutdown\n   mtu 1500\n   vrf VRF12\n   ipv6 address
+    2001:db8:4::1/64\n!\ninterface Vlan4093\n   description MLAG_L3\n   no shutdown\n
+    \  mtu 1500\n   ipv6 address 2001:db8:4::1/64\n!\ninterface Vlan4094\n   description
+    MLAG\n   no shutdown\n   mtu 1500\n   no autostate\n   ipv6 address 2001:db8:3::1/64\n!\ninterface
+    Vxlan1\n   description dc1-leaf1a_VTEP\n   vxlan source-interface Loopback1\n
+    \  vxlan virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port
+    4789\n   vxlan encapsulation ipv6\n   vxlan vlan 11 vni 10011\n   vxlan vlan 12
+    vni 10012\n   vxlan vlan 21 vni 10021\n   vxlan vlan 22 vni 10022\n   vxlan vlan
+    31 vni 10031\n   vxlan vlan 32 vni 10032\n   vxlan vlan 3401 vni 13401\n   vxlan
+    vlan 3402 vni 13402\n   vxlan vrf VRF10 vni 10\n   vxlan vrf VRF11 vni 11\n   vxlan
+    vrf VRF12 vni 12\n!\nip virtual-router mac-address 00:1c:73:00:00:99\n!\nip address
+    virtual source-nat vrf VRF10 address 10.255.10.1\nip address virtual source-nat
+    vrf VRF11 address 10.255.11.1\nip address virtual source-nat vrf VRF12 address
+    10.255.12.1\n!\nip routing\nno ip routing vrf MGMT\nip routing vrf VRF10\nip routing
+    vrf VRF11\nip routing vrf VRF12\n!\nipv6 prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6\n
+    \  seq 10 permit 2001:db8:1::/48 eq 64\n   seq 15 permit 2001:db8:5::/48 eq 64\n!\nipv6
+    prefix-list PL-MLAG-PEER-VRFS\n   seq 10 permit 2001:db8:4::/64\n!\nipv6 unicast-routing\nipv6
+    unicast-routing vrf VRF11\nipv6 unicast-routing vrf VRF12\n!\nmlag configuration\n
+    \  domain-id DC1_L3_LEAF1\n   local-interface Vlan4094\n   peer-address 2001:db8:3::2\n
+    \  peer-link Port-Channel3\n   reload-delay mlag 300\n   reload-delay non-mlag
+    330\n!\nip route vrf MGMT 0.0.0.0/0 172.16.1.1\n!\nntp local-interface vrf MGMT
+    Management1\nntp server vrf MGMT 0.pool.ntp.org prefer\n!\nroute-map RM-CONN-2-BGP
+    permit 30\n   match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6\n!\nroute-map
+    RM-CONN-2-BGP-VRFS deny 10\n   match ip address prefix-list PL-MLAG-PEER-VRFS\n!\nroute-map
+    RM-CONN-2-BGP-VRFS permit 20\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description
+    Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal
+    routing\n   set origin incomplete\n!\nrouter bfd\n   multihop interval 300 min-rx
+    300 multiplier 3\n!\nrouter bgp 65101\n   router-id 10.255.1.1\n   no bgp default
+    ipv4-unicast\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer group\n
+    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    password 7 Q4fqtbqcZ7oQuKfuWtNGRQ==\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv6-UNDERLAY-PEERS
+    peer group\n   neighbor IPv6-UNDERLAY-PEERS password 7 F0bdF6JLcJtagc6PCN8W0Q==\n
+    \  neighbor IPv6-UNDERLAY-PEERS send-community\n   neighbor IPv6-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor MLAG-IPv6-UNDERLAY-PEER peer group\n   neighbor
+    MLAG-IPv6-UNDERLAY-PEER remote-as 65101\n   neighbor MLAG-IPv6-UNDERLAY-PEER next-hop-self\n
+    \  neighbor MLAG-IPv6-UNDERLAY-PEER description dc1-leaf1b\n   neighbor MLAG-IPv6-UNDERLAY-PEER
+    route-map RM-MLAG-PEER-IN in\n   neighbor MLAG-IPv6-UNDERLAY-PEER password 7 GNtuK+/vTwZwSZiwj1FK/Q==\n
+    \  neighbor MLAG-IPv6-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv6-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor 2001:db8:0:1::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:0:1::1 remote-as 65100\n   neighbor 2001:db8:0:1::1 description
+    dc1-spine1_Loopback0\n   neighbor 2001:db8:0:2::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:0:2::1 remote-as 65100\n   neighbor 2001:db8:0:2::1 description
+    dc1-spine2_Loopback0\n   neighbor 2001:db8:2:1::1 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2:1::1 remote-as 65100\n   neighbor 2001:db8:2:1::1 description
+    dc1-spine2_Ethernet1\n   neighbor 2001:db8:2::1 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2::1 remote-as 65100\n   neighbor 2001:db8:2::1 description
+    dc1-spine1_Ethernet1\n   neighbor 2001:db8:4::2 peer group MLAG-IPv6-UNDERLAY-PEER\n
+    \  neighbor 2001:db8:4::2 description dc1-leaf1b_Vlan4093\n   redistribute connected
+    route-map RM-CONN-2-BGP\n   !\n   vlan 11\n      rd 10.255.1.1:10011\n      route-target
+    both 10011:10011\n      redistribute learned\n   !\n   vlan 12\n      rd 10.255.1.1:10012\n
+    \     route-target both 10012:10012\n      redistribute learned\n   !\n   vlan
+    21\n      rd 10.255.1.1:10021\n      route-target both 10021:10021\n      redistribute
+    learned\n   !\n   vlan 22\n      rd 10.255.1.1:10022\n      route-target both
+    10022:10022\n      redistribute learned\n   !\n   vlan 31\n      rd 10.255.1.1:10031\n
+    \     route-target both 10031:10031\n      redistribute learned\n   !\n   vlan
+    32\n      rd 10.255.1.1:10032\n      route-target both 10032:10032\n      redistribute
+    learned\n   !\n   vlan 3401\n      rd 10.255.1.1:13401\n      route-target both
+    13401:13401\n      redistribute learned\n   !\n   vlan 3402\n      rd 10.255.1.1:13402\n
+    \     route-target both 13402:13402\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n
+    \     no neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv6\n
+    \     neighbor IPv6-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv6-UNDERLAY-PEER
+    activate\n   !\n   vrf VRF10\n      rd 10.255.1.1:10\n      route-target import
+    evpn 10:10\n      route-target export evpn 10:10\n      router-id 10.255.1.1\n
+    \     neighbor 2001:db8:4::2 peer group MLAG-IPv6-UNDERLAY-PEER\n      neighbor
+    2001:db8:4::2 description dc1-leaf1b_Vlan3009\n      redistribute connected route-map
+    RM-CONN-2-BGP-VRFS\n   !\n   vrf VRF11\n      rd 10.255.1.1:11\n      route-target
+    import evpn 11:11\n      route-target export evpn 11:11\n      router-id 10.255.1.1\n
+    \     neighbor 2001:db8:4::2 peer group MLAG-IPv6-UNDERLAY-PEER\n      neighbor
+    2001:db8:4::2 description dc1-leaf1b_Vlan3010\n      redistribute connected route-map
+    RM-CONN-2-BGP-VRFS\n   !\n   vrf VRF12\n      rd 10.255.1.1:12\n      route-target
+    import evpn 12:12\n      route-target export evpn 12:12\n      router-id 10.255.1.1\n
+    \     neighbor 2001:db8:4::2 peer group MLAG-IPv6-UNDERLAY-PEER\n      neighbor
+    2001:db8:4::2 description dc1-leaf1b_Vlan3011\n      redistribute connected route-map
+    RM-CONN-2-BGP-VRFS\n!\nend\n"
+  AVD-FABRIC-_dc1-leaf1b: "!\nno enable password\nno aaa root\n!\nusername admin privilege
+    15 role network-admin nopassword\nusername ansible privilege 15 role network-admin
+    secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\ndaemon
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.1.12:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname dc1-leaf1b\nip name-server vrf
+    MGMT 192.168.1.1\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree
+    mst 0 priority 4096\n!\nvlan 11\n   name VRF10_VLAN11\n!\nvlan 12\n   name VRF10_VLAN12\n!\nvlan
+    21\n   name VRF11_VLAN21\n!\nvlan 22\n   name VRF11_VLAN22\n!\nvlan 31\n   name
+    VRF12_VLAN31\n!\nvlan 32\n   name VRF12_VLAN32\n!\nvlan 3009\n   name MLAG_L3_VRF_VRF10\n
+    \  trunk group MLAG\n!\nvlan 3010\n   name MLAG_L3_VRF_VRF11\n   trunk group MLAG\n!\nvlan
+    3011\n   name MLAG_L3_VRF_VRF12\n   trunk group MLAG\n!\nvlan 3401\n   name L2_VLAN3401\n!\nvlan
+    3402\n   name L2_VLAN3402\n!\nvlan 4093\n   name MLAG_L3\n   trunk group MLAG\n!\nvlan
+    4094\n   name MLAG\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance
+    VRF10\n!\nvrf instance VRF11\n!\nvrf instance VRF12\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\ninterface
+    Port-Channel3\n   description MLAG_dc1-leaf1a_Port-Channel3\n   no shutdown\n
+    \  switchport mode trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface
+    Port-Channel5\n   description SERVER_dc1-leaf1-server1_Bond1\n   no shutdown\n
+    \  switchport trunk native vlan 4092\n   switchport trunk allowed vlan 11-12,21-22\n
+    \  switchport mode trunk\n   switchport\n   mlag 5\n   spanning-tree portfast\n!\ninterface
+    Port-Channel8\n   description L2_dc1-leaf1c_Port-Channel1\n   no shutdown\n   switchport
+    trunk allowed vlan 11-12,21-22,31-32,3401-3402\n   switchport mode trunk\n   switchport\n
+    \  mlag 8\n!\ninterface Ethernet1\n   description P2P_dc1-spine1_Ethernet2\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ipv6 address 2001:db8:2:2::2/64\n!\ninterface
+    Ethernet2\n   description P2P_dc1-spine2_Ethernet2\n   no shutdown\n   mtu 1500\n
+    \  no switchport\n   ipv6 address 2001:db8:2:3::2/64\n!\ninterface Ethernet3\n
+    \  description MLAG_dc1-leaf1a_Ethernet3\n   no shutdown\n   channel-group 3 mode
+    active\n!\ninterface Ethernet4\n   description MLAG_dc1-leaf1a_Ethernet4\n   no
+    shutdown\n   channel-group 3 mode active\n!\ninterface Ethernet5\n   description
+    SERVER_dc1-leaf1-server1_PCI2\n   no shutdown\n   channel-group 5 mode active\n!\ninterface
+    Ethernet8\n   description L2_dc1-leaf1c_Ethernet2\n   no shutdown\n   channel-group
+    8 mode active\n!\ninterface Loopback0\n   description ROUTER_ID\n   no shutdown\n
+    \  ipv6 address 2001:db8:1:2::1/64\n!\ninterface Loopback1\n   description VXLAN_TUNNEL_SOURCE\n
+    \  no shutdown\n   ipv6 address 2001:db8:5:1::1/64\n!\ninterface Loopback10\n
+    \  description DIAG_VRF_VRF10\n   no shutdown\n   vrf VRF10\n   ip address 10.255.10.2/32\n!\ninterface
+    Loopback11\n   description DIAG_VRF_VRF11\n   no shutdown\n   vrf VRF11\n   ip
+    address 10.255.11.2/32\n!\ninterface Loopback12\n   description DIAG_VRF_VRF12\n
+    \  no shutdown\n   vrf VRF12\n   ip address 10.255.12.2/32\n!\ninterface Management1\n
+    \  description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip address 172.16.1.102/24\n!\ninterface
+    Vlan11\n   description VRF10_VLAN11\n   no shutdown\n   vrf VRF10\n   ip address
+    virtual 10.10.11.1/24\n!\ninterface Vlan12\n   description VRF10_VLAN12\n   no
+    shutdown\n   vrf VRF10\n   ip address virtual 10.10.12.1/24\n!\ninterface Vlan21\n
+    \  description VRF11_VLAN21\n   no shutdown\n   vrf VRF11\n   ipv6 enable\n   ipv6
+    address virtual 2001:DB8:21::1/48\n!\ninterface Vlan22\n   description VRF11_VLAN22\n
+    \  no shutdown\n   vrf VRF11\n   ip address virtual 10.10.22.1/24\n!\ninterface
+    Vlan31\n   description VRF12_VLAN31\n   no shutdown\n   vrf VRF12\n   ipv6 enable\n
+    \  ipv6 address virtual 2001:DB8:31::1/48\n!\ninterface Vlan32\n   description
+    VRF12_VLAN32\n   no shutdown\n   vrf VRF12\n   ipv6 enable\n   ipv6 address virtual
+    2001:DB8:32::1/48\n!\ninterface Vlan3009\n   description MLAG_L3_VRF_VRF10\n   no
+    shutdown\n   mtu 1500\n   vrf VRF10\n   ipv6 address 2001:db8:4::2/64\n!\ninterface
+    Vlan3010\n   description MLAG_L3_VRF_VRF11\n   no shutdown\n   mtu 1500\n   vrf
+    VRF11\n   ipv6 address 2001:db8:4::2/64\n!\ninterface Vlan3011\n   description
+    MLAG_L3_VRF_VRF12\n   no shutdown\n   mtu 1500\n   vrf VRF12\n   ipv6 address
+    2001:db8:4::2/64\n!\ninterface Vlan4093\n   description MLAG_L3\n   no shutdown\n
+    \  mtu 1500\n   ipv6 address 2001:db8:4::2/64\n!\ninterface Vlan4094\n   description
+    MLAG\n   no shutdown\n   mtu 1500\n   no autostate\n   ipv6 address 2001:db8:3::2/64\n!\ninterface
+    Vxlan1\n   description dc1-leaf1b_VTEP\n   vxlan source-interface Loopback1\n
+    \  vxlan virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port
+    4789\n   vxlan encapsulation ipv6\n   vxlan vlan 11 vni 10011\n   vxlan vlan 12
+    vni 10012\n   vxlan vlan 21 vni 10021\n   vxlan vlan 22 vni 10022\n   vxlan vlan
+    31 vni 10031\n   vxlan vlan 32 vni 10032\n   vxlan vlan 3401 vni 13401\n   vxlan
+    vlan 3402 vni 13402\n   vxlan vrf VRF10 vni 10\n   vxlan vrf VRF11 vni 11\n   vxlan
+    vrf VRF12 vni 12\n!\nip virtual-router mac-address 00:1c:73:00:00:99\n!\nip address
+    virtual source-nat vrf VRF10 address 10.255.10.2\nip address virtual source-nat
+    vrf VRF11 address 10.255.11.2\nip address virtual source-nat vrf VRF12 address
+    10.255.12.2\n!\nip routing\nno ip routing vrf MGMT\nip routing vrf VRF10\nip routing
+    vrf VRF11\nip routing vrf VRF12\n!\nipv6 prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6\n
+    \  seq 10 permit 2001:db8:1::/48 eq 64\n   seq 15 permit 2001:db8:5::/48 eq 64\n!\nipv6
+    prefix-list PL-MLAG-PEER-VRFS\n   seq 10 permit 2001:db8:4::/64\n!\nipv6 unicast-routing\nipv6
+    unicast-routing vrf VRF11\nipv6 unicast-routing vrf VRF12\n!\nmlag configuration\n
+    \  domain-id DC1_L3_LEAF1\n   local-interface Vlan4094\n   peer-address 2001:db8:3::1\n
+    \  peer-link Port-Channel3\n   reload-delay mlag 300\n   reload-delay non-mlag
+    330\n!\nip route vrf MGMT 0.0.0.0/0 172.16.1.1\n!\nntp local-interface vrf MGMT
+    Management1\nntp server vrf MGMT 0.pool.ntp.org prefer\n!\nroute-map RM-CONN-2-BGP
+    permit 30\n   match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6\n!\nroute-map
+    RM-CONN-2-BGP-VRFS deny 10\n   match ip address prefix-list PL-MLAG-PEER-VRFS\n!\nroute-map
+    RM-CONN-2-BGP-VRFS permit 20\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description
+    Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal
+    routing\n   set origin incomplete\n!\nrouter bfd\n   multihop interval 300 min-rx
+    300 multiplier 3\n!\nrouter bgp 65101\n   router-id 10.255.1.2\n   no bgp default
+    ipv4-unicast\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer group\n
+    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    password 7 Q4fqtbqcZ7oQuKfuWtNGRQ==\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv6-UNDERLAY-PEERS
+    peer group\n   neighbor IPv6-UNDERLAY-PEERS password 7 F0bdF6JLcJtagc6PCN8W0Q==\n
+    \  neighbor IPv6-UNDERLAY-PEERS send-community\n   neighbor IPv6-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor MLAG-IPv6-UNDERLAY-PEER peer group\n   neighbor
+    MLAG-IPv6-UNDERLAY-PEER remote-as 65101\n   neighbor MLAG-IPv6-UNDERLAY-PEER next-hop-self\n
+    \  neighbor MLAG-IPv6-UNDERLAY-PEER description dc1-leaf1a\n   neighbor MLAG-IPv6-UNDERLAY-PEER
+    route-map RM-MLAG-PEER-IN in\n   neighbor MLAG-IPv6-UNDERLAY-PEER password 7 GNtuK+/vTwZwSZiwj1FK/Q==\n
+    \  neighbor MLAG-IPv6-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv6-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor 2001:db8:0:1::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:0:1::1 remote-as 65100\n   neighbor 2001:db8:0:1::1 description
+    dc1-spine1_Loopback0\n   neighbor 2001:db8:0:2::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:0:2::1 remote-as 65100\n   neighbor 2001:db8:0:2::1 description
+    dc1-spine2_Loopback0\n   neighbor 2001:db8:2:2::1 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2:2::1 remote-as 65100\n   neighbor 2001:db8:2:2::1 description
+    dc1-spine1_Ethernet2\n   neighbor 2001:db8:2:3::1 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2:3::1 remote-as 65100\n   neighbor 2001:db8:2:3::1 description
+    dc1-spine2_Ethernet2\n   neighbor 2001:db8:4::1 peer group MLAG-IPv6-UNDERLAY-PEER\n
+    \  neighbor 2001:db8:4::1 description dc1-leaf1a_Vlan4093\n   redistribute connected
+    route-map RM-CONN-2-BGP\n   !\n   vlan 11\n      rd 10.255.1.2:10011\n      route-target
+    both 10011:10011\n      redistribute learned\n   !\n   vlan 12\n      rd 10.255.1.2:10012\n
+    \     route-target both 10012:10012\n      redistribute learned\n   !\n   vlan
+    21\n      rd 10.255.1.2:10021\n      route-target both 10021:10021\n      redistribute
+    learned\n   !\n   vlan 22\n      rd 10.255.1.2:10022\n      route-target both
+    10022:10022\n      redistribute learned\n   !\n   vlan 31\n      rd 10.255.1.2:10031\n
+    \     route-target both 10031:10031\n      redistribute learned\n   !\n   vlan
+    32\n      rd 10.255.1.2:10032\n      route-target both 10032:10032\n      redistribute
+    learned\n   !\n   vlan 3401\n      rd 10.255.1.2:13401\n      route-target both
+    13401:13401\n      redistribute learned\n   !\n   vlan 3402\n      rd 10.255.1.2:13402\n
+    \     route-target both 13402:13402\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n
+    \     no neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv6\n
+    \     neighbor IPv6-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv6-UNDERLAY-PEER
+    activate\n   !\n   vrf VRF10\n      rd 10.255.1.2:10\n      route-target import
+    evpn 10:10\n      route-target export evpn 10:10\n      router-id 10.255.1.2\n
+    \     neighbor 2001:db8:4::1 peer group MLAG-IPv6-UNDERLAY-PEER\n      neighbor
+    2001:db8:4::1 description dc1-leaf1a_Vlan3009\n      redistribute connected route-map
+    RM-CONN-2-BGP-VRFS\n   !\n   vrf VRF11\n      rd 10.255.1.2:11\n      route-target
+    import evpn 11:11\n      route-target export evpn 11:11\n      router-id 10.255.1.2\n
+    \     neighbor 2001:db8:4::1 peer group MLAG-IPv6-UNDERLAY-PEER\n      neighbor
+    2001:db8:4::1 description dc1-leaf1a_Vlan3010\n      redistribute connected route-map
+    RM-CONN-2-BGP-VRFS\n   !\n   vrf VRF12\n      rd 10.255.1.2:12\n      route-target
+    import evpn 12:12\n      route-target export evpn 12:12\n      router-id 10.255.1.2\n
+    \     neighbor 2001:db8:4::1 peer group MLAG-IPv6-UNDERLAY-PEER\n      neighbor
+    2001:db8:4::1 description dc1-leaf1a_Vlan3011\n      redistribute connected route-map
+    RM-CONN-2-BGP-VRFS\n!\nend\n"
+  AVD-FABRIC-_dc1-leaf1c: "!\nno enable password\nno aaa root\n!\nusername admin privilege
+    15 role network-admin nopassword\nusername ansible privilege 15 role network-admin
+    secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\ndaemon
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.1.12:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname dc1-leaf1c\nip name-server vrf
+    MGMT 192.168.1.1\n!\nspanning-tree mode mstp\nspanning-tree mst 0 priority 32768\n!\nvlan
+    11\n   name VRF10_VLAN11\n!\nvlan 12\n   name VRF10_VLAN12\n!\nvlan 21\n   name
+    VRF11_VLAN21\n!\nvlan 22\n   name VRF11_VLAN22\n!\nvlan 31\n   name VRF12_VLAN31\n!\nvlan
+    32\n   name VRF12_VLAN32\n!\nvlan 3401\n   name L2_VLAN3401\n!\nvlan 3402\n   name
+    L2_VLAN3402\n!\nvrf instance MGMT\n!\nmanagement api http-commands\n   protocol
+    https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\ninterface Port-Channel1\n
+    \  description L2_DC1_L3_LEAF1_Port-Channel8\n   no shutdown\n   switchport trunk
+    allowed vlan 11-12,21-22,31-32,3401-3402\n   switchport mode trunk\n   switchport\n!\ninterface
+    Ethernet1\n   description L2_dc1-leaf1a_Ethernet8\n   no shutdown\n   channel-group
+    1 mode active\n!\ninterface Ethernet2\n   description L2_dc1-leaf1b_Ethernet8\n
+    \  no shutdown\n   channel-group 1 mode active\n!\ninterface Ethernet5\n   description
+    SERVER_dc1-leaf1-server1_iLO\n   no shutdown\n   switchport access vlan 11\n   switchport
+    mode access\n   switchport\n   spanning-tree portfast\n!\ninterface Management1\n
+    \  description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip address 172.16.1.151/24\nno
+    ip routing vrf MGMT\n!\nip route vrf MGMT 0.0.0.0/0 172.16.1.1\n!\nntp local-interface
+    vrf MGMT Management1\nntp server vrf MGMT 0.pool.ntp.org prefer\n!\nend\n"
+  AVD-FABRIC-_dc1-leaf2a: "!\nno enable password\nno aaa root\n!\nusername admin privilege
+    15 role network-admin nopassword\nusername ansible privilege 15 role network-admin
+    secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\ndaemon
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.1.12:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname dc1-leaf2a\nip name-server vrf
+    MGMT 192.168.1.1\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree
+    mst 0 priority 4096\n!\nvlan 11\n   name VRF10_VLAN11\n!\nvlan 12\n   name VRF10_VLAN12\n!\nvlan
+    21\n   name VRF11_VLAN21\n!\nvlan 22\n   name VRF11_VLAN22\n!\nvlan 31\n   name
+    VRF12_VLAN31\n!\nvlan 32\n   name VRF12_VLAN32\n!\nvlan 3009\n   name MLAG_L3_VRF_VRF10\n
+    \  trunk group MLAG\n!\nvlan 3010\n   name MLAG_L3_VRF_VRF11\n   trunk group MLAG\n!\nvlan
+    3011\n   name MLAG_L3_VRF_VRF12\n   trunk group MLAG\n!\nvlan 3401\n   name L2_VLAN3401\n!\nvlan
+    3402\n   name L2_VLAN3402\n!\nvlan 4093\n   name MLAG_L3\n   trunk group MLAG\n!\nvlan
+    4094\n   name MLAG\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance
+    VRF10\n!\nvrf instance VRF11\n!\nvrf instance VRF12\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\ninterface
+    Port-Channel3\n   description MLAG_dc1-leaf2b_Port-Channel3\n   no shutdown\n
+    \  switchport mode trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface
+    Port-Channel5\n   description SERVER_dc1-leaf2-server1\n   no shutdown\n   switchport
+    trunk native vlan 4092\n   switchport trunk allowed vlan 11-12,21-22\n   switchport
+    mode trunk\n   switchport\n   mlag 5\n   spanning-tree portfast\n!\ninterface
+    Port-Channel8\n   description L2_dc1-leaf2c_Port-Channel1\n   no shutdown\n   switchport
+    trunk allowed vlan 11-12,21-22,31-32,3401-3402\n   switchport mode trunk\n   switchport\n
+    \  mlag 8\n!\ninterface Ethernet1\n   description P2P_dc1-spine1_Ethernet3\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ipv6 address 2001:db8:2:4::2/64\n!\ninterface
+    Ethernet2\n   description P2P_dc1-spine2_Ethernet3\n   no shutdown\n   mtu 1500\n
+    \  no switchport\n   ipv6 address 2001:db8:2:5::2/64\n!\ninterface Ethernet3\n
+    \  description MLAG_dc1-leaf2b_Ethernet3\n   no shutdown\n   channel-group 3 mode
+    active\n!\ninterface Ethernet4\n   description MLAG_dc1-leaf2b_Ethernet4\n   no
+    shutdown\n   channel-group 3 mode active\n!\ninterface Ethernet5\n   description
+    SERVER_dc1-leaf2-server1_PCI1\n   no shutdown\n   channel-group 5 mode active\n!\ninterface
+    Ethernet8\n   description L2_dc1-leaf2c_Ethernet1\n   no shutdown\n   channel-group
+    8 mode active\n!\ninterface Loopback0\n   description ROUTER_ID\n   no shutdown\n
+    \  ipv6 address 2001:db8:1:3::1/64\n!\ninterface Loopback1\n   description VXLAN_TUNNEL_SOURCE\n
+    \  no shutdown\n   ipv6 address 2001:db8:5:3::1/64\n!\ninterface Loopback10\n
+    \  description DIAG_VRF_VRF10\n   no shutdown\n   vrf VRF10\n   ip address 10.255.10.3/32\n!\ninterface
+    Loopback11\n   description DIAG_VRF_VRF11\n   no shutdown\n   vrf VRF11\n   ip
+    address 10.255.11.3/32\n!\ninterface Loopback12\n   description DIAG_VRF_VRF12\n
+    \  no shutdown\n   vrf VRF12\n   ip address 10.255.12.3/32\n!\ninterface Management1\n
+    \  description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip address 172.16.1.103/24\n!\ninterface
+    Vlan11\n   description VRF10_VLAN11\n   no shutdown\n   vrf VRF10\n   ip address
+    virtual 10.10.11.1/24\n!\ninterface Vlan12\n   description VRF10_VLAN12\n   no
+    shutdown\n   vrf VRF10\n   ip address virtual 10.10.12.1/24\n!\ninterface Vlan21\n
+    \  description VRF11_VLAN21\n   no shutdown\n   vrf VRF11\n   ipv6 enable\n   ipv6
+    address virtual 2001:DB8:21::1/48\n!\ninterface Vlan22\n   description VRF11_VLAN22\n
+    \  no shutdown\n   vrf VRF11\n   ip address virtual 10.10.22.1/24\n!\ninterface
+    Vlan31\n   description VRF12_VLAN31\n   no shutdown\n   vrf VRF12\n   ipv6 enable\n
+    \  ipv6 address virtual 2001:DB8:31::1/48\n!\ninterface Vlan32\n   description
+    VRF12_VLAN32\n   no shutdown\n   vrf VRF12\n   ipv6 enable\n   ipv6 address virtual
+    2001:DB8:32::1/48\n!\ninterface Vlan3009\n   description MLAG_L3_VRF_VRF10\n   no
+    shutdown\n   mtu 1500\n   vrf VRF10\n   ipv6 address 2001:db8:4:2::1/64\n!\ninterface
+    Vlan3010\n   description MLAG_L3_VRF_VRF11\n   no shutdown\n   mtu 1500\n   vrf
+    VRF11\n   ipv6 address 2001:db8:4:2::1/64\n!\ninterface Vlan3011\n   description
+    MLAG_L3_VRF_VRF12\n   no shutdown\n   mtu 1500\n   vrf VRF12\n   ipv6 address
+    2001:db8:4:2::1/64\n!\ninterface Vlan4093\n   description MLAG_L3\n   no shutdown\n
+    \  mtu 1500\n   ipv6 address 2001:db8:4:2::1/64\n!\ninterface Vlan4094\n   description
+    MLAG\n   no shutdown\n   mtu 1500\n   no autostate\n   ipv6 address 2001:db8:3:2::1/64\n!\ninterface
+    Vxlan1\n   description dc1-leaf2a_VTEP\n   vxlan source-interface Loopback1\n
+    \  vxlan virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port
+    4789\n   vxlan encapsulation ipv6\n   vxlan vlan 11 vni 10011\n   vxlan vlan 12
+    vni 10012\n   vxlan vlan 21 vni 10021\n   vxlan vlan 22 vni 10022\n   vxlan vlan
+    31 vni 10031\n   vxlan vlan 32 vni 10032\n   vxlan vlan 3401 vni 13401\n   vxlan
+    vlan 3402 vni 13402\n   vxlan vrf VRF10 vni 10\n   vxlan vrf VRF11 vni 11\n   vxlan
+    vrf VRF12 vni 12\n!\nip virtual-router mac-address 00:1c:73:00:00:99\n!\nip address
+    virtual source-nat vrf VRF10 address 10.255.10.3\nip address virtual source-nat
+    vrf VRF11 address 10.255.11.3\nip address virtual source-nat vrf VRF12 address
+    10.255.12.3\n!\nip routing\nno ip routing vrf MGMT\nip routing vrf VRF10\nip routing
+    vrf VRF11\nip routing vrf VRF12\n!\nipv6 prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6\n
+    \  seq 10 permit 2001:db8:1::/48 eq 64\n   seq 15 permit 2001:db8:5::/48 eq 64\n!\nipv6
+    prefix-list PL-MLAG-PEER-VRFS\n   seq 10 permit 2001:db8:4:2::/64\n!\nipv6 unicast-routing\nipv6
+    unicast-routing vrf VRF11\nipv6 unicast-routing vrf VRF12\n!\nmlag configuration\n
+    \  domain-id DC1_L3_LEAF2\n   local-interface Vlan4094\n   peer-address 2001:db8:3:2::2\n
+    \  peer-link Port-Channel3\n   reload-delay mlag 300\n   reload-delay non-mlag
+    330\n!\nip route vrf MGMT 0.0.0.0/0 172.16.1.1\n!\nntp local-interface vrf MGMT
+    Management1\nntp server vrf MGMT 0.pool.ntp.org prefer\n!\nroute-map RM-CONN-2-BGP
+    permit 30\n   match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6\n!\nroute-map
+    RM-CONN-2-BGP-VRFS deny 10\n   match ip address prefix-list PL-MLAG-PEER-VRFS\n!\nroute-map
+    RM-CONN-2-BGP-VRFS permit 20\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description
+    Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal
+    routing\n   set origin incomplete\n!\nrouter bfd\n   multihop interval 300 min-rx
+    300 multiplier 3\n!\nrouter bgp 65102\n   router-id 10.255.1.3\n   no bgp default
+    ipv4-unicast\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer group\n
+    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    password 7 Q4fqtbqcZ7oQuKfuWtNGRQ==\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv6-UNDERLAY-PEERS
+    peer group\n   neighbor IPv6-UNDERLAY-PEERS password 7 F0bdF6JLcJtagc6PCN8W0Q==\n
+    \  neighbor IPv6-UNDERLAY-PEERS send-community\n   neighbor IPv6-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor MLAG-IPv6-UNDERLAY-PEER peer group\n   neighbor
+    MLAG-IPv6-UNDERLAY-PEER remote-as 65102\n   neighbor MLAG-IPv6-UNDERLAY-PEER next-hop-self\n
+    \  neighbor MLAG-IPv6-UNDERLAY-PEER description dc1-leaf2b\n   neighbor MLAG-IPv6-UNDERLAY-PEER
+    route-map RM-MLAG-PEER-IN in\n   neighbor MLAG-IPv6-UNDERLAY-PEER password 7 GNtuK+/vTwZwSZiwj1FK/Q==\n
+    \  neighbor MLAG-IPv6-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv6-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor 2001:db8:0:1::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:0:1::1 remote-as 65100\n   neighbor 2001:db8:0:1::1 description
+    dc1-spine1_Loopback0\n   neighbor 2001:db8:0:2::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:0:2::1 remote-as 65100\n   neighbor 2001:db8:0:2::1 description
+    dc1-spine2_Loopback0\n   neighbor 2001:db8:2:4::1 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2:4::1 remote-as 65100\n   neighbor 2001:db8:2:4::1 description
+    dc1-spine1_Ethernet3\n   neighbor 2001:db8:2:5::1 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2:5::1 remote-as 65100\n   neighbor 2001:db8:2:5::1 description
+    dc1-spine2_Ethernet3\n   neighbor 2001:db8:4:2::2 peer group MLAG-IPv6-UNDERLAY-PEER\n
+    \  neighbor 2001:db8:4:2::2 description dc1-leaf2b_Vlan4093\n   redistribute connected
+    route-map RM-CONN-2-BGP\n   !\n   vlan 11\n      rd 10.255.1.3:10011\n      route-target
+    both 10011:10011\n      redistribute learned\n   !\n   vlan 12\n      rd 10.255.1.3:10012\n
+    \     route-target both 10012:10012\n      redistribute learned\n   !\n   vlan
+    21\n      rd 10.255.1.3:10021\n      route-target both 10021:10021\n      redistribute
+    learned\n   !\n   vlan 22\n      rd 10.255.1.3:10022\n      route-target both
+    10022:10022\n      redistribute learned\n   !\n   vlan 31\n      rd 10.255.1.3:10031\n
+    \     route-target both 10031:10031\n      redistribute learned\n   !\n   vlan
+    32\n      rd 10.255.1.3:10032\n      route-target both 10032:10032\n      redistribute
+    learned\n   !\n   vlan 3401\n      rd 10.255.1.3:13401\n      route-target both
+    13401:13401\n      redistribute learned\n   !\n   vlan 3402\n      rd 10.255.1.3:13402\n
+    \     route-target both 13402:13402\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n
+    \     no neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv6\n
+    \     neighbor IPv6-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv6-UNDERLAY-PEER
+    activate\n   !\n   vrf VRF10\n      rd 10.255.1.3:10\n      route-target import
+    evpn 10:10\n      route-target export evpn 10:10\n      router-id 10.255.1.3\n
+    \     neighbor 2001:db8:4:2::2 peer group MLAG-IPv6-UNDERLAY-PEER\n      neighbor
+    2001:db8:4:2::2 description dc1-leaf2b_Vlan3009\n      redistribute connected
+    route-map RM-CONN-2-BGP-VRFS\n   !\n   vrf VRF11\n      rd 10.255.1.3:11\n      route-target
+    import evpn 11:11\n      route-target export evpn 11:11\n      router-id 10.255.1.3\n
+    \     neighbor 2001:db8:4:2::2 peer group MLAG-IPv6-UNDERLAY-PEER\n      neighbor
+    2001:db8:4:2::2 description dc1-leaf2b_Vlan3010\n      redistribute connected
+    route-map RM-CONN-2-BGP-VRFS\n   !\n   vrf VRF12\n      rd 10.255.1.3:12\n      route-target
+    import evpn 12:12\n      route-target export evpn 12:12\n      router-id 10.255.1.3\n
+    \     neighbor 2001:db8:4:2::2 peer group MLAG-IPv6-UNDERLAY-PEER\n      neighbor
+    2001:db8:4:2::2 description dc1-leaf2b_Vlan3011\n      redistribute connected
+    route-map RM-CONN-2-BGP-VRFS\n!\nend\n"
+  AVD-FABRIC-_dc1-leaf2b: "!\nno enable password\nno aaa root\n!\nusername admin privilege
+    15 role network-admin nopassword\nusername ansible privilege 15 role network-admin
+    secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\ndaemon
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.1.12:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname dc1-leaf2b\nip name-server vrf
+    MGMT 192.168.1.1\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree
+    mst 0 priority 4096\n!\nvlan 11\n   name VRF10_VLAN11\n!\nvlan 12\n   name VRF10_VLAN12\n!\nvlan
+    21\n   name VRF11_VLAN21\n!\nvlan 22\n   name VRF11_VLAN22\n!\nvlan 31\n   name
+    VRF12_VLAN31\n!\nvlan 32\n   name VRF12_VLAN32\n!\nvlan 3009\n   name MLAG_L3_VRF_VRF10\n
+    \  trunk group MLAG\n!\nvlan 3010\n   name MLAG_L3_VRF_VRF11\n   trunk group MLAG\n!\nvlan
+    3011\n   name MLAG_L3_VRF_VRF12\n   trunk group MLAG\n!\nvlan 3401\n   name L2_VLAN3401\n!\nvlan
+    3402\n   name L2_VLAN3402\n!\nvlan 4093\n   name MLAG_L3\n   trunk group MLAG\n!\nvlan
+    4094\n   name MLAG\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance
+    VRF10\n!\nvrf instance VRF11\n!\nvrf instance VRF12\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\ninterface
+    Port-Channel3\n   description MLAG_dc1-leaf2a_Port-Channel3\n   no shutdown\n
+    \  switchport mode trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface
+    Port-Channel5\n   description SERVER_dc1-leaf2-server1\n   no shutdown\n   switchport
+    trunk native vlan 4092\n   switchport trunk allowed vlan 11-12,21-22\n   switchport
+    mode trunk\n   switchport\n   mlag 5\n   spanning-tree portfast\n!\ninterface
+    Port-Channel8\n   description L2_dc1-leaf2c_Port-Channel1\n   no shutdown\n   switchport
+    trunk allowed vlan 11-12,21-22,31-32,3401-3402\n   switchport mode trunk\n   switchport\n
+    \  mlag 8\n!\ninterface Ethernet1\n   description P2P_dc1-spine1_Ethernet4\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ipv6 address 2001:db8:2:6::2/64\n!\ninterface
+    Ethernet2\n   description P2P_dc1-spine2_Ethernet4\n   no shutdown\n   mtu 1500\n
+    \  no switchport\n   ipv6 address 2001:db8:2:7::2/64\n!\ninterface Ethernet3\n
+    \  description MLAG_dc1-leaf2a_Ethernet3\n   no shutdown\n   channel-group 3 mode
+    active\n!\ninterface Ethernet4\n   description MLAG_dc1-leaf2a_Ethernet4\n   no
+    shutdown\n   channel-group 3 mode active\n!\ninterface Ethernet5\n   description
+    SERVER_dc1-leaf2-server1_PCI2\n   no shutdown\n   channel-group 5 mode active\n!\ninterface
+    Ethernet8\n   description L2_dc1-leaf2c_Ethernet2\n   no shutdown\n   channel-group
+    8 mode active\n!\ninterface Loopback0\n   description ROUTER_ID\n   no shutdown\n
+    \  ipv6 address 2001:db8:1:4::1/64\n!\ninterface Loopback1\n   description VXLAN_TUNNEL_SOURCE\n
+    \  no shutdown\n   ipv6 address 2001:db8:5:3::1/64\n!\ninterface Loopback10\n
+    \  description DIAG_VRF_VRF10\n   no shutdown\n   vrf VRF10\n   ip address 10.255.10.4/32\n!\ninterface
+    Loopback11\n   description DIAG_VRF_VRF11\n   no shutdown\n   vrf VRF11\n   ip
+    address 10.255.11.4/32\n!\ninterface Loopback12\n   description DIAG_VRF_VRF12\n
+    \  no shutdown\n   vrf VRF12\n   ip address 10.255.12.4/32\n!\ninterface Management1\n
+    \  description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip address 172.16.1.104/24\n!\ninterface
+    Vlan11\n   description VRF10_VLAN11\n   no shutdown\n   vrf VRF10\n   ip address
+    virtual 10.10.11.1/24\n!\ninterface Vlan12\n   description VRF10_VLAN12\n   no
+    shutdown\n   vrf VRF10\n   ip address virtual 10.10.12.1/24\n!\ninterface Vlan21\n
+    \  description VRF11_VLAN21\n   no shutdown\n   vrf VRF11\n   ipv6 enable\n   ipv6
+    address virtual 2001:DB8:21::1/48\n!\ninterface Vlan22\n   description VRF11_VLAN22\n
+    \  no shutdown\n   vrf VRF11\n   ip address virtual 10.10.22.1/24\n!\ninterface
+    Vlan31\n   description VRF12_VLAN31\n   no shutdown\n   vrf VRF12\n   ipv6 enable\n
+    \  ipv6 address virtual 2001:DB8:31::1/48\n!\ninterface Vlan32\n   description
+    VRF12_VLAN32\n   no shutdown\n   vrf VRF12\n   ipv6 enable\n   ipv6 address virtual
+    2001:DB8:32::1/48\n!\ninterface Vlan3009\n   description MLAG_L3_VRF_VRF10\n   no
+    shutdown\n   mtu 1500\n   vrf VRF10\n   ipv6 address 2001:db8:4:2::2/64\n!\ninterface
+    Vlan3010\n   description MLAG_L3_VRF_VRF11\n   no shutdown\n   mtu 1500\n   vrf
+    VRF11\n   ipv6 address 2001:db8:4:2::2/64\n!\ninterface Vlan3011\n   description
+    MLAG_L3_VRF_VRF12\n   no shutdown\n   mtu 1500\n   vrf VRF12\n   ipv6 address
+    2001:db8:4:2::2/64\n!\ninterface Vlan4093\n   description MLAG_L3\n   no shutdown\n
+    \  mtu 1500\n   ipv6 address 2001:db8:4:2::2/64\n!\ninterface Vlan4094\n   description
+    MLAG\n   no shutdown\n   mtu 1500\n   no autostate\n   ipv6 address 2001:db8:3:2::2/64\n!\ninterface
+    Vxlan1\n   description dc1-leaf2b_VTEP\n   vxlan source-interface Loopback1\n
+    \  vxlan virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port
+    4789\n   vxlan encapsulation ipv6\n   vxlan vlan 11 vni 10011\n   vxlan vlan 12
+    vni 10012\n   vxlan vlan 21 vni 10021\n   vxlan vlan 22 vni 10022\n   vxlan vlan
+    31 vni 10031\n   vxlan vlan 32 vni 10032\n   vxlan vlan 3401 vni 13401\n   vxlan
+    vlan 3402 vni 13402\n   vxlan vrf VRF10 vni 10\n   vxlan vrf VRF11 vni 11\n   vxlan
+    vrf VRF12 vni 12\n!\nip virtual-router mac-address 00:1c:73:00:00:99\n!\nip address
+    virtual source-nat vrf VRF10 address 10.255.10.4\nip address virtual source-nat
+    vrf VRF11 address 10.255.11.4\nip address virtual source-nat vrf VRF12 address
+    10.255.12.4\n!\nip routing\nno ip routing vrf MGMT\nip routing vrf VRF10\nip routing
+    vrf VRF11\nip routing vrf VRF12\n!\nipv6 prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6\n
+    \  seq 10 permit 2001:db8:1::/48 eq 64\n   seq 15 permit 2001:db8:5::/48 eq 64\n!\nipv6
+    prefix-list PL-MLAG-PEER-VRFS\n   seq 10 permit 2001:db8:4:2::/64\n!\nipv6 unicast-routing\nipv6
+    unicast-routing vrf VRF11\nipv6 unicast-routing vrf VRF12\n!\nmlag configuration\n
+    \  domain-id DC1_L3_LEAF2\n   local-interface Vlan4094\n   peer-address 2001:db8:3:2::1\n
+    \  peer-link Port-Channel3\n   reload-delay mlag 300\n   reload-delay non-mlag
+    330\n!\nip route vrf MGMT 0.0.0.0/0 172.16.1.1\n!\nntp local-interface vrf MGMT
+    Management1\nntp server vrf MGMT 0.pool.ntp.org prefer\n!\nroute-map RM-CONN-2-BGP
+    permit 30\n   match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6\n!\nroute-map
+    RM-CONN-2-BGP-VRFS deny 10\n   match ip address prefix-list PL-MLAG-PEER-VRFS\n!\nroute-map
+    RM-CONN-2-BGP-VRFS permit 20\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description
+    Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal
+    routing\n   set origin incomplete\n!\nrouter bfd\n   multihop interval 300 min-rx
+    300 multiplier 3\n!\nrouter bgp 65102\n   router-id 10.255.1.4\n   no bgp default
+    ipv4-unicast\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer group\n
+    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    password 7 Q4fqtbqcZ7oQuKfuWtNGRQ==\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv6-UNDERLAY-PEERS
+    peer group\n   neighbor IPv6-UNDERLAY-PEERS password 7 F0bdF6JLcJtagc6PCN8W0Q==\n
+    \  neighbor IPv6-UNDERLAY-PEERS send-community\n   neighbor IPv6-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor MLAG-IPv6-UNDERLAY-PEER peer group\n   neighbor
+    MLAG-IPv6-UNDERLAY-PEER remote-as 65102\n   neighbor MLAG-IPv6-UNDERLAY-PEER next-hop-self\n
+    \  neighbor MLAG-IPv6-UNDERLAY-PEER description dc1-leaf2a\n   neighbor MLAG-IPv6-UNDERLAY-PEER
+    route-map RM-MLAG-PEER-IN in\n   neighbor MLAG-IPv6-UNDERLAY-PEER password 7 GNtuK+/vTwZwSZiwj1FK/Q==\n
+    \  neighbor MLAG-IPv6-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv6-UNDERLAY-PEER
+    maximum-routes 12000\n   neighbor 2001:db8:0:1::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:0:1::1 remote-as 65100\n   neighbor 2001:db8:0:1::1 description
+    dc1-spine1_Loopback0\n   neighbor 2001:db8:0:2::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:0:2::1 remote-as 65100\n   neighbor 2001:db8:0:2::1 description
+    dc1-spine2_Loopback0\n   neighbor 2001:db8:2:6::1 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2:6::1 remote-as 65100\n   neighbor 2001:db8:2:6::1 description
+    dc1-spine1_Ethernet4\n   neighbor 2001:db8:2:7::1 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2:7::1 remote-as 65100\n   neighbor 2001:db8:2:7::1 description
+    dc1-spine2_Ethernet4\n   neighbor 2001:db8:4:2::1 peer group MLAG-IPv6-UNDERLAY-PEER\n
+    \  neighbor 2001:db8:4:2::1 description dc1-leaf2a_Vlan4093\n   redistribute connected
+    route-map RM-CONN-2-BGP\n   !\n   vlan 11\n      rd 10.255.1.4:10011\n      route-target
+    both 10011:10011\n      redistribute learned\n   !\n   vlan 12\n      rd 10.255.1.4:10012\n
+    \     route-target both 10012:10012\n      redistribute learned\n   !\n   vlan
+    21\n      rd 10.255.1.4:10021\n      route-target both 10021:10021\n      redistribute
+    learned\n   !\n   vlan 22\n      rd 10.255.1.4:10022\n      route-target both
+    10022:10022\n      redistribute learned\n   !\n   vlan 31\n      rd 10.255.1.4:10031\n
+    \     route-target both 10031:10031\n      redistribute learned\n   !\n   vlan
+    32\n      rd 10.255.1.4:10032\n      route-target both 10032:10032\n      redistribute
+    learned\n   !\n   vlan 3401\n      rd 10.255.1.4:13401\n      route-target both
+    13401:13401\n      redistribute learned\n   !\n   vlan 3402\n      rd 10.255.1.4:13402\n
+    \     route-target both 13402:13402\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n
+    \     no neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv6\n
+    \     neighbor IPv6-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv6-UNDERLAY-PEER
+    activate\n   !\n   vrf VRF10\n      rd 10.255.1.4:10\n      route-target import
+    evpn 10:10\n      route-target export evpn 10:10\n      router-id 10.255.1.4\n
+    \     neighbor 2001:db8:4:2::1 peer group MLAG-IPv6-UNDERLAY-PEER\n      neighbor
+    2001:db8:4:2::1 description dc1-leaf2a_Vlan3009\n      redistribute connected
+    route-map RM-CONN-2-BGP-VRFS\n   !\n   vrf VRF11\n      rd 10.255.1.4:11\n      route-target
+    import evpn 11:11\n      route-target export evpn 11:11\n      router-id 10.255.1.4\n
+    \     neighbor 2001:db8:4:2::1 peer group MLAG-IPv6-UNDERLAY-PEER\n      neighbor
+    2001:db8:4:2::1 description dc1-leaf2a_Vlan3010\n      redistribute connected
+    route-map RM-CONN-2-BGP-VRFS\n   !\n   vrf VRF12\n      rd 10.255.1.4:12\n      route-target
+    import evpn 12:12\n      route-target export evpn 12:12\n      router-id 10.255.1.4\n
+    \     neighbor 2001:db8:4:2::1 peer group MLAG-IPv6-UNDERLAY-PEER\n      neighbor
+    2001:db8:4:2::1 description dc1-leaf2a_Vlan3011\n      redistribute connected
+    route-map RM-CONN-2-BGP-VRFS\n!\nend\n"
+  AVD-FABRIC-_dc1-leaf2c: "!\nno enable password\nno aaa root\n!\nusername admin privilege
+    15 role network-admin nopassword\nusername ansible privilege 15 role network-admin
+    secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\ndaemon
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.1.12:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname dc1-leaf2c\nip name-server vrf
+    MGMT 192.168.1.1\n!\nspanning-tree mode mstp\nspanning-tree mst 0 priority 32768\n!\nvlan
+    11\n   name VRF10_VLAN11\n!\nvlan 12\n   name VRF10_VLAN12\n!\nvlan 21\n   name
+    VRF11_VLAN21\n!\nvlan 22\n   name VRF11_VLAN22\n!\nvlan 31\n   name VRF12_VLAN31\n!\nvlan
+    32\n   name VRF12_VLAN32\n!\nvlan 3401\n   name L2_VLAN3401\n!\nvlan 3402\n   name
+    L2_VLAN3402\n!\nvrf instance MGMT\n!\nmanagement api http-commands\n   protocol
+    https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\ninterface Port-Channel1\n
+    \  description L2_DC1_L3_LEAF2_Port-Channel8\n   no shutdown\n   switchport trunk
+    allowed vlan 11-12,21-22,31-32,3401-3402\n   switchport mode trunk\n   switchport\n!\ninterface
+    Ethernet1\n   description L2_dc1-leaf2a_Ethernet8\n   no shutdown\n   channel-group
+    1 mode active\n!\ninterface Ethernet2\n   description L2_dc1-leaf2b_Ethernet8\n
+    \  no shutdown\n   channel-group 1 mode active\n!\ninterface Ethernet5\n   description
+    SERVER_dc1-leaf2-server1_iLO\n   no shutdown\n   switchport access vlan 11\n   switchport
+    mode access\n   switchport\n   spanning-tree portfast\n!\ninterface Management1\n
+    \  description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip address 172.16.1.152/24\nno
+    ip routing vrf MGMT\n!\nip route vrf MGMT 0.0.0.0/0 172.16.1.1\n!\nntp local-interface
+    vrf MGMT Management1\nntp server vrf MGMT 0.pool.ntp.org prefer\n!\nend\n"
+  AVD-FABRIC-_dc1-spine1: "!\nno enable password\nno aaa root\n!\nusername admin privilege
+    15 role network-admin nopassword\nusername ansible privilege 15 role network-admin
+    secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\ndaemon
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.1.12:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname dc1-spine1\nip name-server vrf
+    MGMT 192.168.1.1\n!\nspanning-tree mode none\n!\nvrf instance MGMT\n!\nmanagement
+    api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
+    shutdown\n!\ninterface Ethernet1\n   description P2P_dc1-leaf1a_Ethernet1\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ipv6 address 2001:db8:2::1/64\n!\ninterface
+    Ethernet2\n   description P2P_dc1-leaf1b_Ethernet1\n   no shutdown\n   mtu 1500\n
+    \  no switchport\n   ipv6 address 2001:db8:2:2::1/64\n!\ninterface Ethernet3\n
+    \  description P2P_dc1-leaf2a_Ethernet1\n   no shutdown\n   mtu 1500\n   no switchport\n
+    \  ipv6 address 2001:db8:2:4::1/64\n!\ninterface Ethernet4\n   description P2P_dc1-leaf2b_Ethernet1\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ipv6 address 2001:db8:2:6::1/64\n!\ninterface
+    Loopback0\n   description ROUTER_ID\n   no shutdown\n   ipv6 address 2001:db8:0:1::1/64\n!\ninterface
+    Management1\n   description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip
+    address 172.16.1.11/24\n!\nip routing\nno ip routing vrf MGMT\n!\nipv6 prefix-list
+    PL-LOOPBACKS-EVPN-OVERLAY-V6\n   seq 10 permit 2001:db8::/48 eq 64\n!\nipv6 unicast-routing\n!\nip
+    route vrf MGMT 0.0.0.0/0 172.16.1.1\n!\nntp local-interface vrf MGMT Management1\nntp
+    server vrf MGMT 0.pool.ntp.org prefer\n!\nroute-map RM-CONN-2-BGP permit 30\n
+    \  match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6\n!\nrouter bfd\n
+    \  multihop interval 300 min-rx 300 multiplier 3\n!\nrouter bgp 65100\n   router-id
+    10.255.0.1\n   no bgp default ipv4-unicast\n   maximum-paths 4 ecmp 4\n   neighbor
+    EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n
+    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    password 7 Q4fqtbqcZ7oQuKfuWtNGRQ==\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv6-UNDERLAY-PEERS
+    peer group\n   neighbor IPv6-UNDERLAY-PEERS password 7 F0bdF6JLcJtagc6PCN8W0Q==\n
+    \  neighbor IPv6-UNDERLAY-PEERS send-community\n   neighbor IPv6-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor 2001:db8:1:1::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:1:1::1 remote-as 65101\n   neighbor 2001:db8:1:1::1 description
+    dc1-leaf1a_Loopback0\n   neighbor 2001:db8:1:2::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:1:2::1 remote-as 65101\n   neighbor 2001:db8:1:2::1 description
+    dc1-leaf1b_Loopback0\n   neighbor 2001:db8:1:3::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:1:3::1 remote-as 65102\n   neighbor 2001:db8:1:3::1 description
+    dc1-leaf2a_Loopback0\n   neighbor 2001:db8:1:4::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:1:4::1 remote-as 65102\n   neighbor 2001:db8:1:4::1 description
+    dc1-leaf2b_Loopback0\n   neighbor 2001:db8:2:2::2 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2:2::2 remote-as 65101\n   neighbor 2001:db8:2:2::2 description
+    dc1-leaf1b_Ethernet1\n   neighbor 2001:db8:2:4::2 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2:4::2 remote-as 65102\n   neighbor 2001:db8:2:4::2 description
+    dc1-leaf2a_Ethernet1\n   neighbor 2001:db8:2:6::2 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2:6::2 remote-as 65102\n   neighbor 2001:db8:2:6::2 description
+    dc1-leaf2b_Ethernet1\n   neighbor 2001:db8:2::2 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2::2 remote-as 65101\n   neighbor 2001:db8:2::2 description
+    dc1-leaf1a_Ethernet1\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n
+    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family
+    ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv6\n
+    \     neighbor IPv6-UNDERLAY-PEERS activate\n!\nend\n"
+  AVD-FABRIC-_dc1-spine2: "!\nno enable password\nno aaa root\n!\nusername admin privilege
+    15 role network-admin nopassword\nusername ansible privilege 15 role network-admin
+    secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\ndaemon
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.1.12:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname dc1-spine2\nip name-server vrf
+    MGMT 192.168.1.1\n!\nspanning-tree mode none\n!\nvrf instance MGMT\n!\nmanagement
+    api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
+    shutdown\n!\ninterface Ethernet1\n   description P2P_dc1-leaf1a_Ethernet2\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ipv6 address 2001:db8:2:1::1/64\n!\ninterface
+    Ethernet2\n   description P2P_dc1-leaf1b_Ethernet2\n   no shutdown\n   mtu 1500\n
+    \  no switchport\n   ipv6 address 2001:db8:2:3::1/64\n!\ninterface Ethernet3\n
+    \  description P2P_dc1-leaf2a_Ethernet2\n   no shutdown\n   mtu 1500\n   no switchport\n
+    \  ipv6 address 2001:db8:2:5::1/64\n!\ninterface Ethernet4\n   description P2P_dc1-leaf2b_Ethernet2\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ipv6 address 2001:db8:2:7::1/64\n!\ninterface
+    Loopback0\n   description ROUTER_ID\n   no shutdown\n   ipv6 address 2001:db8:0:2::1/64\n!\ninterface
+    Management1\n   description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip
+    address 172.16.1.12/24\n!\nip routing\nno ip routing vrf MGMT\n!\nipv6 prefix-list
+    PL-LOOPBACKS-EVPN-OVERLAY-V6\n   seq 10 permit 2001:db8::/48 eq 64\n!\nipv6 unicast-routing\n!\nip
+    route vrf MGMT 0.0.0.0/0 172.16.1.1\n!\nntp local-interface vrf MGMT Management1\nntp
+    server vrf MGMT 0.pool.ntp.org prefer\n!\nroute-map RM-CONN-2-BGP permit 30\n
+    \  match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6\n!\nrouter bfd\n
+    \  multihop interval 300 min-rx 300 multiplier 3\n!\nrouter bgp 65100\n   router-id
+    10.255.0.2\n   no bgp default ipv4-unicast\n   maximum-paths 4 ecmp 4\n   neighbor
+    EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n
+    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    password 7 Q4fqtbqcZ7oQuKfuWtNGRQ==\n   neighbor EVPN-OVERLAY-PEERS send-community\n
+    \  neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv6-UNDERLAY-PEERS
+    peer group\n   neighbor IPv6-UNDERLAY-PEERS password 7 F0bdF6JLcJtagc6PCN8W0Q==\n
+    \  neighbor IPv6-UNDERLAY-PEERS send-community\n   neighbor IPv6-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor 2001:db8:1:1::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:1:1::1 remote-as 65101\n   neighbor 2001:db8:1:1::1 description
+    dc1-leaf1a_Loopback0\n   neighbor 2001:db8:1:2::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:1:2::1 remote-as 65101\n   neighbor 2001:db8:1:2::1 description
+    dc1-leaf1b_Loopback0\n   neighbor 2001:db8:1:3::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:1:3::1 remote-as 65102\n   neighbor 2001:db8:1:3::1 description
+    dc1-leaf2a_Loopback0\n   neighbor 2001:db8:1:4::1 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 2001:db8:1:4::1 remote-as 65102\n   neighbor 2001:db8:1:4::1 description
+    dc1-leaf2b_Loopback0\n   neighbor 2001:db8:2:1::2 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2:1::2 remote-as 65101\n   neighbor 2001:db8:2:1::2 description
+    dc1-leaf1a_Ethernet2\n   neighbor 2001:db8:2:3::2 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2:3::2 remote-as 65101\n   neighbor 2001:db8:2:3::2 description
+    dc1-leaf1b_Ethernet2\n   neighbor 2001:db8:2:5::2 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2:5::2 remote-as 65102\n   neighbor 2001:db8:2:5::2 description
+    dc1-leaf2a_Ethernet2\n   neighbor 2001:db8:2:7::2 peer group IPv6-UNDERLAY-PEERS\n
+    \  neighbor 2001:db8:2:7::2 remote-as 65102\n   neighbor 2001:db8:2:7::2 description
+    dc1-leaf2b_Ethernet2\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n
+    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family
+    ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv6\n
+    \     neighbor IPv6-UNDERLAY-PEERS activate\n!\nend\n"
+cvp_topology:
+  DC1:
+    devices: []
+    parent_container: FABRIC
+  DC1_L2_LEAVES:
+    devices:
+    - dc1-leaf1c
+    - dc1-leaf2c
+    parent_container: DC1
+  DC1_L3_LEAVES:
+    devices:
+    - dc1-leaf1a
+    - dc1-leaf1b
+    - dc1-leaf2a
+    - dc1-leaf2b
+    parent_container: DC1
+  DC1_SPINES:
+    devices:
+    - dc1-spine1
+    - dc1-spine2
+    parent_container: DC1
+  FABRIC:
+    devices: []
+    parent_container: Tenant

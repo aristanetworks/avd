@@ -1,0 +1,84 @@
+fabric_name: FABRIC_MISSING_IP_ADDRESS_ON_WAN_LAN_HA_UPLINK
+
+wan_mode: cv-pathfinder
+underlay_routing_protocol: ebgp
+
+cv_pathfinder_regions:
+  - name: AVD_Land_East
+    id: 43
+    description: AVD Region
+    sites:
+      - name: Site511
+        id: 511
+        location: Miami
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.142.0/24
+      - 192.168.143.0/24
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+  data_plane:
+    shared_key: ABCDEF1234567890666
+
+type: wan_router
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.142.0/24
+    uplink_ipv4_pool: 172.17.0.0/16
+    bgp_as: 65000
+  node_groups:
+    - group: Site511
+      cv_pathfinder_region: AVD_Land_East
+      cv_pathfinder_site: Site511
+      loopback_ipv6_pool: 2001:db8::/64
+      uplink_type: p2p-vrfs
+      uplink_interfaces: [Ethernet52]
+      wan_ha:
+        enabled: true
+        ha_interfaces: [Ethernet52]
+      nodes:
+        - name: missing-ip-address-on-wan-lan-ha-uplink-for-peer
+          id: 2
+          uplink_switches: [missing-ip-address-on-uplink-used-as-wan-lan-ha]
+          l3_interfaces:
+            - name: Ethernet1
+              wan_carrier: ATT
+              wan_circuit_id: 423-01
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+        - name: missing-ip-address-on-uplink-used-as-wan-lan-ha
+          id: 3
+          uplink_switches: [missing-ip-address-on-wan-lan-ha-uplink-for-peer]
+          l3_interfaces:
+            - name: Ethernet2
+              wan_carrier: Colt
+              wan_circuit_id: 10423
+              ip_address: 172.15.6.6/31
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+
+wan_path_groups:
+  - name: MPLS
+    ipsec:
+      static_peers: false
+      dynamic_peers: false
+    id: 100
+    dps_keepalive:
+      interval: 300
+  - name: INET
+    id: 101
+
+wan_carriers:
+  - name: ATT
+    path_group: INET
+    trusted: true
+  - name: Colt
+    path_group: MPLS
+    trusted: true

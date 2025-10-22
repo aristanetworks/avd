@@ -35,4 +35,36 @@ queue-monitor length cpu threshold {{ queue_monitor_length.cpu.thresholds.high }
 !
 queue-monitor length log {{ queue_monitor_length.log }}
 {%     endif %}
+{%     if queue_monitor_length.mirror.enabled is arista.avd.defined(true) or
+        queue_monitor_length.mirror.destination.cpu is arista.avd.defined(true) or
+        queue_monitor_length.mirror.destination.ethernet_interfaces is arista.avd.defined or
+        queue_monitor_length.mirror.destination.tunnel_mode_gre is arista.avd.defined %}
+!
+{%         if queue_monitor_length.mirror.enabled is arista.avd.defined(true) %}
+queue-monitor length mirror
+{%         endif %}
+{%         if queue_monitor_length.mirror.destination.cpu is arista.avd.defined(true) %}
+queue-monitor length mirror destination Cpu
+{%         endif %}
+{%         for ethernet_interface in queue_monitor_length.mirror.destination.ethernet_interfaces | arista.avd.natural_sort %}
+queue-monitor length mirror destination {{ ethernet_interface }}
+{%         endfor %}
+{%         if queue_monitor_length.mirror.destination.tunnel_mode_gre is arista.avd.defined %}
+{%             set tunnel_mode_gre = queue_monitor_length.mirror.destination.tunnel_mode_gre %}
+{%             set tunnel_config = "queue-monitor length mirror destination tunnel mode gre source " ~ tunnel_mode_gre.source ~ " destination " ~ tunnel_mode_gre.destination %}
+{%             if tunnel_mode_gre.ttl is arista.avd.defined %}
+{%                 set tunnel_config = tunnel_config ~ " ttl " ~ tunnel_mode_gre.ttl %}
+{%             endif %}
+{%             if tunnel_mode_gre.dscp is arista.avd.defined %}
+{%                 set tunnel_config = tunnel_config ~ " dscp " ~ tunnel_mode_gre.dscp %}
+{%             endif %}
+{%             if tunnel_mode_gre.protocol is arista.avd.defined %}
+{%                 set tunnel_config = tunnel_config ~ " protocol " ~ tunnel_mode_gre.protocol %}
+{%             endif %}
+{%             if tunnel_mode_gre.vrf is arista.avd.defined %}
+{%                 set tunnel_config = tunnel_config ~ " vrf " ~ tunnel_mode_gre.vrf %}
+{%             endif %}
+{{ tunnel_config }}
+{%         endif %}
+{%     endif %}
 {% endif %}

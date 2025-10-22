@@ -1,0 +1,3 @@
+---
+# Test iBGP evpn_encapsulation:vxlan with evpn_role server
+fabric_evpn_encapsulation: vxlan

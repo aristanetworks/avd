@@ -1,0 +1,33 @@
+type: l3leaf
+
+overlay_routing_protocol: HER
+overlay_her_flood_list_per_vni: true
+overlay_her_flood_list_scope: dc
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.254.0/24
+    vtep_loopback_ipv4_pool: 192.168.253.0/24
+    bgp_as: 65001
+  nodes:
+    - name: missing-dc-name-for-overlay-her-flood-list-scope-dc
+      id: 1
+      filter:
+        tags: ["leaf1"]
+
+tenants:
+  - name: TEST
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: TEST
+        vrf_id: 1
+        svis:
+          - id: 3900
+            name: SVI_ON_ALL_LEAFS
+            tags: ["leaf1"]
+    l2vlans:
+      - id: 2900
+        name: L2VLAN_ON_ALL_LEAFS
+        tags: ["leaf1"]
+
+expected_error_message: "'dc_name' is required with 'overlay_her_flood_list_scope: dc'"

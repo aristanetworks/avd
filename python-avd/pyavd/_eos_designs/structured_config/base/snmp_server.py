@@ -8,7 +8,8 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._utils import AvdStringFormatter, strip_null_from_data
 from pyavd.j2filters import natural_sort, snmp_hash
 
 if TYPE_CHECKING:
@@ -36,24 +37,20 @@ class SnmpServerMixin(Protocol):
         we will use snmp_hash filter to create an instance of hashlib HASH corresponding to the auth_type
         value based on various snmp_settings.users information.
         """
-        source_interfaces_inputs = self.inputs.source_interfaces.snmp
         snmp_settings = self.inputs.snmp_settings
 
-        if not any([source_interfaces_inputs, snmp_settings]):
+        if not snmp_settings:
             return
 
         self._snmp_engine_ids(snmp_settings)
         self._snmp_location(snmp_settings)
         self._snmp_users(snmp_settings)
         self._snmp_hosts(snmp_settings)
-        self._snmp_vrfs(snmp_settings)
-        self._snmp_local_interfaces(source_interfaces_inputs)
+        self._snmp_vrfs_and_acls(snmp_settings)
 
         self.structured_config.snmp_server._update(
             contact=snmp_settings.contact,
             communities=snmp_settings.communities,
-            ipv4_acls=snmp_settings.ipv4_acls._cast_as(EosCliConfigGen.SnmpServer.Ipv4Acls),
-            ipv6_acls=snmp_settings.ipv6_acls._cast_as(EosCliConfigGen.SnmpServer.Ipv6Acls),
             views=snmp_settings.views._cast_as(EosCliConfigGen.SnmpServer.Views),
             groups=snmp_settings.groups._cast_as(EosCliConfigGen.SnmpServer.Groups),
             traps=snmp_settings.traps,
@@ -69,16 +66,12 @@ class SnmpServerMixin(Protocol):
             # Accepting SonarLint issue: The weak sha1 is not used for encryption. Just to create a unique engine id.
             local_engine_id = sha1(f"{self.shared_utils.hostname}{self.shared_utils.node_config.mgmt_ip}".encode()).hexdigest()  # NOSONAR # noqa: S324
 
-        elif compute_source == "system_mac":
+        else:
             if self.shared_utils.system_mac_address is None:
-                msg = "default_engine_id_from_system_mac: true requires system_mac_address to be set."
+                msg = "'compute_local_engineid_source: system_mac' requires 'system_mac_address' to be set."
                 raise AristaAvdInvalidInputsError(msg)
             # the default engine id on switches is derived as per the following formula
             local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
-        else:
-            # Unknown mode
-            msg = f"'{compute_source}' is not a valid value to compute the engine ID, accepted values are 'hostname_and_ip' and 'system_mac'"
-            raise AristaAvdError(msg)
 
         self.structured_config.snmp_server.engine_ids.local = local_engine_id
 
@@ -87,15 +80,18 @@ class SnmpServerMixin(Protocol):
         if not snmp_settings.location:
             return
 
-        location_elements = [
-            self.shared_utils.fabric_name,
-            self.inputs.dc_name,
-            self.inputs.pod_name,
-            self.shared_utils.node_config.rack,
-            self.shared_utils.hostname,
-        ]
-        location_elements = [location for location in location_elements if location not in [None, ""]]
-        self.structured_config.snmp_server.location = " ".join(location_elements)
+        self.structured_config.snmp_server.location = AvdStringFormatter().format(
+            self.inputs.snmp_settings.location_template,
+            **strip_null_from_data(
+                {
+                    "fabric_name": self.shared_utils.fabric_name,
+                    "dc_name": self.inputs.dc_name,
+                    "pod_name": self.inputs.pod_name,
+                    "rack": self.shared_utils.node_config.rack,
+                    "hostname": self.shared_utils.hostname,
+                }
+            ),
+        )
 
     def _snmp_users(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
         """
@@ -122,6 +118,7 @@ class SnmpServerMixin(Protocol):
 
                 if user.auth is not None and user.auth_passphrase is not None:
                     user_dict.auth = user.auth
+                    hash_filter = {}
                     if compute_v3_user_localized_key:
                         hash_filter = {"passphrase": user.auth_passphrase, "auth": user.auth, "engine_id": engine_ids.local}
                         user_dict.auth_passphrase = snmp_hash(hash_filter)
@@ -148,23 +145,23 @@ class SnmpServerMixin(Protocol):
         if not (hosts := snmp_settings.hosts):
             return
 
-        has_mgmt_ip = (self.shared_utils.node_config.mgmt_ip is not None) or (self.shared_utils.node_config.ipv6_mgmt_ip is not None)
-
         for host in natural_sort(hosts, "host"):
             host: EosDesigns.SnmpSettings.HostsItem
             vrfs = set()
             if vrf := host.vrf:
-                vrfs.add(vrf)
+                host_vrf, source_interface = self._get_vrf_and_source_interface(
+                    vrf_input=vrf,
+                    vrfs=snmp_settings.vrfs,
+                    set_source_interfaces=True,
+                    context=f"snmp_settings.hosts[host={host.host}].vrf",
+                )
+                vrfs.add(host_vrf)
 
-            if (use_mgmt_interface_vrf := host.use_mgmt_interface_vrf) and has_mgmt_ip:
-                vrfs.add(self.inputs.mgmt_interface_vrf)
+                if source_interface:
+                    self.structured_config.snmp_server.local_interfaces.append_new(name=source_interface, vrf=host_vrf if host_vrf != "default" else None)
 
-            if (use_inband_mgmt_vrf := host.use_inband_mgmt_vrf) and self.shared_utils.inband_mgmt_interface is not None:
-                # self.shared_utils.inband_mgmt_vrf returns None for the default VRF, but here we need "default" to avoid duplicates.
-                vrfs.add(self.shared_utils.inband_mgmt_vrf or "default")
-
-            if not any([vrfs, use_mgmt_interface_vrf, use_inband_mgmt_vrf]):
-                # If no VRFs are defined (and we are not just ignoring missing mgmt config)
+            if not vrfs:
+                # If no VRFs are defined
                 vrfs.add("default")
 
             output_host = host._cast_as(EosCliConfigGen.SnmpServer.HostsItem, ignore_extra_keys=True)
@@ -185,36 +182,25 @@ class SnmpServerMixin(Protocol):
 
         self.structured_config.snmp_server.hosts = snmp_hosts
 
-    def _snmp_local_interfaces(self: AvdStructuredConfigBaseProtocol, source_interfaces_inputs: EosDesigns.SourceInterfaces.Snmp) -> None:
-        """Set local_interfaces if "source_interfaces.snmp" is set."""
-        if not source_interfaces_inputs:
-            # Empty dict or None
-            return
-        local_interfaces = self._build_source_interfaces(
-            source_interfaces_inputs.mgmt_interface,
-            source_interfaces_inputs.inband_mgmt_interface,
-            error_context="SNMP",
-            output_type=EosCliConfigGen.SnmpServer.LocalInterfaces,
-        )
-        self.structured_config.snmp_server.local_interfaces = local_interfaces
-
-    def _snmp_vrfs(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
+    def _snmp_vrfs_and_acls(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
         """
-        Set list of dicts for enabling/disabling SNMP for VRFs.
+        Set ACLs (ipv4 and ipv6) and a list of dicts for enabling/disabling SNMP for VRFs.
 
-        Requires one of the following options to be set under snmp_settings:
-        - vrfs
-        - enable_mgmt_interface_vrf
-        - enable_inband_mgmt_vrf
+        Requires snmp_settings.vrfs to be set
         """
-        has_mgmt_ip = (self.shared_utils.node_config.mgmt_ip is not None) or (self.shared_utils.node_config.ipv6_mgmt_ip is not None)
+        vrfs = EosCliConfigGen.SnmpServer.Vrfs()
 
-        vrfs = snmp_settings.vrfs._deepcopy()
-        if has_mgmt_ip and (enable_mgmt_interface_vrf := snmp_settings.enable_mgmt_interface_vrf) is not None:
-            vrfs.append(EosCliConfigGen.SnmpServer.VrfsItem(name=self.inputs.mgmt_interface_vrf, enable=enable_mgmt_interface_vrf))
+        for vrf in snmp_settings.vrfs:
+            if vrf.enable is None:
+                continue
 
-        if (enable_inband_mgmt_vrf := snmp_settings.enable_inband_mgmt_vrf) is not None and self.shared_utils.inband_mgmt_interface is not None:
-            # self.shared_utils.inband_mgmt_vrf returns None for the default VRF, but here we need "default" to avoid duplicates.
-            vrfs.append(EosCliConfigGen.SnmpServer.VrfsItem(name=self.shared_utils.inband_mgmt_vrf or "default", enable=enable_inband_mgmt_vrf))
+            vrf_name = self.get_vrf(vrf.name, context=f"snmp_settings.vrfs[name={vrf.name}]")
+            vrfs.append_new(name=vrf_name, enable=vrf.enable)
+
+            if vrf.ipv4_acl is not None:
+                self.structured_config.snmp_server.ipv4_acls.append_new(name=vrf.ipv4_acl, vrf=vrf_name if vrf_name != "default" else None)
+
+            if vrf.ipv6_acl is not None:
+                self.structured_config.snmp_server.ipv6_acls.append_new(name=vrf.ipv6_acl, vrf=vrf_name if vrf_name != "default" else None)
 
         self.structured_config.snmp_server.vrfs = vrfs._natural_sorted()

@@ -7,6 +7,8 @@ import json
 from logging import getLogger
 from typing import TYPE_CHECKING, Any, Literal, Protocol
 
+from grpclib import GRPCError, Status
+
 from pyavd._cv.api.arista.studio.v1 import (
     Inputs,
     InputsConfig,
@@ -28,9 +30,10 @@ from pyavd._cv.api.arista.studio.v1 import (
 )
 from pyavd._cv.api.arista.time import TimeBounds
 from pyavd._cv.api.fmp import RepeatedString
+from pyavd._cv.client.exceptions import CVResourceNotFound
 
+from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
-from .exceptions import CVResourceNotFound, get_cv_client_exception
 
 if TYPE_CHECKING:
     from datetime import datetime
@@ -48,6 +51,7 @@ class StudioMixin(Protocol):
 
     studio_api_version: Literal["v1"] = "v1"
 
+    @GRPCRequestHandler()
     async def get_studio(
         self: CVClientProtocol,
         studio_id: str,
@@ -80,8 +84,7 @@ class StudioMixin(Protocol):
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
         except Exception as e:  # pylint: disable=broad-exception-caught
-            e = get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
-            if isinstance(e, CVResourceNotFound):
+            if isinstance(e, GRPCError) and e.status == Status.NOT_FOUND:
                 # Continue execution if we did not find any state in the workspace.
                 # This simply means the studio itself was not changed in this workspace.
                 pass
@@ -103,14 +106,11 @@ class StudioMixin(Protocol):
             time=TimeBounds(start=None, end=time),
         )
         client = StudioConfigServiceStub(self._channel)
-        try:
-            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            async for _response in responses:
-                # If we get here it means we got an entry with "removed: True" so no need to look further.
-                msg = "The studio was deleted in the workspace."
-                raise CVResourceNotFound(msg, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'")  # noqa: TRY301 TODO: Improve error handling
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        async for _response in responses:
+            # If we get here it means we got an entry with "removed: True" so no need to look further.
+            msg = "The studio was deleted in the workspace."
+            raise CVResourceNotFound(msg, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'")
 
         # If we get here, it means there are no inputs in the workspace and they are not deleted, so we can fetch from mainline.
         request = StudioRequest(
@@ -119,13 +119,11 @@ class StudioMixin(Protocol):
             time=time,
         )
         client = StudioServiceStub(self._channel)
-        try:
-            response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
+        response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
 
+    @GRPCRequestHandler()
     async def get_studio_inputs(
         self: CVClientProtocol,
         studio_id: str,
@@ -162,27 +160,25 @@ class StudioMixin(Protocol):
         )
         client = InputsServiceStub(self._channel)
         studio_inputs = {}
-        try:
-            # We use get_all since inputs can be larger than the maximum message size.
-            # The inputs are split up by the server to send the value of each key in the underlying data instead of one big JSON blob.
-            # Each response will contain a path on which a value must be set.
-            # After all responses have been handled the data built from the paths/values contain the full inputs.
-            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            async for response in responses:
-                if response.value.inputs is None:
-                    continue
 
-                self._set_value_from_path(
-                    path=response.value.key.path.values,
-                    data=studio_inputs,
-                    value=json.loads(response.value.inputs),
-                )
+        # We use get_all since inputs can be larger than the maximum message size.
+        # The inputs are split up by the server to send the value of each key in the underlying data instead of one big JSON blob.
+        # Each response will contain a path on which a value must be set.
+        # After all responses have been handled the data built from the paths/values contain the full inputs.
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        async for response in responses:
+            if response.value.inputs is None:
+                continue
 
-            # We only get a response if the inputs are set/changed in the workspace.
-            if studio_inputs:
-                return studio_inputs or default_value
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
+            self._set_value_from_path(
+                path=response.value.key.path.values,
+                data=studio_inputs,
+                value=json.loads(response.value.inputs),
+            )
+
+        # We only get a response if the inputs are set/changed in the workspace.
+        if studio_inputs:
+            return studio_inputs or default_value
 
         # If we get here, it means no inputs were returned by the workspace call.
         # So now we fetch the inputs config from the workspace to see if the inputs were deleted in this workspace.
@@ -196,14 +192,10 @@ class StudioMixin(Protocol):
             time=time,
         )
         client = InputsConfigServiceStub(self._channel)
-        try:
-            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            async for _response in responses:
-                # If we get here it means we got an entry with "removed: True" so no need to look further.
-                return default_value
-
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        async for _response in responses:
+            # If we get here it means we got an entry with "removed: True" so no need to look further.
+            return default_value
 
         # If we get here, it means there are no inputs in the workspace and they are not deleted, so we can fetch from mainline.
         request = InputsStreamRequest(
@@ -216,22 +208,20 @@ class StudioMixin(Protocol):
             time=time,
         )
         client = InputsServiceStub(self._channel)
-        try:
-            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            async for response in responses:
-                if response.value.inputs is None:
-                    continue
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        async for response in responses:
+            if response.value.inputs is None:
+                continue
 
-                self._set_value_from_path(
-                    path=response.value.key.path.values,
-                    data=studio_inputs,
-                    value=json.loads(response.value.inputs),
-                )
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
+            self._set_value_from_path(
+                path=response.value.key.path.values,
+                data=studio_inputs,
+                value=json.loads(response.value.inputs),
+            )
 
         return studio_inputs or default_value
 
+    @GRPCRequestHandler()
     async def get_studio_inputs_with_path(
         self: CVClientProtocol,
         studio_id: str,
@@ -271,9 +261,8 @@ class StudioMixin(Protocol):
         client = InputsServiceStub(self._channel)
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-        except Exception as e:  # pylint: disable=broad-exception-caught
-            e = get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}', Path '{input_path}'") or e
-            if isinstance(e, CVResourceNotFound) and workspace_id != "":
+        except GRPCError as e:
+            if e.status == Status.NOT_FOUND and workspace_id != "":
                 # Ignore this error, since it simply means we have to check if inputs got deleted in this workspace or fetch from mainline as last resort.
                 pass
             else:
@@ -299,14 +288,10 @@ class StudioMixin(Protocol):
             time=time,
         )
         client = InputsConfigServiceStub(self._channel)
-        try:
-            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            async for _response in responses:
-                # If we get here it means we got an entry with "removed: True" so no need to look further.
-                return default_value
-
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}', Path '{input_path}'") or e
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        async for _response in responses:
+            # If we get here it means we got an entry with "removed: True" so no need to look further.
+            return default_value
 
         # If we get here, it means there are no inputs in the workspace and they are not deleted, so we can fetch from mainline.
         request = InputsRequest(
@@ -321,9 +306,8 @@ class StudioMixin(Protocol):
         client = InputsServiceStub(self._channel)
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-        except Exception as e:  # pylint: disable=broad-exception-caught
-            e = get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}', Path '{input_path}'") or e
-            if isinstance(e, CVResourceNotFound):
+        except GRPCError as e:
+            if e.status == Status.NOT_FOUND:
                 # Ignore this error, since it simply means we no inputs are in the studio so we will return the default value.
                 return default_value
             raise
@@ -332,6 +316,7 @@ class StudioMixin(Protocol):
             return json.loads(response.value.inputs)
         return default_value
 
+    @GRPCRequestHandler()
     async def set_studio_inputs(
         self: CVClientProtocol,
         studio_id: str,
@@ -366,13 +351,11 @@ class StudioMixin(Protocol):
             ),
         )
         client = InputsConfigServiceStub(self._channel)
-        try:
-            response = await client.set(request, metadata=self._metadata, timeout=timeout)
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}', Path '{input_path}'") or e
+        response = await client.set(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
 
+    @GRPCRequestHandler()
     async def get_topology_studio_inputs(
         self: CVClientProtocol,
         workspace_id: str,
@@ -429,6 +412,7 @@ class StudioMixin(Protocol):
             )
         return topology_inputs
 
+    @GRPCRequestHandler()
     async def set_topology_studio_inputs(
         self: CVClientProtocol,
         workspace_id: str,
@@ -495,12 +479,7 @@ class StudioMixin(Protocol):
                 ),
             )
 
-        input_keys = []
         client = InputsConfigServiceStub(self._channel)
-        try:
-            responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
-            input_keys = [response.key async for response in responses]
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Studio ID '{TOPOLOGY_STUDIO_ID}, Workspace ID '{workspace_id}', Devices '{device_inputs}'") or e
+        responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
 
-        return input_keys
+        return [response.key async for response in responses]

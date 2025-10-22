@@ -1,0 +1,41 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: missing-network-services-l3-interface-ospf-authentication-key
+      id: 101
+      bgp_as: 101
+
+tenants:
+  - name: L3PO
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: TESTING
+        vrf_id: 2
+        # missing authenication-key for both vrf and l3_interface
+        ospf:
+          enabled: true
+          authentication: simple
+        svis:
+        l3_interfaces:
+          - enabled: true
+            interfaces:
+              - Ethernet6
+            ip_addresses:
+              - 192.168.48.4/31
+            ospf:
+              enabled: true
+              area: 0
+            nodes:
+              - missing-network-services-l3-interface-ospf-authentication-key
+
+expected_error_message: >-
+  '`tenants[name=L3PO].vrfs[name=TESTING].ospf.cleartext_simple_auth_key`
+  or `tenants[name=L3PO].vrfs[name=TESTING].l3_interfaces[name=Ethernet6].ospf.simple_auth_key`
+  or `tenants[name=L3PO].vrfs[name=TESTING].l3_interfaces[name=Ethernet6].ospf.cleartext_simple_auth_key`'
+  is required but was not found.

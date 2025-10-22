@@ -6,6 +6,10 @@
 {# context used to hide password and keys #}
 {% set hide_passwords = eos_cli_config_gen_documentation.hide_passwords | arista.avd.default(true) %}
 # {{ hostname | arista.avd.default(inventory_hostname) }}
+{% if metadata.serial_number is arista.avd.defined %}
+
+Serial Number: {{ metadata.serial_number }}
+{% endif %}
 {% if eos_cli_config_gen_documentation.toc is not arista.avd.defined(false) %}
 
 ## Table of Contents
@@ -43,6 +47,8 @@
 {% include 'documentation/monitor-layer1.j2' %}
 {# Hardware TCAM Profile #}
 {% include 'documentation/tcam-profile.j2' %}
+{# Load Balance #}
+{% include 'documentation/load-balance.j2' %}
 {# Link Tracking Groups #}
 {% include 'documentation/link-tracking-groups.j2' %}
 {# MLAG #}
@@ -57,6 +63,8 @@
 {% include 'documentation/spanning-tree.j2' %}
 {# Sync-E #}
 {% include 'documentation/sync-e.j2' %}
+{# Port-channel #}
+{% include 'documentation/port-channel.j2' %}
 {# Internal VLAN Allocation Policy #}
 {% include 'documentation/vlan-internal-order.j2' %}
 {# VLANs #}
@@ -115,6 +123,8 @@
 {% include 'documentation/ip-dhcp-snooping.j2' %}
 {# IP NAT #}
 {% include 'documentation/ip-nat.j2' %}
+{# IP Hardware FIB #}
+{% include 'documentation/ip-hardware.j2' %}
 {# Errdisable #}
 {% include 'documentation/errdisable.j2' %}
 {# MACsec #}

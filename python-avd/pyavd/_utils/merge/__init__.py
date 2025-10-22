@@ -6,11 +6,13 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import TYPE_CHECKING, Any
 
-from deepmerge import Merger
+from deepmerge.merger import Merger
 
 from .mergeonschema import MergeOnSchema
 
 if TYPE_CHECKING:
+    from deepmerge.strategy.core import StrategyListInitable
+
     from pyavd._schema.avdschema import AvdSchema
 
 
@@ -51,7 +53,7 @@ def merge(
     list_merge: str = "append",
     same_key_strategy: str = "override",
     destructive_merge: bool = True,
-    schema: AvdSchema = None,
+    schema: AvdSchema | None = None,
 ) -> Any:
     """
     Merge two or more data sets using deepmerge.
@@ -87,7 +89,7 @@ def merge(
         msg = f"merge: 'list_merge' argument can only be equal to one of {list(MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY.keys())}"
         raise ValueError(msg)
 
-    list_strategies = [MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY.get(list_merge, "append")]
+    list_strategies: StrategyListInitable = [MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY.get(list_merge, "append")]
 
     if list_merge != "replace" and schema is not None:
         # If list_merge is not "replace" and we have a schema, we prepend the list_strategies
@@ -96,18 +98,17 @@ def merge(
         merge_on_schema = MergeOnSchema(schema)
         list_strategies.insert(0, merge_on_schema.strategy)
 
-    dict_strategies = ["merge" if recursive else "override"]
+    dict_strategies: StrategyListInitable = ["merge" if recursive else "override"]
 
-    if same_key_strategy == "must_match":
-        same_key_strategy = _strategy_must_match
+    fallback_strategy = _strategy_must_match if same_key_strategy == "must_match" else same_key_strategy
 
     merger = Merger(
         # List of tuples with strategies for each type
         [(list, list_strategies), (dict, dict_strategies), (set, ["union"])],
         # Fallback strategy applied to all other types
-        [same_key_strategy],
+        [fallback_strategy],
         # Strategy for type conflict
-        [same_key_strategy],
+        [fallback_strategy],
     )
     for nxt in nxt_list:
         if isinstance(nxt, list):

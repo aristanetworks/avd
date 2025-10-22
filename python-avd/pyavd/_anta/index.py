@@ -18,16 +18,12 @@ AVD_TEST_INDEX: list[TestSpec] = [
     TestSpec(
         test_class=VerifyAPIHttpsSSL,
         conditional_keys=[StructuredConfigKey.HTTPS_SSL_PROFILE],
-        input_dict={"profile": StructuredConfigKey.HTTPS_SSL_PROFILE},
+        input_factory=VerifyAPIHttpsSSLInputFactory,
     ),
     TestSpec(
-        test_class=VerifyAVTPathHealth,
-        conditional_keys=[StructuredConfigKey.ROUTER_AVT],
-    ),
-    TestSpec(
-        test_class=VerifyAVTRole,
-        conditional_keys=[StructuredConfigKey.ROUTER_AVT],
-        input_factory=VerifyAVTRoleInputFactory,
+        test_class=VerifyAVTSpecificPath,
+        conditional_keys=[StructuredConfigKey.ROUTER_AVT, StructuredConfigKey.ROUTER_PATH_SELECTION],
+        input_factory=VerifyAVTSpecificPathInputFactory,
     ),
     TestSpec(
         test_class=VerifyBGPPeerSession,
@@ -36,6 +32,14 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyCoredump,
+    ),
+    TestSpec(
+        test_class=VerifyEnvironmentCooling,
+        input_factory=VerifyEnvironmentCoolingInputFactory,
+    ),
+    TestSpec(
+        test_class=VerifyEnvironmentPower,
+        input_factory=VerifyEnvironmentPowerInputFactory,
     ),
     TestSpec(
         test_class=VerifyEnvironmentSystemCooling,
@@ -64,8 +68,12 @@ AVD_TEST_INDEX: list[TestSpec] = [
         input_factory=VerifyInterfacesStatusInputFactory,
     ),
     TestSpec(
+        test_class=VerifyInventory,
+    ),
+    TestSpec(
         test_class=VerifyPortChannels,
         conditional_keys=[StructuredConfigKey.PORT_CHANNEL_INTERFACES],
+        input_factory=VerifyPortChannelsInputFactory,
     ),
     TestSpec(
         test_class=VerifyRunningConfigDiffs,
@@ -82,6 +90,9 @@ AVD_TEST_INDEX: list[TestSpec] = [
         test_class=VerifyLoggingErrors,
     ),
     TestSpec(
+        test_class=VerifyMaintenance,
+    ),
+    TestSpec(
         test_class=VerifyMemoryUtilization,
     ),
     TestSpec(
@@ -89,21 +100,8 @@ AVD_TEST_INDEX: list[TestSpec] = [
         conditional_keys=[StructuredConfigKey.MLAG_CONFIGURATION],
     ),
     TestSpec(
-        test_class=VerifyMlagDualPrimary,
-        conditional_keys=[StructuredConfigKey.MLAG_DUAL_PRIMARY_DETECTION_DELAY],
-        input_factory=VerifyMlagDualPrimaryInputFactory,
-    ),
-    TestSpec(
         test_class=VerifyMlagInterfaces,
         conditional_keys=[StructuredConfigKey.MLAG_CONFIGURATION],
-    ),
-    TestSpec(
-        test_class=VerifyMlagReloadDelay,
-        conditional_keys=[StructuredConfigKey.RELOAD_DELAY_MLAG, StructuredConfigKey.RELOAD_DELAY_NON_MLAG],
-        input_dict={
-            "reload_delay": StructuredConfigKey.RELOAD_DELAY_MLAG,
-            "reload_delay_non_mlag": StructuredConfigKey.RELOAD_DELAY_NON_MLAG,
-        },
     ),
     TestSpec(
         test_class=VerifyMlagStatus,
@@ -113,8 +111,9 @@ AVD_TEST_INDEX: list[TestSpec] = [
         test_class=VerifyNTP,
     ),
     TestSpec(
-        test_class=VerifyPathsHealth,
+        test_class=VerifySpecificPath,
         conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION],
+        input_factory=VerifySpecificPathInputFactory,
     ),
     TestSpec(
         test_class=VerifyReachability,
@@ -122,11 +121,12 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyReloadCause,
+        input_factory=VerifyReloadCauseInputFactory,
     ),
     TestSpec(
         test_class=VerifyRoutingProtocolModel,
         conditional_keys=[StructuredConfigKey.SERVICE_ROUTING_PROTOCOLS_MODEL],
-        input_dict={"model": StructuredConfigKey.SERVICE_ROUTING_PROTOCOLS_MODEL},
+        input_factory=VerifyRoutingProtocolModelInputFactory,
     ),
     TestSpec(
         test_class=VerifySpecificIPSecConn,
@@ -134,18 +134,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
         input_factory=VerifySpecificIPSecConnInputFactory,
     ),
     TestSpec(
-        test_class=VerifySTPBlockedPorts,
-    ),
-    TestSpec(
         test_class=VerifySTPCounters,
-    ),
-    TestSpec(
-        test_class=VerifyStunClientTranslation,
-        conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION],
-        input_factory=VerifyStunClientTranslationInputFactory,
-    ),
-    TestSpec(
-        test_class=VerifyTelnetStatus,
     ),
     TestSpec(
         test_class=VerifyTemperature,
@@ -153,6 +142,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     TestSpec(
         test_class=VerifyTransceiversTemperature,
     ),
+    TestSpec(test_class=VerifyVxlanConfigSanity, conditional_keys=[StructuredConfigKey.VXLAN1_INTERFACE]),
     TestSpec(
         test_class=VerifyZeroTouch,
     ),

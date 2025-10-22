@@ -19,6 +19,7 @@ if TYPE_CHECKING:
     FlowTracking = (
         EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.FlowTracking
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem.FlowTracking
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem.FlowTracking
         | EosDesigns.CoreInterfaces.P2pLinksItem.FlowTracking
         | EosDesigns.L3Edge.P2pLinksItem.FlowTracking
         | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.WanHa.FlowTracking

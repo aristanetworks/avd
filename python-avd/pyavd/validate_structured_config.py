@@ -21,10 +21,7 @@ def validate_structured_config(structured_config: dict) -> ValidationResult:
     Returns:
         Validation result object with any validation errors or deprecation warnings.
     """
-    # pylint: disable=import-outside-toplevel
-    from .avd_schema_tools import EosCliConfigGenAvdSchemaTools
-
-    # pylint: enable=import-outside-toplevel
+    from .avd_schema_tools import EosCliConfigGenAvdSchemaTools  # noqa: PLC0415
 
     eos_cli_config_gen_schema_tools = EosCliConfigGenAvdSchemaTools()
     # Inplace conversion of data

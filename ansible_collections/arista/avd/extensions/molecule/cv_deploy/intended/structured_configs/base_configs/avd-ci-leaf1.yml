@@ -1,0 +1,12 @@
+hostname: avd-ci-leaf1
+metadata:
+  is_deployed: true
+  cv_tags:
+    device_tags:
+    - name: dummy_name
+      value: dummy_val
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: dummy_name
+        value: dummy_val

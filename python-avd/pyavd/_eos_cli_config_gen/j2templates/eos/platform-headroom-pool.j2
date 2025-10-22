@@ -1,0 +1,15 @@
+{#
+ Copyright (c) 2023-2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - platform profile apply #}
+{% if platform.trident.mmu.headroom_pool.limit is arista.avd.defined %}
+{%     set headroom_pool_limit = "platform trident mmu headroom-pool limit " %}
+{%     if platform.trident.mmu.headroom_pool.unit is arista.avd.defined %}
+{%         set headroom_pool_limit = headroom_pool_limit ~ platform.trident.mmu.headroom_pool.unit ~ " " %}
+{%     endif %}
+{%     set headroom_pool_limit = headroom_pool_limit ~ platform.trident.mmu.headroom_pool.limit %}
+!
+{{ headroom_pool_limit }}
+{% endif %}

@@ -2,7 +2,7 @@
 all:
   hosts:
     cloudvision:
-      ansible_host: www.cv-staging.corp.arista.io
+      ansible_host: apiserver.cv-staging.corp.arista.io
       # cv_token is coming from an ENV variable
       ansible_password: "{{ lookup('ansible.builtin.env', 'CV_TOKEN') }}"
   children:

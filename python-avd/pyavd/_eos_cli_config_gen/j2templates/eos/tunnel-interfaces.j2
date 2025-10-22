@@ -63,6 +63,8 @@ interface {{ tunnel_interface.name }}
 {%     endif %}
 {%     if tunnel_interface.source_interface is arista.avd.defined %}
    tunnel source interface {{ tunnel_interface.source_interface }}
+{%     elif tunnel_interface.source is arista.avd.defined %}
+   tunnel source {{ tunnel_interface.source }}
 {%     endif %}
 {%     if tunnel_interface.destination is arista.avd.defined %}
    tunnel destination {{ tunnel_interface.destination }}

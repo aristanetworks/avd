@@ -33,4 +33,6 @@ def encrypt(value: Any, passwd_type: str | None = None, key: str | None = None, 
     except KeyError as exc:
         msg = f"Type {passwd_type} is not supported for the encrypt filter"
         raise KeyError(msg) from exc
-    return encrypt_method(str(value), key=key, **kwargs)
+    if key is not None:
+        kwargs["key"] = key
+    return encrypt_method(str(value), **kwargs)

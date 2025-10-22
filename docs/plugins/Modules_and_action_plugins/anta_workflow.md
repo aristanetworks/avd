@@ -57,14 +57,12 @@ The plugin offers the following capabilities:
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;batch_size</samp> | int | optional | 5 |  | Number of devices to run per ANTA instance. This can be increased based on the available resources of the Ansible runner. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;tags</samp> | any | optional | None |  | List of tags used with user-defined catalogs to filter which tests to run on which devices.<br>These tags are used in conjunction with `anta_tags` variable assigned to devices in the Ansible inventory. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;dry_run</samp> | bool | optional | False |  | Run ANTA in dry-run mode. In this mode, only the test catalogs are generated,<br>and a report is created to preview the tests that would be run against each device. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;logs_dir</samp> | str | optional | None |  | Directory where the ANTA debug logs will be stored. Logs are stored per ANTA instance. Debug logs can be created using `-vvv` verbosity. |
 | <samp>report</samp> | dict | optional | None |  | ANTA report settings. These settings define the output format and location of the ANTA reports. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;csv_output</samp> | str | optional | None |  | Path to the CSV report file. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;md_output</samp> | str | optional | None |  | Path to the Markdown report file. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;json_output</samp> | str | optional | None |  | Path to the JSON report file. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;filters</samp> | dict | optional | None |  | Filters used to hide specific test statuses from the reports. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hide_statuses</samp> | list | optional | None | Valid values:<br>- <code>success</code><br>- <code>failure</code><br>- <code>error</code><br>- <code>skipped</code><br>- <code>unset</code> | List of test statuses to hide from the reports. |
-| <samp>strict_mode</samp> | bool | optional | False |  | When `strict_mode` is `true`, the plugin returns `failed: true` if any ANTA tests fail or error.<br>Otherwise, the plugin returns `changed: true` in such cases. |
 
 ## See Also
 
@@ -101,7 +99,6 @@ The plugin offers the following capabilities:
           # tags:
           #   - leaf
           # dry_run: true
-          logs_dir: "{{ inventory_dir }}/anta/logs"
         report:
           csv_output: "{{ inventory_dir }}/anta/reports/anta_report.csv"
           md_output: "{{ inventory_dir }}/anta/reports/anta_report.md"
@@ -110,7 +107,6 @@ The plugin offers the following capabilities:
           #   hide_statuses:
           #     - success
           #     - skipped
-        strict_mode: true
 ```
 
 ## Authors

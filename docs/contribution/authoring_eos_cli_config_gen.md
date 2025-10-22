@@ -22,7 +22,7 @@ This document outlines the steps and checklist for contributing to the `eos_cli_
 
 ### Prepare development environment
 
-Follow the [Development Tooling Guide](https://avd.arista.com/stable/docs/contribution/development-tooling.html).
+Follow the [Development Tooling Guide](../contribution/development-tooling.md).
 
 ### Schema creation
 
@@ -78,7 +78,7 @@ Run `pre-commit run --all`, this will trigger recompiling the schemas and the te
 
 !!! Note
 
-    When using Ansible (either through molecule or from a test repo), AVD is able to detect when it is running from source, and recompiles schemas and templates automatically during the "Verify Requirements" step, as outlined in the [Development Tooling Guide](https://avd.arista.com/stable/docs/contribution/development-tooling.html).
+    When using Ansible (either through molecule or from a test repo), AVD is able to detect when it is running from source, and recompiles schemas and templates automatically during the "Verify Requirements" step, as outlined in the [Development Tooling Guide](../contribution/development-tooling.md).
 
     However, if you are using pyavd or need to manually recompile the schemas and templates for any other reason, you can run the following commands:
 
@@ -89,16 +89,17 @@ Run `pre-commit run --all`, this will trigger recompiling the schemas and the te
 
 ### Validate Changes and Test Configurations
 
-1. Add some molecule tests in the `ansible_collections/arista/avd/molecule/eos_cli_config_gen` scenario or other relevant molecule scenario exercising the new knob configuration.
+1. Add some molecule tests in the `ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen` scenario or other relevant molecule scenario exercising the new knob configuration.
 2. Update the `host_vars` files:
    - Modify or add the `molecule/<scenario_name>/host_vars/hostX/<key_name>.yml` file to include the new configuration knobs.
    - If multiple files are required to cover all the test cases:
      - Add the additional test cases to the next host directory, e.g., `host_vars/host2/<key_name>.yml`, `host_vars/host3/<key_name>.yml`, etc.
      - Ensure each file represents unique scenarios or configurations to validate different combinations.
    - Ensure that the new keys are thoroughly tested with various valid values and edge cases.
+   - Use `host1` for all inputs. Also use other hosts (e.g., `host2`, `host3`, etc.) when you have mutually exclusive inputs or wish to test different values for a single key.
 3. When marking any key as "deprecated", move the related tests to the `eos_cli_config_gen_deprecated_vars` molecule scenario and add any missing tests if necessary.
 4. Run `molecule converge -s <scenario_name>` from the path `ansible_collections/arista/avd/` to execute the molecule tests locally and generate the new expected configuration and documentation for newly added test-cases.
-5. To execute all the molecule scenarios, run `make refresh-facts` from the path `ansible_collections/arista/avd/molecule` and verify the tests.
+5. To execute all the molecule scenarios, run `make refresh-facts` from the path `ansible_collections/arista/avd/extensions/molecule` and verify the tests.
 6. Check the PyAVD test coverage report by running `tox -e coverage,report` and work on improving the coverage where possible.
 7. Test the generated configuration using eAPI or CloudVision in a relevant lab, if available, to ensure it works as intended.
 

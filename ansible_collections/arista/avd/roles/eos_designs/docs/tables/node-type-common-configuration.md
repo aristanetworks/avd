@@ -28,6 +28,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.defaults.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.defaults.structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker_type</samp>](## "<node_type_keys.key>.defaults.flow_tracker_type") | String |  |  | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the flow tracker type.<br>Override the `default_flow_tracker_type`` set at the `node_type_key` level.<br>`default_flow_tracker_type` default value is `sampled`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "<node_type_keys.key>.defaults.campus") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "<node_type_keys.key>.defaults.campus_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "<node_type_keys.key>.defaults.campus_access_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "<node_type_keys.key>.defaults.cv_tags_topology_type") | String |  |  |  | Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf". |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
@@ -51,6 +55,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker_type</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].flow_tracker_type") | String |  |  | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the flow tracker type.<br>Override the `default_flow_tracker_type`` set at the `node_type_key` level.<br>`default_flow_tracker_type` default value is `sampled`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].campus") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].campus_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].campus_access_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].cv_tags_topology_type") | String |  |  |  | Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "<node_type_keys.key>.node_groups.[].id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "<node_type_keys.key>.node_groups.[].platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "<node_type_keys.key>.node_groups.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
@@ -70,6 +78,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.node_groups.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.node_groups.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker_type</samp>](## "<node_type_keys.key>.node_groups.[].flow_tracker_type") | String |  |  | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the flow tracker type.<br>Override the `default_flow_tracker_type`` set at the `node_type_key` level.<br>`default_flow_tracker_type` default value is `sampled`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "<node_type_keys.key>.node_groups.[].campus") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "<node_type_keys.key>.node_groups.[].campus_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "<node_type_keys.key>.node_groups.[].campus_access_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "<node_type_keys.key>.node_groups.[].cv_tags_topology_type") | String |  |  |  | Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf". |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "<node_type_keys.key>.nodes.[].id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
@@ -91,6 +103,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.nodes.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.nodes.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker_type</samp>](## "<node_type_keys.key>.nodes.[].flow_tracker_type") | String |  |  | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the flow tracker type.<br>Override the `default_flow_tracker_type`` set at the `node_type_key` level.<br>`default_flow_tracker_type` default value is `sampled`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "<node_type_keys.key>.nodes.[].campus") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "<node_type_keys.key>.nodes.[].campus_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "<node_type_keys.key>.nodes.[].campus_access_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "<node_type_keys.key>.nodes.[].cv_tags_topology_type") | String |  |  |  | Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf". |
 
 === "YAML"
 
@@ -166,6 +182,21 @@
         # Override the `default_flow_tracker_type`` set at the `node_type_key` level.
         # `default_flow_tracker_type` default value is `sampled`.
         flow_tracker_type: <str; "sampled" | "hardware">
+
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        # Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+        campus: <str>
+
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        # Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+        campus_pod: <str>
+
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        # Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+        campus_access_pod: <str>
+
+        # Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
+        cv_tags_topology_type: <str>
 
       # Define variables related to all nodes part of this group.
       node_groups:
@@ -247,6 +278,21 @@
               # `default_flow_tracker_type` default value is `sampled`.
               flow_tracker_type: <str; "sampled" | "hardware">
 
+              # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+              # Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+              campus: <str>
+
+              # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+              # Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+              campus_pod: <str>
+
+              # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+              # Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+              campus_access_pod: <str>
+
+              # Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
+              cv_tags_topology_type: <str>
+
           # Unique identifier used for IP addressing and other algorithms.
           id: <int>
 
@@ -313,6 +359,21 @@
           # Override the `default_flow_tracker_type`` set at the `node_type_key` level.
           # `default_flow_tracker_type` default value is `sampled`.
           flow_tracker_type: <str; "sampled" | "hardware">
+
+          # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+          # Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+          campus: <str>
+
+          # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+          # Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+          campus_pod: <str>
+
+          # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+          # Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+          campus_access_pod: <str>
+
+          # Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
+          cv_tags_topology_type: <str>
 
       # Define variables per node.
       nodes:
@@ -386,4 +447,19 @@
           # Override the `default_flow_tracker_type`` set at the `node_type_key` level.
           # `default_flow_tracker_type` default value is `sampled`.
           flow_tracker_type: <str; "sampled" | "hardware">
+
+          # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+          # Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+          campus: <str>
+
+          # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+          # Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+          campus_pod: <str>
+
+          # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+          # Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+          campus_access_pod: <str>
+
+          # Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
+          cv_tags_topology_type: <str>
     ```

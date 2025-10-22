@@ -3,10 +3,10 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from ipaddress import ip_interface
+from ipaddress import IPv4Address, ip_interface
 
 from anta.input_models.security import IPSecPeer
-from anta.tests.security import VerifySpecificIPSecConn
+from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn
 
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
@@ -14,7 +14,21 @@ from pyavd.j2filters import natural_sort
 from ._base_classes import AntaTestInputFactory
 
 
-class VerifySpecificIPSecConnInputFactory(AntaTestInputFactory):
+class VerifyAPIHttpsSSLInputFactory(AntaTestInputFactory[VerifyAPIHttpsSSL.Input]):
+    """
+    Input factory class for the `VerifyAPIHttpsSSL` test.
+
+    The test input `profile` is collected from the value of
+    `management_api_http.https_ssl_profile` of the device structured config.
+    """
+
+    def create(self) -> list[VerifyAPIHttpsSSL.Input] | None:
+        """Create a list of inputs for the `VerifyAPIHttpsSSL test."""
+        profile = self.structured_config.management_api_http.https_ssl_profile
+        return [VerifyAPIHttpsSSL.Input(profile=profile)] if profile else None
+
+
+class VerifySpecificIPSecConnInputFactory(AntaTestInputFactory[VerifySpecificIPSecConn.Input]):
     """
     Input factory class for the `VerifySpecificIPSecConn` test.
 
@@ -28,26 +42,29 @@ class VerifySpecificIPSecConnInputFactory(AntaTestInputFactory):
 
     def create(self) -> list[VerifySpecificIPSecConn.Input] | None:
         """Create a list of inputs for the `VerifySpecificIPSecConn` test."""
-        ip_security_connections = []
+        ip_security_connections: list[IPSecPeer] = []
 
-        added_peers = set()
+        added_peers: set[tuple[str, str]] = set()
         for path_group in self.structured_config.router_path_selection.path_groups:
             # Check if the path group has static peers
             if not path_group.static_peers:
-                self.logger.debug(LogMessage.STUN_NO_STATIC_PEERS, caller=path_group.name)
+                self.logger_adapter.debug(LogMessage.PATH_GROUP_NO_STATIC_PEERS, path_group=path_group.name)
                 continue
 
             # Add static peers to the list of IP security connections
             for static_peer in path_group.static_peers:
                 peer_ip = ip_interface(static_peer.router_ip).ip
                 if (static_peer.router_ip, "default") not in added_peers:
-                    ip_security_connections.append(
-                        IPSecPeer(
-                            peer=peer_ip,
-                            vrf="default",
-                        ),
-                    )
-                    added_peers.add((static_peer.router_ip, "default"))
+                    if isinstance(peer_ip, IPv4Address):
+                        ip_security_connections.append(
+                            IPSecPeer(
+                                peer=peer_ip,
+                                vrf="default",
+                            ),
+                        )
+                        added_peers.add((static_peer.router_ip, "default"))
+                    else:
+                        self.logger_adapter.debug(LogMessage.PATH_GROUP_IPV6_STATIC_PEER, peer=peer_ip, path_group=path_group.name)
 
         return (
             [VerifySpecificIPSecConn.Input(ip_security_connections=natural_sort(ip_security_connections, sort_key="peer"))] if ip_security_connections else None

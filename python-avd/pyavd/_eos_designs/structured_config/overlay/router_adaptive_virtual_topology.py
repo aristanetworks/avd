@@ -41,7 +41,10 @@ class RouterAdaptiveVirtualTopologyMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         # Edge or Transit
-        self.structured_config.router_adaptive_virtual_topology._update(topology_role=self.shared_utils.cv_pathfinder_role, zone=self.shared_utils.wan_zone)
+        self.structured_config.router_adaptive_virtual_topology._update(
+            topology_role=self.shared_utils.cv_pathfinder_role,
+            zone=self.shared_utils.wan_zone,
+        )
         self.structured_config.router_adaptive_virtual_topology.region._update(name=wan_region.name, id=wan_region.id)
         self.structured_config.router_adaptive_virtual_topology.site._update(name=wan_site.name, id=wan_site.id)
 

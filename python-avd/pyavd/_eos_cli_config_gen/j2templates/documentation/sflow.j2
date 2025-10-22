@@ -44,6 +44,10 @@
 
 sFlow Sample Rate: {{ sflow.sample }}
 {%     endif %}
+{%     if sflow.sample_truncate_size is arista.avd.defined %}
+
+sFlow Sample Truncation Size: {{ sflow.sample_truncate_size }} bytes.
+{%     endif %}
 {%     if sflow.sample_input_subinterface is arista.avd.defined(true) %}
 
 sFlow Sample Input Subinterface is enabled.

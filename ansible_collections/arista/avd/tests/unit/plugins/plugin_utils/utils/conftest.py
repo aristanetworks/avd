@@ -4,10 +4,10 @@
 """Fixtures for testing the utils modules."""
 
 from pathlib import Path
+from unittest.mock import MagicMock
 
-import logging
 import pytest
-
+from ansible.cli import Display
 from ansible.inventory.manager import InventoryManager
 from ansible.parsing.dataloader import DataLoader
 from ansible.playbook.block import Block
@@ -25,17 +25,10 @@ DEFAULT_BLOCK_DATA = {"name": "Test Block", "block": [{"name": "Task from Block"
 DEFAULT_TASK_DATA = {"name": "Test Task", "debug": {"msg": "Hello from Task"}}
 
 
-class MinimalActionPlugin:
-    """Minimal Ansible action plugin for testing."""
-
-    def __init__(self, task: Task) -> None:
-        """Initialize with a dummy Ansible task."""
-        self._task = task
-
-
 @pytest.fixture
 def ansible_task(request: pytest.FixtureRequest) -> Task:
-    """Build a dummy Ansible task with parametrized data.
+    """
+    Build a dummy Ansible task with parametrized data.
 
     Parameters can be specified using indirect parametrization:
 
@@ -64,42 +57,8 @@ def ansible_task(request: pytest.FixtureRequest) -> Task:
 
 
 @pytest.fixture
-def anta_record() -> logging.LogRecord:
-    """Create a log record from an ANTA library."""
-    return logging.LogRecord(
-        name="anta.runner",
-        level=logging.INFO,
-        pathname="",
-        lineno=0,
-        msg="Hello from ANTA",
-        args=(),
-        exc_info=None
-    )
-
-
-@pytest.fixture
-def non_anta_record() -> logging.LogRecord:
-    """Create a log record from a non-ANTA library."""
-    return logging.LogRecord(
-        name="pyavd",
-        level=logging.INFO,
-        pathname="",
-        lineno=0,
-        msg="Hello from PyAVD",
-        args=(),
-        exc_info=None
-    )
-
-
-@pytest.fixture
-def warning_record() -> logging.LogRecord:
-    """Create a warning log record from an ANTA library."""
-    return logging.LogRecord(
-        name="anta.runner",
-        level=logging.WARNING,
-        pathname="",
-        lineno=0,
-        msg="Warning from ANTA",
-        args=(),
-        exc_info=None
-    )
+def mock_display() -> MagicMock:
+    """Fixture that provides a mock Ansible Display object."""
+    mock = MagicMock(spec=Display)
+    mock.verbosity = 0
+    return mock

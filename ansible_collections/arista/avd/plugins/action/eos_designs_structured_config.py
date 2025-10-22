@@ -63,14 +63,12 @@ class ActionModule(ActionBase):
         file_mode = str(self._task.args.get("mode", "0o664"))
         template_output = self._task.args.get("template_output", False)
         validation_mode = self._task.args.get("validation_mode")
+        digital_twin = self._task.args.get("digital_twin", False)
 
         avd_switch_facts = get(task_vars, "avd_switch_facts", required=True)
 
         # Initialise defaultdict that loads facts from json files on demand.
         all_facts = AvdSwitchFactsDefaultDict(avd_switch_facts)
-
-        # TODO: AVD 6.0.0 remove 'switch'
-        task_vars["switch"] = avd_switch_facts[hostname]
 
         # Read ansible variables and perform templating to support inline jinja2
         for var in task_vars:
@@ -105,6 +103,7 @@ class ActionModule(ActionBase):
                 input_schema_tools=input_schema_tools,
                 result=result,
                 templar=self.templar,
+                digital_twin=digital_twin,
             )
         except Exception as error:
             raise AnsibleActionFail(message=str(error)) from error
@@ -190,8 +189,6 @@ class ActionModule(ActionBase):
 
         # TODO: AVD 6.0.0 consider not setting facts at all.
         result["ansible_facts"] = output
-        # TODO: AVD 6.0.0 remove 'switch'
-        result["ansible_facts"]["switch"] = task_vars.get("switch")
 
         if cprofile_file:
             profiler.disable()

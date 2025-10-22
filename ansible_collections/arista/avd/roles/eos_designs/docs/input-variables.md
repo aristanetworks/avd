@@ -12,7 +12,7 @@ title: Input variables for eos_designs
 
 This document describes the supported input variables for the role `arista.avd.eos_designs`.
 
-Since several data models have changed between AVD versions 4.x and 5.x, it is recommended to study the [Porting Guide for AVD 5.x.x](../../../../../../docs/porting-guides/5.x.x.md) for existing deployments.
+Since several data models have changed between AVD versions 5.x and 6.x, it is recommended to study the [Porting Guide for AVD 6.x.x](../../../../../../docs/porting-guides/6.x.x.md) for existing deployments.
 
 The input variables are documented below in tables and YAML.
 
@@ -28,16 +28,6 @@ The input variables are documented below in tables and YAML.
 ## Supported designs
 
 `eos_designs` supports multiple options such as L3LS-EVPN with 3-stage or 5-stage, L2LS, MPLS, AutoVPN and CV Pathfinder. The sections below highlight some of these topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](#node-type-customization) to create your own node type.
-
-## Design type
-
-!!! note
-    The `design.type` variable is no longer required. It has been deprecated and will be removed in AVD 6.0.0.
-    The default [Node Type Variables](#node-type-variables) can be used with all designs.
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/design.md
---8<--
 
 ### 3-stage clos topology support (Leaf & Spine)
 
@@ -214,8 +204,6 @@ AVD provides the capability to customize your node types, supporting a variety o
     The default values will be overridden if this key is defined.
     If you need to change all the existing `node_type_keys`, it is recommended to copy the defaults and modify them.
     If you need to add custom `node_type_keys`, create them under `custom_node_type_keys`; if named identically to default `node_type_keys` entries, custom entries will replace the equivalent default entry.
-
-The default value of `node_type_keys` depend on the `design.type` setting which is deprecated for removal in AVD 6.0.0. The default design type `l3ls-evpn` provides all the default node types mentioned in the previous section.
 
 ??? example "Default value for design `l3ls-evpn`"
 
@@ -440,6 +428,13 @@ mlag_l3_ip_primary & mlag_l3_ip_secondary:
 - `{{ switch_data.combined.mlag_peer_l3_ipv4_pool }}`
 - All group/hostvars
 
+mlag_ibgp_peering_ip_primary & mlag_ibgp_peering_ip_secondary:
+
+- `{{ mlag_primary_id }}`
+- `{{ mlag_secondary_id }}`
+- `{{ vrf.mlag_ibgp_peering_ipv4_pool }}`
+- All group/hostvars
+
 p2p_uplinks_ip & p2p_uplinks_peer_ip:
 
 - `{{ switch.uplink_ipv4_pool }}`
@@ -463,13 +458,7 @@ vtep_ip:
 - `{{ loopback_ipv4_offset }}`
 - All group/hostvars
 
-While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
-the values are not part of the officially supported data models, and may change without notice.
-
 ### Context for interface_descriptions templates
-
-!!! warning  "Caveat"
-    In AVD 4.x, it is not possible to completely overwrite the description of the subinterfaces when `uplink_type` is set to `p2p-vrfs`. The string `_vrf_<VRF>` is always appended to the description.
 
 To help format the custom interface descriptions, the following contextual variables are available to the custom templates:
 
@@ -486,6 +475,8 @@ underlay_port_channel_interfaces:
 - `{{ link.channel_group_id }}`
 - `{{ link.peer }}`
 - `{{ link.peer_channel_group_id }}`
+- `{{ link.wan_carrier }}` for `l3_port_channels` defined under the node config.
+- `{{ link.main_interface_wan_carrier }}` for `l3_port_channels` subintefaces defined under the node config.
 - All group/hostvars
 
 mlag_ethernet_interfaces:
@@ -511,24 +502,21 @@ connected_endpoints_ethernet_interfaces:
 connected_endpoints_port_channel_interfaces:
 
 - `{{ peer }}`
+- `{{ peer_interface }}`
 - `{{ adapter_port_channel_id }}`
 - `{{ adapter_port_channel_description }}`
 - `{{ adapter_description }}`
 - All group/hostvars
 
-router_id_loopback_interfaces (replacing overlay_loopback_interface):
+router_id_loopback_interfaces:
 
 - `{{ router_id_loopback_description }}`
-- `{{ overlay_loopback_description }}` (deprecated - use `router_id_loopback_description` instead)
 - All group/hostvars
 
 vtep_loopback_interface:
 
 - `{{ vtep_loopback_description }}`
 - All group/hostvars
-
-While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
-the values are not part of the officially supported data models and may change without notice.
 
 ## Type setting
 
@@ -570,10 +558,6 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/type-setting.md
 
 Node types can be defined statically on each node or in each group of nodes.  By leveraging `default_node_types`, regular expressions can be used to determine the node type based
 on the hostname.
-
-!!! warning
-    Please note that using the `default_node_types` functionality will cause certain tests in the eos_validate_state role to not be executed.
-    This functionality will be restored as part of a later update to eos_validate_state and this note will then be removed.
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/default-node-types.md
@@ -663,6 +647,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-l3-port-c
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-bgp-configuration.md
+--8<--
+
+### Node type Multicast configuration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-multicast.md
 --8<--
 
 ### Node type network services configuration
@@ -764,13 +754,24 @@ Make sure to configure the variables in a group_vars file covering all devices m
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/core-interfaces.md
 --8<--
 
-## Flagging a device as not deployed
+## Setting a device as not deployed
 
-- It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.
-- By default, this will have no impact within the `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still be pushed by the `eos_config_deploy_eapi` directly to devices if used.
-- However, if the `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices flagged  as `is_deployed: false` and not attempt to configure them.
-- If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail lldp_toplogy and interface tests on peers of the undeployed device trying to verify that interfaces are up.
-- To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface and lldp_topology tests. Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network.
+You can provision configurations for an entire network topology while marking specific devices as undeployed by setting the host-level variable `is_deployed: false`.
+
+This setting does not affect the configuration generation roles (`eos_designs`, `eos_cli_config_gen`), which will still build the complete intended configuration for all devices. However, behavior during deployment depends on the role used:
+
+- The `eos_config_deploy_eapi` role will ignore this setting and attempt to push the configuration to every device.
+- The `cv_deploy` role will respect this setting and skip any device marked as `is_deployed: false`, not attempting to configure it via CloudVision.
+
+This practice can create validation challenges. Active, deployed devices will still have configurations for interfaces and BGP sessions pointing to the undeployed neighbor, causing test failures by the `anta_runner` role.
+
+To maintain a clean operational state and ensure validation tests pass on the active devices, AVD enables the following variables by default:
+
+- `shutdown_interfaces_towards_undeployed_peers: true`: On deployed devices, this will add a `shutdown` command to the interfaces connected to undeployed devices. This ensures the ANTA interface and LLDP tests will be skipped for those interfaces.
+- `shutdown_bgp_towards_undeployed_peers: true`: On deployed devices, this will add a `shutdown` command to the BGP neighbor configuration towards undeployed devices. This ensures the ANTA BGP tests will be skipped for those neighbors.
+
+!!! note
+    `anta_runner` will also **automatically skip all tests** for devices that are themselves marked as `is_deployed: false`.
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/is-deployed.md
@@ -893,6 +894,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/overlay-settings.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/evpn-settings.md
 --8<--
 
+## Address locking settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/address-locking-settings.md
+--8<--
+
 ## WAN Settings
 
 ### WAN generic settings
@@ -958,6 +965,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/cv-pathfinder-inter
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/zscaler-endpoints.md
 --8<--
 
+### WAN Zscaler Integration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-cv-pathfinder-zscaler-integration.md
+--8<--
+
 ## Management settings
 
 --8<--
@@ -1020,6 +1033,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/system-settings.md
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/cloudvision-settings.md
+--8<--
+
+## CloudVision Tags Settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/cloudvision-tags.md
 --8<--
 
 ## Endpoint connectivity
@@ -1535,8 +1554,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/svi-profiles.md
 
 ### EVPN VLAN aware bundles settings
 
-EVPN VLAN aware bundles referenced by name in `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].evpn_vlan_bundle`
-or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle` or `<network_services_key>[].l2vlans[].evpn_vlan_bundle`.
+EVPN VLAN aware bundles referenced by name in `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle` or `<network_services_key>[].l2vlans[].evpn_vlan_bundle`.
 
 An EVPN VLAN aware bundle will only be configured if at least one VLAN is associated with it.
 
@@ -1602,7 +1620,7 @@ This feature is intended to be used for the integration of AVD and CloudVision S
 
 The topology should be pulled from the CloudVision "Inventory and Topology Studio" inputs. Device IDs must be translated to hostnames.
 
-This feature currently provides the following configurations based on the given CloudVision topology and `default_interfaces`:
+This feature currently provides the following configurations based on the given CloudVision topology:
 
 - `uplink_switches`
 - `uplink_interfaces`
@@ -1612,18 +1630,28 @@ This feature currently provides the following configurations based on the given 
 - `mgmt_interface` (if interface "ManagementX" is found in the list)
 
 !!! note
-    Any derived configuration can be overridden by setting the key manually.
-    Even keys set under node type `defaults` will take precedence over these derived configurations.
+    `cv_topology` can not be combined with manually set `uplink_switches`, `uplink_interfaces`, `uplink_switch_interfaces` and `mlag_interfaces`.
 
     When using parallel links between the same devices for L3 uplinks it is important to set
     `max_uplink_switches` and `max_parallel_uplinks` to ensure consistent IP addressing.
 
 ??? example "`cv_topology` example"
-    To use this feature set `default_interfaces` according to the intended design (see [default_interfaces](#default-interface-settings) for details) and set `use_cv_topology` to `true`.
+    To use this feature set `cv_topology_levels` according to the intended design and set `use_cv_topology` to `true`.
     Provide a full topology under `cv_topology` like this example:
 
     ```yaml
     use_cv_topology: true
+    cv_topology_levels:
+      - type: super-spine
+        level: 1
+      - type: spine
+        level: 2
+      - type: l3leaf
+        level: 3
+      - type: l2leaf
+        level: 4
+      - type: overlay-controller
+        level: 5
     cv_topology:
       - hostname: s2-spine2
         platform: vEOS-LAB
@@ -1655,4 +1683,104 @@ This feature currently provides the following configurations based on the given 
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/cv-topology.md
+--8<--
+
+## PREVIEW - Digital Twin settings
+
+!!! note
+    To easily switch between production mode and digital twin mode, it is recommended to create a dedicated playbook where `avd_digital_twin_mode: true` is set in the playbook vars.
+
+    By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation)
+    will replace original fabric artifacts.
+
+    To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name` variables for both `eos_designs`
+    and `eos_cli_config_gen` to point to a dedicated output location.
+
+AVD Digital Twin functionality natively generates all artifacts required to deploy a virtual replica of a production AVD fabric.
+The generated artifacts are automatically optimized for the specific Digital Twin environment. For example, an EOS configuration generated for an ACT environment will automatically remove or adjust any unsupported features.
+
+AVD currently supports the following Digital Twin environments:
+
+- ACT (Arista Cloud Test)
+
+To generate the ACT Digital Twin artifacts, run the `eos_designs` and `eos_cli_config_gen` roles with the `avd_digital_twin_mode`  flag set to `true` in your Ansible playbook:
+
+```yaml
+---
+
+# Production playbook to generate production fabric artifacts
+- name: Build Configurations and Documentation
+  hosts: FABRIC
+  gather_facts: false
+  tasks:
+
+    - name: Generate AVD Structured Configurations and Fabric Documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+
+    - name: Generate Device Configurations and Documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
+
+# Digital Twin playbook to generate Digital Twin mode artifacts
+- name: Build Configurations and Documentation
+  hosts: FABRIC
+  gather_facts: false
+  vars:
+    # Adjust the output dirs to keep Digital Twin artifacts in a separate directory
+    output_dir_name: "digital_twin/intended"
+    documentation_dir_name: "digital_twin/documentation"
+    # Set this flag to True to enable Digital Twin mode
+    avd_digital_twin_mode: true
+  tasks:
+
+    - name: Generate AVD Structured Configurations and Fabric Documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+
+    - name: Generate Device Configurations and Documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
+
+```
+
+Produced artifacts:
+
+```text
+.
+├── digital_twin
+│   ├── documentation
+│   │   ├── devices
+│   │   │   ├── <DEVICE_NAME>.md
+│   │   │   └── ...
+│   │   └── fabric
+│   │       ├── <FABRIC_NAME>-documentation.md
+│   │       ├── <FABRIC_NAME>-p2p-links.csv
+│   │       ├── <FABRIC_NAME>-topology.csv
+│   │       └── <FABRIC_NAME>-topology.yml
+│   └── intended
+│       ├── configs
+│       │   ├── <DEVICE_NAME>.cfg
+│       │   └── ...
+│       └── structured_configs
+│           ├── <DEVICE_NAME>.yml
+│           └── ...
+```
+
+If not specified otherwise, AVD uses the following default values when generating ACT Digital Twin artifacts:
+
+| Attribute | Description | Default value | Source of information |
+| --------- | ----------- | ------------- | --------------------- |
+| act_os_version | OS version of the replica device | `cloudeos`: `4.33.2F`<br>`cvp`: `2024.3.2`<br>`generic`: `ubuntu-2204-lts`<br>`third-party`: `byod`<br>`tools-server`: `ubuntu-2204-lts`<br>`veos`: `4.33.1.1F` | `node_config.digital_twin.act_os_version` or `digital_twin.fabric.act_os_version` |
+| act_username | username of the default account deployed on the replica device | `admin` | `digital_twin.fabric.act_username` |
+| act_password | password of the default account deployed on the replica device | `admin` | `digital_twin.fabric.act_password` |
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/digital-twin-configuration.md
+--8<--
+
+### Node type Digital Twin configuration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-digital-twin-configuration.md
 --8<--
