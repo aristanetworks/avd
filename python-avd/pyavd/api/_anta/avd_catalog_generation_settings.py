@@ -18,9 +18,12 @@ class InputFactorySettings(BaseModel):
     ----------
         allow_bgp_vrfs : bool
             Whether to include BGP neighbors in VRFs.
+        vtep_fabric_reachability: bool
+            Whether to include fabric reachability tests on VTEP devices.
     """
 
     allow_bgp_vrfs: bool = Field(default=False)
+    vtep_fabric_reachability: bool = Field(default=False)
 
 
 class AvdCatalogGenerationSettings(BaseModel):

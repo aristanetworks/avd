@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from pyavd._utils import get
+from pyavd._utils import get, get_item
 
 
 @dataclass(frozen=True)
@@ -25,6 +25,8 @@ class MinimalStructuredConfig:
     is_deployed: bool
     dns_domain: str | None
     ethernet_interfaces: list[MinimalEthernetInterface]
+    loopback0_ip: str | None
+    vtep_ip: str | None
 
 
 def get_minimal_structured_configs(structured_configs: dict[str, dict]) -> dict[str, MinimalStructuredConfig]:
@@ -56,11 +58,24 @@ def get_minimal_structured_configs(structured_configs: dict[str, dict]) -> dict[
             if (intf_ip := get(intf, "ip_address")) and get(intf, "switchport.enabled") is False
         ]
 
+        # Get the VTEP IP if any
+        vxlan_source_interface = get(structured_config, "vxlan_interface.vxlan1.vxlan.source_interface")
+        if vxlan_source_interface is not None:
+            if "Dps" in vxlan_source_interface:
+                interface_model = get(structured_config, "dps_interfaces", default=[])
+            else:
+                interface_model = get(structured_config, "loopback_interfaces", default=[])
+            vtep_ip = get(get_item(interface_model, "name", vxlan_source_interface, default={}), "ip_address")
+        else:
+            vtep_ip = None
+
         # Create the minimal structured configuration
         minimal_structured_configs[device] = MinimalStructuredConfig(
             hostname=structured_config["hostname"],
             is_deployed=get(structured_config, "metadata.is_deployed", default=False),
             dns_domain=get(structured_config, "dns_domain"),
             ethernet_interfaces=minimal_ethernet_interfaces,
+            loopback0_ip=get(get_item(get(structured_config, "loopback_interfaces", []), "name", "Loopback0", default={}), "ip_address"),
+            vtep_ip=vtep_ip,
         )
     return minimal_structured_configs

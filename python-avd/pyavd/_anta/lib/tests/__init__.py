@@ -32,7 +32,7 @@ from anta.tests.mlag import (
 )
 from anta.tests.path_selection import VerifySpecificPath
 from anta.tests.routing.bgp import VerifyBGPPeerSession
-from anta.tests.routing.generic import VerifyRoutingProtocolModel
+from anta.tests.routing.generic import VerifyRoutingProtocolModel, VerifyRoutingTableEntry
 from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn
 from anta.tests.stp import VerifySTPCounters
 from anta.tests.system import (
@@ -75,6 +75,7 @@ __all__ = [
     "VerifyReachability",
     "VerifyReloadCause",
     "VerifyRoutingProtocolModel",
+    "VerifyRoutingTableEntry",
     "VerifyRunningConfigDiffs",
     "VerifySTPCounters",
     "VerifySpecificIPSecConn",
