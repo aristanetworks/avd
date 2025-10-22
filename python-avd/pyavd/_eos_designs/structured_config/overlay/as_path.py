@@ -31,5 +31,5 @@ class AsPathMixin(Protocol):
             remote_asns = natural_sort({bgp_as for rs_dict in self._evpn_route_servers.values() if (bgp_as := rs_dict.get("bgp_as")) is not None})
             for remote_asn in remote_asns:
                 entries = EosCliConfigGen.AsPath.AccessListsItem.Entries()
-                entries.append_new(type="permit", match=f"_{as_path_list_match_from_bgp_asns([remote_asn])}_")
+                entries.append_new(type="permit", match=as_path_list_match_from_bgp_asns([remote_asn]))
                 self.structured_config.as_path.access_lists.append_new(name=f"AS{remote_asn}", entries=entries)
