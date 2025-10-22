@@ -75,6 +75,9 @@ class ActionModule(ActionBase):
         # and take the HostVarsVars for this host.
         # All variables will be templated on access and cached by Ansible's tooling.
         host_hostvars = ActionPluginVars(self)[hostname]
+        # The dict() here will force templating of all variables at once, potentially triggering issues for
+        # missing variables in inline templates in Ansible 2.19.
+        host_hostvars = dict(host_hostvars)
 
         avd_switch_facts = get(host_hostvars, "avd_switch_facts", required=True)
 
@@ -94,9 +97,7 @@ class ActionModule(ActionBase):
             structured_config = get_structured_config(
                 hostname=hostname,
                 all_facts=all_facts,
-                # The dict() here will force templating of all variables at once, potentially triggering issues for
-                # missing variables in inline templates in Ansible 2.19.
-                hostvars=dict(host_hostvars),
+                hostvars=host_hostvars,
                 input_schema_tools=input_schema_tools,
                 result=result,
                 templar=self.templar,
