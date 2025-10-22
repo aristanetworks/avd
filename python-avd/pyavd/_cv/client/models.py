@@ -75,7 +75,7 @@ class CVTagAssignment:
 
     @classmethod
     def from_api(cls, tag_assignment: TagAssignment) -> Self:
-        """Create a TagAssignmentTuple from a raw API TagAssignment object."""
+        """Create a CVTagAssignment from a raw API TagAssignment object."""
         # The API may return a complex interface ID like 'Ethernet1@<serial>', so we parse it to get just the interface name.
         interface_id = str(tag_assignment.key.interface_id).rsplit("@", maxsplit=1)[0] if tag_assignment.key.interface_id is not None else None
 
