@@ -51,7 +51,7 @@ Following the less preferred option 2, it could have been changed to:
 ---
 # assuming a default custom strutcured configuration prefix
 # this will not warn
-custom_structured_config_dns_domain: my.awesome.domain.local
+custom_structured_configuration_dns_domain: my.awesome.domain.local
 ```
 
 ### Future
