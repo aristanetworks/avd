@@ -9,8 +9,6 @@
   arista.avd.eos_designs_structured_config:
     template_output: false
   when: ansible_version.major == 2 and ansible_version.minor < 19
-- ansible.builtin.debug:
-    var: result.ansible_facts._inline_jinja
 - ansible.builtin.assert:
     that:
       - result is success
