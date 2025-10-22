@@ -58,7 +58,9 @@ class ConnectedEndpointsMixin(Protocol):
                 if filtered_adapters:
                     # The object was deepcopied inside "get_merged_adapter_settings" so we can modify it here.
                     connected_endpoint.adapters = filtered_adapters
-                    connected_endpoint._internal_data.type = connected_endpoints_key._internal_data.type
+                    connected_endpoint._internal_data.context = connected_endpoints_key.key
+                    if not connected_endpoint.type:
+                        connected_endpoint.type = connected_endpoints_key._internal_data.type
                     filtered_connected_endpoints.append(connected_endpoint)
 
         return filtered_connected_endpoints

@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import get, remove_cached_property_type
+from pyavd._utils import remove_cached_property_type
 from pyavd.j2filters import list_compress, natural_sort, range_expand
 
 if TYPE_CHECKING:
@@ -438,11 +438,8 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
     @remove_cached_property_type
     @cached_property
     def uplink_switch_interfaces(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsProtocol.UplinkSwitchInterfaces:
-        uplink_switch_interfaces = (
-            self.shared_utils.node_config.uplink_switch_interfaces or get(self.shared_utils.cv_topology_config, "uplink_switch_interfaces") or []
-        )
-        if uplink_switch_interfaces:
-            return EosDesignsFactsProtocol.UplinkSwitchInterfaces(range_expand(uplink_switch_interfaces))
+        if _uplink_switch_interfaces := self.shared_utils.node_config.uplink_switch_interfaces or self.shared_utils.cv_topology_config.uplink_switch_interfaces:
+            return EosDesignsFactsProtocol.UplinkSwitchInterfaces(range_expand(_uplink_switch_interfaces))
 
         if not self.shared_utils.uplink_switches:
             return EosDesignsFactsProtocol.UplinkSwitchInterfaces()

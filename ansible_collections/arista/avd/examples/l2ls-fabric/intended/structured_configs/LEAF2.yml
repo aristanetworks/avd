@@ -54,6 +54,7 @@ ethernet_interfaces:
   peer: HostB
   peer_interface: Eth1
   peer_type: server
+  peer_key: servers
   port_profile: PP-GREEN
   switchport:
     enabled: true
