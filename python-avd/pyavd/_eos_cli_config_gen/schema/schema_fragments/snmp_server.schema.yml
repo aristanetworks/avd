@@ -150,7 +150,8 @@ keys:
         items:
           type: dict
           keys:
-            # TODO: AVD 6.0, make this primary_key.
+            # TODO: AVD 6.0, make this required.
+            # Cannot make it primary key because same user group can be defined with different version
             name:
               type: str
               description: Username.
