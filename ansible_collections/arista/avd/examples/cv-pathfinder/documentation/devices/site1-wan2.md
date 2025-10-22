@@ -1236,7 +1236,7 @@ ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.3:101
 
 | List Name | Type | Match | Origin |
 | --------- | ---- | ----- | ------ |
-| ASPATH-WAN | permit | _65000_ | any |
+| ASPATH-WAN | permit | `_65000_` | any |
 
 #### AS Path Lists Device Configuration
 
