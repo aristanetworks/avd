@@ -64,7 +64,7 @@ as_path:
   - name: ASPATH-WAN
     entries:
     - type: permit
-      match: '65000'
+      match: _65000_
 config_end: true
 daemon_terminattr:
   cvaddrs:
