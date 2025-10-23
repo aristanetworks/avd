@@ -56,7 +56,7 @@ l3leaf:
           bgp_as: 65333
           mgmt_ip: 192.168.202.113/24
     - group: AUTO_BGP_ASN_LEAF5_4BYTE_DOTZERO
-      bgp_as: 65222.0
+      bgp_as: "65222.0"
       nodes:
         - name: AUTO_BGP_ASN_LEAF7A
           id: 11
