@@ -10,6 +10,8 @@ l2leaf:
 default_mgmt_method: inband
 
 ssh_settings:
+  enabled: true
+  idle_timeout: 0
   vrfs:
     - name: use_inband_mgmt_vrf
       enabled: true
