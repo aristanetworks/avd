@@ -68,7 +68,7 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
 
         # If the device is a VTEP, add the Vxlan1 interface to the list
         if all([self.device.is_vtep, self.device.vxlan_interface_item]):
-            interfaces.append(InterfaceState(name=self.device.vxlan_interface_item.name, status=self.device.vxlan_interface_item.status))
+            interfaces.append(InterfaceState(name=self.device.vxlan_interface_item.name, status=self.device.vxlan_interface_item.status))  # pyright: ignore[reportOptionalMemberAccess]
 
         return [VerifyInterfacesStatus.Input(interfaces=natural_sort(interfaces, sort_key="name"))] if interfaces else None
 

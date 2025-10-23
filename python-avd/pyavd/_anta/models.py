@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from functools import cached_property
 from ipaddress import IPv4Address, IPv6Address, ip_interface
 from logging import getLogger
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
@@ -41,7 +41,7 @@ class InterfaceItem:
     """Represents a VXLAN source interface from the structured configuration."""
 
     name: str
-    status: str
+    status: Literal["up", "down", "adminDown"]
 
 
 @dataclass
@@ -197,10 +197,11 @@ class DeviceTestContext:
 
         # Fetch the source interface details from structured config
         interface_item = None
-        if dps_item := self.structured_config.dps_interfaces.get(source_interface, None):
-            interface_item = dps_item
-        elif loopback_item := self.structured_config.loopback_interfaces.get(source_interface, None):
-            interface_item = loopback_item
+        if source_interface:
+            if dps_item := self.structured_config.dps_interfaces.get(source_interface, None):
+                interface_item = dps_item
+            elif loopback_item := self.structured_config.loopback_interfaces.get(source_interface, None):
+                interface_item = loopback_item
 
         # Add interface details
         if self.structured_config.vxlan_interface.vxlan1.vxlan.shutdown:
