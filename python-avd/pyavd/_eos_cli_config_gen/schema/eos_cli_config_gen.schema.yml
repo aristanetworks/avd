@@ -3956,6 +3956,9 @@ keys:
         peer_type:
           type: str
           description: Key only used for documentation or validation purposes.
+        peer_key:
+          type: str
+          description: Key only used for documentation or validation purposes.
         sflow:
           type: dict
           keys:
@@ -7144,11 +7147,6 @@ keys:
             new_key: next_hop
   ipv6_unicast_routing:
     type: bool
-  is_deployed:
-    description: 'Key only used for documentation or validation purposes.
-
-      This key is deprecated and new key is metadata.is_deployed.'
-    type: bool
   kernel:
     type: dict
     keys:
@@ -8989,7 +8987,7 @@ keys:
             type: bool
             description: Enforce strict host key checking.
       enable:
-        description: Enable SSH for VRF default.
+        description: Explicitly enable or disable SSH for all VRFs.
         type: bool
       connection:
         type: dict
@@ -9202,6 +9200,14 @@ keys:
         type: str
       fabric_name:
         type: str
+      serial_number:
+        description: 'Serial Number of the device.
+
+          Used only for documentation and deployment purposes. It is used by the ''cv_deploy''
+          role.'
+        type: str
+        convert_types:
+        - int
       cv_tags:
         type: dict
         keys:
@@ -12418,6 +12424,9 @@ keys:
           type: str
           description: Key only used for documentation or validation purposes.
         peer_type:
+          type: str
+          description: Key only used for documentation or validation purposes.
+        peer_key:
           type: str
           description: Key only used for documentation or validation purposes.
         sflow:
@@ -22182,16 +22191,6 @@ keys:
                 be less than the value of B) formats. Example. 30-34,55,RED
               convert_types:
               - int
-  serial_number:
-    documentation_options:
-      table: metadata
-    description: 'Serial Number of the device.
-
-      Used only for documentation and deployment purposes. It is used by the ''cv_deploy''
-      role.'
-    type: str
-    convert_types:
-    - int
   service_routing_configuration_bgp:
     type: dict
     keys:
@@ -23407,6 +23406,10 @@ keys:
                             - initial
                         icmp_type:
                           type: list
+                          description: 'List of ICMP message types to match.
+
+                            This field is applicable only when the protocol is set
+                            to `icmp` or `icmpv6`.'
                           items:
                             type: str
                         enforce_gtsm:
@@ -24553,6 +24556,8 @@ keys:
               source_interface:
                 type: str
                 description: Source Interface Name.
+              shutdown:
+                type: bool
               multicast:
                 type: dict
                 keys:

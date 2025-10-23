@@ -65,7 +65,6 @@ This feature is still under development, so several planned features are not imp
 - Make all timeouts configurable. Current exposed settings have no effect.
 - Detect changes in configlets and only update when needed. (Depends on newer API)
 - Validate tag labels and values
-- Detect conflicting devices like using the same serial number or mac for more than one hostname.
 - Support for assigning change control templates.
 - Add automatic testing.
 - Add required CloudVision versions once the APIs are generally available.
@@ -347,6 +346,49 @@ Click "Save" to exit the dialogue box.
 !!! note
     The name of the service account must match a username configured to be authorized on
     EOS, otherwise device interactive API calls might fail due to authorization denial.
+
+## Proxy server support
+
+The `arista.avd.cv_deploy` role supports connecting to CloudVision through an [HTTP CONNECT](https://en.wikipedia.org/wiki/HTTP_tunnel#HTTP_CONNECT_method) proxy server, with or without basic authentication.
+
+To enable the proxy, set `proxy_host` (port `TCP/8080` will be used by default). If this variable is not defined, a proxy will not be used (default mode).
+
+!!! Warning
+
+    Authentication credentials (when used) are sent to the proxy server using ***HTTP Basic authentication*** over non-encrypted HTTP transport (credentials are only `Base64` encoded, not encrypted). Credentials can be exposed by intercepting and analyzing raw TCP/IP traffic between AVD and Proxy server.
+
+    Please use AVD proxy authentication only when absolutely necessary. Always use other filtering and identification mechanisms (like HTTP filtering based on the client's SRC IP, requested destination domains, etc.) to limit the security risks.
+
+    It is important to note that plain HTTP is used by AVD only for the initial CONNECT request to establish the tunnel with the CloudVision through proxy server. Once the TCP tunnel to CloudVision through proxy server is active, all subsequent AVD communication — including both REST and gRPC calls — is protected within a secure TLS session(s) established between AVD and CloudVision ***inside*** the TCP proxy tunnel.
+
+Below settings allow modifying the default proxy-related behavior as needed. The values below are the default values.
+
+```yaml
+# Set FQDN/IP of the HTTP CONNECT proxy server.
+proxy_host: <str>
+# Set target TCP port of the HTTP CONNECT proxy server.
+proxy_port: 8080
+# Set authentication username for the HTTP CONNECT proxy server.
+proxy_username: <str>
+# Set authentication password for the HTTP CONNECT proxy server.
+proxy_password: <str>
+```
+
+Example of the configuration to use unauthenticated HTTP proxy using CONNECT method:
+
+```yaml
+proxy_host: proxy.local.domain
+proxy_port: 3128
+```
+
+Example of the configuration to use authenticated HTTP proxy using CONNECT method:
+
+```yaml
+proxy_host: proxy.local.domain
+proxy_port: 3128
+proxy_username: "avd_proxy_user"
+proxy_password: "avd_proxy_password"
+```
 
 ## License
 

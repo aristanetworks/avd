@@ -1,0 +1,56 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: ntp-settings-1
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.2/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+ntp:
+  servers:
+  - name: 10.10.10.1
+    preferred: true
+  - name: 10.10.10.2
+    burst: true
+    iburst: true
+    key: 1
+    maxpoll: 5
+    minpoll: 3
+    version: 4
+  vrf: default
+  authenticate: true
+  authenticate_servers_only: true
+  authentication_keys:
+  - id: 1
+    hash_algorithm: sha1
+    key: 06071D285F5A08
+    key_type: '7'
+  - id: 2
+    hash_algorithm: md5
+    key: $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo
+    key_type: 8a
+  - id: 3
+    hash_algorithm: sha1
+    key: 03054902151B20
+    key_type: '7'
+  trusted_keys: '1'
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

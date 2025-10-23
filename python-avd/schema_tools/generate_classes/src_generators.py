@@ -133,6 +133,37 @@ class ClassVarSrc:
 
 
 @dataclass
+class LiteralSrc:
+    """
+    Dataclass containing the elements to generate Python source code for one Literal type.
+
+    Use str() on the instance to render the source code.
+    """
+
+    name: str
+    values: list[str] | list[int]
+
+    def __str__(self) -> str:
+        """
+        Render source code for one field.
+
+        <name>: TypeAlias = Literal[<value>, <value>]
+        """
+
+        def quote(value: str | int) -> str:
+            match value:
+                case str():
+                    return f'"{value}"'
+                case int():
+                    return str(value)
+
+        return f"{self.name}: TypeAlias = Literal[{', '.join(map(quote, self.values))}]"
+
+    def get_imports(self) -> set:
+        return {"from typing import Literal, TypeAlias"}
+
+
+@dataclass
 class ModelSrc:
     """
     Dataclass containing the elements to generate Python source code for this class including any nested classes and fields.

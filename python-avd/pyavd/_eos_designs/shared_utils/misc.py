@@ -10,7 +10,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default, get
+from pyavd._utils import default
 from pyavd._utils.password_utils.password import simple_7_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.api.pool_manager import PoolManager
@@ -110,12 +110,12 @@ class MiscMixin(Protocol):
 
     @cached_property
     def uplink_switches(self: SharedUtilsProtocol) -> list[str]:
-        return self.node_config.uplink_switches._as_list() or get(self.cv_topology_config, "uplink_switches") or []
+        return self.node_config.uplink_switches._as_list() or self.cv_topology_config.uplink_switches._as_list()
 
     @cached_property
     def uplink_interfaces(self: SharedUtilsProtocol) -> list[str]:
         return range_expand(
-            self.node_config.uplink_interfaces or get(self.cv_topology_config, "uplink_interfaces") or self.default_interfaces.uplink_interfaces,
+            self.node_config.uplink_interfaces or self.cv_topology_config.uplink_interfaces or self.default_interfaces.uplink_interfaces,
         )
 
     @cached_property
@@ -152,11 +152,11 @@ class MiscMixin(Protocol):
         return self.inputs.fabric_name
 
     @cached_property
-    def uplink_interface_speed(self: SharedUtilsProtocol) -> str | None:
+    def uplink_interface_speed(self: SharedUtilsProtocol) -> EosCliConfigGen.EthernetInterfacesItem.Speed | None:
         return default(self.node_config.uplink_interface_speed, self.default_interfaces.uplink_interface_speed)
 
     @cached_property
-    def uplink_switch_interface_speed(self: SharedUtilsProtocol) -> str | None:
+    def uplink_switch_interface_speed(self: SharedUtilsProtocol) -> EosCliConfigGen.EthernetInterfacesItem.Speed | None:
         # Keeping since we will need it when adding speed support under default interfaces.
         return self.node_config.uplink_switch_interface_speed
 
@@ -419,17 +419,26 @@ class MiscMixin(Protocol):
     ) -> EosDesigns._DynamicKeys.DynamicConnectedEndpoints:
         """Emit the complete list of connected_endpoints and custom_connected_endpoints, prioritizing custom_connected_endpoints."""
         all_connected_endpoints = EosDesigns._DynamicKeys.DynamicConnectedEndpoints()
-        for connected_endpoint in self.inputs._dynamic_keys.custom_connected_endpoints:
-            connected_endpoint_item = connected_endpoint._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem)
-            connected_endpoint_item._internal_data.description = self.inputs.custom_connected_endpoints_keys[connected_endpoint.key].description
-            connected_endpoint_item._internal_data.type = self.inputs.custom_connected_endpoints_keys[connected_endpoint.key].type
-            all_connected_endpoints.append(connected_endpoint_item)
+        if self.inputs.connected_endpoints:
+            dyn_connected_endpoints_item = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem(
+                key="connected_endpoints",
+                value=self.inputs.connected_endpoints._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints),
+            )
+            dyn_connected_endpoints_item._internal_data.description = None
+            dyn_connected_endpoints_item._internal_data.type = None
+            all_connected_endpoints.append(dyn_connected_endpoints_item)
 
-        for connected_endpoint in self.inputs._dynamic_keys.connected_endpoints:
-            if connected_endpoint.key not in all_connected_endpoints:
-                connected_endpoint._internal_data.description = self.inputs.connected_endpoints_keys[connected_endpoint.key].description
-                connected_endpoint._internal_data.type = self.inputs.connected_endpoints_keys[connected_endpoint.key].type
-                all_connected_endpoints.append(connected_endpoint)
+        for dyn_connected_endpoints in self.inputs._dynamic_keys.custom_connected_endpoints:
+            dyn_connected_endpoints_item = dyn_connected_endpoints._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem)
+            dyn_connected_endpoints_item._internal_data.description = self.inputs.custom_connected_endpoints_keys[dyn_connected_endpoints.key].description
+            dyn_connected_endpoints_item._internal_data.type = self.inputs.custom_connected_endpoints_keys[dyn_connected_endpoints.key].type
+            all_connected_endpoints.append(dyn_connected_endpoints_item)
+
+        for dyn_connected_endpoints in self.inputs._dynamic_keys.connected_endpoints:
+            if dyn_connected_endpoints.key not in all_connected_endpoints:
+                dyn_connected_endpoints._internal_data.description = self.inputs.connected_endpoints_keys[dyn_connected_endpoints.key].description
+                dyn_connected_endpoints._internal_data.type = self.inputs.connected_endpoints_keys[dyn_connected_endpoints.key].type
+                all_connected_endpoints.append(dyn_connected_endpoints)
 
         return all_connected_endpoints
 

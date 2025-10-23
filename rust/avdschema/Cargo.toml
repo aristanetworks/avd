@@ -1,8 +1,8 @@
 [package]
 name = "avdschema"
-version = "0.0.0"
+version.workspace = true
 edition = "2024"
-license = "Apache-2.0"
+license.workspace = true
 
 [dependencies]
 derive_more = { version = "2.0.1", features = [

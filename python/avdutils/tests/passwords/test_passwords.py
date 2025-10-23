@@ -2,6 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 
 import pytest
@@ -34,7 +35,7 @@ SHA512_CRYPT_TEST_DATA = [
 
 
 @pytest.mark.parametrize(("password", "salt", "expected_hash", "expected_raise"), SHA512_CRYPT_TEST_DATA)
-def test_sha512_crypt(password: str, salt: str, expected_hash: str, expected_raise: Exception) -> None:
+def test_sha512_crypt(password: str, salt: str, expected_hash: str, expected_raise: AbstractContextManager[None]) -> None:
     """Test sha512_crypt function."""
     with expected_raise:
         assert sha512_crypt(password, salt) == expected_hash

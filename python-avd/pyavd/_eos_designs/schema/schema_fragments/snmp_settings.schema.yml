@@ -20,7 +20,19 @@ keys:
       location:
         type: bool
         default: false
-        description: Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack> <inventory_hostname>".
+        description: |-
+          Enables SNMP location using `location_template` value.
+      location_template:
+        type: str
+        description: |-
+          Customize the SNMP location description.
+          The available template fields are:
+            - fabric_name: The logical name of the fabric.
+            - dc_name: The name of the data center associated with the fabric.
+            - pod_name: The pod or cluster grouping within the data center.
+            - rack: Physical rack location of switch.
+            - hostname: Hostname used in inventory.
+        default: "{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}"
       vrfs:
         type: list
         primary_key: name

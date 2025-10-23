@@ -10,8 +10,7 @@ keys:
     type: bool
     documentation_options:
       table: wan-settings
-    # TODO: AVD 6.0.0 change default to false
-    default: true
+    default: false
     description: |-
       For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the EOS version.
 

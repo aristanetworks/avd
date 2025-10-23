@@ -126,7 +126,7 @@ traffic-policies
 {%                                     endif %}
          {{ protocol_field_cli }}
 {%                                 endif %}
-{%                             elif protocol.icmp_type is arista.avd.defined and protocol.protocol | lower == 'icmp' %}
+{%                             elif protocol.icmp_type is arista.avd.defined and (protocol.protocol | lower == 'icmp' or protocol.protocol | lower == 'icmpv6') %}
          {{ protocol_cli }} type {{ protocol.icmp_type | arista.avd.natural_sort | join(' ') }} code all
 {%                             else %}
          {{ protocol_cli }}

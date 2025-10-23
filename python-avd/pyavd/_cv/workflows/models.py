@@ -25,7 +25,11 @@ class CloudVision:
     token: str | None
     username: str | None
     password: str | None
-    verify_certs: bool = True
+    verify_certs: bool
+    proxy_host: str | None
+    proxy_port: int | None
+    proxy_username: str | None
+    proxy_password: str | None
 
 
 @dataclass
@@ -158,6 +162,11 @@ class CVDevice:
     system_mac_address: str | None = None
     _exists_on_cv: bool | None = None
     """ Do not set this manually. """
+    _streaming: bool | None = None
+    """
+    Device's streaming status.
+    Do not set this manually.
+    """
 
 
 @dataclass
