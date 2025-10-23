@@ -293,7 +293,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf1a",
@@ -303,7 +304,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf1a",
@@ -313,7 +315,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf1a",
@@ -697,7 +700,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf1b",
@@ -707,7 +711,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf1b",
@@ -717,7 +722,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf1b",
@@ -1035,7 +1041,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf1c",
@@ -1045,7 +1052,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf1c",
@@ -1055,7 +1063,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf1c",
@@ -1439,7 +1448,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf2a",
@@ -1449,7 +1459,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf2a",
@@ -1459,7 +1470,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf2a",
@@ -1546,7 +1558,8 @@
         ],
         "description": "Verifies Vxlan1 source interface and UDP port.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf2a",
@@ -1556,7 +1569,8 @@
         ],
         "description": "Verifies the Vxlan1 interface status.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf2a",
@@ -1566,7 +1580,8 @@
         ],
         "description": "Verifies there are no VXLAN config-sanity inconsistencies.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf2a",
@@ -1587,7 +1602,8 @@
         ],
         "description": "Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf2a",
@@ -1597,7 +1613,8 @@
         ],
         "description": "Verifies Vxlan1 VTEP peers.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf2c",
@@ -1827,7 +1844,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf2c",
@@ -1837,7 +1855,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf2c",
@@ -1847,7 +1866,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-leaf2c",
@@ -2176,7 +2196,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-spine1",
@@ -2186,7 +2207,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-spine1",
@@ -2196,7 +2218,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-spine1",
@@ -2525,7 +2548,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-spine2",
@@ -2535,7 +2559,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-spine2",
@@ -2545,7 +2570,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-spine2",
@@ -2665,7 +2691,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-svc-leaf1a",
@@ -2675,7 +2702,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-svc-leaf1a",
@@ -2685,7 +2713,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-svc-leaf1b",
@@ -2717,7 +2746,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-svc-leaf1b",
@@ -2727,7 +2757,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-svc-leaf1b",
@@ -2737,7 +2768,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-wan1",
@@ -3011,7 +3043,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-wan1",
@@ -3021,7 +3054,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-wan1",
@@ -3031,7 +3065,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-wan1",
@@ -3415,7 +3450,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-wan2",
@@ -3425,7 +3461,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-wan2",
@@ -3435,7 +3472,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc1-wan2",
@@ -3819,7 +3857,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf1a",
@@ -3829,7 +3868,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf1a",
@@ -3839,7 +3879,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf1a",
@@ -4223,7 +4264,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf1b",
@@ -4233,7 +4275,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf1b",
@@ -4243,7 +4286,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf1b",
@@ -4561,7 +4605,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf1c",
@@ -4571,7 +4616,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf1c",
@@ -4581,7 +4627,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf1c",
@@ -4965,7 +5012,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2a",
@@ -4975,7 +5023,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2a",
@@ -4985,7 +5034,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2a",
@@ -5072,7 +5122,8 @@
         ],
         "description": "Verifies Vxlan1 source interface and UDP port.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2a",
@@ -5082,7 +5133,8 @@
         ],
         "description": "Verifies the Vxlan1 interface status.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2a",
@@ -5092,7 +5144,8 @@
         ],
         "description": "Verifies there are no VXLAN config-sanity inconsistencies.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2a",
@@ -5113,7 +5166,8 @@
         ],
         "description": "Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2a",
@@ -5123,7 +5177,8 @@
         ],
         "description": "Verifies Vxlan1 VTEP peers.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2b",
@@ -5419,7 +5474,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2b",
@@ -5429,7 +5485,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2b",
@@ -5439,7 +5496,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2b",
@@ -5526,7 +5584,8 @@
         ],
         "description": "Verifies Vxlan1 source interface and UDP port.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2b",
@@ -5536,7 +5595,8 @@
         ],
         "description": "Verifies the Vxlan1 interface status.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2b",
@@ -5546,7 +5606,8 @@
         ],
         "description": "Verifies there are no VXLAN config-sanity inconsistencies.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2b",
@@ -5567,7 +5628,8 @@
         ],
         "description": "Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2b",
@@ -5577,7 +5639,8 @@
         ],
         "description": "Verifies Vxlan1 VTEP peers.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2c",
@@ -5807,7 +5870,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2c",
@@ -5817,7 +5881,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2c",
@@ -5827,7 +5892,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf2c",
@@ -6211,7 +6277,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf3a.arista.com",
@@ -6221,7 +6288,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf3a.arista.com",
@@ -6231,7 +6299,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf3a.arista.com",
@@ -6615,7 +6684,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf3b.arista.com",
@@ -6625,7 +6695,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf3b.arista.com",
@@ -6635,7 +6706,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-leaf3b.arista.com",
@@ -6953,7 +7025,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-spine1",
@@ -6963,7 +7036,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-spine1",
@@ -6973,7 +7047,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-spine1",
@@ -7302,7 +7377,8 @@
         ],
         "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-spine2",
@@ -7312,7 +7388,8 @@
         ],
         "description": "Verifies the EOS version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-spine2",
@@ -7322,7 +7399,8 @@
         ],
         "description": "Verifies the TerminAttr version of the device.",
         "result": "unset",
-        "messages": []
+        "messages": [],
+        "custom_field": null
     },
     {
         "name": "dc2-spine2",
