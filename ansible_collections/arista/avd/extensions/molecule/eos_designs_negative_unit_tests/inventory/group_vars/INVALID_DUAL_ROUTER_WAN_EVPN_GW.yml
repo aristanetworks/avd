@@ -1,6 +1,5 @@
 ---
 # Testing having two routers in a site with EVPN GW activated which is not supported currently.
-wan_use_evpn_node_settings_for_lan: true
 # enabling EVPN on LAN
 overlay_routing_protocol: ebgp
 

@@ -19,6 +19,7 @@ ethernet_interfaces:
   peer: server-1
   peer_interface: Eth9
   peer_type: server
+  peer_key: servers
   switchport:
     enabled: true
 hostname: DC1-POD1-L2LEAF1A

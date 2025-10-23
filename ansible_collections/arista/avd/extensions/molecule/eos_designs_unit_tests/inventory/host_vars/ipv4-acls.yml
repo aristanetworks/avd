@@ -1,6 +1,9 @@
 ---
 type: spine
 
+# testing bgp_as_notation: asdot and bgp_as<65536
+bgp_as_notation: asdot
+
 spine:
   nodes:
     - bgp_as: 65000

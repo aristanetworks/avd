@@ -81,12 +81,14 @@ ethernet_interfaces:
   peer: dc1-leaf1-server1
   peer_interface: PCI2
   peer_type: server
+  peer_key: servers
   validate_state: false
 - name: Ethernet41
   description: Cameras
   shutdown: false
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -97,6 +99,7 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -107,6 +110,7 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -117,6 +121,7 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -127,6 +132,7 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -137,6 +143,7 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -147,6 +154,7 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -157,6 +165,7 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -167,6 +176,7 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_portfast: edge
   peer_type: network_port
+  peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true

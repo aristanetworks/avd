@@ -71,6 +71,7 @@ ethernet_interfaces:
   peer: server02_SINGLE_NODE_TRUNK
   peer_interface: Eth1
   peer_type: server
+  peer_key: servers
   port_profile: ALL_WITH_SECURITY
   switchport:
     enabled: true
@@ -83,6 +84,7 @@ ethernet_interfaces:
   peer: server02_SINGLE_NODE
   peer_interface: Eth1
   peer_type: server
+  peer_key: servers
   port_profile: TENANT_A
   switchport:
     enabled: true
@@ -94,6 +96,7 @@ ethernet_interfaces:
   peer: PHONE01_untagged
   peer_interface: Eth0
   peer_type: phone
+  peer_key: phones
   switchport:
     enabled: true
     mode: trunk phone
@@ -108,6 +111,7 @@ ethernet_interfaces:
   peer: PHONE02_tagged
   peer_interface: Eth0
   peer_type: phone
+  peer_key: phones
   switchport:
     enabled: true
     mode: trunk phone
@@ -288,10 +292,6 @@ router_bgp:
     remote_as: '65001'
     peer: DC1-SPINE4
     description: DC1-SPINE4
-  aggregate_addresses:
-  - prefix: 10.1.1.0/8
-    advertise_only: true
-  - prefix: 10.2.1.0/8
   redistribute:
     connected:
       enabled: true
@@ -378,6 +378,10 @@ router_bgp:
         enabled: true
       ospf:
         enabled: true
+    aggregate_addresses:
+    - prefix: 10.1.1.0/8
+      advertise_only: true
+    - prefix: 10.2.1.0/8
   - name: Tenant_A_WEB_Zone
     rd: 1.1.1.1:11
     route_targets:

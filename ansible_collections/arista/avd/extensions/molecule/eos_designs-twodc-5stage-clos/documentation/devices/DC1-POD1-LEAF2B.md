@@ -273,6 +273,9 @@ vlan 4094
 | Ethernet17 | Set using structured_config on server adapter | *access | *110 | *- | *- | 17 |
 | Ethernet18 | SERVER_server-1_Eth6 | *access | *110 | *- | *- | 18 |
 | Ethernet19 | SERVER_server-1_Eth8 | *access | *110 | *- | *- | 19 |
+| Ethernet26 | SPECIALSERVER_server-2_Eth2 | access | 110 | - | - | - |
+| Ethernet27 | server-3_Eth2 | access | 110 | - | - | - |
+| Ethernet28 | SPECIALENDPOINT_server-4_Eth6 | *access | *110 | *- | *- | 28 |
 
 *Inherited from Port-Channel Interface
 
@@ -439,6 +442,39 @@ interface Ethernet19
    Comment created from raw_eos_cli under profile NESTED_TENANT_A
    EOF
 
+!
+interface Ethernet26
+   description SPECIALSERVER_server-2_Eth2
+   no shutdown
+   switchport access vlan 110
+   switchport mode access
+   switchport
+   service-profile foo
+   comment
+   Comment created from raw_eos_cli under profile TENANT_A
+   EOF
+
+!
+interface Ethernet27
+   description server-3_Eth2
+   no shutdown
+   switchport access vlan 110
+   switchport mode access
+   switchport
+   service-profile foo
+   comment
+   Comment created from raw_eos_cli under profile TENANT_A
+   EOF
+
+!
+interface Ethernet28
+   description SPECIALENDPOINT_server-4_Eth6
+   no shutdown
+   channel-group 28 mode active
+   comment
+   Comment created from raw_eos_cli under profile NESTED_TENANT_A
+   EOF
+
 ```
 
 ### Port-Channel Interfaces
@@ -455,6 +491,7 @@ interface Ethernet19
 | Port-Channel17 | Set using structured_config on server adapter port-channel | access | 110 | - | - | - | - | 17 | - |
 | Port-Channel18 | PortChannel | access | 110 | - | - | - | - | 18 | - |
 | Port-Channel19 | PortChannel | access | 110 | - | - | - | - | 19 | - |
+| Port-Channel28 | PortChannel | access | 110 | - | - | - | - | 28 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -518,6 +555,19 @@ interface Port-Channel19
    service-profile foo
    comment
    Comment created from raw_eos_cli under adapter port_channel for switch Po19
+   EOF
+
+!
+interface Port-Channel28
+   description PortChannel
+   no shutdown
+   switchport access vlan 110
+   switchport mode access
+   switchport
+   mlag 28
+   service-profile foo
+   comment
+   Comment created from raw_eos_cli under port_channel on profile NESTED_TENANT_A
    EOF
 
 ```
@@ -802,7 +852,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### Router BGP
 
-ASN Notation: asplain
+ASN Notation: asdot
 
 #### Router BGP Summary
 
@@ -921,6 +971,7 @@ ASN Notation: asplain
 ```eos
 !
 router bgp 65112.100
+   bgp asn notation asdot
    router-id 172.16.110.5
    update wait-install
    no bgp default ipv4-unicast

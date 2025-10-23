@@ -162,6 +162,7 @@ ethernet_interfaces:
   peer: CPE_TENANT_A_SITE2
   peer_interface: eth0
   peer_type: cpe
+  peer_key: cpes
   port_profile: TENANT_A_WAN_SERVICE_10
   switchport:
     enabled: true

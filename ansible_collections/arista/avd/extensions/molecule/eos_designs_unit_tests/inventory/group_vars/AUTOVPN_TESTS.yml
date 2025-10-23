@@ -129,12 +129,10 @@ tenants:
       - name: IT
         vrf_id: 100
         # Removing the default address family with the vrf NOT defined under wan_virtual_topologies.vrfs
-        # and the knob wan_use_evpn_node_settings_for_lan: False
         address_families: []
       - name: WAN-VRF-NO-AF
         vrf_id: 200
         # Removing the default address family with the vrf defined under wan_virtual_topologies.vrfs
-        # and the knob wan_use_evpn_node_settings_for_lan: False
         address_families: []
     l2vlans:
       - id: 101

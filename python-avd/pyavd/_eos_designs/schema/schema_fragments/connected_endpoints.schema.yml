@@ -5,10 +5,84 @@
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
-dynamic_keys:
-  "connected_endpoints_keys.key":
-    $ref: "eos_designs#/$defs/connected_endpoints"
+keys:
+  connected_endpoints:
     type: list
-    display_name: Connected Endpoints
-    documentation_options:
-      table: connected-endpoints
+    primary_key: name
+    description: |-
+      List of endpoint connected to the fabric.
+      This should be applied to group_vars or host_vars where endpoints are connecting.
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Endpoint name will be used in the switchport description.
+        type:
+          type: str
+          description: |-
+            Type of endpoint.
+            This is used in descriptions and in documentation.
+        rack:
+          type: str
+          description: Rack is used for documentation purposes only.
+        # TODO: Add this in a separate PR.
+        # digital_twin:
+        #   type: dict
+        #   description: |-
+        #     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        #   keys:
+        #     enabled:
+        #       type: bool
+        #       description: |-
+        #         Setting this flag to `false` will exclude the endpoint and all associated switch ports from the:
+        #           - generated Digital Twin topology file.
+        #           - generated structured and rendered EOS configuration.
+        #         This setting overrides global `digital_twin.endpoints.enabled` flag.
+        #       default: true
+        adapters:
+          type: list
+          description: A list of adapters, group by adapters leveraging the same port-profile.
+          items:
+            $ref: "eos_designs#/$defs/adapter_config"
+            type: dict
+            keys:
+              switch_ports:
+                type: list
+                required: true
+                description: |
+                  List of switch interfaces.
+                  The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+                items:
+                  type: str
+                  description: Switchport interface.
+              switches:
+                type: list
+                required: true
+                description: |
+                  List of switches.
+                  The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+                items:
+                  type: str
+                  description: Device.
+              endpoint_ports:
+                type: list
+                description: |
+                  Endpoint ports is used for description, required unless `description` or `descriptions` is set.
+                  The lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+                  Each list item is one switchport.
+                items:
+                  type: str
+                  description: Port name on the endpoint.
+              descriptions:
+                type: list
+                description: |-
+                  Unique description per port. When set, takes priority over description.
+                  This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+                  The available template fields are:
+                    - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                    - `endpoint` - The name of the connected endpoint
+                    - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.
+                    - `port_channel_id`: The port-channel number for the switch.
+                items:
+                  type: str
