@@ -39,12 +39,7 @@ class PrefixListsMixin(Protocol):
         for index, network in enumerate(collapse_addresses(get_ipv4_networks_from_pool(self.shared_utils.loopback_ipv4_pool)), start=1):
             sequence_numbers.append_new(sequence=index * 10, action=f"permit {network} eq 32")
 
-        if (
-            self.shared_utils.overlay_vtep
-            and self.shared_utils.vtep_loopback.lower() != "loopback0"
-            and not self.shared_utils.is_wan_router
-            and self.shared_utils.vtep_loopback_ipv4_pool
-        ):
+        if self.shared_utils.overlay_vtep and self.shared_utils.vtep_loopback.lower() != "loopback0" and not self.shared_utils.is_wan_router:
             for index, network in enumerate(
                 collapse_addresses(get_ipv4_networks_from_pool(self.shared_utils.vtep_loopback_ipv4_pool)), start=len(sequence_numbers) + 1
             ):
@@ -118,7 +113,11 @@ class PrefixListsMixin(Protocol):
         sequence_numbers = EosCliConfigGen.Ipv6PrefixListsItem.SequenceNumbers()
         for index, network in enumerate(collapse_addresses(get_ipv6_networks_from_pool(self.shared_utils.loopback_ipv6_pool)), start=1):
             sequence_numbers.append_new(sequence=index * 10, action=f"permit {network} eq {self.inputs.fabric_ip_addressing.loopback.ipv6_prefix_length}")
-        if self.shared_utils.overlay_vtep and self.shared_utils.underlay_ipv6_numbered and self.shared_utils.vtep_loopback_ipv6_pool:
+        if (
+            self.shared_utils.overlay_vtep
+            and self.shared_utils.underlay_ipv6_numbered
+            and not (self.shared_utils.node_config.vtep_loopback and self.shared_utils.node_config.vtep_loopback == "Loopback0")
+        ):
             for index, network in enumerate(
                 collapse_addresses(get_ipv6_networks_from_pool(self.shared_utils.vtep_loopback_ipv6_pool)), start=len(sequence_numbers) + 1
             ):
