@@ -22800,7 +22800,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         hostkey: Hostkey
         """Subclass of AvdModel."""
         enable: bool | None
-        """Enable SSH for VRF default."""
+        """Explicitly enable or disable SSH for all VRFs."""
         connection: Connection
         """Subclass of AvdModel."""
         vrfs: Vrfs
@@ -22855,7 +22855,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of AvdList with `str` items.
                     fips_restrictions: Use FIPS compliant algorithms.
                     hostkey: Subclass of AvdModel.
-                    enable: Enable SSH for VRF default.
+                    enable: Explicitly enable or disable SSH for all VRFs.
                     connection: Subclass of AvdModel.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     log_level: SSH daemon log level.
@@ -63008,7 +63008,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     flags: Flags
                     """Subclass of AvdList with `str` items."""
                     icmp_type: IcmpType
-                    """Subclass of AvdList with `str` items."""
+                    """
+                    List of ICMP message types to match.
+                    This field is applicable only when the protocol is set to
+                    `icmp` or `icmpv6`.
+
+                    Subclass of AvdList with `str` items.
+                    """
                     enforce_gtsm: bool | None
                     """Enforce the GTSM for BGP speakers. Only supported when protocol is set to 'neighbors'."""
 
@@ -63039,7 +63045,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 src_field: L4 port range field set.
                                 dst_field: L4 port range field set.
                                 flags: Subclass of AvdList with `str` items.
-                                icmp_type: Subclass of AvdList with `str` items.
+                                icmp_type:
+                                   List of ICMP message types to match.
+                                   This field is applicable only when the protocol is set to
+                                   `icmp` or `icmpv6`.
+
+                                   Subclass of AvdList with `str` items.
                                 enforce_gtsm: Enforce the GTSM for BGP speakers. Only supported when protocol is set to 'neighbors'.
 
                             """
