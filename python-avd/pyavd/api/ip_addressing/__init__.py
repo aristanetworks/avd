@@ -405,7 +405,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         Used for "vtep_diagnostic.loopback".
         """
         if (switch_id := self.shared_utils.id) is None:
-            msg = f"'id' is not set on '{self.shared_utils.hostname}' to get IP address for a loopback interface"
+            msg = f"'id' is not set on '{self.shared_utils.hostname}' to get IP address for a vrf loopback interface"
             raise AristaAvdInvalidInputsError(msg)
         offset = switch_id + self.shared_utils.node_config.loopback_ipv4_offset
         return get_ip_from_pool(pool, 32, offset, 0)
@@ -418,7 +418,10 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         Used for "vtep_diagnostic.loopback".
         """
-        offset = (self.shared_utils.id or 0) + self.shared_utils.node_config.loopback_ipv6_offset
+        if (switch_id := self.shared_utils.id) is None:
+            msg = f"'id' is not set on '{self.shared_utils.hostname}' to get IPv6 address for a vrf loopback interface"
+            raise AristaAvdInvalidInputsError(msg)
+        offset = switch_id + self.shared_utils.node_config.loopback_ipv6_offset
         return get_ip_from_pool(pool, 128, offset, 0)
 
     def evpn_underlay_l3_multicast_group(
