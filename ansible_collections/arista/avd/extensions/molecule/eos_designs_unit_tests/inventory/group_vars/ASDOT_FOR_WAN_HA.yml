@@ -65,7 +65,7 @@ wan_router:
     loopback_ipv4_pool: 192.168.42.0/24
     vtep_loopback_ipv4_pool: 192.168.142.0/24
     uplink_ipv4_pool: 172.17.0.0/16
-    bgp_as: 65000.100
+    bgp_as: "65000.100"
   node_groups:
     - group: ASDOT-FOR-WAN-HA-TRANSIT
       uplink_switches: [asdot-for-wan-ha-leaf11]
