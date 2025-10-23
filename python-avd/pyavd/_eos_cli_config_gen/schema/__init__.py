@@ -9962,8 +9962,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "peer": {"type": str},
                 "peer_interface": {"type": str},
                 "peer_type": {"type": str},
-                "port_profile": {"type": str},
                 "peer_key": {"type": str},
+                "port_profile": {"type": str},
             }
             peer: str | None
             """Key only used for documentation or validation purposes."""
@@ -9971,9 +9971,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Key only used for documentation or validation purposes."""
             peer_type: str | None
             """Key only used for documentation or validation purposes."""
-            port_profile: str | None
-            """Key only used for documentation or validation purposes."""
             peer_key: str | None
+            """Key only used for documentation or validation purposes."""
+            port_profile: str | None
             """Key only used for documentation or validation purposes."""
 
             if TYPE_CHECKING:
@@ -9984,8 +9984,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer: str | None | UndefinedType = Undefined,
                     peer_interface: str | None | UndefinedType = Undefined,
                     peer_type: str | None | UndefinedType = Undefined,
-                    port_profile: str | None | UndefinedType = Undefined,
                     peer_key: str | None | UndefinedType = Undefined,
+                    port_profile: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Metadata.
@@ -9997,8 +9997,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         peer: Key only used for documentation or validation purposes.
                         peer_interface: Key only used for documentation or validation purposes.
                         peer_type: Key only used for documentation or validation purposes.
-                        port_profile: Key only used for documentation or validation purposes.
                         peer_key: Key only used for documentation or validation purposes.
+                        port_profile: Key only used for documentation or validation purposes.
 
                     """
 

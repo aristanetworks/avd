@@ -3959,10 +3959,10 @@ keys:
             peer_type:
               type: str
               description: Key only used for documentation or validation purposes.
-            port_profile:
+            peer_key:
               type: str
               description: Key only used for documentation or validation purposes.
-            peer_key:
+            port_profile:
               type: str
               description: Key only used for documentation or validation purposes.
         sflow:

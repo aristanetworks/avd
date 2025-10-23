@@ -245,9 +245,9 @@ class PortChannelInterfacesMixin(Protocol):
             mtu=self.shared_utils.node_config.wan_ha.mtu,
         )
         port_channel_interface.metadata._update(
+            # TODO: if different interfaces used across nodes it will fail just like for mlag.
             peer_interface=port_channel_name,
             peer_type="l3_interface",
-            # TODO: if different interfaces used across nodes it will fail just like for mlag.
             peer=self.shared_utils.wan_ha_peer,
         )
         self.structured_config.port_channel_interfaces.append(port_channel_interface)

@@ -47,7 +47,7 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory):
                 continue
 
             if not intf.metadata.peer or not intf.metadata.peer_interface:
-                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="peer, peer_interface")
+                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="metadata.peer, metadata.peer_interface")
                 continue
 
             if not self.is_peer_available(intf.metadata.peer, identity=intf.name):
