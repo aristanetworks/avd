@@ -34,7 +34,7 @@ class WanMixin(Protocol):
         default_wan_role = self.node_type_key_data.default_wan_role
         wan_role = self.node_config.wan_role or default_wan_role
         if wan_role is not None and not self.platform_settings.feature_support.wan:
-            msg = f"The WAN features are not compatible with the '{self.node_config.platform}' platform used by node '{self.hostname}'."
+            msg = f"The WAN features are not compatible with the '{self.node_config.platform}' platform"
             raise AristaAvdInvalidInputsError(msg)
         return wan_role
 
@@ -613,29 +613,12 @@ class WanMixin(Protocol):
         if not self.is_wan_router:
             return False
 
-        configured_as_wan_vrf = vrf.name in self.inputs.wan_virtual_topologies.vrfs or vrf.name == "default"
-
-        # Old behavior where we rely on address_families.
-        if not self.inputs.wan_use_evpn_node_settings_for_lan and "evpn" in vrf.address_families and not configured_as_wan_vrf:
-            msg = (
-                f"The VRF '{vrf.name}' does not have a 'wan_vni' defined under 'wan_virtual_topologies'. "
-                "If this VRF was not intended to be extended over the WAN, but still required to be configured on the WAN router, "
-                "set 'address_families: []' under the VRF definition. If this VRF was not intended to be configured on the WAN router, "
-                "use the VRF filter 'deny_vrfs' under the node settings."
-            )
-            raise AristaAvdInvalidInputsError(msg)
-
-        return configured_as_wan_vrf
+        return vrf.name in self.inputs.wan_virtual_topologies.vrfs or vrf.name == "default"
 
     @cached_property
     def evpn_wan_gateway(self: SharedUtilsProtocol) -> bool:
         """Return whether device is running in wan gateway mode."""
-        gateway = (
-            self.wan_role == "client"
-            and self.evpn_role != "none"
-            and self.overlay_routing_protocol != "none"
-            and self.inputs.wan_use_evpn_node_settings_for_lan
-        )
+        gateway = self.wan_role == "client" and self.evpn_role != "none" and self.overlay_routing_protocol != "none"
         if not gateway:
             return False
 

@@ -48,17 +48,14 @@ def identify_duplicated_devices(devices: list[CVDevice]) -> DuplicatedDevices:
     """
     duplicated_devices = DuplicatedDevices()
 
-    # Deduplicate CVDevice objects as original `devices` list may contain duplicated items
-    unique_devices = list({id(device): device for device in devices}.values())
-
     # Group devices based on <CVDevice>.serial_number as long as it's not None
     devices_grouped_by_serial_number = groupby_obj(
-        list_of_objects=[device for device in unique_devices if device.serial_number is not None], attr="serial_number", skip_singles=True
+        list_of_objects=[device for device in devices if device.serial_number is not None], attr="serial_number", skip_singles=True
     )
 
     # Group devices based on <CVDevice>.system_mac_address as long as it's not None
     devices_grouped_by_system_mac_address = groupby_obj(
-        list_of_objects=[device for device in unique_devices if device.system_mac_address is not None], attr="system_mac_address", skip_singles=True
+        list_of_objects=[device for device in devices if device.system_mac_address is not None], attr="system_mac_address", skip_singles=True
     )
 
     # Populate list of CVDevice with duplicated serial_number values

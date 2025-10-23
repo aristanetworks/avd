@@ -342,6 +342,19 @@ keys:
     type: str
     convert_types:
     - int
+  bgp_as_notation:
+    documentation_options:
+      table: bgp-settings
+    type: str
+    valid_values:
+    - auto
+    - asdot
+    - asplain
+    default: auto
+    description: "AS number representation.\nasdot - AS number representation in asdot
+      format (Ex. 123.12).\nasplain - AS number representation in asplain format (Ex.
+      12312).\nauto - Will look at the configured ASN and if there is a dot in it,\n
+      \      it will use asdot otherwise asplain."
   bgp_default_ipv4_unicast:
     documentation_options:
       table: bgp-settings
@@ -6451,21 +6464,6 @@ keys:
       this requires a restart of the KernelFib agent.
 
       - `false`: For newer EOS versions (starting 4.33.2) use the proper CLI.'
-  wan_use_evpn_node_settings_for_lan:
-    type: bool
-    documentation_options:
-      table: wan-settings
-    default: false
-    description: 'PREVIEW: This key is currently not supported and may produce invalid
-      configuration.
-
-      When true, `eos_designs` will use `overlay_routing_protocol`, `evpn_role` and
-      `vtep`
-
-      node settings for LAN side on WAN devices. Otherwise these will be ignored for
-      WAN.
-
-      This will be the default in AVD version 6.0.0 and this option will be removed.'
   wan_virtual_topologies:
     type: dict
     description: 'Configure Virtual Topologies for CV Pathfinder and AutoVPN.

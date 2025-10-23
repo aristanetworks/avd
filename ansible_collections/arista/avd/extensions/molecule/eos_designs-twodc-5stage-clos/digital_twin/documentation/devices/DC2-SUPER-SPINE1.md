@@ -337,8 +337,8 @@ ASN Notation: asplain
 | 172.16.10.2 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.16.21.1 | 65210 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 172.16.21.3 | 65210 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.16.110.1 | 65110.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 172.16.110.3 | 65111.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 172.16.110.1 | 4267049060 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 172.16.110.3 | 4267114596 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.17.20.1 | 65201 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 172.17.20.3 | 65201 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 172.17.20.9 | 65201 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
@@ -389,10 +389,10 @@ router bgp 65200
    neighbor 172.16.21.3 remote-as 65210
    neighbor 172.16.21.3 description DC2-POD1-SPINE2_Ethernet1
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.1 remote-as 65110.100
+   neighbor 172.16.110.1 remote-as 4267049060
    neighbor 172.16.110.1 description DC1-POD1-SPINE1_Loopback0
    neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.3 remote-as 65111.100
+   neighbor 172.16.110.3 remote-as 4267114596
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A_Loopback0
    neighbor 172.17.20.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.20.1 remote-as 65201

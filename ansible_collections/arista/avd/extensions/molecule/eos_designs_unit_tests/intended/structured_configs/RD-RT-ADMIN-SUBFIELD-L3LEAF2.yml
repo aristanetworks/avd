@@ -50,6 +50,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65002'
+  as_notation: asdot
   router_id: 192.168.255.2
   maximum_paths:
     paths: 4
