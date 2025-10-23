@@ -8,7 +8,7 @@ from anta.tests.hardware import VerifyEnvironmentCooling, VerifyEnvironmentPower
 from ._base_classes import AntaTestInputFactory
 
 
-class VerifyEnvironmentCoolingInputFactory(AntaTestInputFactory):
+class VerifyEnvironmentCoolingInputFactory(AntaTestInputFactory[VerifyEnvironmentCooling.Input]):
     """Input factory class for the `VerifyEnvironmentCooling` test."""
 
     def create(self) -> list[VerifyEnvironmentCooling.Input] | None:
@@ -16,7 +16,7 @@ class VerifyEnvironmentCoolingInputFactory(AntaTestInputFactory):
         return [VerifyEnvironmentCooling.Input(states=["ok"])]
 
 
-class VerifyEnvironmentPowerInputFactory(AntaTestInputFactory):
+class VerifyEnvironmentPowerInputFactory(AntaTestInputFactory[VerifyEnvironmentPower.Input]):
     """Input factory class for the `VerifyEnvironmentPower` test."""
 
     def create(self) -> list[VerifyEnvironmentPower.Input] | None:

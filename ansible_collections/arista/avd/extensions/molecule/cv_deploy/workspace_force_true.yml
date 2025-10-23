@@ -67,7 +67,7 @@
             cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
             cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
             cv_register_detailed_results: true
-            cv_devices: [ avd-ci-leaf1, avd-ci-core1 ]
+            cv_devices: [avd-ci-leaf1, avd-ci-core1]
             cv_submit_workspace_force: true
 
         - name: "(BLOCK) {{ test_id | upper }} Check CVP returns"
