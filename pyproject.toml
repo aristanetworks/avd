@@ -123,6 +123,7 @@ runtime-evaluated-base-classes = ["pydantic.BaseModel"]
 exclude = [
   "ansible_collections/arista/avd",                                      # TODO
   "python-avd/pyavd/_anta",                                              # TODO
+  "python-avd/pyavd/api",                                                # TODO
   "python-avd/pyavd/_cv",                                                # TODO
   "python-avd/pyavd/_schema",                                            # TODO
   "python-avd/schema_tools",                                             # TODO
@@ -141,7 +142,7 @@ extraPaths = ["python-avd"]
 
 [tool.bumpversion]
 
-current_version = "6.0.0-dev1"
+current_version = "6.0.0-dev2"
 
 allow_dirty = true
 commit = false

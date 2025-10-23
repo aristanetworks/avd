@@ -5,17 +5,19 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from logging import getLogger
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Generic, TypeVar
+
+from anta.models import AntaTest
 
 from pyavd._anta.logs import LogMessage, TestLoggerAdapter
 
 if TYPE_CHECKING:
-    from anta.models import AntaTest
-
     from pyavd._anta.models import DeviceTestContext
 
+Input = TypeVar("Input", bound=AntaTest.Input)
 
-class AntaTestInputFactory(ABC):
+
+class AntaTestInputFactory(ABC, Generic[Input]):
     """
     Base class for `AntaTest.Input` factories.
 
@@ -44,7 +46,7 @@ class AntaTestInputFactory(ABC):
         self.logger_adapter = TestLoggerAdapter(logger=getLogger(self.__module__), extra={"device": self.device.hostname, "test": test_name})
 
     @abstractmethod
-    def create(self) -> list[AntaTest.Input] | None:
+    def create(self) -> list[Input] | None:
         """Create the `AntaTest.Input` models for the `AntaTest`."""
 
     def is_peer_available(self, peer: str, identity: str) -> bool:
