@@ -38,14 +38,14 @@ repository = "https://github.com/aristanetworks/avd"
 [dependency-groups]
 pytest = [
     "ansible-core>=2.16.0,<2.19.0",
-    "anta>=1.5.0",
+    "anta>=1.6.0",
     "pytest>=8.2.0",
     "pytest-asyncio>=1.2.0",
-    "pydantic>=2.3.0,<2.12",
+    "pydantic>=2.3.0",
     "referencing>=0.35.0",
 ]
 coverage = [
-    "coverage[toml]==7.10.7",
+    "coverage[toml]==7.11.0",
 ]
 
 [project.optional-dependencies]
@@ -54,7 +54,7 @@ ansible = [
     "pyavd[ansible-collection]",
 ]
 ansible-collection = [
-    "anta>=1.5.0",
+    "anta>=1.6.0",
     "netaddr>=0.7.19",
     # distlib is required to install the collection from source as it is using manifest
     "distlib>=0.3.9",
@@ -73,7 +73,7 @@ requires = [
     "pydantic>=2.3.0",
     "cryptography>=43.0.0",
     "aristaproto>=0.1.1",
-    "ruff==0.14.0",
+    "ruff==0.14.1",
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]

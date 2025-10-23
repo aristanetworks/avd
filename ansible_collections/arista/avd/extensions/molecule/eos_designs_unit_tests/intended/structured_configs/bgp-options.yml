@@ -31,7 +31,8 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '65000'
+  as: '1.1'
+  as_notation: asdot
   router_id: 10.10.10.1
   distance:
     external_routes: 20
