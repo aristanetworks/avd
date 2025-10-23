@@ -83,15 +83,15 @@
     - name: "{{ test_id | upper }} Process raw device_inventory_status_on_cv variables"
       tags: ["{{ test_id }}"]
       ansible.builtin.set_fact:
-        serial_number: "{{ device_inventory_status_on_cv.json.result.value.key.deviceId }}"
         metadata:
+          serial_number: "{{ device_inventory_status_on_cv.json.result.value.key.deviceId }}"
           system_mac_address: "{{ device_inventory_status_on_cv.json.result.value.systemMacAddress }}"
 
     - name: "{{ test_id | upper }} Expose new variables set on DUTs"
       tags: ["{{ test_id }}"]
       ansible.builtin.debug:
         msg:
-          - "DEVICE {{ inventory_hostname }} | SERIAL_NUMBER: {{ serial_number }} | SYSTEM_MAC_ADDRESS: {{ metadata.system_mac_address }}"
+          - "DEVICE {{ inventory_hostname }} | SERIAL_NUMBER: {{ metadata.serial_number }} | SYSTEM_MAC_ADDRESS: {{ metadata.system_mac_address }}"
 
     - name: "{{ test_id | upper }} Copy content of the original test's structured_config files into new structured_config files"
       tags: ["{{ test_id }}"]
@@ -101,27 +101,21 @@
         dest: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
         mode: "0644"
 
-    - name: "{{ test_id | upper }} Update content of the structured_config files with new serial_number variable"
-      tags: ["{{ test_id }}"]
-      ansible.builtin.lineinfile:
-        line: "serial_number: {{ hostvars['avd-ci-leaf1'].serial_number if inventory_hostname == 'avd-ci-leaf2' else serial_number }}"
-        path: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
-        create: true
-        mode: "0644"
-        insertbefore: BOF
-      no_log: true
-
     - name: "{{ test_id | upper }} Read current content of the structured files"
       tags: ["{{ test_id }}"]
       ansible.builtin.slurp:
         src: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
       register: structured_config_file_content
 
-    - name: "{{ test_id | upper }} Update content of the structured_config files with new metadata.system_mac_address variable if metadata is not present"
+    - name: "{{ test_id | upper }} Update content of the structured_config files if metadata is not present"
       tags: ["{{ test_id }}"]
       ansible.builtin.lineinfile:
         line: |-
           metadata:
+            serial_number: {{
+              hostvars['avd-ci-leaf1'].metadata.serial_number
+              if inventory_hostname == 'avd-ci-leaf2' else metadata.serial_number
+            }}
             system_mac_address: {{
               hostvars['avd-ci-spine1'].metadata.system_mac_address
               if inventory_hostname == 'avd-ci-spine2' else metadata.system_mac_address
@@ -133,11 +127,15 @@
       no_log: true
       when: "'metadata:' not in structured_config_file_content.content | b64decode"
 
-    - name: "{{ test_id | upper }} Update metadata in the structured_config files with new metadata.system_mac_address variable if metadata is already present"
+    - name: "{{ test_id | upper }} Update metadata in the structured_config files if metadata is already present"
       tags: ["{{ test_id }}"]
       ansible.builtin.lineinfile:
         line: |-
           metadata:
+            serial_number: {{
+              hostvars['avd-ci-leaf1'].metadata.serial_number
+              if inventory_hostname == 'avd-ci-leaf2' else metadata.serial_number
+            }}
             system_mac_address: {{
               hostvars['avd-ci-spine1'].metadata.system_mac_address
               if inventory_hostname == 'avd-ci-spine2' else metadata.system_mac_address
@@ -243,7 +241,7 @@
               # and overlapping system_mac_address between avd-ci-spine1 and avd-ci-spine2
               - >
                 cv_deploy_results.errors | select('search', '.*Duplicated devices found in inventory.*' +
-                hostvars['avd-ci-leaf1'].serial_number +
+                hostvars['avd-ci-leaf1'].metadata.serial_number +
                 '.*avd-ci-leaf1.*avd-ci-leaf2.*' +
                 hostvars['avd-ci-spine1'].metadata.system_mac_address +
                 '.*avd-ci-spine1.*avd-ci-spine2.*') | list | length > 0
