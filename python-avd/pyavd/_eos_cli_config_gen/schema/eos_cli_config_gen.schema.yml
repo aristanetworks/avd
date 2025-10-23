@@ -5847,6 +5847,7 @@ keys:
         entries:
           type: list
           required: true
+          min_length: 1
           items:
             type: dict
             keys:
@@ -5858,6 +5859,7 @@ keys:
                 - deny
               communities:
                 type: list
+                min_length: 1
                 items:
                   type: str
                 description: 'If defined, a standard community-list will be configured.
@@ -5904,6 +5906,7 @@ keys:
     keys:
       enabled:
         type: bool
+        required: true
       bridging:
         type: bool
       information_option:
@@ -5911,6 +5914,7 @@ keys:
         keys:
           enabled:
             type: bool
+            required: true
             description: Enable insertion of option-82 in DHCP request packets.
           circuit_id_type:
             type: str
@@ -5967,6 +5971,7 @@ keys:
         entries:
           type: list
           required: true
+          min_length: 1
           items:
             type: dict
             keys:
@@ -5997,6 +6002,7 @@ keys:
         entries:
           type: list
           required: true
+          min_length: 1
           items:
             type: dict
             keys:

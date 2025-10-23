@@ -14831,7 +14831,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             CircuitIdFormat: TypeAlias = Literal["%h:%p", "%p:%v"]
             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "circuit_id_type": {"type": str}, "circuit_id_format": {"type": str}}
-            enabled: bool | None
+            enabled: bool
             """Enable insertion of option-82 in DHCP request packets."""
             circuit_id_type: str | None
             """"none" or <0 - 255>."""
@@ -14848,7 +14848,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | None | UndefinedType = Undefined,
+                    enabled: bool | UndefinedType = Undefined,
                     circuit_id_type: str | None | UndefinedType = Undefined,
                     circuit_id_format: CircuitIdFormat | None | UndefinedType = Undefined,
                 ) -> None:
@@ -14875,7 +14875,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "information_option": {"type": InformationOption},
             "vlan": {"type": str},
         }
-        enabled: bool | None
+        enabled: bool
         bridging: bool | None
         information_option: InformationOption
         """Subclass of AvdModel."""
@@ -14891,7 +14891,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                enabled: bool | None | UndefinedType = Undefined,
+                enabled: bool | UndefinedType = Undefined,
                 bridging: bool | None | UndefinedType = Undefined,
                 information_option: InformationOption | UndefinedType = Undefined,
                 vlan: str | None | UndefinedType = Undefined,

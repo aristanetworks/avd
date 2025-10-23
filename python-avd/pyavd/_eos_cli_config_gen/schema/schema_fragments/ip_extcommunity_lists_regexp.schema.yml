@@ -19,6 +19,7 @@ keys:
         entries:
           type: list
           required: true
+          min_length: 1
           items:
             type: dict
             keys:

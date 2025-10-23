@@ -11,6 +11,7 @@ keys:
     keys:
       enabled:
         type: bool
+        required: true
       bridging:
         type: bool
       information_option:
@@ -18,6 +19,7 @@ keys:
         keys:
           enabled:
             type: bool
+            required: true
             description: Enable insertion of option-82 in DHCP request packets.
           circuit_id_type:
             type: str
