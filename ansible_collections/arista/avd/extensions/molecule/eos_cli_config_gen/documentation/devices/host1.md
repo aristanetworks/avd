@@ -13054,6 +13054,7 @@ Counters: DEMO-TRAFFIC
 | BLUE-C2-POLICY-05 | ipv6 | any | any | - | - | - | - | - | action: PASS<br/>redirect next-hop IPv4 address: 2.2.2.33 2.2.2.43 vrf: VRF_TTL_IPv4 ttl: 5 |
 | BLUE-C2-POLICY-06 | ipv4 | any | any | - | - | - | - | - | action: PASS<br/>redirect next-hop groups: Testing_TTL_GROUP ttl: 44 |
 | BLUE-C2-POLICY-07 | ipv4 | any | any | - | - | - | - | - | action: PASS |
+| BLUE-C2-POLICY-08 | ipv6 | any | any | icmpv6 | - | - | - | - | default action: PASS |
 
 ##### BLUE-C3-POLICY
 
@@ -13232,6 +13233,9 @@ traffic-policies
       match BLUE-C2-POLICY-07 ipv4
          !
          actions
+      !
+      match BLUE-C2-POLICY-08 ipv6
+         protocol icmpv6 type echo-reply echo-request code all
       !
       match ipv4-all-default ipv4
          actions
