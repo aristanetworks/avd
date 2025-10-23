@@ -140,7 +140,7 @@ snmp-server location {{ snmp_server.location }}
 {%         endif %}
 {%     endfor %}
 {# Then render remote users #}
-{%     for user in snmp_server.users | arista.avd.natural_sort('name') | selectattr("remote_address", "defined") %}
+{%     for user in snmp_server.users | arista.avd.natural_sort('name') | selectattr("remote_address", "arista.avd.defined") %}
 {%         if user.name is arista.avd.defined %}
 {%             set user_cli = "snmp-server user " ~ user.name %}
 {%         endif %}
