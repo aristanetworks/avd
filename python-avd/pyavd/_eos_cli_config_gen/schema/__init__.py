@@ -12260,6 +12260,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "peer": {"type": str},
             "peer_interface": {"type": str},
             "peer_type": {"type": str},
+            "peer_key": {"type": str},
             "sflow": {"type": Sflow},
             "sync_e": {"type": SyncE},
             "port_profile": {"type": str},
@@ -12464,6 +12465,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Key only used for documentation or validation purposes."""
         peer_type: str | None
         """Key only used for documentation or validation purposes."""
+        peer_key: str | None
+        """Key only used for documentation or validation purposes."""
         sflow: Sflow
         """Subclass of AvdModel."""
         sync_e: SyncE
@@ -12599,6 +12602,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 peer: str | None | UndefinedType = Undefined,
                 peer_interface: str | None | UndefinedType = Undefined,
                 peer_type: str | None | UndefinedType = Undefined,
+                peer_key: str | None | UndefinedType = Undefined,
                 sflow: Sflow | UndefinedType = Undefined,
                 sync_e: SyncE | UndefinedType = Undefined,
                 port_profile: str | None | UndefinedType = Undefined,
@@ -12735,6 +12739,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer: Key only used for documentation or validation purposes.
                     peer_interface: Key only used for documentation or validation purposes.
                     peer_type: Key only used for documentation or validation purposes.
+                    peer_key: Key only used for documentation or validation purposes.
                     sflow: Subclass of AvdModel.
                     sync_e: Subclass of AvdModel.
                     port_profile: Key only used for documentation or validation purposes.
@@ -22795,7 +22800,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         hostkey: Hostkey
         """Subclass of AvdModel."""
         enable: bool | None
-        """Enable SSH for VRF default."""
+        """Explicitly enable or disable SSH for all VRFs."""
         connection: Connection
         """Subclass of AvdModel."""
         vrfs: Vrfs
@@ -22850,7 +22855,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of AvdList with `str` items.
                     fips_restrictions: Use FIPS compliant algorithms.
                     hostkey: Subclass of AvdModel.
-                    enable: Enable SSH for VRF default.
+                    enable: Explicitly enable or disable SSH for all VRFs.
                     connection: Subclass of AvdModel.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     log_level: SSH daemon log level.
@@ -24399,6 +24404,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "pod_name": {"type": str},
             "dc_name": {"type": str},
             "fabric_name": {"type": str},
+            "serial_number": {"type": str},
             "cv_tags": {"type": CvTags},
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
@@ -24411,6 +24417,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         pod_name: str | None
         dc_name: str | None
         fabric_name: str | None
+        serial_number: str | None
+        """
+        Serial Number of the device.
+        Used only for documentation and deployment purposes. It is used by the
+        'cv_deploy' role.
+        """
         cv_tags: CvTags
         """Subclass of AvdModel."""
         cv_pathfinder: CvPathfinder
@@ -24438,6 +24450,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 pod_name: str | None | UndefinedType = Undefined,
                 dc_name: str | None | UndefinedType = Undefined,
                 fabric_name: str | None | UndefinedType = Undefined,
+                serial_number: str | None | UndefinedType = Undefined,
                 cv_tags: CvTags | UndefinedType = Undefined,
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
@@ -24456,6 +24469,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     pod_name: pod_name
                     dc_name: dc_name
                     fabric_name: fabric_name
+                    serial_number:
+                       Serial Number of the device.
+                       Used only for documentation and deployment purposes. It is used by the
+                       'cv_deploy' role.
                     cv_tags: Subclass of AvdModel.
                     cv_pathfinder:
                        Metadata used for CV Pathfinder visualization on CloudVision.
@@ -33559,6 +33576,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "peer": {"type": str},
             "peer_interface": {"type": str},
             "peer_type": {"type": str},
+            "peer_key": {"type": str},
             "sflow": {"type": Sflow},
             "vrrp_ids": {"type": VrrpIds},
             "switchport": {"type": Switchport},
@@ -33708,6 +33726,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Key only used for documentation or validation purposes."""
         peer_type: str | None
         """Key only used for documentation or validation purposes."""
+        peer_key: str | None
+        """Key only used for documentation or validation purposes."""
         sflow: Sflow
         """Subclass of AvdModel."""
         vrrp_ids: VrrpIds
@@ -33814,6 +33834,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 peer: str | None | UndefinedType = Undefined,
                 peer_interface: str | None | UndefinedType = Undefined,
                 peer_type: str | None | UndefinedType = Undefined,
+                peer_key: str | None | UndefinedType = Undefined,
                 sflow: Sflow | UndefinedType = Undefined,
                 vrrp_ids: VrrpIds | UndefinedType = Undefined,
                 switchport: Switchport | UndefinedType = Undefined,
@@ -33914,6 +33935,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer: Key only used for documentation or validation purposes.
                     peer_interface: Key only used for documentation or validation purposes.
                     peer_type: Key only used for documentation or validation purposes.
+                    peer_key: Key only used for documentation or validation purposes.
                     sflow: Subclass of AvdModel.
                     vrrp_ids:
                        VRRP model.
@@ -62978,7 +63000,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     flags: Flags
                     """Subclass of AvdList with `str` items."""
                     icmp_type: IcmpType
-                    """Subclass of AvdList with `str` items."""
+                    """
+                    List of ICMP message types to match.
+                    This field is applicable only when the protocol is set to
+                    `icmp` or `icmpv6`.
+
+                    Subclass of AvdList with `str` items.
+                    """
                     enforce_gtsm: bool | None
                     """Enforce the GTSM for BGP speakers. Only supported when protocol is set to 'neighbors'."""
 
@@ -63009,7 +63037,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 src_field: L4 port range field set.
                                 dst_field: L4 port range field set.
                                 flags: Subclass of AvdList with `str` items.
-                                icmp_type: Subclass of AvdList with `str` items.
+                                icmp_type:
+                                   List of ICMP message types to match.
+                                   This field is applicable only when the protocol is set to
+                                   `icmp` or `icmpv6`.
+
+                                   Subclass of AvdList with `str` items.
                                 enforce_gtsm: Enforce the GTSM for BGP speakers. Only supported when protocol is set to 'neighbors'.
 
                             """
@@ -67490,7 +67523,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "router_segment_security": {"type": RouterSegmentSecurity},
         "router_service_insertion": {"type": RouterServiceInsertion},
         "router_traffic_engineering": {"type": RouterTrafficEngineering},
-        "serial_number": {"type": str},
         "service_routing_configuration_bgp": {"type": ServiceRoutingConfigurationBgp},
         "service_routing_protocols_model": {"type": str},
         "service_unsupported_transceiver": {"type": ServiceUnsupportedTransceiver},
@@ -68003,12 +68035,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     router_traffic_engineering: RouterTrafficEngineering
     """Subclass of AvdModel."""
-    serial_number: str | None
-    """
-    Serial Number of the device.
-    Used only for documentation and deployment purposes. It is used by the
-    'cv_deploy' role.
-    """
     service_routing_configuration_bgp: ServiceRoutingConfigurationBgp
     """Subclass of AvdModel."""
     service_routing_protocols_model: ServiceRoutingProtocolsModel | None
@@ -68253,7 +68279,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             router_segment_security: RouterSegmentSecurity | UndefinedType = Undefined,
             router_service_insertion: RouterServiceInsertion | UndefinedType = Undefined,
             router_traffic_engineering: RouterTrafficEngineering | UndefinedType = Undefined,
-            serial_number: str | None | UndefinedType = Undefined,
             service_routing_configuration_bgp: ServiceRoutingConfigurationBgp | UndefinedType = Undefined,
             service_routing_protocols_model: ServiceRoutingProtocolsModel | None | UndefinedType = Undefined,
             service_unsupported_transceiver: ServiceUnsupportedTransceiver | UndefinedType = Undefined,
@@ -68586,10 +68611,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 router_traffic_engineering: Subclass of AvdModel.
-                serial_number:
-                   Serial Number of the device.
-                   Used only for documentation and deployment purposes. It is used by the
-                   'cv_deploy' role.
                 service_routing_configuration_bgp: Subclass of AvdModel.
                 service_routing_protocols_model: service_routing_protocols_model
                 service_unsupported_transceiver: Subclass of AvdModel.

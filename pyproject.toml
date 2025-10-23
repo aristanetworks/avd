@@ -53,7 +53,7 @@ convention = "google"
   "E402",   # Ansible plugins require a layout with imports below the docs
   "INP001", # implicit namespace package. Add an `__init__.py` - Ansible plugins are not in packages
 ]
-"ansible_collections/arista/avd/molecule/eos_designs_unit_tests/custom_modules/*.py" = [
+"ansible_collections/arista/avd/extensions/molecule/eos_designs_unit_tests/custom_modules/*.py" = [
   "INP001", # implicit namespace package. Add an `__init__.py` - TODO: Evaluate or see if it is a false positive
 ]
 "python-avd/scripts/**/*.py" = [
@@ -122,9 +122,7 @@ runtime-evaluated-base-classes = ["pydantic.BaseModel"]
 [tool.pyright]
 exclude = [
   "ansible_collections/arista/avd",                                      # TODO
-  "python/avdutils/tests",                                               # TODO
   "python-avd/pyavd/api",                                                # TODO
-  "python-avd/pyavd/_anta",                                              # TODO
   "python-avd/pyavd/_cv",                                                # TODO
   "python-avd/pyavd/_schema",                                            # TODO
   "python-avd/schema_tools",                                             # TODO
@@ -138,10 +136,12 @@ exclude = [
   "python-avd/pyavd/_eos_designs/schema/__init__.py",
 ]
 pythonVersion = "3.10"
+# This is to direct pyright where to look for schema_tools
+extraPaths = ["python-avd"]
 
 [tool.bumpversion]
 
-current_version = "6.0.0-dev1"
+current_version = "6.0.0-dev2"
 
 allow_dirty = true
 commit = false
