@@ -11,7 +11,7 @@ from pyavd.j2filters import natural_sort
 from ._base_classes import AntaTestInputFactory
 
 
-class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory):
+class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory[VerifyBGPPeerSession.Input]):
     """
     Input factory class for the `VerifyBGPPeerSession` test.
 
