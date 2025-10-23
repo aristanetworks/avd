@@ -65,6 +65,9 @@ class IpAddressingMixin(Protocol):
     @cached_property
     def vtep_ip(self: SharedUtilsProtocol) -> str:
         """Render ipv4 address for vtep_ip using dynamically loaded python module."""
+        if self.node_config.vtep_loopback and self.node_config.vtep_loopback == "Loopback0" and self.router_id:
+            return self.router_id
+
         if self.mlag is True:
             return self.ip_addressing.vtep_ip_mlag()
 
@@ -73,6 +76,9 @@ class IpAddressingMixin(Protocol):
     @cached_property
     def vtep_ipv6(self: SharedUtilsProtocol) -> str | None:
         """Render ipv6 address for vtep_ip using dynamically loaded python module."""
+        if self.node_config.vtep_loopback and self.node_config.vtep_loopback == "Loopback0" and self.ipv6_router_id:
+            return self.ipv6_router_id
+
         if self.mlag is True:
             return self.ip_addressing.vtep_ipv6_mlag()
 
