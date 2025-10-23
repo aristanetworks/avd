@@ -123,7 +123,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
                 continue
 
             if not intf.ip_address or not intf.metadata.peer or not intf.metadata.peer_interface:
-                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="ip_address, peer, peer_interface")
+                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="ip_address, metadata.peer, metadata.peer_interface")
                 continue
 
             if intf.ip_address == "dhcp":

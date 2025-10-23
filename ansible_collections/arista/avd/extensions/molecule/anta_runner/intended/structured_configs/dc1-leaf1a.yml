@@ -99,8 +99,8 @@ ethernet_interfaces:
     peer: dc1-leaf1-workstation1
     peer_interface: e1
     peer_type: workstation
-    port_profile: Workstations
     peer_key: workstations
+    port_profile: Workstations
   validate_state: false
   switchport:
     enabled: true
@@ -114,8 +114,8 @@ ethernet_interfaces:
     peer: dc1-leaf1-workstation2
     peer_interface: e1
     peer_type: workstation
-    port_profile: Workstations
     peer_key: workstations
+    port_profile: Workstations
   validate_state: false
   switchport:
     enabled: true
@@ -129,8 +129,8 @@ ethernet_interfaces:
     peer: dc1-leaf1-workstationNoLLDP
     peer_interface: e1
     peer_type: workstation
-    port_profile: Workstations_NoLLDP
     peer_key: workstations
+    port_profile: Workstations_NoLLDP
   validate_lldp: false
   switchport:
     enabled: true

@@ -59,8 +59,8 @@ ethernet_interfaces:
     peer: HostC
     peer_interface: Eth1
     peer_type: server
-    port_profile: PP-BLUE
     peer_key: servers
+    port_profile: PP-BLUE
   switchport:
     enabled: true
     mode: access

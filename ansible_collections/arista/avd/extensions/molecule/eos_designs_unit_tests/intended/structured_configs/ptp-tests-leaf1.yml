@@ -110,8 +110,8 @@ ethernet_interfaces:
     peer: dynamic-endpoint
     peer_interface: eth1
     peer_type: server
-    port_profile: PTP-profile-dynamic
     peer_key: servers
+    port_profile: PTP-profile-dynamic
   switchport:
     enabled: true
     mode: access

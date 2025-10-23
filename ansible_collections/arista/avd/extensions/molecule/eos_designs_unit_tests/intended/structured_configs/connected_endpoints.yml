@@ -237,8 +237,8 @@ ethernet_interfaces:
   metadata:
     peer: DOT1X_UNAUTHORIZED
     peer_type: custom_server
-    port_profile: INDIVIDUAL_TRUNK
     peer_key: servers
+    port_profile: INDIVIDUAL_TRUNK
   sflow:
     enable: false
   switchport:
@@ -303,8 +303,8 @@ ethernet_interfaces:
   metadata:
     peer: DOT1X_UNAUTHORIZED_PORT_CHANNEL
     peer_type: custom_server
-    port_profile: INDIVIDUAL_TRUNK
     peer_key: servers
+    port_profile: INDIVIDUAL_TRUNK
 - name: Ethernet18
   description: CUSTOM_SERVER_DOT1X_UNAUTHORIZED_PORT_CHANNEL
   shutdown: false
@@ -320,8 +320,8 @@ ethernet_interfaces:
   metadata:
     peer: DOT1X_UNAUTHORIZED_PORT_CHANNEL
     peer_type: custom_server
-    port_profile: INDIVIDUAL_TRUNK
     peer_key: servers
+    port_profile: INDIVIDUAL_TRUNK
 - name: Ethernet26
   description: CUSTOM_SERVER_INDIVIDUAL_3
   shutdown: false

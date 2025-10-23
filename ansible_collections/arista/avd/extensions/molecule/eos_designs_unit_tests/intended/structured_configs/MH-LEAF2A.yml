@@ -51,8 +51,8 @@ ethernet_interfaces:
     peer: ROUTER01
     peer_interface: Eth1
     peer_type: router
-    port_profile: Tenant_X_LT
     peer_key: routers
+    port_profile: Tenant_X_LT
   switchport:
     enabled: true
     mode: access

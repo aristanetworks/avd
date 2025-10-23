@@ -51,8 +51,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -85,8 +85,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -119,8 +119,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -153,8 +153,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -187,8 +187,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -221,8 +221,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -255,8 +255,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -289,8 +289,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -323,8 +323,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -357,8 +357,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -391,8 +391,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -425,8 +425,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -459,8 +459,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -493,8 +493,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -527,8 +527,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -561,8 +561,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -595,8 +595,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -629,8 +629,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -663,8 +663,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -697,8 +697,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -731,8 +731,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -765,8 +765,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -799,8 +799,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -833,8 +833,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -867,8 +867,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -901,8 +901,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -935,8 +935,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -969,8 +969,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1003,8 +1003,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1037,8 +1037,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1071,8 +1071,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1105,8 +1105,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1139,8 +1139,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1173,8 +1173,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1207,8 +1207,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1241,8 +1241,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1275,8 +1275,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1309,8 +1309,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1343,8 +1343,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1377,8 +1377,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1411,8 +1411,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1445,8 +1445,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1479,8 +1479,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1513,8 +1513,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1547,8 +1547,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1581,8 +1581,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1615,8 +1615,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1649,8 +1649,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1683,8 +1683,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1717,8 +1717,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1751,8 +1751,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1785,8 +1785,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1819,8 +1819,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1853,8 +1853,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1887,8 +1887,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1921,8 +1921,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1955,8 +1955,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1989,8 +1989,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2023,8 +2023,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2057,8 +2057,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2091,8 +2091,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2125,8 +2125,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2159,8 +2159,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2193,8 +2193,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2227,8 +2227,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2261,8 +2261,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2295,8 +2295,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2329,8 +2329,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2363,8 +2363,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2397,8 +2397,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2431,8 +2431,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2465,8 +2465,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2499,8 +2499,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2533,8 +2533,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2567,8 +2567,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2601,8 +2601,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2635,8 +2635,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2669,8 +2669,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2703,8 +2703,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2737,8 +2737,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2771,8 +2771,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2805,8 +2805,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2839,8 +2839,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2873,8 +2873,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2907,8 +2907,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2941,8 +2941,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2975,8 +2975,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -3009,8 +3009,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -3043,8 +3043,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -3077,8 +3077,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -3111,8 +3111,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -3145,8 +3145,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -3179,8 +3179,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -3213,8 +3213,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -3247,8 +3247,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -3281,8 +3281,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer_type: network_port
-    port_profile: PP-DOT1X
     peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone

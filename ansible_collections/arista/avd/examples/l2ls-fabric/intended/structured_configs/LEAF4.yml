@@ -59,8 +59,8 @@ ethernet_interfaces:
     peer: Host2
     peer_interface: Eth1
     peer_type: server
-    port_profile: PP-ORANGE
     peer_key: servers
+    port_profile: PP-ORANGE
   switchport:
     enabled: true
     mode: access

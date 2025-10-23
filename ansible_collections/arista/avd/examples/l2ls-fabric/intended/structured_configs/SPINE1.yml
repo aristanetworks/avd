@@ -81,8 +81,8 @@ ethernet_interfaces:
     peer: FIREWALL
     peer_interface: Eth1
     peer_type: firewall
-    port_profile: PP-FIREWALL
     peer_key: firewalls
+    port_profile: PP-FIREWALL
 hostname: SPINE1
 ip_domain_lookup:
   source_interfaces:

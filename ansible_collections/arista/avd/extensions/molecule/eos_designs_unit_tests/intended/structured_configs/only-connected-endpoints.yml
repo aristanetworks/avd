@@ -9,8 +9,8 @@ ethernet_interfaces:
     peer: TEST_SERVER_01
     peer_interface: Nic1
     peer_type: server
-    port_profile: MY_PROFILE
     peer_key: servers
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -27,8 +27,8 @@ ethernet_interfaces:
     peer: TEST_SERVER_01
     peer_interface: Nic1
     peer_type: server
-    port_profile: MY_PROFILE
     peer_key: servers
+    port_profile: MY_PROFILE
 - name: Ethernet2
   description: SERVER_TEST_SERVER_01_Nic2
   shutdown: false
@@ -39,8 +39,8 @@ ethernet_interfaces:
     peer: TEST_SERVER_01
     peer_interface: Nic2
     peer_type: server
-    port_profile: MY_PROFILE
     peer_key: servers
+    port_profile: MY_PROFILE
 - name: Ethernet20
   description: Network Port
   shutdown: false
@@ -51,8 +51,8 @@ ethernet_interfaces:
   metadata:
     peer: Network Port
     peer_type: network_port
-    port_profile: MY_PROFILE
     peer_key: network_ports
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -69,8 +69,8 @@ ethernet_interfaces:
   metadata:
     peer: Network Port
     peer_type: network_port
-    port_profile: MY_PROFILE
     peer_key: network_ports
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -87,8 +87,8 @@ ethernet_interfaces:
   metadata:
     peer: Network Port
     peer_type: network_port
-    port_profile: MY_PROFILE
     peer_key: network_ports
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -105,8 +105,8 @@ ethernet_interfaces:
   metadata:
     peer: Network Port
     peer_type: network_port
-    port_profile: MY_PROFILE
     peer_key: network_ports
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -123,8 +123,8 @@ ethernet_interfaces:
   metadata:
     peer: Network Port
     peer_type: network_port
-    port_profile: MY_PROFILE
     peer_key: network_ports
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -141,8 +141,8 @@ ethernet_interfaces:
   metadata:
     peer: Network Port
     peer_type: network_port
-    port_profile: MY_PROFILE
     peer_key: network_ports
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -159,8 +159,8 @@ ethernet_interfaces:
   metadata:
     peer: Network Port
     peer_type: network_port
-    port_profile: MY_PROFILE
     peer_key: network_ports
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -177,8 +177,8 @@ ethernet_interfaces:
   metadata:
     peer: Network Port
     peer_type: network_port
-    port_profile: MY_PROFILE
     peer_key: network_ports
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -195,8 +195,8 @@ ethernet_interfaces:
   metadata:
     peer: Network Port
     peer_type: network_port
-    port_profile: MY_PROFILE
     peer_key: network_ports
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk
@@ -213,8 +213,8 @@ ethernet_interfaces:
   metadata:
     peer: Network Port
     peer_type: network_port
-    port_profile: MY_PROFILE
     peer_key: network_ports
+    port_profile: MY_PROFILE
   switchport:
     enabled: true
     mode: trunk

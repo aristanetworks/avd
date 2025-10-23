@@ -235,19 +235,18 @@ class PortChannelInterfacesMixin(Protocol):
             ),
         )
 
-        port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
+        self.structured_config.port_channel_interfaces.append_new(
             name=port_channel_name,
             switchport=EosCliConfigGen.PortChannelInterfacesItem.Switchport(enabled=False),
+            metadata=EosCliConfigGen.PortChannelInterfacesItem.Metadata(
+                # TODO: if different interfaces used across nodes it will fail just like for mlag.
+                peer_interface=port_channel_name,
+                peer_type="l3_interface",
+                peer=self.shared_utils.wan_ha_peer,
+            ),
             shutdown=False,
             description=description or None,
             ip_address=self.shared_utils.wan_ha_ip_addresses[0],
             flow_tracker=direct_wan_ha_links_flow_tracker,
             mtu=self.shared_utils.node_config.wan_ha.mtu,
         )
-        port_channel_interface.metadata._update(
-            # TODO: if different interfaces used across nodes it will fail just like for mlag.
-            peer_interface=port_channel_name,
-            peer_type="l3_interface",
-            peer=self.shared_utils.wan_ha_peer,
-        )
-        self.structured_config.port_channel_interfaces.append(port_channel_interface)
