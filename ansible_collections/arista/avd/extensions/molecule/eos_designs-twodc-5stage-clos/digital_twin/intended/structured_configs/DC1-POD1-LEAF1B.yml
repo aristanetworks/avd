@@ -172,6 +172,7 @@ metadata:
     password: cvp123!
 router_bgp:
   as: '65111.100'
+  as_notation: asdot
   router_id: 172.16.110.6
   maximum_paths:
     paths: 4

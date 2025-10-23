@@ -286,8 +286,8 @@ ASN Notation: asplain
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 11.1.2.1 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | False | - | - | - | - |
-| 172.16.11.1 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.16.11.3 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.16.11.1 | 4267049060 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.16.11.3 | 4267049060 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 172.16.12.1 | 65120 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 172.16.12.3 | 65120 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 172.17.10.1 | 65101 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | True | - | - | - | - |
@@ -311,10 +311,10 @@ router bgp 65100
    no neighbor 11.1.2.1 bfd
    neighbor 11.1.2.1 description DC2-SUPER-SPINE1
    neighbor 172.16.11.1 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.11.1 remote-as 65110.100
+   neighbor 172.16.11.1 remote-as 4267049060
    neighbor 172.16.11.1 description DC1-POD1-SPINE1_Ethernet1
    neighbor 172.16.11.3 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.11.3 remote-as 65110.100
+   neighbor 172.16.11.3 remote-as 4267049060
    neighbor 172.16.11.3 description DC1-POD1-SPINE2_Ethernet1
    neighbor 172.16.12.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.12.1 remote-as 65120

@@ -296,7 +296,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                 name=interface_name,
                 peer_group=self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name,
                 peer=self.shared_utils.mlag_peer,
-                remote_as=self.shared_utils.bgp_as,
+                remote_as=self.shared_utils.formatted_bgp_as,
                 description=AvdStringFormatter().format(
                     self.inputs.mlag_bgp_peer_description,
                     mlag_peer=self.shared_utils.mlag_peer,
