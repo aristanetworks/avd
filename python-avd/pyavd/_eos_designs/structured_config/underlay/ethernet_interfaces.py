@@ -363,16 +363,17 @@ class EthernetInterfacesMixin(Protocol):
                 ),
             )
             if self.shared_utils.use_port_channel_for_direct_ha:
-                ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
+                self.structured_config.ethernet_interfaces.append_new(
                     name=interface,
+                    metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
+                        peer_interface=interface, peer_type="wan_ha_peer", peer=self.shared_utils.wan_ha_peer
+                    ),
                     description=description or None,
                     shutdown=False,
                     channel_group=EosCliConfigGen.EthernetInterfacesItem.ChannelGroup(id=self.shared_utils.wan_ha_port_channel_id, mode="active"),
                     # TODO: do we need speed?
                     mtu=self.shared_utils.node_config.wan_ha.mtu,
                 )
-                ethernet_interface.metadata._update(peer_interface=interface, peer_type="wan_ha_peer", peer=self.shared_utils.wan_ha_peer)
-                self.structured_config.ethernet_interfaces.append(ethernet_interface)
             else:
                 # Using direct l3 interface
                 self.structured_config.ethernet_interfaces.append_new(
