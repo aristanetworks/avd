@@ -1,0 +1,9 @@
+# Test for not generating the avt, router path selection and security test when router ip is ipv6 address
+custom_structured_configuration_router_path_selection:
+  path_groups:
+    - name: mpls
+      static_peers:
+        - router_ip: "1:1:1:1:1:1:1:1"
+          name: dc1-leaf1a
+          ipv4_addresses:
+            - 172.18.1.2

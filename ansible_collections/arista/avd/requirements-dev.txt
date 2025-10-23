@@ -1,12 +1,10 @@
 # pyavd minimal requirements when running from source
 # anta is set to latest version to make sure developers run with the latest version
 # when generating molecule artifacts.
-anta==1.5.0
+anta==1.6.0
 cryptography>=43.0.0
 netaddr>=0.7.19
 PyYAML>=6.0.0
-# temporarily capping pydantic for CI
-pydantic<2.12
 # dev requirements
 ansible-core>=2.16.0,<2.19.0
 ansible-doc-extractor>=0.1.10
@@ -26,7 +24,7 @@ pytest>=8.2.0
 pre-commit>=3.2.0
 pre-commit-hooks>=3.3.0
 referencing>=0.35.0
-ruff==0.14.0
+ruff==0.14.1
 tox
 twine
 yamllint
