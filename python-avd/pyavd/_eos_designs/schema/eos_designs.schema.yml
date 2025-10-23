@@ -342,6 +342,19 @@ keys:
     type: str
     convert_types:
     - int
+  bgp_as_notation:
+    documentation_options:
+      table: bgp-settings
+    type: str
+    valid_values:
+    - auto
+    - asdot
+    - asplain
+    default: auto
+    description: "AS number representation.\nasdot - AS number representation in asdot
+      format (Ex. 123.12).\nasplain - AS number representation in asplain format (Ex.
+      12312).\nauto - Will look at the configured ASN and if there is a dot in it,\n
+      \      it will use asdot otherwise asplain."
   bgp_default_ipv4_unicast:
     documentation_options:
       table: bgp-settings

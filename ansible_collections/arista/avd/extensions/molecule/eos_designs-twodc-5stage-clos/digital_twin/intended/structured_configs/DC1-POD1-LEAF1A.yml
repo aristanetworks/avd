@@ -136,6 +136,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65111.100'
+  as_notation: asdot
   router_id: 172.16.110.3
   maximum_paths:
     paths: 4

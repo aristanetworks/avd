@@ -135,12 +135,12 @@ router_bgp:
   neighbors:
   - ip_address: 172.16.11.1
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65110.100'
+    remote_as: '4267049060'
     peer: DC1-POD1-SPINE1
     description: DC1-POD1-SPINE1_Ethernet1
   - ip_address: 172.16.11.3
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65110.100'
+    remote_as: '4267049060'
     peer: DC1-POD1-SPINE2
     description: DC1-POD1-SPINE2_Ethernet1
   - ip_address: 172.16.12.1

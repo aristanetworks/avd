@@ -518,6 +518,10 @@ router_path_selection:
       name: dc1-leaf1b
       ipv4_addresses:
       - 172.18.2.2
+    - router_ip: '1:1:1:1:1:1:1:1'
+      name: dc1-leaf1a
+      ipv4_addresses:
+      - 172.18.1.2
   - name: internet
     id: 102
     ipsec_profile: CP-PROFILE

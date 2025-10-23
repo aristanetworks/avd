@@ -246,7 +246,7 @@ class MlagMixin(Protocol):
         peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
             name=peer_group_name,
             type="ipv4",
-            remote_as=self.bgp_as,
+            remote_as=self.formatted_bgp_as,
             next_hop_self=True,
             description=AvdStringFormatter().format(self.inputs.mlag_bgp_peer_group_description, mlag_peer=self.mlag_peer),
             password=self.get_bgp_password(bgp_peer_group),

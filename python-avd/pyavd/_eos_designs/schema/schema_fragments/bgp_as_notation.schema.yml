@@ -1,0 +1,20 @@
+# Copyright (c) 2025 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  bgp_as_notation:
+    documentation_options:
+      table: bgp-settings
+    type: str
+    valid_values: ["auto", "asdot", "asplain"]
+    default: auto
+    description: |-
+      AS number representation.
+      asdot - AS number representation in asdot format (Ex. 123.12).
+      asplain - AS number representation in asplain format (Ex. 12312).
+      auto - Will look at the configured ASN and if there is a dot in it,
+             it will use asdot otherwise asplain.

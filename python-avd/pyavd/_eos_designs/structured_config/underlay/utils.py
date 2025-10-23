@@ -62,7 +62,7 @@ class UtilsMixin(Protocol):
                     peer_interface=uplink.interface,
                     peer_type=peer_facts.type,
                     peer_is_deployed=peer_facts.is_deployed,
-                    peer_bgp_as=peer_facts.bgp_as,
+                    peer_bgp_as=self.shared_utils.get_asn(peer_facts.bgp_as),
                     type=uplink.type,
                     speed=uplink.peer_speed or uplink.speed,
                     ip_address=uplink.peer_ip_address,

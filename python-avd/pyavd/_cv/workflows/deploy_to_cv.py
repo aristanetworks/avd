@@ -151,11 +151,16 @@ async def deploy_to_cv(
             # Create workspace
             await create_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
 
-            # Form the list of targeted CVDevices (list may contain duplicated items)
-            devices = (
-                [tag.device for tag in device_tags if tag.device is not None]
-                + [tag.device for tag in interface_tags if tag.device is not None]
-                + [config.device for config in configs if config.device is not None]
+            # Form deduplicated list of targeted CVDevices
+            devices = list(
+                {
+                    id(device): device
+                    for device in (
+                        [tag.device for tag in device_tags if tag.device is not None]
+                        + [tag.device for tag in interface_tags if tag.device is not None]
+                        + [config.device for config in configs if config.device is not None]
+                    )
+                }.values()
             )
             # Check structured config of the targeted devices for overlapping `serial_number`s or `system_mac_address`es.
             verify_device_inputs(devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
@@ -163,8 +168,6 @@ async def deploy_to_cv(
             try:
                 # Verify devices exist and update CVDevice objects with _exists_on_cv.
                 # Depending on skip_missing_devices we will raise or skip missing devices.
-                # Since verify_devices will silently return if _exists_on_cv is already set,
-                # we can just send all the items even if we have duplicate device objects.
                 await verify_devices_on_cv(
                     devices=devices,
                     workspace_id=result.workspace.id,
@@ -237,7 +240,7 @@ async def deploy_to_cv(
                 result.workspace.state = "abandoned"
                 return result
 
-            await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
+            await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=result.warnings)
 
             # Create/update CVChangeControl object with ID created by workspace.
             if result.workspace.change_control_id is not None:
