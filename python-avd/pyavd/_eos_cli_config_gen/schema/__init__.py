@@ -63000,7 +63000,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     flags: Flags
                     """Subclass of AvdList with `str` items."""
                     icmp_type: IcmpType
-                    """Subclass of AvdList with `str` items."""
+                    """
+                    List of ICMP message types to match.
+                    This field is applicable only when the protocol is set to
+                    `icmp` or `icmpv6`.
+
+                    Subclass of AvdList with `str` items.
+                    """
                     enforce_gtsm: bool | None
                     """Enforce the GTSM for BGP speakers. Only supported when protocol is set to 'neighbors'."""
 
@@ -63031,7 +63037,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 src_field: L4 port range field set.
                                 dst_field: L4 port range field set.
                                 flags: Subclass of AvdList with `str` items.
-                                icmp_type: Subclass of AvdList with `str` items.
+                                icmp_type:
+                                   List of ICMP message types to match.
+                                   This field is applicable only when the protocol is set to
+                                   `icmp` or `icmpv6`.
+
+                                   Subclass of AvdList with `str` items.
                                 enforce_gtsm: Enforce the GTSM for BGP speakers. Only supported when protocol is set to 'neighbors'.
 
                             """

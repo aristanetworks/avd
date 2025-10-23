@@ -23406,6 +23406,10 @@ keys:
                             - initial
                         icmp_type:
                           type: list
+                          description: 'List of ICMP message types to match.
+
+                            This field is applicable only when the protocol is set
+                            to `icmp` or `icmpv6`.'
                           items:
                             type: str
                         enforce_gtsm:
