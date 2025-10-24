@@ -17,45 +17,50 @@ ethernet_interfaces:
   channel_group:
     id: 47
     mode: active
-  peer: LEAF2
-  peer_interface: Ethernet47
-  peer_type: mlag_peer
+  metadata:
+    peer: LEAF2
+    peer_interface: Ethernet47
+    peer_type: mlag_peer
 - name: Ethernet48
   description: MLAG_LEAF2_Ethernet48
   shutdown: false
   channel_group:
     id: 47
     mode: active
-  peer: LEAF2
-  peer_interface: Ethernet48
-  peer_type: mlag_peer
+  metadata:
+    peer: LEAF2
+    peer_interface: Ethernet48
+    peer_type: mlag_peer
 - name: Ethernet1
   description: L2_SPINE1_Ethernet1
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: SPINE1
-  peer_interface: Ethernet1
-  peer_type: l2spine
+  metadata:
+    peer: SPINE1
+    peer_interface: Ethernet1
+    peer_type: l2spine
 - name: Ethernet2
   description: L2_SPINE2_Ethernet1
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: SPINE2
-  peer_interface: Ethernet1
-  peer_type: l2spine
+  metadata:
+    peer: SPINE2
+    peer_interface: Ethernet1
+    peer_type: l2spine
 - name: Ethernet3
   description: SERVER_HostA_Eth1
   shutdown: false
   spanning_tree_portfast: edge
-  peer: HostA
-  peer_interface: Eth1
-  peer_type: server
-  peer_key: servers
-  port_profile: PP-BLUE
+  metadata:
+    peer: HostA
+    peer_interface: Eth1
+    peer_type: server
+    peer_key: servers
+    port_profile: PP-BLUE
   switchport:
     enabled: true
     mode: access

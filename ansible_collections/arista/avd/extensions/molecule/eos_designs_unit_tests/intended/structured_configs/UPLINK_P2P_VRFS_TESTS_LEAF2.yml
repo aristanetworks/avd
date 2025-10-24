@@ -14,9 +14,10 @@ ethernet_interfaces:
       sparse_mode: true
   mac_security:
     profile: TEST
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE1
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet1.42
@@ -27,9 +28,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 42
   ipv6_address: 2001:db8:3:8::2/64
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE1
-  peer_interface: Ethernet2.42
-  peer_type: spine
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+    peer_interface: Ethernet2.42
+    peer_type: spine
 - name: Ethernet1.66
   description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet2.66_VRF_ONLY-ON-L2LEAF
   shutdown: false
@@ -38,9 +40,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 66
   ipv6_address: 2001:db8:3:8::2/64
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE1
-  peer_interface: Ethernet2.66
-  peer_type: spine
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+    peer_interface: Ethernet2.66
+    peer_type: spine
 - name: Ethernet2
   description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet1
   shutdown: false
@@ -51,9 +54,10 @@ ethernet_interfaces:
       sparse_mode: true
   mac_security:
     profile: TEST
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE2
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2.100
@@ -64,9 +68,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 100
   ipv6_address: 2001:db8:3:9::2/64
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE2
-  peer_interface: Ethernet1.100
-  peer_type: spine
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+    peer_interface: Ethernet1.100
+    peer_type: spine
 - name: Ethernet2.42
   description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet1.42_VRF_PROD
   shutdown: false
@@ -75,9 +80,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 42
   ipv6_address: 2001:db8:3:9::2/64
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE2
-  peer_interface: Ethernet1.42
-  peer_type: spine
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+    peer_interface: Ethernet1.42
+    peer_type: spine
 hostname: UPLINK_P2P_VRFS_TESTS_LEAF2
 ip_igmp_snooping:
   globally_enabled: true

@@ -10,9 +10,10 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
+  metadata:
+    peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_HARDWARE_FEATURES_CLOUDEOS_Ethernet2
   shutdown: false
@@ -27,9 +28,10 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: HARDWARE_FEATURES_CLOUDEOS
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: HARDWARE_FEATURES_CLOUDEOS
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   sflow:
     enable: true
   switchport:
@@ -40,17 +42,19 @@ ethernet_interfaces:
   channel_group:
     id: 2
     mode: active
-  peer: HARDWARE_FEATURES_CLOUDEOS_2
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: HARDWARE_FEATURES_CLOUDEOS_2
+    peer_interface: Ethernet1
+    peer_type: l3leaf
 - name: Ethernet9
   description: P2P_HARDWARE_FEATURES_CUSTOM_PLATFORM_Ethernet9
   shutdown: false
   mtu: 9214
   ip_address: 10.10.60.0/31
-  peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
-  peer_interface: Ethernet9
-  peer_type: l3leaf
+  metadata:
+    peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
+    peer_interface: Ethernet9
+    peer_type: l3leaf
   sflow:
     enable: true
   switchport:
@@ -59,7 +63,8 @@ ethernet_interfaces:
   shutdown: false
   vrf: VRF10
   ip_address: 10.10.40.5/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   sflow:
     enable: true
   switchport:
@@ -78,10 +83,11 @@ ethernet_interfaces:
       interval: -3
     role: master
     transport: ipv4
-  peer: TEST_POE
-  peer_interface: ETH5_NO_POE
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: TEST_POE
+    peer_interface: ETH5_NO_POE
+    peer_type: server
+    peer_key: servers
   sflow:
     enable: true
   switchport:
@@ -92,19 +98,21 @@ ethernet_interfaces:
   channel_group:
     id: 8
     mode: active
-  peer: TEST_MTU_MRU
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: TEST_MTU_MRU
+    peer_type: server
+    peer_key: servers
 - name: Ethernet6
   description: SERVER_TEST_INTERFACE_STORM_CONTROL_ETH15_WITH_STORM_CONTROL
   shutdown: false
   storm_control:
     all:
       level: '10'
-  peer: TEST_INTERFACE_STORM_CONTROL
-  peer_interface: ETH15_WITH_STORM_CONTROL
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: TEST_INTERFACE_STORM_CONTROL
+    peer_interface: ETH15_WITH_STORM_CONTROL
+    peer_type: server
+    peer_key: servers
   sflow:
     enable: true
   switchport:

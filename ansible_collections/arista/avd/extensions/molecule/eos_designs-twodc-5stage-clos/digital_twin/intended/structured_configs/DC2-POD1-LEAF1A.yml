@@ -16,9 +16,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC2-POD1-SPINE1
-  peer_interface: Ethernet3
-  peer_type: spine
+  metadata:
+    peer: DC2-POD1-SPINE1
+    peer_interface: Ethernet3
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -28,9 +29,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC2-POD1-SPINE2
-  peer_interface: Ethernet3
-  peer_type: spine
+  metadata:
+    peer: DC2-POD1-SPINE2
+    peer_interface: Ethernet3
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -39,16 +41,18 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: DC2-POD1-L2LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: DC2-POD1-L2LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet6
   description: P2P_DC1.POD1.LEAF2A_Ethernet7
   shutdown: false
   ip_address: 100.100.100.201/24
-  peer: DC1.POD1.LEAF2A
-  peer_interface: Ethernet7
-  peer_type: l3leaf
+  metadata:
+    peer: DC1.POD1.LEAF2A
+    peer_interface: Ethernet7
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet7
@@ -57,9 +61,10 @@ ethernet_interfaces:
   ip_address: 11.1.0.39/31
   ptp:
     enable: true
-  peer: DC1-POD1-LEAF2B
-  peer_interface: Ethernet7
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF2B
+    peer_interface: Ethernet7
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: DC2-POD1-LEAF1A
