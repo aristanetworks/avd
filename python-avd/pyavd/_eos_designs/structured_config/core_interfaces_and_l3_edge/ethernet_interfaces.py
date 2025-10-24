@@ -47,13 +47,11 @@ class EthernetInterfacesMixin(Protocol):
             for member in p2p_link_data["port_channel_members"]:
                 ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
                     name=member["interface"],
-                    peer=p2p_link_data["peer"],
-                    peer_interface=member["peer_interface"],
-                    peer_type=p2p_link_data["peer_type"],
                     shutdown=False,
                     description=self._port_channel_member_description(p2p_link_data, member) or None,
                     speed=p2p_link.speed,
                 )
+                ethernet_interface.metadata._update(peer_interface=member["peer_interface"], peer=p2p_link_data["peer"], peer_type=p2p_link_data["peer_type"])
                 ethernet_interface.channel_group.id = p2p_link_data["port_channel_id"]
                 ethernet_interface.channel_group.mode = p2p_link.port_channel.mode
                 # Propagate campus_link_type for campus devices

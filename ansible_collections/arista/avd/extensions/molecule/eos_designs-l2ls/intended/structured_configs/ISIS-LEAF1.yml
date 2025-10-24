@@ -10,9 +10,10 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: ISIS-SPINE1
-  peer_interface: Ethernet1
-  peer_type: l3spine
+  metadata:
+    peer: ISIS-SPINE1
+    peer_interface: Ethernet1
+    peer_type: l3spine
 hostname: ISIS-LEAF1
 ip_igmp_snooping:
   globally_enabled: true

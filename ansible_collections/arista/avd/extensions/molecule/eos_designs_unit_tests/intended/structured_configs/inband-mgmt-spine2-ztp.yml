@@ -39,9 +39,10 @@ ethernet_interfaces:
   mtu: 9214
   ip_address: 172.16.255.2/31
   dhcp_server_ipv4: true
-  peer: inband-mgmt-parent
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: inband-mgmt-parent
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: inband-mgmt-spine2-ztp

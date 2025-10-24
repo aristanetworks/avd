@@ -10,18 +10,20 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: sflow-tests-leaf3
-  peer_interface: Ethernet16
-  peer_type: l3leaf
+  metadata:
+    peer: sflow-tests-leaf3
+    peer_interface: Ethernet16
+    peer_type: l3leaf
 - name: Ethernet2
   description: L2_sflow-tests-leaf4_Ethernet16
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: sflow-tests-leaf4
-  peer_interface: Ethernet16
-  peer_type: l3leaf
+  metadata:
+    peer: sflow-tests-leaf4
+    peer_interface: Ethernet16
+    peer_type: l3leaf
 hostname: sflow-tests-l2-leaf1
 ip_igmp_snooping:
   globally_enabled: true
