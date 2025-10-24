@@ -1,15 +1,19 @@
-# digital-twin-enforce-eapi-1
+# digital-twin-adjust-oob-mgmt-3
 
 ## Table of Contents
 
 - [Management](#management)
-  - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Enable Password](#enable-password)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
+- [VLANs](#vlans)
+  - [VLANs Summary](#vlans-summary)
+  - [VLANs Device Configuration](#vlans-device-configuration)
+- [Interfaces](#interfaces)
+  - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
@@ -21,33 +25,6 @@
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 
 ## Management
-
-### Management Interfaces
-
-#### Management Interfaces Summary
-
-##### IPv4
-
-| Management Interface | Description | Type | VRF | IP Address | Gateway |
-| -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.0.1/32 | - |
-
-##### IPv6
-
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
-
-#### Management Interfaces Device Configuration
-
-```eos
-!
-interface Management1
-   description OOB_MANAGEMENT
-   no shutdown
-   vrf MGMT
-   ip address 192.168.0.1/32
-```
 
 ### Management API HTTP
 
@@ -61,7 +38,7 @@ interface Management1
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| default | - | - |
+| INBAND_MGMT | - | - |
 
 #### Management API HTTP Device Configuration
 
@@ -71,7 +48,7 @@ management api http-commands
    protocol https
    no shutdown
    !
-   vrf default
+   vrf INBAND_MGMT
       no shutdown
 ```
 
@@ -96,6 +73,50 @@ Enable password has been disabled
 vlan internal order ascending range 1006 1199
 ```
 
+## VLANs
+
+### VLANs Summary
+
+| VLAN ID | Name | Trunk Groups |
+| ------- | ---- | ------------ |
+| 4092 | INBAND_MGMT | - |
+
+### VLANs Device Configuration
+
+```eos
+!
+vlan 4092
+   name INBAND_MGMT
+```
+
+## Interfaces
+
+### VLAN Interfaces
+
+#### VLAN Interfaces Summary
+
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan4092 | Inband Management | INBAND_MGMT | 1500 | False |
+
+##### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan4092 |  INBAND_MGMT  |  192.168.1.3/32  |  -  |  -  |  -  |  -  |
+
+#### VLAN Interfaces Device Configuration
+
+```eos
+!
+interface Vlan4092
+   description Inband Management
+   no shutdown
+   mtu 1500
+   vrf INBAND_MGMT
+   ip address 192.168.1.3/32
+```
+
 ## Routing
 
 ### Service Routing Protocols Model
@@ -114,6 +135,7 @@ service routing protocols model multi-agent
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
+| INBAND_MGMT | - |
 | MGMT | False |
 
 #### IP Routing Device Configuration
@@ -129,6 +151,7 @@ no ip routing vrf MGMT
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
+| INBAND_MGMT | false |
 | MGMT | false |
 
 ## Multicast
@@ -152,11 +175,14 @@ no ip routing vrf MGMT
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
+| INBAND_MGMT | disabled |
 | MGMT | disabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
+!
+vrf instance INBAND_MGMT
 !
 vrf instance MGMT
 ```

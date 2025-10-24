@@ -1,4 +1,4 @@
-# digital-twin-enforce-eapi-1
+# digital-twin-adjust-oob-mgmt-1
 
 ## Table of Contents
 
@@ -30,7 +30,7 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.0.1/32 | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.1.1/32 | - |
 
 ##### IPv6
 
@@ -46,7 +46,7 @@ interface Management1
    description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
-   ip address 192.168.0.1/32
+   ip address 192.168.1.1/32
 ```
 
 ### Management API HTTP
@@ -61,7 +61,7 @@ interface Management1
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| default | - | - |
+| MGMT | - | - |
 
 #### Management API HTTP Device Configuration
 
@@ -71,7 +71,7 @@ management api http-commands
    protocol https
    no shutdown
    !
-   vrf default
+   vrf MGMT
       no shutdown
 ```
 
