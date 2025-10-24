@@ -11,9 +11,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.254.2.2/31
-  peer: flow-tracking-tests-leaf1
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: flow-tracking-tests-leaf1
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4
@@ -23,9 +24,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.254.2.6/31
-  peer: flow-tracking-tests-leaf2
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: flow-tracking-tests-leaf2
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet6
@@ -35,9 +37,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.254.2.18/31
-  peer: flow-tracking-tests-leaf3
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: flow-tracking-tests-leaf3
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet8
@@ -47,9 +50,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.254.2.22/31
-  peer: flow-tracking-tests-leaf4
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: flow-tracking-tests-leaf4
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet9
@@ -58,9 +62,10 @@ ethernet_interfaces:
   mtu: 9214
   flow_tracker:
     hardware: FLOW-TRACKER-2
-  peer: flow-tracking-tests-spine1
-  peer_interface: Ethernet9
-  peer_type: spine
+  metadata:
+    peer: flow-tracking-tests-spine1
+    peer_interface: Ethernet9
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet10
@@ -69,27 +74,30 @@ ethernet_interfaces:
   mtu: 9214
   flow_tracker:
     hardware: FLOW-TRACKER-1
-  peer: flow-tracking-tests-spine1
-  peer_interface: Ethernet10
-  peer_type: spine
+  metadata:
+    peer: flow-tracking-tests-spine1
+    peer_interface: Ethernet10
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet11
   description: P2P_flow-tracking-tests-spine1_Ethernet11
   shutdown: false
   mtu: 9214
-  peer: flow-tracking-tests-spine1
-  peer_interface: Ethernet11
-  peer_type: spine
+  metadata:
+    peer: flow-tracking-tests-spine1
+    peer_interface: Ethernet11
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet12
   description: P2P_flow-tracking-tests-spine1_Ethernet12
   shutdown: false
   mtu: 9214
-  peer: flow-tracking-tests-spine1
-  peer_interface: Ethernet12
-  peer_type: spine
+  metadata:
+    peer: flow-tracking-tests-spine1
+    peer_interface: Ethernet12
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet13
@@ -98,9 +106,10 @@ ethernet_interfaces:
   mtu: 9214
   flow_tracker:
     hardware: FLOW-TRACKER-2
-  peer: flow-tracking-tests-spine1
-  peer_interface: Ethernet13
-  peer_type: spine
+  metadata:
+    peer: flow-tracking-tests-spine1
+    peer_interface: Ethernet13
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet14
@@ -109,27 +118,30 @@ ethernet_interfaces:
   mtu: 9214
   flow_tracker:
     hardware: FLOW-TRACKER-1
-  peer: flow-tracking-tests-spine1
-  peer_interface: Ethernet14
-  peer_type: spine
+  metadata:
+    peer: flow-tracking-tests-spine1
+    peer_interface: Ethernet14
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet15
   description: P2P_flow-tracking-tests-spine1_Ethernet15
   shutdown: false
   mtu: 9214
-  peer: flow-tracking-tests-spine1
-  peer_interface: Ethernet15
-  peer_type: spine
+  metadata:
+    peer: flow-tracking-tests-spine1
+    peer_interface: Ethernet15
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet16
   description: P2P_flow-tracking-tests-spine1_Ethernet16
   shutdown: false
   mtu: 9214
-  peer: flow-tracking-tests-spine1
-  peer_interface: Ethernet16
-  peer_type: spine
+  metadata:
+    peer: flow-tracking-tests-spine1
+    peer_interface: Ethernet16
+    peer_type: spine
   switchport:
     enabled: false
 flow_tracking:

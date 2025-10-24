@@ -3947,18 +3947,24 @@ keys:
               min: 1
               max: 3
               description: IGMP version on IGMP host-proxy interface.
-        peer:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_interface:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_type:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_key:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          keys:
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_interface:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_type:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_key:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            port_profile:
+              type: str
+              description: Key only used for documentation or validation purposes.
         sflow:
           type: dict
           keys:
@@ -3983,9 +3989,6 @@ keys:
                 any integer between 1-255, or set to `disabled`.
               convert_types:
               - int
-        port_profile:
-          type: str
-          description: Key only used for documentation or validation purposes.
         uc_tx_queues:
           type: list
           primary_key: id
@@ -8987,7 +8990,7 @@ keys:
             type: bool
             description: Enforce strict host key checking.
       enable:
-        description: Enable SSH for VRF default.
+        description: Explicitly enable or disable SSH for all VRFs.
         type: bool
       connection:
         type: dict
@@ -12417,18 +12420,21 @@ keys:
               min: 1
               max: 3
               description: IGMP version on IGMP host-proxy interface.
-        peer:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_interface:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_type:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_key:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          keys:
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_interface:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_type:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_key:
+              type: str
+              description: Key only used for documentation or validation purposes.
         sflow:
           type: dict
           keys:
@@ -23406,6 +23412,10 @@ keys:
                             - initial
                         icmp_type:
                           type: list
+                          description: 'List of ICMP message types to match.
+
+                            This field is applicable only when the protocol is set
+                            to `icmp` or `icmpv6`.'
                           items:
                             type: str
                         enforce_gtsm:

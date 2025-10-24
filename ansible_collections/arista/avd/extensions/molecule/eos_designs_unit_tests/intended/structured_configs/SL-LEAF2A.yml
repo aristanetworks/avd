@@ -10,36 +10,40 @@ ethernet_interfaces:
   channel_group:
     id: 25
     mode: active
-  peer: SL-LEAF2B
-  peer_interface: Ethernet25
-  peer_type: mlag_peer
+  metadata:
+    peer: SL-LEAF2B
+    peer_interface: Ethernet25
+    peer_type: mlag_peer
 - name: Ethernet26
   description: MLAG_SL-LEAF2B_Ethernet26
   shutdown: false
   channel_group:
     id: 25
     mode: active
-  peer: SL-LEAF2B
-  peer_interface: Ethernet26
-  peer_type: mlag_peer
+  metadata:
+    peer: SL-LEAF2B
+    peer_interface: Ethernet26
+    peer_type: mlag_peer
 - name: Ethernet41
   description: L2_SL-LEAF0B_Ethernet41
   shutdown: false
   channel_group:
     id: 41
     mode: active
-  peer: SL-LEAF0B
-  peer_interface: Ethernet41
-  peer_type: l2leaf
+  metadata:
+    peer: SL-LEAF0B
+    peer_interface: Ethernet41
+    peer_type: l2leaf
 - name: Ethernet42
   description: L2_SL-LEAF0B_Ethernet42
   shutdown: false
   channel_group:
     id: 41
     mode: active
-  peer: SL-LEAF0B
-  peer_interface: Ethernet42
-  peer_type: l2leaf
+  metadata:
+    peer: SL-LEAF0B
+    peer_interface: Ethernet42
+    peer_type: l2leaf
 hostname: SL-LEAF2A
 ip_igmp_snooping:
   globally_enabled: true

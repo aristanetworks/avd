@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.254.255.250/30
-  peer: MLAG_ODD_ID_L3LEAF1A
-  peer_interface: Ethernet10
-  peer_type: l3leaf
+  metadata:
+    peer: MLAG_ODD_ID_L3LEAF1A
+    peer_interface: Ethernet10
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -19,9 +20,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.254.255.254/30
-  peer: MLAG_ODD_ID_L3LEAF1B
-  peer_interface: Ethernet10
-  peer_type: l3leaf
+  metadata:
+    peer: MLAG_ODD_ID_L3LEAF1B
+    peer_interface: Ethernet10
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: P2P-UPLINKS-IPV4-PREFIX-LENGTH
