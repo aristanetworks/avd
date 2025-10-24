@@ -10,9 +10,10 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: bgp-peer-groups-2
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
+  metadata:
+    peer: bgp-peer-groups-2
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
 hostname: bgp-peer-groups-1
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO

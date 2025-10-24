@@ -24,18 +24,20 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  peer: site2-leaf2
-  peer_interface: Ethernet5
-  peer_type: mlag_peer
+  metadata:
+    peer: site2-leaf2
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
 - name: Ethernet6
   description: MLAG_site2-leaf2_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: site2-leaf2
-  peer_interface: Ethernet6
-  peer_type: mlag_peer
+  metadata:
+    peer: site2-leaf2
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
 - name: Ethernet3
   description: P2P_site2-wan1_Ethernet1
   shutdown: false
@@ -43,9 +45,10 @@ ethernet_interfaces:
   flow_tracker:
     sampled: FLOW-TRACKER
   ip_address: 10.0.2.12/31
-  peer: site2-wan1
-  peer_interface: Ethernet1
-  peer_type: wan_router
+  metadata:
+    peer: site2-wan1
+    peer_interface: Ethernet1
+    peer_type: wan_router
   switchport:
     enabled: false
 - name: Ethernet3.100
@@ -58,9 +61,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 100
   ip_address: 10.0.2.12/31
-  peer: site2-wan1
-  peer_interface: Ethernet1.100
-  peer_type: wan_router
+  metadata:
+    peer: site2-wan1
+    peer_interface: Ethernet1.100
+    peer_type: wan_router
 - name: Ethernet3.101
   description: P2P_site2-wan1_Ethernet1.101_VRF_RED
   shutdown: false
@@ -71,9 +75,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 101
   ip_address: 10.0.2.12/31
-  peer: site2-wan1
-  peer_interface: Ethernet1.101
-  peer_type: wan_router
+  metadata:
+    peer: site2-wan1
+    peer_interface: Ethernet1.101
+    peer_type: wan_router
 flow_tracking:
   sampled:
     sample: 10000

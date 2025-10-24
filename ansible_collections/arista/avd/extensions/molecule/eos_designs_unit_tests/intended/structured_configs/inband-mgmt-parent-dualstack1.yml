@@ -20,9 +20,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack2
-  peer_interface: Ethernet11
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack2
+    peer_interface: Ethernet11
+    peer_type: mlag_peer
 - name: Ethernet12
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet12
   shutdown: false
@@ -30,9 +31,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack2
-  peer_interface: Ethernet12
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack2
+    peer_interface: Ethernet12
+    peer_type: mlag_peer
 - name: Ethernet13
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet13
   shutdown: false
@@ -40,9 +42,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack2
-  peer_interface: Ethernet13
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack2
+    peer_interface: Ethernet13
+    peer_type: mlag_peer
 - name: Ethernet14
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet14
   shutdown: false
@@ -50,9 +53,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack2
-  peer_interface: Ethernet14
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack2
+    peer_interface: Ethernet14
+    peer_type: mlag_peer
 - name: Ethernet15
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet15
   shutdown: false
@@ -60,9 +64,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack2
-  peer_interface: Ethernet15
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack2
+    peer_interface: Ethernet15
+    peer_type: mlag_peer
 - name: Ethernet16
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet16
   shutdown: false
@@ -70,9 +75,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack2
-  peer_interface: Ethernet16
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack2
+    peer_interface: Ethernet16
+    peer_type: mlag_peer
 - name: Ethernet17
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet17
   shutdown: false
@@ -80,9 +86,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack2
-  peer_interface: Ethernet17
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack2
+    peer_interface: Ethernet17
+    peer_type: mlag_peer
 - name: Ethernet18
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet18
   shutdown: false
@@ -90,9 +97,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack2
-  peer_interface: Ethernet18
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack2
+    peer_interface: Ethernet18
+    peer_type: mlag_peer
 - name: Ethernet19
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet19
   shutdown: false
@@ -100,9 +108,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack2
-  peer_interface: Ethernet19
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack2
+    peer_interface: Ethernet19
+    peer_type: mlag_peer
 - name: Ethernet20
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet20
   shutdown: false
@@ -110,18 +119,20 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack2
-  peer_interface: Ethernet20
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack2
+    peer_interface: Ethernet20
+    peer_type: mlag_peer
 - name: Ethernet24
   description: INBAND-MGMT-DUALSTACK-SUBNETS_Ethernet1
   shutdown: false
   channel_group:
     id: 24
     mode: active
-  peer: inband-mgmt-dualstack-subnets
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: inband-mgmt-dualstack-subnets
+    peer_interface: Ethernet1
+    peer_type: l2leaf
   switchport:
     enabled: true
     mode: access
@@ -132,9 +143,10 @@ ethernet_interfaces:
   channel_group:
     id: 25
     mode: active
-  peer: inband-mgmt-dualstack-ips
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: inband-mgmt-dualstack-ips
+    peer_interface: Ethernet1
+    peer_type: l2leaf
   switchport:
     enabled: true
     mode: access

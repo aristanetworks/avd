@@ -16,18 +16,20 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  peer: DC1-POD1-LEAF2B
-  peer_interface: Ethernet5
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1-POD1-LEAF2B
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
 - name: Ethernet6
   description: MLAG_DC1-POD1-LEAF2B_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: DC1-POD1-LEAF2B
-  peer_interface: Ethernet6
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1-POD1-LEAF2B
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_DC1-POD1-SPINE1_Ethernet4
   shutdown: false
@@ -37,9 +39,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC1-POD1-SPINE1
-  peer_interface: Ethernet4
-  peer_type: spine
+  metadata:
+    peer: DC1-POD1-SPINE1
+    peer_interface: Ethernet4
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -51,9 +54,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC1-POD1-SPINE2
-  peer_interface: Ethernet4
-  peer_type: spine
+  metadata:
+    peer: DC1-POD1-SPINE2
+    peer_interface: Ethernet4
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -62,18 +66,20 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: DC1-POD1-L2LEAF2A
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-POD1-L2LEAF2A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet4
   description: L2_DC1-POD1-L2LEAF2B_Ethernet1
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: DC1-POD1-L2LEAF2B
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-POD1-L2LEAF2B
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet11
   description: P2P_DC1-POD1-SPINE1_Ethernet7
   shutdown: false
@@ -83,9 +89,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC1-POD1-SPINE1
-  peer_interface: Ethernet7
-  peer_type: spine
+  metadata:
+    peer: DC1-POD1-SPINE1
+    peer_interface: Ethernet7
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet12
@@ -97,9 +104,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC1-POD1-SPINE2
-  peer_interface: Ethernet7
-  peer_type: spine
+  metadata:
+    peer: DC1-POD1-SPINE2
+    peer_interface: Ethernet7
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet13
@@ -111,9 +119,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC1-POD1-LEAF1B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF1B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet13.1025
@@ -123,9 +132,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1025
   ip_address: 172.17.110.12/31
-  peer: DC1-POD1-LEAF1B
-  peer_interface: Ethernet1.1025
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF1B
+    peer_interface: Ethernet1.1025
+    peer_type: l3leaf
 - name: Ethernet13.1102
   description: P2P_DC1-POD1-LEAF1B_Ethernet1.1102_VRF_vrf_with_loopbacks_dc1_pod1_only
   shutdown: false
@@ -133,9 +143,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1102
   ip_address: 172.17.110.12/31
-  peer: DC1-POD1-LEAF1B
-  peer_interface: Ethernet1.1102
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF1B
+    peer_interface: Ethernet1.1102
+    peer_type: l3leaf
 - name: Ethernet13.1100
   description: P2P_DC1-POD1-LEAF1B_Ethernet1.1100_VRF_vrf_with_loopbacks_from_overlapping_pool
   shutdown: false
@@ -143,9 +154,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1100
   ip_address: 172.17.110.12/31
-  peer: DC1-POD1-LEAF1B
-  peer_interface: Ethernet1.1100
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF1B
+    peer_interface: Ethernet1.1100
+    peer_type: l3leaf
 - name: Ethernet13.1101
   description: P2P_DC1-POD1-LEAF1B_Ethernet1.1101_VRF_vrf_with_loopbacks_from_pod_pools
   shutdown: false
@@ -153,26 +165,29 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1101
   ip_address: 172.17.110.12/31
-  peer: DC1-POD1-LEAF1B
-  peer_interface: Ethernet1.1101
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF1B
+    peer_interface: Ethernet1.1101
+    peer_type: l3leaf
 - name: Ethernet7
   description: P2P_DC2-POD1-LEAF1A_Ethernet6
   shutdown: false
   ip_address: 100.100.100.101/24
-  peer: DC2-POD1-LEAF1A
-  peer_interface: Ethernet6
-  peer_type: l3leaf
+  metadata:
+    peer: DC2-POD1-LEAF1A
+    peer_interface: Ethernet6
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet27
   description: server-3_Eth1
   shutdown: false
   service_profile: foo
-  peer: server-3
-  peer_interface: Eth1
-  peer_key: connected_endpoints
-  port_profile: TENANT_A
+  metadata:
+    peer: server-3
+    peer_interface: Eth1
+    peer_key: connected_endpoints
+    port_profile: TENANT_A
   switchport:
     enabled: true
     mode: access
@@ -190,11 +205,12 @@ ethernet_interfaces:
   channel_group:
     id: 28
     mode: active
-  peer: server-4
-  peer_interface: Eth5
-  peer_type: SpecialEndpoint
-  peer_key: connected_endpoints
-  port_profile: NESTED_TENANT_A
+  metadata:
+    peer: server-4
+    peer_interface: Eth5
+    peer_type: SpecialEndpoint
+    peer_key: connected_endpoints
+    port_profile: NESTED_TENANT_A
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
@@ -208,11 +224,12 @@ ethernet_interfaces:
   channel_group:
     id: 16
     mode: active
-  peer: server-1
-  peer_interface: Eth1
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_A
+  metadata:
+    peer: server-1
+    peer_interface: Eth1
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_A
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile TENANT_A
@@ -226,11 +243,12 @@ ethernet_interfaces:
   channel_group:
     id: 17
     mode: active
-  peer: server-1
-  peer_interface: Eth3
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_A
+  metadata:
+    peer: server-1
+    peer_interface: Eth3
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_A
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under adapter for switch Eth17
@@ -244,11 +262,12 @@ ethernet_interfaces:
   channel_group:
     id: 18
     mode: active
-  peer: server-1
-  peer_interface: Eth5
-  peer_type: server
-  peer_key: servers
-  port_profile: NESTED_TENANT_A
+  metadata:
+    peer: server-1
+    peer_interface: Eth5
+    peer_type: server
+    peer_key: servers
+    port_profile: NESTED_TENANT_A
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
@@ -262,11 +281,12 @@ ethernet_interfaces:
   channel_group:
     id: 19
     mode: active
-  peer: server-1
-  peer_interface: Eth7
-  peer_type: server
-  peer_key: servers
-  port_profile: NESTED_TENANT_A
+  metadata:
+    peer: server-1
+    peer_interface: Eth7
+    peer_type: server
+    peer_key: servers
+    port_profile: NESTED_TENANT_A
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
@@ -278,11 +298,12 @@ ethernet_interfaces:
   description: SPECIALSERVER_server-2_Eth1
   shutdown: false
   service_profile: foo
-  peer: server-2
-  peer_interface: Eth1
-  peer_type: SpecialServer
-  peer_key: servers
-  port_profile: TENANT_A
+  metadata:
+    peer: server-2
+    peer_interface: Eth1
+    peer_type: SpecialServer
+    peer_key: servers
+    port_profile: TENANT_A
   switchport:
     enabled: true
     mode: access

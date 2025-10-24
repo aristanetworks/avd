@@ -88,9 +88,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.0.4.57/31
-  peer: site4-border1
-  peer_interface: Ethernet3
-  peer_type: l3leaf
+  metadata:
+    peer: site4-border1
+    peer_interface: Ethernet3
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -100,9 +101,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.0.4.59/31
-  peer: site4-border2
-  peer_interface: Ethernet3
-  peer_type: l3leaf
+  metadata:
+    peer: site4-border2
+    peer_interface: Ethernet3
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3
@@ -111,9 +113,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 172.18.40.2/24
-  peer: mpls-cloud
-  peer_interface: Ethernet8
-  peer_type: l3_interface
+  metadata:
+    peer: mpls-cloud
+    peer_interface: Ethernet8
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet4
@@ -123,9 +126,10 @@ ethernet_interfaces:
     hardware: FLOW-TRACKER
   ip_address: 100.64.40.2/24
   access_group_in: ACL-INTERNET-IN_Ethernet4
-  peer: inet-cloud
-  peer_interface: Ethernet10
-  peer_type: l3_interface
+  metadata:
+    peer: inet-cloud
+    peer_interface: Ethernet10
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

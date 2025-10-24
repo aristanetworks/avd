@@ -30,9 +30,10 @@ ethernet_interfaces:
   channel_group:
     id: 2
     mode: active
-  peer: peerDevice1
-  peer_interface: Ethernet11
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: peerDevice1
+    peer_interface: Ethernet11
+    peer_type: l3_port_channel_member
 - name: Ethernet2
   description: peer1
   shutdown: false
@@ -40,16 +41,18 @@ ethernet_interfaces:
   channel_group:
     id: 2
     mode: active
-  peer: peer1
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: peer1
+    peer_type: l3_port_channel_member
 - name: Ethernet3
   description: Custom eth3 description
   shutdown: false
   channel_group:
     id: 2
     mode: active
-  peer: peer1
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: peer1
+    peer_type: l3_port_channel_member
 - name: Ethernet1/4
   description: peerDevice2_Ethernet1/12
   shutdown: false
@@ -57,9 +60,10 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: passive
-  peer: peerDevice2
-  peer_interface: Ethernet1/12
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: peerDevice2
+    peer_interface: Ethernet1/12
+    peer_type: l3_port_channel_member
 - name: Ethernet1/5
   description: peer2
   shutdown: false
@@ -67,8 +71,9 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: passive
-  peer: peer2
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: peer2
+    peer_type: l3_port_channel_member
 - name: Ethernet1/10
   description: peerDevice3_Ethernet1/10
   shutdown: false
@@ -76,27 +81,30 @@ ethernet_interfaces:
   channel_group:
     id: 8
     mode: 'on'
-  peer: peerDevice3
-  peer_interface: Ethernet1/10
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: peerDevice3
+    peer_interface: Ethernet1/10
+    peer_type: l3_port_channel_member
 - name: Ethernet1/19
   description: peerDevice4_Ethernet1/19
   shutdown: true
   channel_group:
     id: 19
     mode: active
-  peer: peerDevice4
-  peer_interface: Ethernet1/19
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: peerDevice4
+    peer_interface: Ethernet1/19
+    peer_type: l3_port_channel_member
 - name: Ethernet1/20
   description: peerDevice4_Ethernet1/20
   shutdown: true
   channel_group:
     id: 19
     mode: active
-  peer: peerDevice4
-  peer_interface: Ethernet1/20
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: peerDevice4
+    peer_interface: Ethernet1/20
+    peer_type: l3_port_channel_member
 flow_tracking:
   hardware:
     trackers:
@@ -262,9 +270,10 @@ port_channel_interfaces:
   service_profile: TEST-QOS-PROFILE1
   flow_tracker:
     hardware: FLOW-TRACKER
-  peer: peer1
-  peer_interface: Port-Channel10
-  peer_type: l3_port_channel
+  metadata:
+    peer: peer1
+    peer_interface: Port-Channel10
+    peer_type: l3_port_channel
   switchport:
     enabled: false
 - name: Port-Channel5
@@ -275,9 +284,10 @@ port_channel_interfaces:
       input: TEST_POLICY
   ip_address: 192.168.1.105/31
   service_profile: TEST-QOS-PROFILE1
-  peer: peer2
-  peer_interface: Port-Channel15
-  peer_type: l3_port_channel
+  metadata:
+    peer: peer2
+    peer_interface: Port-Channel15
+    peer_type: l3_port_channel
   switchport:
     enabled: false
   eos_cli: '! TEST RAW_EOS_CLI
@@ -292,9 +302,10 @@ port_channel_interfaces:
   service_profile: TEST-QOS-PROFILE2
   flow_tracker:
     hardware: FLOW-TRACKER
-  peer: peer2
-  peer_interface: Port-Channel15
-  peer_type: l3_port_channel
+  metadata:
+    peer: peer2
+    peer_interface: Port-Channel15
+    peer_type: l3_port_channel
 - name: Port-Channel5.105
   description: peer2_Port-Channel16
   shutdown: false
@@ -304,18 +315,20 @@ port_channel_interfaces:
   service_profile: TEST-QOS-PROFILE2
   flow_tracker:
     hardware: FLOW-TRACKER
-  peer: peer2
-  peer_interface: Port-Channel16
-  peer_type: l3_port_channel
+  metadata:
+    peer: peer2
+    peer_interface: Port-Channel16
+    peer_type: l3_port_channel
 - name: Port-Channel5.110
   description: StreamFast_peer3_Port-Channel17
   shutdown: false
   encapsulation_dot1q:
     vlan: 110
   ip_address: 192.168.100.118/31
-  peer: peer3
-  peer_interface: Port-Channel17
-  peer_type: l3_port_channel
+  metadata:
+    peer: peer3
+    peer_interface: Port-Channel17
+    peer_type: l3_port_channel
 - name: Port-Channel8
   description: BlizzardFast_peerDevice3_Port-Channel18
   shutdown: false
@@ -324,9 +337,10 @@ port_channel_interfaces:
   service_profile: TEST-QOS-PROFILE3
   flow_tracker:
     hardware: FLOW-TRACKER
-  peer: peerDevice3
-  peer_interface: Port-Channel18
-  peer_type: l3_port_channel
+  metadata:
+    peer: peerDevice3
+    peer_interface: Port-Channel18
+    peer_type: l3_port_channel
   switchport:
     enabled: false
   eos_cli: '! TEST RAW_EOS_CLI 123
@@ -336,9 +350,10 @@ port_channel_interfaces:
   description: BlizzardFast_peerDevice4_Port-Channel20
   shutdown: true
   ip_address: 192.168.1.19/31
-  peer: peerDevice4
-  peer_interface: Port-Channel20
-  peer_type: l3_port_channel
+  metadata:
+    peer: peerDevice4
+    peer_interface: Port-Channel20
+    peer_type: l3_port_channel
   switchport:
     enabled: false
 prefix_lists:

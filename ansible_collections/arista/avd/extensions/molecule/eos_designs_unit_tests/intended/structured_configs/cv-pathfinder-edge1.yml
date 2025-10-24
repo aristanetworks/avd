@@ -90,9 +90,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.3/31
-  peer: site-ha-disabled-leaf
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-disabled-leaf
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet52.1000
@@ -103,9 +104,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1000
   ip_address: 172.17.0.3/31
-  peer: site-ha-disabled-leaf
-  peer_interface: Ethernet2.1000
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-disabled-leaf
+    peer_interface: Ethernet2.1000
+    peer_type: l3leaf
 - name: Ethernet52.142
   description: P2P_site-ha-disabled-leaf_Ethernet2.142_VRF_PROD
   shutdown: false
@@ -114,9 +116,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 142
   ip_address: 172.17.0.3/31
-  peer: site-ha-disabled-leaf
-  peer_interface: Ethernet2.142
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-disabled-leaf
+    peer_interface: Ethernet2.142
+    peer_type: l3leaf
 - name: Ethernet52.666
   description: P2P_site-ha-disabled-leaf_Ethernet2.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
@@ -125,9 +128,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 666
   ip_address: 172.17.0.3/31
-  peer: site-ha-disabled-leaf
-  peer_interface: Ethernet2.666
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-disabled-leaf
+    peer_interface: Ethernet2.666
+    peer_type: l3leaf
 - name: Ethernet1/49.3
   description: Inmrasat_S511
   shutdown: false
@@ -135,13 +139,15 @@ ethernet_interfaces:
     vlan: 3
   ip_address: dhcp
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1_49.3
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet2
   description: AWS-1_212
   shutdown: false
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet3
@@ -151,26 +157,30 @@ ethernet_interfaces:
   dhcp_client_accept_default_route: true
   ip_nat:
     service_profile: NAT-IE-DIRECT
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet4
   shutdown: false
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet5
   shutdown: false
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet1/49
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet6
@@ -180,9 +190,10 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: peerDevice1
-  peer_interface: PeerDevIntf1
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: peerDevice1
+    peer_interface: PeerDevIntf1
+    peer_type: l3_port_channel_member
 - name: Ethernet7
   description: peerDeviceA
   shutdown: false
@@ -190,8 +201,9 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: peerDeviceA
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: peerDeviceA
+    peer_type: l3_port_channel_member
 - name: Ethernet1/10
   description: peerDevice10
   shutdown: false
@@ -199,8 +211,9 @@ ethernet_interfaces:
   channel_group:
     id: 450
     mode: 'on'
-  peer: peerDevice10
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: peerDevice10
+    peer_type: l3_port_channel_member
 - name: Ethernet1/16
   description: peerDevice11
   shutdown: false
@@ -208,16 +221,18 @@ ethernet_interfaces:
   channel_group:
     id: 540
     mode: active
-  peer: peerDevice11
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: peerDevice11
+    peer_type: l3_port_channel_member
 - name: Ethernet1/17
   description: peerDevice11
   shutdown: false
   channel_group:
     id: 540
     mode: active
-  peer: peerDevice11
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: peerDevice11
+    peer_type: l3_port_channel_member
 - name: Ethernet1/18
   description: peerDevice11
   shutdown: false
@@ -225,8 +240,9 @@ ethernet_interfaces:
   channel_group:
     id: 540
     mode: active
-  peer: peerDevice11
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: peerDevice11
+    peer_type: l3_port_channel_member
 flow_tracking:
   hardware:
     trackers:
@@ -683,18 +699,20 @@ port_channel_interfaces:
   ip_address: 172.15.5.7/31
   flow_tracker:
     hardware: FLOW-TRACKER
-  peer: peerDeviceA
-  peer_interface: Port-Channel2
-  peer_type: l3_port_channel
+  metadata:
+    peer: peerDeviceA
+    peer_interface: Port-Channel2
+    peer_type: l3_port_channel
   switchport:
     enabled: false
 - name: Port-Channel450
   description: Orange_peerDevice10_Port-Channel455
   shutdown: false
   ip_address: 172.15.5.8/31
-  peer: peerDevice10
-  peer_interface: Port-Channel455
-  peer_type: l3_port_channel
+  metadata:
+    peer: peerDevice10
+    peer_interface: Port-Channel455
+    peer_type: l3_port_channel
   switchport:
     enabled: false
 - name: Port-Channel540
@@ -703,9 +721,10 @@ port_channel_interfaces:
   ip_address: 172.15.6.9/31
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Port-Channel540
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Port-Channel540
-  peer: peerDevice11
-  peer_interface: Port-Channel545
-  peer_type: l3_port_channel
+  metadata:
+    peer: peerDevice11
+    peer_interface: Port-Channel545
+    peer_type: l3_port_channel
   switchport:
     enabled: false
 prefix_lists:

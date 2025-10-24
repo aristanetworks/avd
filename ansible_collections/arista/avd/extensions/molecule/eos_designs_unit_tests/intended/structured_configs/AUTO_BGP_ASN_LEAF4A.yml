@@ -10,18 +10,20 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: AUTO_BGP_ASN_LEAF4B
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
+  metadata:
+    peer: AUTO_BGP_ASN_LEAF4B
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
 - name: Ethernet4
   description: MLAG_AUTO_BGP_ASN_LEAF4B_Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: AUTO_BGP_ASN_LEAF4B
-  peer_interface: Ethernet4
-  peer_type: mlag_peer
+  metadata:
+    peer: AUTO_BGP_ASN_LEAF4B
+    peer_interface: Ethernet4
+    peer_type: mlag_peer
 hostname: AUTO_BGP_ASN_LEAF4A
 ip_igmp_snooping:
   globally_enabled: true

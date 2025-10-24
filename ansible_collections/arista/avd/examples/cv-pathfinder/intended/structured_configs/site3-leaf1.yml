@@ -24,9 +24,10 @@ ethernet_interfaces:
   flow_tracker:
     sampled: FLOW-TRACKER
   spanning_tree_portfast: edge
-  peer: site3-wan1
-  peer_interface: Ethernet1
-  peer_type: wan_router
+  metadata:
+    peer: site3-wan1
+    peer_interface: Ethernet1
+    peer_type: wan_router
   switchport:
     enabled: true
     mode: trunk

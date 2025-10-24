@@ -14,9 +14,10 @@ ethernet_interfaces:
       sparse_mode: true
   mac_security:
     profile: TEST
-  peer: UPLINK_P2P_VRFS_TESTS_LEAF2
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_LEAF2
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet1.100
@@ -27,9 +28,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 100
   ipv6_address: 2001:db8:3:9::2/64
-  peer: UPLINK_P2P_VRFS_TESTS_LEAF2
-  peer_interface: Ethernet2.100
-  peer_type: l3leaf
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_LEAF2
+    peer_interface: Ethernet2.100
+    peer_type: l3leaf
 - name: Ethernet1.42
   description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet2.42_VRF_PROD
   shutdown: false
@@ -38,9 +40,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 42
   ipv6_address: 2001:db8:3:9::2/64
-  peer: UPLINK_P2P_VRFS_TESTS_LEAF2
-  peer_interface: Ethernet2.42
-  peer_type: l3leaf
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_LEAF2
+    peer_interface: Ethernet2.42
+    peer_type: l3leaf
 - name: Ethernet2
   description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2
   shutdown: false
@@ -51,9 +54,10 @@ ethernet_interfaces:
       sparse_mode: true
   mac_security:
     profile: TEST
-  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2.100
@@ -64,9 +68,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 100
   ip_address: 10.42.42.10/31
-  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
-  peer_interface: Ethernet2.100
-  peer_type: l3leaf
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+    peer_interface: Ethernet2.100
+    peer_type: l3leaf
 - name: Ethernet2.42
   description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.42_VRF_PROD
   shutdown: false
@@ -75,9 +80,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 42
   ip_address: 10.42.42.10/31
-  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
-  peer_interface: Ethernet2.42
-  peer_type: l3leaf
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+    peer_interface: Ethernet2.42
+    peer_type: l3leaf
 hostname: UPLINK_P2P_VRFS_TESTS_SPINE2
 ip_routing: true
 loopback_interfaces:

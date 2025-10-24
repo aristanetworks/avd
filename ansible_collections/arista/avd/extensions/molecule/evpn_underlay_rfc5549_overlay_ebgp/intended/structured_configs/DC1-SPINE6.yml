@@ -19,9 +19,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-LEAF4A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF4A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -29,9 +30,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-LEAF4B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF4B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: DC1-SPINE6

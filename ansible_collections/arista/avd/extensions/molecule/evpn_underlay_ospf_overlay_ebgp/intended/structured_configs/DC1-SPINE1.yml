@@ -26,9 +26,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: /wCirdje6f59x/1Ev+Oe6xok2+5jD3M/
-  peer: DC1-LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -43,9 +44,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
-  peer: DC1-LEAF2A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF2A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3
@@ -60,9 +62,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
-  peer: DC1-LEAF2B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF2B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4
@@ -77,9 +80,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: QB0XEg/PJV6Y5HtvjDdiafrPx/g+JRKk
-  peer: DC1-SVC3A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-SVC3A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet5
@@ -94,9 +98,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: QB0XEg/PJV6Y5HtvjDdiafrPx/g+JRKk
-  peer: DC1-SVC3B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-SVC3B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet6
@@ -111,9 +116,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: kguPGHyy/wCN0mKibi4dLRL4PmsrU4UP
-  peer: DC1-BL1A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL1A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet7
@@ -128,9 +134,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: kguPGHyy/wCN0mKibi4dLRL4PmsrU4UP
-  peer: DC1-BL1B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL1B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: DC1-SPINE1

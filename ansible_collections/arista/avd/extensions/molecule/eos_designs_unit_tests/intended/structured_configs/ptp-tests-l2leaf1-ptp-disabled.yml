@@ -10,18 +10,20 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: ptp-tests-leaf1
-  peer_interface: Ethernet11
-  peer_type: l3leaf
+  metadata:
+    peer: ptp-tests-leaf1
+    peer_interface: Ethernet11
+    peer_type: l3leaf
 - name: Ethernet2
   description: L2_ptp-tests-leaf2_Ethernet11
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: ptp-tests-leaf2
-  peer_interface: Ethernet11
-  peer_type: l3leaf
+  metadata:
+    peer: ptp-tests-leaf2
+    peer_interface: Ethernet11
+    peer_type: l3leaf
 hostname: ptp-tests-l2leaf1-ptp-disabled
 ip_igmp_snooping:
   globally_enabled: true
