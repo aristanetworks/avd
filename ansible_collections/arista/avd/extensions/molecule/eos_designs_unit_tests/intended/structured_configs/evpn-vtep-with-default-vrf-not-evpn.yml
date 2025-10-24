@@ -51,11 +51,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -67,7 +69,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 110
-    tenant: MY_FABRIC
+    metadata:
+      tenant: MY_FABRIC
     rd: 192.168.255.109:10110
     route_targets:
       both:

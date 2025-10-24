@@ -53,18 +53,21 @@ router_bgp:
       d_path: true
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
   - name: IPVPN-GATEWAY-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     local_as: '4296212580'
     update_source: Loopback0
     bfd: true
@@ -74,13 +77,15 @@ router_bgp:
   - ip_address: 10.90.90.90
     peer_group: IPVPN-GATEWAY-PEERS
     remote_as: '4266328964'
-    peer: SOME-EBGP-PEER
+    metadata:
+      peer: SOME-EBGP-PEER
     description: SOME-EBGP-PEER
     ebgp_multihop: 15
   - ip_address: 10.80.80.80
     peer_group: IPVPN-GATEWAY-PEERS
     remote_as: '4296212580'
-    peer: SOME-IBGP-PEER
+    metadata:
+      peer: SOME-IBGP-PEER
     description: SOME-IBGP-PEER
   redistribute:
     connected:
@@ -88,7 +93,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 10
-    tenant: mytenant
+    metadata:
+      tenant: mytenant
     rd: 10.10.0.1:10010
     route_targets:
       both:

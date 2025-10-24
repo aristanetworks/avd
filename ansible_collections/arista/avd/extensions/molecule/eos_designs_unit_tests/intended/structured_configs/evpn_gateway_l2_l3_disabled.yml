@@ -57,11 +57,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
@@ -74,7 +76,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 11
-    tenant: EVPN_GATEWAY_TESTS
+    metadata:
+      tenant: EVPN_GATEWAY_TESTS
     rd: 192.168.255.4:10011
     route_targets:
       both:
@@ -82,7 +85,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 12
-    tenant: EVPN_GATEWAY_TESTS
+    metadata:
+      tenant: EVPN_GATEWAY_TESTS
     rd: 192.168.255.4:10012
     route_targets:
       both:
@@ -90,7 +94,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 21
-    tenant: EVPN_GATEWAY_TESTS
+    metadata:
+      tenant: EVPN_GATEWAY_TESTS
     rd: 192.168.255.4:10021
     route_targets:
       both:
@@ -98,7 +103,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 22
-    tenant: EVPN_GATEWAY_TESTS
+    metadata:
+      tenant: EVPN_GATEWAY_TESTS
     rd: 192.168.255.4:10022
     route_targets:
       both:
@@ -106,7 +112,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 300
-    tenant: EVPN_GATEWAY_TESTS
+    metadata:
+      tenant: EVPN_GATEWAY_TESTS
     rd: 192.168.255.4:10300
     route_targets:
       both:
@@ -114,7 +121,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 3401
-    tenant: EVPN_GATEWAY_TESTS
+    metadata:
+      tenant: EVPN_GATEWAY_TESTS
     rd: 192.168.255.4:13401
     route_targets:
       both:
@@ -122,7 +130,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 3402
-    tenant: EVPN_GATEWAY_TESTS
+    metadata:
+      tenant: EVPN_GATEWAY_TESTS
     rd: 192.168.255.4:13402
     route_targets:
       both:

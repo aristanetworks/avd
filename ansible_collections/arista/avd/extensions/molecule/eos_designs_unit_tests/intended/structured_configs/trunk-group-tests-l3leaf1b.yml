@@ -176,7 +176,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65001'
     description: trunk-group-tests-l3leaf1a
     next_hop_self: true
@@ -184,11 +185,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -197,7 +200,8 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.247.0
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: trunk-group-tests-l3leaf1a
+    metadata:
+      peer: trunk-group-tests-l3leaf1a
     description: trunk-group-tests-l3leaf1a_Vlan4093
   redistribute:
     connected:
@@ -205,7 +209,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 100
-    tenant: TRUNK_GROUP_TESTS
+    metadata:
+      tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10100
     route_targets:
       both:
@@ -213,7 +218,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 200
-    tenant: TRUNK_GROUP_TESTS
+    metadata:
+      tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10200
     route_targets:
       both:
@@ -221,7 +227,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 300
-    tenant: TRUNK_GROUP_TESTS
+    metadata:
+      tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10300
     route_targets:
       both:
@@ -229,7 +236,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 301
-    tenant: TRUNK_GROUP_TESTS
+    metadata:
+      tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10301
     route_targets:
       both:
@@ -237,7 +245,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 398
-    tenant: TRUNK_GROUP_TESTS
+    metadata:
+      tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10398
     route_targets:
       both:
@@ -245,7 +254,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 110
-    tenant: TRUNK_GROUP_TESTS
+    metadata:
+      tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10110
     route_targets:
       both:
@@ -253,7 +263,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 210
-    tenant: TRUNK_GROUP_TESTS
+    metadata:
+      tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10210
     route_targets:
       both:
@@ -261,7 +272,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 310
-    tenant: TRUNK_GROUP_TESTS
+    metadata:
+      tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10310
     route_targets:
       both:
@@ -269,7 +281,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 311
-    tenant: TRUNK_GROUP_TESTS
+    metadata:
+      tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10311
     route_targets:
       both:
@@ -277,7 +290,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 399
-    tenant: TRUNK_GROUP_TESTS
+    metadata:
+      tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10399
     route_targets:
       both:

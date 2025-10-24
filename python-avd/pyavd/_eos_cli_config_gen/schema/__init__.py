@@ -37982,6 +37982,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class PeerGroupsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class Metadata(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"type": {"type": str}}
+                type: str | None
+                """Key only used for documentation or validation purposes."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, type: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Metadata.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            type: Key only used for documentation or validation purposes.
+
+                        """
+
             class AsPath(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -38340,7 +38361,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
-                "type": {"type": str},
+                "metadata": {"type": Metadata},
                 "remote_as": {"type": str},
                 "local_as": {"type": str},
                 "description": {"type": str},
@@ -38379,8 +38400,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             }
             name: str
             """Peer-group name."""
-            type: str | None
-            """Key only used for documentation or validation purposes."""
+            metadata: Metadata
+            """Subclass of AvdModel."""
             remote_as: str | None
             """
             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -38477,7 +38498,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    type: str | None | UndefinedType = Undefined,
+                    metadata: Metadata | UndefinedType = Undefined,
                     remote_as: str | None | UndefinedType = Undefined,
                     local_as: str | None | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
@@ -38522,7 +38543,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: Peer-group name.
-                        type: Key only used for documentation or validation purposes.
+                        metadata: Subclass of AvdModel.
                         remote_as:
                            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                            For asdot notation in
@@ -38617,6 +38638,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             remote_as_replace_out: Replace AS number with local AS number.
                             prepend_own_disabled: Disable prepending own AS number to AS path.
+
+                        """
+
+            class Metadata(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"peer": {"type": str}}
+                peer: str | None
+                """Key only used for documentation or validation purposes."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, peer: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Metadata.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            peer: Key only used for documentation or validation purposes.
 
                         """
 
@@ -38955,7 +38997,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "remote_as": {"type": str},
                 "local_as": {"type": str},
                 "as_path": {"type": AsPath},
-                "peer": {"type": str},
+                "metadata": {"type": Metadata},
                 "description": {"type": str},
                 "route_reflector_client": {"type": bool},
                 "password": {"type": str},
@@ -39010,8 +39052,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
-            peer: str | None
-            """Key only used for documentation or validation purposes."""
+            metadata: Metadata
+            """Subclass of AvdModel."""
             description: str | None
             route_reflector_client: bool | None
             password: str | None
@@ -39091,7 +39133,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     remote_as: str | None | UndefinedType = Undefined,
                     local_as: str | None | UndefinedType = Undefined,
                     as_path: AsPath | UndefinedType = Undefined,
-                    peer: str | None | UndefinedType = Undefined,
+                    metadata: Metadata | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     route_reflector_client: bool | None | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
@@ -39147,7 +39189,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            BGP AS-PATH options.
 
                            Subclass of AvdModel.
-                        peer: Key only used for documentation or validation purposes.
+                        metadata: Subclass of AvdModel.
                         description: description
                         route_reflector_client: route_reflector_client
                         password: password
@@ -39204,10 +39246,31 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class NeighborInterfacesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class Metadata(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"peer": {"type": str}}
+                peer: str | None
+                """Key only used for documentation or validation purposes."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, peer: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Metadata.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            peer: Key only used for documentation or validation purposes.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "remote_as": {"type": str},
-                "peer": {"type": str},
+                "metadata": {"type": Metadata},
                 "peer_group": {"type": str, "default": "Peer-group name"},
                 "description": {"type": str},
                 "peer_filter": {"type": str},
@@ -39221,8 +39284,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
             number.
             """
-            peer: str | None
-            """Key only used for documentation or validation purposes."""
+            metadata: Metadata
+            """Subclass of AvdModel."""
             peer_group: str
             """Default value: `"Peer-group name"`"""
             description: str | None
@@ -39236,7 +39299,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     remote_as: str | None | UndefinedType = Undefined,
-                    peer: str | None | UndefinedType = Undefined,
+                    metadata: Metadata | UndefinedType = Undefined,
                     peer_group: str | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     peer_filter: str | None | UndefinedType = Undefined,
@@ -39254,7 +39317,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            For asdot notation in
                            YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                            number.
-                        peer: Key only used for documentation or validation purposes.
+                        metadata: Subclass of AvdModel.
                         peer_group: peer_group
                         description: description
                         peer_filter: Peer-filter name.
@@ -40030,6 +40093,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class VlanAwareBundlesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class Metadata(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"tenant": {"type": str}, "description": {"type": str}}
+                tenant: str | None
+                """Key only used for documentation or validation purposes."""
+                description: str | None
+                """Key only used for documentation or validation purposes."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, tenant: str | None | UndefinedType = Undefined, description: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Metadata.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            tenant: Key only used for documentation or validation purposes.
+                            description: Key only used for documentation or validation purposes.
+
+                        """
+
             class RdEvpnDomain(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -40219,8 +40306,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
-                "tenant": {"type": str},
-                "description": {"type": str},
+                "metadata": {"type": Metadata},
                 "rd": {"type": str},
                 "rd_evpn_domain": {"type": RdEvpnDomain},
                 "route_targets": {"type": RouteTargets},
@@ -40231,10 +40317,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             }
             name: str
             """VLAN aware bundle name."""
-            tenant: str | None
-            """Key only used for documentation or validation purposes."""
-            description: str | None
-            """Key only used for documentation or validation purposes."""
+            metadata: Metadata
+            """Subclass of AvdModel."""
             rd: str | None
             """Route distinguisher."""
             rd_evpn_domain: RdEvpnDomain
@@ -40259,8 +40343,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    tenant: str | None | UndefinedType = Undefined,
-                    description: str | None | UndefinedType = Undefined,
+                    metadata: Metadata | UndefinedType = Undefined,
                     rd: str | None | UndefinedType = Undefined,
                     rd_evpn_domain: RdEvpnDomain | UndefinedType = Undefined,
                     route_targets: RouteTargets | UndefinedType = Undefined,
@@ -40277,8 +40360,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: VLAN aware bundle name.
-                        tenant: Key only used for documentation or validation purposes.
-                        description: Key only used for documentation or validation purposes.
+                        metadata: Subclass of AvdModel.
                         rd: Route distinguisher.
                         rd_evpn_domain: Subclass of AvdModel.
                         route_targets: Subclass of AvdModel.
@@ -40300,6 +40382,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         class VlansItem(AvdModel):
             """Subclass of AvdModel."""
+
+            class Metadata(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"tenant": {"type": str}}
+                tenant: str | None
+                """Key only used for documentation or validation purposes."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, tenant: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Metadata.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            tenant: Key only used for documentation or validation purposes.
+
+                        """
 
             class RdEvpnDomain(AvdModel):
                 """Subclass of AvdModel."""
@@ -40490,7 +40593,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "id": {"type": int},
-                "tenant": {"type": str},
+                "metadata": {"type": Metadata},
                 "rd": {"type": str},
                 "rd_evpn_domain": {"type": RdEvpnDomain},
                 "route_targets": {"type": RouteTargets},
@@ -40499,8 +40602,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "eos_cli": {"type": str},
             }
             id: int
-            tenant: str | None
-            """Key only used for documentation or validation purposes."""
+            metadata: Metadata
+            """Subclass of AvdModel."""
             rd: str | None
             """Route distinguisher."""
             rd_evpn_domain: RdEvpnDomain
@@ -40523,7 +40626,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    tenant: str | None | UndefinedType = Undefined,
+                    metadata: Metadata | UndefinedType = Undefined,
                     rd: str | None | UndefinedType = Undefined,
                     rd_evpn_domain: RdEvpnDomain | UndefinedType = Undefined,
                     route_targets: RouteTargets | UndefinedType = Undefined,
@@ -40539,7 +40642,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         id: id
-                        tenant: Key only used for documentation or validation purposes.
+                        metadata: Subclass of AvdModel.
                         rd: Route distinguisher.
                         rd_evpn_domain: Subclass of AvdModel.
                         route_targets: Subclass of AvdModel.

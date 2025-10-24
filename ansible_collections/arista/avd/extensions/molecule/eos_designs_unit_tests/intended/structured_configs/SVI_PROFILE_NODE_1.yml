@@ -58,11 +58,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -74,7 +76,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 110
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10110
     route_targets:
       both:
@@ -82,7 +85,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 111
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10111
     route_targets:
       both:
@@ -90,7 +94,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 112
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10112
     route_targets:
       both:
@@ -98,7 +103,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 113
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10113
     route_targets:
       both:
@@ -106,7 +112,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 114
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10114
     route_targets:
       both:
@@ -114,7 +121,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 115
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10115
     route_targets:
       both:
@@ -122,7 +130,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 120
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10120
     route_targets:
       both:
@@ -130,7 +139,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 121
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10121
     route_targets:
       both:
@@ -138,7 +148,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 210
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10210
     route_targets:
       both:
@@ -146,7 +157,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 211
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10211
     route_targets:
       both:
@@ -154,7 +166,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 212
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10212
     route_targets:
       both:
@@ -162,7 +175,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 410
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10410
     route_targets:
       both:
@@ -170,7 +184,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 411
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10411
     route_targets:
       both:
@@ -178,7 +193,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 412
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10412
     route_targets:
       both:
@@ -186,7 +202,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 510
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10510
     route_targets:
       both:
@@ -194,7 +211,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 511
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10511
     route_targets:
       both:
@@ -202,7 +220,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 512
-    tenant: svi_profile_tests
+    metadata:
+      tenant: svi_profile_tests
     rd: 192.168.255.1:10512
     route_targets:
       both:

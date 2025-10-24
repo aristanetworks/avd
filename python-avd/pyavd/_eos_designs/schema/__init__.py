@@ -47181,6 +47181,27 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class Metadata(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"type": {"type": str}}
+                        type: str | None
+                        """Key only used for documentation or validation purposes."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, type: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                Metadata.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    type: Key only used for documentation or validation purposes.
+
+                                """
+
                     class AsPath(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -47553,7 +47574,7 @@ class EosDesigns(EosDesignsRootModel):
                         "nodes": {"type": Nodes},
                         "address_family_ipv4": {"type": AddressFamilyIpv4},
                         "address_family_ipv6": {"type": AddressFamilyIpv6},
-                        "type": {"type": str},
+                        "metadata": {"type": Metadata},
                         "remote_as": {"type": str},
                         "local_as": {"type": str},
                         "description": {"type": str},
@@ -47617,8 +47638,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Subclass of AvdModel."""
                     address_family_ipv6: AddressFamilyIpv6
                     """Subclass of AvdModel."""
-                    type: str | None
-                    """Key only used for documentation or validation purposes."""
+                    metadata: Metadata
+                    """Subclass of AvdModel."""
                     remote_as: str | None
                     """
                     BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -47719,7 +47740,7 @@ class EosDesigns(EosDesignsRootModel):
                             nodes: Nodes | UndefinedType = Undefined,
                             address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                             address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
-                            type: str | None | UndefinedType = Undefined,
+                            metadata: Metadata | UndefinedType = Undefined,
                             remote_as: str | None | UndefinedType = Undefined,
                             local_as: str | None | UndefinedType = Undefined,
                             description: str | None | UndefinedType = Undefined,
@@ -47781,7 +47802,7 @@ class EosDesigns(EosDesignsRootModel):
                                    of AvdList with `str` items.
                                 address_family_ipv4: Subclass of AvdModel.
                                 address_family_ipv6: Subclass of AvdModel.
-                                type: Key only used for documentation or validation purposes.
+                                metadata: Subclass of AvdModel.
                                 remote_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -53099,6 +53120,27 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class Metadata(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"type": {"type": str}}
+                            type: str | None
+                            """Key only used for documentation or validation purposes."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, type: str | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    Metadata.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        type: Key only used for documentation or validation purposes.
+
+                                    """
+
                         class AsPath(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -53475,7 +53517,7 @@ class EosDesigns(EosDesignsRootModel):
                             "cleartext_password": {"type": str},
                             "address_family_ipv4": {"type": AddressFamilyIpv4},
                             "address_family_ipv6": {"type": AddressFamilyIpv6},
-                            "type": {"type": str},
+                            "metadata": {"type": Metadata},
                             "remote_as": {"type": str},
                             "local_as": {"type": str},
                             "description": {"type": str},
@@ -53539,8 +53581,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         address_family_ipv6: AddressFamilyIpv6
                         """Subclass of AvdModel."""
-                        type: str | None
-                        """Key only used for documentation or validation purposes."""
+                        metadata: Metadata
+                        """Subclass of AvdModel."""
                         remote_as: str | None
                         """
                         BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -53641,7 +53683,7 @@ class EosDesigns(EosDesignsRootModel):
                                 cleartext_password: str | None | UndefinedType = Undefined,
                                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
-                                type: str | None | UndefinedType = Undefined,
+                                metadata: Metadata | UndefinedType = Undefined,
                                 remote_as: str | None | UndefinedType = Undefined,
                                 local_as: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
@@ -53703,7 +53745,7 @@ class EosDesigns(EosDesignsRootModel):
                                        make use of a vault or similar.
                                     address_family_ipv4: Subclass of AvdModel.
                                     address_family_ipv6: Subclass of AvdModel.
-                                    type: Key only used for documentation or validation purposes.
+                                    metadata: Subclass of AvdModel.
                                     remote_as:
                                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                        For asdot notation in
