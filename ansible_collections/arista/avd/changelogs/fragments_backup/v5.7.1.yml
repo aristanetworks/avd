@@ -1,0 +1,21 @@
+release_summary: |
+  Release 5.7.1 - See documentation on avd.arista.com for details.
+bugfixes:
+### Fixed issues in eos_designs
+- |-
+ Fix(eos_designs): Avoid restricting valid user tags in generate_cv_tags.device_tags (#5888) by @gmuloc in https://github.com/aristanetworks/avd/pull/5911
+- |-
+ Fix(eos_designs): Escape asdot in as-path access-list for WAN HA (#6016) by @gmuloc in https://github.com/aristanetworks/avd/pull/6018
+### Other Fixed issues
+- |-
+ Fix(cv_deploy): Properly support a custom Change Control name (#5964) by @gmuloc in https://github.com/aristanetworks/avd/pull/5982
+### Documentation
+- |-
+ Doc: fix dual-dc layer3 edge by @joelbreton2 in https://github.com/aristanetworks/avd/pull/5948
+- |-
+ Doc(eos_designs): Update the section about `is_deployed : false` devices (#5863) by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5952
+- |-
+ Doc: Fix typo in configuration key name (#6035) by @gmuloc in https://github.com/aristanetworks/avd/pull/6040
+### Other Changes
+- |-
+ Bump: ANTA requirements to v1.6.0 (#6041) by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/6048
