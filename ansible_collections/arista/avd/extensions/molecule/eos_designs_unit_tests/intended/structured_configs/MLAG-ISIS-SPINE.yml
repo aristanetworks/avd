@@ -18,9 +18,10 @@ ethernet_interfaces:
       key_type: '7'
       key: $1c$sTNAlR6rKSw=
       mode: md5
-  peer: MLAG-ISIS-L3LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: MLAG-ISIS-L3LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet31
@@ -37,9 +38,10 @@ ethernet_interfaces:
       key_type: '7'
       key: $1c$sTNAlR6rKSw=
       mode: md5
-  peer: MLAG-ISIS-L3LEAF1B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: MLAG-ISIS-L3LEAF1B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet32
@@ -56,9 +58,10 @@ ethernet_interfaces:
       key_type: '7'
       key: $1c$sTNAlR6rKSw=
       mode: md5
-  peer: isis-cleartext-keys-leaf1
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: isis-cleartext-keys-leaf1
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet33
@@ -75,9 +78,10 @@ ethernet_interfaces:
       key_type: '7'
       key: $1c$sTNAlR6rKSw=
       mode: md5
-  peer: isis-cleartext-keys-leaf2
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: isis-cleartext-keys-leaf2
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: MLAG-ISIS-SPINE

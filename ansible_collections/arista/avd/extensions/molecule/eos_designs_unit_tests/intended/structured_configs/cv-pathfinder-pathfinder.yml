@@ -89,21 +89,24 @@ ethernet_interfaces:
   description: Bouygues_Telecom_777
   shutdown: false
   ip_address: 10.7.7.7/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2/2
   description: Colt_10000
   shutdown: false
   ip_address: 172.16.0.1/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet3
   description: Another-ISP_999
   shutdown: false
   ip_address: 10.9.9.9/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

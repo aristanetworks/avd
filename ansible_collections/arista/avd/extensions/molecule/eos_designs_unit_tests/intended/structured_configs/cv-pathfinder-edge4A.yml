@@ -92,10 +92,12 @@ ethernet_interfaces:
     vlan: 42
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet1
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet42
@@ -105,9 +107,10 @@ ethernet_interfaces:
   channel_group:
     id: 666
     mode: active
-  peer: cv-pathfinder-edge4B
-  peer_interface: Ethernet42
-  peer_type: wan_ha_peer
+  metadata:
+    peer: cv-pathfinder-edge4B
+    peer_interface: Ethernet42
+    peer_type: wan_ha_peer
 - name: Ethernet43
   description: WAN_HA_cv-pathfinder-edge4B_Ethernet43
   shutdown: false
@@ -115,9 +118,10 @@ ethernet_interfaces:
   channel_group:
     id: 666
     mode: active
-  peer: cv-pathfinder-edge4B
-  peer_interface: Ethernet43
-  peer_type: wan_ha_peer
+  metadata:
+    peer: cv-pathfinder-edge4B
+    peer_interface: Ethernet43
+    peer_type: wan_ha_peer
 flow_tracking:
   hardware:
     trackers:
@@ -238,9 +242,10 @@ port_channel_interfaces:
   ip_address: 10.10.10.1/24
   flow_tracker:
     hardware: FLOW-TRACKER
-  peer: cv-pathfinder-edge4B
-  peer_interface: Port-Channel666
-  peer_type: l3_interface
+  metadata:
+    peer: cv-pathfinder-edge4B
+    peer_interface: Port-Channel666
+    peer_type: l3_interface
   switchport:
     enabled: false
 prefix_lists:

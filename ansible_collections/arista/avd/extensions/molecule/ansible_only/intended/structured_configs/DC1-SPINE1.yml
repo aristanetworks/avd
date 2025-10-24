@@ -10,9 +10,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 9214
   ip_address: 172.31.254.40/31
-  peer: DC1-BL1A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL1A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -21,9 +22,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 9214
   ip_address: 172.31.254.42/31
-  peer: DC1-BL1A
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL1A
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3
@@ -32,9 +34,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 9214
   ip_address: 172.31.254.48/31
-  peer: DC1-BL1B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL1B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4
@@ -43,9 +46,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 9214
   ip_address: 172.31.254.50/31
-  peer: DC1-BL1B
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL1B
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: DC1-SPINE1

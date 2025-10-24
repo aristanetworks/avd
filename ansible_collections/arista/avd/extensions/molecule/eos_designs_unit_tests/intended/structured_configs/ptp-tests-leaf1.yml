@@ -10,18 +10,20 @@ ethernet_interfaces:
   channel_group:
     id: 9
     mode: active
-  peer: ptp-tests-leaf2
-  peer_interface: Ethernet9
-  peer_type: mlag_peer
+  metadata:
+    peer: ptp-tests-leaf2
+    peer_interface: Ethernet9
+    peer_type: mlag_peer
 - name: Ethernet10
   description: MLAG_ptp-tests-leaf2_Ethernet10
   shutdown: false
   channel_group:
     id: 9
     mode: active
-  peer: ptp-tests-leaf2
-  peer_interface: Ethernet10
-  peer_type: mlag_peer
+  metadata:
+    peer: ptp-tests-leaf2
+    peer_interface: Ethernet10
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_ptp-tests-spine1_Ethernet1
   shutdown: false
@@ -36,9 +38,10 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: ptp-tests-spine1
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -55,9 +58,10 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: ptp-tests-spine1
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet11
@@ -66,27 +70,30 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: ptp-tests-l2leaf1-ptp-disabled
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: ptp-tests-l2leaf1-ptp-disabled
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet12
   description: L2_ptp-tests-l2leaf2-ptp-enabled_Ethernet1
   shutdown: false
   channel_group:
     id: 12
     mode: active
-  peer: ptp-tests-l2leaf2-ptp-enabled
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: ptp-tests-l2leaf2-ptp-enabled
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet14
   description: L2_ptp-tests-l2leaf2-ptp-enabled-uplink-disabled_Ethernet1
   shutdown: false
   channel_group:
     id: 14
     mode: active
-  peer: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet13
   description: SERVER_dynamic-endpoint_eth1
   shutdown: false
@@ -99,11 +106,12 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: dynamic-endpoint
-  peer_interface: eth1
-  peer_type: server
-  peer_key: servers
-  port_profile: PTP-profile-dynamic
+  metadata:
+    peer: dynamic-endpoint
+    peer_interface: eth1
+    peer_type: server
+    peer_key: servers
+    port_profile: PTP-profile-dynamic
   switchport:
     enabled: true
     mode: access
@@ -122,10 +130,11 @@ ethernet_interfaces:
     role: master
     transport: ipv4
   spanning_tree_portfast: edge
-  peer: video-endpoint
-  peer_interface: PCI1
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: video-endpoint
+    peer_interface: PCI1
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -136,10 +145,11 @@ ethernet_interfaces:
   channel_group:
     id: 6
     mode: active
-  peer: Endpoint-with-mpass
-  peer_interface: PCI1
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: Endpoint-with-mpass
+    peer_interface: PCI1
+    peer_type: server
+    peer_key: servers
 - name: Ethernet3
   description: SERVER_Endpoint-with-specific-PTP-profile_eth3
   shutdown: false
@@ -153,10 +163,11 @@ ethernet_interfaces:
       interval: -4
     role: master
     transport: ipv4
-  peer: Endpoint-with-specific-PTP-profile
-  peer_interface: eth3
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: Endpoint-with-specific-PTP-profile
+    peer_interface: eth3
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
     mode: access

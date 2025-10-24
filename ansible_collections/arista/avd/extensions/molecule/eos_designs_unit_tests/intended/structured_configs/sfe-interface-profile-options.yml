@@ -7,21 +7,24 @@ ethernet_interfaces:
 - name: Ethernet5
   shutdown: false
   ip_address: 192.168.1.201/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet7
   shutdown: false
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet9
   description: Cybercast
   shutdown: false
   ip_address: 192.168.1.202/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet1
@@ -29,40 +32,46 @@ ethernet_interfaces:
   channel_group:
     id: 2
     mode: active
-  peer_type: l3_port_channel_member
+  metadata:
+    peer_type: l3_port_channel_member
 - name: Ethernet2
   shutdown: false
   channel_group:
     id: 2
     mode: active
-  peer_type: l3_port_channel_member
+  metadata:
+    peer_type: l3_port_channel_member
 - name: Ethernet3
   shutdown: false
   channel_group:
     id: 2
     mode: active
-  peer_type: l3_port_channel_member
+  metadata:
+    peer_type: l3_port_channel_member
 - name: Ethernet1/4
   shutdown: false
   channel_group:
     id: 5
     mode: passive
-  peer_type: l3_port_channel_member
+  metadata:
+    peer_type: l3_port_channel_member
 - name: Ethernet1/5
   shutdown: false
   channel_group:
     id: 5
     mode: passive
-  peer_type: l3_port_channel_member
+  metadata:
+    peer_type: l3_port_channel_member
 - name: Ethernet1/10
   description: peerDevice3_Ethernet1/10
   shutdown: false
   channel_group:
     id: 8
     mode: 'on'
-  peer: peerDevice3
-  peer_interface: Ethernet1/10
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: peerDevice3
+    peer_interface: Ethernet1/10
+    peer_type: l3_port_channel_member
 hostname: sfe-interface-profile-options
 ip_igmp_snooping:
   globally_enabled: true
@@ -113,14 +122,16 @@ port_channel_interfaces:
   description: Cybercast
   shutdown: false
   ip_address: 192.168.1.102/31
-  peer_type: l3_port_channel
+  metadata:
+    peer_type: l3_port_channel
   switchport:
     enabled: false
 - name: Port-Channel5
   description: StreamFast
   shutdown: false
   ip_address: 192.168.1.105/31
-  peer_type: l3_port_channel
+  metadata:
+    peer_type: l3_port_channel
   switchport:
     enabled: false
 - name: Port-Channel5.108
@@ -128,11 +139,13 @@ port_channel_interfaces:
   encapsulation_dot1q:
     vlan: 108
   ip_address: 192.168.100.115/31
-  peer_type: l3_port_channel
+  metadata:
+    peer_type: l3_port_channel
 - name: Port-Channel8
   shutdown: false
   ip_address: 192.168.100.125/31
-  peer_type: l3_port_channel
+  metadata:
+    peer_type: l3_port_channel
   switchport:
     enabled: false
 prefix_lists:

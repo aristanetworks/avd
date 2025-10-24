@@ -1318,18 +1318,24 @@ keys:
               min: 1
               max: 3
               description: IGMP version on IGMP host-proxy interface.
-        peer:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_interface:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_type:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_key:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          keys:
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_interface:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_type:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_key:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            port_profile:
+              type: str
+              description: Key only used for documentation or validation purposes.
         sflow:
           type: dict
           keys:
@@ -1352,9 +1358,6 @@ keys:
               description: The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.
               convert_types:
                 - int
-        port_profile:
-          type: str
-          description: Key only used for documentation or validation purposes.
         uc_tx_queues:
           type: list
           primary_key: id

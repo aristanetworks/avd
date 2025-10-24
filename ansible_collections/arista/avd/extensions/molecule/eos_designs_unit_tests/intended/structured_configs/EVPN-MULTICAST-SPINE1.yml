@@ -12,9 +12,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: EVPN-MULTICAST-L3LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: EVPN-MULTICAST-L3LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -25,9 +26,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: EVPN-MULTICAST-L3LEAF1B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: EVPN-MULTICAST-L3LEAF1B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3
@@ -38,9 +40,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: EVPN-MULTICAST-L3LEAF2A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: EVPN-MULTICAST-L3LEAF2A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4
@@ -51,9 +54,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: EVPN-MULTICAST-L3LEAF3A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: EVPN-MULTICAST-L3LEAF3A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet5
@@ -64,9 +68,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: EVPN-MULTICAST-L3LEAF3B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: EVPN-MULTICAST-L3LEAF3B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet6
@@ -77,9 +82,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: EVPN-MULTICAST-DISABLED
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: EVPN-MULTICAST-DISABLED
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: EVPN-MULTICAST-SPINE1

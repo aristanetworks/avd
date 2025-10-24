@@ -27,9 +27,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: SITE2-LSR1
-  peer_interface: Ethernet1
-  peer_type: p
+  metadata:
+    peer: SITE2-LSR1
+    peer_interface: Ethernet1
+    peer_type: p
   switchport:
     enabled: false
   eos_cli: 'link-debounce time 1000
@@ -42,9 +43,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: SITE2-LSR2
-  peer_interface: Ethernet12
-  peer_type: p
+  metadata:
+    peer: SITE2-LSR2
+    peer_interface: Ethernet12
+    peer_type: p
 - name: Ethernet12
   description: P2P_SITE2-LSR2_Ethernet13
   shutdown: false
@@ -52,9 +54,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: SITE2-LSR2
-  peer_interface: Ethernet13
-  peer_type: p
+  metadata:
+    peer: SITE2-LSR2
+    peer_interface: Ethernet13
+    peer_type: p
 - name: Ethernet13
   description: P2P_SITE2-LSR2_Ethernet14
   shutdown: false
@@ -62,9 +65,10 @@ ethernet_interfaces:
   channel_group:
     id: 220
     mode: active
-  peer: SITE2-LSR2
-  peer_interface: Ethernet14
-  peer_type: p
+  metadata:
+    peer: SITE2-LSR2
+    peer_interface: Ethernet14
+    peer_type: p
 - name: Ethernet14
   description: P2P_SITE2-LSR2_Ethernet15
   shutdown: false
@@ -72,9 +76,10 @@ ethernet_interfaces:
   channel_group:
     id: 220
     mode: active
-  peer: SITE2-LSR2
-  peer_interface: Ethernet15
-  peer_type: p
+  metadata:
+    peer: SITE2-LSR2
+    peer_interface: Ethernet15
+    peer_type: p
 - name: Ethernet6.10
   description: TENANT_B_SITE_5_INTRA_L3VPN
   shutdown: false
@@ -82,7 +87,8 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 10
   ip_address: 123.1.1.2/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet6.100
   description: TENANT_B_SITE_3_OSPF
   shutdown: false
@@ -93,7 +99,8 @@ ethernet_interfaces:
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   ospf_cost: 10
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet6.101
   description: TENANT_B_SITE_5
   shutdown: false
@@ -101,13 +108,15 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 101
   ip_address: 192.168.48.2/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet6
   description: TENANT_B_SITE_5_WAN_TEST
   shutdown: false
   vrf: TENANT_B_WAN
   ip_address: 123.10.10.2/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet7
@@ -115,7 +124,8 @@ ethernet_interfaces:
   lldp:
     transmit: false
     receive: false
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
   switchport:
     enabled: false
 - name: Ethernet9.100
@@ -126,7 +136,8 @@ ethernet_interfaces:
       vlan: 100
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
   eos_cli: storm-control broadcast level 10
 - name: Ethernet9.101
   comment: Test structured_config for Ethernet subinterface
@@ -137,33 +148,38 @@ ethernet_interfaces:
       vlan: 101
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Ethernet4
   shutdown: false
   channel_group:
     id: 4
     mode: active
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Ethernet5
   shutdown: false
   channel_group:
     id: 4
     mode: active
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Ethernet9
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet8
   description: CPE_CPE_TENANT_A_SITE2_eth0
   shutdown: false
   spanning_tree_portfast: edge
-  peer: CPE_TENANT_A_SITE2
-  peer_interface: eth0
-  peer_type: cpe
-  peer_key: cpes
-  port_profile: TENANT_A_WAN_SERVICE_10
+  metadata:
+    peer: CPE_TENANT_A_SITE2
+    peer_interface: eth0
+    peer_type: cpe
+    peer_key: cpes
+    port_profile: TENANT_A_WAN_SERVICE_10
   switchport:
     enabled: true
     mode: trunk
@@ -308,9 +324,10 @@ port_channel_interfaces:
       mode: md5
   ip_address: 100.64.49.2/30
   ipv6_enable: true
-  peer: SITE2-LSR2
-  peer_interface: Port-Channel12
-  peer_type: p
+  metadata:
+    peer: SITE2-LSR2
+    peer_interface: Port-Channel12
+    peer_type: p
   switchport:
     enabled: false
   eos_cli: 'link-debounce time 1600
@@ -337,9 +354,10 @@ port_channel_interfaces:
       mode: md5
   ip_address: 100.64.49.6/30
   ipv6_enable: true
-  peer: SITE2-LSR2
-  peer_interface: Port-Channel110
-  peer_type: p
+  metadata:
+    peer: SITE2-LSR2
+    peer_interface: Port-Channel110
+    peer_type: p
   switchport:
     enabled: false
   eos_cli: 'link-debounce time 1600
@@ -353,7 +371,8 @@ port_channel_interfaces:
       vlan: 1000
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
   eos_cli: storm-control broadcast level 15
 - name: Port-Channel4.1001
   shutdown: false
@@ -363,7 +382,8 @@ port_channel_interfaces:
       vlan: 1001
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Port-Channel4.1002
   comment: Test structured_config for Port-Channel subinterface
   shutdown: false
@@ -373,7 +393,8 @@ port_channel_interfaces:
       vlan: 1002
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Port-Channel4.1003
   shutdown: false
   encapsulation_vlan:
@@ -382,7 +403,8 @@ port_channel_interfaces:
       vlan: 1003
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Port-Channel4.1004
   shutdown: false
   encapsulation_vlan:
@@ -391,10 +413,12 @@ port_channel_interfaces:
       vlan: 1004
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Port-Channel4
   shutdown: false
-  peer_type: system
+  metadata:
+    peer_type: system
   switchport:
     enabled: false
 router_bfd:

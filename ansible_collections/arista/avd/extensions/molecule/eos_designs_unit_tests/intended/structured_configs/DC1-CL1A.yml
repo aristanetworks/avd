@@ -23,9 +23,10 @@ ethernet_interfaces:
   channel_group:
     id: 1151
     mode: active
-  peer: DC1-CL1B
-  peer_interface: Ethernet1/15/1
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1-CL1B
+    peer_interface: Ethernet1/15/1
+    peer_type: mlag_peer
 - name: Ethernet1/16/1
   description: MLAG_PEER_DC1-CL1B_Ethernet1/16/1
   shutdown: false
@@ -33,18 +34,20 @@ ethernet_interfaces:
   channel_group:
     id: 1151
     mode: active
-  peer: DC1-CL1B
-  peer_interface: Ethernet1/16/1
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1-CL1B
+    peer_interface: Ethernet1/16/1
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet26
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.33/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet26
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet26
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -53,9 +56,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.35/31
-  peer: DC1-SPINE2
-  peer_interface: Ethernet26
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet26
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -64,9 +68,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.37/31
-  peer: DC1-SPINE3
-  peer_interface: Ethernet26
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet26
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet4
@@ -75,9 +80,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.39/31
-  peer: DC1-SPINE4
-  peer_interface: Ethernet26
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet26
+    peer_type: spine
   switchport:
     enabled: false
 hostname: DC1-CL1A

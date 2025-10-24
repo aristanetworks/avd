@@ -84,9 +84,10 @@ ethernet_interfaces:
   description: ACME-MPLS-INC_mpls-pf1_mpls-cloud_Ethernet1
   shutdown: false
   ip_address: 172.18.100.2/24
-  peer: mpls-cloud
-  peer_interface: Ethernet1
-  peer_type: l3_interface
+  metadata:
+    peer: mpls-cloud
+    peer_interface: Ethernet1
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2
@@ -94,9 +95,10 @@ ethernet_interfaces:
   shutdown: false
   ip_address: 100.64.100.2/24
   access_group_in: ACL-PF-INTERNET-IN_Ethernet2
-  peer: inet-cloud
-  peer_interface: Ethernet1
-  peer_type: l3_interface
+  metadata:
+    peer: inet-cloud
+    peer_interface: Ethernet1
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

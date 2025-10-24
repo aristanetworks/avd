@@ -10,13 +10,15 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
-  peer: bgp-from-network-services-2
-  peer_interface: Ethernet10
-  peer_type: mlag_peer
+  metadata:
+    peer: bgp-from-network-services-2
+    peer_interface: Ethernet10
+    peer_type: mlag_peer
 - name: Ethernet47
   shutdown: false
   ip_address: 10.10.1.1/30
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 hostname: bgp-from-network-services-1

@@ -13,18 +13,20 @@ ethernet_interfaces:
   channel_group:
     id: 971
     mode: active
-  peer: LEAF3A
-  peer_interface: Ethernet97/4
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF3A
+    peer_interface: Ethernet97/4
+    peer_type: l2leaf
 - name: Ethernet97/2
   description: L2_LEAF3B_Ethernet97/4
   shutdown: false
   channel_group:
     id: 971
     mode: active
-  peer: LEAF3B
-  peer_interface: Ethernet97/4
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF3B
+    peer_interface: Ethernet97/4
+    peer_type: l2leaf
 - name: Ethernet1
   description: IDF3 Standard Port
   shutdown: false
@@ -47,9 +49,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -80,9 +83,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -113,9 +117,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -146,9 +151,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -179,9 +185,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -212,9 +219,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -245,9 +253,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -278,9 +287,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -311,9 +321,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -344,9 +355,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -377,9 +389,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -410,9 +423,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -443,9 +457,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -476,9 +491,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -509,9 +525,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -542,9 +559,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -575,9 +593,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -608,9 +627,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -641,9 +661,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -674,9 +695,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -707,9 +729,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -740,9 +763,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -773,9 +797,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -806,9 +831,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -839,9 +865,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -872,9 +899,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -905,9 +933,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -938,9 +967,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -971,9 +1001,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1004,9 +1035,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1037,9 +1069,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1070,9 +1103,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1103,9 +1137,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1136,9 +1171,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1169,9 +1205,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1202,9 +1239,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1235,9 +1273,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1268,9 +1307,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1301,9 +1341,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1334,9 +1375,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1367,9 +1409,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1400,9 +1443,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1433,9 +1477,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1466,9 +1511,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1499,9 +1545,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1532,9 +1579,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1565,9 +1613,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1598,9 +1647,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1631,9 +1681,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1664,9 +1715,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1697,9 +1749,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1730,9 +1783,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1763,9 +1817,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1796,9 +1851,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1829,9 +1885,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1862,9 +1919,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1895,9 +1953,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1928,9 +1987,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1961,9 +2021,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -1994,9 +2055,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2027,9 +2089,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2060,9 +2123,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2093,9 +2157,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2126,9 +2191,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2159,9 +2225,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2192,9 +2259,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2225,9 +2293,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2258,9 +2327,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2291,9 +2361,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2324,9 +2395,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2357,9 +2429,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2390,9 +2463,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2423,9 +2497,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2456,9 +2531,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2489,9 +2565,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2522,9 +2599,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2555,9 +2633,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2588,9 +2667,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2621,9 +2701,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2654,9 +2735,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2687,9 +2769,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2720,9 +2803,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2753,9 +2837,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2786,9 +2871,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2819,9 +2905,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2852,9 +2939,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2885,9 +2973,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2918,9 +3007,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2951,9 +3041,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -2984,9 +3075,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -3017,9 +3109,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -3050,9 +3143,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -3083,9 +3177,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -3116,9 +3211,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -3149,9 +3245,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone
@@ -3182,9 +3279,10 @@ ethernet_interfaces:
     reauthorization_request_limit: 3
   spanning_tree_bpduguard: enabled
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: PP-DOT1X
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: PP-DOT1X
   switchport:
     enabled: true
     mode: trunk phone

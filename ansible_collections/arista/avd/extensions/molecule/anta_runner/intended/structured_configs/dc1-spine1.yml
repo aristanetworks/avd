@@ -10,9 +10,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.0/31
-  peer: dc1-leaf1a
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf1a
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -20,9 +21,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.4/31
-  peer: dc1-leaf1b
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf1b
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3
@@ -30,9 +32,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.8/31
-  peer: dc1-leaf2a
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf2a
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4
@@ -40,9 +43,10 @@ ethernet_interfaces:
   shutdown: true
   mtu: 1500
   ip_address: 10.255.255.12/31
-  peer: dc1-leaf2b
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf2b
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet5
@@ -50,9 +54,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.33.255.16/31
-  peer: dc1-svc-leaf1a
-  peer_interface: Ethernet1
-  peer_type: service_leaf
+  metadata:
+    peer: dc1-svc-leaf1a
+    peer_interface: Ethernet1
+    peer_type: service_leaf
   switchport:
     enabled: false
 - name: Ethernet6
@@ -60,9 +65,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.33.255.20/31
-  peer: dc1-svc-leaf1b
-  peer_interface: Ethernet1
-  peer_type: service_leaf
+  metadata:
+    peer: dc1-svc-leaf1b
+    peer_interface: Ethernet1
+    peer_type: service_leaf
   switchport:
     enabled: false
 hostname: dc1-spine1

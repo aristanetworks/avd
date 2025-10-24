@@ -12,9 +12,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 9214
   ip_address: 172.31.254.41/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -23,9 +24,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 9214
   ip_address: 172.31.254.43/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 event_handlers:

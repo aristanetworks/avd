@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.254.2.0/31
-  peer: sflow-tests-leaf1
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: sflow-tests-leaf1
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   sflow:
     enable: true
   switchport:
@@ -21,9 +22,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.254.2.2/31
-  peer: sflow-tests-leaf1
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: sflow-tests-leaf1
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   sflow:
     enable: true
   switchport:
@@ -33,9 +35,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.254.2.4/31
-  peer: sflow-tests-leaf2
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: sflow-tests-leaf2
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   sflow:
     enable: true
   switchport:
@@ -45,9 +48,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.254.2.6/31
-  peer: sflow-tests-leaf2
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: sflow-tests-leaf2
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   sflow:
     enable: true
   switchport:
@@ -57,9 +61,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.254.2.16/31
-  peer: sflow-tests-leaf3
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: sflow-tests-leaf3
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   sflow:
     enable: true
   switchport:
@@ -69,9 +74,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.254.2.18/31
-  peer: sflow-tests-leaf3
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: sflow-tests-leaf3
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   sflow:
     enable: true
   switchport:
@@ -81,9 +87,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.254.2.20/31
-  peer: sflow-tests-leaf4
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: sflow-tests-leaf4
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   sflow:
     enable: true
   switchport:
@@ -93,9 +100,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.254.2.22/31
-  peer: sflow-tests-leaf4
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: sflow-tests-leaf4
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   sflow:
     enable: true
   switchport:
@@ -104,9 +112,10 @@ ethernet_interfaces:
   description: P2P_sflow-tests-spine2_Ethernet9
   shutdown: false
   mtu: 9214
-  peer: sflow-tests-spine2
-  peer_interface: Ethernet9
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine2
+    peer_interface: Ethernet9
+    peer_type: spine
   sflow:
     enable: true
   switchport:
@@ -115,9 +124,10 @@ ethernet_interfaces:
   description: P2P_sflow-tests-spine2_Ethernet10
   shutdown: false
   mtu: 9214
-  peer: sflow-tests-spine2
-  peer_interface: Ethernet10
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine2
+    peer_interface: Ethernet10
+    peer_type: spine
   sflow:
     enable: false
   switchport:
@@ -126,9 +136,10 @@ ethernet_interfaces:
   description: P2P_sflow-tests-spine2_Ethernet11
   shutdown: false
   mtu: 9214
-  peer: sflow-tests-spine2
-  peer_interface: Ethernet11
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine2
+    peer_interface: Ethernet11
+    peer_type: spine
   sflow:
     enable: true
   switchport:
@@ -137,9 +148,10 @@ ethernet_interfaces:
   description: P2P_sflow-tests-spine2_Ethernet12
   shutdown: false
   mtu: 9214
-  peer: sflow-tests-spine2
-  peer_interface: Ethernet12
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine2
+    peer_interface: Ethernet12
+    peer_type: spine
   sflow:
     enable: true
   switchport:
@@ -148,9 +160,10 @@ ethernet_interfaces:
   description: P2P_sflow-tests-spine2_Ethernet13
   shutdown: false
   mtu: 9214
-  peer: sflow-tests-spine2
-  peer_interface: Ethernet13
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine2
+    peer_interface: Ethernet13
+    peer_type: spine
   sflow:
     enable: false
   switchport:
@@ -159,9 +172,10 @@ ethernet_interfaces:
   description: P2P_sflow-tests-spine2_Ethernet14
   shutdown: false
   mtu: 9214
-  peer: sflow-tests-spine2
-  peer_interface: Ethernet14
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine2
+    peer_interface: Ethernet14
+    peer_type: spine
   sflow:
     enable: true
   switchport:

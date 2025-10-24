@@ -20,9 +20,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.81/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet42
@@ -31,9 +32,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.83/31
-  peer: DC1-SPINE2
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet43
@@ -42,9 +44,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.85/31
-  peer: DC1-SPINE3
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet44
@@ -53,9 +56,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.87/31
-  peer: DC1-SPINE4
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet7
@@ -64,7 +68,8 @@ ethernet_interfaces:
   mtu: 9000
   vrf: Tenant_A_WAN_Zone
   ip_address: 10.10.10.10/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet8
@@ -73,7 +78,8 @@ ethernet_interfaces:
   mtu: 9000
   vrf: Tenant_L3_VRF_Zone
   ip_address: 10.10.10.10/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet9
@@ -82,7 +88,8 @@ ethernet_interfaces:
   mtu: 9000
   vrf: Tenant_L3_VRF_Zone
   ip_address: 10.10.20.20/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet10.100
@@ -93,7 +100,8 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 100
   ip_address: 10.10.11.10/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet10.200
   description: subinterface test with vlan override
   shutdown: false
@@ -102,10 +110,12 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 121
   ip_address: 10.10.21.10/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet10
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet4000
@@ -113,9 +123,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.3.2.1/21
-  peer: MY-own-peer
-  peer_interface: Ethernet123
-  peer_type: my_precious
+  metadata:
+    peer: MY-own-peer
+    peer_interface: Ethernet123
+    peer_type: my_precious
   switchport:
     enabled: false
 hardware:

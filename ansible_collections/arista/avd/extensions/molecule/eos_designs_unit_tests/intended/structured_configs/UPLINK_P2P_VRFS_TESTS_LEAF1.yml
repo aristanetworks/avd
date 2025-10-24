@@ -14,9 +14,10 @@ ethernet_interfaces:
       sparse_mode: true
   mac_security:
     profile: TEST
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE1
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet1.42
@@ -26,9 +27,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 42
   ip_address: 10.42.42.9/31
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE1
-  peer_interface: Ethernet1.42
-  peer_type: spine
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+    peer_interface: Ethernet1.42
+    peer_type: spine
 - name: Ethernet1.66
   description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.66_VRF_ONLY-ON-L2LEAF
   shutdown: false
@@ -36,9 +38,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 66
   ip_address: 10.42.42.9/31
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE1
-  peer_interface: Ethernet1.66
-  peer_type: spine
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+    peer_interface: Ethernet1.66
+    peer_type: spine
 - name: Ethernet2
   description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2
   shutdown: false
@@ -49,9 +52,10 @@ ethernet_interfaces:
       sparse_mode: true
   mac_security:
     profile: TEST
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE2
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2.100
@@ -61,9 +65,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 100
   ip_address: 10.42.42.11/31
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE2
-  peer_interface: Ethernet2.100
-  peer_type: spine
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+    peer_interface: Ethernet2.100
+    peer_type: spine
 - name: Ethernet2.42
   description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.42_VRF_PROD
   shutdown: false
@@ -71,27 +76,30 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 42
   ip_address: 10.42.42.11/31
-  peer: UPLINK_P2P_VRFS_TESTS_SPINE2
-  peer_interface: Ethernet2.42
-  peer_type: spine
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+    peer_interface: Ethernet2.42
+    peer_type: spine
 - name: Ethernet51
   description: L2_UPLINK_P2P_VRFS_TESTS_L2LEAF1_Ethernet1
   shutdown: false
   channel_group:
     id: 51
     mode: active
-  peer: UPLINK_P2P_VRFS_TESTS_L2LEAF1
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_L2LEAF1
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet52
   description: L2_UPLINK_P2P_VRFS_TESTS_L2LEAF1_Ethernet2
   shutdown: false
   channel_group:
     id: 51
     mode: active
-  peer: UPLINK_P2P_VRFS_TESTS_L2LEAF1
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_L2LEAF1
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 hostname: UPLINK_P2P_VRFS_TESTS_LEAF1
 ip_igmp_snooping:
   globally_enabled: true

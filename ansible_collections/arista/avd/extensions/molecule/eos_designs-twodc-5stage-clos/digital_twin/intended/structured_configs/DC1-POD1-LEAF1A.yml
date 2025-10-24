@@ -15,9 +15,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC1-POD1-SPINE1
-  peer_interface: Ethernet3
-  peer_type: spine
+  metadata:
+    peer: DC1-POD1-SPINE1
+    peer_interface: Ethernet3
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -29,9 +30,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC1-POD1-SPINE2
-  peer_interface: Ethernet3
-  peer_type: spine
+  metadata:
+    peer: DC1-POD1-SPINE2
+    peer_interface: Ethernet3
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -40,17 +42,19 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: DC1-POD1-L2LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-POD1-L2LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet4
   description: P2P_DC1-RS1_Ethernet3
   shutdown: false
   ip_address: 172.17.10.4/31
   service_profile: QOS-PROFILE
-  peer: DC1-RS1
-  peer_interface: Ethernet3
-  peer_type: overlay-controller
+  metadata:
+    peer: DC1-RS1
+    peer_interface: Ethernet3
+    peer_type: overlay-controller
   switchport:
     enabled: false
 hostname: DC1-POD1-LEAF1A

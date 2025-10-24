@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.4/31
-  peer: cv-pathfinder-edge2A
-  peer_interface: Ethernet52
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2A
+    peer_interface: Ethernet52
+    peer_type: wan_router
   switchport:
     enabled: false
 - name: Ethernet1.1000
@@ -22,9 +23,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1000
   ip_address: 172.17.0.4/31
-  peer: cv-pathfinder-edge2A
-  peer_interface: Ethernet52.1000
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2A
+    peer_interface: Ethernet52.1000
+    peer_type: wan_router
 - name: Ethernet1.142
   description: P2P_cv-pathfinder-edge2A_Ethernet52.142_VRF_PROD
   shutdown: false
@@ -33,9 +35,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 142
   ip_address: 172.17.0.4/31
-  peer: cv-pathfinder-edge2A
-  peer_interface: Ethernet52.142
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2A
+    peer_interface: Ethernet52.142
+    peer_type: wan_router
 - name: Ethernet1.666
   description: P2P_cv-pathfinder-edge2A_Ethernet52.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
@@ -44,17 +47,19 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 666
   ip_address: 172.17.0.4/31
-  peer: cv-pathfinder-edge2A
-  peer_interface: Ethernet52.666
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2A
+    peer_interface: Ethernet52.666
+    peer_type: wan_router
 - name: Ethernet2
   description: P2P_cv-pathfinder-edge2B_Ethernet52
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.8/31
-  peer: cv-pathfinder-edge2B
-  peer_interface: Ethernet52
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2B
+    peer_interface: Ethernet52
+    peer_type: wan_router
   switchport:
     enabled: false
 - name: Ethernet2.1000
@@ -65,9 +70,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1000
   ip_address: 172.17.0.8/31
-  peer: cv-pathfinder-edge2B
-  peer_interface: Ethernet52.1000
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2B
+    peer_interface: Ethernet52.1000
+    peer_type: wan_router
 - name: Ethernet2.142
   description: P2P_cv-pathfinder-edge2B_Ethernet52.142_VRF_PROD
   shutdown: false
@@ -76,9 +82,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 142
   ip_address: 172.17.0.8/31
-  peer: cv-pathfinder-edge2B
-  peer_interface: Ethernet52.142
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2B
+    peer_interface: Ethernet52.142
+    peer_type: wan_router
 - name: Ethernet2.666
   description: P2P_cv-pathfinder-edge2B_Ethernet52.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
@@ -87,9 +94,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 666
   ip_address: 172.17.0.8/31
-  peer: cv-pathfinder-edge2B
-  peer_interface: Ethernet52.666
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2B
+    peer_interface: Ethernet52.666
+    peer_type: wan_router
 hostname: site-ha-enabled-leaf2A
 ip_igmp_snooping:
   globally_enabled: true

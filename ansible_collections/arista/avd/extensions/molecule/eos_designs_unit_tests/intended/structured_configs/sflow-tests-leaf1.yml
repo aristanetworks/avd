@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.254.2.1/31
-  peer: sflow-tests-spine1
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine1
+    peer_interface: Ethernet1
+    peer_type: spine
   sflow:
     enable: true
   switchport:
@@ -21,9 +22,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.254.2.3/31
-  peer: sflow-tests-spine1
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine1
+    peer_interface: Ethernet2
+    peer_type: spine
   sflow:
     enable: true
   switchport:
@@ -31,10 +33,11 @@ ethernet_interfaces:
 - name: Ethernet10
   description: SERVER_single-interface-true_eth1
   shutdown: false
-  peer: single-interface-true
-  peer_interface: eth1
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: single-interface-true
+    peer_interface: eth1
+    peer_type: server
+    peer_key: servers
   sflow:
     enable: true
   switchport:
@@ -44,10 +47,11 @@ ethernet_interfaces:
 - name: Ethernet12
   description: SERVER_single-interface-false_eth11
   shutdown: false
-  peer: single-interface-false
-  peer_interface: eth11
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: single-interface-false
+    peer_interface: eth11
+    peer_type: server
+    peer_key: servers
   sflow:
     enable: false
   switchport:
@@ -57,10 +61,11 @@ ethernet_interfaces:
 - name: Ethernet14
   description: SERVER_single-interface-no-definition_eth12
   shutdown: false
-  peer: single-interface-no-definition
-  peer_interface: eth12
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: single-interface-no-definition
+    peer_interface: eth12
+    peer_type: server
+    peer_key: servers
   sflow:
     enable: true
   switchport:

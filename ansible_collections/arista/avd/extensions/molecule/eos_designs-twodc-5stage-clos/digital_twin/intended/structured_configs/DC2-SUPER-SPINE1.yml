@@ -12,9 +12,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC2-POD1-SPINE1
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: DC2-POD1-SPINE1
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -24,9 +25,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC2-POD1-SPINE2
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: DC2-POD1-SPINE2
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -34,9 +36,10 @@ ethernet_interfaces:
   shutdown: false
   ip_address: 172.17.20.0/31
   service_profile: QOS-PROFILE
-  peer: DC2-RS1
-  peer_interface: Ethernet1
-  peer_type: overlay-controller
+  metadata:
+    peer: DC2-RS1
+    peer_interface: Ethernet1
+    peer_type: overlay-controller
   switchport:
     enabled: false
 - name: Ethernet5
@@ -44,9 +47,10 @@ ethernet_interfaces:
   shutdown: false
   ip_address: 172.17.20.8/31
   service_profile: QOS-PROFILE
-  peer: DC2-RS2
-  peer_interface: Ethernet1
-  peer_type: overlay-controller
+  metadata:
+    peer: DC2-RS2
+    peer_interface: Ethernet1
+    peer_type: overlay-controller
   switchport:
     enabled: false
 - name: Ethernet6
@@ -54,9 +58,10 @@ ethernet_interfaces:
   shutdown: false
   ip_address: 172.17.20.2/31
   service_profile: QOS-PROFILE
-  peer: DC2-RS1
-  peer_interface: Ethernet2
-  peer_type: overlay-controller
+  metadata:
+    peer: DC2-RS1
+    peer_interface: Ethernet2
+    peer_type: overlay-controller
   switchport:
     enabled: false
 - name: Ethernet7
@@ -64,9 +69,10 @@ ethernet_interfaces:
   shutdown: false
   ip_address: 172.17.20.10/31
   service_profile: QOS-PROFILE
-  peer: DC2-RS2
-  peer_interface: Ethernet2
-  peer_type: overlay-controller
+  metadata:
+    peer: DC2-RS2
+    peer_interface: Ethernet2
+    peer_type: overlay-controller
   switchport:
     enabled: false
 - name: Ethernet4
@@ -77,9 +83,10 @@ ethernet_interfaces:
     profile: MACSEC_PROFILE
   ptp:
     enable: true
-  peer: DC1-SUPER-SPINE1
-  peer_interface: Ethernet6
-  peer_type: super-spine
+  metadata:
+    peer: DC1-SUPER-SPINE1
+    peer_interface: Ethernet6
+    peer_type: super-spine
   switchport:
     enabled: false
 hostname: DC2-SUPER-SPINE1

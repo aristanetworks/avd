@@ -89,7 +89,8 @@ ethernet_interfaces:
   description: Orange_888
   shutdown: false
   ip_address: 10.8.8.8/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

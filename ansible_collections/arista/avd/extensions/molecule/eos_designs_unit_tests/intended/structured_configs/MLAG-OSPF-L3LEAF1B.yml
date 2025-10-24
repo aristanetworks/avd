@@ -22,18 +22,20 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  peer: MLAG-OSPF-L3LEAF1A
-  peer_interface: Ethernet5
-  peer_type: mlag_peer
+  metadata:
+    peer: MLAG-OSPF-L3LEAF1A
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
 - name: Ethernet6
   description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: MLAG-OSPF-L3LEAF1A
-  peer_interface: Ethernet6
-  peer_type: mlag_peer
+  metadata:
+    peer: MLAG-OSPF-L3LEAF1A
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet220
   shutdown: false
@@ -50,9 +52,10 @@ ethernet_interfaces:
   - id: 2
     hash_algorithm: sha512
     key: pWGuZ4QaDATcfTOKCkm1p2Rq2A4O9j5j
-  peer: DC1-SPINE1
-  peer_interface: Ethernet220
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet220
+    peer_type: spine
   switchport:
     enabled: false
 hostname: MLAG-OSPF-L3LEAF1B

@@ -12,9 +12,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -25,9 +26,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1

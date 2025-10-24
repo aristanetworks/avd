@@ -15,9 +15,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: UNDERLAY-MULTICAST-L3LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: UNDERLAY-MULTICAST-L3LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -28,9 +29,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: UNDERLAY-MULTICAST-L3LEAF1B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: UNDERLAY-MULTICAST-L3LEAF1B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3
@@ -44,9 +46,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: UNDERLAY-MULTICAST-L3LEAF2A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: UNDERLAY-MULTICAST-L3LEAF2A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4
@@ -54,9 +57,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.12/31
-  peer: UNDERLAY-MULTICAST-L3LEAF2B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: UNDERLAY-MULTICAST-L3LEAF2B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet5
@@ -64,9 +68,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.16/31
-  peer: UNDERLAY-MULTICAST-L3LEAF3A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: UNDERLAY-MULTICAST-L3LEAF3A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet6
@@ -74,9 +79,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.20/31
-  peer: UNDERLAY-MULTICAST-L3LEAF3B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: UNDERLAY-MULTICAST-L3LEAF3B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: UNDERLAY-MULTICAST-SPINE1

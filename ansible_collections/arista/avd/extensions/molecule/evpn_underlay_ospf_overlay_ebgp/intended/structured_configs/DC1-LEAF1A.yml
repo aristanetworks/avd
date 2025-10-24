@@ -26,9 +26,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: /wCirdje6f59x/1Ev+Oe6xok2+5jD3M/
-  peer: DC1-SPINE1
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -43,9 +44,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
-  peer: DC1-SPINE2
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -60,9 +62,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
-  peer: DC1-SPINE3
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet4
@@ -77,9 +80,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: QB0XEg/PJV6Y5HtvjDdiafrPx/g+JRKk
-  peer: DC1-SPINE4
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 hostname: DC1-LEAF1A

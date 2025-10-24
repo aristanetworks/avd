@@ -34,9 +34,10 @@ ethernet_interfaces:
   ip_address: 10.0.100.1/24
   ipv6_enable: true
   ipv6_address: cafe::cafe/64
-  peer: uplink_lan_l2leaf
-  peer_interface: Ethernet1 VLAN 100
-  peer_type: l2leaf
+  metadata:
+    peer: uplink_lan_l2leaf
+    peer_interface: Ethernet1 VLAN 100
+    peer_type: l2leaf
   eos_cli: comment yo
   _custom_key: custom_value
 - name: Ethernet2
@@ -47,16 +48,18 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.0.10.1/24
-  peer: uplink_lan_l2leaf
-  peer_interface: Ethernet1 VLAN 10
-  peer_type: l2leaf
+  metadata:
+    peer: uplink_lan_l2leaf
+    peer_interface: Ethernet1 VLAN 10
+    peer_type: l2leaf
   switchport:
     enabled: false
 - name: Ethernet1
   description: Comcast_999
   shutdown: false
   ip_address: 10.9.9.9/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

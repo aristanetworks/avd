@@ -23,9 +23,10 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  peer: DC1-L2LEAF1A
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-L2LEAF1A
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet8
   description: DC1-L2LEAF1B_Ethernet2
   shutdown: false
@@ -33,63 +34,70 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  peer: DC1-L2LEAF1B
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-L2LEAF1B
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet9
   description: DC1-L2LEAF3A_Ethernet2
   shutdown: false
   channel_group:
     id: 9
     mode: active
-  peer: DC1-L2LEAF3A
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-L2LEAF3A
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet13
   description: DC1-L2LEAF4A_Ethernet2
   shutdown: false
   channel_group:
     id: 1013
     mode: active
-  peer: DC1-L2LEAF4A
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-L2LEAF4A
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet14/1
   description: DC1.L2LEAF5A_Ethernet2
   shutdown: false
   channel_group:
     id: 141
     mode: active
-  peer: DC1.L2LEAF5A
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: DC1.L2LEAF5A
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet15/1
   description: DC1.L2LEAF5B_Ethernet2
   shutdown: false
   channel_group:
     id: 141
     mode: active
-  peer: DC1.L2LEAF5B
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: DC1.L2LEAF5B
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet31
   description: DC1.L2LEAF6B_Ethernet1
   shutdown: false
   channel_group:
     id: 30
     mode: active
-  peer: DC1.L2LEAF6B
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: DC1.L2LEAF6B
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet49/1
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet5/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.65/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet5/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet5/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet50/1
@@ -98,9 +106,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.67/31
-  peer: DC1-SPINE2
-  peer_interface: Ethernet1/5/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet1/5/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet51/1
@@ -109,9 +118,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.69/31
-  peer: DC1-SPINE2
-  peer_interface: Ethernet1/6/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet1/6/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet52/1
@@ -120,9 +130,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.71/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet6/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet6/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet53/1
@@ -131,9 +142,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.73/31
-  peer: DC1-SPINE3
-  peer_interface: Ethernet1/5/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet1/5/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet54/1
@@ -142,9 +154,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.75/31
-  peer: DC1-SPINE4
-  peer_interface: Ethernet5/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet5/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet55/1
@@ -153,9 +166,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.77/31
-  peer: DC1-SPINE4
-  peer_interface: Ethernet6/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet6/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet56/1
@@ -164,9 +178,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.79/31
-  peer: DC1-SPINE3
-  peer_interface: Ethernet1/6/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet1/6/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet24
@@ -175,7 +190,8 @@ ethernet_interfaces:
   ip_address: 10.0.0.5/30
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet10
@@ -184,51 +200,56 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
-  peer: server01_MLAG
-  peer_interface: Eth3
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_B
+  metadata:
+    peer: server01_MLAG
+    peer_interface: Eth3
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_B
 - name: Ethernet11
   description: server01_MTU_PROFILE_MLAG_Eth5
   shutdown: false
   channel_group:
     id: 11
     mode: active
-  peer: server01_MTU_PROFILE_MLAG
-  peer_interface: Eth5
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_A_MTU
+  metadata:
+    peer: server01_MTU_PROFILE_MLAG
+    peer_interface: Eth5
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_A_MTU
 - name: Ethernet12
   description: server01_MTU_ADAPTOR_MLAG_Eth7
   shutdown: false
   channel_group:
     id: 12
     mode: active
-  peer: server01_MTU_ADAPTOR_MLAG
-  peer_interface: Eth7
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: server01_MTU_ADAPTOR_MLAG
+    peer_interface: Eth7
+    peer_type: server
+    peer_key: servers
 - name: Ethernet20
   description: FIREWALL01_E1
   shutdown: false
   channel_group:
     id: 20
     mode: active
-  peer: FIREWALL01
-  peer_interface: E1
-  peer_type: firewall
-  peer_key: firewalls
-  port_profile: TENANT_A_B
+  metadata:
+    peer: FIREWALL01
+    peer_interface: E1
+    peer_type: firewall
+    peer_key: firewalls
+    port_profile: TENANT_A_B
 - name: Ethernet21
   description: ROUTER01_Eth1
   shutdown: false
-  peer: ROUTER01
-  peer_interface: Eth1
-  peer_type: router
-  peer_key: routers
-  port_profile: TENANT_A
+  metadata:
+    peer: ROUTER01
+    peer_interface: Eth1
+    peer_type: router
+    peer_key: routers
+    port_profile: TENANT_A
   switchport:
     enabled: true
     mode: access
@@ -239,11 +260,12 @@ ethernet_interfaces:
   channel_group:
     id: 26
     mode: active
-  peer: PHONE03_port_channel
-  peer_interface: Eth1
-  peer_type: phone
-  peer_key: phones
-  port_profile: PHONE_WITH_PC
+  metadata:
+    peer: PHONE03_port_channel
+    peer_interface: Eth1
+    peer_type: phone
+    peer_key: phones
+    port_profile: PHONE_WITH_PC
 hardware:
   speed_groups:
   - speed_group: '1'

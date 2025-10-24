@@ -10,26 +10,29 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: IPV6_NUMBERED_LEAF1b
-  peer_interface: Ethernet11
-  peer_type: mlag_peer
+  metadata:
+    peer: IPV6_NUMBERED_LEAF1b
+    peer_interface: Ethernet11
+    peer_type: mlag_peer
 - name: Ethernet12
   description: MLAG_IPV6_NUMBERED_LEAF1b_Ethernet12
   shutdown: false
   channel_group:
     id: 11
     mode: active
-  peer: IPV6_NUMBERED_LEAF1b
-  peer_interface: Ethernet12
-  peer_type: mlag_peer
+  metadata:
+    peer: IPV6_NUMBERED_LEAF1b
+    peer_interface: Ethernet12
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_IPV6_NUMBERED_SPINE1_Ethernet1
   shutdown: false
   mtu: 1500
   ipv6_address: 2001:db8:2::2/64
-  peer: IPV6_NUMBERED_SPINE1
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: IPV6_NUMBERED_SPINE1
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -37,9 +40,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_address: 2001:db8:2:1::2/64
-  peer: IPV6_NUMBERED_SPINE2
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: IPV6_NUMBERED_SPINE2
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 hostname: IPV6_NUMBERED_LEAF1a

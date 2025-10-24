@@ -10,27 +10,30 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: 'on'
-  peer: port-channel-interface-true
-  peer_interface: PCI1
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: port-channel-interface-true
+    peer_interface: PCI1
+    peer_type: server
+    peer_key: servers
 - name: Ethernet12
   description: MLAG_sflow-tests-leaf4_Ethernet12
   shutdown: false
   channel_group:
     id: 11
     mode: active
-  peer: sflow-tests-leaf4
-  peer_interface: Ethernet12
-  peer_type: mlag_peer
+  metadata:
+    peer: sflow-tests-leaf4
+    peer_interface: Ethernet12
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_sflow-tests-spine1_Ethernet5
   shutdown: false
   mtu: 9214
   ip_address: 10.254.2.17/31
-  peer: sflow-tests-spine1
-  peer_interface: Ethernet5
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine1
+    peer_interface: Ethernet5
+    peer_type: spine
   sflow:
     enable: true
   switchport:
@@ -40,9 +43,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.254.2.19/31
-  peer: sflow-tests-spine1
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine1
+    peer_interface: Ethernet6
+    peer_type: spine
   sflow:
     enable: true
   switchport:
@@ -53,38 +57,42 @@ ethernet_interfaces:
   channel_group:
     id: 16
     mode: active
-  peer: sflow-tests-l2-leaf1
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: sflow-tests-l2-leaf1
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet17
   description: L2_sflow-tests-l2-leaf2_Ethernet1
   shutdown: false
   channel_group:
     id: 17
     mode: active
-  peer: sflow-tests-l2-leaf2
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: sflow-tests-l2-leaf2
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet13
   description: SERVER_port-channel-interface-false_PCI11
   shutdown: false
   channel_group:
     id: 13
     mode: 'on'
-  peer: port-channel-interface-false
-  peer_interface: PCI11
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: port-channel-interface-false
+    peer_interface: PCI11
+    peer_type: server
+    peer_key: servers
 - name: Ethernet15
   description: SERVER_port-channel-interface-no-definition_PCI13
   shutdown: false
   channel_group:
     id: 15
     mode: 'on'
-  peer: port-channel-interface-no-definition
-  peer_interface: PCI13
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: port-channel-interface-no-definition
+    peer_interface: PCI13
+    peer_type: server
+    peer_key: servers
 hostname: sflow-tests-leaf3
 ip_igmp_snooping:
   globally_enabled: true

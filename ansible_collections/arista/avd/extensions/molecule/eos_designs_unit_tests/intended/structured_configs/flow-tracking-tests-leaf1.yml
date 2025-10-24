@@ -11,9 +11,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.254.2.1/31
-  peer: flow-tracking-tests-spine1
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: flow-tracking-tests-spine1
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -23,9 +24,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.254.2.3/31
-  peer: flow-tracking-tests-spine2
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: flow-tracking-tests-spine2
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet81
@@ -34,14 +36,16 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER-3
   ip_address: 10.1.55.0/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet82
   shutdown: false
   vrf: VRF1
   ip_address: 10.1.55.0/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet83
@@ -50,7 +54,8 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.1.55.0/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet84
@@ -59,7 +64,8 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.1.55.0/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet10
@@ -67,10 +73,11 @@ ethernet_interfaces:
   shutdown: false
   flow_tracker:
     hardware: FLOW-TRACKER-3
-  peer: single-interface-true
-  peer_interface: eth1
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: single-interface-true
+    peer_interface: eth1
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -78,10 +85,11 @@ ethernet_interfaces:
 - name: Ethernet11
   description: SERVER_single-interface-false_eth11
   shutdown: false
-  peer: single-interface-false
-  peer_interface: eth11
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: single-interface-false
+    peer_interface: eth11
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -91,10 +99,11 @@ ethernet_interfaces:
   shutdown: false
   flow_tracker:
     hardware: FLOW-TRACKER
-  peer: single-interface-no-definition
-  peer_interface: eth12
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: single-interface-no-definition
+    peer_interface: eth12
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -104,10 +113,11 @@ ethernet_interfaces:
   shutdown: false
   flow_tracker:
     hardware: FLOW-TRACKER
-  peer: single-interface-true4
-  peer_interface: eth1
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: single-interface-true4
+    peer_interface: eth1
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
     mode: access

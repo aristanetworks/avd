@@ -10,17 +10,19 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: HARDWARE_FEATURES_720XP
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
+  metadata:
+    peer: HARDWARE_FEATURES_720XP
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_HARDWARE_FEATURES_VEOS_LAB_Ethernet2
   shutdown: false
   mtu: 9194
   ip_address: 10.10.50.5/31
-  peer: HARDWARE_FEATURES_VEOS_LAB
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: HARDWARE_FEATURES_VEOS_LAB
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -28,9 +30,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9194
   ip_address: 10.10.50.8/31
-  peer: HARDWARE_FEATURES_7280R
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: HARDWARE_FEATURES_7280R
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4
@@ -38,9 +41,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9194
   ip_address: 10.10.30.1/31
-  peer: HARDWARE_FEATURES_VEOS_LAB
-  peer_interface: Ethernet4
-  peer_type: l3leaf
+  metadata:
+    peer: HARDWARE_FEATURES_VEOS_LAB
+    peer_interface: Ethernet4
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4.4
@@ -48,9 +52,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9194
   ip_address: 10.10.30.41/31
-  peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
-  peer_interface: Ethernet4.4
-  peer_type: l3leaf
+  metadata:
+    peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+    peer_interface: Ethernet4.4
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet9
@@ -58,26 +63,29 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9194
   ip_address: 10.10.60.0/31
-  peer: HARDWARE_FEATURES_720XP
-  peer_interface: Ethernet9
-  peer_type: l3leaf
+  metadata:
+    peer: HARDWARE_FEATURES_720XP
+    peer_interface: Ethernet9
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet5
   shutdown: false
   vrf: VRF10
   ip_address: 10.10.40.3/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet7
   description: SERVER_TEST_POE_ETH3_NO_POE
   shutdown: false
   l2_mtu: 1001
-  peer: TEST_POE
-  peer_interface: ETH3_NO_POE
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: TEST_POE
+    peer_interface: ETH3_NO_POE
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
 - name: Ethernet8
@@ -86,16 +94,18 @@ ethernet_interfaces:
   channel_group:
     id: 8
     mode: active
-  peer: TEST_MTU_MRU
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: TEST_MTU_MRU
+    peer_type: server
+    peer_key: servers
 - name: Ethernet6
   description: SERVER_TEST_INTERFACE_STORM_CONTROL_ETH13_NO_STORM_CONTROL
   shutdown: false
-  peer: TEST_INTERFACE_STORM_CONTROL
-  peer_interface: ETH13_NO_STORM_CONTROL
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: TEST_INTERFACE_STORM_CONTROL
+    peer_interface: ETH13_NO_STORM_CONTROL
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
 hardware_counters: null

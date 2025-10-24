@@ -9,7 +9,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9000
   ip_address: 10.10.10.10/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2
@@ -18,22 +19,25 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: some_peer
-  peer_interface: Ethernet2
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: some_peer
+    peer_interface: Ethernet2
+    peer_type: l3_port_channel_member
 - name: Ethernet3
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer_type: l3_port_channel_member
+  metadata:
+    peer_type: l3_port_channel_member
 - name: Ethernet4
   description: test
   shutdown: false
   mtu: 9000
   vrf: TESTING
   ip_address: 10.10.10.10/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet5
@@ -42,22 +46,25 @@ ethernet_interfaces:
   channel_group:
     id: 2
     mode: active
-  peer: some_peer
-  peer_interface: Ethernet5
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: some_peer
+    peer_interface: Ethernet5
+    peer_type: l3_port_channel_member
 - name: Ethernet6
   shutdown: false
   channel_group:
     id: 2
     mode: active
-  peer_type: l3_port_channel_member
+  metadata:
+    peer_type: l3_port_channel_member
 - name: Ethernet7
   description: test
   shutdown: false
   mtu: 9000
   vrf: VRF_STATIC_ROUTE_ON_L3_INTERFACE
   ip_address: 10.10.10.10/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet8
@@ -67,9 +74,10 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: some_peer
-  peer_interface: Ethernet8
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: some_peer
+    peer_interface: Ethernet8
+    peer_type: l3_port_channel_member
 - name: Ethernet9
   description: some_peer_Ethernet9
   shutdown: false
@@ -77,9 +85,10 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: some_peer
-  peer_interface: Ethernet9
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: some_peer
+    peer_interface: Ethernet9
+    peer_type: l3_port_channel_member
 hostname: network-services-static-routes
 ip_igmp_snooping:
   globally_enabled: true
@@ -115,16 +124,18 @@ port_channel_interfaces:
 - name: Port-Channel1
   description: Po1
   shutdown: false
-  peer_interface: Po1
-  peer_type: l3_port_channel
+  metadata:
+    peer_interface: Po1
+    peer_type: l3_port_channel
   switchport:
     enabled: false
 - name: Port-Channel2
   description: Po2
   shutdown: false
   vrf: TESTING
-  peer_interface: Po2
-  peer_type: l3_port_channel
+  metadata:
+    peer_interface: Po2
+    peer_type: l3_port_channel
   switchport:
     enabled: false
 - name: Port-Channel3
@@ -132,9 +143,10 @@ port_channel_interfaces:
   shutdown: false
   vrf: VRF_STATIC_ROUTE_ON_L3_PORT_CHANNEL
   mtu: 1555
-  peer: some_peer
-  peer_interface: Po3
-  peer_type: l3_port_channel
+  metadata:
+    peer: some_peer
+    peer_interface: Po3
+    peer_type: l3_port_channel
   switchport:
     enabled: false
 prefix_lists:

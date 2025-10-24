@@ -19,9 +19,10 @@ ethernet_interfaces:
   mtu: 9214
   ip_address: 172.16.255.12/31
   dhcp_server_ipv4: true
-  peer: inband-ztp-without-ntp-leaf
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: inband-ztp-without-ntp-leaf
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: inband-ztp-without-ntp-spine

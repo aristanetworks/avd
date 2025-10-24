@@ -19,9 +19,10 @@ ethernet_interfaces:
   - id: 2
     hash_algorithm: sha512
     key: pWGuZ4QaDATcfTOKCkm1p2Rq2A4O9j5j
-  peer: DC1-SPINE4
-  peer_interface: Ethernet17
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet17
+    peer_type: spine
   switchport:
     enabled: false
 hostname: CV-TOPOLOGY-LEAF3B

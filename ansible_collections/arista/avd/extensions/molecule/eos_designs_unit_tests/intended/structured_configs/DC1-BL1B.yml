@@ -22,9 +22,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.193/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet23
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet23
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -33,9 +34,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.195/31
-  peer: DC1-SPINE2
-  peer_interface: Ethernet23
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet23
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -44,9 +46,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.197/31
-  peer: DC1-SPINE3
-  peer_interface: Ethernet23
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet23
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet4
@@ -55,9 +58,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.199/31
-  peer: DC1-SPINE4
-  peer_interface: Ethernet23
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet23
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet8
@@ -66,7 +70,8 @@ ethernet_interfaces:
   mtu: 9000
   vrf: Tenant_A_L3_VRF_Zone
   ip_address: 10.10.30.10/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet9
@@ -75,7 +80,8 @@ ethernet_interfaces:
   mtu: 9000
   vrf: Tenant_A_L3_VRF_Zone
   ip_address: 10.10.40.20/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet10
@@ -84,7 +90,8 @@ ethernet_interfaces:
   mtu: 9000
   vrf: Tenant_A_L3_VRF_Zone
   ip_address: 10.10.40.20/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet11
@@ -93,7 +100,8 @@ ethernet_interfaces:
   mtu: 9000
   vrf: Tenant_A_L3_VRF_Zone
   ip_address: 10.10.40.20/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet12
@@ -104,7 +112,8 @@ ethernet_interfaces:
   ip_address: 10.10.50.10/24
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet12
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet12
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet13.10
@@ -117,19 +126,22 @@ ethernet_interfaces:
   ip_address: 10.10.50.20/24
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet13.10
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet7
   description: test
   shutdown: false
   mtu: 9000
   vrf: Tenant_A_WAN_Zone
   ip_address: 10.10.20.20/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet13
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet4000
@@ -137,9 +149,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.1.2.3/12
-  peer: MY-own-peer
-  peer_interface: Ethernet123
-  peer_type: my_precious
+  metadata:
+    peer: MY-own-peer
+    peer_interface: Ethernet123
+    peer_type: my_precious
   switchport:
     enabled: false
 hardware:

@@ -30,14 +30,16 @@ ethernet_interfaces:
   description: ATT_666
   shutdown: false
   ip_address: 192.168.1.105/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet1/2
   description: ATT_777
   shutdown: false
   ip_address: 192.168.2.205/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

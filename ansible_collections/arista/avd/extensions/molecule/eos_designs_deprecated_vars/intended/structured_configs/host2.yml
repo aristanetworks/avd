@@ -15,9 +15,10 @@ ethernet_interfaces:
   isis_circuit_type: level-2
   mpls:
     ip: true
-  peer: host1
-  peer_interface: Ethernet42
-  peer_type: l3leaf
+  metadata:
+    peer: host1
+    peer_interface: Ethernet42
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: host2

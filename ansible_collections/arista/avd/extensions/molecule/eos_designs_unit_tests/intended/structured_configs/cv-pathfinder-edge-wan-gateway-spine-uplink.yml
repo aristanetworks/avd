@@ -89,9 +89,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.18.0.197/31
-  peer: cv-pathfinder-spine1
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: cv-pathfinder-spine1
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet1
@@ -99,7 +100,8 @@ ethernet_interfaces:
   shutdown: false
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

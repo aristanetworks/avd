@@ -22,9 +22,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.1/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet1/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet1/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet28
@@ -33,9 +34,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.3/31
-  peer: DC1-SPINE2
-  peer_interface: Ethernet1/1/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet1/1/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet29
@@ -44,9 +46,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.5/31
-  peer: DC1-SPINE3
-  peer_interface: Ethernet1/1/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet1/1/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet30
@@ -55,9 +58,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.7/31
-  peer: DC1-SPINE4
-  peer_interface: Ethernet1/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet1/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet6
@@ -68,11 +72,12 @@ ethernet_interfaces:
   spanning_tree_bpdufilter: 'False'
   spanning_tree_bpduguard: 'False'
   spanning_tree_portfast: edge
-  peer: server02_SINGLE_NODE_TRUNK
-  peer_interface: Eth1
-  peer_type: server
-  peer_key: servers
-  port_profile: ALL_WITH_SECURITY
+  metadata:
+    peer: server02_SINGLE_NODE_TRUNK
+    peer_interface: Eth1
+    peer_type: server
+    peer_key: servers
+    port_profile: ALL_WITH_SECURITY
   switchport:
     enabled: true
     mode: trunk
@@ -81,11 +86,12 @@ ethernet_interfaces:
 - name: Ethernet7
   description: server02_SINGLE_NODE_Eth1
   shutdown: false
-  peer: server02_SINGLE_NODE
-  peer_interface: Eth1
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_A
+  metadata:
+    peer: server02_SINGLE_NODE
+    peer_interface: Eth1
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_A
   switchport:
     enabled: true
     mode: access
@@ -93,10 +99,11 @@ ethernet_interfaces:
 - name: Ethernet8
   description: PHONE01_untagged_Eth0
   shutdown: false
-  peer: PHONE01_untagged
-  peer_interface: Eth0
-  peer_type: phone
-  peer_key: phones
+  metadata:
+    peer: PHONE01_untagged
+    peer_interface: Eth0
+    peer_type: phone
+    peer_key: phones
   switchport:
     enabled: true
     mode: trunk phone
@@ -108,10 +115,11 @@ ethernet_interfaces:
 - name: Ethernet9
   description: PHONE02_tagged_Eth0
   shutdown: false
-  peer: PHONE02_tagged
-  peer_interface: Eth0
-  peer_type: phone
-  peer_key: phones
+  metadata:
+    peer: PHONE02_tagged
+    peer_interface: Eth0
+    peer_type: phone
+    peer_key: phones
   switchport:
     enabled: true
     mode: trunk phone

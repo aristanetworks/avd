@@ -25,9 +25,10 @@ ethernet_interfaces:
   service_policy:
     qos:
       input: TEST_POLICY
-  peer: peer1
-  peer_interface: ethernet1
-  peer_type: other
+  metadata:
+    peer: peer1
+    peer_interface: ethernet1
+    peer_type: other
   switchport:
     enabled: false
   eos_cli: '! TEST RAW_EOS_CLI
@@ -39,9 +40,10 @@ ethernet_interfaces:
   mtu: 9214
   ip_address: 192.168.0.2/31
   ipv6_enable: true
-  peer: peer2
-  peer_interface: ethernet2
-  peer_type: other
+  metadata:
+    peer: peer2
+    peer_interface: ethernet2
+    peer_type: other
   switchport:
     enabled: false
 - name: ethernet3
@@ -49,9 +51,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.4/31
-  peer: peer3
-  peer_interface: ethernet3
-  peer_type: other
+  metadata:
+    peer: peer3
+    peer_interface: ethernet3
+    peer_type: other
   switchport:
     enabled: false
 - name: ethernet4
@@ -59,9 +62,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.6/31
-  peer: peer4
-  peer_interface: ethernet4
-  peer_type: other
+  metadata:
+    peer: peer4
+    peer_interface: ethernet4
+    peer_type: other
   switchport:
     enabled: false
 - name: Ethernet5
@@ -70,72 +74,80 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  peer: peer5
-  peer_interface: Ethernet5
-  peer_type: other
+  metadata:
+    peer: peer5
+    peer_interface: Ethernet5
+    peer_type: other
 - name: Ethernet6
   description: P2P_peer5_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: peer5
-  peer_interface: Ethernet6
-  peer_type: other
+  metadata:
+    peer: peer5
+    peer_interface: Ethernet6
+    peer_type: other
 - name: Ethernet7
   description: P2P_peer6_Ethernet7
   shutdown: false
   channel_group:
     id: 7
     mode: active
-  peer: peer6
-  peer_interface: Ethernet7
-  peer_type: other
+  metadata:
+    peer: peer6
+    peer_interface: Ethernet7
+    peer_type: other
 - name: Ethernet8
   description: P2P_peer6_Ethernet8
   shutdown: false
   channel_group:
     id: 7
     mode: active
-  peer: peer6
-  peer_interface: Ethernet8
-  peer_type: other
+  metadata:
+    peer: peer6
+    peer_interface: Ethernet8
+    peer_type: other
 - name: Ethernet9
   description: P2P_peer7_Ethernet9
   shutdown: false
   channel_group:
     id: 9
     mode: active
-  peer: peer7
-  peer_interface: Ethernet9
-  peer_type: other
+  metadata:
+    peer: peer7
+    peer_interface: Ethernet9
+    peer_type: other
 - name: Ethernet10
   description: P2P_peer7_Ethernet10
   shutdown: false
   channel_group:
     id: 9
     mode: active
-  peer: peer7
-  peer_interface: Ethernet10
-  peer_type: other
+  metadata:
+    peer: peer7
+    peer_interface: Ethernet10
+    peer_type: other
 - name: Ethernet11
   description: Description set via ethernet_structured_config(l3_edge)
   shutdown: false
   channel_group:
     id: 11
     mode: active
-  peer: peer7
-  peer_interface: Ethernet11
-  peer_type: other
+  metadata:
+    peer: peer7
+    peer_interface: Ethernet11
+    peer_type: other
 - name: Ethernet12
   description: Description set via ethernet_structured_config(l3_edge)
   shutdown: false
   channel_group:
     id: 11
     mode: active
-  peer: peer7
-  peer_interface: Ethernet12
-  peer_type: other
+  metadata:
+    peer: peer7
+    peer_interface: Ethernet12
+    peer_type: other
 hostname: l3_edge_bgp
 ip_routing: true
 loopback_interfaces:
@@ -152,9 +164,10 @@ port_channel_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.8/31
-  peer: peer5
-  peer_interface: Port-Channel5
-  peer_type: other
+  metadata:
+    peer: peer5
+    peer_interface: Port-Channel5
+    peer_type: other
   switchport:
     enabled: false
 - name: Port-Channel7
@@ -162,9 +175,10 @@ port_channel_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.10/31
-  peer: peer6
-  peer_interface: Port-Channel7
-  peer_type: other
+  metadata:
+    peer: peer6
+    peer_interface: Port-Channel7
+    peer_type: other
   switchport:
     enabled: false
 - name: Port-Channel9
@@ -172,9 +186,10 @@ port_channel_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.12/31
-  peer: peer7
-  peer_interface: Port-Channel9
-  peer_type: other
+  metadata:
+    peer: peer7
+    peer_interface: Port-Channel9
+    peer_type: other
   switchport:
     enabled: false
 - name: Port-Channel11
@@ -182,9 +197,10 @@ port_channel_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.14/31
-  peer: peer7
-  peer_interface: Port-Channel11
-  peer_type: other
+  metadata:
+    peer: peer7
+    peer_interface: Port-Channel11
+    peer_type: other
   switchport:
     enabled: false
 prefix_lists:

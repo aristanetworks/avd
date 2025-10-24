@@ -10,9 +10,10 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: override_uplink_type-d
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: override_uplink_type-d
+    peer_interface: Ethernet1
+    peer_type: spine
 hostname: override_uplink_type-u
 ip_routing: true
 loopback_interfaces:

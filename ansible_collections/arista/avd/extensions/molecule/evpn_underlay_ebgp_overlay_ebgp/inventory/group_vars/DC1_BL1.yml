@@ -7,9 +7,10 @@ my_dci_ethernet_interfaces:
     switchport:
       enabled: false
     mtu: 1500
-    peer: MY-own-peer
-    peer_interface: Ethernet123
-    peer_type: my_precious
+    metadata:
+      peer: MY-own-peer
+      peer_interface: Ethernet123
+      peer_type: my_precious
 
 # Override the default structured config (override_ is a custom_structured_configuration_prefix set in DC1_FABRIC.yml)
 override_ntp: null

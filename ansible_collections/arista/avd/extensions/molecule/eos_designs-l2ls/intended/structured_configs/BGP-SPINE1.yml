@@ -10,44 +10,49 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: BGP-SPINE2
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
+  metadata:
+    peer: BGP-SPINE2
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
 - name: Ethernet4
   description: MLAG_BGP-SPINE2_Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: BGP-SPINE2
-  peer_interface: Ethernet4
-  peer_type: mlag_peer
+  metadata:
+    peer: BGP-SPINE2
+    peer_interface: Ethernet4
+    peer_type: mlag_peer
 - name: Ethernet1
   description: L2_BGP-LEAF1_Ethernet1
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: BGP-LEAF1
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: BGP-LEAF1
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet2
   description: L2_BGP-LEAF2_Ethernet1
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: BGP-LEAF2
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: BGP-LEAF2
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet5
   description: P2P_DUMMY-CORE_Ethernet1/3
   shutdown: false
   mtu: 9214
   ip_address: 192.168.253.4/31
-  peer: DUMMY-CORE
-  peer_interface: Ethernet1/3
-  peer_type: other
+  metadata:
+    peer: DUMMY-CORE
+    peer_interface: Ethernet1/3
+    peer_type: other
   switchport:
     enabled: false
 - name: Ethernet6
@@ -55,9 +60,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.253.8/31
-  peer: DUMMY-CORE
-  peer_interface: Ethernet1/5
-  peer_type: other
+  metadata:
+    peer: DUMMY-CORE
+    peer_interface: Ethernet1/5
+    peer_type: other
   switchport:
     enabled: false
 - name: Ethernet7
@@ -66,22 +72,25 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  peer: DUMMY-CORE
-  peer_interface: Ethernet1/7
-  peer_type: other
+  metadata:
+    peer: DUMMY-CORE
+    peer_interface: Ethernet1/7
+    peer_type: other
 - name: Ethernet8
   description: P2P_DUMMY-CORE_Ethernet1/9
   shutdown: false
   channel_group:
     id: 8
     mode: active
-  peer: DUMMY-CORE
-  peer_interface: Ethernet1/9
-  peer_type: other
+  metadata:
+    peer: DUMMY-CORE
+    peer_interface: Ethernet1/9
+    peer_type: other
 - name: Ethernet9
   shutdown: false
   ip_address: 10.0.1.0/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet18.100
@@ -89,36 +98,41 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 100
   ip_address: 10.0.1.4/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet18.101
   shutdown: false
   vrf: New_VRF
   encapsulation_dot1q:
     vlan: 101
   ip_address: 10.0.1.8/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet18
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet14
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth0
   shutdown: false
-  peer: CAMPUS_EGRESS_FW_1
-  peer_interface: Eth0
-  peer_type: firewall
-  peer_key: firewalls
+  metadata:
+    peer: CAMPUS_EGRESS_FW_1
+    peer_interface: Eth0
+    peer_type: firewall
+    peer_key: firewalls
   switchport:
     enabled: true
 - name: Ethernet15
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth2
   shutdown: false
-  peer: CAMPUS_EGRESS_FW_1
-  peer_interface: Eth2
-  peer_type: firewall
-  peer_key: firewalls
-  port_profile: campus_eggress
+  metadata:
+    peer: CAMPUS_EGRESS_FW_1
+    peer_interface: Eth2
+    peer_type: firewall
+    peer_key: firewalls
+    port_profile: campus_eggress
   switchport:
     enabled: true
 - name: Ethernet16
@@ -127,32 +141,36 @@ ethernet_interfaces:
   channel_group:
     id: 16
     mode: active
-  peer: CAMPUS_EGRESS_FW_1
-  peer_interface: Eth4
-  peer_type: firewall
-  peer_key: firewalls
+  metadata:
+    peer: CAMPUS_EGRESS_FW_1
+    peer_interface: Eth4
+    peer_type: firewall
+    peer_key: firewalls
 - name: Ethernet17
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth6
   shutdown: false
   channel_group:
     id: 17
     mode: active
-  peer: CAMPUS_EGRESS_FW_1
-  peer_interface: Eth6
-  peer_type: firewall
-  peer_key: firewalls
-  port_profile: campus_eggress
+  metadata:
+    peer: CAMPUS_EGRESS_FW_1
+    peer_interface: Eth6
+    peer_type: firewall
+    peer_key: firewalls
+    port_profile: campus_eggress
 - name: Ethernet10
   shutdown: false
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   switchport:
     enabled: true
 - name: Ethernet11
   shutdown: false
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: campus_eggress
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: campus_eggress
   switchport:
     enabled: true
 - name: Ethernet12
@@ -160,16 +178,18 @@ ethernet_interfaces:
   channel_group:
     id: 12
     mode: active
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
 - name: Ethernet13
   shutdown: false
   channel_group:
     id: 13
     mode: active
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: campus_eggress
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: campus_eggress
 hostname: BGP-SPINE1
 ip_igmp_snooping:
   globally_enabled: true
@@ -398,9 +418,10 @@ port_channel_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.253.12/31
-  peer: DUMMY-CORE
-  peer_interface: Port-Channel17
-  peer_type: other
+  metadata:
+    peer: DUMMY-CORE
+    peer_interface: Port-Channel17
+    peer_type: other
   switchport:
     enabled: false
 - name: Port-Channel8
@@ -408,9 +429,10 @@ port_channel_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.253.16/31
-  peer: DUMMY-CORE
-  peer_interface: Port-Channel19
-  peer_type: other
+  metadata:
+    peer: DUMMY-CORE
+    peer_interface: Port-Channel19
+    peer_type: other
   switchport:
     enabled: false
 - name: Port-Channel16
