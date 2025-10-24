@@ -19,18 +19,20 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: inband-mgmt-parent-dualstack1
-  peer_interface: Ethernet25
-  peer_type: l3leaf
+  metadata:
+    peer: inband-mgmt-parent-dualstack1
+    peer_interface: Ethernet25
+    peer_type: l3leaf
 - name: Ethernet2
   description: INBAND-MGMT-PARENT-DUALSTACK2_Ethernet25
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: inband-mgmt-parent-dualstack2
-  peer_interface: Ethernet25
-  peer_type: l3leaf
+  metadata:
+    peer: inband-mgmt-parent-dualstack2
+    peer_interface: Ethernet25
+    peer_type: l3leaf
 hostname: inband-mgmt-dualstack-ips
 ip_igmp_snooping:
   globally_enabled: true

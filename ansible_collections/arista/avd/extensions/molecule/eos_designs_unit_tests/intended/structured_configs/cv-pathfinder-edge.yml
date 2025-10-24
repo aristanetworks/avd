@@ -90,9 +90,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.1/31
-  peer: site-ha-disabled-leaf
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-disabled-leaf
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet52.1000
@@ -103,9 +104,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1000
   ip_address: 172.17.0.1/31
-  peer: site-ha-disabled-leaf
-  peer_interface: Ethernet1.1000
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-disabled-leaf
+    peer_interface: Ethernet1.1000
+    peer_type: l3leaf
 - name: Ethernet52.142
   description: P2P_site-ha-disabled-leaf_Ethernet1.142_VRF_PROD
   shutdown: false
@@ -114,9 +116,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 142
   ip_address: 172.17.0.1/31
-  peer: site-ha-disabled-leaf
-  peer_interface: Ethernet1.142
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-disabled-leaf
+    peer_interface: Ethernet1.142
+    peer_type: l3leaf
 - name: Ethernet52.666
   description: P2P_site-ha-disabled-leaf_Ethernet1.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
@@ -125,9 +128,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 666
   ip_address: 172.17.0.1/31
-  peer: site-ha-disabled-leaf
-  peer_interface: Ethernet1.666
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-disabled-leaf
+    peer_interface: Ethernet1.666
+    peer_type: l3leaf
 - name: Ethernet1
   description: ATT_666_peer3_Ethernet42
   shutdown: false
@@ -135,9 +139,10 @@ ethernet_interfaces:
     hardware: FLOW-TRACKER
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer: peer3
-  peer_interface: Ethernet42
-  peer_type: l3_interface
+  metadata:
+    peer: peer3
+    peer_interface: Ethernet42
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2
@@ -146,7 +151,8 @@ ethernet_interfaces:
   ip_address: 172.15.5.5/31
   ip_nat:
     service_profile: NAT-IE-DIRECT
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2/1
@@ -155,14 +161,16 @@ ethernet_interfaces:
   ip_address: 172.15.5.6/31
   ip_nat:
     service_profile: NAT-IE-DIRECT
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet3
   description: Comcast-5G_AF830
   shutdown: false
   ip_address: 172.20.20.20/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

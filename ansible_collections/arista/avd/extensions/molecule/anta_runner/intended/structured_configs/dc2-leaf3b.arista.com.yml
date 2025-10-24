@@ -10,26 +10,29 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: dc2-leaf3a.arista.com
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
+  metadata:
+    peer: dc2-leaf3a.arista.com
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
 - name: Ethernet4
   description: MLAG_dc2-leaf3a.arista.com_Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: dc2-leaf3a.arista.com
-  peer_interface: Ethernet4
-  peer_type: mlag_peer
+  metadata:
+    peer: dc2-leaf3a.arista.com
+    peer_interface: Ethernet4
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_dc2-spine1_Ethernet6
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.125/31
-  peer: dc2-spine1
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: dc2-spine1
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -37,9 +40,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.127/31
-  peer: dc2-spine2
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: dc2-spine2
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet11
@@ -47,44 +51,50 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: dc2-leaf3-fw1
-  peer_interface: e1
-  peer_type: firewall
+  metadata:
+    peer: dc2-leaf3-fw1
+    peer_interface: e1
+    peer_type: firewall
 - name: Ethernet16
   description: Test_dhcp_interface_connectivity
   shutdown: true
   ip_address: dhcp
-  peer: dc2-leaf3a.arista.com
-  peer_interface: Ethernet16
+  metadata:
+    peer: dc2-leaf3a.arista.com
+    peer_interface: Ethernet16
   switchport:
     enabled: false
 - name: Ethernet17
   description: Test_ip_unnumbered_interface_connectivity
   ip_address: unnumbered Loopback0
-  peer: dc2-leaf3a.arista.com
-  peer_interface: Ethernet17
+  metadata:
+    peer: dc2-leaf3a.arista.com
+    peer_interface: Ethernet17
   switchport:
     enabled: false
 - name: Ethernet18
   description: Test_peer_dhcp_interface_connectivity
   ip_address: dhcp
-  peer: dc2-leaf3a.arista.com
-  peer_interface: Ethernet18
+  metadata:
+    peer: dc2-leaf3a.arista.com
+    peer_interface: Ethernet18
   switchport:
     enabled: false
 - name: Ethernet19
   description: Test_peer_ip_unnumbered_interface_connectivity
   ip_address: unnumbered Loopback0
-  peer: dc2-leaf3a.arista.com
-  peer_interface: Ethernet19
+  metadata:
+    peer: dc2-leaf3a.arista.com
+    peer_interface: Ethernet19
   switchport:
     enabled: false
 - name: Ethernet20
   description: Test_peer_shutdown_interface_connectivity
   shutdown: true
   ip_address: 10.19.20.1/31
-  peer: dc2-leaf3a.arista.com
-  peer_interface: Ethernet20
+  metadata:
+    peer: dc2-leaf3a.arista.com
+    peer_interface: Ethernet20
   switchport:
     enabled: false
 hostname: dc2-leaf3b.arista.com

@@ -10,18 +10,20 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  peer: MLAG_SAME_SUBNET_L3LEAF2B
-  peer_interface: Ethernet5
-  peer_type: mlag_peer
+  metadata:
+    peer: MLAG_SAME_SUBNET_L3LEAF2B
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
 - name: Ethernet6
   description: MLAG_MLAG_SAME_SUBNET_L3LEAF2B_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: MLAG_SAME_SUBNET_L3LEAF2B
-  peer_interface: Ethernet6
-  peer_type: mlag_peer
+  metadata:
+    peer: MLAG_SAME_SUBNET_L3LEAF2B
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
 hostname: MLAG_SAME_SUBNET_L3LEAF2A
 ip_igmp_snooping:
   globally_enabled: true

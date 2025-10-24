@@ -12,9 +12,10 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: DC2-POD1-LEAF2A
-  peer_interface: Ethernet3
-  peer_type: l3leaf
+  metadata:
+    peer: DC2-POD1-LEAF2A
+    peer_interface: Ethernet3
+    peer_type: l3leaf
 hostname: DC2-POD1-L2LEAF2A
 ip_igmp_snooping:
   globally_enabled: true

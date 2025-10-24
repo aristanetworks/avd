@@ -10,9 +10,10 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
-  peer: bgp-from-network-services-1
-  peer_interface: Ethernet10
-  peer_type: mlag_peer
+  metadata:
+    peer: bgp-from-network-services-1
+    peer_interface: Ethernet10
+    peer_type: mlag_peer
 hostname: bgp-from-network-services-2
 ip_igmp_snooping:
   globally_enabled: true

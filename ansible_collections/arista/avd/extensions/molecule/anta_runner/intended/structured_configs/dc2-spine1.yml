@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.104/31
-  peer: dc2-leaf1a
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: dc2-leaf1a
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -19,9 +20,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.108/31
-  peer: dc2-leaf1b
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: dc2-leaf1b
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3
@@ -29,9 +31,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.112/31
-  peer: dc2-leaf2a
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: dc2-leaf2a
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4
@@ -39,9 +42,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.116/31
-  peer: dc2-leaf2b
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: dc2-leaf2b
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet5
@@ -49,9 +53,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.120/31
-  peer: dc2-leaf3a.arista.com
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: dc2-leaf3a.arista.com
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet6
@@ -59,9 +64,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.124/31
-  peer: dc2-leaf3b.arista.com
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: dc2-leaf3b.arista.com
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: dc2-spine1
