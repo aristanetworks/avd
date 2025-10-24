@@ -66098,6 +66098,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ipv6_attached_host_route_export": {"type": Ipv6AttachedHostRouteExport},
             "bfd": {"type": Bfd},
             "service_policy": {"type": ServicePolicy},
+            "traffic_policy_input": {"type": str},
+            "traffic_policy_output": {"type": str},
             "ntp_serve": {"type": bool},
             "pvlan_mapping": {"type": str},
             "tenant": {"type": str},
@@ -66242,6 +66244,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         service_policy: ServicePolicy
         """Subclass of AvdModel."""
+        traffic_policy_input: str | None
+        """Ingress traffic-policy."""
+        traffic_policy_output: str | None
+        """Egress traffic-policy."""
         ntp_serve: bool | None
         """Enable/disable serving NTP to clients."""
         pvlan_mapping: str | None
@@ -66329,6 +66335,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_attached_host_route_export: Ipv6AttachedHostRouteExport | UndefinedType = Undefined,
                 bfd: Bfd | UndefinedType = Undefined,
                 service_policy: ServicePolicy | UndefinedType = Undefined,
+                traffic_policy_input: str | None | UndefinedType = Undefined,
+                traffic_policy_output: str | None | UndefinedType = Undefined,
                 ntp_serve: bool | None | UndefinedType = Undefined,
                 pvlan_mapping: str | None | UndefinedType = Undefined,
                 tenant: str | None | UndefinedType = Undefined,
@@ -66433,6 +66441,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv6_attached_host_route_export: Subclass of AvdModel.
                     bfd: Subclass of AvdModel.
                     service_policy: Subclass of AvdModel.
+                    traffic_policy_input: Ingress traffic-policy.
+                    traffic_policy_output: Egress traffic-policy.
                     ntp_serve: Enable/disable serving NTP to clients.
                     pvlan_mapping: List of VLANs as string.
                     tenant: Key only used for documentation or validation purposes.
