@@ -23,20 +23,17 @@ ELEMENT_TYPE_TO_STRING_MAP = {
 
 @dataclass(frozen=True)
 class CVTag:
-    """
-    Represent the input model for a CloudVision Tag.
-
-    Attributes:
-        element_type: The type of network element the tag applies to.
-        label: The label of the tag.
-        value: The value of the tag.
-    """
+    """Represent the input model for a CloudVision Tag."""
 
     element_type: Literal["device", "interface", "unspecified"]
+    """The type of network element the tag applies to."""
     label: str
+    """The label of the tag."""
     value: str
+    """The value of the tag."""
 
-    def to_element_type(self) -> ElementType:
+    def get_element_type(self) -> ElementType:
+        """Get the API ElementType object from this CVTag instance."""
         return STRING_TO_ELEMENT_TYPE_MAP.get(self.element_type, ElementType.UNSPECIFIED)
 
     @classmethod
@@ -53,24 +50,21 @@ class CVTag:
 
 @dataclass(frozen=True)
 class CVTagAssignment:
-    """
-    Represent the input model for a CloudVision Tag Assignment.
-
-    Attributes:
-        element_type: The type of network element the tag is assigned to.
-        label: The label of the tag.
-        value: The value of the tag.
-        device_id: The serial number of the device for the assignment.
-        interface_id: The name of the interface for interface assignments.
-    """
+    """Represent the input model for a CloudVision Tag Assignment."""
 
     element_type: Literal["device", "interface", "unspecified"]
+    """The type of network element the tag is assigned to."""
     label: str
+    """The label of the tag."""
     value: str
+    """The value of the tag."""
     device_id: str
+    """The serial number of the device for the assignment."""
     interface_id: str | None = None
+    """The name of the interface for interface assignments."""
 
-    def to_element_type(self) -> ElementType:
+    def get_element_type(self) -> ElementType:
+        """Get the API ElementType object from this CVTagAssignment instance."""
         return STRING_TO_ELEMENT_TYPE_MAP.get(self.element_type, ElementType.UNSPECIFIED)
 
     @classmethod

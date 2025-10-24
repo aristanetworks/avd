@@ -63,7 +63,7 @@ async def deploy_tags_to_cv(
     LOGGER.info("deploy_tags_to_cv: Getting existing tags")
     existing_tags = {CVTag.from_api(tag) for tag in await cv_client.get_tags(workspace_id=workspace.id, element_type=tag_type, creator_type="user")}
     LOGGER.info("deploy_tags_to_cv: Got %s tags", len(existing_tags))
-    desired_tags = {tag.to_cv_tag() for tag in todo_tags}
+    desired_tags = {tag.as_cv_tag() for tag in todo_tags}
     tags_to_add = desired_tags.difference(existing_tags)
     if tags_to_add:
         LOGGER.info("deploy_tags_to_cv: Creating %s tags", len(tags_to_add))
@@ -80,7 +80,7 @@ async def deploy_tags_to_cv(
         for tag_assignment in await cv_client.get_tag_assignments(workspace_id=workspace.id, element_type=tag_type, creator_type="user")
     }
     LOGGER.info("deploy_tags_to_cv: Got %s tag assignments", len(existing_assignments))
-    desired_assignments = {cv_tag_assignment for assignment in todo_assignments if (cv_tag_assignment := assignment.to_cv_tag_assignment()) is not None}
+    desired_assignments = {cv_tag_assignment for assignment in todo_assignments if (cv_tag_assignment := assignment.as_cv_tag_assignment()) is not None}
     assignments_to_add = desired_assignments.difference(existing_assignments)
     if assignments_to_add:
         LOGGER.info("deploy_tags_to_cv: Creating %s tag assignments", len(assignments_to_add))

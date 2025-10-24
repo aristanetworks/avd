@@ -55,7 +55,6 @@ class TagMixin(Protocol):
     """Only to be used as mixin on CVClient class."""
 
     tags_api_version: Literal["v2"] = "v2"
-    # TODO: Ensure to document that we only support v2 of this api - hence only the CV versions supporting that.
 
     @GRPCRequestHandler()
     async def get_tags(
@@ -144,7 +143,7 @@ class TagMixin(Protocol):
                 TagConfig(
                     key=TagKey(
                         workspace_id=workspace_id,
-                        element_type=tag.to_element_type(),
+                        element_type=tag.get_element_type(),
                         label=tag.label,
                         value=tag.value,
                     ),
@@ -243,7 +242,7 @@ class TagMixin(Protocol):
                 TagAssignmentConfig(
                     key=TagAssignmentKey(
                         workspace_id=workspace_id,
-                        element_type=tag_assignment.to_element_type(),
+                        element_type=tag_assignment.get_element_type(),
                         label=tag_assignment.label,
                         value=tag_assignment.value,
                         device_id=tag_assignment.device_id,
@@ -281,7 +280,7 @@ class TagMixin(Protocol):
                 TagAssignmentConfig(
                     key=TagAssignmentKey(
                         workspace_id=workspace_id,
-                        element_type=tag_assignment.to_element_type(),
+                        element_type=tag_assignment.get_element_type(),
                         label=tag_assignment.label,
                         value=tag_assignment.value,
                         device_id=tag_assignment.device_id,

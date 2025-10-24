@@ -65,7 +65,7 @@ class CVDeviceTag:
     value: str
     device: CVDevice | None = None
 
-    def to_cv_tag(self) -> CVTag:
+    def as_cv_tag(self) -> CVTag:
         """Return the CVTag model for this tag."""
         return CVTag(
             element_type="device",
@@ -73,7 +73,7 @@ class CVDeviceTag:
             value=self.value,
         )
 
-    def to_cv_tag_assignment(self) -> CVTagAssignment | None:
+    def as_cv_tag_assignment(self) -> CVTagAssignment | None:
         """Return the CVTagAssignment model for this tag."""
         if self.device is None or self.device.serial_number is None:
             return None
@@ -95,7 +95,7 @@ class CVInterfaceTag:
     interface: str | None = None
     """Must be set if device is set"""
 
-    def to_cv_tag(self) -> CVTag:
+    def as_cv_tag(self) -> CVTag:
         """Return the CVTag model for this tag."""
         return CVTag(
             element_type="interface",
@@ -103,7 +103,7 @@ class CVInterfaceTag:
             value=self.value,
         )
 
-    def to_cv_tag_assignment(self) -> CVTagAssignment | None:
+    def as_cv_tag_assignment(self) -> CVTagAssignment | None:
         """Return the CVTagAssignment model for this tag."""
         if self.device is None or self.device.serial_number is None or self.interface is None:
             return None
