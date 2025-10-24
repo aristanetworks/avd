@@ -26,7 +26,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  required-checks:  # Added in github settings as a required check before merge. This ensures that CI finishes before merge queue is merged.
+  required-checks: # Added in github settings as a required check before merge. This ensures that CI finishes before merge queue is merged.
     needs:
       - python_type_checking
       - python_requirements
@@ -54,11 +54,7 @@ jobs:
       eos_design: ${{ steps.filter.outputs.eos_design }}
       config_gen: ${{ steps.filter.outputs.config_gen }}
       pyavd: ${{ steps.filter.outputs.pyavd }}
-      cloudvision: ${{ steps.filter.outputs.cloudvision }}
-      dhcp: ${{ steps.filter.outputs.dhcp }}
-      plugins: ${{ steps.filter.outputs.plugins }}
       requirements: ${{ steps.filter.outputs.requirements }}
-      docs: ${{ steps.filter.outputs.docs }}
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
       rust_src_or_ci_changed: ${{ steps.filter.outputs.rust_src_or_ci_changed }}
     steps:
@@ -71,32 +67,18 @@ jobs:
               - 'ansible_collections/arista/avd/roles/eos_designs/*'
               - 'ansible_collections/arista/avd/roles/eos_designs/**/*'
               - '.github/workflows/pull-request-management.yml'
-              - 'ansible_collections/arista/avd/molecule/*'
-              - 'ansible_collections/arista/avd/molecule/**/*'
+              - 'ansible_collections/arista/avd/extensions/molecule/*'
+              - 'ansible_collections/arista/avd/extensions/molecule/**/*'
               - 'python-avd/pyavd/_eos_designs/*'
               - 'python-avd/pyavd/_eos_designs/**/*'
-              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
-              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
-              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
-              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
             config_gen:
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
               - '.github/workflows/pull-request-management.yml'
-              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/*'
-              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/**/*'
+              - 'ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen*/*'
+              - 'ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen*/**/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/**/*'
-            cloudvision:
-              - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
-              - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
-              - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
-              - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
-              - '.github/workflows/pull-request-management.yml'
-            dhcp:
-              - 'ansible_collections/arista/avd/roles/dhcp_provisioner/*'
-              - 'ansible_collections/arista/avd/roles/dhcp_provisioner/**/*'
-              - '.github/workflows/pull-request-management.yml'
             plugins:
               - 'ansible_collections/arista/avd/plugins/filter/**'
               - 'ansible_collections/arista/avd/plugins/test/**'
@@ -104,16 +86,11 @@ jobs:
               - 'ansible_collections/arista/avd/requirements.txt'
               - 'ansible_collections/arista/avd/requirements-dev.txt'
               - 'ansible_collections/arista/avd/meta/runtime.yml'
+              - 'ansible_collections/arista/avd/requirements.yml'
               - '.github/requirements-ci-dev.txt'
               - '.github/workflows/pull-request-management.yml'
-            docs:
-              - '.github/workflows/pull-request-management.yml'
-              - 'mkdocs.yml'
-              - 'ansible_collections/arista/avd/docs/**'
-              - 'ansible_collections/arista/avd/roles/**/*.md'
-              - 'ansible_collections/arista/avd/**/*.md'
-              - 'ansible_collections/arista/avd/README.md'
-              - 'ansible_collections/arista/avd/**/*.schema.yml'
+              - 'sonar-project.properties'
+              - '.pre-commit-config.yaml'
             pyavd:
               - 'python-avd/*'
               - 'python-avd/**/*'
@@ -166,6 +143,10 @@ jobs:
     name: Python Linting not covered in pre-commit
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v5
+      - name: Install pyavd and Ansible requirements
+        run: |
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
       - name: PyRight static type checker
         # Specific SHA as allowed by github org admins
         uses: jakebailey/pyright-action@6cabc0f01c4994be48fd45cd9dbacdd6e1ee6e5e
@@ -208,6 +189,7 @@ jobs:
     name: Validate eos_cli_config_gen
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
+    if: needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     strategy:
       fail-fast: true
       matrix:
@@ -221,7 +203,6 @@ jobs:
         include:
           - avd_scenario: "eos_cli_config_gen"
             ansible_version: "ansible-core==2.16.0"
-    if: needs.file-changes.outputs.config_gen == 'true'
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
@@ -242,42 +223,7 @@ jobs:
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
-      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
-
-  # ----------------------------------- #
-  # DHCP PROVISIONNER MOLECULE
-  # ----------------------------------- #
-  molecule_dhcp_provisionner:
-    name: Validate DHCP configuration
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        avd_scenario: ["dhcp_configuration", "dhcp_provisioning"]
-        ansible_version: ["ansible-core<2.19.0"]
-    needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.dhcp == 'true'
-    steps:
-      - uses: actions/checkout@v5
-      - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
-        with:
-          name: pyavd
-          path: /tmp/pyavd/
-      - name: Install pyavd and Ansible requirements
-        run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
-      - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
-        run: |
-          molecule test --scenario-name ${{ matrix.avd_scenario }}
-      - name: Check GIT status
-        run: |
-          sh .github/check-git-status.sh
-      # - uses: actions/upload-artifact@v4
-      #   with:
-      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
-      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+      #     path: ${PWD}/ansible_collections/arista/avd/extensions/molecule/${{ matrix.avd_scenario }}
 
   # ----------------------------------- #
   # EOS Design MOLECULE
@@ -285,6 +231,8 @@ jobs:
   molecule_eos_designs:
     name: Validate eos_designs
     runs-on: ubuntu-latest
+    needs: [build_pyavd, file-changes]
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     strategy:
       fail-fast: true
       matrix:
@@ -316,8 +264,6 @@ jobs:
             ansible_version: "ansible-core<2.18.0"
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.19.0"
-    needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
@@ -340,7 +286,7 @@ jobs:
     name: Validate eos_designs with minimum requirements
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
@@ -370,53 +316,15 @@ jobs:
       - name: Check GIT status
         run: |
           sh .github/check-git-status.sh
-  # ----------------------------------- #
-  # Cloudvision MOLECULE
-  # ----------------------------------- #
-  molecule_cloudvision:
-    name: Validate cvp_collection
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        avd_scenario:
-          - "eos_config_deploy_cvp"
-        ansible_version:
-          - "ansible-core<2.19.0"
-        include:
-          - avd_scenario: "eos_config_deploy_cvp"
-            ansible_version: "ansible-core==2.16.0"
-    needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.cloudvision == 'true' || needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
 
-    steps:
-      - uses: actions/checkout@v5
-      - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
-        with:
-          name: pyavd
-          path: /tmp/pyavd/
-      - name: Install pyavd and Ansible requirements
-        run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
-      - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
-        run: |
-          molecule test --scenario-name ${{ matrix.avd_scenario }}
-      - name: Check GIT status
-        run: |
-          sh .github/check-git-status.sh
-      # - uses: actions/upload-artifact@v4
-      #   with:
-      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
-      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
-      #
   # ----------------------------------- #
   # ANTA Runner MOLECULE
   # ----------------------------------- #
   molecule_anta_runner:
     name: Validate anta_runner
     runs-on: ubuntu-latest
+    needs: [build_pyavd, file-changes]
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.anta_runner == 'true' || needs.file-changes.outputs.requirements == 'true'
     strategy:
       fail-fast: true
       matrix:
@@ -427,8 +335,6 @@ jobs:
         include:
           - avd_scenario: "anta_runner"
             ansible_version: "ansible-core==2.16.0"
-    needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.anta_runner == 'true'
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
@@ -655,7 +561,8 @@ jobs:
     if: |
       needs.file-changes.outputs.eos_design == 'true' ||
       needs.file-changes.outputs.config_gen == 'true' ||
-      needs.file-changes.outputs.pyavd == 'true'
+      needs.file-changes.outputs.pyavd == 'true' ||
+      needs.file-changes.outputs.requirements == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -716,7 +623,7 @@ jobs:
       - name: Set up Python 3.11
         uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: "3.11"
       - name: Install coverage
         working-directory: python-avd
         run: pip install --group coverage
@@ -760,15 +667,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # macos-13 covers x64 and macos-latest covers arm
+        # macos-14 covers x64 and macos-latest covers arm
+        # note that at some point x64 won't be available anymore as per
+        # https://github.com/actions/runner-images/issues/13046
+        # the next update will be macos-15-intel
         os:
-          [
-            ubuntu-latest,
-            ubuntu-24.04-arm,
-            windows-latest,
-            macos-13,
-            macos-latest,
-          ]
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - windows-latest
+          - macos-14
+          - macos-latest
     steps:
       - uses: actions/checkout@v5
         # This is needed for arm machines since they don't ship with 2024 edition.
@@ -818,15 +726,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # macos-13 covers x64 and macos-latest covers arm
+        # macos-14 covers x64 and macos-latest covers arm
+        # note that at some point x64 won't be available anymore as per
+        # https://github.com/actions/runner-images/issues/13046
+        # the next update will be macos-15-intel
         os:
-          [
-            ubuntu-latest,
-            ubuntu-24.04-arm,
-            windows-latest,
-            macos-13,
-            macos-latest,
-          ]
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - windows-latest
+          - macos-14
+          - macos-latest
         python: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v5

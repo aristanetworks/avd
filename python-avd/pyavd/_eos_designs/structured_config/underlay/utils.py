@@ -62,7 +62,7 @@ class UtilsMixin(Protocol):
                     peer_interface=uplink.interface,
                     peer_type=peer_facts.type,
                     peer_is_deployed=peer_facts.is_deployed,
-                    peer_bgp_as=peer_facts.bgp_as,
+                    peer_bgp_as=self.shared_utils.get_asn(peer_facts.bgp_as),
                     type=uplink.type,
                     speed=uplink.peer_speed or uplink.speed,
                     ip_address=uplink.peer_ip_address,
@@ -85,7 +85,6 @@ class UtilsMixin(Protocol):
                     sflow_enabled=self.shared_utils.get_interface_sflow(uplink.peer_interface, self.inputs.fabric_sflow.downlinks),
                     flow_tracking=downlinks_flow_tracking,
                     spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
-                    structured_config=uplink.structured_config,
                     ethernet_structured_config=uplink.peer_ethernet_structured_config,
                     port_channel_structured_config=uplink.peer_port_channel_structured_config,
                 )

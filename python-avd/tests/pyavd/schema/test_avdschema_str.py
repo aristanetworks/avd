@@ -183,6 +183,7 @@ def test_generated_schema(
             (("'Validation Error: ': The value 'foo' is not a valid MAC address (Expecting bytes separated by colons like 01:23:45:67:89:AB)."),),
             id="err-invalid-mac-foo",
         ),
+        pytest.param("invalid_format", "foo", None, None, id="ok-invalid-format"),  # TODO: Consider catching and raising NotImplementedErr for invalid format.
     ],
 )
 def test_str_format(

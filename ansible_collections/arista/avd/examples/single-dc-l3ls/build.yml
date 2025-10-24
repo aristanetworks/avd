@@ -1,8 +1,8 @@
 ---
 # build.yml
 
-- name: Build Configurations and Documentation # (1)!
-  hosts: FABRIC
+- name: Build Configurations and Documentation
+  hosts: FABRIC # (1)!
   gather_facts: false
   tasks:
 

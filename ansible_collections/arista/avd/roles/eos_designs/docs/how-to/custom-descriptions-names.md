@@ -77,8 +77,8 @@ underlay_l2_port_channel_description: "L2_{peer_node_group_or_peer}_{peer_interf
 mgmt_interface_description: "OOB_MANAGEMENT"
 
 # Endpoint description
-default_connected_endpoints_description: "{endpoint_type!u}_{endpoint}{endpoint_port?<_}"
-default_connected_endpoints_port_channel_description: "{endpoint_type!u}_{endpoint}{endpoint_port_channel?<_}"
+default_connected_endpoints_description: "{endpoint_type?>_!u}{endpoint}{endpoint_port?<_}"
+default_connected_endpoints_port_channel_description: "{endpoint_type?>_!u}{endpoint}{endpoint_port_channel?<_}"
 default_network_ports_description: "{endpoint?}"
 default_network_ports_port_channel_description: " {endpoint?}{endpoint_port_channel?<_}"
 

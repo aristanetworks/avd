@@ -70,6 +70,7 @@ ethernet_interfaces:
   peer: dc1-leaf1-server1
   peer_interface: PCI2
   peer_type: server
+  peer_key: servers
 hostname: dc1-leaf1b
 ip_domain_lookup:
   source_interfaces:
@@ -157,7 +158,7 @@ ntp:
   servers:
   - name: 0.pool.ntp.org
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_dc1-leaf1a_Port-Channel3
@@ -220,7 +221,6 @@ router_bgp:
   router_id: 10.255.1.2
   maximum_paths:
     paths: 4
-    ecmp: 4
   bgp:
     default:
       ipv4_unicast: false

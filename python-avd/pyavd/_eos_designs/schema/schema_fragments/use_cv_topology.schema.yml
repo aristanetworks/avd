@@ -13,3 +13,4 @@ keys:
     description: |-
       Generate AVD configurations directly from a given CloudVision topology.
       See `cv_topology` for details.
+      Requires both `cv_topology` and `cv_topology_levels` to be set.

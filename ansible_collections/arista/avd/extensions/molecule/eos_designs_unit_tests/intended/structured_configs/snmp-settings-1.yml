@@ -1,0 +1,116 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: snmp-settings-1
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 10.10.10.43/26
+  type: oob
+  gateway: 10.10.10.1
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+snmp_server:
+  contact: example@example.com
+  communities:
+  - name: SNMP-COMMUNITY-1
+    access: ro
+    access_list_ipv4:
+      name: onur
+  - name: SNMP-COMMUNITY-2
+    access: rw
+    access_list_ipv4:
+      name: SNMP-MGMT
+    access_list_ipv6:
+      name: SNMP-MGMT
+    view: VW-READ
+  - name: SNMP-COMMUNITY-3
+  ipv4_acls:
+  - name: acl-for-vrf-default
+  - name: acl-for-vrf-MGMT
+    vrf: MGMT
+  ipv6_acls:
+  - name: acl-for-vrf-default
+  - name: acl-for-vrf-MGMT
+    vrf: MGMT
+  local_interfaces:
+  - name: Management1
+    vrf: MGMT
+  views:
+  - name: VW-WRITE
+    mib_family_name: iso
+    included: true
+  - name: VW-READ
+    mib_family_name: iso
+    included: true
+  groups:
+  - name: GRP-READ-ONLY
+    version: v3
+    authentication: priv
+    read: v3read
+  - name: GRP-READ-WRITE
+    version: v3
+    authentication: auth
+    read: v3read
+    write: v3write
+  users:
+  - name: usertest-auth-priv
+    group: usergroup
+    version: v3
+    auth: sha
+    auth_passphrase: clearauth
+    priv: aes192
+    priv_passphrase: clearpriv
+  hosts:
+  - host: 10.6.75.121
+    vrf: SNMPVRF
+    version: '1'
+    community: SNMP-COMMUNITY-1
+  - host: 10.6.75.124
+    version: '3'
+    users:
+    - username: USER-WRITE
+      authentication_level: auth
+  - host: 10.6.75.125
+    vrf: SNMPVRF
+    version: 2c
+    community: SNMP-COMMUNITY-2
+  - host: 10.6.75.129
+    vrf: MGMT
+    version: 2c
+    community: SNMP-COMMUNITY-2
+  - host: 10.6.75.130
+    vrf: MGMT
+    version: 2c
+    community: SNMP-COMMUNITY-2
+  - host: 10.6.75.131
+    version: '3'
+    community: SNMP-COMMUNITY-2
+  traps:
+    enable: true
+  vrfs:
+  - name: default
+    enable: false
+  - name: MGMT
+    enable: true
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 10.10.10.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

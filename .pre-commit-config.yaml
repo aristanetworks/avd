@@ -1,3 +1,4 @@
+---
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
@@ -10,23 +11,23 @@ repos:
     hooks:
       - id: trailing-whitespace
         name: Trims trailing whitespace.
-        exclude: ansible_collections/arista/avd/molecule
+        exclude: ansible_collections/arista/avd/extensions/molecule
       - id: end-of-file-fixer
         name: Ensures that a file is either empty, or ends with one newline.
         exclude_types: [svg, json]
-        exclude: ansible_collections/arista/avd/molecule
+        exclude: ansible_collections/arista/avd/extensions/molecule
       - id: check-added-large-files
         name: Prevents giant files from being committed.
         exclude: >-
           (?x)
-          (ansible_collections/arista/avd/molecule
+          (ansible_collections/arista/avd/extensions/molecule
           |pickle$
           |python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/__init__.py
           |python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py
           )
       - id: check-merge-conflict
         name: Checks for files that contain merge conflict strings.
-        exclude: ansible_collections/arista/avd/molecule
+        exclude: ansible_collections/arista/avd/extensions/molecule
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
     rev: v1.5.5
@@ -63,7 +64,7 @@ repos:
       - id: insert-license
         name: Check and insert license on Jinja2 files.
         files: .*\.j2$
-        exclude: ansible_collections/arista/avd/molecule.*
+        exclude: ansible_collections/arista/avd/extensions/molecule.*
         args:
           - --license-filepath
           - development/license-short.txt
@@ -77,7 +78,7 @@ repos:
       - id: insert-license
         name: Check and insert license on Markdown files.
         files: .*\.md$
-        exclude: (ansible_collections/arista/avd/molecule|.github|ansible_collections/arista/avd/examples/.+/documentation/).*
+        exclude: (ansible_collections/arista/avd/extensions/molecule|.github|ansible_collections/arista/avd/examples/.+/documentation/).*
         args:
           - --license-filepath
           - development/license-short.txt
@@ -103,7 +104,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.13.1
+    rev: v0.14.1
     hooks:
       # Run the linter.
       - id: ruff
@@ -113,13 +114,13 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.405
+    rev: v1.1.406
     hooks:
       - id: pyright
         name: PyRight static type checker
         types: [python]
         additional_dependencies:
-          - 'anta==1.5.0'
+          - 'anta==1.6.0'
           - 'ansible-core>=2.16.0,<2.19.0'
           - 'deepmerge>=1.1.0'
           - 'PyYAML>=6.0.0'
@@ -127,9 +128,10 @@ repos:
           - 'jsonschema-rs>=0.24'
           - 'referencing>=0.35.0'
           - 'ruff==0.11.11'
+          - 'pytest>=8.2.0'
 
   - repo: https://github.com/pycqa/pylint
-    rev: "v3.3.8"
+    rev: "v4.0.2"
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files outside the Ansible collection.
@@ -170,7 +172,8 @@ repos:
         types: [text]
         args:
           - '--ignore-words=.github/ignore-codespell-words'  # Ignore words listed in this file
-        exclude: >  # List of regex patterns for files/directories to exclude
+        # List of regex patterns for files/directories to exclude
+        exclude: >
           (?x)^(
             .*\.cfg|  # Exclude all .cfg files
             .*\.svg|  # Exclude all .svg files
@@ -264,6 +267,7 @@ repos:
           - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/service-unsupported-transceiver.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/unsupported-transceiver.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-node-type-keys.key.md
+          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/design.md
         pass_filenames: false
 
       - id: templates
@@ -272,7 +276,7 @@ repos:
         language: python
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=38.0.4', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=43.0.0', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     # Keep v0.18.0 for now as pre-commit.ci fails on v0.18.1

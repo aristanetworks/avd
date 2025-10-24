@@ -13,22 +13,13 @@ ansible_collections/arista/avd/roles/eos_config_deploy_eapi/**/*:
 ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*:
   - onurgashi
   - aphillipps
-ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*:
-  - guillaumeVilar
-  - noredistribution
-ansible_collections/arista/avd/roles/cvp_configlet_upload/**/*:
-  - guillaumeVilar
-  - noredistribution
-ansible_collections/arista/avd/roles/dhcp_provisioner/**/*:
-  - guillaumeVilar
-  - noredistribution
 ansible_collections/arista/avd/plugins/filter/**/*:
   - carlbuchmann
   - ClausHolbechArista
 ansible_collections/arista/avd/plugins/modules/**/*:
   - guillaumeVilar
   - noredistribution
-ansible_collections/arista/avd/molecule/**/*:
+ansible_collections/arista/avd/extensions/molecule/**/*:
   - carlbuchmann
 ansible_collections/arista/avd/docs/**/*:
   - carlbuchmann

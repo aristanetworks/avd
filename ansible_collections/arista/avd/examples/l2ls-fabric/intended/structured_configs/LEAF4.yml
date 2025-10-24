@@ -54,6 +54,7 @@ ethernet_interfaces:
   peer: Host2
   peer_interface: Eth1
   peer_type: server
+  peer_key: servers
   port_profile: PP-ORANGE
   switchport:
     enabled: true
@@ -110,9 +111,8 @@ ntp:
   servers:
   - name: time.google.com
     preferred: true
-    vrf: MGMT
   - name: pool.ntp.org
-    vrf: MGMT
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel47
   description: MLAG_LEAF3_Port-Channel47

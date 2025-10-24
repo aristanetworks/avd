@@ -3,11 +3,6 @@ aaa_authorization:
     default: local
 aaa_root:
   disabled: true
-agents:
-- name: KernelFib
-  environment_variables:
-  - name: KERNELFIB_PROGRAM_ALL_ECMP
-    value: '1'
 application_traffic_recognition:
   field_sets:
     l4_ports:
@@ -216,6 +211,8 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+kernel:
+  software_forwarding_ecmp: true
 local_users:
 - name: admin
   privilege: 15
@@ -316,7 +313,7 @@ ntp:
   servers:
   - name: 0.pool.ntp.org
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel4
   description: REGION2-INTERNET-CORP_inet-site3-wan1_inet-cloud_Port-Channel8
