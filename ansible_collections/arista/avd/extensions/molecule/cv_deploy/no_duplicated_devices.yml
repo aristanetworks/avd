@@ -80,15 +80,15 @@
     - name: "{{ test_id | upper }} Process raw device_inventory_status_on_cv variables"
       tags: ["{{ test_id }}"]
       ansible.builtin.set_fact:
-        serial_number: "{{ device_inventory_status_on_cv.json.result.value.key.deviceId }}"
         metadata:
+          serial_number: "{{ device_inventory_status_on_cv.json.result.value.key.deviceId }}"
           system_mac_address: "{{ device_inventory_status_on_cv.json.result.value.systemMacAddress }}"
 
     - name: "{{ test_id | upper }} Expose new variables set on DUTs"
       tags: ["{{ test_id }}"]
       ansible.builtin.debug:
         msg:
-          - "DEVICE {{ inventory_hostname }} | SERIAL_NUMBER: {{ serial_number }} | SYSTEM_MAC_ADDRESS: {{ metadata.system_mac_address }}"
+          - "DEVICE {{ inventory_hostname }} | SERIAL_NUMBER: {{ metadata.serial_number }} | SYSTEM_MAC_ADDRESS: {{ metadata.system_mac_address }}"
 
     - name: "{{ test_id | upper }} Copy content of the original test's structured_config files into new structured_config files"
       tags: ["{{ test_id }}"]
@@ -97,26 +97,16 @@
         dest: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
         mode: "0644"
 
-    - name: "{{ test_id | upper }} Update content of the structured_config files with new serial_number variable"
-      tags: ["{{ test_id }}"]
-      ansible.builtin.lineinfile:
-        line: "serial_number: {{ serial_number }}"
-        path: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
-        create: true
-        mode: "0644"
-        insertbefore: BOF
-      no_log: true
-
     - name: "{{ test_id | upper }} Read current content of the structured files"
       tags: ["{{ test_id }}"]
       ansible.builtin.slurp:
         src: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
       register: structured_config_file_content
 
-    - name: "{{ test_id | upper }} Update content of the structured_config files with new metadata.system_mac_address variable if metadata is not present"
+    - name: "{{ test_id | upper }} Update content of the structured_config files if metadata is not present"
       tags: ["{{ test_id }}"]
       ansible.builtin.lineinfile:
-        line: "metadata:\n  system_mac_address: {{ metadata.system_mac_address }}"
+        line: "metadata:\n  serial_number: {{ metadata.serial_number }}\n  system_mac_address: {{ metadata.system_mac_address }}"
         path: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
         create: true
         mode: "0644"
@@ -124,10 +114,10 @@
       no_log: true
       when: "'metadata:' not in structured_config_file_content.content | b64decode"
 
-    - name: "{{ test_id | upper }} Update metadata in the structured_config files with new metadata.system_mac_address variable if metadata is already present"
+    - name: "{{ test_id | upper }} Update metadata in the structured_config files if metadata is already present"
       tags: ["{{ test_id }}"]
       ansible.builtin.lineinfile:
-        line: "metadata:\n  system_mac_address: {{ metadata.system_mac_address }}"
+        line: "metadata:\n  serial_number: {{ metadata.serial_number }}\n  system_mac_address: {{ metadata.system_mac_address }}"
         path: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
         regexp: '^metadata:'
       no_log: true

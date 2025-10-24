@@ -27,7 +27,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_ssh.hostkey.server.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;server_cert</samp>](## "management_ssh.hostkey.server_cert") | String |  |  |  | Configure switch's hostkey cert file. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;client_strict_checking</samp>](## "management_ssh.hostkey.client_strict_checking") | Boolean |  |  |  | Enforce strict host key checking. |
-    | [<samp>&nbsp;&nbsp;enable</samp>](## "management_ssh.enable") | Boolean |  |  |  | Enable SSH for VRF default. |
+    | [<samp>&nbsp;&nbsp;enable</samp>](## "management_ssh.enable") | Boolean |  |  |  | Explicitly enable or disable SSH for all VRFs. |
     | [<samp>&nbsp;&nbsp;connection</samp>](## "management_ssh.connection") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "management_ssh.connection.limit") | Integer |  |  | Min: 1<br>Max: 100 | Maximum total number of SSH sessions to device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;per_host</samp>](## "management_ssh.connection.per_host") | Integer |  |  | Min: 1<br>Max: 20 | Maximum number of SSH sessions to device from a single host. |
@@ -91,7 +91,7 @@
         # Enforce strict host key checking.
         client_strict_checking: <bool>
 
-      # Enable SSH for VRF default.
+      # Explicitly enable or disable SSH for all VRFs.
       enable: <bool>
       connection:
 
