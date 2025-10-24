@@ -18,4 +18,5 @@
           - result.ansible_facts is defined
           - result.ansible_facts._inline_jinja_value_1 == "test"
           - result.ansible_facts._inline_jinja is defined
+          # Verifying that the template has not been rendered
           - result.ansible_facts._inline_jinja == "{{'{{ _inline_jinja_value_1 }}'}}"
