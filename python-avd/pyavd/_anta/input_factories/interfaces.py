@@ -34,7 +34,11 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
 
     For Ethernet interfaces, `interface_defaults.ethernet.shutdown` is considered when `shutdown` is not set
 
-    For VXLAN interfaces, status is down when the interface is shutdown, also considering the L2VNIs, L3VNIs, Source Interface to check the state.
+    For VXLAN interfaces:
+    - Status is **'down'** if the interface itself is shutdown.
+    - Status is **'up'** if the interface is active and has L2VNIs or L3VNIs configured.
+    - If the VXLAN source interface is shutdown, a debug message is logged to indicate that source interface is down.
+    - If no VNIs (L2 or L3) are configured, a debug message is logged to indicate that VNIs are missing.
     """
 
     def create(self) -> list[VerifyInterfacesStatus.Input] | None:
