@@ -29,22 +29,25 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 111
   ip_address: 10.10.10.111/24
-  peer: tenant-default-vrf-settings
-  peer_interface: Ethernet1 VLAN 111
-  peer_type: l3leaf
+  metadata:
+    peer: tenant-default-vrf-settings
+    peer_interface: Ethernet1 VLAN 111
+    peer_type: l3leaf
 - name: Ethernet2
   description: L2_tenant-default-vrf-settings_Ethernet1
   shutdown: false
-  peer: tenant-default-vrf-settings
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: tenant-default-vrf-settings
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet1
   description: Comcast_999
   shutdown: false
   ip_address: 10.9.9.9/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

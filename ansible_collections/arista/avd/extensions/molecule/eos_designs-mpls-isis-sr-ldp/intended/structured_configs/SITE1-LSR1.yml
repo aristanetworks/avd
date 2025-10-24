@@ -27,9 +27,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: SITE1-LER1
-  peer_interface: Ethernet1
-  peer_type: pe
+  metadata:
+    peer: SITE1-LER1
+    peer_interface: Ethernet1
+    peer_type: pe
   switchport:
     enabled: false
   eos_cli: 'link-debounce time 1000
@@ -57,9 +58,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: SITE1-RR1
-  peer_interface: Ethernet4
-  peer_type: rr
+  metadata:
+    peer: SITE1-RR1
+    peer_interface: Ethernet4
+    peer_type: rr
   switchport:
     enabled: false
   eos_cli: 'link-debounce time 1000
@@ -87,9 +89,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: SITE2-LSR1
-  peer_interface: Ethernet3
-  peer_type: p
+  metadata:
+    peer: SITE2-LSR1
+    peer_interface: Ethernet3
+    peer_type: p
   switchport:
     enabled: false
   eos_cli: 'link-debounce time 1000

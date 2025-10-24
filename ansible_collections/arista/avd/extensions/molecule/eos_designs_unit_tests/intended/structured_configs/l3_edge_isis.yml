@@ -22,9 +22,10 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
   service_profile: TEST-QOS-PROFILE
-  peer: peer1
-  peer_interface: ethernet1
-  peer_type: other
+  metadata:
+    peer: peer1
+    peer_interface: ethernet1
+    peer_type: other
   switchport:
     enabled: false
 - name: ethernet2
@@ -43,9 +44,10 @@ ethernet_interfaces:
       key_type: '7'
       key: 7h4BlaA7By3z4DS4JcikPQ==
       mode: md5
-  peer: peer2
-  peer_interface: ethernet2
-  peer_type: other
+  metadata:
+    peer: peer2
+    peer_interface: ethernet2
+    peer_type: other
   switchport:
     enabled: false
 - name: ethernet3
@@ -64,9 +66,10 @@ ethernet_interfaces:
       key_type: '7'
       key: $1c$sTNAlR6rKSw=
       mode: text
-  peer: peer3
-  peer_interface: ethernet3
-  peer_type: other
+  metadata:
+    peer: peer3
+    peer_interface: ethernet3
+    peer_type: other
   switchport:
     enabled: false
 - name: ethernet4
@@ -85,9 +88,10 @@ ethernet_interfaces:
       key_type: '7'
       key: $1c$sTNAlR6rKSw=
       mode: text
-  peer: peer4
-  peer_interface: ethernet4
-  peer_type: other
+  metadata:
+    peer: peer4
+    peer_interface: ethernet4
+    peer_type: other
   switchport:
     enabled: false
 - name: ethernet5
@@ -106,9 +110,10 @@ ethernet_interfaces:
       key_type: '7'
       key: m89QJMCtp4LRQGQz7SJF/Q==
       mode: md5
-  peer: peer2
-  peer_interface: ethernet5
-  peer_type: other
+  metadata:
+    peer: peer2
+    peer_interface: ethernet5
+    peer_type: other
   switchport:
     enabled: false
 - name: ethernet6
@@ -127,9 +132,10 @@ ethernet_interfaces:
       key_type: '7'
       key: CthgAX8QFfMSWvwSuEAhyw==
       mode: text
-  peer: peer2
-  peer_interface: ethernet6
-  peer_type: other
+  metadata:
+    peer: peer2
+    peer_interface: ethernet6
+    peer_type: other
   switchport:
     enabled: false
 hostname: l3_edge_isis

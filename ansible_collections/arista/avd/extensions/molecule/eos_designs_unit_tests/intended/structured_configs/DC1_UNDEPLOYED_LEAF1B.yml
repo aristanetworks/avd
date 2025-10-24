@@ -23,9 +23,10 @@ ethernet_interfaces:
   channel_group:
     id: 571
     mode: active
-  peer: DC1_UNDEPLOYED_LEAF1A
-  peer_interface: Ethernet57/1
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1_UNDEPLOYED_LEAF1A
+    peer_interface: Ethernet57/1
+    peer_type: mlag_peer
 - name: Ethernet58/1
   description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1A_Ethernet58/1
   shutdown: false
@@ -33,17 +34,19 @@ ethernet_interfaces:
   channel_group:
     id: 571
     mode: active
-  peer: DC1_UNDEPLOYED_LEAF1A
-  peer_interface: Ethernet58/1
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1_UNDEPLOYED_LEAF1A
+    peer_interface: Ethernet58/1
+    peer_type: mlag_peer
 - name: Ethernet49/1
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet29
   shutdown: false
   speed: forced 100gfull
   ip_address: 172.31.255.161/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet29
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet29
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet50/1
@@ -51,9 +54,10 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   ip_address: 172.31.255.163/31
-  peer: DC1-SPINE2
-  peer_interface: Ethernet29
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet29
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet51/1
@@ -61,9 +65,10 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   ip_address: 172.31.255.165/31
-  peer: DC1-SPINE3
-  peer_interface: Ethernet29
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet29
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet52/1
@@ -71,9 +76,10 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   ip_address: 172.31.255.167/31
-  peer: DC1-SPINE4
-  peer_interface: Ethernet29
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet29
+    peer_type: spine
   switchport:
     enabled: false
 hardware:

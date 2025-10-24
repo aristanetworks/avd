@@ -2,9 +2,10 @@
 ### Ethernet Interfaces ###
 ethernet_interfaces:
   - name: Ethernet1
-    peer: DC1-SPINE1
-    peer_interface: Ethernet1
-    peer_type: spine
+    metadata:
+      peer: DC1-SPINE1
+      peer_interface: Ethernet1
+      peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
     comment: |-
       testing multi line comment with |-
@@ -160,9 +161,10 @@ ethernet_interfaces:
       - 10.0.0.254/24
       - 1.1.1.3/24
       - 1.1.1.4/24
-    peer: SRV-POD03
-    peer_interface: Eth1
-    peer_type: server
+    metadata:
+      peer: SRV-POD03
+      peer_interface: Eth1
+      peer_type: server
     arp_gratuitous_accept: true
     description: SRV-POD02_Eth1
     comment: |
@@ -224,9 +226,10 @@ ethernet_interfaces:
       ipv6: true
 
   - name: Ethernet3
-    peer: DC1-SPINE2
-    peer_interface: Ethernet2
-    peer_type: spine
+    metadata:
+      peer: DC1-SPINE2
+      peer_interface: Ethernet2
+      peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet2
     comment: testing single line comment
     mtu: 1500
@@ -390,9 +393,10 @@ ethernet_interfaces:
         congestion_drops: true
         spanning_tree: true
         storm_control_discards: true
-    peer: SRV-POD02
-    peer_interface: Eth1
-    peer_type: server
+    metadata:
+      peer: SRV-POD02
+      peer_interface: Eth1
+      peer_type: server
     description: SRV-POD02_Eth1
     # test for switchport trunk mode
     switchport:
@@ -651,9 +655,10 @@ ethernet_interfaces:
     logging:
       event:
         link_status: true
-    peer: SRV-POD02
-    peer_interface: Eth1
-    peer_type: server
+    metadata:
+      peer: SRV-POD02
+      peer_interface: Eth1
+      peer_type: server
     description: SRV-POD02_Eth1
     # test for switchport trunk mode settings
     switchport:
@@ -1777,9 +1782,10 @@ ethernet_interfaces:
       mac_based_access_list: true
 
   - name: Ethernet73
-    peer: DC1-AGG01
-    peer_interface: Ethernet1
-    peer_type: l2leaf
+    metadata:
+      peer: DC1-AGG01
+      peer_interface: Ethernet1
+      peer_type: l2leaf
     description: DC1-AGG01_Ethernet1
     channel_group:
       id: 5
@@ -1790,27 +1796,30 @@ ethernet_interfaces:
       application_override: 5
 
   - name: Ethernet74
-    peer: DC1-LEAF1B
-    peer_interface: Ethernet3
-    peer_type: mlag_peer
+    metadata:
+      peer: DC1-LEAF1B
+      peer_interface: Ethernet3
+      peer_type: mlag_peer
     description: MLAG_PEER_DC1-LEAF1B_Ethernet3
     channel_group:
       id: 3
       mode: active
 
   - name: Ethernet75
-    peer: DC1-LEAF1B
-    peer_interface: Ethernet4
-    peer_type: mlag_peer
+    metadata:
+      peer: DC1-LEAF1B
+      peer_interface: Ethernet4
+      peer_type: mlag_peer
     description: MLAG_PEER_DC1-LEAF1B_Ethernet4
     channel_group:
       id: 3
       mode: active
 
   - name: Ethernet76
-    peer: SRV-POD03
-    peer_interface: Eth1
-    peer_type: server
+    metadata:
+      peer: SRV-POD03
+      peer_interface: Eth1
+      peer_type: server
     description: SRV-POD03_Eth1
     channel_group:
       id: 5
@@ -1820,17 +1829,19 @@ ethernet_interfaces:
       transmit: false
 
   - name: Ethernet77
-    peer: DC1-LEAF1B
-    peer_interface: Ethernet4
+    metadata:
+      peer: DC1-LEAF1B
+      peer_interface: Ethernet4
     description: MLAG_PEER_DC1-LEAF1B_Ethernet8
     channel_group:
       id: 8
       mode: active
 
   - name: Ethernet78
-    peer: DC1-AGG03
-    peer_interface: Ethernet1
-    peer_type: l2leaf
+    metadata:
+      peer: DC1-AGG03
+      peer_interface: Ethernet1
+      peer_type: l2leaf
     description: DC1-AGG03_Ethernet1
     channel_group:
       id: 15
@@ -1840,9 +1851,10 @@ ethernet_interfaces:
       multiplier: 30
 
   - name: Ethernet79
-    peer: DC1-AGG04
-    peer_interface: Ethernet1
-    peer_type: l2leaf
+    metadata:
+      peer: DC1-AGG04
+      peer_interface: Ethernet1
+      peer_type: l2leaf
     description: DC1-AGG04_Ethernet1
     channel_group:
       id: 16
