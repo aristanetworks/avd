@@ -18,9 +18,10 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: HARDWARE_FEATURES_VEOS_LAB
-  peer_interface: Ethernet2.2
-  peer_type: l3leaf
+  metadata:
+    peer: HARDWARE_FEATURES_VEOS_LAB
+    peer_interface: Ethernet2.2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4.4
@@ -28,9 +29,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.10.30.40/31
-  peer: HARDWARE_FEATURES_CLOUDEOS
-  peer_interface: Ethernet4.4
-  peer_type: l3leaf
+  metadata:
+    peer: HARDWARE_FEATURES_CLOUDEOS
+    peer_interface: Ethernet4.4
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet9.9
@@ -38,9 +40,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.10.60.4/31
-  peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
-  peer_interface: Ethernet9.9
-  peer_type: l3leaf
+  metadata:
+    peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
+    peer_interface: Ethernet9.9
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet5.5
@@ -49,10 +52,12 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 5
   ip_address: 10.10.40.6/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet5
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet7.7
@@ -70,10 +75,11 @@ ethernet_interfaces:
       interval: -3
     role: master
     transport: ipv4
-  peer: TEST_POE
-  peer_interface: ETH7_NO_POE
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: TEST_POE
+    peer_interface: ETH7_NO_POE
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
 hardware_counters:

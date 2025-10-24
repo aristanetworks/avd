@@ -18,9 +18,10 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: ptp-tests-spine1
-  peer_interface: Ethernet17
-  peer_type: spine
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet17
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -28,9 +29,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.1.11/31
-  peer: ptp-tests-spine2
-  peer_interface: Ethernet17
-  peer_type: spine
+  metadata:
+    peer: ptp-tests-spine2
+    peer_interface: Ethernet17
+    peer_type: spine
   switchport:
     enabled: false
 hostname: ptp-tests-leaf5

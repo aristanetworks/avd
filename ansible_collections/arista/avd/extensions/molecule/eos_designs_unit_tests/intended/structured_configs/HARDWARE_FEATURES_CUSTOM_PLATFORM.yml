@@ -10,26 +10,29 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: HARDWARE_FEATURES_7280R
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
+  metadata:
+    peer: HARDWARE_FEATURES_7280R
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
 - name: Ethernet1
   description: L2_HARDWARE_FEATURES_CLOUDEOS_2_Ethernet2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: HARDWARE_FEATURES_CLOUDEOS_2
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: HARDWARE_FEATURES_CLOUDEOS_2
+    peer_interface: Ethernet2
+    peer_type: l3leaf
 - name: Ethernet9
   description: P2P_HARDWARE_FEATURES_7280R_Ethernet9
   shutdown: false
   mtu: 9214
   ip_address: 10.10.60.1/31
-  peer: HARDWARE_FEATURES_7280R
-  peer_interface: Ethernet9
-  peer_type: l3leaf
+  metadata:
+    peer: HARDWARE_FEATURES_7280R
+    peer_interface: Ethernet9
+    peer_type: l3leaf
   sflow:
     enable: true
   switchport:
@@ -39,9 +42,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.10.60.5/31
-  peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
-  peer_interface: Ethernet9.9
-  peer_type: l3leaf
+  metadata:
+    peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+    peer_interface: Ethernet9.9
+    peer_type: l3leaf
   switchport:
     enabled: false
 hardware_counters:

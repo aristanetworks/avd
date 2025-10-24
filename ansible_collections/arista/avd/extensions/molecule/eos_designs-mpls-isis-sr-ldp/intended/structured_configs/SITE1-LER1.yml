@@ -27,9 +27,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: SITE1-LSR1
-  peer_interface: Ethernet1
-  peer_type: p
+  metadata:
+    peer: SITE1-LSR1
+    peer_interface: Ethernet1
+    peer_type: p
   switchport:
     enabled: false
   eos_cli: 'link-debounce time 1000
@@ -57,9 +58,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: SITE1-LER2
-  peer_interface: Ethernet2
-  peer_type: pe
+  metadata:
+    peer: SITE1-LER2
+    peer_interface: Ethernet2
+    peer_type: pe
   switchport:
     enabled: false
   eos_cli: 'link-debounce time 1500
@@ -75,13 +77,15 @@ ethernet_interfaces:
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   ospf_cost: 10
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet6
   shutdown: false
   lldp:
     transmit: false
     receive: false
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
   switchport:
     enabled: false
 - name: Ethernet9.100
@@ -92,7 +96,8 @@ ethernet_interfaces:
       vlan: 100
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
   eos_cli: storm-control broadcast level 10
 - name: Ethernet9.101
   comment: Test structured_config for Ethernet subinterface
@@ -103,22 +108,26 @@ ethernet_interfaces:
       vlan: 101
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Ethernet3
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Ethernet9
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet8
@@ -127,11 +136,12 @@ ethernet_interfaces:
   channel_group:
     id: 8
     mode: active
-  peer: CPE_TENANT_A_SITE1
-  peer_interface: Ethernet1
-  peer_type: cpe
-  peer_key: cpes
-  port_profile: TENANT_A_WAN_SERVICE_10
+  metadata:
+    peer: CPE_TENANT_A_SITE1
+    peer_interface: Ethernet1
+    peer_type: cpe
+    peer_key: cpes
+    port_profile: TENANT_A_WAN_SERVICE_10
 hostname: SITE1-LER1
 ip_igmp_snooping:
   globally_enabled: true
@@ -258,7 +268,8 @@ port_channel_interfaces:
       vlan: 1000
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
   eos_cli: storm-control broadcast level 15
 - name: Port-Channel3.1001
   shutdown: false
@@ -268,7 +279,8 @@ port_channel_interfaces:
       vlan: 1001
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Port-Channel3.1002
   comment: Test structured_config for Port-Channel subinterface
   shutdown: false
@@ -278,7 +290,8 @@ port_channel_interfaces:
       vlan: 1002
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Port-Channel3.1003
   shutdown: false
   encapsulation_vlan:
@@ -287,7 +300,8 @@ port_channel_interfaces:
       vlan: 1003
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Port-Channel3.1004
   shutdown: false
   encapsulation_vlan:
@@ -296,14 +310,16 @@ port_channel_interfaces:
       vlan: 1004
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Port-Channel3
   shutdown: false
   evpn_ethernet_segment:
     identifier: 0000:0000:0102:0000:0034
     route_target: 01:02:00:00:00:34
   lacp_id: 0102.0000.0034
-  peer_type: system
+  metadata:
+    peer_type: system
   switchport:
     enabled: false
 - name: Port-Channel8
