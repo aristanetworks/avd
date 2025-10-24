@@ -171,20 +171,20 @@ class PortChannelInterfacesMixin(Protocol):
         else:
             main_interface_wan_carrier = None
 
-        interface_description = self.shared_utils.interface_descriptions.underlay_port_channel_interface(
-            InterfaceDescriptionData(
-                shared_utils=self.shared_utils,
-                interface=l3_port_channel.name,
-                port_channel_description=l3_port_channel.description,
-                peer=l3_port_channel.peer,
-                peer_interface=l3_port_channel.peer_port_channel,
-                wan_carrier=l3_port_channel.wan_carrier,
-                wan_circuit_id=l3_port_channel.wan_circuit_id,
-                main_interface_wan_carrier=main_interface_wan_carrier,
-            ),
-        )
-        interface._update(
-            description=interface_description or None,
+        interface.description = (
+            self.shared_utils.interface_descriptions.underlay_port_channel_interface(
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=l3_port_channel.name,
+                    port_channel_description=l3_port_channel.description,
+                    peer=l3_port_channel.peer,
+                    peer_interface=l3_port_channel.peer_port_channel,
+                    wan_carrier=l3_port_channel.wan_carrier,
+                    wan_circuit_id=l3_port_channel.wan_circuit_id,
+                    main_interface_wan_carrier=main_interface_wan_carrier,
+                ),
+            )
+            or None
         )
         interface.metadata._update(peer_interface=l3_port_channel.peer_port_channel, peer_type="l3_port_channel")
 
