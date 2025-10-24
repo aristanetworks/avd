@@ -53,6 +53,9 @@ nodes:
     - Ethernet17
     - Ethernet18
     - Ethernet19
+    - Ethernet26
+    - Ethernet27
+    - Ethernet28
 - DC1-POD1-SPINE1:
     node_type: veos
     ip_addr: 192.168.1.5/24
@@ -163,6 +166,9 @@ nodes:
     - Ethernet17
     - Ethernet18
     - Ethernet19
+    - Ethernet26
+    - Ethernet27
+    - Ethernet28
 - DC2-POD1-L2LEAF1A:
     node_type: veos
     ip_addr: 192.168.1.23/24
