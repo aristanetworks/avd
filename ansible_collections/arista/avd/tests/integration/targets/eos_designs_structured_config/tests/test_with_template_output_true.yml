@@ -12,7 +12,7 @@
       arista.avd.eos_designs_structured_config:
         template_output: true
 
-    - assert:
+    - ansible.builtin.assert:
         that:
           - result is success
           - result.ansible_facts is defined
