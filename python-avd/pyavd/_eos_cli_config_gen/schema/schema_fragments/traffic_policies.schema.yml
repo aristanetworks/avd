@@ -178,6 +178,13 @@ keys:
                         enforce_gtsm:
                           type: bool
                           description: Enforce the GTSM for BGP speakers. Only supported when protocol is set to 'neighbors'.
+                  packet_type_vxlan:
+                    type: dict
+                    keys:
+                      decap:
+                        type: bool
+                      decap_exclude:
+                        type: bool
                   actions:
                     type: dict
                     keys:

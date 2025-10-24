@@ -47,6 +47,9 @@ traffic_policies:
               flags:
                 - established
           ttl: "10, 20-30"
+          packet_type_vxlan:
+            decap: true
+            decap_exclude: true
           actions:
             traffic_class: 5
             redirect:
