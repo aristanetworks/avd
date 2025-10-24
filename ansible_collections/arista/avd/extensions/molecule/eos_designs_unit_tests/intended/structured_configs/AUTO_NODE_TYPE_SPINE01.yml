@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.0/31
-  peer: AUTO_NODE_TYPE_LEAF01
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: AUTO_NODE_TYPE_LEAF01
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -19,9 +20,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.4/31
-  peer: AUTO_NODE_TYPE_UNGROUPED_LEAF02
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: AUTO_NODE_TYPE_UNGROUPED_LEAF02
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: AUTO_NODE_TYPE_SPINE01

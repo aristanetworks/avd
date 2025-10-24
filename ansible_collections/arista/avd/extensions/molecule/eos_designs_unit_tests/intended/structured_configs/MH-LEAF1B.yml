@@ -25,9 +25,10 @@ ethernet_interfaces:
   - name: LT_GROUP1
     direction: upstream
   ip_address: 10.10.101.3/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet20
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet20
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet10
@@ -36,66 +37,72 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
-  peer: server01_ES1
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: Tenant_X
+  metadata:
+    peer: server01_ES1
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: Tenant_X
 - name: Ethernet12
   description: server03_AUTO_ESI_Eth2
   shutdown: false
   channel_group:
     id: 12
     mode: active
-  peer: server03_AUTO_ESI
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: Tenant_X
+  metadata:
+    peer: server03_AUTO_ESI
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: Tenant_X
 - name: Ethernet13
   description: server04_AUTO_ESI_Profile_Eth2
   shutdown: false
   channel_group:
     id: 13
     mode: active
-  peer: server04_AUTO_ESI_Profile
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: Tenant_ESI_Auto
+  metadata:
+    peer: server04_AUTO_ESI_Profile
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: Tenant_ESI_Auto
 - name: Ethernet14
   description: server05_AUTO_ESI_Profile_Override_Eth2
   shutdown: false
   channel_group:
     id: 14
     mode: active
-  peer: server05_AUTO_ESI_Profile_Override
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: Tenant_ESI_Auto
+  metadata:
+    peer: server05_AUTO_ESI_Profile_Override
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: Tenant_ESI_Auto
 - name: Ethernet15
   description: server06_Single_Active_Port_Channel_Eth2
   shutdown: false
   channel_group:
     id: 15
     mode: active
-  peer: server06_Single_Active_Port_Channel
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: Tenant_X_Trunk_Auto
+  metadata:
+    peer: server06_Single_Active_Port_Channel
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: Tenant_X_Trunk_Auto
 - name: Ethernet16
   description: server07_Single_Active_Port_Channel_Manual_DF_Eth2
   shutdown: false
   channel_group:
     id: 16
     mode: active
-  peer: server07_Single_Active_Port_Channel_Manual_DF
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: Tenant_X_Trunk
+  metadata:
+    peer: server07_Single_Active_Port_Channel_Manual_DF
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: Tenant_X_Trunk
 - name: Ethernet17
   description: server08_Single_Active_Ethernet_Eth2
   shutdown: false
@@ -106,11 +113,12 @@ ethernet_interfaces:
       algorithm: preference
       preference_value: 0
     route_target: 21:3f:36:b8:ff:71
-  peer: server08_Single_Active_Ethernet
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: Tenant_X_Trunk_Auto_Eth
+  metadata:
+    peer: server08_Single_Active_Ethernet
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: Tenant_X_Trunk_Auto_Eth
   switchport:
     enabled: true
     mode: trunk
@@ -125,11 +133,12 @@ ethernet_interfaces:
     designated_forwarder_election:
       algorithm: modulus
     route_target: 00:dd:00:dd:00:dd
-  peer: server09_All_Active_Ethernet
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: Tenant_X_Trunk
+  metadata:
+    peer: server09_All_Active_Ethernet
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: Tenant_X_Trunk
   switchport:
     enabled: true
     mode: trunk
@@ -145,11 +154,12 @@ ethernet_interfaces:
       algorithm: preference
       preference_value: 250
     route_target: 88:5b:86:cc:8b:ac
-  peer: server10_Single_Active_Ethernet_Manual_DF
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: Tenant_X_Trunk
+  metadata:
+    peer: server10_Single_Active_Ethernet_Manual_DF
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: Tenant_X_Trunk
   switchport:
     enabled: true
     mode: trunk
@@ -161,11 +171,12 @@ ethernet_interfaces:
   channel_group:
     id: 20
     mode: active
-  peer: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: Tenant_X_Trunk
+  metadata:
+    peer: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: Tenant_X_Trunk
 - name: Ethernet21
   description: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt_Eth2
   shutdown: false
@@ -177,11 +188,12 @@ ethernet_interfaces:
       preference_value: 250
       dont_preempt: true
     route_target: 5d:0b:68:d3:6f:f9
-  peer: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: Tenant_X_Trunk
+  metadata:
+    peer: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: Tenant_X_Trunk
   switchport:
     enabled: true
     mode: trunk
@@ -193,11 +205,12 @@ ethernet_interfaces:
   channel_group:
     id: 22
     mode: active
-  peer: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: Tenant_X_Trunk
+  metadata:
+    peer: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: Tenant_X_Trunk
 - name: Ethernet23
   description: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus_Eth2
   shutdown: false
@@ -207,11 +220,12 @@ ethernet_interfaces:
     designated_forwarder_election:
       algorithm: modulus
     route_target: 26:2b:7d:f9:c9:8b
-  peer: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: Tenant_X_Trunk
+  metadata:
+    peer: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: Tenant_X_Trunk
   switchport:
     enabled: true
     mode: trunk
@@ -223,10 +237,11 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: ROUTER02_WITH_SUBIF
-  peer_interface: Eth2
-  peer_type: router
-  peer_key: routers
+  metadata:
+    peer: ROUTER02_WITH_SUBIF
+    peer_interface: Eth2
+    peer_type: router
+    peer_key: routers
 hostname: MH-LEAF1B
 ip_igmp_snooping:
   globally_enabled: true

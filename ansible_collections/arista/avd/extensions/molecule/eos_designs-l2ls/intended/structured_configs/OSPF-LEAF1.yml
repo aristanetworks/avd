@@ -10,23 +10,26 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: OSPF-SPINE1
-  peer_interface: Ethernet1
-  peer_type: l3spine
+  metadata:
+    peer: OSPF-SPINE1
+    peer_interface: Ethernet1
+    peer_type: l3spine
 - name: Ethernet2
   description: L2_OSPF-SPINE2_Ethernet1
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: OSPF-SPINE2
-  peer_interface: Ethernet1
-  peer_type: l3spine
+  metadata:
+    peer: OSPF-SPINE2
+    peer_interface: Ethernet1
+    peer_type: l3spine
 - name: Ethernet10
   description: Endpoint
   shutdown: false
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -34,8 +37,9 @@ ethernet_interfaces:
 - name: Ethernet11
   description: Endpoint
   shutdown: false
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access

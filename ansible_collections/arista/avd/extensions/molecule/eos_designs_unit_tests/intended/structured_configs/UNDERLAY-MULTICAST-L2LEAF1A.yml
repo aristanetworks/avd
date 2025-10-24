@@ -10,9 +10,10 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: UNDERLAY-MULTICAST-L3LEAF1A
-  peer_interface: Ethernet6
-  peer_type: l3leaf
+  metadata:
+    peer: UNDERLAY-MULTICAST-L3LEAF1A
+    peer_interface: Ethernet6
+    peer_type: l3leaf
 hostname: UNDERLAY-MULTICAST-L2LEAF1A
 ip_igmp_snooping:
   globally_enabled: true
