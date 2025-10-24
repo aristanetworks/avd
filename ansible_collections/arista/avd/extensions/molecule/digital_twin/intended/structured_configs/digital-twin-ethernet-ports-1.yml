@@ -99,11 +99,13 @@ ethernet_interfaces:
   peer: firewall-1
   peer_interface: Eth1
   peer_type: firewall
+  peer_key: firewalls
   switchport:
     enabled: true
 - name: Ethernet2
   shutdown: false
   peer_type: network_port
+  peer_key: network_ports
   switchport:
     enabled: true
 hostname: digital-twin-ethernet-ports-1
@@ -181,7 +183,6 @@ router_bgp:
   router_id: 192.168.3.129
   maximum_paths:
     paths: 4
-    ecmp: 4
   updates:
     wait_install: true
   bgp:
