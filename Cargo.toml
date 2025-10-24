@@ -1,5 +1,5 @@
 [workspace]
-package.version = "5.7.1-dev0"
+package.version = "5.7.1"
 package.license = "Apache-2.0"
 
 members = [

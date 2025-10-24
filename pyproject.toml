@@ -150,7 +150,7 @@ pythonVersion = "3.10"
 
 [tool.bumpversion]
 
-current_version = "5.7.1-dev0"
+current_version = "5.7.1"
 
 allow_dirty = true
 commit = false

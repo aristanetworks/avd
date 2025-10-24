@@ -4,6 +4,25 @@ Arista.Avd Release Notes
 
 .. contents:: Topics
 
+v5.7.1
+======
+
+Release Summary
+---------------
+
+Release 5.7.1 - See documentation on avd.arista.com for details.
+
+Bugfixes
+--------
+
+- Bump: ANTA requirements to v1.6.0 (#6041) by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/6048
+- Doc(eos_designs): Update the section about `is_deployed : false` devices (#5863) by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5952
+- Doc: Fix typo in configuration key name (#6035) by @gmuloc in https://github.com/aristanetworks/avd/pull/6040
+- Doc: fix dual-dc layer3 edge by @joelbreton2 in https://github.com/aristanetworks/avd/pull/5948
+- Fix(cv_deploy): Properly support a custom Change Control name (#5964) by @gmuloc in https://github.com/aristanetworks/avd/pull/5982
+- Fix(eos_designs): Avoid restricting valid user tags in generate_cv_tags.device_tags (#5888) by @gmuloc in https://github.com/aristanetworks/avd/pull/5911
+- Fix(eos_designs): Escape asdot in as-path access-list for WAN HA (#6016) by @gmuloc in https://github.com/aristanetworks/avd/pull/6018
+
 v5.7.0
 ======
 
@@ -29,9 +48,9 @@ Minor Changes
 - Feat(eos_cli_config_gen): Enhance switchport default phone with trunk (un)tagged phone and qos_trust by @vitthalmagadum in https://github.com/aristanetworks/avd/pull/5778
 - Feat(eos_cli_config_gen): Support for interface dot1x supplicant by @geetanjalimanegslab in https://github.com/aristanetworks/avd/pull/5796
 - Feat(eos_designs): Add support for BGP aggregate addresses by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5749
+- Feat(eos_designs): Add support for multicast ipv4 static on p2p uplinks ethernet by @gmuloc in https://github.com/aristanetworks/avd/pull/5843
 - Feat(eos_designs): Added support for L2VLAN profiles by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5722
 - Feat(eos_designs): Extend LACP fallback individual options by @colinmacgiolla in https://github.com/aristanetworks/avd/pull/5781
-- Feat(eos_designs): Add support for multicast ipv4 static on p2p uplinks ethernet by @gmuloc in https://github.com/aristanetworks/avd/pull/5843
 - Refactor(cvp_configlet_upload): Deprecate arista.avd.cvp_configlet_upload by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5740
 - Refactor(pyavd): deploy manifest of CV static config containers and configlets by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5793
 - Refactor: Include ansible tests in Ruff by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/5698
