@@ -17,7 +17,7 @@ as_path:
   - name: ASPATH-WAN
     entries:
     - type: permit
-      match: 65000\.1
+      match: 65000\.100
 config_end: true
 dps_interfaces:
 - name: Dps1
@@ -325,7 +325,7 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '65000.1'
+  as: '65000.100'
   as_notation: asdot
   router_id: 192.168.42.1
   maximum_paths:
@@ -347,7 +347,7 @@ router_bgp:
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
     type: wan
-    remote_as: '65000.1'
+    remote_as: '65000.100'
     update_source: Dps1
     bfd: true
     bfd_timers:
@@ -365,7 +365,7 @@ router_bgp:
     peer: asdot-for-wan-ha-leaf11
     description: asdot-for-wan-ha-leaf11_Ethernet1
   - ip_address: 192.168.142.2
-    remote_as: '65000.1'
+    remote_as: '65000.100'
     peer: asdot-for-wan-ha-transit1B1
     description: asdot-for-wan-ha-transit1B1
     route_reflector_client: true
