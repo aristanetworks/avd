@@ -10,9 +10,10 @@ ethernet_interfaces:
   channel_group:
     id: 2
     mode: active
-  peer: digital-twin-default-interfaces-digital-twin-platform
-  peer_interface: Ethernet4
-  peer_type: l2spine
+  metadata:
+    peer: digital-twin-default-interfaces-digital-twin-platform
+    peer_interface: Ethernet4
+    peer_type: l2spine
 hostname: digital-twin-default-interfaces-original-platform
 ip_igmp_snooping:
   globally_enabled: true

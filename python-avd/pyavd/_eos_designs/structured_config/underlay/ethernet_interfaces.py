@@ -41,13 +41,11 @@ class EthernetInterfacesMixin(Protocol):
             )
             ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
                 name=link.interface,
-                peer=link.peer,
-                peer_interface=link.peer_interface,
-                peer_type=link.peer_type,
                 description=description or None,
                 speed=link.speed,
                 shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link.peer_is_deployed,
             )
+            ethernet_interface.metadata._update(peer_interface=link.peer_interface, peer=link.peer, peer_type=link.peer_type)
             # Structured Config
             if link.ethernet_structured_config:
                 self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
@@ -189,9 +187,6 @@ class EthernetInterfacesMixin(Protocol):
                     )
                     ethernet_subinterface = EosCliConfigGen.EthernetInterfacesItem(
                         name=subinterface.interface,
-                        peer=link.peer,
-                        peer_interface=subinterface.peer_interface,
-                        peer_type=link.peer_type,
                         vrf=subinterface.vrf,
                         # TODO: - for now reusing the encapsulation as it is hardcoded to the VRF ID which is used as
                         # subinterface name
@@ -201,6 +196,7 @@ class EthernetInterfacesMixin(Protocol):
                         mtu=self.shared_utils.get_interface_mtu(subinterface.interface, self.shared_utils.p2p_uplinks_mtu),
                         flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                     )
+                    ethernet_subinterface.metadata._update(peer_interface=subinterface.peer_interface, peer=link.peer, peer_type=link.peer_type)
                     ethernet_subinterface.encapsulation_dot1q.vlan = subinterface.encapsulation_dot1q_vlan
 
                     ethernet_subinterface.sflow.enable = self.shared_utils.get_interface_sflow(ethernet_subinterface.name, link.sflow_enabled)
@@ -229,7 +225,7 @@ class EthernetInterfacesMixin(Protocol):
                 self.structured_config.ethernet_interfaces.append_new(
                     name=interface_name,
                     switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False),
-                    peer_type="l3_interface",
+                    metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(peer_type="l3_interface"),
                     shutdown=False,
                 )
 
@@ -271,10 +267,9 @@ class EthernetInterfacesMixin(Protocol):
 
         interface._update(
             description=interface_description or None,
-            peer_type="l3_interface",
-            peer_interface=l3_interface.peer_interface,
             speed=l3_interface.speed,
         )
+        interface.metadata._update(peer_interface=l3_interface.peer_interface, peer_type="l3_interface")
         if l3_interface.ipv4_acl_in:
             acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_in, l3_interface)
             interface.access_group_in = acl.name
@@ -327,16 +322,15 @@ class EthernetInterfacesMixin(Protocol):
                     peer_interface=member_intf.peer_interface,
                 ),
             )
-            self.structured_config.ethernet_interfaces.append_new(
+            ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
                 name=member_intf.name,
                 description=interface_description or None,
-                peer_type="l3_port_channel_member",
-                peer=peer,
-                peer_interface=member_intf.peer_interface,
                 shutdown=not l3_port_channel.enabled,
                 speed=member_intf.speed if member_intf.speed else None,
                 channel_group=EosCliConfigGen.EthernetInterfacesItem.ChannelGroup(id=int(channel_group_id), mode=l3_port_channel.mode),
             )
+            ethernet_interface.metadata._update(peer_interface=member_intf.peer_interface, peer_type="l3_port_channel_member", peer=peer)
+            self.structured_config.ethernet_interfaces.append(ethernet_interface)
             if member_intf.structured_config:
                 self.custom_structured_configs.nested.ethernet_interfaces.obtain(member_intf.name)._deepmerge(
                     member_intf.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
@@ -371,9 +365,9 @@ class EthernetInterfacesMixin(Protocol):
             if self.shared_utils.use_port_channel_for_direct_ha:
                 self.structured_config.ethernet_interfaces.append_new(
                     name=interface,
-                    peer_type="wan_ha_peer",
-                    peer_interface=interface,
-                    peer=self.shared_utils.wan_ha_peer,
+                    metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
+                        peer_interface=interface, peer_type="wan_ha_peer", peer=self.shared_utils.wan_ha_peer
+                    ),
                     description=description or None,
                     shutdown=False,
                     channel_group=EosCliConfigGen.EthernetInterfacesItem.ChannelGroup(id=self.shared_utils.wan_ha_port_channel_id, mode="active"),
@@ -385,8 +379,7 @@ class EthernetInterfacesMixin(Protocol):
                 self.structured_config.ethernet_interfaces.append_new(
                     name=interface,
                     switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False),
-                    peer_type="l3_interface",
-                    peer=self.shared_utils.wan_ha_peer,
+                    metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(peer=self.shared_utils.wan_ha_peer, peer_type="l3_interface"),
                     shutdown=False,
                     description=description or None,
                     ip_address=self.shared_utils.wan_ha_ip_addresses[index],

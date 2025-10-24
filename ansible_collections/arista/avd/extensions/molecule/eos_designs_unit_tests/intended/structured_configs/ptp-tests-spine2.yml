@@ -18,9 +18,10 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: ptp-tests-leaf3
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: ptp-tests-leaf3
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet16
@@ -28,9 +29,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.1.6/31
-  peer: ptp-tests-leaf4
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: ptp-tests-leaf4
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet17
@@ -38,9 +40,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.1.10/31
-  peer: ptp-tests-leaf5
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: ptp-tests-leaf5
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet18
@@ -57,9 +60,10 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: ptp-tests-leaf6
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: ptp-tests-leaf6
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet6
@@ -75,9 +79,10 @@ ethernet_interfaces:
     sync_message:
       interval: 2
     transport: ipv4
-  peer: ptp-tests-spine1
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet7
@@ -93,9 +98,10 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: ptp-tests-spine1
-  peer_interface: Ethernet7
-  peer_type: spine
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet7
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet8
@@ -111,9 +117,10 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: ptp-tests-spine1
-  peer_interface: Ethernet8
-  peer_type: spine
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet8
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet9
@@ -129,9 +136,10 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: ptp-tests-spine1
-  peer_interface: Ethernet9
-  peer_type: spine
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet9
+    peer_type: spine
   switchport:
     enabled: false
 hostname: ptp-tests-spine2
