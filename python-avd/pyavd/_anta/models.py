@@ -189,27 +189,15 @@ class DeviceTestContext:
         return BgpNeighbor(ip_address=ip_interface(neighbor.ip_address).ip, vrf=vrf, update_source=update_source)
 
     @cached_property
-    def vxlan_interface_item(self) -> InterfaceItem | None:
+    def vxlan_source_interface_status(self) -> EosCliConfigGen.DpsInterfacesItem | EosCliConfigGen.LoopbackInterfacesItem | None:
         """Returns the source interface item from structured configs."""
         source_interface = self.structured_config.vxlan_interface.vxlan1.vxlan.source_interface
-        l2vnis = self.structured_config.vxlan_interface.vxlan1.vxlan.vlans
-        l3vnis = self.structured_config.vxlan_interface.vxlan1.vxlan.vrfs
 
         # Fetch the source interface details from structured config
-        interface_item = None
+        source_interface_item = None
         if source_interface:
             if dps_item := self.structured_config.dps_interfaces.get(source_interface, None):
-                interface_item = dps_item
+                source_interface_item = dps_item
             elif loopback_item := self.structured_config.loopback_interfaces.get(source_interface, None):
-                interface_item = loopback_item
-
-        # Add interface details
-        if self.structured_config.vxlan_interface.vxlan1.vxlan.shutdown:
-            return InterfaceItem(name="Vxlan1", status="down")
-        if not interface_item or interface_item.shutdown:
-            LOGGER.debug("<Vxlan1> skipped - Interface is down due to source interface is operationally down")
-            return None
-        if not l2vnis and not l3vnis:
-            LOGGER.debug("<Vxlan1> skipped - Interface is down due to no L2VNIs and L3VNIs configured")
-            return None
-        return InterfaceItem(name="Vxlan1", status="up")
+                source_interface_item = loopback_item
+        return source_interface_item

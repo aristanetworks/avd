@@ -95,6 +95,10 @@ class LogMessage(Enum):
     INTERFACE_NO_IP = "{interface} skipped - No IP address configured"
     INTERFACE_UNNUMBERED = "{interface} skipped - IP unnumbered interface"
 
+    # Vxlan interface state messages
+    SOURCE_INTERFACE_SHUTDOWN = "{interface} skipped - Source interface {source_interface} is shutdown"
+    VNI_NOT_CONFIGURED = "{interface} skipped - Interface is shutdown due to no L2VNIs and L3VNIs configured"
+
     # WAN-specific messages
     PATH_GROUP_NO_STUN_INTERFACE = "path group {path_group} skipped - No STUN client interfaces found"
     PATH_GROUP_NO_LOCAL_INTERFACES = "path group {path_group} skipped - No local interfaces found"
