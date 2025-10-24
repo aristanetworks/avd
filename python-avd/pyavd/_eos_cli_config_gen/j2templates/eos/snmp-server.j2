@@ -170,7 +170,7 @@ snmp-server location {{ snmp_server.location }}
 {%         endif %}
 {{ user_cli }}
 {%     endfor %}
-{%     for host in snmp_server.hosts | arista.avd.natural_sort('host') %}
+{%     for host in snmp_server.hosts | sort(attribute='host') %}
 {%         if host.host is arista.avd.defined %}
 {%             set host_cli = "snmp-server host " ~ host.host %}
 {%             if host.vrf is arista.avd.defined %}
