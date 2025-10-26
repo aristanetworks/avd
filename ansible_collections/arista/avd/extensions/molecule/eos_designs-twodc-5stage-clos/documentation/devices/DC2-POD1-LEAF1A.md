@@ -314,9 +314,9 @@ interface Loopback101
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
-| Vlan4092 | Inband Management | default | - | False |
+| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
+| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
+| Vlan4092 | Inband Management | default | - | False | - | - |
 
 ##### IPv4
 

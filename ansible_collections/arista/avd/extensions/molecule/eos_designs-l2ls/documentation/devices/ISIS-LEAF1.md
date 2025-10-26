@@ -174,9 +174,9 @@ interface Port-Channel1
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
-| Vlan4092 | Inband Management | default | 1500 | False |
+| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
+| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
+| Vlan4092 | Inband Management | default | 1500 | False | - | - |
 
 ##### IPv4
 

@@ -405,9 +405,9 @@ interface Port-Channel3
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
-| Vlan4094 | MLAG | default | 1500 | False |
+| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
+| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
+| Vlan4094 | MLAG | default | 1500 | False | - | - |
 
 ##### IPv4
 

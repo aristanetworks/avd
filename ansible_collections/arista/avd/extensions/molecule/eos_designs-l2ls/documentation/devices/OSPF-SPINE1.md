@@ -306,11 +306,11 @@ interface Loopback0
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
-| Vlan100 | SVI_100 | default | - | False |
-| Vlan4092 | Inband Management | default | 1500 | False |
-| Vlan4094 | MLAG | default | 9214 | False |
+| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
+| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
+| Vlan100 | SVI_100 | default | - | False | - | - |
+| Vlan4092 | Inband Management | default | 1500 | False | - | - |
+| Vlan4094 | MLAG | default | 9214 | False | - | - |
 
 ##### IPv4
 

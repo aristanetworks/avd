@@ -467,14 +467,14 @@ interface Loopback1
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
-| Vlan42 | RED-TEST | RED | - | False |
-| Vlan666 | BLUE-TEST | BLUE | - | False |
-| Vlan3099 | MLAG_L3_VRF_BLUE | BLUE | 9214 | False |
-| Vlan3100 | MLAG_L3_VRF_RED | RED | 9214 | False |
-| Vlan4093 | MLAG_L3 | default | 9214 | False |
-| Vlan4094 | MLAG | default | 9214 | False |
+| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
+| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
+| Vlan42 | RED-TEST | RED | - | False | - | - |
+| Vlan666 | BLUE-TEST | BLUE | - | False | - | - |
+| Vlan3099 | MLAG_L3_VRF_BLUE | BLUE | 9214 | False | - | - |
+| Vlan3100 | MLAG_L3_VRF_RED | RED | 9214 | False | - | - |
+| Vlan4093 | MLAG_L3 | default | 9214 | False | - | - |
+| Vlan4094 | MLAG | default | 9214 | False | - | - |
 
 ##### IPv4
 

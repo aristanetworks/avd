@@ -469,20 +469,20 @@ interface Loopback0
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
-| Vlan10 | Inband Management | default | 1500 | False |
-| Vlan110 | IDF1-Data | default | - | False |
-| Vlan120 | IDF1-Voice | default | - | False |
-| Vlan130 | IDF1-Guest | default | - | False |
-| Vlan210 | IDF2-Data | default | - | False |
-| Vlan220 | IDF2-Voice | default | - | False |
-| Vlan230 | IDF2-Guest | default | - | False |
-| Vlan310 | IDF3-Data | default | - | False |
-| Vlan320 | IDF3-Voice | default | - | False |
-| Vlan330 | IDF3-Guest | default | - | False |
-| Vlan4093 | MLAG_L3 | default | 1500 | False |
-| Vlan4094 | MLAG | default | 1500 | False |
+| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
+| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
+| Vlan10 | Inband Management | default | 1500 | False | - | - |
+| Vlan110 | IDF1-Data | default | - | False | - | - |
+| Vlan120 | IDF1-Voice | default | - | False | - | - |
+| Vlan130 | IDF1-Guest | default | - | False | - | - |
+| Vlan210 | IDF2-Data | default | - | False | - | - |
+| Vlan220 | IDF2-Voice | default | - | False | - | - |
+| Vlan230 | IDF2-Guest | default | - | False | - | - |
+| Vlan310 | IDF3-Data | default | - | False | - | - |
+| Vlan320 | IDF3-Voice | default | - | False | - | - |
+| Vlan330 | IDF3-Guest | default | - | False | - | - |
+| Vlan4093 | MLAG_L3 | default | 1500 | False | - | - |
+| Vlan4094 | MLAG | default | 1500 | False | - | - |
 
 ##### IPv4
 

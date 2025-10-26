@@ -501,19 +501,19 @@ interface Loopback12
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
-| Vlan11 | VRF10_VLAN11 | VRF10 | - | False |
-| Vlan12 | VRF10_VLAN12 | VRF10 | - | False |
-| Vlan21 | VRF11_VLAN21 | VRF11 | - | False |
-| Vlan22 | VRF11_VLAN22 | VRF11 | - | False |
-| Vlan31 | VRF12_VLAN31 | VRF12 | - | False |
-| Vlan32 | VRF12_VLAN32 | VRF12 | - | False |
-| Vlan3009 | MLAG_L3_VRF_VRF10 | VRF10 | 1500 | False |
-| Vlan3010 | MLAG_L3_VRF_VRF11 | VRF11 | 1500 | False |
-| Vlan3011 | MLAG_L3_VRF_VRF12 | VRF12 | 1500 | False |
-| Vlan4093 | MLAG_L3 | default | 1500 | False |
-| Vlan4094 | MLAG | default | 1500 | False |
+| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
+| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
+| Vlan11 | VRF10_VLAN11 | VRF10 | - | False | - | - |
+| Vlan12 | VRF10_VLAN12 | VRF10 | - | False | - | - |
+| Vlan21 | VRF11_VLAN21 | VRF11 | - | False | - | - |
+| Vlan22 | VRF11_VLAN22 | VRF11 | - | False | - | - |
+| Vlan31 | VRF12_VLAN31 | VRF12 | - | False | - | - |
+| Vlan32 | VRF12_VLAN32 | VRF12 | - | False | - | - |
+| Vlan3009 | MLAG_L3_VRF_VRF10 | VRF10 | 1500 | False | - | - |
+| Vlan3010 | MLAG_L3_VRF_VRF11 | VRF11 | 1500 | False | - | - |
+| Vlan3011 | MLAG_L3_VRF_VRF12 | VRF12 | 1500 | False | - | - |
+| Vlan4093 | MLAG_L3 | default | 1500 | False | - | - |
+| Vlan4094 | MLAG | default | 1500 | False | - | - |
 
 ##### IPv4
 
