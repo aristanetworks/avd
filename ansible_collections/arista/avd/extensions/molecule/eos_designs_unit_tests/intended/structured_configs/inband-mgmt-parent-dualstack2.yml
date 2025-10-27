@@ -386,15 +386,17 @@ vlan_interfaces:
   ipv6_address: 2a00:105::3/64
   ipv6_virtual_router_addresses:
   - 2a00:105::1
-  tenant: INBAND_MGMT_TESTS
+  metadata:
+    tenant: INBAND_MGMT_TESTS
 - name: Vlan3000
   description: MLAG_L3_VRF_INBANDMGMT
   shutdown: false
   vrf: INBANDMGMT
   ip_address: 100.64.1.5/31
   mtu: 9214
-  tenant: INBAND_MGMT_TESTS
-  type: underlay_peering
+  metadata:
+    tenant: INBAND_MGMT_TESTS
+    type: underlay_peering
 - name: Vlan104
   description: Inband Management
   shutdown: false

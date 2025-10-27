@@ -387,41 +387,47 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.11.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan12
   description: VRF10_VLAN12
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan3009
   description: MLAG_L3_VRF_VRF10
   shutdown: false
   vrf: VRF10
   ip_address: 10.255.1.97/31
   mtu: 1500
-  tenant: TENANT1
-  type: underlay_peering
+  metadata:
+    tenant: TENANT1
+    type: underlay_peering
 - name: Vlan21
   description: VRF11_VLAN21
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.21.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan22
   description: VRF11_VLAN22
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.22.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan3010
   description: MLAG_L3_VRF_VRF11
   shutdown: false
   vrf: VRF11
   ip_address: 10.255.1.97/31
   mtu: 1500
-  tenant: TENANT1
-  type: underlay_peering
+  metadata:
+    tenant: TENANT1
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:

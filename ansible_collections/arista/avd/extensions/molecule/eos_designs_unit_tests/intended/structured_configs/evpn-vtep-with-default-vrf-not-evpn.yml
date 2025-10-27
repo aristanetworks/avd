@@ -93,7 +93,8 @@ vlan_interfaces:
   description: SVI-110
   shutdown: false
   ip_address_virtual: 10.1.10.1
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 vlan_internal_order:
   allocation: ascending
   range:
