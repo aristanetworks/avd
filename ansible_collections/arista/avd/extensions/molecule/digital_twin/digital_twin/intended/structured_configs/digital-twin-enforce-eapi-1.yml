@@ -6,7 +6,6 @@ enable_password:
 hostname: digital-twin-enforce-eapi-1
 ip_igmp_snooping:
   globally_enabled: true
-ip_routing: true
 management_api_http:
   enable_https: true
   enable_vrfs:
