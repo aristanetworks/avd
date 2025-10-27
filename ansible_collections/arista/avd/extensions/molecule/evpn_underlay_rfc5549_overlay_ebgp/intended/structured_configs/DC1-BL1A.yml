@@ -19,9 +19,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE1
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -29,9 +30,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE2
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -39,9 +41,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE3
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet4
@@ -49,9 +52,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE4
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet9
@@ -59,9 +63,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-BL1B
-  peer_interface: Ethernet9
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL1B
+    peer_interface: Ethernet9
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet10
@@ -69,9 +74,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-BL1B
-  peer_interface: Ethernet10
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL1B
+    peer_interface: Ethernet10
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet11
@@ -79,9 +85,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.23.23.1/30
-  peer: outside-r1
-  peer_interface: other1
-  peer_type: other
+  metadata:
+    peer: outside-r1
+    peer_interface: other1
+    peer_type: other
   switchport:
     enabled: false
 - name: Ethernet4000
@@ -89,9 +96,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.1.2.3/12
-  peer: MY-own-peer
-  peer_interface: Ethernet123
-  peer_type: my_precious
+  metadata:
+    peer: MY-own-peer
+    peer_interface: Ethernet123
+    peer_type: my_precious
   switchport:
     enabled: false
 hostname: DC1-BL1A

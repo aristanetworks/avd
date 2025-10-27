@@ -13,9 +13,10 @@ ethernet_interfaces:
   service_policy:
     qos:
       input: TEST_POLICY
-  peer: peer1
-  peer_interface: eth1
-  peer_type: l3_interface
+  metadata:
+    peer: peer1
+    peer_interface: eth1
+    peer_type: l3_interface
   sflow:
     enable: true
   switchport:
@@ -28,8 +29,9 @@ ethernet_interfaces:
   shutdown: false
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer: peer2
-  peer_type: l3_interface
+  metadata:
+    peer: peer2
+    peer_type: l3_interface
   sflow:
     enable: true
   switchport:
@@ -39,8 +41,9 @@ ethernet_interfaces:
   shutdown: true
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer: peer3
-  peer_type: l3_interface
+  metadata:
+    peer: peer3
+    peer_type: l3_interface
   sflow:
     enable: true
   switchport:
@@ -48,7 +51,8 @@ ethernet_interfaces:
 - name: Ethernet43
   shutdown: true
   ip_address: 192.168.42.42/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   sflow:
     enable: true
   switchport:
@@ -57,7 +61,8 @@ ethernet_interfaces:
   description: Telecom_10220
   shutdown: false
   ip_address: 192.168.44.44/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   sflow:
     enable: true
   switchport:
@@ -68,7 +73,8 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 10
   ip_address: 192.168.44.45/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   sflow:
     enable: true
 hostname: node-type-l3-interfaces

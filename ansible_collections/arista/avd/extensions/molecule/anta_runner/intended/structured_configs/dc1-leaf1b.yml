@@ -11,26 +11,29 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: dc1-leaf1a
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
+  metadata:
+    peer: dc1-leaf1a
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
 - name: Ethernet4
   description: MLAG_dc1-leaf1a_Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: dc1-leaf1a
-  peer_interface: Ethernet4
-  peer_type: mlag_peer
+  metadata:
+    peer: dc1-leaf1a
+    peer_interface: Ethernet4
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_dc1-spine1_Ethernet2
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.5/31
-  peer: dc1-spine1
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: dc1-spine1
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -38,9 +41,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.7/31
-  peer: dc1-spine2
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: dc1-spine2
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet6
@@ -48,9 +52,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.2/31
-  peer: dc1-wan1
-  peer_interface: Ethernet2
-  peer_type: wan_router
+  metadata:
+    peer: dc1-wan1
+    peer_interface: Ethernet2
+    peer_type: wan_router
   switchport:
     enabled: false
 - name: Ethernet7
@@ -58,9 +63,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.6/31
-  peer: dc1-wan2
-  peer_interface: Ethernet2
-  peer_type: wan_router
+  metadata:
+    peer: dc1-wan2
+    peer_interface: Ethernet2
+    peer_type: wan_router
   switchport:
     enabled: false
 - name: Ethernet8
@@ -69,26 +75,29 @@ ethernet_interfaces:
   channel_group:
     id: 8
     mode: active
-  peer: dc1-leaf1c
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: dc1-leaf1c
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet5
   description: SERVER_dc1-leaf1-server1_PCI2
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: dc1-leaf1-server1
-  peer_interface: PCI2
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: dc1-leaf1-server1
+    peer_interface: PCI2
+    peer_type: server
+    peer_key: servers
   validate_state: false
 - name: Ethernet41
   description: Cameras
   shutdown: false
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -98,8 +107,9 @@ ethernet_interfaces:
   description: Cameras
   shutdown: false
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -109,8 +119,9 @@ ethernet_interfaces:
   description: Cameras
   shutdown: false
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -120,8 +131,9 @@ ethernet_interfaces:
   description: Cameras
   shutdown: false
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -131,8 +143,9 @@ ethernet_interfaces:
   description: Cameras
   shutdown: false
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -142,8 +155,9 @@ ethernet_interfaces:
   description: Cameras
   shutdown: false
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -153,8 +167,9 @@ ethernet_interfaces:
   description: Cameras
   shutdown: false
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -164,8 +179,9 @@ ethernet_interfaces:
   description: Cameras
   shutdown: false
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true
@@ -175,8 +191,9 @@ ethernet_interfaces:
   description: Cameras
   shutdown: false
   spanning_tree_portfast: edge
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   validate_state: false
   switchport:
     enabled: true

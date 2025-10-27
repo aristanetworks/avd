@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_address: 2001:db8:2:4::2/64
-  peer: IPV6_NUMBERED_SPINE1
-  peer_interface: Ethernet3
-  peer_type: spine
+  metadata:
+    peer: IPV6_NUMBERED_SPINE1
+    peer_interface: Ethernet3
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -19,9 +20,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_address: 2001:db8:2:5::2/64
-  peer: IPV6_NUMBERED_SPINE2
-  peer_interface: Ethernet3
-  peer_type: spine
+  metadata:
+    peer: IPV6_NUMBERED_SPINE2
+    peer_interface: Ethernet3
+    peer_type: spine
   switchport:
     enabled: false
 hostname: IPV6_NUMBERED_LEAF2a

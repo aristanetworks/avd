@@ -8,9 +8,10 @@ ethernet_interfaces:
   description: L2_add-subnets-to-redistribution-in-default-vrf-with-sequence30_Ethernet2
   shutdown: false
   spanning_tree_portfast: edge
-  peer: add-subnets-to-redistribution-in-default-vrf-with-sequence30
-  peer_interface: Ethernet2
-  peer_type: wan_router
+  metadata:
+    peer: add-subnets-to-redistribution-in-default-vrf-with-sequence30
+    peer_interface: Ethernet2
+    peer_type: wan_router
   switchport:
     enabled: true
     mode: trunk
