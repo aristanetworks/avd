@@ -145,7 +145,8 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF1
   ip_address: 172.16.11.1/24
-  tenant: PTP
+  metadata:
+    tenant: PTP
 vlan_internal_order:
   allocation: ascending
   range:

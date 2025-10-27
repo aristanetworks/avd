@@ -332,18 +332,20 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.30.1/24
-  tenant: Tenant_A
-  tags:
-  - app
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - app
+    - erp1
 - name: Vlan131
   description: Tenant_A_APP_Zone_2
   shutdown: false
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.31.1/24
-  tenant: Tenant_A
-  tags:
-  - app
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - app
 - name: Vlan120
   description: Tenant_A_WEB_Zone_1
   shutdown: false
@@ -353,19 +355,21 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     source_interface: lo100
     vrf: TEST
-  tenant: Tenant_A
-  tags:
-  - web
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
+    - erp1
 - name: Vlan121
   description: Tenant_A_WEBZone_2
   shutdown: true
   vrf: Tenant_A_WEB_Zone
   ip_address_virtual: 10.1.10.254/24
   mtu: 1560
-  tenant: Tenant_A
-  tags:
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
 - name: Vlan122
   description: Tenant_a_WEB_DHCP_no_source_int_no_vrf
   shutdown: false
@@ -373,9 +377,10 @@ vlan_interfaces:
   ip_address_virtual: 10.1.22.1/24
   ip_helpers:
   - ip_helper: 1.1.1.1
-  tenant: Tenant_A
-  tags:
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
 - name: Vlan123
   description: Tenant_a_WEB_DHCP_source_int_no_vrf
   shutdown: false
@@ -384,9 +389,10 @@ vlan_interfaces:
   ip_helpers:
   - ip_helper: 1.1.1.1
     source_interface: lo100
-  tenant: Tenant_A
-  tags:
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
 - name: Vlan124
   description: Tenant_a_WEB_DHCP_vrf_no_source_int
   shutdown: false
@@ -395,9 +401,10 @@ vlan_interfaces:
   ip_helpers:
   - ip_helper: 1.1.1.1
     vrf: TEST
-  tenant: Tenant_A
-  tags:
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
 vlan_internal_order:
   allocation: ascending
   range:
