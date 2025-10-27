@@ -277,13 +277,15 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.11.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan12
   description: VRF10_VLAN12
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan21
   description: VRF11_VLAN21
   shutdown: false
@@ -291,13 +293,15 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:DB8:21::1/48
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan22
   description: VRF11_VLAN22
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.22.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan31
   description: VRF11_VLAN21
   shutdown: false
@@ -305,7 +309,8 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:DB8:32::1/48
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan32
   description: VRF11_VLAN22
   shutdown: false
@@ -313,7 +318,8 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:DB8:33::1/48
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vlan_internal_order:
   allocation: ascending
   range:

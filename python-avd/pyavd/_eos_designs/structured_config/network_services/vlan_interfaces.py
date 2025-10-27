@@ -37,7 +37,7 @@ class VlanInterfacesMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 for svi in vrf.svis:
-                    self.structured_config.vlan_interfaces.append(self._get_vlan_interface_config_for_svi(svi, vrf, tenant), ignore_fields=("tenant",))
+                    self.structured_config.vlan_interfaces.append(self._get_vlan_interface_config_for_svi(svi, vrf, tenant), ignore_fields=("metadata",))
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Continue to next VRF if mlag vlan_id is not set
@@ -66,8 +66,6 @@ class VlanInterfacesMixin(Protocol):
             interface_ip = get_ip_from_ip_prefix(interface_ip)
         vlan_interface_config = EosCliConfigGen.VlanInterfacesItem(
             name=interface_name,
-            tenant=tenant.name,
-            tags=EosCliConfigGen.VlanInterfacesItem.Tags(svi._get("tags", [])),  # Historic behavior is to not output the default ["all"]
             description=default(svi.description, svi.name),
             shutdown=not default(svi.enabled, False),  # noqa: FBT003
             ip_address=svi.ip_address,
@@ -78,6 +76,9 @@ class VlanInterfacesMixin(Protocol):
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
+        vlan_interface_config.metadata._update(
+            tenant=tenant.name, tags=EosCliConfigGen.VlanInterfacesItem.Metadata.Tags(svi._get("tags", []))
+        )  # Historic behavior is to not output the default ["all"])
 
         if svi.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl(
@@ -175,8 +176,6 @@ class VlanInterfacesMixin(Protocol):
         """Build full config for MLAG peering SVI for the given VRF."""
         vlan_interface_config = EosCliConfigGen.VlanInterfacesItem(
             name=f"Vlan{vlan_id}",
-            tenant=tenant.name,
-            type="underlay_peering",
             shutdown=False,
             description=self.shared_utils.interface_descriptions.mlag_peer_l3_vrf_svi(
                 InterfaceDescriptionData(shared_utils=self.shared_utils, interface=f"Vlan{vlan_id}", vrf=vrf.name, vlan=vlan_id)
@@ -184,6 +183,7 @@ class VlanInterfacesMixin(Protocol):
             vrf=vrf.name,
             mtu=self.shared_utils.get_interface_mtu(f"Vlan{vlan_id}", self.shared_utils.p2p_uplinks_mtu),
         )
+        vlan_interface_config.metadata._update(tenant=tenant.name, type="underlay_peering")
         vlan_interface_config._update(**self._get_vlan_ip_config_for_mlag_peering(vrf))
         return vlan_interface_config
 

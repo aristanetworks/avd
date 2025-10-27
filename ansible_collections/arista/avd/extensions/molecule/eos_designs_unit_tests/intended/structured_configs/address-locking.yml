@@ -127,7 +127,8 @@ vlan_interfaces:
   description: test-address-locking-2
   shutdown: false
   vrf: TEST_ADDRESS_LOCKING
-  tenant: TENANT2
+  metadata:
+    tenant: TENANT2
 vlan_internal_order:
   allocation: ascending
   range:

@@ -368,15 +368,17 @@ vlan_interfaces:
   description: VLAN11
   shutdown: false
   vrf: VRF1
-  tenant: SFLOW
+  metadata:
+    tenant: SFLOW
 - name: Vlan3000
   description: MLAG_L3_VRF_VRF1
   shutdown: false
   vrf: VRF1
   ip_address: 10.254.1.105/31
   mtu: 9214
-  tenant: SFLOW
-  type: underlay_peering
+  metadata:
+    tenant: SFLOW
+    type: underlay_peering
 - name: Vlan4092
   description: Inband Management
   shutdown: false

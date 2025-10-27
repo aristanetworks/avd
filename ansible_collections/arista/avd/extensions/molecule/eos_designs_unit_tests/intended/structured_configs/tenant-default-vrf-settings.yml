@@ -145,9 +145,10 @@ vlan_interfaces:
 - name: Vlan111
   description: svi_with_default_vrf
   shutdown: true
-  tenant: TEST
-  tags:
-  - fabric
+  metadata:
+    tenant: TEST
+    tags:
+    - fabric
 vlan_internal_order:
   allocation: ascending
   range:
