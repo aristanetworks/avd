@@ -4,7 +4,7 @@ ansible:
     backend: ansible-playbook
     args:
       ansible_playbook:
-        - --inventory=inventory/hosts.yml
+        - --inventory=inventory/
   env:
     ANSIBLE_FORCE_COLOR: true
   cfg:

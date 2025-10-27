@@ -4,7 +4,7 @@ ansible:
     backend: ansible-playbook
     args:
       ansible_playbook:
-        - --inventory=inventory/inventory.yml
+        - --inventory=inventory/
   env:
     ANSIBLE_FORCE_COLOR: true
   cfg:

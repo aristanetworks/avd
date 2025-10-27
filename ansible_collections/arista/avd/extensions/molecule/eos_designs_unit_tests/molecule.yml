@@ -4,7 +4,7 @@ ansible:
     backend: ansible-playbook
     args:
       ansible_playbook:
-        - --inventory=inventory/hosts.yml
+        - --inventory=inventory/
   env:
     ANSIBLE_FORCE_COLOR: true
     PYTHONPATH: ${PYTHONPATH}:${MOLECULE_SCENARIO_DIRECTORY}/custom_modules
