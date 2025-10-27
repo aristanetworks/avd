@@ -90,7 +90,8 @@ ethernet_interfaces:
   shutdown: false
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet52
@@ -100,8 +101,9 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.10.10.1/24
-  peer: cv-pathfinder-edge3B
-  peer_type: l3_interface
+  metadata:
+    peer: cv-pathfinder-edge3B
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

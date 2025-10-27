@@ -22,9 +22,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.0/31
-  peer: DC1-LEAF1A
-  peer_interface: Ethernet27
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF1A
+    peer_interface: Ethernet27
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3/1
@@ -33,9 +34,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.32/31
-  peer: DC1-LEAF2A
-  peer_interface: Ethernet49/1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF2A
+    peer_interface: Ethernet49/1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4/1
@@ -44,9 +46,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.38/31
-  peer: DC1-LEAF2A
-  peer_interface: Ethernet52/1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF2A
+    peer_interface: Ethernet52/1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet5/1
@@ -55,9 +58,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.64/31
-  peer: DC1-LEAF2B
-  peer_interface: Ethernet49/1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF2B
+    peer_interface: Ethernet49/1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet6/1
@@ -66,9 +70,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.70/31
-  peer: DC1-LEAF2B
-  peer_interface: Ethernet52/1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF2B
+    peer_interface: Ethernet52/1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet7/1
@@ -77,9 +82,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.96/31
-  peer: DC1-SVC3A
-  peer_interface: Ethernet49/1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-SVC3A
+    peer_interface: Ethernet49/1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet9/1
@@ -88,9 +94,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.128/31
-  peer: DC1-SVC3B
-  peer_interface: Ethernet49/1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-SVC3B
+    peer_interface: Ethernet49/1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet18
@@ -99,9 +106,10 @@ ethernet_interfaces:
   speed: forced 40gfull
   mtu: 1500
   ip_address: 10.10.101.6/31
-  peer: MLAG-OSPF-L3LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: MLAG-OSPF-L3LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet19
@@ -110,9 +118,10 @@ ethernet_interfaces:
   speed: forced 40gfull
   mtu: 1500
   ip_address: 10.10.101.0/31
-  peer: MH-LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: MH-LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet20
@@ -121,9 +130,10 @@ ethernet_interfaces:
   speed: forced 40gfull
   mtu: 1500
   ip_address: 10.10.101.2/31
-  peer: MH-LEAF1B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: MH-LEAF1B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet21
@@ -132,9 +142,10 @@ ethernet_interfaces:
   speed: forced 40gfull
   mtu: 1500
   ip_address: 10.10.101.4/31
-  peer: MH-LEAF2A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: MH-LEAF2A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet22
@@ -143,9 +154,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.160/31
-  peer: DC1-BL1A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL1A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet23
@@ -154,9 +166,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.192/31
-  peer: DC1-BL1B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL1B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet24
@@ -165,9 +178,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.224/31
-  peer: DC1-BL2A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL2A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet25
@@ -176,9 +190,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.0/31
-  peer: DC1-BL2B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL2B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet26
@@ -187,9 +202,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.32/31
-  peer: DC1-CL1A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-CL1A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet27
@@ -198,9 +214,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.64/31
-  peer: DC1-CL1B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-CL1B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet28
@@ -209,9 +226,10 @@ ethernet_interfaces:
   speed: 100g-2
   mtu: 1500
   ip_address: 172.31.255.128/31
-  peer: DC1_UNDEPLOYED_LEAF1A
-  peer_interface: Ethernet49/1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1_UNDEPLOYED_LEAF1A
+    peer_interface: Ethernet49/1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet29
@@ -220,9 +238,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.160/31
-  peer: DC1_UNDEPLOYED_LEAF1B
-  peer_interface: Ethernet49/1
-  peer_type: l3leaf
+  metadata:
+    peer: DC1_UNDEPLOYED_LEAF1B
+    peer_interface: Ethernet49/1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet220
@@ -231,9 +250,10 @@ ethernet_interfaces:
   speed: forced 40gfull
   mtu: 1500
   ip_address: 10.10.101.8/31
-  peer: MLAG-OSPF-L3LEAF1B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: MLAG-OSPF-L3LEAF1B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: DC1-SPINE1

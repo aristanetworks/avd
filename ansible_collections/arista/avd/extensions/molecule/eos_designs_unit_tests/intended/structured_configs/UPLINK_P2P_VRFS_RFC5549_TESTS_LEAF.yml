@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ipv6_enable: true
-  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
-  peer_interface: Ethernet3
-  peer_type: l3spine
+  metadata:
+    peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
+    peer_interface: Ethernet3
+    peer_type: l3spine
   switchport:
     enabled: false
 - name: Ethernet1.100
@@ -22,9 +23,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 100
   ipv6_enable: true
-  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
-  peer_interface: Ethernet3.100
-  peer_type: l3spine
+  metadata:
+    peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
+    peer_interface: Ethernet3.100
+    peer_type: l3spine
 - name: Ethernet1.42
   description: P2P_UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1_Ethernet3.42_VRF_PROD
   shutdown: false
@@ -33,9 +35,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 42
   ipv6_enable: true
-  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
-  peer_interface: Ethernet3.42
-  peer_type: l3spine
+  metadata:
+    peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
+    peer_interface: Ethernet3.42
+    peer_type: l3spine
 hostname: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF
 ip_igmp_snooping:
   globally_enabled: true

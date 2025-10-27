@@ -11,9 +11,10 @@ ethernet_interfaces:
   ip_address: 192.168.1.13/31
   ptp:
     enable: true
-  peer: ptp-tests-spine1
-  peer_interface: Ethernet18
-  peer_type: spine
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet18
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -23,9 +24,10 @@ ethernet_interfaces:
   ip_address: 192.168.1.15/31
   ptp:
     enable: true
-  peer: ptp-tests-spine2
-  peer_interface: Ethernet18
-  peer_type: spine
+  metadata:
+    peer: ptp-tests-spine2
+    peer_interface: Ethernet18
+    peer_type: spine
   switchport:
     enabled: false
 hostname: ptp-tests-leaf6

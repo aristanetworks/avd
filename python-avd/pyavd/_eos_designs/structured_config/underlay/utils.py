@@ -158,12 +158,12 @@ class UtilsMixin(Protocol):
         is_subinterface = "." in l3_generic_interface.name
         interface._update(
             name=l3_generic_interface.name,
-            peer=l3_generic_interface.peer,
             ip_address=l3_generic_interface.ip_address,
             shutdown=not l3_generic_interface.enabled,
             service_profile=l3_generic_interface.qos_profile,
             eos_cli=l3_generic_interface.raw_eos_cli,
         )
+        interface.metadata.peer = l3_generic_interface.peer
         interface.switchport.enabled = False if "." not in l3_generic_interface.name else None
 
         if is_subinterface:
@@ -235,20 +235,19 @@ class UtilsMixin(Protocol):
         interface_name = link.interface if is_native else f"{link.interface}.{svi.id}"
         subinterface = EosCliConfigGen.EthernetInterfacesItem(
             name=interface_name,
-            peer=link.peer,
-            peer_interface=f"{link.peer_interface} VLAN {svi.id}",
-            peer_type=link.peer_type,
             description=default(svi.description, svi.name),
             shutdown=not default(svi.enabled, False),  # noqa: FBT003
             switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False) if is_native else Undefined,
             encapsulation_dot1q=EosCliConfigGen.EthernetInterfacesItem.EncapsulationDot1q(vlan=svi.id) if not is_native else Undefined,
             vrf=vrf.name if vrf.name != "default" else None,
             ip_address=svi.ip_address,
+            ip_address_secondaries=EosCliConfigGen.EthernetInterfacesItem.IpAddressSecondaries(svi.ip_address_secondaries),
             ipv6_address=svi.ipv6_address,
             ipv6_enable=svi.ipv6_enable,
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
+        subinterface.metadata._update(peer_interface=f"{link.peer_interface} VLAN {svi.id}", peer=link.peer, peer_type=link.peer_type)
 
         if flow_tracker := self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker):
             subinterface.flow_tracker = flow_tracker
