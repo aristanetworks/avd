@@ -23432,8 +23432,10 @@ keys:
                     keys:
                       decap:
                         type: bool
+                        description: VXLAN decapsulated packet type match.
                       decap_exclude:
                         type: bool
+                        description: Non-VXLAN decapsulated packet type match.
                   actions:
                     type: dict
                     keys:

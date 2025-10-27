@@ -63118,7 +63118,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"decap": {"type": bool}, "decap_exclude": {"type": bool}}
                     decap: bool | None
+                    """VXLAN decapsulated packet type match."""
                     decap_exclude: bool | None
+                    """Non-VXLAN decapsulated packet type match."""
 
                     if TYPE_CHECKING:
 
@@ -63130,8 +63132,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                decap: decap
-                                decap_exclude: decap_exclude
+                                decap: VXLAN decapsulated packet type match.
+                                decap_exclude: Non-VXLAN decapsulated packet type match.
 
                             """
 
