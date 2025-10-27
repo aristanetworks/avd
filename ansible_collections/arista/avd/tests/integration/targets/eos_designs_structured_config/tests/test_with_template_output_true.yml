@@ -1,17 +1,21 @@
+---
 - name: Test with template_output true
-  ignore_errors: false
-  register: result
-  vars:
-    custom_structured_configuration__inline_jinja_value: "test"
-    custom_structured_configuration__inline_jinja: "{{ _inline_jinja_value }}"
+  when: ansible_version.major == 2 and ansible_version.minor < 19
+  block:
+    - name: Test with template_output true
+      ignore_errors: false
+      register: result
+      vars:
+        custom_structured_configuration__inline_jinja_value: "test"
+        custom_structured_configuration__inline_jinja: "{{ _inline_jinja_value }}"
 
-  arista.avd.eos_designs_structured_config:
-    template_output: true
+      arista.avd.eos_designs_structured_config:
+        template_output: true
 
-- assert:
-    that:
-      - result is success
-      - result.ansible_facts is defined
-      - result.ansible_facts._inline_jinja_value == "test"
-      - result.ansible_facts._inline_jinja is defined
-      - result.ansible_facts._inline_jinja == "test"
+    - ansible.builtin.assert:
+        that:
+          - result is success
+          - result.ansible_facts is defined
+          - result.ansible_facts._inline_jinja_value == "test"
+          - result.ansible_facts._inline_jinja is defined
+          - result.ansible_facts._inline_jinja == "test"
