@@ -95,9 +95,9 @@ vlan 4092
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
-| Vlan4092 | Inband Management | INBAND_MGMT | 1500 | False |
+| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
+| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
+| Vlan4092 | Inband Management | INBAND_MGMT | 1500 | False | - | - |
 
 ##### IPv4
 
