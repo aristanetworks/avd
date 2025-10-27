@@ -15561,6 +15561,68 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class IpNameServerGroupsItem(AvdModel):
         """Subclass of AvdModel."""
 
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class NameServersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ip_address": {"type": str}, "priority": {"type": int}}
+                ip_address: str
+                """IPv4 or IPv6 address for DNS server."""
+                priority: int | None
+                """Priority value (lower is first)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ip_address: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        NameServersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ip_address: IPv4 or IPv6 address for DNS server.
+                            priority: Priority value (lower is first).
+
+                        """
+
+            class NameServers(AvdIndexedList[str, NameServersItem]):
+                """Subclass of AvdIndexedList with `NameServersItem` items. Primary key is `ip_address` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ip_address"
+
+            NameServers._item_type = NameServersItem
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "name_servers": {"type": NameServers}}
+            name: str
+            """VRF name. Use "default" for the default VRF."""
+            name_servers: NameServers
+            """Subclass of AvdIndexedList with `NameServersItem` items. Primary key is `ip_address` (`str`)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, name_servers: NameServers | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: VRF name. Use "default" for the default VRF.
+                        name_servers: Subclass of AvdIndexedList with `NameServersItem` items. Primary key is `ip_address` (`str`).
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
         class NameServersItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -15602,11 +15664,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "name": {"type": str},
+            "vrfs": {"type": Vrfs},
             "name_servers": {"type": NameServers},
             "dns_domain": {"type": str},
             "ip_domain_lists": {"type": IpDomainLists},
         }
         name: str
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         name_servers: NameServers
         """Subclass of AvdList with `NameServersItem` items."""
         dns_domain: str | None
@@ -15623,6 +15688,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
                 name_servers: NameServers | UndefinedType = Undefined,
                 dns_domain: str | None | UndefinedType = Undefined,
                 ip_domain_lists: IpDomainLists | UndefinedType = Undefined,
@@ -15635,6 +15701,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     name: name
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     name_servers: Subclass of AvdList with `NameServersItem` items.
                     dns_domain: dns_domain
                     ip_domain_lists:
