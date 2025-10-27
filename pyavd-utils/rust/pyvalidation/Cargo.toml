@@ -5,23 +5,23 @@ edition = "2024"
 license.workspace = true
 
 [build-dependencies]
-pyo3-build-config = { version = "0.24.2"}
+pyo3-build-config = { workspace = true }
 
 [dependencies]
 avdschema = { path = "../../../rust/avdschema", features = ["dump_load_files"] }
 included_store = { path = "../../../rust/included_store" }
 validation = { path = "../../../rust/validation", features = ["python_bindings"] }
 
-derive_more = { version = "2.0.1", features = ["display", "from"] }
-log = { version = "0.4.26" }
-pyo3 = { version = "0.24.2", "features" = ["extension-module", "abi3"] }
-pyo3-log = { version = "0.12.1" }
-serde = { version = "1.0.217", features = ["derive"] }
-serde_json = { version = "1.0.135", features = [
+derive_more = { workspace = true, features = ["display", "from"] }
+log = { workspace = true }
+pyo3 = { workspace = true, "features" = ["extension-module", "abi3"] }
+pyo3-log = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true, features = [
     "arbitrary_precision", # To support very big numbers
     "preserve_order",
 ] }
-serde_yaml = { version = "0.9.33" }
+serde_yaml = { workspace = true }
 
 [lib]
 crate-type = ["cdylib", "lib"]
