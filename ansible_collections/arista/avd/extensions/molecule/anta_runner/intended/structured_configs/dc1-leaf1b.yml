@@ -512,6 +512,15 @@ router_bgp:
       connected:
         enabled: true
         route_map: RM-CONN-2-BGP-VRFS
+router_ospf:
+  process_ids:
+  - id: 16
+    vrf: Tenant_A_OSPF
+    passive_interface_default: true
+    router_id: 10.255.11.10
+    no_passive_interfaces:
+    - Ethernet22
+    - Ethernet23
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: mstp

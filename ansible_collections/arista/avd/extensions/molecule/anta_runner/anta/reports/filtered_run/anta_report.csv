@@ -60,6 +60,8 @@ dc1-leaf1b,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with
 dc1-leaf1b,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc1-leaf1b,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
 dc1-leaf1b,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
+dc1-leaf1b,VerifyOSPFMaxLSA,unset,,Verifies all OSPF instances did not cross the maximum LSA threshold.,OSPF
+dc1-leaf1b,VerifyOSPFNeighborState,unset,,Verifies all OSPF neighbors are in FULL state.,OSPF
 dc1-leaf1b,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-leaf1b,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc1-leaf1b,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
