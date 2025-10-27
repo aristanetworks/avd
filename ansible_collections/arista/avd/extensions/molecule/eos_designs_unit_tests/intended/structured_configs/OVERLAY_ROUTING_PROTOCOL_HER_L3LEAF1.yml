@@ -64,26 +64,29 @@ vlan_interfaces:
   description: SVI_ON_ALL_LEAFS
   shutdown: true
   vrf: TEST
-  tenant: TEST
-  tags:
-  - leaf1
-  - leaf2
-  - leaf3
+  metadata:
+    tenant: TEST
+    tags:
+    - leaf1
+    - leaf2
+    - leaf3
 - name: Vlan3901
   description: SVI_ON_LEAF1
   shutdown: true
   vrf: TEST
-  tenant: TEST
-  tags:
-  - leaf1
+  metadata:
+    tenant: TEST
+    tags:
+    - leaf1
 - name: Vlan3902
   description: SVI_ON_LEAF1-2
   shutdown: true
   vrf: TEST
-  tenant: TEST
-  tags:
-  - leaf1
-  - leaf2
+  metadata:
+    tenant: TEST
+    tags:
+    - leaf1
+    - leaf2
 vlan_internal_order:
   allocation: ascending
   range:

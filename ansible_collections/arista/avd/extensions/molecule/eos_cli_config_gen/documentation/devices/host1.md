@@ -6231,6 +6231,7 @@ interface Port-Channel100.102
    encapsulation dot1q vlan 102 inner 110
    vrf C2
    ip address 10.1.2.3/31
+   ip address 10.1.2.5/31 secondary
    logging event storm-control discards
 !
 interface Port-Channel101

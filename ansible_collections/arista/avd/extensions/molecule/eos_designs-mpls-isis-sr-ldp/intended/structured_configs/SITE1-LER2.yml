@@ -509,9 +509,10 @@ vlan_interfaces:
   description: TENANT_B_INSIDE_FW
   shutdown: false
   vrf: TENANT_B_INTRA
-  tenant: TENANT_B
-  tags:
-  - tag1
+  metadata:
+    tenant: TENANT_B
+    tags:
+    - tag1
 vlan_internal_order:
   allocation: ascending
   range:

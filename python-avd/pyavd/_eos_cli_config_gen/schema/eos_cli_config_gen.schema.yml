@@ -12222,6 +12222,11 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask or "dhcp".
+        ip_address_secondaries:
+          type: list
+          items:
+            type: str
+            description: IPv4 address/mask.
         dhcp_client_accept_default_route:
           type: bool
           description: Install default-route obtained via DHCP.
@@ -24423,17 +24428,20 @@ keys:
         pvlan_mapping:
           type: str
           description: List of VLANs as string.
-        tenant:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        tags:
-          type: list
-          items:
-            type: str
-          description: Key only used for documentation or validation purposes.
-        type:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          keys:
+            tenant:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            tags:
+              type: list
+              items:
+                type: str
+              description: Key only used for documentation or validation purposes.
+            type:
+              type: str
+              description: Key only used for documentation or validation purposes.
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the VLAN interface in
