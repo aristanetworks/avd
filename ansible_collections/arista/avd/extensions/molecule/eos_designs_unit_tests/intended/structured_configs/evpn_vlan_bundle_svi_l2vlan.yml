@@ -123,30 +123,34 @@ vlan_interfaces:
   description: SVI_1
   shutdown: false
   vrf: SIT_VRF
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 - name: Vlan1009
   description: SVI_2
   shutdown: false
   vrf: SIT_VRF
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 - name: Vlan1010
   description: SVI_3
   shutdown: false
   vrf: SIT_VRF
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 - name: Vlan1011
   description: SVI_4
   shutdown: false
   vrf: VRF_ID_VNI_NONE
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 vlan_internal_order:
   allocation: ascending
   range:

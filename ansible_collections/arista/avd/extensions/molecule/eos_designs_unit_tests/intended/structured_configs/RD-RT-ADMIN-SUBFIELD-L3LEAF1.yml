@@ -168,41 +168,46 @@ vlan_interfaces:
   shutdown: false
   vrf: TEST1
   ip_address_virtual: 10.0.1.1/24
-  tenant: Tenant_A
-  tags:
-  - test_l3
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - test_l3
 - name: Vlan2
   description: VLAN_2
   shutdown: false
   vrf: TEST1
   ip_address_virtual: 10.0.2.1/24
-  tenant: Tenant_A
-  tags:
-  - test_l3
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - test_l3
 - name: Vlan3
   description: VLAN_3
   shutdown: false
   vrf: TEST1
   ip_address_virtual: 10.0.3.1/24
-  tenant: Tenant_A
-  tags:
-  - test_l3
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - test_l3
 - name: Vlan4
   description: VLAN_4
   shutdown: false
   vrf: TEST1
   ip_address_virtual: 10.0.4.1/24
-  tenant: Tenant_A
-  tags:
-  - test_l3
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - test_l3
 - name: Vlan5
   description: VLAN_5
   shutdown: false
   vrf: TEST1
   ip_address_virtual: 10.0.5.1/24
-  tenant: Tenant_A
-  tags:
-  - test_l3
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - test_l3
 vlan_internal_order:
   allocation: ascending
   range:

@@ -66086,10 +66086,50 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class Tags(AvdList[str]):
-            """Subclass of AvdList with `str` items."""
+        class Metadata(AvdModel):
+            """Subclass of AvdModel."""
 
-        Tags._item_type = str
+            class Tags(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tags._item_type = str
+
+            _fields: ClassVar[dict] = {"tenant": {"type": str}, "tags": {"type": Tags}, "type": {"type": str}}
+            tenant: str | None
+            """Key only used for documentation or validation purposes."""
+            tags: Tags
+            """
+            Key only used for documentation or validation purposes.
+
+            Subclass of AvdList with `str` items.
+            """
+            type: str | None
+            """Key only used for documentation or validation purposes."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    tenant: str | None | UndefinedType = Undefined,
+                    tags: Tags | UndefinedType = Undefined,
+                    type: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Metadata.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        tenant: Key only used for documentation or validation purposes.
+                        tags:
+                           Key only used for documentation or validation purposes.
+
+                           Subclass of AvdList with `str` items.
+                        type: Key only used for documentation or validation purposes.
+
+                    """
 
         _fields: ClassVar[dict] = {
             "name": {"type": str},
@@ -66161,9 +66201,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "traffic_policy_output": {"type": str},
             "ntp_serve": {"type": bool},
             "pvlan_mapping": {"type": str},
-            "tenant": {"type": str},
-            "tags": {"type": Tags},
-            "type": {"type": str},
+            "metadata": {"type": Metadata},
             "eos_cli": {"type": str},
         }
         name: str
@@ -66311,16 +66349,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Enable/disable serving NTP to clients."""
         pvlan_mapping: str | None
         """List of VLANs as string."""
-        tenant: str | None
-        """Key only used for documentation or validation purposes."""
-        tags: Tags
-        """
-        Key only used for documentation or validation purposes.
-
-        Subclass of AvdList with `str` items.
-        """
-        type: str | None
-        """Key only used for documentation or validation purposes."""
+        metadata: Metadata
+        """Subclass of AvdModel."""
         eos_cli: str | None
         """Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration."""
 
@@ -66398,9 +66428,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 traffic_policy_output: str | None | UndefinedType = Undefined,
                 ntp_serve: bool | None | UndefinedType = Undefined,
                 pvlan_mapping: str | None | UndefinedType = Undefined,
-                tenant: str | None | UndefinedType = Undefined,
-                tags: Tags | UndefinedType = Undefined,
-                type: str | None | UndefinedType = Undefined,
+                metadata: Metadata | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -66504,12 +66532,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     traffic_policy_output: Egress traffic-policy.
                     ntp_serve: Enable/disable serving NTP to clients.
                     pvlan_mapping: List of VLANs as string.
-                    tenant: Key only used for documentation or validation purposes.
-                    tags:
-                       Key only used for documentation or validation purposes.
-
-                       Subclass of AvdList with `str` items.
-                    type: Key only used for documentation or validation purposes.
+                    metadata: Subclass of AvdModel.
                     eos_cli: Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
 
                 """

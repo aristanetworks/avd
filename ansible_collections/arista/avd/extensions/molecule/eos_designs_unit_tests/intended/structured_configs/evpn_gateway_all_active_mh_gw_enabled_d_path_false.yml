@@ -205,30 +205,35 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.11.1/24
-  tenant: EVPN_GATEWAY_TESTS
+  metadata:
+    tenant: EVPN_GATEWAY_TESTS
 - name: Vlan12
   description: VRF10_VLAN12
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
-  tenant: EVPN_GATEWAY_TESTS
+  metadata:
+    tenant: EVPN_GATEWAY_TESTS
 - name: Vlan21
   description: VRF11_VLAN21
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.21.1/24
-  tenant: EVPN_GATEWAY_TESTS
+  metadata:
+    tenant: EVPN_GATEWAY_TESTS
 - name: Vlan22
   description: VRF11_VLAN22
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.22.1/24
-  tenant: EVPN_GATEWAY_TESTS
+  metadata:
+    tenant: EVPN_GATEWAY_TESTS
 - name: Vlan300
   description: VRF11_VLAN300
   shutdown: false
   vrf: VRF11
-  tenant: EVPN_GATEWAY_TESTS
+  metadata:
+    tenant: EVPN_GATEWAY_TESTS
 vlan_internal_order:
   allocation: ascending
   range:
