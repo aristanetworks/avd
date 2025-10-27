@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.42.42.205/31
-  peer: host1
-  peer_interface: Ethernet43
-  peer_type: l3leaf
+  metadata:
+    peer: host1
+    peer_interface: Ethernet43
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: host4

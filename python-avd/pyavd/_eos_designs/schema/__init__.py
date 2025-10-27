@@ -19604,7 +19604,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Vrfs._item_type = VrfsItem
 
-        _fields: ClassVar[dict] = {"vrfs": {"type": Vrfs}, "idle_timeout": {"type": int}}
+        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrfs": {"type": Vrfs}, "idle_timeout": {"type": int}}
+        enabled: bool | None
+        """
+        Explicitly enable or disable management ssh for all VRFs. By default EOS enables management ssh for
+        all VRFs.
+        """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         idle_timeout: int | None
@@ -19612,7 +19617,13 @@ class EosDesigns(EosDesignsRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, vrfs: Vrfs | UndefinedType = Undefined, idle_timeout: int | None | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                enabled: bool | None | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
+                idle_timeout: int | None | UndefinedType = Undefined,
+            ) -> None:
                 """
                 SshSettings.
 
@@ -19620,6 +19631,9 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    enabled:
+                       Explicitly enable or disable management ssh for all VRFs. By default EOS enables management ssh for
+                       all VRFs.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     idle_timeout: Idle timeout in minutes.
 

@@ -8,9 +8,10 @@ ethernet_interfaces:
   description: P2P_sflow-tests-spine1_Ethernet9
   shutdown: false
   mtu: 9214
-  peer: sflow-tests-spine1
-  peer_interface: Ethernet9
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine1
+    peer_interface: Ethernet9
+    peer_type: spine
   sflow:
     enable: true
   switchport:
@@ -19,9 +20,10 @@ ethernet_interfaces:
   description: P2P_sflow-tests-spine1_Ethernet10
   shutdown: false
   mtu: 9214
-  peer: sflow-tests-spine1
-  peer_interface: Ethernet10
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine1
+    peer_interface: Ethernet10
+    peer_type: spine
   sflow:
     enable: false
   switchport:
@@ -30,9 +32,10 @@ ethernet_interfaces:
   description: P2P_sflow-tests-spine1_Ethernet11
   shutdown: false
   mtu: 9214
-  peer: sflow-tests-spine1
-  peer_interface: Ethernet11
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine1
+    peer_interface: Ethernet11
+    peer_type: spine
   sflow:
     enable: true
   switchport:
@@ -41,9 +44,10 @@ ethernet_interfaces:
   description: P2P_sflow-tests-spine1_Ethernet12
   shutdown: false
   mtu: 9214
-  peer: sflow-tests-spine1
-  peer_interface: Ethernet12
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine1
+    peer_interface: Ethernet12
+    peer_type: spine
   sflow:
     enable: true
   switchport:
@@ -52,9 +56,10 @@ ethernet_interfaces:
   description: P2P_sflow-tests-spine1_Ethernet13
   shutdown: false
   mtu: 9214
-  peer: sflow-tests-spine1
-  peer_interface: Ethernet13
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine1
+    peer_interface: Ethernet13
+    peer_type: spine
   sflow:
     enable: false
   switchport:
@@ -63,9 +68,10 @@ ethernet_interfaces:
   description: P2P_sflow-tests-spine1_Ethernet14
   shutdown: false
   mtu: 9214
-  peer: sflow-tests-spine1
-  peer_interface: Ethernet14
-  peer_type: spine
+  metadata:
+    peer: sflow-tests-spine1
+    peer_interface: Ethernet14
+    peer_type: spine
   sflow:
     enable: true
   switchport:

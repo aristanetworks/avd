@@ -11,10 +11,12 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 10
   ip_address: 10.10.10.10/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet10
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 hostname: default_interface_mtu_platform

@@ -10,36 +10,40 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: OLD_SW-1/2
-  peer_interface: Endpoint_port1
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/2
+    peer_interface: Endpoint_port1
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet2
   description: Interface description custom_server_OLD_SW-1/2_ENDPOINT_PORT2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: OLD_SW-1/2
-  peer_interface: ENDPOINT_PORT2
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/2
+    peer_interface: ENDPOINT_PORT2
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet3
   description: CUSTOM_SERVER_OLD_SW-1/3_ENDPOINT_PORT
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: OLD_SW-1/3
-  peer_interface: ENDPOINT_PORT
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/3
+    peer_interface: ENDPOINT_PORT
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet4
   description: PHYSICAL_PORT_DESCRIPTION
   shutdown: false
-  peer: OLD_SW-1/4
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/4
+    peer_type: custom_server
+    peer_key: servers
   switchport:
     enabled: true
 - name: Ethernet5
@@ -48,61 +52,68 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  peer: OLD_SW-1/5
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/5
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet6
   description: CUSTOM_SERVER_OLD_SW-1/5
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: OLD_SW-1/5
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/5
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet7
   description: PHYSICAL_PORT_DESCRIPTION
   shutdown: false
   channel_group:
     id: 7
     mode: active
-  peer: OLD_SW-1/6
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/6
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet8
   description: PHYSICAL_PORT_DESCRIPTION
   shutdown: false
   channel_group:
     id: 7
     mode: active
-  peer: OLD_SW-1/6
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/6
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet10
   description: PHYSICAL_PORT_DESCRIPTION_1
   shutdown: false
   channel_group:
     id: 10
     mode: active
-  peer: OLD_SW-1/7
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/7
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet11
   description: PHYSICAL_PORT_DESCRIPTION_2
   shutdown: false
   channel_group:
     id: 10
     mode: active
-  peer: OLD_SW-1/7
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/7
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet19
   description: CUSTOM_SERVER_OLD_SW-1/8_Endpoint_port4
   shutdown: false
-  peer: OLD_SW-1/8
-  peer_interface: Endpoint_port4
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/8
+    peer_interface: Endpoint_port4
+    peer_type: custom_server
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -112,28 +123,31 @@ ethernet_interfaces:
   channel_group:
     id: 20
     mode: active
-  peer: OLD_SW-1/9
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/9
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet21
   description: CUSTOM_SERVER_OLD_SW-1/9
   shutdown: false
   channel_group:
     id: 20
     mode: active
-  peer: OLD_SW-1/9
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/9
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet25
   description: CUSTOM_SERVER_OLD_SW-1/12_Endpoint_port6
   shutdown: false
   channel_group:
     id: 25
     mode: active
-  peer: OLD_SW-1/12
-  peer_interface: Endpoint_port6
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/12
+    peer_interface: Endpoint_port6
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet12
   description: CUSTOM_SERVER_INDIVIDUAL_1
   shutdown: false
@@ -153,9 +167,10 @@ ethernet_interfaces:
   service_profile: MYQOS
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
-  peer: INDIVIDUAL_1
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: INDIVIDUAL_1
+    peer_type: custom_server
+    peer_key: servers
   sflow:
     enable: false
   switchport:
@@ -184,9 +199,10 @@ ethernet_interfaces:
   service_profile: MYQOS
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
-  peer: INDIVIDUAL_1
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: INDIVIDUAL_1
+    peer_type: custom_server
+    peer_key: servers
   sflow:
     enable: false
   switchport:
@@ -218,12 +234,13 @@ ethernet_interfaces:
   service_profile: MYQOS
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
-  peer: DOT1X_UNAUTHORIZED
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: DOT1X_UNAUTHORIZED
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: INDIVIDUAL_TRUNK
   sflow:
     enable: false
-  port_profile: INDIVIDUAL_TRUNK
   switchport:
     enabled: true
     mode: trunk
@@ -240,9 +257,10 @@ ethernet_interfaces:
   channel_group:
     id: 15
     mode: active
-  peer: INDIVIDUAL_2_TRUNK_PHONE
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: INDIVIDUAL_2_TRUNK_PHONE
+    peer_type: custom_server
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk phone
@@ -259,9 +277,10 @@ ethernet_interfaces:
   channel_group:
     id: 15
     mode: active
-  peer: INDIVIDUAL_2_TRUNK_PHONE
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: INDIVIDUAL_2_TRUNK_PHONE
+    peer_type: custom_server
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk phone
@@ -281,10 +300,11 @@ ethernet_interfaces:
     unauthorized:
       access_vlan_membership_egress: true
       native_vlan_membership_egress: true
-  peer: DOT1X_UNAUTHORIZED_PORT_CHANNEL
-  peer_type: custom_server
-  peer_key: servers
-  port_profile: INDIVIDUAL_TRUNK
+  metadata:
+    peer: DOT1X_UNAUTHORIZED_PORT_CHANNEL
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: INDIVIDUAL_TRUNK
 - name: Ethernet18
   description: CUSTOM_SERVER_DOT1X_UNAUTHORIZED_PORT_CHANNEL
   shutdown: false
@@ -297,10 +317,11 @@ ethernet_interfaces:
     unauthorized:
       access_vlan_membership_egress: true
       native_vlan_membership_egress: true
-  peer: DOT1X_UNAUTHORIZED_PORT_CHANNEL
-  peer_type: custom_server
-  peer_key: servers
-  port_profile: INDIVIDUAL_TRUNK
+  metadata:
+    peer: DOT1X_UNAUTHORIZED_PORT_CHANNEL
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: INDIVIDUAL_TRUNK
 - name: Ethernet26
   description: CUSTOM_SERVER_INDIVIDUAL_3
   shutdown: false
@@ -320,9 +341,10 @@ ethernet_interfaces:
   service_profile: MYQOS
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
-  peer: INDIVIDUAL_3
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: INDIVIDUAL_3
+    peer_type: custom_server
+    peer_key: servers
   sflow:
     enable: false
   switchport:
@@ -348,9 +370,10 @@ ethernet_interfaces:
   service_profile: MYQOS
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
-  peer: INDIVIDUAL_3
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: INDIVIDUAL_3
+    peer_type: custom_server
+    peer_key: servers
   sflow:
     enable: false
   switchport:
@@ -376,9 +399,10 @@ ethernet_interfaces:
   service_profile: MYQOS
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
-  peer: INDIVIDUAL_4
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: INDIVIDUAL_4
+    peer_type: custom_server
+    peer_key: servers
   sflow:
     enable: false
   switchport:
@@ -407,9 +431,10 @@ ethernet_interfaces:
   service_profile: MYQOS
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
-  peer: INDIVIDUAL_4
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: INDIVIDUAL_4
+    peer_type: custom_server
+    peer_key: servers
   sflow:
     enable: false
   switchport:
@@ -422,10 +447,11 @@ ethernet_interfaces:
 - name: Ethernet24
   description: CUSTOM_SERVER_OLD_SW-1/11_Endpoint_port5
   shutdown: false
-  peer: OLD_SW-1/11
-  peer_interface: Endpoint_port5
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/11
+    peer_interface: Endpoint_port5
+    peer_type: custom_server
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -441,9 +467,10 @@ ethernet_interfaces:
     pae:
       mode: supplicant
       supplicant_profile: test_profile_network_ports
-  peer: DOT1X_SUPPLICANT_PORT_CHANNEL
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: DOT1X_SUPPLICANT_PORT_CHANNEL
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet33
   description: CUSTOM_SERVER_DOT1X_SUPPLICANT_PORT_CHANNEL
   shutdown: false
@@ -454,25 +481,28 @@ ethernet_interfaces:
     pae:
       mode: supplicant
       supplicant_profile: test_profile_network_ports
-  peer: DOT1X_SUPPLICANT_PORT_CHANNEL
-  peer_type: custom_server
-  peer_key: servers
+  metadata:
+    peer: DOT1X_SUPPLICANT_PORT_CHANNEL
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false
-  peer: custom_connected_endpoint
-  peer_interface: Nic101
-  peer_type: monitor
-  peer_key: monitor
+  metadata:
+    peer: custom_connected_endpoint
+    peer_interface: Nic101
+    peer_type: monitor
+    peer_key: monitor
   switchport:
     enabled: true
 - name: Ethernet111
   description: TESTING_TYPE_1_testing_Nic1
   shutdown: false
-  peer: testing
-  peer_interface: Nic1
-  peer_type: Testing_Type_1
-  peer_key: Testing_1
+  metadata:
+    peer: testing
+    peer_interface: Nic1
+    peer_type: Testing_Type_1
+    peer_key: Testing_1
   switchport:
     enabled: true
 hostname: connected_endpoints
