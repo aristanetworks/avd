@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from functools import cached_property
 from ipaddress import IPv4Address, IPv6Address, ip_interface
 from logging import getLogger
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
@@ -34,14 +34,6 @@ class BgpNeighborInterface:
 
     interface: str
     vrf: str
-
-
-@dataclass(frozen=True)
-class InterfaceItem:
-    """Represents a VXLAN source interface from the structured configuration."""
-
-    name: str
-    status: Literal["up", "down", "adminDown"]
 
 
 @dataclass
