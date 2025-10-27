@@ -279,17 +279,19 @@ vlan_interfaces:
   shutdown: false
   vrf: TEST_VRF
   ip_address_virtual: 10.1.10.1/24
-  tenant: CUSTOM_PYTHON_MODULES_TENANT
-  tags:
-  - opzone
+  metadata:
+    tenant: CUSTOM_PYTHON_MODULES_TENANT
+    tags:
+    - opzone
 - name: Vlan3000
   description: 'MLAG_PEER_L3_iBGP: vrf TEST_VRF'
   shutdown: false
   vrf: TEST_VRF
   ip_address: 10.255.240.10/31
   mtu: 9214
-  tenant: CUSTOM_PYTHON_MODULES_TENANT
-  type: underlay_peering
+  metadata:
+    tenant: CUSTOM_PYTHON_MODULES_TENANT
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:

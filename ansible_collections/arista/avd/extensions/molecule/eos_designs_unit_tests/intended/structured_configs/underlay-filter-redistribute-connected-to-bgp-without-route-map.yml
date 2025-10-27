@@ -109,9 +109,10 @@ vlan_interfaces:
   description: svi_with_default_vrf
   shutdown: true
   ip_address: 10.10.10.111/24
-  tenant: TEST
-  tags:
-  - fabric
+  metadata:
+    tenant: TEST
+    tags:
+    - fabric
 vlan_internal_order:
   allocation: ascending
   range:

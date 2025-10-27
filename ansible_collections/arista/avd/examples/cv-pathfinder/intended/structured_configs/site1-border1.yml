@@ -407,29 +407,33 @@ vlan_interfaces:
   shutdown: false
   vrf: BLUE
   ip_address: 10.66.1.1/24
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 - name: Vlan3099
   description: MLAG_L3_VRF_BLUE
   shutdown: false
   vrf: BLUE
   ip_address: 10.255.251.8/31
   mtu: 9214
-  tenant: WAN-EXAMPLE-TENANT
-  type: underlay_peering
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
+    type: underlay_peering
 - name: Vlan42
   description: RED-TEST
   shutdown: false
   vrf: RED
   ip_address: 10.42.1.1/24
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 - name: Vlan3100
   description: MLAG_L3_VRF_RED
   shutdown: false
   vrf: RED
   ip_address: 10.255.251.8/31
   mtu: 9214
-  tenant: WAN-EXAMPLE-TENANT
-  type: underlay_peering
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:

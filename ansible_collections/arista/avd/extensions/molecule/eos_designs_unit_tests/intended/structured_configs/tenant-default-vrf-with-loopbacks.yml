@@ -108,9 +108,10 @@ vlan_interfaces:
 - name: Vlan1008
   description: SVI_1
   shutdown: false
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 vlan_internal_order:
   allocation: ascending
   range:

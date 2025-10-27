@@ -563,8 +563,9 @@ vlan_interfaces:
           administrative_distance: 20
 
   - name: Vlan111
-    tenant: Tenant_A
-    tags: ['DC1']
+    metadata:
+      tenant: Tenant_A
+      tags: ['DC1']
     description: PR01-DEMO
     shutdown: false
     vrf: TENANT_A_PROJECT01

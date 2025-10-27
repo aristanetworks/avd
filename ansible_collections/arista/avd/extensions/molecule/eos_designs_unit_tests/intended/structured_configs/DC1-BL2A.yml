@@ -500,25 +500,28 @@ vlan_interfaces:
   ospf_cost: 100
   ospf_authentication: simple
   ospf_authentication_key: AQQvKeimxJu+uGQ/yYvv9w==
-  tenant: Tenant_A
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - wan
 - name: Vlan250
   description: Tenant_B_WAN_Zone_1
   shutdown: false
   vrf: Tenant_B_WAN_Zone
   ip_address_virtual: 10.2.50.1/24
-  tenant: Tenant_B
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_B
+    tags:
+    - wan
 - name: Vlan350
   description: Tenant_C_WAN_Zone_1
   shutdown: false
   vrf: Tenant_C_WAN_Zone
   ip_address_virtual: 10.3.50.1/24
-  tenant: Tenant_C
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_C
+    tags:
+    - wan
 - name: Vlan453
   description: Tenant_D_WAN_Zone_1
   shutdown: false
@@ -526,9 +529,10 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 10.0.10.1/24
-  tenant: Tenant_D
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - wan
 vlan_internal_order:
   allocation: ascending
   range:

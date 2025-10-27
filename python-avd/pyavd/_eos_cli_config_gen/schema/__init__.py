@@ -30835,6 +30835,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class IpAddressSecondaries(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        IpAddressSecondaries._item_type = str
+
         IpVerifyUnicastSourceReachableVia: TypeAlias = Literal["any", "rx"]
 
         class IpNat(AvdModel):
@@ -33609,6 +33614,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "vmtracer": {"type": bool},
             "ptp": {"type": Ptp},
             "ip_address": {"type": str},
+            "ip_address_secondaries": {"type": IpAddressSecondaries},
             "dhcp_client_accept_default_route": {"type": bool},
             "dhcp_server_ipv4": {"type": bool},
             "dhcp_server_ipv6": {"type": bool},
@@ -33733,6 +33739,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         ip_address: str | None
         """IPv4 address/mask or "dhcp"."""
+        ip_address_secondaries: IpAddressSecondaries
+        """Subclass of AvdList with `str` items."""
         dhcp_client_accept_default_route: bool | None
         """Install default-route obtained via DHCP."""
         dhcp_server_ipv4: bool | None
@@ -33858,6 +33866,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 vmtracer: bool | None | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
+                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                 dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
                 dhcp_server_ipv4: bool | None | UndefinedType = Undefined,
                 dhcp_server_ipv6: bool | None | UndefinedType = Undefined,
@@ -33956,6 +33965,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     vmtracer: vmtracer
                     ptp: Subclass of AvdModel.
                     ip_address: IPv4 address/mask or "dhcp".
+                    ip_address_secondaries: Subclass of AvdList with `str` items.
                     dhcp_client_accept_default_route: Install default-route obtained via DHCP.
                     dhcp_server_ipv4: Enable IPv4 DHCP server.
                     dhcp_server_ipv6: Enable IPv6 DHCP server.
@@ -66076,10 +66086,50 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class Tags(AvdList[str]):
-            """Subclass of AvdList with `str` items."""
+        class Metadata(AvdModel):
+            """Subclass of AvdModel."""
 
-        Tags._item_type = str
+            class Tags(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tags._item_type = str
+
+            _fields: ClassVar[dict] = {"tenant": {"type": str}, "tags": {"type": Tags}, "type": {"type": str}}
+            tenant: str | None
+            """Key only used for documentation or validation purposes."""
+            tags: Tags
+            """
+            Key only used for documentation or validation purposes.
+
+            Subclass of AvdList with `str` items.
+            """
+            type: str | None
+            """Key only used for documentation or validation purposes."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    tenant: str | None | UndefinedType = Undefined,
+                    tags: Tags | UndefinedType = Undefined,
+                    type: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Metadata.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        tenant: Key only used for documentation or validation purposes.
+                        tags:
+                           Key only used for documentation or validation purposes.
+
+                           Subclass of AvdList with `str` items.
+                        type: Key only used for documentation or validation purposes.
+
+                    """
 
         _fields: ClassVar[dict] = {
             "name": {"type": str},
@@ -66149,9 +66199,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "service_policy": {"type": ServicePolicy},
             "ntp_serve": {"type": bool},
             "pvlan_mapping": {"type": str},
-            "tenant": {"type": str},
-            "tags": {"type": Tags},
-            "type": {"type": str},
+            "metadata": {"type": Metadata},
             "eos_cli": {"type": str},
         }
         name: str
@@ -66295,16 +66343,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Enable/disable serving NTP to clients."""
         pvlan_mapping: str | None
         """List of VLANs as string."""
-        tenant: str | None
-        """Key only used for documentation or validation purposes."""
-        tags: Tags
-        """
-        Key only used for documentation or validation purposes.
-
-        Subclass of AvdList with `str` items.
-        """
-        type: str | None
-        """Key only used for documentation or validation purposes."""
+        metadata: Metadata
+        """Subclass of AvdModel."""
         eos_cli: str | None
         """Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration."""
 
@@ -66380,9 +66420,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 service_policy: ServicePolicy | UndefinedType = Undefined,
                 ntp_serve: bool | None | UndefinedType = Undefined,
                 pvlan_mapping: str | None | UndefinedType = Undefined,
-                tenant: str | None | UndefinedType = Undefined,
-                tags: Tags | UndefinedType = Undefined,
-                type: str | None | UndefinedType = Undefined,
+                metadata: Metadata | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -66484,12 +66522,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     service_policy: Subclass of AvdModel.
                     ntp_serve: Enable/disable serving NTP to clients.
                     pvlan_mapping: List of VLANs as string.
-                    tenant: Key only used for documentation or validation purposes.
-                    tags:
-                       Key only used for documentation or validation purposes.
-
-                       Subclass of AvdList with `str` items.
-                    type: Key only used for documentation or validation purposes.
+                    metadata: Subclass of AvdModel.
                     eos_cli: Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
 
                 """
