@@ -311,6 +311,7 @@ management_security:
       key: profileA.key
 metadata:
   is_deployed: true
+  platform: vEOS-LAB
   fabric_name: EOS_DESIGNS_UNIT_TESTS
   cv_tags:
     device_tags:

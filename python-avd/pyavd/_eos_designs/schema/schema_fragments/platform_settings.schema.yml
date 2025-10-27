@@ -81,6 +81,14 @@ keys:
             <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
           min: 68
           max: 65535
+        kernel_ecmp_cli:
+          type: bool
+          default: true
+          description: |-
+            For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the EOS version.
+
+            - `true`: For older EOS versions use an agent environment variable. Changing this requires a restart of the KernelFib agent.
+            - `false`: For newer EOS versions (starting 4.33.2) use the proper CLI.
         feature_support:
           type: dict
           keys:
