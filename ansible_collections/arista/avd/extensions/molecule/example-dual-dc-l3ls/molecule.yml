@@ -4,12 +4,14 @@ ansible:
     backend: ansible-playbook
     args:
       ansible_playbook:
-        - --inventory=../../../examples/dual-dc-l3ls/inventory.yml
+        - --inventory=${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/dual-dc-l3ls/inventory.yml
   env:
     ANSIBLE_FORCE_COLOR: true
   cfg:
     defaults:
       jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
+  playbooks:
+    converge: '${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/dual-dc-l3ls/build.yml'
 scenario:
   converge_sequence:
     - converge

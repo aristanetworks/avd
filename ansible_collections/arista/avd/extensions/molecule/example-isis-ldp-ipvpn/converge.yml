@@ -1,3 +1,0 @@
----
-- name: Converge
-  ansible.builtin.import_playbook: '../../../examples/isis-ldp-ipvpn/build.yml'

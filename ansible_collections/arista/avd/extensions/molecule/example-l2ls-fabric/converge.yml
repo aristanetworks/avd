@@ -1,3 +1,0 @@
----
-- name: Converge
-  ansible.builtin.import_playbook: '../../../examples/l2ls-fabric/build.yml'

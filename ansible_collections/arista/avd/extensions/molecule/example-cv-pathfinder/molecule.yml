@@ -4,13 +4,15 @@ ansible:
     backend: ansible-playbook
     args:
       ansible_playbook:
-        - --inventory=../../../examples/cv-pathfinder/inventory.yml
-        - --vault-password-file=../../../examples/cv-pathfinder/.vault
+        - --inventory=${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/cv-pathfinder/inventory.yml
   env:
     ANSIBLE_FORCE_COLOR: true
   cfg:
     defaults:
       jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
+      vault_password_file: "${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/cv-pathfinder/.vault"
+  playbooks:
+    converge: '../../../examples/cv-pathfinder/build.yml'
 scenario:
   converge_sequence:
     - converge
