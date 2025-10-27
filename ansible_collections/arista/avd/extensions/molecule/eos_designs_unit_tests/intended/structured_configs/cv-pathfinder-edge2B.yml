@@ -96,9 +96,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.9/31
-  peer: site-ha-enabled-leaf2A
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-enabled-leaf2A
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet52.1000
@@ -109,9 +110,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1000
   ip_address: 172.17.0.9/31
-  peer: site-ha-enabled-leaf2A
-  peer_interface: Ethernet2.1000
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-enabled-leaf2A
+    peer_interface: Ethernet2.1000
+    peer_type: l3leaf
 - name: Ethernet52.142
   description: P2P_site-ha-enabled-leaf2A_Ethernet2.142_VRF_PROD
   shutdown: false
@@ -120,9 +122,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 142
   ip_address: 172.17.0.9/31
-  peer: site-ha-enabled-leaf2A
-  peer_interface: Ethernet2.142
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-enabled-leaf2A
+    peer_interface: Ethernet2.142
+    peer_type: l3leaf
 - name: Ethernet52.666
   description: P2P_site-ha-enabled-leaf2A_Ethernet2.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
@@ -131,17 +134,19 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 666
   ip_address: 172.17.0.9/31
-  peer: site-ha-enabled-leaf2A
-  peer_interface: Ethernet2.666
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-enabled-leaf2A
+    peer_interface: Ethernet2.666
+    peer_type: l3leaf
 - name: Ethernet53
   description: P2P_site-ha-enabled-leaf2B_Ethernet2
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.11/31
-  peer: site-ha-enabled-leaf2B
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-enabled-leaf2B
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet53.1000
@@ -152,9 +157,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1000
   ip_address: 172.17.0.11/31
-  peer: site-ha-enabled-leaf2B
-  peer_interface: Ethernet2.1000
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-enabled-leaf2B
+    peer_interface: Ethernet2.1000
+    peer_type: l3leaf
 - name: Ethernet53.142
   description: P2P_site-ha-enabled-leaf2B_Ethernet2.142_VRF_PROD
   shutdown: false
@@ -163,9 +169,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 142
   ip_address: 172.17.0.11/31
-  peer: site-ha-enabled-leaf2B
-  peer_interface: Ethernet2.142
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-enabled-leaf2B
+    peer_interface: Ethernet2.142
+    peer_type: l3leaf
 - name: Ethernet53.666
   description: P2P_site-ha-enabled-leaf2B_Ethernet2.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
@@ -174,14 +181,16 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 666
   ip_address: 172.17.0.11/31
-  peer: site-ha-enabled-leaf2B
-  peer_interface: Ethernet2.666
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-enabled-leaf2B
+    peer_interface: Ethernet2.666
+    peer_type: l3leaf
 - name: Ethernet2
   description: Colt_10423
   shutdown: false
   ip_address: 172.15.6.6/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

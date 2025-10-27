@@ -38,9 +38,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.1/31
-  peer: dc1-leaf1a
-  peer_interface: Ethernet6
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf1a
+    peer_interface: Ethernet6
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -48,30 +49,34 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.3/31
-  peer: dc1-leaf1b
-  peer_interface: Ethernet6
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf1b
+    peer_interface: Ethernet6
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3
   description: mpls-sp-1_DC1-MPLS-3
   shutdown: false
   ip_address: 172.18.3.2/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet4
   description: isp-1_DC1-INET-3
   shutdown: false
   ip_address: 100.64.3.2/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet5
   description: TAC_DC1-INET-3
   shutdown: false
   ip_address: 100.64.3.2/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

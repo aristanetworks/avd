@@ -94,9 +94,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.0.1.9/31
-  peer: site1-border1
-  peer_interface: Ethernet3
-  peer_type: l3leaf
+  metadata:
+    peer: site1-border1
+    peer_interface: Ethernet3
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet1.100
@@ -109,9 +110,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 100
   ip_address: 10.0.1.9/31
-  peer: site1-border1
-  peer_interface: Ethernet3.100
-  peer_type: l3leaf
+  metadata:
+    peer: site1-border1
+    peer_interface: Ethernet3.100
+    peer_type: l3leaf
 - name: Ethernet1.101
   description: P2P_site1-border1_Ethernet3.101_VRF_RED
   shutdown: false
@@ -122,9 +124,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 101
   ip_address: 10.0.1.9/31
-  peer: site1-border1
-  peer_interface: Ethernet3.101
-  peer_type: l3leaf
+  metadata:
+    peer: site1-border1
+    peer_interface: Ethernet3.101
+    peer_type: l3leaf
 - name: Ethernet2
   description: P2P_site1-border2_Ethernet3
   shutdown: false
@@ -132,9 +135,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.0.1.11/31
-  peer: site1-border2
-  peer_interface: Ethernet3
-  peer_type: l3leaf
+  metadata:
+    peer: site1-border2
+    peer_interface: Ethernet3
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2.100
@@ -147,9 +151,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 100
   ip_address: 10.0.1.11/31
-  peer: site1-border2
-  peer_interface: Ethernet3.100
-  peer_type: l3leaf
+  metadata:
+    peer: site1-border2
+    peer_interface: Ethernet3.100
+    peer_type: l3leaf
 - name: Ethernet2.101
   description: P2P_site1-border2_Ethernet3.101_VRF_RED
   shutdown: false
@@ -160,18 +165,20 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 101
   ip_address: 10.0.1.11/31
-  peer: site1-border2
-  peer_interface: Ethernet3.101
-  peer_type: l3leaf
+  metadata:
+    peer: site1-border2
+    peer_interface: Ethernet3.101
+    peer_type: l3leaf
 - name: Ethernet3
   description: ACME-MPLS-INC_mpls-site1-wan1_mpls-cloud_Ethernet5
   shutdown: false
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 172.18.10.2/24
-  peer: mpls-cloud
-  peer_interface: Ethernet5
-  peer_type: l3_interface
+  metadata:
+    peer: mpls-cloud
+    peer_interface: Ethernet5
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet4
@@ -181,9 +188,10 @@ ethernet_interfaces:
     hardware: FLOW-TRACKER
   ip_address: 100.64.10.2/24
   access_group_in: ACL-INTERNET-IN_Ethernet4
-  peer: inet-cloud
-  peer_interface: Ethernet5
-  peer_type: l3_interface
+  metadata:
+    peer: inet-cloud
+    peer_interface: Ethernet5
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

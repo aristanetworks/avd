@@ -25,9 +25,10 @@ ethernet_interfaces:
   - name: Eth-conn-to-router
     direction: upstream
   ip_address: 10.10.101.5/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet21
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet21
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -36,20 +37,22 @@ ethernet_interfaces:
   channel_group:
     id: 2
     mode: active
-  peer: MH-L2LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: MH-L2LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet10
   description: ROUTER01_Eth1
   shutdown: false
   link_tracking_groups:
   - name: Eth-conn-to-router
     direction: downstream
-  peer: ROUTER01
-  peer_interface: Eth1
-  peer_type: router
-  peer_key: routers
-  port_profile: Tenant_X_LT
+  metadata:
+    peer: ROUTER01
+    peer_interface: Eth1
+    peer_type: router
+    peer_key: routers
+    port_profile: Tenant_X_LT
   switchport:
     enabled: true
     mode: access

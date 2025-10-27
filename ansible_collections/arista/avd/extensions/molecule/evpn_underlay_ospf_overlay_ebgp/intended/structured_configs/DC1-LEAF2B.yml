@@ -20,18 +20,20 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  peer: DC1-LEAF2A
-  peer_interface: Ethernet5
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1-LEAF2A
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
 - name: Ethernet6
   description: MLAG_DC1-LEAF2A_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: DC1-LEAF2A
-  peer_interface: Ethernet6
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1-LEAF2A
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_DC1-SPINE1_Ethernet3
   shutdown: false
@@ -44,9 +46,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: /wCirdje6f59x/1Ev+Oe6xok2+5jD3M/
-  peer: DC1-SPINE1
-  peer_interface: Ethernet3
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet3
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -61,9 +64,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
-  peer: DC1-SPINE2
-  peer_interface: Ethernet3
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet3
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -78,9 +82,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
-  peer: DC1-SPINE3
-  peer_interface: Ethernet3
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet3
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet4
@@ -95,9 +100,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: QB0XEg/PJV6Y5HtvjDdiafrPx/g+JRKk
-  peer: DC1-SPINE4
-  peer_interface: Ethernet3
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet3
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet7
@@ -106,9 +112,10 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  peer: DC1-L2LEAF1A
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-L2LEAF1A
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 hostname: DC1-LEAF2B
 ip_igmp_snooping:
   globally_enabled: true
