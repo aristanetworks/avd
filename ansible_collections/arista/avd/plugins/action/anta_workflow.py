@@ -116,6 +116,11 @@ ARGUMENT_SPEC = {
                         "elements": "str",
                         "choices": ["success", "failure", "error", "skipped", "unset"],
                     },
+                    "sort_test_results": {
+                        "type": "list",
+                        "elements": "str",
+                        "choices": ["name", "categories", "test", "description", "result"],
+                    },
                 },
             },
         },
@@ -249,6 +254,7 @@ def run_anta(devices: list[str]) -> ResultManager:
 def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[str, Any]) -> dict[str, Any]:
     """Build the ANTA reports from the batch results and return a summary dictionary containing ANTA test statistics."""
     hide_statuses = get(report_settings, "filters.hide_statuses")
+    sort_test_results = get(report_settings, "filters.sort_test_results")
     csv_output_path = get(report_settings, "csv_output")
     md_output_path = get(report_settings, "md_output")
     json_output_path = get(report_settings, "json_output")
@@ -269,7 +275,10 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
         filtered_result_manager = result_manager
 
     # Sort the result manager
-    filtered_result_manager.sort(sort_by=["name", "categories", "test", "description", "result", "custom_field"])
+    if sort_test_results:
+        filtered_result_manager.sort(sort_by=sort_test_results)
+    else:
+        filtered_result_manager.sort(sort_by=["name", "categories", "test", "description", "result", "custom_field"])
 
     # TODO: Consider using multiprocessing to generate reports in parallel
     if csv_output_path:
