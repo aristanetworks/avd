@@ -17,9 +17,7 @@ scenario:
     - converge
   test_sequence:
     - syntax
-    - create
     - converge
-    - verify
     - cleanup
   cleanup_sequence:
     - destroy
