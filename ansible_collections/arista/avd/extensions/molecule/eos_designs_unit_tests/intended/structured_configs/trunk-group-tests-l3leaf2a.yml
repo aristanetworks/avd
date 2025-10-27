@@ -233,18 +233,20 @@ vlan_interfaces:
   shutdown: false
   vrf: TG_200
   ip_address_virtual: 10.2.0.1/24
-  tenant: TRUNK_GROUP_TESTS
-  tags:
-  - TRUNK_GROUP_TESTS_L3LEAF1
-  - TRUNK_GROUP_TESTS_L2LEAF1
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
+    tags:
+    - TRUNK_GROUP_TESTS_L3LEAF1
+    - TRUNK_GROUP_TESTS_L2LEAF1
 - name: Vlan3199
   description: MLAG_L3_VRF_TG_200
   shutdown: false
   vrf: TG_200
   ip_address: 10.255.247.4/31
   mtu: 9214
-  tenant: TRUNK_GROUP_TESTS
-  type: underlay_peering
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:

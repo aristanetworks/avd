@@ -140,8 +140,9 @@ vlan_interfaces:
   vrf: default
   ip_address: 10.10.20.0/31
   mtu: 9214
-  tenant: TEST
-  type: underlay_peering
+  metadata:
+    tenant: TEST
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:

@@ -199,9 +199,10 @@ vlan_interfaces:
   shutdown: false
   vrf: ONLY-ON-L2LEAF
   ip_address_virtual: 172.16.0.1/24
-  tenant: TenantC
-  tags:
-  - not-on-spine-2
+  metadata:
+    tenant: TenantC
+    tags:
+    - not-on-spine-2
 vlan_internal_order:
   allocation: ascending
   range:

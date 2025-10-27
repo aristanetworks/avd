@@ -116,13 +116,15 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF1
   ip_address_virtual: 10.0.100.1/24
-  tenant: DUPLICATE_TENANT1
+  metadata:
+    tenant: DUPLICATE_TENANT1
 - name: Vlan200
   description: VLAN200
   shutdown: false
   vrf: VRF1
   ip_address_virtual: 10.0.200.1/24
-  tenant: DUPLICATE_TENANT1
+  metadata:
+    tenant: DUPLICATE_TENANT1
 vlan_internal_order:
   allocation: ascending
   range:
