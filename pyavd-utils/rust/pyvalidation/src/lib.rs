@@ -28,10 +28,7 @@ mod validation {
 
     use pyo3::{Bound, PyResult, exceptions::PyRuntimeError, pyfunction, types::PyModule};
 
-    use crate::{
-        StoreValidate as _, coercion::Coercion, context::Context, validation::Validation,
-        validation_result::ValidationResult,
-    };
+    use validation::{Coercion as _, Context, StoreValidate as _, Validation as _, ValidationResult};
 
     use super::{STORE, get_store};
 
@@ -42,7 +39,7 @@ mod validation {
     }
 
     #[pymodule_export]
-    use crate::feedback::{
+    use ::validation::feedback::{
         CoercionNote, Feedback, Issue, Type, Value, Violation, ViolationValidValues,
     };
 

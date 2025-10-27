@@ -8,6 +8,8 @@ members = [
     "rust/avdschema_macros",
     "rust/validation",
     "rust/passwords",
+    "pyavd-utils/rust/pypasswords",
+    "pyavd-utils/rust/pyvalidation",
     ]
 resolver = "2"
 

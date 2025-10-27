@@ -105,7 +105,7 @@ jobs:
             rust_src_or_ci_changed:
               - '.github/**/*'
               - 'rust/**/*'
-              - 'python/avdutils/**/*'
+              - 'pyavd-utils/**/*'
               - 'Cargo.toml'
 
   # -------------------------------------- #
@@ -749,7 +749,7 @@ jobs:
         run: |
           pip install tox tox-gh-actions --upgrade
       - name: Run pytest via tox
-        working-directory: python/avdutils
+        working-directory: pyavd-utils
         # Running tox  which will build the package (including rust).
         # For most runs without an environment set here. The environment is mapped with the tox gh-action plugin.
         run: |
@@ -772,11 +772,11 @@ jobs:
         run: |
           pip install tox tox-gh-actions --upgrade
       - name: Run pytest via tox
-        working-directory: python/avdutils
+        working-directory: pyavd-utils
         run: |
           tox -e coverage,report
       - name: Upload coverage from pytest
         uses: actions/upload-artifact@v4
         with:
-          name: pytest-avdutils-coverage
-          path: python/avdutils/coverage.xml
+          name: pytest-pyavd-utils-coverage
+          path: pyavd-utils/coverage.xml

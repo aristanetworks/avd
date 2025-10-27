@@ -5,18 +5,5 @@
 mod errors;
 mod sha512crypt;
 
-use pyo3::pymodule;
-
-#[pymodule]
-#[pyo3(name = "passwords")]
-mod passwords {
-
-    use crate::sha512crypt;
-    use pyo3::{PyResult, pyfunction};
-
-    #[pyfunction]
-    /// Computes the SHA512 crypt value for the password given the salt
-    pub fn sha512_crypt(password: String, salt: String) -> PyResult<String> {
-        Ok(sha512crypt::sha512_crypt(&password, &salt)?)
-    }
-}
+pub use sha512crypt::sha512_crypt;
+pub use errors::{InvalidSaltError, Sha512CryptError};

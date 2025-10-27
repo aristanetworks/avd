@@ -7,7 +7,7 @@ from typing import cast
 
 import pytest
 
-from avdutils.validation import Issue, Value, Violation, init_store_from_fragments, validate_json
+from pyavd_utils.validation import Issue, Value, Violation, init_store_from_fragments, validate_json
 
 
 @pytest.fixture

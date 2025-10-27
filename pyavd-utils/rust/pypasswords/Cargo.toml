@@ -1,0 +1,15 @@
+[package]
+name = "pypasswords"
+version.workspace = true
+edition = "2024"
+license.workspace = true
+
+[build-dependencies]
+pyo3-build-config = { version = "0.24.2"}
+
+[dependencies]
+pyo3 = { version = "0.24.2", "features" = ["extension-module", "abi3"] }
+passwords = { path = "../../../rust/passwords" }
+
+[lib]
+crate-type = ["cdylib", "lib"]

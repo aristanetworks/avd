@@ -1,27 +1,27 @@
 [package]
-name = "validation"
+name = "pyvalidation"
 version.workspace = true
 edition = "2024"
 license.workspace = true
 
 [build-dependencies]
-pyo3-build-config = { version = "0.26.0"}
+pyo3-build-config = { version = "0.24.2"}
 
 [dependencies]
-avdschema = { path = "../avdschema" }
+avdschema = { path = "../../../rust/avdschema", features = ["dump_load_files"] }
+included_store = { path = "../../../rust/included_store" }
+validation = { path = "../../../rust/validation", features = ["python_bindings"] }
+
 derive_more = { version = "2.0.1", features = ["display", "from"] }
-ordermap = { version = "0.5.4", features = ["serde"] }
-pyo3 = { version = "0.26.0", features = ["abi3", "extension-module"], optional = true }
-regex = { version = "1.11.1" }
+log = { version = "0.4.26" }
+pyo3 = { version = "0.24.2", "features" = ["extension-module", "abi3"] }
+pyo3-log = { version = "0.12.1" }
 serde = { version = "1.0.217", features = ["derive"] }
 serde_json = { version = "1.0.135", features = [
     "arbitrary_precision", # To support very big numbers
     "preserve_order",
 ] }
 serde_yaml = { version = "0.9.33" }
-
-[features]
-python_bindings = ["dep:pyo3"]
 
 [lib]
 crate-type = ["cdylib", "lib"]
