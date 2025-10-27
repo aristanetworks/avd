@@ -133,11 +133,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
@@ -148,22 +150,26 @@ router_bgp:
   - ip_address: 172.16.255.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: inband-mgmt-parent
+    metadata:
+      peer: inband-mgmt-parent
     description: inband-mgmt-parent_Ethernet1
   - ip_address: 172.16.255.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    peer: inband-mgmt-parent-vrf
+    metadata:
+      peer: inband-mgmt-parent-vrf
     description: inband-mgmt-parent-vrf_Ethernet1
   - ip_address: 10.0.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65000'
-    peer: inband-mgmt-parent
+    metadata:
+      peer: inband-mgmt-parent
     description: inband-mgmt-parent_Loopback0
   - ip_address: 10.0.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: inband-mgmt-parent-vrf
+    metadata:
+      peer: inband-mgmt-parent-vrf
     description: inband-mgmt-parent-vrf_Loopback0
   redistribute:
     connected:

@@ -158,7 +158,8 @@ vlan_interfaces:
   description: SVI_100
   shutdown: false
   ip_address_virtual: 10.0.100.1/24
-  tenant: L2LS_OSPF
+  metadata:
+    tenant: L2LS_OSPF
 - name: Vlan4092
   description: Inband Management
   shutdown: false

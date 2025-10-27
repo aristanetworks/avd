@@ -531,13 +531,15 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     bfd: true
@@ -558,19 +560,23 @@ router_bgp:
   - ip_address: 10.0.2.14
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
-    peer: site2-leaf2
+    metadata:
+      peer: site2-leaf2
     description: site2-leaf2_Ethernet3
   - ip_address: 192.168.42.1
     peer_group: WAN-OVERLAY-PEERS
-    peer: pf1
+    metadata:
+      peer: pf1
     description: pf1_Dps1
   - ip_address: 192.168.42.2
     peer_group: WAN-OVERLAY-PEERS
-    peer: pf2
+    metadata:
+      peer: pf2
     description: pf2_Dps1
   - ip_address: 192.168.42.7
     remote_as: '65000'
-    peer: site2-wan1
+    metadata:
+      peer: site2-wan1
     description: site2-wan1
     route_reflector_client: true
     update_source: Dps1

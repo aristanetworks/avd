@@ -932,12 +932,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     bfd: true
@@ -970,15 +972,18 @@ router_bgp:
   - ip_address: 172.17.0.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65199'
-    peer: site-ha-disabled-leaf
+    metadata:
+      peer: site-ha-disabled-leaf
     description: site-ha-disabled-leaf_Ethernet2
   - ip_address: 192.168.144.2
     peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder1
+    metadata:
+      peer: cv-pathfinder-pathfinder1
     description: cv-pathfinder-pathfinder1_Dps1
   - ip_address: 192.168.144.3
     peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder2
+    metadata:
+      peer: cv-pathfinder-pathfinder2
     description: cv-pathfinder-pathfinder2_Dps1
   redistribute:
     connected:

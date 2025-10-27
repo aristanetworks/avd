@@ -147,12 +147,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: UNDERLAY_PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: af6F4WLl4wUrWRZcwbEwkQ==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
@@ -164,32 +166,38 @@ router_bgp:
   - ip_address: 2001:1::c
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65106'
-    peer: DC1-LEAF3A
+    metadata:
+      peer: DC1-LEAF3A
     description: DC1-LEAF3A_Loopback0
   - ip_address: 2001:1::d
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65106'
-    peer: DC1-LEAF3B
+    metadata:
+      peer: DC1-LEAF3B
     description: DC1-LEAF3B_Loopback0
   neighbor_interfaces:
   - name: Ethernet1
     remote_as: '65106'
-    peer: DC1-LEAF3A
+    metadata:
+      peer: DC1-LEAF3A
     peer_group: UNDERLAY_PEERS
     description: DC1-LEAF3A_Ethernet1
   - name: Ethernet2
     remote_as: '65106'
-    peer: DC1-LEAF3B
+    metadata:
+      peer: DC1-LEAF3B
     peer_group: UNDERLAY_PEERS
     description: DC1-LEAF3B_Ethernet1
   - name: Ethernet3
     remote_as: '65106'
-    peer: DC1-LEAF3A
+    metadata:
+      peer: DC1-LEAF3A
     peer_group: UNDERLAY_PEERS
     description: DC1-LEAF3A_Ethernet2
   - name: Ethernet4
     remote_as: '65106'
-    peer: DC1-LEAF3B
+    metadata:
+      peer: DC1-LEAF3B
     peer_group: UNDERLAY_PEERS
     description: DC1-LEAF3B_Ethernet2
   redistribute:

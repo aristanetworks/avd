@@ -208,7 +208,6 @@ class ActionModule(ActionBase):
             ansible_display=display,
             schema_id="eos_cli_config_gen",
             validation_mode=validation_mode,
-            plugin_name="arista.avd.eos_cli_config_gen",
         )
         result.update(input_schema_tools.convert_and_validate_data(task_vars))
 
