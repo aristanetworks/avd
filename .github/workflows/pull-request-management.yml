@@ -267,8 +267,6 @@ jobs:
             ansible_version: "ansible-core<2.18.0"
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.19.0"
-          - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core<2.20.0"
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
