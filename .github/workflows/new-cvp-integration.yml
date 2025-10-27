@@ -61,7 +61,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -94,7 +94,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/

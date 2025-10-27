@@ -174,7 +174,7 @@ jobs:
         with:
           python-version: ${{ matrix.python_version }}
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -206,7 +206,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -267,7 +267,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -290,7 +290,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -338,7 +338,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -381,7 +381,7 @@ jobs:
             3.12
             3.13
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -406,7 +406,7 @@ jobs:
           python-version: |
             3.12
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -494,7 +494,7 @@ jobs:
         run: |
           pip install "ansible-core==2.16.0"
       - name: Download collection
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: avd-collection
       - name: Install galaxy-importer
@@ -531,7 +531,7 @@ jobs:
             3.12
             3.13
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -539,7 +539,7 @@ jobs:
         run: |
           pip install "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
       - name: Download collection
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: avd-collection
       - name: Extract collection
@@ -628,18 +628,18 @@ jobs:
         working-directory: python-avd
         run: pip install --group coverage
       - name: Download coverage artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           pattern: coverage-data-*
           path: python-avd
           merge-multiple: true
       - name: Download eos_designs compiled templates artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pytest-eos-designs-compiled-templates
           path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
       - name: Download eos_cli_config_gen compiled templates artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pytest-eos-cli-config-gen-compiled-templates
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
