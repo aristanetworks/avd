@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_name_server_groups.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "ip_name_server_groups.[].vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_name_server_groups.[].vrfs.[].name") | String | Required, Unique |  |  | VRF name. Use "default" for the default VRF. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name_servers</samp>](## "ip_name_server_groups.[].vrfs.[].name_servers") | List, items: Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name_servers</samp>](## "ip_name_server_groups.[].vrfs.[].name_servers") | List, items: Dictionary | Required |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "ip_name_server_groups.[].vrfs.[].name_servers.[].ip_address") | String | Required, Unique |  |  | IPv4 or IPv6 address for DNS server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "ip_name_server_groups.[].vrfs.[].name_servers.[].priority") | Integer |  |  | Min: 0<br>Max: 15 | Priority value (lower is first). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name_servers</samp>](## "ip_name_server_groups.[].name_servers") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0.</span> |
@@ -32,7 +32,7 @@
 
             # VRF name. Use "default" for the default VRF.
           - name: <str; required; unique>
-            name_servers: # required
+            name_servers: # >=1 items; required
 
                 # IPv4 or IPv6 address for DNS server.
               - ip_address: <str; required; unique>
