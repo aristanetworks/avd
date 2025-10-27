@@ -198,6 +198,6 @@ class DeviceTestContext:
         if source_interface:
             if dps_item := self.structured_config.dps_interfaces.get(source_interface, None):
                 source_interface_item = dps_item
-            elif loopback_item := self.structured_config.loopback_interfaces.get(source_interface, None):
+            if loopback_item := self.structured_config.loopback_interfaces.get(source_interface, None):
                 source_interface_item = loopback_item
         return source_interface_item
