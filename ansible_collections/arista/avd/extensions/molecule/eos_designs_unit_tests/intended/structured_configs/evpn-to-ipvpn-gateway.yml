@@ -139,7 +139,8 @@ vlan_interfaces:
   shutdown: true
   vrf: testvrf
   ip_address_virtual: 10.10.10.10/24
-  tenant: mytenant
+  metadata:
+    tenant: mytenant
 vlan_internal_order:
   allocation: ascending
   range:

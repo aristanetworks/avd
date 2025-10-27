@@ -71,7 +71,8 @@ vlan_interfaces:
   description: SVI_3910
   shutdown: true
   vrf: TEST
-  tenant: TEST
+  metadata:
+    tenant: TEST
 vlan_internal_order:
   allocation: ascending
   range:

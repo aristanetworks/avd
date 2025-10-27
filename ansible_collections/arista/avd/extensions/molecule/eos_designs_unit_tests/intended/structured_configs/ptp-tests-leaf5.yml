@@ -181,7 +181,8 @@ vlan_interfaces:
   description: VLAN11
   shutdown: false
   vrf: VRF1
-  tenant: PTP
+  metadata:
+    tenant: PTP
 vlan_internal_order:
   allocation: ascending
   range:

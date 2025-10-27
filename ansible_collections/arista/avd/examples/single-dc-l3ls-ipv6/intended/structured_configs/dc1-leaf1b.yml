@@ -458,21 +458,24 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.11.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan12
   description: VRF10_VLAN12
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan3009
   description: MLAG_L3_VRF_VRF10
   shutdown: false
   vrf: VRF10
   ipv6_address: 2001:db8:4::2/64
   mtu: 1500
-  tenant: TENANT1
-  type: underlay_peering
+  metadata:
+    tenant: TENANT1
+    type: underlay_peering
 - name: Vlan21
   description: VRF11_VLAN21
   shutdown: false
@@ -480,21 +483,24 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:DB8:21::1/48
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan22
   description: VRF11_VLAN22
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.22.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan3010
   description: MLAG_L3_VRF_VRF11
   shutdown: false
   vrf: VRF11
   ipv6_address: 2001:db8:4::2/64
   mtu: 1500
-  tenant: TENANT1
-  type: underlay_peering
+  metadata:
+    tenant: TENANT1
+    type: underlay_peering
 - name: Vlan31
   description: VRF12_VLAN31
   shutdown: false
@@ -502,7 +508,8 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:DB8:31::1/48
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan32
   description: VRF12_VLAN32
   shutdown: false
@@ -510,15 +517,17 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:DB8:32::1/48
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan3011
   description: MLAG_L3_VRF_VRF12
   shutdown: false
   vrf: VRF12
   ipv6_address: 2001:db8:4::2/64
   mtu: 1500
-  tenant: TENANT1
-  type: underlay_peering
+  metadata:
+    tenant: TENANT1
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:

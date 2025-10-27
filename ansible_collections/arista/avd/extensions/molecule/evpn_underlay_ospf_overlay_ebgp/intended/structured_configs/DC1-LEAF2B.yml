@@ -369,17 +369,19 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_B_OP_Zone
   ip_address_virtual: 10.2.10.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan3019
   description: MLAG_L3_VRF_Tenant_B_OP_Zone
   shutdown: false
   vrf: Tenant_B_OP_Zone
   ip_address: 10.255.251.3/31
   mtu: 1500
-  tenant: Tenant_A
-  type: underlay_peering
+  metadata:
+    tenant: Tenant_A
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:
