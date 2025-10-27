@@ -30835,6 +30835,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class IpAddressSecondaries(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        IpAddressSecondaries._item_type = str
+
         IpVerifyUnicastSourceReachableVia: TypeAlias = Literal["any", "rx"]
 
         class IpNat(AvdModel):
@@ -33609,6 +33614,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "vmtracer": {"type": bool},
             "ptp": {"type": Ptp},
             "ip_address": {"type": str},
+            "ip_address_secondaries": {"type": IpAddressSecondaries},
             "dhcp_client_accept_default_route": {"type": bool},
             "dhcp_server_ipv4": {"type": bool},
             "dhcp_server_ipv6": {"type": bool},
@@ -33733,6 +33739,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         ip_address: str | None
         """IPv4 address/mask or "dhcp"."""
+        ip_address_secondaries: IpAddressSecondaries
+        """Subclass of AvdList with `str` items."""
         dhcp_client_accept_default_route: bool | None
         """Install default-route obtained via DHCP."""
         dhcp_server_ipv4: bool | None
@@ -33858,6 +33866,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 vmtracer: bool | None | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
+                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                 dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
                 dhcp_server_ipv4: bool | None | UndefinedType = Undefined,
                 dhcp_server_ipv6: bool | None | UndefinedType = Undefined,
@@ -33956,6 +33965,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     vmtracer: vmtracer
                     ptp: Subclass of AvdModel.
                     ip_address: IPv4 address/mask or "dhcp".
+                    ip_address_secondaries: Subclass of AvdList with `str` items.
                     dhcp_client_accept_default_route: Install default-route obtained via DHCP.
                     dhcp_server_ipv4: Enable IPv4 DHCP server.
                     dhcp_server_ipv6: Enable IPv6 DHCP server.

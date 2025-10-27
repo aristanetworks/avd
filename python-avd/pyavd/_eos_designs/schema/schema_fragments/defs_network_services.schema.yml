@@ -1056,6 +1056,11 @@ $defs:
                     ip_address:
                       type: str
                       description: IPv4 address/Mask.
+                    ip_address_secondaries:
+                      type: list
+                      items:
+                        type: str
+                        description: IPv4 address/Mask.
                     encapsulation_dot1q_vlan:
                       description: For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
                       type: int
