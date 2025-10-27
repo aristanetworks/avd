@@ -175,11 +175,6 @@ class EthernetInterfacesMixin(Protocol):
         # Common ethernet_interface settings
         ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
             name=adapter.switch_ports[node_index],
-            peer=peer,
-            peer_interface=peer_interface,
-            peer_type=connected_endpoint.type,
-            peer_key=connected_endpoint._internal_data.context,
-            port_profile=adapter.profile,
             description=self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interface(
                 InterfaceDescriptionData(
                     shared_utils=self.shared_utils,
@@ -199,6 +194,13 @@ class EthernetInterfacesMixin(Protocol):
             dot1x=adapter.dot1x,
             poe=adapter.poe if self.shared_utils.platform_settings.feature_support.poe else Undefined,
             eos_cli=adapter.raw_eos_cli,
+        )
+        ethernet_interface.metadata._update(
+            peer=peer,
+            peer_interface=peer_interface,
+            peer_type=connected_endpoint.type,
+            port_profile=adapter.profile,
+            peer_key=connected_endpoint._internal_data.context,
         )
 
         # Port-channel member

@@ -22,18 +22,20 @@ ethernet_interfaces:
   channel_group:
     id: 1001
     mode: active
-  peer: DC1-LEAF2A
-  peer_interface: Ethernet13
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF2A
+    peer_interface: Ethernet13
+    peer_type: l3leaf
 - name: Ethernet2
   description: DC1-LEAF2B_Ethernet13
   shutdown: false
   channel_group:
     id: 1001
     mode: active
-  peer: DC1-LEAF2B
-  peer_interface: Ethernet13
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF2B
+    peer_interface: Ethernet13
+    peer_type: l3leaf
 hostname: DC1-L2LEAF4A
 ip_igmp_snooping:
   globally_enabled: true

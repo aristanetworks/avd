@@ -17,65 +17,72 @@ ethernet_interfaces:
   channel_group:
     id: 47
     mode: active
-  peer: SPINE1
-  peer_interface: Ethernet47
-  peer_type: mlag_peer
+  metadata:
+    peer: SPINE1
+    peer_interface: Ethernet47
+    peer_type: mlag_peer
 - name: Ethernet48
   description: MLAG_SPINE1_Ethernet48
   shutdown: false
   channel_group:
     id: 47
     mode: active
-  peer: SPINE1
-  peer_interface: Ethernet48
-  peer_type: mlag_peer
+  metadata:
+    peer: SPINE1
+    peer_interface: Ethernet48
+    peer_type: mlag_peer
 - name: Ethernet1
   description: L2_LEAF1_Ethernet2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: LEAF1
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF1
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet2
   description: L2_LEAF2_Ethernet2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: LEAF2
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF2
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet3
   description: L2_LEAF3_Ethernet2
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: LEAF3
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF3
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet4
   description: L2_LEAF4_Ethernet2
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: LEAF4
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF4
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet5
   description: FIREWALL_FIREWALL_Eth2
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: FIREWALL
-  peer_interface: Eth2
-  peer_type: firewall
-  peer_key: firewalls
-  port_profile: PP-FIREWALL
+  metadata:
+    peer: FIREWALL
+    peer_interface: Eth2
+    peer_type: firewall
+    peer_key: firewalls
+    port_profile: PP-FIREWALL
 hostname: SPINE2
 ip_domain_lookup:
   source_interfaces:

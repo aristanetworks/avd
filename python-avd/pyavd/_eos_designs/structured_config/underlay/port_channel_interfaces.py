@@ -171,23 +171,22 @@ class PortChannelInterfacesMixin(Protocol):
         else:
             main_interface_wan_carrier = None
 
-        interface_description = self.shared_utils.interface_descriptions.underlay_port_channel_interface(
-            InterfaceDescriptionData(
-                shared_utils=self.shared_utils,
-                interface=l3_port_channel.name,
-                port_channel_description=l3_port_channel.description,
-                peer=l3_port_channel.peer,
-                peer_interface=l3_port_channel.peer_port_channel,
-                wan_carrier=l3_port_channel.wan_carrier,
-                wan_circuit_id=l3_port_channel.wan_circuit_id,
-                main_interface_wan_carrier=main_interface_wan_carrier,
-            ),
+        interface.description = (
+            self.shared_utils.interface_descriptions.underlay_port_channel_interface(
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=l3_port_channel.name,
+                    port_channel_description=l3_port_channel.description,
+                    peer=l3_port_channel.peer,
+                    peer_interface=l3_port_channel.peer_port_channel,
+                    wan_carrier=l3_port_channel.wan_carrier,
+                    wan_circuit_id=l3_port_channel.wan_circuit_id,
+                    main_interface_wan_carrier=main_interface_wan_carrier,
+                ),
+            )
+            or None
         )
-        interface._update(
-            description=interface_description or None,
-            peer_type="l3_port_channel",
-            peer_interface=l3_port_channel.peer_port_channel,
-        )
+        interface.metadata._update(peer_interface=l3_port_channel.peer_port_channel, peer_type="l3_port_channel")
 
         if l3_port_channel.ipv4_acl_in:
             acl = self._get_acl_for_l3_generic_interface(l3_port_channel.ipv4_acl_in, l3_port_channel)
@@ -239,10 +238,12 @@ class PortChannelInterfacesMixin(Protocol):
         self.structured_config.port_channel_interfaces.append_new(
             name=port_channel_name,
             switchport=EosCliConfigGen.PortChannelInterfacesItem.Switchport(enabled=False),
-            peer_type="l3_interface",
-            # TODO: if different interfaces used across nodes it will fail just like for mlag.
-            peer_interface=port_channel_name,
-            peer=self.shared_utils.wan_ha_peer,
+            metadata=EosCliConfigGen.PortChannelInterfacesItem.Metadata(
+                # TODO: if different interfaces used across nodes it will fail just like for mlag.
+                peer_interface=port_channel_name,
+                peer_type="l3_interface",
+                peer=self.shared_utils.wan_ha_peer,
+            ),
             shutdown=False,
             description=description or None,
             ip_address=self.shared_utils.wan_ha_ip_addresses[0],

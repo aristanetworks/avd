@@ -76,3 +76,14 @@
         anta_reports_dir: "{{ root_dir }}/anta/reports/user_defined_catalogs_with_tags_run"
         anta_runner_tags: ["border_leaf"]
       run_once: true
+
+    - name: ANTA Default Run with Filtered Report
+      delegate_to: 127.0.0.1
+      ansible.builtin.import_role:
+        name: arista.avd.anta_runner
+      vars:
+        anta_runner_dry_run: true
+        avd_catalogs_dir: "{{ root_dir }}/anta/avd_catalogs/default_run_filtered_report"
+        anta_reports_dir: "{{ root_dir }}/anta/reports/default_run_filtered_report"
+        anta_report_hide_statuses: ["unset"]
+      run_once: true

@@ -7,10 +7,11 @@ ethernet_interfaces:
 - name: Ethernet19
   description: SERVER_OLD_SW-1/8_Endpoint_port4
   shutdown: false
-  peer: OLD_SW-1/8
-  peer_interface: Endpoint_port4
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: OLD_SW-1/8
+    peer_interface: Endpoint_port4
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk

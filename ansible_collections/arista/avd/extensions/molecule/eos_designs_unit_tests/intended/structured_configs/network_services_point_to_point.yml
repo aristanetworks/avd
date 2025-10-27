@@ -9,25 +9,29 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: 'on'
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Ethernet10
   shutdown: false
   channel_group:
     id: 10
     mode: active
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Ethernet4
   shutdown: false
   channel_group:
     id: 4
     mode: active
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Ethernet3
   shutdown: false
   lldp:
     transmit: false
     receive: false
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
   switchport:
     enabled: false
 - name: Ethernet7
@@ -35,13 +39,15 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Ethernet8
   shutdown: false
   channel_group:
     id: 8
     mode: 'on'
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 hostname: network_services_point_to_point
 ip_igmp_snooping:
   globally_enabled: true
@@ -123,12 +129,14 @@ port_channel_interfaces:
   evpn_ethernet_segment:
     identifier: 0000:0000:0102:BEEF:F00D
     route_target: 01:02:BE:EF:F0:0D
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
   switchport:
     enabled: false
 - name: Port-Channel10
   shutdown: false
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
   switchport:
     enabled: false
 - name: Port-Channel4
@@ -137,7 +145,8 @@ port_channel_interfaces:
     identifier: 0000:0000:0102:CAFE:F00D
     route_target: 01:02:CA:FE:F0:0D
   lacp_id: 0102.CAFE.F00D
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
   switchport:
     enabled: false
 - name: Port-Channel7.1000
@@ -148,7 +157,8 @@ port_channel_interfaces:
       vlan: 1000
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Port-Channel8.1000
   shutdown: false
   encapsulation_vlan:
@@ -157,14 +167,16 @@ port_channel_interfaces:
       vlan: 1000
     network:
       encapsulation: client
-  peer_type: point_to_point_service
+  metadata:
+    peer_type: point_to_point_service
 - name: Port-Channel7
   shutdown: false
   evpn_ethernet_segment:
     identifier: 0000:0000:0102:BEEF:F00D
     route_target: 01:02:BE:EF:F0:0D
   lacp_id: 0102.BEEF.F00D
-  peer_type: system
+  metadata:
+    peer_type: system
   switchport:
     enabled: false
 - name: Port-Channel8
@@ -172,7 +184,8 @@ port_channel_interfaces:
   evpn_ethernet_segment:
     identifier: 0000:0000:0102:BEEF:F00D
     route_target: 01:02:BE:EF:F0:0D
-  peer_type: system
+  metadata:
+    peer_type: system
   switchport:
     enabled: false
 router_bfd:

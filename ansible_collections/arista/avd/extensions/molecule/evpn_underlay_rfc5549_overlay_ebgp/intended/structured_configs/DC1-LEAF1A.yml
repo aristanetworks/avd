@@ -19,9 +19,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE1
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -29,9 +30,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE2
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -39,9 +41,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE3
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet4
@@ -49,9 +52,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE4
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet6
@@ -73,11 +77,12 @@ ethernet_interfaces:
   spanning_tree_bpdufilter: 'True'
   spanning_tree_bpduguard: 'False'
   spanning_tree_portfast: edge
-  peer: server02_SINGLE_NODE_TRUNK
-  peer_interface: Eth1
-  peer_type: server
-  peer_key: servers
-  port_profile: ALL_WITH_SECURITY
+  metadata:
+    peer: server02_SINGLE_NODE_TRUNK
+    peer_interface: Eth1
+    peer_type: server
+    peer_key: servers
+    port_profile: ALL_WITH_SECURITY
   switchport:
     enabled: true
     mode: trunk
@@ -86,11 +91,12 @@ ethernet_interfaces:
 - name: Ethernet7
   description: SERVER_server02_SINGLE_NODE_Eth1
   shutdown: false
-  peer: server02_SINGLE_NODE
-  peer_interface: Eth1
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_A
+  metadata:
+    peer: server02_SINGLE_NODE
+    peer_interface: Eth1
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_A
   switchport:
     enabled: true
     mode: access
