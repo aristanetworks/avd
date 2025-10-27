@@ -329,61 +329,71 @@ vlan_interfaces:
   shutdown: false
   vrf: L2_MULTI_DOMAIN_ENABLED
   ip_address_virtual: 10.1.50.1/24
-  tenant: L2_MULTI_DOMAIN_DISABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_DISABLED
 - name: Vlan160
   description: L2_MULTI_DOMAIN_NEUTRAL
   shutdown: false
   vrf: L2_MULTI_DOMAIN_ENABLED
   ip_address_virtual: 10.1.60.1/24
-  tenant: L2_MULTI_DOMAIN_DISABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_DISABLED
 - name: Vlan170
   description: L2_MULTI_DOMAIN_DISABLED
   shutdown: false
   vrf: L2_MULTI_DOMAIN_ENABLED
   ip_address_virtual: 10.1.70.1/24
-  tenant: L2_MULTI_DOMAIN_DISABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_DISABLED
 - name: Vlan110
   description: L2_MULTI_DOMAIN_NEUTRAL
   shutdown: false
   vrf: L2_MULTI_DOMAIN_NEUTRAL_1
   ip_address_virtual: 10.1.10.1/24
-  tenant: L2_MULTI_DOMAIN_DISABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_DISABLED
 - name: Vlan111
   description: L2_MULTI_DOMAIN_ENABLED
   shutdown: false
   vrf: L2_MULTI_DOMAIN_NEUTRAL_1
   ip_address_virtual: 10.1.11.1/24
-  tenant: L2_MULTI_DOMAIN_DISABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_DISABLED
 - name: Vlan250
   description: L2_MULTI_DOMAIN_NEUTRAL
   shutdown: false
   vrf: L2_MULTI_DOMAIN_DISBLED
   ip_address_virtual: 10.2.50.1/24
-  tenant: L2_MULTI_DOMAIN_ENABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_ENABLED
 - name: Vlan260
   description: L2_MULTI_DOMAIN_NEUTRAL
   shutdown: false
   vrf: L2_MULTI_DOMAIN_DISBLED
   ip_address_virtual: 10.2.60.1/24
-  tenant: L2_MULTI_DOMAIN_ENABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_ENABLED
 - name: Vlan270
   description: L2_MULTI_DOMAIN_ENABLED
   shutdown: false
   vrf: L2_MULTI_DOMAIN_DISBLED
   ip_address_virtual: 10.2.70.1/24
-  tenant: L2_MULTI_DOMAIN_ENABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_ENABLED
 - name: Vlan210
   description: L2_MULTI_DOMAIN_NEUTRAL
   shutdown: false
   vrf: L2_MULTI_DOMAIN_NEUTRAL_2
   ip_address_virtual: 10.2.10.1/24
-  tenant: L2_MULTI_DOMAIN_ENABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_ENABLED
 - name: Vlan211
   description: L2_MULTI_DOMAIN_DISABLED
   shutdown: false
   vrf: L2_MULTI_DOMAIN_NEUTRAL_2
   ip_address_virtual: 10.2.11.1/24
-  tenant: L2_MULTI_DOMAIN_ENABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_ENABLED
 vlan_internal_order:
   allocation: ascending
   range:

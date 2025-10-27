@@ -123,9 +123,10 @@ vlan_interfaces:
   description: Duplicate_SVI_100_LEAF2
   shutdown: false
   vrf: TEST
-  tenant: Tenant_A
-  tags:
-  - DUP-LEAF2
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - DUP-LEAF2
 vlan_internal_order:
   allocation: ascending
   range:

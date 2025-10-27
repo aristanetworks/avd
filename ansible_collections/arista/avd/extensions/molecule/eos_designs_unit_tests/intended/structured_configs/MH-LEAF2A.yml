@@ -25,9 +25,10 @@ ethernet_interfaces:
   - name: Eth-conn-to-router
     direction: upstream
   ip_address: 10.10.101.5/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet21
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet21
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -36,20 +37,22 @@ ethernet_interfaces:
   channel_group:
     id: 2
     mode: active
-  peer: MH-L2LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: MH-L2LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet10
   description: ROUTER01_Eth1
   shutdown: false
   link_tracking_groups:
   - name: Eth-conn-to-router
     direction: downstream
-  peer: ROUTER01
-  peer_interface: Eth1
-  peer_type: router
-  peer_key: routers
-  port_profile: Tenant_X_LT
+  metadata:
+    peer: ROUTER01
+    peer_interface: Eth1
+    peer_type: router
+    peer_key: routers
+    port_profile: Tenant_X_LT
   switchport:
     enabled: true
     mode: access
@@ -373,33 +376,37 @@ vlan_interfaces:
   description: Tenant_default_vrf
   shutdown: false
   ip_address_virtual: 10.2.10.1/24
-  tenant: Tenant_X
-  tags:
-  - default_vrf
+  metadata:
+    tenant: Tenant_X
+    tags:
+    - default_vrf
 - name: Vlan310
   description: Tenant_X_OP_Zone_1
   shutdown: false
   vrf: Tenant_X_OP_Zone
   ip_address_virtual: 10.1.10.1/24
-  tenant: Tenant_X
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_X
+    tags:
+    - opzone
 - name: Vlan315
   description: Tenant_network_vrf_1
   shutdown: false
   vrf: VRF_with_loopback_ip_pools
   ip_address_virtual: 10.1.10.2/24
-  tenant: Tenant_X
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_X
+    tags:
+    - opzone
 - name: Vlan316
   description: Tenant_network_vrf_2
   shutdown: false
   vrf: VRF_without_loopback_ip_pools
   ip_address_virtual: 10.1.10.3/24
-  tenant: Tenant_X
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_X
+    tags:
+    - opzone
 vlan_internal_order:
   allocation: ascending
   range:

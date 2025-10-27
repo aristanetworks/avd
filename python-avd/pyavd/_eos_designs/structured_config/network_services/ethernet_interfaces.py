@@ -83,12 +83,10 @@ class EthernetInterfacesMixin(Protocol):
                 ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
                     name=member_intf.name,
                     description=interface_description or None,
-                    peer_type="l3_port_channel_member",
-                    peer=peer or None,
-                    peer_interface=member_intf.peer_interface or None,
                     shutdown=not l3_port_channel.enabled,
                     speed=member_intf.speed if member_intf.speed else None,
                 )
+                ethernet_interface.metadata._update(peer_interface=member_intf.peer_interface or None, peer_type="l3_port_channel_member", peer=peer or None)
                 ethernet_interface.channel_group.id = int(channel_group_id)
                 ethernet_interface.channel_group.mode = l3_port_channel.mode
 
@@ -130,7 +128,6 @@ class EthernetInterfacesMixin(Protocol):
                 interface_description = l3_interface.descriptions[node_index] if l3_interface.descriptions else l3_interface.description
                 interface = EosCliConfigGen.EthernetInterfacesItem(
                     name=interface_name,
-                    peer_type="l3_interface",
                     ip_address=l3_interface.ip_addresses[node_index],
                     mtu=self.shared_utils.get_interface_mtu(interface_name, l3_interface.mtu),
                     shutdown=not l3_interface.enabled,
@@ -139,6 +136,7 @@ class EthernetInterfacesMixin(Protocol):
                     eos_cli=l3_interface.raw_eos_cli,
                     flow_tracker=self.shared_utils.get_flow_tracker(l3_interface.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                 )
+                interface.metadata.peer_type = "l3_interface"
 
                 if l3_interface.structured_config:
                     self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface_name)._deepmerge(
@@ -254,7 +252,7 @@ class EthernetInterfacesMixin(Protocol):
                         channel_group_id = int("".join(re.findall(r"\d", first_interface_name)))
                         self.structured_config.ethernet_interfaces.append_new(
                             name=interface_name,
-                            peer_type="point_to_point_service",
+                            metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(peer_type="point_to_point_service"),
                             shutdown=False,
                             channel_group=EosCliConfigGen.EthernetInterfacesItem.ChannelGroup(id=channel_group_id, mode=port_channel_mode),
                         )
@@ -277,9 +275,9 @@ class EthernetInterfacesMixin(Protocol):
 
                             interface = EosCliConfigGen.EthernetInterfacesItem(
                                 name=subif_name,
-                                peer_type="point_to_point_service",
                                 shutdown=False,
                             )
+                            interface.metadata.peer_type = "point_to_point_service"
                             if subif.raw_eos_cli:
                                 interface.eos_cli = subif.raw_eos_cli
                             interface.encapsulation_vlan.client.encapsulation = "dot1q"
@@ -295,9 +293,9 @@ class EthernetInterfacesMixin(Protocol):
                     else:
                         interface = EosCliConfigGen.EthernetInterfacesItem(
                             name=interface_name,
-                            peer_type="point_to_point_service",
                             shutdown=False,
                         )
+                        interface.metadata.peer_type = "point_to_point_service"
                         interface.switchport.enabled = False
                         if point_to_point_service.lldp_disable:
                             interface.lldp._update(transmit=False, receive=False)
@@ -309,9 +307,9 @@ class EthernetInterfacesMixin(Protocol):
         for interface_name in natural_sort(missing_parent_interface_names):
             interface = EosCliConfigGen.EthernetInterfacesItem(
                 name=interface_name,
-                peer_type="l3_interface",
                 shutdown=False,
             )
+            interface.metadata.peer_type = "l3_interface"
             interface.switchport.enabled = False
             self.structured_config.ethernet_interfaces.append(interface)
 

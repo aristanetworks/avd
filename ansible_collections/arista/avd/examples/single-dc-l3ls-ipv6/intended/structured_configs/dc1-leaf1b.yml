@@ -20,26 +20,29 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: dc1-leaf1a
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
+  metadata:
+    peer: dc1-leaf1a
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
 - name: Ethernet4
   description: MLAG_dc1-leaf1a_Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: dc1-leaf1a
-  peer_interface: Ethernet4
-  peer_type: mlag_peer
+  metadata:
+    peer: dc1-leaf1a
+    peer_interface: Ethernet4
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_dc1-spine1_Ethernet2
   shutdown: false
   mtu: 1500
   ipv6_address: 2001:db8:2:2::2/64
-  peer: dc1-spine1
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: dc1-spine1
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -47,9 +50,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_address: 2001:db8:2:3::2/64
-  peer: dc1-spine2
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: dc1-spine2
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet8
@@ -58,19 +62,21 @@ ethernet_interfaces:
   channel_group:
     id: 8
     mode: active
-  peer: dc1-leaf1c
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: dc1-leaf1c
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet5
   description: SERVER_dc1-leaf1-server1_PCI2
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: dc1-leaf1-server1
-  peer_interface: PCI2
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: dc1-leaf1-server1
+    peer_interface: PCI2
+    peer_type: server
+    peer_key: servers
 hostname: dc1-leaf1b
 ip_domain_lookup:
   source_interfaces:
@@ -452,21 +458,24 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.11.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan12
   description: VRF10_VLAN12
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan3009
   description: MLAG_L3_VRF_VRF10
   shutdown: false
   vrf: VRF10
   ipv6_address: 2001:db8:4::2/64
   mtu: 1500
-  tenant: TENANT1
-  type: underlay_peering
+  metadata:
+    tenant: TENANT1
+    type: underlay_peering
 - name: Vlan21
   description: VRF11_VLAN21
   shutdown: false
@@ -474,21 +483,24 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:DB8:21::1/48
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan22
   description: VRF11_VLAN22
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.22.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan3010
   description: MLAG_L3_VRF_VRF11
   shutdown: false
   vrf: VRF11
   ipv6_address: 2001:db8:4::2/64
   mtu: 1500
-  tenant: TENANT1
-  type: underlay_peering
+  metadata:
+    tenant: TENANT1
+    type: underlay_peering
 - name: Vlan31
   description: VRF12_VLAN31
   shutdown: false
@@ -496,7 +508,8 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:DB8:31::1/48
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan32
   description: VRF12_VLAN32
   shutdown: false
@@ -504,15 +517,17 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:DB8:32::1/48
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan3011
   description: MLAG_L3_VRF_VRF12
   shutdown: false
   vrf: VRF12
   ipv6_address: 2001:db8:4::2/64
   mtu: 1500
-  tenant: TENANT1
-  type: underlay_peering
+  metadata:
+    tenant: TENANT1
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:

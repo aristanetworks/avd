@@ -10,18 +10,20 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  peer: MLAG_SAME_SUBNET_L3LEAF1A
-  peer_interface: Ethernet5
-  peer_type: mlag_peer
+  metadata:
+    peer: MLAG_SAME_SUBNET_L3LEAF1A
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
 - name: Ethernet6
   description: MLAG_MLAG_SAME_SUBNET_L3LEAF1A_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: MLAG_SAME_SUBNET_L3LEAF1A
-  peer_interface: Ethernet6
-  peer_type: mlag_peer
+  metadata:
+    peer: MLAG_SAME_SUBNET_L3LEAF1A
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
 hostname: MLAG_SAME_SUBNET_L3LEAF1B
 ip_igmp_snooping:
   globally_enabled: true
@@ -238,29 +240,33 @@ vlan_interfaces:
   shutdown: true
   vrf: TEST
   ip_address_virtual: 10.10.10.1/24
-  tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+  metadata:
+    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
 - name: Vlan3000
   description: MLAG_L3_VRF_TEST
   shutdown: false
   vrf: TEST
   ip_address: 10.10.224.2/30
   mtu: 9214
-  tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
-  type: underlay_peering
+  metadata:
+    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+    type: underlay_peering
 - name: Vlan101
   description: VLAN101
   shutdown: true
   vrf: TEST_COMMA_SEPERATED_MLAG_IBGP_PEERING_POOL
   ip_address_virtual: 10.10.11.1/24
-  tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+  metadata:
+    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
 - name: Vlan3001
   description: MLAG_L3_VRF_TEST_COMMA_SEPERATED_MLAG_IBGP_PEERING_POOL
   shutdown: false
   vrf: TEST_COMMA_SEPERATED_MLAG_IBGP_PEERING_POOL
   ip_address: 10.255.240.2/30
   mtu: 9214
-  tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
-  type: underlay_peering
+  metadata:
+    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:

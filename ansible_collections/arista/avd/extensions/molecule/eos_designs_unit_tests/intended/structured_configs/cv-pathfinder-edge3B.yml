@@ -89,7 +89,8 @@ ethernet_interfaces:
   description: Colt_10423
   shutdown: false
   ip_address: 172.15.6.6/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet52
@@ -99,8 +100,9 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.10.10.2/24
-  peer: cv-pathfinder-edge3A
-  peer_type: l3_interface
+  metadata:
+    peer: cv-pathfinder-edge3A
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

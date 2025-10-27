@@ -3947,18 +3947,24 @@ keys:
               min: 1
               max: 3
               description: IGMP version on IGMP host-proxy interface.
-        peer:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_interface:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_type:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_key:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          keys:
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_interface:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_type:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_key:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            port_profile:
+              type: str
+              description: Key only used for documentation or validation purposes.
         sflow:
           type: dict
           keys:
@@ -3983,9 +3989,6 @@ keys:
                 any integer between 1-255, or set to `disabled`.
               convert_types:
               - int
-        port_profile:
-          type: str
-          description: Key only used for documentation or validation purposes.
         uc_tx_queues:
           type: list
           primary_key: id
@@ -12186,6 +12189,11 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask or "dhcp".
+        ip_address_secondaries:
+          type: list
+          items:
+            type: str
+            description: IPv4 address/mask.
         dhcp_client_accept_default_route:
           type: bool
           description: Install default-route obtained via DHCP.
@@ -12417,18 +12425,21 @@ keys:
               min: 1
               max: 3
               description: IGMP version on IGMP host-proxy interface.
-        peer:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_interface:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_type:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_key:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          keys:
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_interface:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_type:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_key:
+              type: str
+              description: Key only used for documentation or validation purposes.
         sflow:
           type: dict
           keys:
@@ -24384,17 +24395,20 @@ keys:
         pvlan_mapping:
           type: str
           description: List of VLANs as string.
-        tenant:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        tags:
-          type: list
-          items:
-            type: str
-          description: Key only used for documentation or validation purposes.
-        type:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          keys:
+            tenant:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            tags:
+              type: list
+              items:
+                type: str
+              description: Key only used for documentation or validation purposes.
+            type:
+              type: str
+              description: Key only used for documentation or validation purposes.
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the VLAN interface in

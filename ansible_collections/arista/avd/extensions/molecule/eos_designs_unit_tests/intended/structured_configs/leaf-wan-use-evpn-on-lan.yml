@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.18.0.22/31
-  peer: cv-pathfinder-edge-wan-use-evpn-on-lan
-  peer_interface: Ethernet52
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge-wan-use-evpn-on-lan
+    peer_interface: Ethernet52
+    peer_type: wan_router
   switchport:
     enabled: false
 - name: Ethernet2
@@ -19,9 +20,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.18.0.26/31
-  peer: cv-pathfinder-edge-wan-use-evpn-on-lan-no-overlay-on-lan
-  peer_interface: Ethernet52
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge-wan-use-evpn-on-lan-no-overlay-on-lan
+    peer_interface: Ethernet52
+    peer_type: wan_router
   switchport:
     enabled: false
 hostname: leaf-wan-use-evpn-on-lan
@@ -212,13 +214,15 @@ vlan_interfaces:
   shutdown: true
   vrf: PROD
   ip_address_virtual: 10.0.100.1/24
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: Vlan666
   description: VLAN666
   shutdown: true
   vrf: ATTRACTED-VRF-FROM-UPLINK
   ip_address_virtual: 10.66.66.66/24
-  tenant: TenantC
+  metadata:
+    tenant: TenantC
 vlan_internal_order:
   allocation: ascending
   range:

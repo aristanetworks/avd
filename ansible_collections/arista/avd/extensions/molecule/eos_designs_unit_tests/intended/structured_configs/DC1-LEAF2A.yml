@@ -23,9 +23,10 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  peer: DC1-L2LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-L2LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet8
   description: DC1-L2LEAF1B_Ethernet1
   shutdown: false
@@ -33,72 +34,80 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  peer: DC1-L2LEAF1B
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-L2LEAF1B
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet9
   description: DC1-L2LEAF3A_Ethernet1
   shutdown: false
   channel_group:
     id: 9
     mode: active
-  peer: DC1-L2LEAF3A
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-L2LEAF3A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet13
   description: DC1-L2LEAF4A_Ethernet1
   shutdown: false
   channel_group:
     id: 1013
     mode: active
-  peer: DC1-L2LEAF4A
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-L2LEAF4A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet14/1
   description: DC1.L2LEAF5A_Ethernet1
   shutdown: false
   channel_group:
     id: 141
     mode: active
-  peer: DC1.L2LEAF5A
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: DC1.L2LEAF5A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet15/1
   description: DC1.L2LEAF5B_Ethernet1
   shutdown: false
   channel_group:
     id: 141
     mode: active
-  peer: DC1.L2LEAF5B
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: DC1.L2LEAF5B
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet30
   description: DC1.L2LEAF6A_Ethernet1
   shutdown: false
   channel_group:
     id: 30
     mode: active
-  peer: DC1.L2LEAF6A
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: DC1.L2LEAF6A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet32
   description: description through uplink_switch_ethernet_structured_config(DC1.L2LEAF7A)
   shutdown: false
   channel_group:
     id: 32
     mode: active
-  peer: DC1.L2LEAF7A
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: DC1.L2LEAF7A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet49/1
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet3/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.33/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet3/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet3/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet50/1
@@ -107,9 +116,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.35/31
-  peer: DC1-SPINE2
-  peer_interface: Ethernet1/3/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet1/3/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet51/1
@@ -118,9 +128,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.37/31
-  peer: DC1-SPINE2
-  peer_interface: Ethernet1/4/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet1/4/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet52/1
@@ -129,9 +140,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.39/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet4/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet4/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet53/1
@@ -140,9 +152,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.41/31
-  peer: DC1-SPINE3
-  peer_interface: Ethernet1/3/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet1/3/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet54/1
@@ -151,9 +164,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.43/31
-  peer: DC1-SPINE4
-  peer_interface: Ethernet3/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet3/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet55/1
@@ -162,9 +176,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.45/31
-  peer: DC1-SPINE4
-  peer_interface: Ethernet4/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet4/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet56/1
@@ -173,9 +188,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.47/31
-  peer: DC1-SPINE3
-  peer_interface: Ethernet1/4/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet1/4/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet22
@@ -184,7 +200,8 @@ ethernet_interfaces:
   ip_address: 10.0.0.1/30
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet23
@@ -193,7 +210,8 @@ ethernet_interfaces:
   ip_address: 10.0.0.13/30
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet10
@@ -202,51 +220,56 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
-  peer: server01_MLAG
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_B
+  metadata:
+    peer: server01_MLAG
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_B
 - name: Ethernet11
   description: server01_MTU_PROFILE_MLAG_Eth4
   shutdown: false
   channel_group:
     id: 11
     mode: active
-  peer: server01_MTU_PROFILE_MLAG
-  peer_interface: Eth4
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_A_MTU
+  metadata:
+    peer: server01_MTU_PROFILE_MLAG
+    peer_interface: Eth4
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_A_MTU
 - name: Ethernet12
   description: server01_MTU_ADAPTOR_MLAG_Eth6
   shutdown: false
   channel_group:
     id: 12
     mode: active
-  peer: server01_MTU_ADAPTOR_MLAG
-  peer_interface: Eth6
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: server01_MTU_ADAPTOR_MLAG
+    peer_interface: Eth6
+    peer_type: server
+    peer_key: servers
 - name: Ethernet20
   description: FIREWALL01_E0
   shutdown: false
   channel_group:
     id: 20
     mode: active
-  peer: FIREWALL01
-  peer_interface: E0
-  peer_type: firewall
-  peer_key: firewalls
-  port_profile: TENANT_A_B
+  metadata:
+    peer: FIREWALL01
+    peer_interface: E0
+    peer_type: firewall
+    peer_key: firewalls
+    port_profile: TENANT_A_B
 - name: Ethernet21
   description: ROUTER01_Eth0
   shutdown: false
-  peer: ROUTER01
-  peer_interface: Eth0
-  peer_type: router
-  peer_key: routers
-  port_profile: TENANT_A
+  metadata:
+    peer: ROUTER01
+    peer_interface: Eth0
+    peer_type: router
+    peer_key: routers
+    port_profile: TENANT_A
   switchport:
     enabled: true
     mode: access
@@ -257,11 +280,12 @@ ethernet_interfaces:
   channel_group:
     id: 26
     mode: active
-  peer: PHONE03_port_channel
-  peer_interface: Eth0
-  peer_type: phone
-  peer_key: phones
-  port_profile: PHONE_WITH_PC
+  metadata:
+    peer: PHONE03_port_channel
+    peer_interface: Eth0
+    peer_type: phone
+    peer_key: phones
+    port_profile: PHONE_WITH_PC
 - name: Ethernet24
   description: PC
   shutdown: false
@@ -282,9 +306,10 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: DOT1X_PORT_PROFILE
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: DOT1X_PORT_PROFILE
   switchport:
     enabled: true
 - name: Ethernet25
@@ -307,9 +332,10 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: DOT1X_PORT_PROFILE
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: DOT1X_PORT_PROFILE
   switchport:
     enabled: true
 hardware:
@@ -1005,35 +1031,39 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.30.1/24
-  tenant: Tenant_A
-  tags:
-  - app
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - app
+    - erp1
 - name: Vlan131
   description: Tenant_A_APP_Zone_2
   shutdown: false
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.31.1/24
-  tenant: Tenant_A
-  tags:
-  - app
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - app
 - name: Vlan140
   description: Tenant_A_DB_BZone_1
   shutdown: false
   vrf: Tenant_A_DB_Zone
   ip_address_virtual: 10.1.40.1/24
-  tenant: Tenant_A
-  tags:
-  - db
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - db
+    - erp1
 - name: Vlan141
   description: Tenant_A_DB_Zone_2
   shutdown: false
   vrf: Tenant_A_DB_Zone
   ip_address_virtual: 10.1.41.1/24
-  tenant: Tenant_A
-  tags:
-  - db
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - db
 - name: Vlan110
   description: Tenant_A_OP_Zone_1
   shutdown: false
@@ -1041,9 +1071,10 @@ vlan_interfaces:
   ip_address_virtual: 10.1.10.1/24
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Vlan110
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan111
   description: Tenant_A_OP_Zone_2
   shutdown: false
@@ -1053,9 +1084,10 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     source_interface: lo100
     vrf: MGMT
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan112
   description: Tenant_A_OP_Zone_3
   shutdown: false
@@ -1065,9 +1097,10 @@ vlan_interfaces:
     source_interface: lo101
     vrf: MGMT
   mtu: 1560
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan120
   description: Tenant_A_WEB_Zone_1
   shutdown: false
@@ -1080,51 +1113,57 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     source_interface: lo100
     vrf: TEST
-  tenant: Tenant_A
-  tags:
-  - web
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
+    - erp1
 - name: Vlan121
   description: Tenant_A_WEBZone_2
   shutdown: true
   vrf: Tenant_A_WEB_Zone
   ip_address_virtual: 10.1.10.254/24
   mtu: 1560
-  tenant: Tenant_A
-  tags:
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
 - name: Vlan210
   description: Tenant_B_OP_Zone_1
   shutdown: false
   vrf: Tenant_B_OP_Zone
   ip_address_virtual: 10.2.10.1/24
-  tenant: Tenant_B
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_B
+    tags:
+    - opzone
 - name: Vlan211
   description: Tenant_B_OP_Zone_2
   shutdown: false
   vrf: Tenant_B_OP_Zone
   ip_address_virtual: 10.2.11.1/24
-  tenant: Tenant_B
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_B
+    tags:
+    - opzone
 - name: Vlan310
   description: Tenant_C_OP_Zone_1
   shutdown: false
   vrf: Tenant_C_OP_Zone
   ip_address_virtual: 10.3.10.1/24
-  tenant: Tenant_C
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_C
+    tags:
+    - opzone
 - name: Vlan311
   description: Tenant_C_OP_Zone_2
   shutdown: false
   vrf: Tenant_C_OP_Zone
   ip_address_virtual: 10.3.11.1/24
-  tenant: Tenant_C
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_C
+    tags:
+    - opzone
 - name: Vlan450
   description: Tenant_D_v6_WAN_Zone_1
   shutdown: false
@@ -1132,9 +1171,10 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:db8:355::1/64
-  tenant: Tenant_D
-  tags:
-  - v6wan
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6wan
 - name: Vlan451
   description: Tenant_D_v6_WAN_Zone_2
   shutdown: false
@@ -1143,9 +1183,10 @@ vlan_interfaces:
   ipv6_address_virtuals:
   - 2001:db8:451::1/64
   mtu: 1560
-  tenant: Tenant_D
-  tags:
-  - v6wan
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6wan
 - name: Vlan452
   description: Tenant_D_v6_WAN_Zone_3
   shutdown: false
@@ -1155,9 +1196,10 @@ vlan_interfaces:
   ipv6_address_virtuals:
   - 2001:db8:412::1/64
   mtu: 1560
-  tenant: Tenant_D
-  tags:
-  - v6wan
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6wan
 - name: Vlan410
   description: Tenant_D_v6_OP_Zone_1
   shutdown: false
@@ -1178,9 +1220,10 @@ vlan_interfaces:
   - ipv6_prefix: 2001:db8:312::1/64
     valid_lifetime: '200'
     preferred_lifetime: '100'
-  tenant: Tenant_D
-  tags:
-  - v6opzone
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6opzone
 - name: Vlan411
   description: Tenant_D_v6_OP_Zone_2
   shutdown: false
@@ -1191,9 +1234,10 @@ vlan_interfaces:
   ipv6_address: 2001:db8:311::2/64
   ipv6_virtual_router_addresses:
   - 2001:db8:311::1
-  tenant: Tenant_D
-  tags:
-  - v6opzone
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6opzone
 - name: Vlan412
   description: Tenant_D_v6_OP_Zone_1
   shutdown: false
@@ -1203,9 +1247,10 @@ vlan_interfaces:
   ipv6_address_virtuals:
   - 2001:db8:412::1/64
   mtu: 1560
-  tenant: Tenant_D
-  tags:
-  - v6opzone
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6opzone
 - name: Vlan413
   description: Tenant_D_v6_OP_Zone_3
   shutdown: false
@@ -1221,9 +1266,10 @@ vlan_interfaces:
   ipv6_virtual_router_addresses:
   - 2001:db9:413::1
   mtu: 1560
-  tenant: Tenant_D
-  tags:
-  - v6opzone
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6opzone
 vlan_internal_order:
   allocation: ascending
   range:
