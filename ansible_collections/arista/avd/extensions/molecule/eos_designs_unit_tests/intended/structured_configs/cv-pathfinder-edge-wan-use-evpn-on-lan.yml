@@ -351,19 +351,22 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     bfd: true
@@ -379,11 +382,13 @@ router_bgp:
   - ip_address: 172.18.0.22
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65042'
-    peer: leaf-wan-use-evpn-on-lan
+    metadata:
+      peer: leaf-wan-use-evpn-on-lan
     description: leaf-wan-use-evpn-on-lan_Ethernet1
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder
+    metadata:
+      peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder_Dps1
   redistribute:
     connected:

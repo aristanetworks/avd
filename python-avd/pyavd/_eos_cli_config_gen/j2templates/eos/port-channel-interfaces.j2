@@ -256,6 +256,9 @@ interface {{ port_channel_interface.name }}
 {%     endif %}
 {%     if port_channel_interface.ip_address is arista.avd.defined %}
    ip address {{ port_channel_interface.ip_address }}
+{%         for ip_address_secondary in port_channel_interface.ip_address_secondaries | arista.avd.natural_sort %}
+   ip address {{ ip_address_secondary }} secondary
+{%         endfor %}
 {%     endif %}
 {%     if port_channel_interface.ip_address is arista.avd.defined("dhcp") and port_channel_interface.dhcp_client_accept_default_route is arista.avd.defined(true) %}
    dhcp client accept default-route

@@ -5,6 +5,7 @@ from .action_plugin_vars import ActionPluginVars
 from .anta_workflow_logging import AntaWorkflowFilter, AntaWorkflowHandler
 from .avd_switch_facts_default_dict import AvdSwitchFactsDefaultDict
 from .compile_searchpath import compile_searchpath
+from .constants import ANSIBLE_ABOVE_2_19
 from .cprofile_decorator import cprofile
 from .deprecated_dict import DeprecatedDict
 from .get_templar import get_templar
@@ -14,6 +15,7 @@ from .yaml_dumper import NoAliasDumper, YamlDumper
 from .yaml_loader import YamlLoader
 
 __all__ = [
+    "ANSIBLE_ABOVE_2_19",
     "ActionPluginVars",
     "AntaWorkflowFilter",
     "AntaWorkflowHandler",

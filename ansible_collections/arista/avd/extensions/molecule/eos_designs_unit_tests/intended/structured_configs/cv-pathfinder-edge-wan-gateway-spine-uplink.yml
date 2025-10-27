@@ -351,19 +351,22 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     bfd: true
@@ -379,16 +382,19 @@ router_bgp:
   - ip_address: 172.18.0.196
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65105'
-    peer: cv-pathfinder-spine1
+    metadata:
+      peer: cv-pathfinder-spine1
     description: cv-pathfinder-spine1_Ethernet1
   - ip_address: 192.168.42.17
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65105'
-    peer: cv-pathfinder-spine1
+    metadata:
+      peer: cv-pathfinder-spine1
     description: cv-pathfinder-spine1_Loopback0
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder
+    metadata:
+      peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder_Dps1
   redistribute:
     connected:

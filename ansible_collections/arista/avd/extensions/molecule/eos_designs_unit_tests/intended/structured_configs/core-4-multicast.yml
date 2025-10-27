@@ -94,7 +94,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   neighbors:
@@ -102,19 +103,22 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65002'
     local_as: '65001'
-    peer: peer1
+    metadata:
+      peer: peer1
     description: peer1
   - ip_address: 100.64.48.21
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65003'
     local_as: '65001'
-    peer: peer2
+    metadata:
+      peer: peer2
     description: peer2
   - ip_address: 100.64.48.23
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65004'
     local_as: '65001'
-    peer: peer3
+    metadata:
+      peer: peer3
     description: peer3
   redistribute:
     connected:

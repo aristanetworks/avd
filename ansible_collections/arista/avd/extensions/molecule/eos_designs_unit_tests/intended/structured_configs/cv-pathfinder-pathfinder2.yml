@@ -667,12 +667,14 @@ router_bgp:
     remote_as: '65000'
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     route_reflector_client: true
@@ -686,7 +688,8 @@ router_bgp:
     maximum_routes: 0
     ttl_maximum_hops: 1
   - name: WAN-RR-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     route_reflector_client: true
@@ -701,11 +704,13 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.144.2
     peer_group: WAN-RR-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder1
+    metadata:
+      peer: cv-pathfinder-pathfinder1
     description: cv-pathfinder-pathfinder1_Dps1
   - ip_address: 6.6.6.6
     peer_group: WAN-RR-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder3
+    metadata:
+      peer: cv-pathfinder-pathfinder3
     description: cv-pathfinder-pathfinder3_Dps1
   redistribute:
     connected:

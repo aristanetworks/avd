@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from logging import getLogger
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._errors import AristaAvdInvalidInputsError
@@ -11,6 +12,8 @@ from pyavd._utils import default
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
+
+LOGGER = getLogger(__name__)
 
 
 class MgmtMixin(Protocol):
@@ -30,8 +33,10 @@ class MgmtMixin(Protocol):
         Global var mgmt_interface ->
           Platform Settings management_interface ->
             Fabric Topology data model mgmt_interface.
+        If in Digital Twin mode, the returned value is modified to meet the requirements of the target environment:
+            ACT: Management1.
         """
-        return default(
+        mgmt_interface = default(
             self.node_config.mgmt_interface,
             # Notice that we actually have a default value for the next two, but the precedence order would break if we use it.
             # TODO: Evaluate if we should remove the default values from either or both.
@@ -40,6 +45,20 @@ class MgmtMixin(Protocol):
             self.cv_topology_config.mgmt_interface,
             "Management1",
         )
+
+        # Adjust OOB management interface for ACT Digital Twin "veos" and "cloudeos" node types
+        if self.digital_twin and self.inputs.digital_twin.environment == "act" and self.platform_settings.digital_twin.act_node_type in ["veos", "cloudeos"]:
+            act_mgmt_interface = "Management1"
+            if mgmt_interface != act_mgmt_interface:
+                LOGGER.info(
+                    "OOB management interface for node '%s' changed from '%s' to '%s' for its ACT Digital Twin copy.",
+                    self.hostname,
+                    mgmt_interface,
+                    act_mgmt_interface,
+                )
+            return act_mgmt_interface
+
+        return mgmt_interface
 
     @cached_property
     def mgmt_gateway(self: SharedUtilsProtocol) -> str | None:

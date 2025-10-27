@@ -1,0 +1,9 @@
+---
+# OOB MGMT is already Ma1 (by default). ACT Digital Twin version of the config respects it.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-adjust-oob-mgmt-1
+      id: 1
+      mgmt_ip: 192.168.1.1/32
