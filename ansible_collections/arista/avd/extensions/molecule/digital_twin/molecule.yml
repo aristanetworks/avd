@@ -10,7 +10,7 @@ ansible:
   cfg:
     defaults:
       jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
-
+      gathering: explicit
 scenario:
   converge_sequence:
     - syntax
@@ -24,10 +24,8 @@ scenario:
     - verify
   cleanup_sequence:
     - destroy
-
 dependency:
   name: galaxy
   enabled: false
-
 verifier:
   name: ansible
