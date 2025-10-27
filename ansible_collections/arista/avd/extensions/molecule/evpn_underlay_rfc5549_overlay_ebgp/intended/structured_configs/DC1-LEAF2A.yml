@@ -20,26 +20,29 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  peer: DC1-LEAF2B
-  peer_interface: Ethernet5
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1-LEAF2B
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
 - name: Ethernet6
   description: MLAG_DC1-LEAF2B_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: DC1-LEAF2B
-  peer_interface: Ethernet6
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1-LEAF2B
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_DC1-SPINE1_Ethernet2
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE1
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -47,9 +50,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE2
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -57,9 +61,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE3
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet4
@@ -67,9 +72,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE4
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet7
@@ -78,41 +84,45 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  peer: DC1-L2LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-L2LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet10
   description: SERVER_server01_MLAG_Eth2
   shutdown: false
   channel_group:
     id: 10
     mode: active
-  peer: server01_MLAG
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_B
+  metadata:
+    peer: server01_MLAG
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_B
 - name: Ethernet11
   description: SERVER_server01_MTU_PROFILE_MLAG_Eth4
   shutdown: false
   channel_group:
     id: 11
     mode: active
-  peer: server01_MTU_PROFILE_MLAG
-  peer_interface: Eth4
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_A_MTU
+  metadata:
+    peer: server01_MTU_PROFILE_MLAG
+    peer_interface: Eth4
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_A_MTU
 - name: Ethernet12
   description: SERVER_server01_MTU_ADAPTOR_MLAG_Eth6
   shutdown: false
   channel_group:
     id: 12
     mode: active
-  peer: server01_MTU_ADAPTOR_MLAG
-  peer_interface: Eth6
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: server01_MTU_ADAPTOR_MLAG
+    peer_interface: Eth6
+    peer_type: server
+    peer_key: servers
 hostname: DC1-LEAF2A
 ip_igmp_snooping:
   globally_enabled: true

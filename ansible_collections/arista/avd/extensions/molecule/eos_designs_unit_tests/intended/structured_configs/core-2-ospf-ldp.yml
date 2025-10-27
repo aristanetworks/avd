@@ -18,9 +18,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet1
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet1
+    peer_type: core_router
   switchport:
     enabled: false
 - name: Ethernet2
@@ -37,9 +38,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet2
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet2
+    peer_type: core_router
   switchport:
     enabled: false
 - name: Ethernet3
@@ -56,9 +58,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet3
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet3
+    peer_type: core_router
   switchport:
     enabled: false
 - name: Ethernet4
@@ -70,9 +73,10 @@ ethernet_interfaces:
   ipv6_enable: true
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet4
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet4
+    peer_type: core_router
   switchport:
     enabled: false
 - name: Ethernet5
@@ -86,9 +90,10 @@ ethernet_interfaces:
   ospf_area: 0.0.0.0
   mpls:
     ip: true
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet5
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet5
+    peer_type: core_router
   switchport:
     enabled: false
 - name: Ethernet6
@@ -106,9 +111,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet6
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet6
+    peer_type: core_router
   switchport:
     enabled: false
 - name: Ethernet10
@@ -135,9 +141,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet10
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet10
+    peer_type: core_router
   switchport:
     enabled: false
 - name: Ethernet12
@@ -147,9 +154,10 @@ ethernet_interfaces:
   channel_group:
     id: 12
     mode: active
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet12
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet12
+    peer_type: core_router
 - name: Ethernet13
   description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet13
   shutdown: false
@@ -157,9 +165,10 @@ ethernet_interfaces:
   channel_group:
     id: 12
     mode: active
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet13
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet13
+    peer_type: core_router
 - name: Ethernet14
   description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B
   shutdown: false
@@ -167,9 +176,10 @@ ethernet_interfaces:
   channel_group:
     id: 9
     mode: active
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet14
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet14
+    peer_type: core_router
 - name: Ethernet15
   description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B
   shutdown: false
@@ -177,9 +187,10 @@ ethernet_interfaces:
   channel_group:
     id: 9
     mode: active
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet15
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet15
+    peer_type: core_router
 - name: Ethernet16
   description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B
   shutdown: false
@@ -187,9 +198,10 @@ ethernet_interfaces:
   channel_group:
     id: 109
     mode: active
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet16
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet16
+    peer_type: core_router
 - name: Ethernet17
   description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B
   shutdown: false
@@ -197,9 +209,10 @@ ethernet_interfaces:
   channel_group:
     id: 109
     mode: active
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet17
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet17
+    peer_type: core_router
 - name: Ethernet18
   description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet18
   shutdown: false
@@ -207,9 +220,10 @@ ethernet_interfaces:
   channel_group:
     id: 18
     mode: active
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet18
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet18
+    peer_type: core_router
 - name: Ethernet19
   description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet19
   shutdown: false
@@ -217,27 +231,30 @@ ethernet_interfaces:
   channel_group:
     id: 18
     mode: active
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet19
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet19
+    peer_type: core_router
 - name: Ethernet20
   description: Description set via ethernet_structured_config(core_interfaces)
   shutdown: false
   channel_group:
     id: 20
     mode: active
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet20
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet20
+    peer_type: core_router
 - name: Ethernet21
   description: Description set via ethernet_structured_config(core_interfaces)
   shutdown: false
   channel_group:
     id: 20
     mode: active
-  peer: core-1-isis-sr-ldp
-  peer_interface: Ethernet21
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet21
+    peer_type: core_router
 hostname: core-2-ospf-ldp
 ip_routing: true
 ipv6_unicast_routing: true
@@ -274,9 +291,10 @@ port_channel_interfaces:
   ipv6_enable: true
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer: core-1-isis-sr-ldp
-  peer_interface: Port-Channel12
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Port-Channel12
+    peer_type: core_router
   switchport:
     enabled: false
 - name: Port-Channel9
@@ -292,9 +310,10 @@ port_channel_interfaces:
   ipv6_enable: true
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer: core-1-isis-sr-ldp
-  peer_interface: Port-Channel14
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Port-Channel14
+    peer_type: core_router
   switchport:
     enabled: false
 - name: Port-Channel109
@@ -319,9 +338,10 @@ port_channel_interfaces:
   ipv6_enable: true
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer: core-1-isis-sr-ldp
-  peer_interface: Port-Channel16
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Port-Channel16
+    peer_type: core_router
   switchport:
     enabled: false
 - name: Port-Channel18
@@ -337,9 +357,10 @@ port_channel_interfaces:
   ipv6_enable: true
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer: core-1-isis-sr-ldp
-  peer_interface: Port-Channel12345
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Port-Channel12345
+    peer_type: core_router
   switchport:
     enabled: false
 - name: Port-Channel20
@@ -353,9 +374,10 @@ port_channel_interfaces:
       igp_sync: true
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer: core-1-isis-sr-ldp
-  peer_interface: Port-Channel12346
-  peer_type: core_router
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Port-Channel12346
+    peer_type: core_router
   switchport:
     enabled: false
 ptp:

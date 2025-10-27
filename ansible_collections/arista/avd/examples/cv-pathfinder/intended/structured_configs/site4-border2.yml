@@ -24,18 +24,20 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  peer: site4-border1
-  peer_interface: Ethernet5
-  peer_type: mlag_peer
+  metadata:
+    peer: site4-border1
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
 - name: Ethernet6
   description: MLAG_site4-border1_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: site4-border1
-  peer_interface: Ethernet6
-  peer_type: mlag_peer
+  metadata:
+    peer: site4-border1
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
 - name: Ethernet3
   description: P2P_site4-wan1_Ethernet2
   shutdown: false
@@ -43,9 +45,10 @@ ethernet_interfaces:
   flow_tracker:
     sampled: FLOW-TRACKER
   ip_address: 10.0.4.58/31
-  peer: site4-wan1
-  peer_interface: Ethernet2
-  peer_type: wan_router
+  metadata:
+    peer: site4-wan1
+    peer_interface: Ethernet2
+    peer_type: wan_router
   switchport:
     enabled: false
 flow_tracking:

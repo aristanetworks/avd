@@ -47,7 +47,6 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 ### Features in preview
 
 - Internet-exit for Zscaler is in preview
-- EVPN WAN gateway is in preview as it requires the use of `wan_use_evpn_node_settings_for_lan`. It is supported only on sites with single WAN Router.
 
 ### Known limitations
 
@@ -869,7 +868,6 @@ In the situation where the LAN is EBGP but HA is configured over a direct link, 
 
 - the LAN routes are received via EVPN
 - Enabling the gateway requires to configure:
-  - `wan_use_evpn_node_settings_for_lan: true`
   - `overlay_routing_protocol: ebgp` for the WAN router
   - `evpn_role: client` for the WAN router
   - an EVPN route server should be defined, e.g. using `evpn_route_servers` settings.

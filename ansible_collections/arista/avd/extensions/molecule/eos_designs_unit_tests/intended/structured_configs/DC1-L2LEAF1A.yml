@@ -23,9 +23,10 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: DC1-L2LEAF1B
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1-L2LEAF1B
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
 - name: Ethernet4
   description: MLAG_PEER_DC1-L2LEAF1B_Ethernet4
   shutdown: false
@@ -33,9 +34,10 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: DC1-L2LEAF1B
-  peer_interface: Ethernet4
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1-L2LEAF1B
+    peer_interface: Ethernet4
+    peer_type: mlag_peer
 - name: Ethernet1
   description: DC1-LEAF2A_Ethernet7
   shutdown: false
@@ -43,9 +45,10 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: DC1-LEAF2A
-  peer_interface: Ethernet7
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF2A
+    peer_interface: Ethernet7
+    peer_type: l3leaf
 - name: Ethernet2
   description: DC1-LEAF2B_Ethernet7
   shutdown: false
@@ -53,20 +56,22 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: DC1-LEAF2B
-  peer_interface: Ethernet7
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF2B
+    peer_interface: Ethernet7
+    peer_type: l3leaf
 - name: Ethernet5
   description: server03_ESI_L2LEAF_Eth1
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: server03_ESI_L2LEAF
-  peer_interface: Eth1
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_A_B
+  metadata:
+    peer: server03_ESI_L2LEAF
+    peer_interface: Eth1
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_A_B
 hostname: DC1-L2LEAF1A
 ip_igmp_snooping:
   globally_enabled: true

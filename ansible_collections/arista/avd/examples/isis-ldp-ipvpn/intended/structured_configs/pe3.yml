@@ -24,9 +24,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: p3
-  peer_interface: Ethernet1
-  peer_type: p
+  metadata:
+    peer: p3
+    peer_interface: Ethernet1
+    peer_type: p
   switchport:
     enabled: false
 - name: Ethernet3
@@ -49,9 +50,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: p4
-  peer_interface: Ethernet3
-  peer_type: p
+  metadata:
+    peer: p4
+    peer_interface: Ethernet3
+    peer_type: p
   switchport:
     enabled: false
 - name: Ethernet2
@@ -61,7 +63,8 @@ ethernet_interfaces:
   ip_address: 10.0.1.9/30
   ospf_network_point_to_point: false
   ospf_area: 0.0.0.0
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet4
@@ -69,7 +72,8 @@ ethernet_interfaces:
   shutdown: false
   vrf: C2_VRF1
   ip_address: 10.1.1.9/30
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 hostname: pe3

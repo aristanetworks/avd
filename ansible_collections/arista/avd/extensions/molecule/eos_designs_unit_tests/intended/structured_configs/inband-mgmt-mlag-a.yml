@@ -20,9 +20,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-mlag-b
-  peer_interface: Ethernet11
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-mlag-b
+    peer_interface: Ethernet11
+    peer_type: mlag_peer
   switchport:
     enabled: true
     mode: access
@@ -34,9 +35,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-mlag-b
-  peer_interface: Ethernet12
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-mlag-b
+    peer_interface: Ethernet12
+    peer_type: mlag_peer
   switchport:
     enabled: true
     mode: access
@@ -48,9 +50,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-mlag-b
-  peer_interface: Ethernet13
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-mlag-b
+    peer_interface: Ethernet13
+    peer_type: mlag_peer
   switchport:
     enabled: true
     mode: access
@@ -62,9 +65,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-mlag-b
-  peer_interface: Ethernet14
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-mlag-b
+    peer_interface: Ethernet14
+    peer_type: mlag_peer
   switchport:
     enabled: true
     mode: access
@@ -76,9 +80,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-mlag-b
-  peer_interface: Ethernet15
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-mlag-b
+    peer_interface: Ethernet15
+    peer_type: mlag_peer
   switchport:
     enabled: true
     mode: access
@@ -90,9 +95,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-mlag-b
-  peer_interface: Ethernet16
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-mlag-b
+    peer_interface: Ethernet16
+    peer_type: mlag_peer
   switchport:
     enabled: true
     mode: access
@@ -104,9 +110,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-mlag-b
-  peer_interface: Ethernet17
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-mlag-b
+    peer_interface: Ethernet17
+    peer_type: mlag_peer
   switchport:
     enabled: true
     mode: access
@@ -118,9 +125,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-mlag-b
-  peer_interface: Ethernet18
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-mlag-b
+    peer_interface: Ethernet18
+    peer_type: mlag_peer
   switchport:
     enabled: true
     mode: access
@@ -132,9 +140,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-mlag-b
-  peer_interface: Ethernet19
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-mlag-b
+    peer_interface: Ethernet19
+    peer_type: mlag_peer
   switchport:
     enabled: true
     mode: access
@@ -146,9 +155,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-mlag-b
-  peer_interface: Ethernet20
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-mlag-b
+    peer_interface: Ethernet20
+    peer_type: mlag_peer
   switchport:
     enabled: true
     mode: access
@@ -159,18 +169,20 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: inband-mgmt-parent
-  peer_interface: Ethernet101
-  peer_type: l3leaf
+  metadata:
+    peer: inband-mgmt-parent
+    peer_interface: Ethernet101
+    peer_type: l3leaf
 - name: Ethernet2
   description: INBAND-MGMT-PARENT-VRF_Ethernet101
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: inband-mgmt-parent-vrf
-  peer_interface: Ethernet101
-  peer_type: l3leaf
+  metadata:
+    peer: inband-mgmt-parent-vrf
+    peer_interface: Ethernet101
+    peer_type: l3leaf
 hostname: inband-mgmt-mlag-a
 ip_igmp_snooping:
   globally_enabled: true

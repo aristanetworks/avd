@@ -89,14 +89,16 @@ ethernet_interfaces:
   description: SFR_999
   shutdown: false
   ip_address: 10.9.9.9/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2
   description: ATT-MPLS_10999
   shutdown: false
   ip_address: 172.19.9.9/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

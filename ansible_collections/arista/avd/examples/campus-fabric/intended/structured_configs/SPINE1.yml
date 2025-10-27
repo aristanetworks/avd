@@ -13,54 +13,60 @@ ethernet_interfaces:
   channel_group:
     id: 551
     mode: active
-  peer: SPINE2
-  peer_interface: Ethernet55/1
-  peer_type: mlag_peer
+  metadata:
+    peer: SPINE2
+    peer_interface: Ethernet55/1
+    peer_type: mlag_peer
 - name: Ethernet56/1
   description: MLAG_SPINE2_Ethernet56/1
   shutdown: false
   channel_group:
     id: 551
     mode: active
-  peer: SPINE2
-  peer_interface: Ethernet56/1
-  peer_type: mlag_peer
+  metadata:
+    peer: SPINE2
+    peer_interface: Ethernet56/1
+    peer_type: mlag_peer
 - name: Ethernet1
   description: L2_LEAF1A_Ethernet51
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: LEAF1A
-  peer_interface: Ethernet51
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF1A
+    peer_interface: Ethernet51
+    peer_type: l2leaf
 - name: Ethernet49/1
   description: L2_LEAF2A_Ethernet1/1
   shutdown: false
   channel_group:
     id: 491
     mode: active
-  peer: LEAF2A
-  peer_interface: Ethernet1/1
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF2A
+    peer_interface: Ethernet1/1
+    peer_type: l2leaf
 - name: Ethernet50/1
   description: L2_LEAF3A_Ethernet97/1
   shutdown: false
   channel_group:
     id: 501
     mode: active
-  peer: LEAF3A
-  peer_interface: Ethernet97/1
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF3A
+    peer_interface: Ethernet97/1
+    peer_type: l2leaf
 - name: Ethernet51/1
   description: L2_LEAF3B_Ethernet97/1
   shutdown: false
   channel_group:
     id: 501
     mode: active
-  peer: LEAF3B
-  peer_interface: Ethernet97/1
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF3B
+    peer_interface: Ethernet97/1
+    peer_type: l2leaf
 - name: Ethernet52/1
   description: P2P_WAN_Ethernet1/1
   shutdown: false
@@ -68,9 +74,10 @@ ethernet_interfaces:
   ip_address: 10.0.0.3/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer: WAN
-  peer_interface: Ethernet1/1
-  peer_type: other
+  metadata:
+    peer: WAN
+    peer_interface: Ethernet1/1
+    peer_type: other
   switchport:
     enabled: false
 hostname: SPINE1
