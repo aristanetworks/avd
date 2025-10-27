@@ -6,7 +6,7 @@ from __future__ import annotations
 from itertools import chain
 
 from anta.input_models.interfaces import InterfaceState
-from anta.tests.interfaces import VerifyInterfacesStatus, VerifyPortChannels
+from anta.tests.interfaces import VerifyInterfacesStatus, VerifyPortChannels, VerifyStormControlDrops
 
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
@@ -94,3 +94,20 @@ class VerifyPortChannelsInputFactory(AntaTestInputFactory[VerifyPortChannels.Inp
                 ignored_interfaces.append(po_intf.name)
 
         return [VerifyPortChannels.Input(ignored_interfaces=natural_sort(ignored_interfaces))] if ignored_interfaces else [VerifyPortChannels.Input()]
+
+
+class VerifyStormControlDropsInputFactory(AntaTestInputFactory[VerifyStormControlDrops.Input]):
+    """
+    Input factory class for the `VerifyStormControlDrops` test.
+
+    Run the test if find at least one Ethernet or Port-Channel interface configured with storm-control on the device. Otherwise skip the test.
+    """
+
+    def create(self) -> list[VerifyStormControlDrops.Input] | None:
+        for intf in self.structured_config.ethernet_interfaces:
+            if intf.storm_control:
+                return [VerifyStormControlDrops.Input()]
+        for po_intf in self.structured_config.port_channel_interfaces:
+            if po_intf.storm_control:
+                return [VerifyStormControlDrops.Input()]
+        return None
