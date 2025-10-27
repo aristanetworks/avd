@@ -8990,6 +8990,11 @@ $defs:
                     ip_address:
                       type: str
                       description: IPv4 address/Mask.
+                    ip_address_secondaries:
+                      type: list
+                      items:
+                        type: str
+                        description: IPv4 address/Mask.
                     encapsulation_dot1q_vlan:
                       description: For subinterfaces the dot1q vlan is derived from
                         the interface name by default, but can also be specified.
@@ -12749,6 +12754,11 @@ $defs:
         type: str
         description: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4
           addresses per node.
+      ip_address_secondaries:
+        type: list
+        items:
+          type: str
+          description: IPv4_address/Mask.
       ipv6_address:
         type: str
         description: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6
