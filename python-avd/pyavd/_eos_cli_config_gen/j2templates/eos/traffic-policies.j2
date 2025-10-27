@@ -144,7 +144,7 @@ traffic-policies
 {%                 if match.ttl is arista.avd.defined %}
          ttl {{ match.ttl }}
 {%                 endif %}
-{%                 if match.packet_type_vxlan.decap is arista.avd.defined or match.packet_type_vxlan.decap_exclude is arista.avd.defined %}
+{%                 if match.packet_type_vxlan.decap is arista.avd.defined(true) or match.packet_type_vxlan.decap_exclude is arista.avd.defined(true) %}
          !
          packet type
 {%                     if match.packet_type_vxlan.decap is arista.avd.defined(true) %}
