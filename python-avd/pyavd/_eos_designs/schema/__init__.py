@@ -19651,6 +19651,11 @@ class EosDesigns(EosDesignsRootModel):
         class NodesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class IpAddressSecondaries(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            IpAddressSecondaries._item_type = str
+
             class Ipv6AddressVirtuals(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -20213,6 +20218,7 @@ class EosDesigns(EosDesignsRootModel):
                 "description": {"type": str},
                 "arp_gratuitous_accept": {"type": bool},
                 "ip_address": {"type": str},
+                "ip_address_secondaries": {"type": IpAddressSecondaries},
                 "ipv6_address": {"type": str},
                 "ipv6_enable": {"type": bool},
                 "ip_address_virtual": {"type": str},
@@ -20256,6 +20262,8 @@ class EosDesigns(EosDesignsRootModel):
             """Accept gratuitous ARP."""
             ip_address: str | None
             """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
+            ip_address_secondaries: IpAddressSecondaries
+            """Subclass of AvdList with `str` items."""
             ipv6_address: str | None
             """IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node."""
             ipv6_enable: bool | None
@@ -20453,6 +20461,7 @@ class EosDesigns(EosDesignsRootModel):
                     description: str | None | UndefinedType = Undefined,
                     arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                     ip_address: str | None | UndefinedType = Undefined,
+                    ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                     ipv6_address: str | None | UndefinedType = Undefined,
                     ipv6_enable: bool | None | UndefinedType = Undefined,
                     ip_address_virtual: str | None | UndefinedType = Undefined,
@@ -20497,6 +20506,7 @@ class EosDesigns(EosDesignsRootModel):
                         description: SVI description. By default set to VLAN name.
                         arp_gratuitous_accept: Accept gratuitous ARP.
                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+                        ip_address_secondaries: Subclass of AvdList with `str` items.
                         ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                         ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
                         ip_address_virtual:
@@ -20639,6 +20649,11 @@ class EosDesigns(EosDesignsRootModel):
             _primary_key: ClassVar[str] = "node"
 
         Nodes._item_type = NodesItem
+
+        class IpAddressSecondaries(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        IpAddressSecondaries._item_type = str
 
         class Ipv6AddressVirtuals(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -21200,6 +21215,7 @@ class EosDesigns(EosDesignsRootModel):
             "description": {"type": str},
             "arp_gratuitous_accept": {"type": bool},
             "ip_address": {"type": str},
+            "ip_address_secondaries": {"type": IpAddressSecondaries},
             "ipv6_address": {"type": str},
             "ipv6_enable": {"type": bool},
             "ip_address_virtual": {"type": str},
@@ -21259,6 +21275,8 @@ class EosDesigns(EosDesignsRootModel):
         """Accept gratuitous ARP."""
         ip_address: str | None
         """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
+        ip_address_secondaries: IpAddressSecondaries
+        """Subclass of AvdList with `str` items."""
         ipv6_address: str | None
         """IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node."""
         ipv6_enable: bool | None
@@ -21458,6 +21476,7 @@ class EosDesigns(EosDesignsRootModel):
                 description: str | None | UndefinedType = Undefined,
                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
+                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ip_address_virtual: str | None | UndefinedType = Undefined,
@@ -21514,6 +21533,7 @@ class EosDesigns(EosDesignsRootModel):
                     description: SVI description. By default set to VLAN name.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+                    ip_address_secondaries: Subclass of AvdList with `str` items.
                     ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                     ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
                     ip_address_virtual:
@@ -48887,6 +48907,11 @@ class EosDesigns(EosDesignsRootModel):
 
                             Tags._item_type = str
 
+                            class IpAddressSecondaries(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            IpAddressSecondaries._item_type = str
+
                             class Ipv6AddressVirtuals(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
 
@@ -49461,6 +49486,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "description": {"type": str},
                                 "arp_gratuitous_accept": {"type": bool},
                                 "ip_address": {"type": str},
+                                "ip_address_secondaries": {"type": IpAddressSecondaries},
                                 "ipv6_address": {"type": str},
                                 "ipv6_enable": {"type": bool},
                                 "ip_address_virtual": {"type": str},
@@ -49514,6 +49540,8 @@ class EosDesigns(EosDesignsRootModel):
                             """Accept gratuitous ARP."""
                             ip_address: str | None
                             """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
+                            ip_address_secondaries: IpAddressSecondaries
+                            """Subclass of AvdList with `str` items."""
                             ipv6_address: str | None
                             """IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node."""
                             ipv6_enable: bool | None
@@ -49712,6 +49740,7 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
+                                    ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                     ipv6_address: str | None | UndefinedType = Undefined,
                                     ipv6_enable: bool | None | UndefinedType = Undefined,
                                     ip_address_virtual: str | None | UndefinedType = Undefined,
@@ -49762,6 +49791,7 @@ class EosDesigns(EosDesignsRootModel):
                                         description: SVI description. By default set to VLAN name.
                                         arp_gratuitous_accept: Accept gratuitous ARP.
                                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+                                        ip_address_secondaries: Subclass of AvdList with `str` items.
                                         ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                                         ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
                                         ip_address_virtual:
@@ -49904,6 +49934,11 @@ class EosDesigns(EosDesignsRootModel):
                             _primary_key: ClassVar[str] = "node"
 
                         Nodes._item_type = NodesItem
+
+                        class IpAddressSecondaries(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        IpAddressSecondaries._item_type = str
 
                         class Ipv6AddressVirtuals(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -50477,6 +50512,7 @@ class EosDesigns(EosDesignsRootModel):
                             "description": {"type": str},
                             "arp_gratuitous_accept": {"type": bool},
                             "ip_address": {"type": str},
+                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "ipv6_address": {"type": str},
                             "ipv6_enable": {"type": bool},
                             "ip_address_virtual": {"type": str},
@@ -50560,6 +50596,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Accept gratuitous ARP."""
                         ip_address: str | None
                         """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
+                        ip_address_secondaries: IpAddressSecondaries
+                        """Subclass of AvdList with `str` items."""
                         ipv6_address: str | None
                         """IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node."""
                         ipv6_enable: bool | None
@@ -50762,6 +50800,7 @@ class EosDesigns(EosDesignsRootModel):
                                 description: str | None | UndefinedType = Undefined,
                                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 ipv6_address: str | None | UndefinedType = Undefined,
                                 ipv6_enable: bool | None | UndefinedType = Undefined,
                                 ip_address_virtual: str | None | UndefinedType = Undefined,
@@ -50834,6 +50873,7 @@ class EosDesigns(EosDesignsRootModel):
                                     description: SVI description. By default set to VLAN name.
                                     arp_gratuitous_accept: Accept gratuitous ARP.
                                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                                     ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
                                     ip_address_virtual:
@@ -51969,6 +52009,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         MemberInterfaces._item_type = MemberInterfacesItem
 
+                        class IpAddressSecondaries(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        IpAddressSecondaries._item_type = str
+
                         class StaticRoutesItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -52277,6 +52322,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
+                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "encapsulation_dot1q_vlan": {"type": int},
                             "enabled": {"type": bool, "default": True},
                             "peer": {"type": str},
@@ -52324,6 +52370,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """IPv4 address/Mask."""
+                        ip_address_secondaries: IpAddressSecondaries
+                        """Subclass of AvdList with `str` items."""
                         encapsulation_dot1q_vlan: int | None
                         """
                         For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
@@ -52388,6 +52436,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -52429,6 +52478,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: IPv4 address/Mask.
+                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     encapsulation_dot1q_vlan:
                                        For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
                                        specified.

@@ -109,6 +109,10 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+- name: PL-SVI-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.0.0.0/24
 - name: PL-STATIC-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -120,14 +124,26 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  - sequence: 30
+    type: permit
+    match:
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
   - sequence: 20
     type: permit
     match:
     - ip address prefix-list PL-STATIC-VRF-DEFAULT
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
   - sequence: 15
     type: deny
     match:
@@ -828,6 +844,9 @@ vlan_interfaces:
 - name: Vlan1234
   description: VRF_DEFAULT_SVI_WITH_OSPF
   shutdown: true
+  ip_address: 10.0.0.2/24
+  ip_address_secondaries:
+  - 10.0.0.3/24
   ospf_network_point_to_point: false
   ospf_area: 0.0.0.0
   tenant: Tenant_D

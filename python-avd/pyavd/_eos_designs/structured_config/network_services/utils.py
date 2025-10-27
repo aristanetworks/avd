@@ -52,7 +52,7 @@ class UtilsMixin(Protocol):
     @cached_property
     def _vrf_default_ipv4_subnets(self: AvdStructuredConfigNetworkServicesProtocol) -> list[str]:
         """Return list of ipv4 subnets in VRF "default"."""
-        subnets = []
+        subnets = set()
         for tenant in self.shared_utils.filtered_tenants:
             if "default" not in tenant.vrfs:
                 continue
@@ -62,11 +62,11 @@ class UtilsMixin(Protocol):
                 if ip_address is None:
                     continue
 
-                subnet = str(ipaddress.ip_network(ip_address, strict=False))
-                if subnet not in subnets:
-                    subnets.append(subnet)
+                subnets.add(str(ipaddress.ip_network(ip_address, strict=False)))
+                for ip_address_secondary in svi.ip_address_secondaries:
+                    subnets.add(str(ipaddress.ip_network(ip_address_secondary, strict=False)))
 
-        return subnets
+        return list(subnets)
 
     @cached_property
     def _vrf_default_ipv4_static_routes(self: AvdStructuredConfigNetworkServicesProtocol) -> dict:
