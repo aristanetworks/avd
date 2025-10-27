@@ -19,18 +19,20 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: inband-mgmt-parent
-  peer_interface: Ethernet22
-  peer_type: l3leaf
+  metadata:
+    peer: inband-mgmt-parent
+    peer_interface: Ethernet22
+    peer_type: l3leaf
 - name: Ethernet2
   description: INBAND-MGMT-PARENT-VRF_Ethernet22
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: inband-mgmt-parent-vrf
-  peer_interface: Ethernet22
-  peer_type: l3leaf
+  metadata:
+    peer: inband-mgmt-parent-vrf
+    peer_interface: Ethernet22
+    peer_type: l3leaf
 hostname: inband-mgmt-subnet-vrf
 ip_igmp_snooping:
   globally_enabled: true

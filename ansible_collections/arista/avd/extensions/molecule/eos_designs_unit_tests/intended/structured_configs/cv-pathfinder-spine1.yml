@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.18.0.196/31
-  peer: cv-pathfinder-edge-wan-gateway-spine-uplink
-  peer_interface: Ethernet52
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge-wan-gateway-spine-uplink
+    peer_interface: Ethernet52
+    peer_type: wan_router
   switchport:
     enabled: false
 hostname: cv-pathfinder-spine1

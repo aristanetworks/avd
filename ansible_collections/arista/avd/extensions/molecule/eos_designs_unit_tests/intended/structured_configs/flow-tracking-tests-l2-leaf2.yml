@@ -10,18 +10,20 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: flow-tracking-tests-leaf3
-  peer_interface: Ethernet32
-  peer_type: l3leaf
+  metadata:
+    peer: flow-tracking-tests-leaf3
+    peer_interface: Ethernet32
+    peer_type: l3leaf
 - name: Ethernet2
   description: L2_flow-tracking-tests-leaf4_Ethernet32
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: flow-tracking-tests-leaf4
-  peer_interface: Ethernet32
-  peer_type: l3leaf
+  metadata:
+    peer: flow-tracking-tests-leaf4
+    peer_interface: Ethernet32
+    peer_type: l3leaf
 flow_tracking:
   sampled:
     sample: 10000

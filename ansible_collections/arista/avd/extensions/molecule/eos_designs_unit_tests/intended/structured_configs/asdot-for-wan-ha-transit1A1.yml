@@ -34,9 +34,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.1/31
-  peer: asdot-for-wan-ha-leaf11
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: asdot-for-wan-ha-leaf11
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet1.42
@@ -46,22 +47,26 @@ ethernet_interfaces:
     vlan: 42
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet2.42
   description: Colt_10666
   shutdown: false
   encapsulation_dot1q:
     vlan: 666
   ip_address: 172.16.6.6/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet1
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:
