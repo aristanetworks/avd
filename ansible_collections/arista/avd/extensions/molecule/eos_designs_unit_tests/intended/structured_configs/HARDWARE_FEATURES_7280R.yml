@@ -293,7 +293,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65001'
     description: HARDWARE_FEATURES_CUSTOM_PLATFORM
     next_hop_self: true
@@ -301,11 +302,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -314,18 +317,21 @@ router_bgp:
   neighbors:
   - ip_address: 10.10.40.9
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
+    metadata:
+      peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
     description: HARDWARE_FEATURES_CUSTOM_PLATFORM_Vlan4093
   - ip_address: 10.10.50.8
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    peer: HARDWARE_FEATURES_CLOUDEOS
+    metadata:
+      peer: HARDWARE_FEATURES_CLOUDEOS
     description: HARDWARE_FEATURES_CLOUDEOS_Ethernet2
   - ip_address: 10.10.60.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     local_as: '65100'
-    peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
+    metadata:
+      peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
     description: HARDWARE_FEATURES_CUSTOM_PLATFORM
   redistribute:
     connected:

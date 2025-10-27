@@ -94,7 +94,8 @@ router_bgp:
     bfd: true
     next_hop_self: true
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65001'
     description: bgp-from-network-services-2
     next_hop_self: true

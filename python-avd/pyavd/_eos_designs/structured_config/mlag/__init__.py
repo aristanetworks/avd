@@ -293,7 +293,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             self.structured_config.router_bgp.neighbor_interfaces.append_new(
                 name=interface_name,
                 peer_group=self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name,
-                peer=self.shared_utils.mlag_peer,
+                metadata=EosCliConfigGen.RouterBgp.NeighborInterfacesItem.Metadata(peer=self.shared_utils.mlag_peer),
                 remote_as=self.shared_utils.formatted_bgp_as,
                 description=AvdStringFormatter().format(
                     self.inputs.mlag_bgp_peer_description,
@@ -308,7 +308,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             self.structured_config.router_bgp.neighbors.append_new(
                 ip_address=neighbor_ip,
                 peer_group=self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name,
-                peer=self.shared_utils.mlag_peer,
+                metadata=EosCliConfigGen.RouterBgp.NeighborsItem.Metadata(peer=self.shared_utils.mlag_peer),
                 description=AvdStringFormatter().format(
                     self.inputs.mlag_bgp_peer_description,
                     mlag_peer=self.shared_utils.mlag_peer,

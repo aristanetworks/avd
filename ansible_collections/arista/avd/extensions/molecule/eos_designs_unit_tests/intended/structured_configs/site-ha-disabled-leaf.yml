@@ -146,11 +146,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -160,12 +162,14 @@ router_bgp:
   - ip_address: 172.17.0.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: cv-pathfinder-edge
+    metadata:
+      peer: cv-pathfinder-edge
     description: cv-pathfinder-edge_Ethernet52
   - ip_address: 172.17.0.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: cv-pathfinder-edge1
+    metadata:
+      peer: cv-pathfinder-edge1
     description: cv-pathfinder-edge1_Ethernet52
   redistribute:
     connected:
@@ -173,7 +177,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 100
-    tenant: TenantA
+    metadata:
+      tenant: TenantA
     rd: 192.168.45.4:1100
     route_targets:
       both:
@@ -181,7 +186,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 101
-    tenant: TenantA
+    metadata:
+      tenant: TenantA
     rd: 192.168.45.4:1101
     route_targets:
       both:
@@ -189,7 +195,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 666
-    tenant: TenantC
+    metadata:
+      tenant: TenantC
     rd: 192.168.45.4:1666
     route_targets:
       both:

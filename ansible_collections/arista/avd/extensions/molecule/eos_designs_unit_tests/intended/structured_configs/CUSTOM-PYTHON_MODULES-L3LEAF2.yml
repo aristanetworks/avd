@@ -76,11 +76,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -90,7 +92,8 @@ router_bgp:
   - ip_address: 172.31.255.24
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: CUSTOM-PYTHON_MODULES-L3LEAF1A
+    metadata:
+      peer: CUSTOM-PYTHON_MODULES-L3LEAF1A
     description: CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet3
   redistribute:
     connected:
@@ -98,7 +101,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 110
-    tenant: CUSTOM_PYTHON_MODULES_TENANT
+    metadata:
+      tenant: CUSTOM_PYTHON_MODULES_TENANT
     rd: 192.168.255.23:11110
     route_targets:
       both:

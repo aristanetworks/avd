@@ -217,12 +217,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -236,7 +238,8 @@ router_bgp:
       enabled: true
   vlans:
   - id: 2
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 192.168.255.109:10002
     route_targets:
       both:
@@ -244,7 +247,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 3
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 192.168.255.109:10003
     route_targets:
       both:

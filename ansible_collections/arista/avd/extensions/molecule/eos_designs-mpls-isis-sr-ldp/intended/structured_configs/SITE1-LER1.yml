@@ -383,7 +383,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     remote_as: '65000'
     update_source: Loopback0
     bfd: true
@@ -393,15 +394,18 @@ router_bgp:
   neighbors:
   - ip_address: 100.70.0.8
     peer_group: MPLS-OVERLAY-PEERS
-    peer: SITE1-RR1
+    metadata:
+      peer: SITE1-RR1
     description: SITE1-RR1_Loopback0
   - ip_address: 100.70.0.9
     peer_group: MPLS-OVERLAY-PEERS
-    peer: SITE2-RR1
+    metadata:
+      peer: SITE2-RR1
     description: SITE2-RR1_Loopback0
   vlans:
   - id: 10
-    tenant: TENANT_A
+    metadata:
+      tenant: TENANT_A
     rd: 100.70.0.5:10010
     route_targets:
       both:
@@ -409,7 +413,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 20
-    tenant: TENANT_A
+    metadata:
+      tenant: TENANT_A
     rd: 100.70.0.5:123456
     route_targets:
       both:
@@ -417,7 +422,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 2020
-    tenant: TENANT_B
+    metadata:
+      tenant: TENANT_B
     rd: 100.70.0.5:22020
     route_targets:
       both:
