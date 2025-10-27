@@ -7,9 +7,6 @@ ansible:
         - --inventory=inventory/
   env:
     ANSIBLE_FORCE_COLOR: true
-    # Custom pythonpath to allow loading custom ip_addressing and descriptions modules.
-    # See CUSTOM_PYTHON_MODULES_TESTS group vars for details.
-    PYTHONPATH: ${PYTHONPATH}:${MOLECULE_SCENARIO_DIRECTORY}/custom_modules
   cfg:
     defaults:
       jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
