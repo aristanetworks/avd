@@ -116,7 +116,7 @@ class PrefixListsMixin(Protocol):
         if (
             self.shared_utils.overlay_vtep
             and self.shared_utils.underlay_ipv6_numbered
-            and not (self.shared_utils.node_config.vtep_loopback and self.shared_utils.node_config.vtep_loopback == "Loopback0")
+            and not (self.shared_utils.vtep_loopback == "loopback0")
         ):
             for index, network in enumerate(
                 collapse_addresses(get_ipv6_networks_from_pool(self.shared_utils.vtep_loopback_ipv6_pool)), start=len(sequence_numbers) + 1
