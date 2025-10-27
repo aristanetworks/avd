@@ -219,72 +219,82 @@ vlan_interfaces:
   description: SVI_9
   shutdown: false
   vrf: research1
-  tenant: research
-  tags:
-  - research
+  metadata:
+    tenant: research
+    tags:
+    - research
 - name: Vlan1017
   description: SVI_10
   shutdown: false
   vrf: research1
-  tenant: research
-  tags:
-  - research
+  metadata:
+    tenant: research
+    tags:
+    - research
 - name: Vlan1011
   description: SVI_4
   shutdown: false
   vrf: SIT2
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 - name: Vlan1012
   description: SVI_5
   shutdown: false
   vrf: SIT2
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 - name: Vlan1013
   description: SVI_6
   shutdown: false
   vrf: SIT2
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 - name: Vlan1014
   description: SVI_7
   shutdown: false
   vrf: SIT3
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 - name: Vlan1015
   description: SVI_8
   shutdown: false
   vrf: SIT3
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 - name: Vlan1008
   description: SVI_1
   shutdown: false
   vrf: SIT_VRF
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 - name: Vlan1009
   description: SVI_2
   shutdown: false
   vrf: SIT_VRF
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 - name: Vlan1010
   description: SVI_3
   shutdown: false
   vrf: SIT_VRF
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 vlan_internal_order:
   allocation: ascending
   range:

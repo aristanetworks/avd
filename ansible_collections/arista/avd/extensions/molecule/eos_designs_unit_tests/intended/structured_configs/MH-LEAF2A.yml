@@ -376,33 +376,37 @@ vlan_interfaces:
   description: Tenant_default_vrf
   shutdown: false
   ip_address_virtual: 10.2.10.1/24
-  tenant: Tenant_X
-  tags:
-  - default_vrf
+  metadata:
+    tenant: Tenant_X
+    tags:
+    - default_vrf
 - name: Vlan310
   description: Tenant_X_OP_Zone_1
   shutdown: false
   vrf: Tenant_X_OP_Zone
   ip_address_virtual: 10.1.10.1/24
-  tenant: Tenant_X
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_X
+    tags:
+    - opzone
 - name: Vlan315
   description: Tenant_network_vrf_1
   shutdown: false
   vrf: VRF_with_loopback_ip_pools
   ip_address_virtual: 10.1.10.2/24
-  tenant: Tenant_X
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_X
+    tags:
+    - opzone
 - name: Vlan316
   description: Tenant_network_vrf_2
   shutdown: false
   vrf: VRF_without_loopback_ip_pools
   ip_address_virtual: 10.1.10.3/24
-  tenant: Tenant_X
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_X
+    tags:
+    - opzone
 vlan_internal_order:
   allocation: ascending
   range:

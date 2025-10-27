@@ -142,12 +142,14 @@ vlan_interfaces:
   ipv6_address: 2001:db8::2/64
   ipv6_virtual_router_addresses:
   - fe80::1
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan200
   description: VARPv6_not_configured_1
   shutdown: false
   vrf: VRF1
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan300
   description: VARPv6_configured_2
   shutdown: false
@@ -155,13 +157,15 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_virtual_router_addresses:
   - fe80::1
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan400
   description: VARPv6_not_configured_2
   shutdown: false
   vrf: VRF1
   ipv6_enable: false
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan500
   description: VARPv6_not_configured_3
   shutdown: false
@@ -169,7 +173,8 @@ vlan_interfaces:
   ipv6_enable: false
   ipv6_address_virtuals:
   - 2001:db8::1/64
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vlan_internal_order:
   allocation: ascending
   range:

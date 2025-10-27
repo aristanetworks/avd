@@ -96,7 +96,8 @@ vlan_interfaces:
   shutdown: true
   ospf_network_point_to_point: false
   ospf_area: 0.0.0.0
-  tenant: Tenant-A
+  metadata:
+    tenant: Tenant-A
 vlan_internal_order:
   allocation: ascending
   range:

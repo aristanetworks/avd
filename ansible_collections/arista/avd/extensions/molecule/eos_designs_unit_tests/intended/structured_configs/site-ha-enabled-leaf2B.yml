@@ -298,13 +298,15 @@ vlan_interfaces:
   shutdown: true
   vrf: PROD
   ip_address_virtual: 10.0.100.1/24
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: Vlan666
   description: VLAN666
   shutdown: true
   vrf: ATTRACTED-VRF-FROM-UPLINK
   ip_address_virtual: 10.66.66.66/24
-  tenant: TenantC
+  metadata:
+    tenant: TenantC
 vlan_internal_order:
   allocation: ascending
   range:
