@@ -114,38 +114,60 @@ mod validation {
 
 #[cfg(test)]
 mod tests {
-    use pyo3::{types::PyAnyMethods as _};
     use super::validation;
+    use pyo3::types::PyAnyMethods as _;
+    const CRATE_DIR: &str = env!("CARGO_MANIFEST_DIR");
+    const EOS_CLI_CONFIG_GEN_FRAGMENTS_DIR: &str =
+        "../../../python-avd/pyavd/_eos_cli_config_gen/schema/schema_fragments";
+    const EOS_DESIGNS_FRAGMENTS_DIR: &str =
+        "../../../python-avd/pyavd/_eos_designs/schema/schema_fragments";
+
+    fn get_dir(fragments_dir: &str) -> std::path::PathBuf {
+        std::path::PathBuf::from(CRATE_DIR).join(fragments_dir)
+    }
+
+    // Initialize the store and ignoring errors for duplicate initialization.
+    // This avoids false negatives when multiple tests are executed at once.
+    fn shared_init_store(py: pyo3::Python<'_>) {
+        let module = py.import("validation").unwrap();
+        {
+            let args = ();
+            let kwargs = pyo3::types::PyDict::new(py);
+            kwargs
+                .set_item(
+                    "eos_cli_config_gen",
+                    get_dir(EOS_CLI_CONFIG_GEN_FRAGMENTS_DIR),
+                )
+                .unwrap();
+            kwargs
+                .set_item("eos_designs", get_dir(EOS_DESIGNS_FRAGMENTS_DIR))
+                .unwrap();
+            let _ = module
+                .call_method("init_store_from_fragments", args, Some(&kwargs));
+        };
+    }
 
     #[test]
-    fn validate_json_py_ok() {
+    fn validate_json_py() {
         // Partial implementation of the pytest but here using pyo3 wrappers in Rust, to ensure we get coverage data
         // and that we can catch issues in Rust without building the Python first.
         pyo3::append_to_inittab!(validation);
         pyo3::Python::initialize();
         pyo3::Python::attach(|py| {
-            let crate_dir = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-            let eos_cli_config_gen_fragment_dir = crate_dir
-                .join("../../../python-avd/pyavd/_eos_cli_config_gen/schema/schema_fragments");
-            let eos_designs_fragment_dir =
-                crate_dir.join("../../../python-avd/pyavd/_eos_designs/schema/schema_fragments");
+            shared_init_store(py);
 
             let module = py.import("validation").unwrap();
-            {
-                let args = ();
-                let kwargs = pyo3::types::PyDict::new(py);
-                kwargs.set_item("eos_cli_config_gen", eos_cli_config_gen_fragment_dir).unwrap();
-                kwargs.set_item("eos_designs", eos_designs_fragment_dir).unwrap();
-                module.call_method("init_store_from_fragments", args, Some(&kwargs)).unwrap();
-            };
-
             let data_as_json_str = serde_json::json!({"ethernet_interfaces": [{"name": "Ethernet1", "description": 12345}, {"name": "Ethernet1"}, {}]}).to_string();
             let validation_result = {
                 let args = ();
-                let kwargs= pyo3::types::PyDict::new(py);
+                let kwargs = pyo3::types::PyDict::new(py);
                 kwargs.set_item("data_as_json", data_as_json_str).unwrap();
-                kwargs.set_item("schema_name", "eos_cli_config_gen").unwrap();
-                module.call_method("validate_json", args, Some(&kwargs)).unwrap()
+                kwargs
+                    .set_item("schema_name", "eos_cli_config_gen")
+                    .unwrap();
+                module
+                    .call_method("validate_json", args, Some(&kwargs))
+                    .unwrap()
             };
             assert!(validation_result.hasattr("violations").unwrap());
             let violations = validation_result.getattr("violations").unwrap();
@@ -157,7 +179,11 @@ mod tests {
 
             // Checking the first violation only. The rest are checked in the pytest implementation.
             let feedback = violations.get_item(0).unwrap();
-            let path = feedback.getattr("path").unwrap().cast_into_exact::<pyo3::types::PyList>().unwrap();
+            let path = feedback
+                .getattr("path")
+                .unwrap()
+                .cast_into_exact::<pyo3::types::PyList>()
+                .unwrap();
             let expected_path = pyo3::types::PyList::new(py, ["ethernet_interfaces", "2"]).unwrap();
             assert!(path.eq(expected_path).unwrap());
             let issue = feedback.getattr("issue").unwrap();
@@ -169,6 +195,113 @@ mod tests {
             let key = violation.getattr("key").unwrap();
             let expected_key = pyo3::types::PyString::new(py, "name");
             assert!(key.eq(expected_key).unwrap());
+        });
+    }
+
+    #[test]
+    fn init_store_py_invalid_fragment_paths() {
+        pyo3::append_to_inittab!(validation);
+        pyo3::Python::initialize();
+        pyo3::Python::attach(|py| {
+            let module = py.import("validation").unwrap();
+
+            // Test with invalid eos_cli_config_gen path
+            let err = {
+                let args = ();
+                let kwargs = pyo3::types::PyDict::new(py);
+                kwargs
+                    .set_item("eos_cli_config_gen", "invalid_path")
+                    .unwrap();
+                kwargs
+                    .set_item("eos_designs", get_dir(EOS_DESIGNS_FRAGMENTS_DIR))
+                    .unwrap();
+                module
+                    .call_method("init_store_from_fragments", args, Some(&kwargs))
+                    .unwrap_err()
+            };
+            assert_eq!(
+                err.value(py).to_string(),
+                "Error while reading the EosCliConfigGen schema fragments: No files found."
+            );
+
+            // Test with invalid eos_designs path
+            let err = {
+                let args = ();
+                let kwargs = pyo3::types::PyDict::new(py);
+                kwargs
+                    .set_item(
+                        "eos_cli_config_gen",
+                        get_dir(EOS_CLI_CONFIG_GEN_FRAGMENTS_DIR),
+                    )
+                    .unwrap();
+                kwargs.set_item("eos_designs", "invalid_path").unwrap();
+                module
+                    .call_method("init_store_from_fragments", args, Some(&kwargs))
+                    .unwrap_err()
+            };
+            assert_eq!(
+                err.value(py).to_string(),
+                "Error while reading the EosDesigns schema fragments: No files found."
+            );
+        });
+    }
+
+    #[test]
+    fn init_store_py_twice() {
+        pyo3::append_to_inittab!(validation);
+        pyo3::Python::initialize();
+        pyo3::Python::attach(|py| {
+            shared_init_store(py);
+
+            let module = py.import("validation").unwrap();
+            let err = {
+                let args = ();
+                let kwargs = pyo3::types::PyDict::new(py);
+                kwargs
+                    .set_item(
+                        "eos_cli_config_gen",
+                        get_dir(EOS_CLI_CONFIG_GEN_FRAGMENTS_DIR),
+                    )
+                    .unwrap();
+                kwargs
+                    .set_item("eos_designs", get_dir(EOS_DESIGNS_FRAGMENTS_DIR))
+                    .unwrap();
+                module
+                    .call_method("init_store_from_fragments", args, Some(&kwargs))
+                    .unwrap_err()
+            };
+
+            assert_eq!(
+                err.value(py).to_string(),
+                "Unable to initialize the schema store. \
+                 Initialization can only happen once, and must be done before running any validations."
+            )
+        })
+    }
+
+    #[test]
+    fn validate_json_py_invalid_json() {
+        pyo3::append_to_inittab!(validation);
+        pyo3::Python::initialize();
+        pyo3::Python::attach(|py| {
+            shared_init_store(py);
+
+            let module = py.import("validation").unwrap();
+            let err = {
+                let args = ();
+                let kwargs = pyo3::types::PyDict::new(py);
+                kwargs.set_item("data_as_json", "invalid_json").unwrap();
+                kwargs
+                    .set_item("schema_name", "eos_cli_config_gen")
+                    .unwrap();
+                module
+                    .call_method("validate_json", args, Some(&kwargs))
+                    .unwrap_err()
+            };
+            assert_eq!(
+                err.value(py).to_string(),
+                "Invalid JSON in data: expected value at line 1 column 1"
+            )
         });
     }
 }
