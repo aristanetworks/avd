@@ -682,6 +682,10 @@ jobs:
         # This is needed for arm machines since they don't ship with 2024 edition.
       - name: Upgrade rust and cargo
         run: rustup update stable
+        # This is needed because we have pyo3 tests.
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.10
       - name: Check code formatting with cargo fmt
         run: cargo fmt --verbose
         if: |
