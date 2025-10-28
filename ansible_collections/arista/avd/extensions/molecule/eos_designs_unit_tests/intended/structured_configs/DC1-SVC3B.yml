@@ -1136,6 +1136,8 @@ router_bgp:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
       description: DC1-SVC3A
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -1157,6 +1159,8 @@ router_bgp:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
       description: DC1-SVC3A
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -1178,6 +1182,8 @@ router_bgp:
     - ip_address: 172.31.12.6
       peer_group: MLAG-PEERS
       description: DC1-SVC3A
+      metadata:
+        validate_state: false
   - name: Tenant_A_OP_Zone
     rd: '65103:9'
     route_targets:
@@ -1196,6 +1202,8 @@ router_bgp:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
       description: DC1-SVC3A
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -1220,6 +1228,8 @@ router_bgp:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
       description: DC1-SVC3A
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -1243,6 +1253,8 @@ router_bgp:
     - ip_address: 172.31.11.6
       peer_group: MLAG-PEERS
       description: DC1-SVC3A
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -1264,6 +1276,8 @@ router_bgp:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
       description: DC1-SVC3A
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -1286,6 +1300,8 @@ router_bgp:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
       description: DC1-SVC3A
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -1308,6 +1324,8 @@ router_bgp:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
       description: DC1-SVC3A
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -1330,6 +1348,8 @@ router_bgp:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
       description: DC1-SVC3A
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true

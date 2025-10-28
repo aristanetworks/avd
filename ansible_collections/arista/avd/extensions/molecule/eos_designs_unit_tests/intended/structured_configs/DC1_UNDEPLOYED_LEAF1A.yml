@@ -478,6 +478,8 @@ router_bgp:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
       description: DC1_UNDEPLOYED_LEAF1B
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -499,6 +501,8 @@ router_bgp:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
       description: DC1_UNDEPLOYED_LEAF1B
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -520,6 +524,8 @@ router_bgp:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
       description: DC1_UNDEPLOYED_LEAF1B
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -544,6 +550,8 @@ router_bgp:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
       description: DC1_UNDEPLOYED_LEAF1B
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -567,6 +575,8 @@ router_bgp:
     - ip_address: 172.31.11.25
       peer_group: MLAG-PEERS
       description: DC1_UNDEPLOYED_LEAF1B
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -588,6 +598,8 @@ router_bgp:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
       description: DC1_UNDEPLOYED_LEAF1B
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -610,6 +622,8 @@ router_bgp:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
       description: DC1_UNDEPLOYED_LEAF1B
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -632,6 +646,8 @@ router_bgp:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
       description: DC1_UNDEPLOYED_LEAF1B
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -654,6 +670,8 @@ router_bgp:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
       description: DC1_UNDEPLOYED_LEAF1B
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true

@@ -345,6 +345,8 @@ router_bgp:
     - ip_address: 10.255.129.117
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: dc2-leaf1b_Vlan3009
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -365,6 +367,8 @@ router_bgp:
     - ip_address: 10.255.129.117
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: dc2-leaf1b_Vlan3010
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true

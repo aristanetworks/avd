@@ -101,6 +101,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.10.1.2
       peer_group: MYPEERGROUP
+      metadata:
+        validate_state: false
     neighbor_interfaces:
     - name: Ethernet1.100
       remote_as: '65000'

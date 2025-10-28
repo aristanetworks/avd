@@ -358,6 +358,8 @@ router_bgp:
     - ip_address: 10.255.251.9
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: site1-border2_Vlan3099
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -386,6 +388,8 @@ router_bgp:
     - ip_address: 10.255.251.9
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: site1-border2_Vlan3100
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true

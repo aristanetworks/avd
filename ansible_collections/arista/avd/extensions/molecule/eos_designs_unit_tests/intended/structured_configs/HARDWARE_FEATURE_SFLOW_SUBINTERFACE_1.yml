@@ -220,6 +220,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.10.40.100
       remote_as: '65002'
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true

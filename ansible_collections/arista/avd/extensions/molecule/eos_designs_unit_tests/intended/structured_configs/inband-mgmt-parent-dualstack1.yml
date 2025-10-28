@@ -359,6 +359,8 @@ router_bgp:
     - ip_address: 100.64.1.5
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: inband-mgmt-parent-dualstack2_Vlan3000
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true

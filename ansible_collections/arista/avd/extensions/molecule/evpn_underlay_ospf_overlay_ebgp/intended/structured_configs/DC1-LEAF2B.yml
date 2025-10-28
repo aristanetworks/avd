@@ -322,6 +322,8 @@ router_bgp:
     - ip_address: 10.255.251.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: DC1-LEAF2A_Vlan3019
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true

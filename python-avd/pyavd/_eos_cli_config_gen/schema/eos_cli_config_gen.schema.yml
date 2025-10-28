@@ -15120,6 +15120,9 @@ keys:
                 peer:
                   type: str
                   description: Key only used for documentation or validation purposes.
+                validate_state:
+                  type: bool
+                  description: Key only used for documentation or validation purposes.
             description:
               type: str
             route_reflector_client:
@@ -15373,6 +15376,9 @@ keys:
               keys:
                 peer:
                   type: str
+                  description: Key only used for documentation or validation purposes.
+                validate_state:
+                  type: bool
                   description: Key only used for documentation or validation purposes.
             peer_group:
               type: str
@@ -18686,6 +18692,13 @@ keys:
                   additional_paths:
                     type: dict
                     $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                  metadata:
+                    type: dict
+                    keys:
+                      validate_state:
+                        type: bool
+                        description: Key only used for documentation or validation
+                          purposes.
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -18712,6 +18725,13 @@ keys:
                     description: Peer-filter name.
                   description:
                     type: str
+                  metadata:
+                    type: dict
+                    keys:
+                      validate_state:
+                        type: bool
+                        description: Key only used for documentation or validation
+                          purposes.
             redistribute:
               type: dict
               description: Redistribute routes in to BGP.

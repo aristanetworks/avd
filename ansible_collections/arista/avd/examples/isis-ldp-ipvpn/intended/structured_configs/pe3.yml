@@ -210,6 +210,8 @@ router_bgp:
       description: C2_ROUTER2
       send_community: standard
       maximum_routes: 100
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true

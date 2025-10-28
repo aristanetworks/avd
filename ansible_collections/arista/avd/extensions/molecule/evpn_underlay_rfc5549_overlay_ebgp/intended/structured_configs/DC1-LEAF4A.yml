@@ -357,6 +357,8 @@ router_bgp:
       remote_as: '65107'
       peer_group: MLAG_VRFS_PEER
       description: DC1-LEAF4B_Vlan3011
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -378,6 +380,8 @@ router_bgp:
       remote_as: '65107'
       peer_group: MLAG_VRFS_PEER
       description: DC1-LEAF4B_Vlan3012
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -399,6 +403,8 @@ router_bgp:
       remote_as: '65107'
       peer_group: MLAG_VRFS_PEER
       description: DC1-LEAF4B_Vlan3009
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -420,6 +426,8 @@ router_bgp:
       remote_as: '65107'
       peer_group: MLAG_VRFS_PEER
       description: DC1-LEAF4B_Vlan3010
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -441,6 +449,8 @@ router_bgp:
       remote_as: '65107'
       peer_group: MLAG_VRFS_PEER
       description: DC1-LEAF4B_Vlan3019
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -462,6 +472,8 @@ router_bgp:
       remote_as: '65107'
       peer_group: MLAG_VRFS_PEER
       description: DC1-LEAF4B_Vlan2
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true

@@ -349,6 +349,8 @@ router_bgp:
     - ip_address: 10.255.247.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: trunk-group-tests-l3leaf1b_Vlan3099
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -371,6 +373,8 @@ router_bgp:
     - ip_address: 10.255.247.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: trunk-group-tests-l3leaf1b_Vlan3199
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -393,6 +397,8 @@ router_bgp:
     - ip_address: 10.255.247.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: trunk-group-tests-l3leaf1b_Vlan3299
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true

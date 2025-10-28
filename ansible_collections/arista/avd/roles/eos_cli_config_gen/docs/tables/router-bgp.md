@@ -139,6 +139,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prepend_own_disabled</samp>](## "router_bgp.neighbors.[].as_path.prepend_own_disabled") | Boolean |  |  |  | Disable prepending own AS number to AS path. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "router_bgp.neighbors.[].metadata") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "router_bgp.neighbors.[].metadata.peer") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "router_bgp.neighbors.[].metadata.validate_state") | Boolean |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "router_bgp.neighbors.[].description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_reflector_client</samp>](## "router_bgp.neighbors.[].route_reflector_client") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "router_bgp.neighbors.[].password") | String |  |  |  |  |
@@ -204,6 +205,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as</samp>](## "router_bgp.neighbor_interfaces.[].remote_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "router_bgp.neighbor_interfaces.[].metadata") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "router_bgp.neighbor_interfaces.[].metadata.peer") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "router_bgp.neighbor_interfaces.[].metadata.validate_state") | Boolean |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_group</samp>](## "router_bgp.neighbor_interfaces.[].peer_group") | String |  | `Peer-group name` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "router_bgp.neighbor_interfaces.[].description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_filter</samp>](## "router_bgp.neighbor_interfaces.[].peer_filter") | String |  |  |  | Peer-filter name. |
@@ -1167,12 +1169,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].neighbors.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.vrfs.[].neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.vrfs.[].neighbors.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "router_bgp.vrfs.[].neighbors.[].metadata") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "router_bgp.vrfs.[].neighbors.[].metadata.validate_state") | Boolean |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbor_interfaces</samp>](## "router_bgp.vrfs.[].neighbor_interfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].name") | String | Required, Unique |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].remote_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_group</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].peer_group") | String |  |  |  | Peer-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_filter</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].peer_filter") | String |  |  |  | Peer-filter name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].description") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].metadata") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].metadata.validate_state") | Boolean |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_bgp.vrfs.[].redistribute") | Dictionary |  |  |  | Redistribute routes in to BGP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attached_host</samp>](## "router_bgp.vrfs.[].redistribute.attached_host") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.attached_host.enabled") | Boolean | Required |  |  |  |
@@ -1879,6 +1885,9 @@
 
             # Key only used for documentation or validation purposes.
             peer: <str>
+
+            # Key only used for documentation or validation purposes.
+            validate_state: <bool>
           description: <str>
           route_reflector_client: <bool>
           password: <str>
@@ -2014,6 +2023,9 @@
 
             # Key only used for documentation or validation purposes.
             peer: <str>
+
+            # Key only used for documentation or validation purposes.
+            validate_state: <bool>
           peer_group: <str; default="Peer-group name">
           description: <str>
 
@@ -4015,6 +4027,10 @@
 
                 # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
                 send_limit: <int; 2-64>
+              metadata:
+
+                # Key only used for documentation or validation purposes.
+                validate_state: <bool>
           neighbor_interfaces:
 
               # Interface name.
@@ -4030,6 +4046,10 @@
               # Peer-filter name.
               peer_filter: <str>
               description: <str>
+              metadata:
+
+                # Key only used for documentation or validation purposes.
+                validate_state: <bool>
 
           # Redistribute routes in to BGP.
           redistribute:

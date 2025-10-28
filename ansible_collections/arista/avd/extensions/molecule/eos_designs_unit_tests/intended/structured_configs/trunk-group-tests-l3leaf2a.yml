@@ -210,6 +210,8 @@ router_bgp:
     - ip_address: 10.255.247.5
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: trunk-group-tests-l3leaf2b_Vlan3199
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true

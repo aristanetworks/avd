@@ -54027,6 +54027,7 @@ class EosDesigns(EosDesignsRootModel):
                         "bgp_peer_groups": {"type": BgpPeerGroups},
                         "additional_route_targets": {"type": AdditionalRouteTargets},
                         "aggregate_addresses": {"type": AggregateAddresses},
+                        "validate_bgp_peers": {"type": bool, "default": False},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen},
                     }
@@ -54281,6 +54282,12 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     aggregate_addresses: AggregateAddresses
                     """Subclass of AvdList with `AggregateAddressesItem` items."""
+                    validate_bgp_peers: bool
+                    """
+                    Enable or disable BGP peer state validation on a per-VRF basis.
+
+                    Default value: `False`
+                    """
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
@@ -54323,6 +54330,7 @@ class EosDesigns(EosDesignsRootModel):
                             bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
                             additional_route_targets: AdditionalRouteTargets | UndefinedType = Undefined,
                             aggregate_addresses: AggregateAddresses | UndefinedType = Undefined,
+                            validate_bgp_peers: bool | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen | UndefinedType = Undefined,
                         ) -> None:
@@ -54519,6 +54527,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `AdditionalRouteTargetsItem` items.
                                 aggregate_addresses: Subclass of AvdList with `AggregateAddressesItem` items.
+                                validate_bgp_peers: Enable or disable BGP peer state validation on a per-VRF basis.
                                 raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
                                 structured_config: Custom structured config for eos_cli_config_gen.
 

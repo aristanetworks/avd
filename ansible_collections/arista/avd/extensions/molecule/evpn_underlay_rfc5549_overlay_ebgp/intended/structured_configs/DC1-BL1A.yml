@@ -366,11 +366,17 @@ router_bgp:
         route_map: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
       update_source: Loopback123
       route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
+      metadata:
+        validate_state: false
     - ip_address: fd5a:fe45:8831:06c5::a
       remote_as: '12345'
       route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
+      metadata:
+        validate_state: false
     - ip_address: fd5a:fe45:8831:06c5::b
       remote_as: '12345'
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true

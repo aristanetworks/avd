@@ -9630,6 +9630,11 @@ $defs:
                         type: str
                         description: Node name or regex pattern matching the full
                           hostname.
+              validate_bgp_peers:
+                type: bool
+                description: Enable or disable BGP peer state validation on a per-VRF
+                  basis.
+                default: false
               raw_eos_cli:
                 type: str
                 description: EOS CLI rendered directly on the root level of the final

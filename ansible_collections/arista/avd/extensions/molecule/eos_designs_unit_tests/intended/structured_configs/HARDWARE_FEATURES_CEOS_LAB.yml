@@ -301,8 +301,12 @@ router_bgp:
     - ip_address: 10.10.40.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: HARDWARE_FEATURES_VEOS_LAB_Vlan3009
+      metadata:
+        validate_state: false
     - ip_address: 10.10.40.100
       remote_as: '65002'
+      metadata:
+        validate_state: false
     redistribute:
       connected:
         enabled: true
