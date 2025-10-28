@@ -58,11 +58,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: MPLS-OVERLAY-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     remote_as: '65233'
     update_source: Loopback0
     route_reflector_client: true
@@ -70,7 +72,8 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   - name: RR-OVERLAY-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     remote_as: '65233'
     update_source: Loopback0
     bfd: true

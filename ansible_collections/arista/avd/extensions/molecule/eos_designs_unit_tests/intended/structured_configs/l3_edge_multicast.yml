@@ -11,9 +11,10 @@ ethernet_interfaces:
   ip_address: 192.168.0.4/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer: peer1
-  peer_interface: ethernet1
-  peer_type: other
+  metadata:
+    peer: peer1
+    peer_interface: ethernet1
+    peer_type: other
   switchport:
     enabled: false
 - name: ethernet2
@@ -26,9 +27,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: peer2
-  peer_interface: ethernet2
-  peer_type: other
+  metadata:
+    peer: peer2
+    peer_interface: ethernet2
+    peer_type: other
   switchport:
     enabled: false
 - name: ethernet3
@@ -39,9 +41,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: peer3
-  peer_interface: ethernet3
-  peer_type: other
+  metadata:
+    peer: peer3
+    peer_interface: ethernet3
+    peer_type: other
   switchport:
     enabled: false
 - name: ethernet4
@@ -51,9 +54,10 @@ ethernet_interfaces:
   ip_address: 192.168.0.8/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer: peer4
-  peer_interface: ethernet4
-  peer_type: other
+  metadata:
+    peer: peer4
+    peer_interface: ethernet4
+    peer_type: other
   switchport:
     enabled: false
 - name: ethernet5
@@ -66,9 +70,10 @@ ethernet_interfaces:
       static: true
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer: peer5
-  peer_interface: ethernet5
-  peer_type: other
+  metadata:
+    peer: peer5
+    peer_interface: ethernet5
+    peer_type: other
   switchport:
     enabled: false
 - name: ethernet6
@@ -79,9 +84,10 @@ ethernet_interfaces:
   multicast:
     ipv4:
       static: true
-  peer: peer6
-  peer_interface: ethernet6
-  peer_type: other
+  metadata:
+    peer: peer6
+    peer_interface: ethernet6
+    peer_type: other
   switchport:
     enabled: false
 hostname: l3_edge_multicast

@@ -50,11 +50,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -75,7 +77,8 @@ router_bgp:
     vlan: 90,100,1008-1009,1011
   vlans:
   - id: 1010
-    tenant: SIT
+    metadata:
+      tenant: SIT
     rd: 10.10.0.3:21010
     route_targets:
       both:
@@ -83,7 +86,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 20
-    tenant: SIT
+    metadata:
+      tenant: SIT
     rd: 10.10.0.3:20020
     route_targets:
       both:
@@ -123,30 +127,34 @@ vlan_interfaces:
   description: SVI_1
   shutdown: false
   vrf: SIT_VRF
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 - name: Vlan1009
   description: SVI_2
   shutdown: false
   vrf: SIT_VRF
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 - name: Vlan1010
   description: SVI_3
   shutdown: false
   vrf: SIT_VRF
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 - name: Vlan1011
   description: SVI_4
   shutdown: false
   vrf: VRF_ID_VNI_NONE
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 vlan_internal_order:
   allocation: ascending
   range:

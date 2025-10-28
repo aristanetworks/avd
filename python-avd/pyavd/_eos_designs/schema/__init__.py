@@ -19604,7 +19604,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Vrfs._item_type = VrfsItem
 
-        _fields: ClassVar[dict] = {"vrfs": {"type": Vrfs}, "idle_timeout": {"type": int}}
+        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrfs": {"type": Vrfs}, "idle_timeout": {"type": int}}
+        enabled: bool | None
+        """
+        Explicitly enable or disable management ssh for all VRFs. By default EOS enables management ssh for
+        all VRFs.
+        """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         idle_timeout: int | None
@@ -19612,7 +19617,13 @@ class EosDesigns(EosDesignsRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, vrfs: Vrfs | UndefinedType = Undefined, idle_timeout: int | None | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                enabled: bool | None | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
+                idle_timeout: int | None | UndefinedType = Undefined,
+            ) -> None:
                 """
                 SshSettings.
 
@@ -19620,6 +19631,9 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    enabled:
+                       Explicitly enable or disable management ssh for all VRFs. By default EOS enables management ssh for
+                       all VRFs.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     idle_timeout: Idle timeout in minutes.
 
@@ -19630,6 +19644,11 @@ class EosDesigns(EosDesignsRootModel):
 
         class NodesItem(AvdModel):
             """Subclass of AvdModel."""
+
+            class IpAddressSecondaries(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            IpAddressSecondaries._item_type = str
 
             class Ipv6AddressVirtuals(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
@@ -20177,6 +20196,7 @@ class EosDesigns(EosDesignsRootModel):
                 "description": {"type": str},
                 "arp_gratuitous_accept": {"type": bool},
                 "ip_address": {"type": str},
+                "ip_address_secondaries": {"type": IpAddressSecondaries},
                 "ipv6_address": {"type": str},
                 "ipv6_enable": {"type": bool},
                 "ip_address_virtual": {"type": str},
@@ -20220,6 +20240,8 @@ class EosDesigns(EosDesignsRootModel):
             """Accept gratuitous ARP."""
             ip_address: str | None
             """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
+            ip_address_secondaries: IpAddressSecondaries
+            """Subclass of AvdList with `str` items."""
             ipv6_address: str | None
             """IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node."""
             ipv6_enable: bool | None
@@ -20417,6 +20439,7 @@ class EosDesigns(EosDesignsRootModel):
                     description: str | None | UndefinedType = Undefined,
                     arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                     ip_address: str | None | UndefinedType = Undefined,
+                    ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                     ipv6_address: str | None | UndefinedType = Undefined,
                     ipv6_enable: bool | None | UndefinedType = Undefined,
                     ip_address_virtual: str | None | UndefinedType = Undefined,
@@ -20461,6 +20484,7 @@ class EosDesigns(EosDesignsRootModel):
                         description: SVI description. By default set to VLAN name.
                         arp_gratuitous_accept: Accept gratuitous ARP.
                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+                        ip_address_secondaries: Subclass of AvdList with `str` items.
                         ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                         ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
                         ip_address_virtual:
@@ -20603,6 +20627,11 @@ class EosDesigns(EosDesignsRootModel):
             _primary_key: ClassVar[str] = "node"
 
         Nodes._item_type = NodesItem
+
+        class IpAddressSecondaries(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        IpAddressSecondaries._item_type = str
 
         class Ipv6AddressVirtuals(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -21148,6 +21177,7 @@ class EosDesigns(EosDesignsRootModel):
             "description": {"type": str},
             "arp_gratuitous_accept": {"type": bool},
             "ip_address": {"type": str},
+            "ip_address_secondaries": {"type": IpAddressSecondaries},
             "ipv6_address": {"type": str},
             "ipv6_enable": {"type": bool},
             "ip_address_virtual": {"type": str},
@@ -21207,6 +21237,8 @@ class EosDesigns(EosDesignsRootModel):
         """Accept gratuitous ARP."""
         ip_address: str | None
         """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
+        ip_address_secondaries: IpAddressSecondaries
+        """Subclass of AvdList with `str` items."""
         ipv6_address: str | None
         """IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node."""
         ipv6_enable: bool | None
@@ -21406,6 +21438,7 @@ class EosDesigns(EosDesignsRootModel):
                 description: str | None | UndefinedType = Undefined,
                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
+                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ip_address_virtual: str | None | UndefinedType = Undefined,
@@ -21462,6 +21495,7 @@ class EosDesigns(EosDesignsRootModel):
                     description: SVI description. By default set to VLAN name.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+                    ip_address_secondaries: Subclass of AvdList with `str` items.
                     ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                     ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
                     ip_address_virtual:
@@ -47351,6 +47385,27 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class Metadata(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"type": {"type": str}}
+                        type: str | None
+                        """Key only used for documentation or validation purposes."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, type: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                Metadata.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    type: Key only used for documentation or validation purposes.
+
+                                """
+
                     class AsPath(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -47723,7 +47778,7 @@ class EosDesigns(EosDesignsRootModel):
                         "nodes": {"type": Nodes},
                         "address_family_ipv4": {"type": AddressFamilyIpv4},
                         "address_family_ipv6": {"type": AddressFamilyIpv6},
-                        "type": {"type": str},
+                        "metadata": {"type": Metadata},
                         "remote_as": {"type": str},
                         "local_as": {"type": str},
                         "description": {"type": str},
@@ -47787,8 +47842,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Subclass of AvdModel."""
                     address_family_ipv6: AddressFamilyIpv6
                     """Subclass of AvdModel."""
-                    type: str | None
-                    """Key only used for documentation or validation purposes."""
+                    metadata: Metadata
+                    """Subclass of AvdModel."""
                     remote_as: str | None
                     """
                     BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -47889,7 +47944,7 @@ class EosDesigns(EosDesignsRootModel):
                             nodes: Nodes | UndefinedType = Undefined,
                             address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                             address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
-                            type: str | None | UndefinedType = Undefined,
+                            metadata: Metadata | UndefinedType = Undefined,
                             remote_as: str | None | UndefinedType = Undefined,
                             local_as: str | None | UndefinedType = Undefined,
                             description: str | None | UndefinedType = Undefined,
@@ -47951,7 +48006,7 @@ class EosDesigns(EosDesignsRootModel):
                                    of AvdList with `str` items.
                                 address_family_ipv4: Subclass of AvdModel.
                                 address_family_ipv6: Subclass of AvdModel.
-                                type: Key only used for documentation or validation purposes.
+                                metadata: Subclass of AvdModel.
                                 remote_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -48996,6 +49051,11 @@ class EosDesigns(EosDesignsRootModel):
 
                             Tags._item_type = str
 
+                            class IpAddressSecondaries(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            IpAddressSecondaries._item_type = str
+
                             class Ipv6AddressVirtuals(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
 
@@ -49554,6 +49614,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "description": {"type": str},
                                 "arp_gratuitous_accept": {"type": bool},
                                 "ip_address": {"type": str},
+                                "ip_address_secondaries": {"type": IpAddressSecondaries},
                                 "ipv6_address": {"type": str},
                                 "ipv6_enable": {"type": bool},
                                 "ip_address_virtual": {"type": str},
@@ -49607,6 +49668,8 @@ class EosDesigns(EosDesignsRootModel):
                             """Accept gratuitous ARP."""
                             ip_address: str | None
                             """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
+                            ip_address_secondaries: IpAddressSecondaries
+                            """Subclass of AvdList with `str` items."""
                             ipv6_address: str | None
                             """IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node."""
                             ipv6_enable: bool | None
@@ -49805,6 +49868,7 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
+                                    ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                     ipv6_address: str | None | UndefinedType = Undefined,
                                     ipv6_enable: bool | None | UndefinedType = Undefined,
                                     ip_address_virtual: str | None | UndefinedType = Undefined,
@@ -49855,6 +49919,7 @@ class EosDesigns(EosDesignsRootModel):
                                         description: SVI description. By default set to VLAN name.
                                         arp_gratuitous_accept: Accept gratuitous ARP.
                                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+                                        ip_address_secondaries: Subclass of AvdList with `str` items.
                                         ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                                         ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
                                         ip_address_virtual:
@@ -49997,6 +50062,11 @@ class EosDesigns(EosDesignsRootModel):
                             _primary_key: ClassVar[str] = "node"
 
                         Nodes._item_type = NodesItem
+
+                        class IpAddressSecondaries(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        IpAddressSecondaries._item_type = str
 
                         class Ipv6AddressVirtuals(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -50554,6 +50624,7 @@ class EosDesigns(EosDesignsRootModel):
                             "description": {"type": str},
                             "arp_gratuitous_accept": {"type": bool},
                             "ip_address": {"type": str},
+                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "ipv6_address": {"type": str},
                             "ipv6_enable": {"type": bool},
                             "ip_address_virtual": {"type": str},
@@ -50637,6 +50708,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Accept gratuitous ARP."""
                         ip_address: str | None
                         """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
+                        ip_address_secondaries: IpAddressSecondaries
+                        """Subclass of AvdList with `str` items."""
                         ipv6_address: str | None
                         """IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node."""
                         ipv6_enable: bool | None
@@ -50839,6 +50912,7 @@ class EosDesigns(EosDesignsRootModel):
                                 description: str | None | UndefinedType = Undefined,
                                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 ipv6_address: str | None | UndefinedType = Undefined,
                                 ipv6_enable: bool | None | UndefinedType = Undefined,
                                 ip_address_virtual: str | None | UndefinedType = Undefined,
@@ -50911,6 +50985,7 @@ class EosDesigns(EosDesignsRootModel):
                                     description: SVI description. By default set to VLAN name.
                                     arp_gratuitous_accept: Accept gratuitous ARP.
                                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                                     ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
                                     ip_address_virtual:
@@ -52046,6 +52121,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         MemberInterfaces._item_type = MemberInterfacesItem
 
+                        class IpAddressSecondaries(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        IpAddressSecondaries._item_type = str
+
                         class StaticRoutesItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -52354,6 +52434,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
+                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "encapsulation_dot1q_vlan": {"type": int},
                             "enabled": {"type": bool, "default": True},
                             "peer": {"type": str},
@@ -52401,6 +52482,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """IPv4 address/Mask."""
+                        ip_address_secondaries: IpAddressSecondaries
+                        """Subclass of AvdList with `str` items."""
                         encapsulation_dot1q_vlan: int | None
                         """
                         For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
@@ -52465,6 +52548,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -52506,6 +52590,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: IPv4 address/Mask.
+                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     encapsulation_dot1q_vlan:
                                        For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
                                        specified.
@@ -53269,6 +53354,27 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class Metadata(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"type": {"type": str}}
+                            type: str | None
+                            """Key only used for documentation or validation purposes."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, type: str | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    Metadata.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        type: Key only used for documentation or validation purposes.
+
+                                    """
+
                         class AsPath(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -53645,7 +53751,7 @@ class EosDesigns(EosDesignsRootModel):
                             "cleartext_password": {"type": str},
                             "address_family_ipv4": {"type": AddressFamilyIpv4},
                             "address_family_ipv6": {"type": AddressFamilyIpv6},
-                            "type": {"type": str},
+                            "metadata": {"type": Metadata},
                             "remote_as": {"type": str},
                             "local_as": {"type": str},
                             "description": {"type": str},
@@ -53709,8 +53815,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         address_family_ipv6: AddressFamilyIpv6
                         """Subclass of AvdModel."""
-                        type: str | None
-                        """Key only used for documentation or validation purposes."""
+                        metadata: Metadata
+                        """Subclass of AvdModel."""
                         remote_as: str | None
                         """
                         BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -53811,7 +53917,7 @@ class EosDesigns(EosDesignsRootModel):
                                 cleartext_password: str | None | UndefinedType = Undefined,
                                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
-                                type: str | None | UndefinedType = Undefined,
+                                metadata: Metadata | UndefinedType = Undefined,
                                 remote_as: str | None | UndefinedType = Undefined,
                                 local_as: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
@@ -53873,7 +53979,7 @@ class EosDesigns(EosDesignsRootModel):
                                        make use of a vault or similar.
                                     address_family_ipv4: Subclass of AvdModel.
                                     address_family_ipv6: Subclass of AvdModel.
-                                    type: Key only used for documentation or validation purposes.
+                                    metadata: Subclass of AvdModel.
                                     remote_as:
                                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                        For asdot notation in

@@ -125,6 +125,9 @@ tenant_d:
         svis:
           - id: 1234
             name: VRF_DEFAULT_SVI_WITH_OSPF
+            ip_address: 10.0.0.2/24
+            ip_address_secondaries:
+              - 10.0.0.3/24
             ospf:
               area: 0.0.0.0
               enabled: true

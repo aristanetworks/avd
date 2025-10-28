@@ -521,11 +521,11 @@ ip name-server vrf TEST 2001:db8::2 priority 3
 
 ###### Name Server
 
-| IP Address | VRF | Priority |
-| ---------- | --- | -------- |
-| 1.1.1.1 | default | 0 |
-| 2.2.2.2 | default | 1 |
-| 8.8.8.8 | default | - |
+| VRF | IP Address | Priority |
+| --- | ---------- | -------- |
+| default | 1.1.1.1 | 0 |
+| default | 2.2.2.2 | 1 |
+| default | 8.8.8.8 | - |
 
 ##### mynameserver1
 
@@ -539,15 +539,15 @@ DNS Domain: arista.avd.com
 
 ###### Name Server
 
-| IP Address | VRF | Priority |
-| ---------- | --- | -------- |
-| 1.1.1.1 | default | - |
-| 2.2.2.1 | vrf1 | - |
-| 2.2.2.2 | vrf1 | 1 |
-| 2.2.2.4 | vrf1 | 4 |
-| 2.2.2.6 | b_vrf | 3 |
-| 2.2.2.7 | a_vrf | 3 |
-| 8.8.8.8 | vrf1 | - |
+| VRF | IP Address | Priority |
+| --- | ---------- | -------- |
+| a_vrf | 2.2.2.7 | 3 |
+| b_vrf | 2.2.2.6 | 3 |
+| default | 1.1.1.1 | - |
+| vrf1 | 2.2.2.1 | - |
+| vrf1 | 2.2.2.2 | 1 |
+| vrf1 | 2.2.2.4 | 4 |
+| vrf1 | 8.8.8.8 | - |
 
 ##### mynameserver2
 
@@ -6231,6 +6231,7 @@ interface Port-Channel100.102
    encapsulation dot1q vlan 102 inner 110
    vrf C2
    ip address 10.1.2.3/31
+   ip address 10.1.2.5/31 secondary
    logging event storm-control discards
 !
 interface Port-Channel101
@@ -13054,6 +13055,7 @@ Counters: DEMO-TRAFFIC
 | BLUE-C2-POLICY-05 | ipv6 | any | any | - | - | - | - | - | action: PASS<br/>redirect next-hop IPv4 address: 2.2.2.33 2.2.2.43 vrf: VRF_TTL_IPv4 ttl: 5 |
 | BLUE-C2-POLICY-06 | ipv4 | any | any | - | - | - | - | - | action: PASS<br/>redirect next-hop groups: Testing_TTL_GROUP ttl: 44 |
 | BLUE-C2-POLICY-07 | ipv4 | any | any | - | - | - | - | - | action: PASS |
+| BLUE-C2-POLICY-08 | ipv6 | any | any | icmpv6 | - | - | - | - | default action: PASS |
 
 ##### BLUE-C3-POLICY
 
@@ -13232,6 +13234,9 @@ traffic-policies
       match BLUE-C2-POLICY-07 ipv4
          !
          actions
+      !
+      match BLUE-C2-POLICY-08 ipv6
+         protocol icmpv6 type echo-reply echo-request code all
       !
       match ipv4-all-default ipv4
          actions

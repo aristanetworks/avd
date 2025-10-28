@@ -10,9 +10,10 @@ ethernet_interfaces:
   shutdown: false
   ip_address: 172.17.20.9/31
   service_profile: QOS-PROFILE
-  peer: DC2-SUPER-SPINE1
-  peer_interface: Ethernet5
-  peer_type: super-spine
+  metadata:
+    peer: DC2-SUPER-SPINE1
+    peer_interface: Ethernet5
+    peer_type: super-spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -20,9 +21,10 @@ ethernet_interfaces:
   shutdown: false
   ip_address: 172.17.20.11/31
   service_profile: QOS-PROFILE
-  peer: DC2-SUPER-SPINE1
-  peer_interface: Ethernet7
-  peer_type: super-spine
+  metadata:
+    peer: DC2-SUPER-SPINE1
+    peer_interface: Ethernet7
+    peer_type: super-spine
   switchport:
     enabled: false
 hostname: DC2-RS2
@@ -84,19 +86,22 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   neighbors:
   - ip_address: 172.17.20.8
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
-    peer: DC2-SUPER-SPINE1
+    metadata:
+      peer: DC2-SUPER-SPINE1
     description: DC2-SUPER-SPINE1_Ethernet5
   - ip_address: 172.17.20.10
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
-    peer: DC2-SUPER-SPINE1
+    metadata:
+      peer: DC2-SUPER-SPINE1
     description: DC2-SUPER-SPINE1_Ethernet7
   redistribute:
     connected:

@@ -68,13 +68,16 @@ spine:
         router_bgp:
           peer_groups:
             - name: IPv4-EXTERNAL-PEERS
-              type: ipv4
+              metadata:
+                type: ipv4
               remote_as: 577
             - name: IPv6-EXTERNAL-PEERS
-              type: ipv6
+              metadata:
+                type: ipv6
               remote_as: 577
             - name: EVPN-EXTERNAL-PEERS
-              type: evpn
+              metadata:
+                type: evpn
               remote_as: 577
           neighbors:
             - ip_address: 142.112.39.2

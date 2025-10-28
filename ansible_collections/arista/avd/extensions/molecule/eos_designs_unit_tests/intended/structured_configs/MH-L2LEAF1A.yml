@@ -22,19 +22,21 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: MH-LEAF2A
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: MH-LEAF2A
+    peer_interface: Ethernet2
+    peer_type: l3leaf
 - name: Ethernet10
   description: server02_Eth1
   shutdown: false
   link_tracking_groups:
   - name: l2leaf-server02
     direction: downstream
-  peer: server02
-  peer_interface: Eth1
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: server02
+    peer_interface: Eth1
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
 hostname: MH-L2LEAF1A

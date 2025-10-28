@@ -22,6 +22,11 @@ except ImportError as e:
         ),
     )
 
+try:
+    from ansible.template import accept_args_markers
+except ImportError:
+    accept_args_markers = None
+
 DOCUMENTATION = r"""
 ---
 name: natural_sort
@@ -76,6 +81,9 @@ _value:
 
 class FilterModule:
     def filters(self) -> dict:
+        wrapped_filter = wrap_filter(PLUGIN_NAME)(natural_sort)
+        if accept_args_markers is not None:
+            wrapped_filter = accept_args_markers(wrapped_filter)
         return {
-            "natural_sort": wrap_filter(PLUGIN_NAME)(natural_sort),
+            "natural_sort": wrapped_filter,
         }
