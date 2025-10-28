@@ -77,6 +77,7 @@ vlan_interfaces:
   shutdown: false
   ip_address: 172.21.210.4/24
   metadata:
+    tenant: inband_mgmt
     type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
@@ -86,7 +87,7 @@ vlan_internal_order:
 vlans:
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  tenant: inband_mgmt
 vrfs:
 - name: MGMT
   ip_routing: false

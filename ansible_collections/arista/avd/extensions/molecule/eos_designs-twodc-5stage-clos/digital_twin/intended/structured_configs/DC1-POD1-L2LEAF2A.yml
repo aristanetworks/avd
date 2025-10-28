@@ -132,6 +132,7 @@ vlan_interfaces:
   shutdown: false
   ip_address: 172.21.110.5/24
   metadata:
+    tenant: inband_mgmt
     type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
@@ -144,6 +145,9 @@ vlans:
   trunk_groups:
   - MLAG
   tenant: system
+- id: 4085
+  name: L2LEAF_INBAND_MGMT
+  tenant: inband_mgmt
 - id: 110
   name: Tenant_A_OP_Zone_1
   tenant: Tenant_A
@@ -174,9 +178,6 @@ vlans:
 - id: 2601
   name: l2vlan_with_no_vxlan
   tenant: Tenant_A
-- id: 4085
-  name: L2LEAF_INBAND_MGMT
-  tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

@@ -167,6 +167,8 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 172.23.254.1
   mtu: 1500
+  metadata:
+    tenant: L2LS_OSPF
 vlan_internal_order:
   allocation: ascending
   range:
@@ -183,7 +185,7 @@ vlans:
   tenant: L2LS_OSPF
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  tenant: L2LS_OSPF
 vrfs:
 - name: MGMT
   ip_routing: false

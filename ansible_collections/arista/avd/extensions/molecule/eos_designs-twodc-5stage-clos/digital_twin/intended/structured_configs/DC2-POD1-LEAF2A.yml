@@ -196,16 +196,6 @@ static_routes:
   prefix: 0.0.0.0/0
   next_hop: 192.168.1.254
 transceiver_qsfp_default_mode_4x10: true
-vlan_interfaces:
-- name: Vlan4092
-  description: Inband Management
-  shutdown: false
-  ip_address: 172.21.210.2/24
-  ip_virtual_router_addresses:
-  - 172.21.210.1
-  ip_attached_host_route_export:
-    enabled: true
-    distance: 19
 vlan_internal_order:
   allocation: ascending
   range:
@@ -214,7 +204,7 @@ vlan_internal_order:
 vlans:
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  tenant: inband_mgmt
 vrfs:
 - name: MGMT
   ip_routing: false

@@ -58,6 +58,7 @@ vlan_interfaces:
   ip_address: 172.23.254.4/24
   mtu: 1500
   metadata:
+    tenant: inband_mgmt
     type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
@@ -70,7 +71,7 @@ vlans:
   tenant: L2LS_ISIS
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  tenant: L2LS_ISIS
 vrfs:
 - name: MGMT
   ip_routing: false

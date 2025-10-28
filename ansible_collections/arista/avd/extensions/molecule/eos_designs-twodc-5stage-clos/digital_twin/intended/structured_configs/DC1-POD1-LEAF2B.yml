@@ -884,6 +884,17 @@ vlan_interfaces:
   shutdown: false
   ip_address: 172.20.110.3/31
   no_autostate: true
+- name: Vlan4085
+  description: L2LEAF_INBAND_MGMT
+  shutdown: false
+  ip_address: 172.21.110.3/24
+  ip_virtual_router_addresses:
+  - 172.21.110.1
+  ip_attached_host_route_export:
+    enabled: true
+    distance: 19
+  metadata:
+    tenant: inband_mgmt
 - name: Vlan110
   description: set from structured_config on svi (was Tenant_A_OP_Zone_1)
   shutdown: false
@@ -957,15 +968,6 @@ vlan_interfaces:
     tags:
     - opzone
     - web
-- name: Vlan4085
-  description: L2LEAF_INBAND_MGMT
-  shutdown: false
-  ip_address: 172.21.110.3/24
-  ip_virtual_router_addresses:
-  - 172.21.110.1
-  ip_attached_host_route_export:
-    enabled: true
-    distance: 19
 vlan_internal_order:
   allocation: ascending
   range:
@@ -977,6 +979,9 @@ vlans:
   trunk_groups:
   - MLAG
   tenant: system
+- id: 4085
+  name: L2LEAF_INBAND_MGMT
+  tenant: inband_mgmt
 - id: 110
   name: Tenant_A_OP_Zone_1
   tenant: Tenant_A
@@ -1007,9 +1012,6 @@ vlans:
 - id: 2601
   name: l2vlan_with_no_vxlan
   tenant: Tenant_A
-- id: 4085
-  name: L2LEAF_INBAND_MGMT
-  tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

@@ -558,15 +558,6 @@ vlan_interfaces:
   ip_address_virtual: 10.1.220.1/24
   metadata:
     tenant: L2LS_BGP
-- name: Vlan3100
-  description: MLAG_L3_VRF_New_VRF
-  shutdown: false
-  vrf: New_VRF
-  ip_address: 192.168.254.1/31
-  mtu: 9214
-  metadata:
-    tenant: L2LS_BGP
-    type: underlay_peering
 - name: Vlan4092
   description: Inband Management
   shutdown: false
@@ -577,6 +568,17 @@ vlan_interfaces:
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+  metadata:
+    tenant: L2LS_BGP
+- name: Vlan3100
+  description: MLAG_L3_VRF_New_VRF
+  shutdown: false
+  vrf: New_VRF
+  ip_address: 192.168.254.1/31
+  mtu: 9214
+  metadata:
+    tenant: L2LS_BGP
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:
@@ -600,14 +602,14 @@ vlans:
 - id: 220
   name: SVI_220
   tenant: L2LS_BGP
+- id: 4092
+  name: INBAND_MGMT
+  tenant: L2LS_BGP
 - id: 3100
   name: MLAG_L3_VRF_New_VRF
   trunk_groups:
   - MLAG
   tenant: L2LS_BGP
-- id: 4092
-  name: INBAND_MGMT
-  tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false
