@@ -201,6 +201,7 @@ tenants:
             name: svi_profile_tests_110_description
             enabled: true
             ip_address_virtual: 10.1.10.1/24
+            do_not_check_ip_address: true
             structured_config:
               description: set from svi.structured_config
             nodes:
@@ -221,6 +222,7 @@ tenants:
             name: svi_profile_tests_111_description
             enabled: true
             ip_address_virtual: 10.1.11.1/24
+            do_not_check_ip_address: true
             structured_config:
               description: set from svi.structured_config
             profile: struct_config_child_profile_1
@@ -233,6 +235,7 @@ tenants:
           - id: 112
             name: svi_profile_tests_112_description
             enabled: true
+            do_not_check_ip_address: true
             ip_address_virtual: 10.1.12.1/24
             structured_config:
               description: set from svi.structured_config
@@ -243,6 +246,7 @@ tenants:
           - id: 113
             name: svi_profile_tests_113_description
             enabled: true
+            do_not_check_ip_address: true
             ip_address_virtual: 10.1.13.1/24
             structured_config:
               description: set from svi.structured_config
@@ -253,6 +257,7 @@ tenants:
           - id: 114
             name: svi_profile_tests_114_description
             enabled: true
+            do_not_check_ip_address: true
             ip_address_virtual: 10.1.14.1/24
             profile: struct_config_child_profile_3
 
@@ -261,6 +266,7 @@ tenants:
           - id: 115
             name: svi_profile_tests_115_description
             enabled: true
+            do_not_check_ip_address: true
             ip_address_virtual: 10.1.15.1/24
             profile: struct_config_child_profile_4
 
@@ -269,9 +275,11 @@ tenants:
           - id: 120
             name: svi_profile_tests_120_description
             profile: struct_config_on_multiple_svis
+            do_not_check_ip_address: true
           - id: 121
             name: svi_profile_tests_121_description
             profile: struct_config_on_multiple_svis
+            do_not_check_ip_address: true
 
 #### ---- Test inheritance of svi igmp_snooping_enabled ----- ###
 # Tests logic for network services: ip igmp snooping
@@ -281,6 +289,7 @@ tenants:
           - id: 210
             name: igmp_snooping_enabled_210
             enabled: true
+            do_not_check_ip_address: true
             ip_address_virtual: 10.2.10.1/24
             igmp_snooping_enabled: true
             profile: igmp_child_profile_1
@@ -289,6 +298,7 @@ tenants:
           - id: 211
             name: igmp_snooping_enabled_211
             enabled: true
+            do_not_check_ip_address: true
             ip_address_virtual: 10.2.11.1/24
             profile: igmp_child_profile_2
 
@@ -296,6 +306,7 @@ tenants:
           - id: 212
             name: igmp_snooping_enabled_212
             enabled: true
+            do_not_check_ip_address: true
             ip_address_virtual: 10.2.12.1/24
             profile: igmp_child_profile_3
 
@@ -307,6 +318,7 @@ tenants:
           - id: 310
             name: vxlan_disabled_310
             enabled: true
+            do_not_check_ip_address: true
             ip_address_virtual: 10.3.10.1/24
             vxlan: false
             profile: vxlan_child_profile_1
@@ -315,6 +327,7 @@ tenants:
           - id: 311
             name: vxlan_disabled_311
             enabled: true
+            do_not_check_ip_address: true
             ip_address_virtual: 10.3.11.1/24
             profile: vxlan_child_profile_2
 
@@ -322,6 +335,7 @@ tenants:
           - id: 312
             name: vxlan_disabled_312
             enabled: true
+            do_not_check_ip_address: true
             ip_address_virtual: 10.3.12.1/24
             profile: vxlan_child_profile_3
 
@@ -373,6 +387,7 @@ tenants:
           - id: 510
             name: ospf_enabled_510
             enabled: true
+            do_not_check_ip_address: true
             ip_address_virtual: 10.5.10.1/24
             ospf:
               enabled: true
@@ -383,6 +398,7 @@ tenants:
           - id: 511
             name: ospf_enabled_511
             enabled: true
+            do_not_check_ip_address: true
             ip_address_virtual: 10.5.11.1/24
             profile: ospf_enabled_child_profile_2
 
@@ -391,5 +407,6 @@ tenants:
           - id: 512
             name: ospf_enabled_512
             enabled: true
+            do_not_check_ip_address: true
             ip_address_virtual: 10.5.12.1/24
             profile: ospf_enabled_child_profile_3
