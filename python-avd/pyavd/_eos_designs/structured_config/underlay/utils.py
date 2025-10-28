@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol, overload
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import Undefined, default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort, range_expand
 
