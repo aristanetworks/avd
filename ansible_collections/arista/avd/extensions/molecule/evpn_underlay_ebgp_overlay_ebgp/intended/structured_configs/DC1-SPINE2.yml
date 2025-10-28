@@ -20,9 +20,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.2/31
-  peer: DC1-LEAF1A
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF1A
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -31,9 +32,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.18/31
-  peer: DC1-LEAF2A
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF2A
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3
@@ -42,9 +44,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.34/31
-  peer: DC1-LEAF2B
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF2B
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4
@@ -53,9 +56,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.50/31
-  peer: DC1-SVC3A
-  peer_interface: Ethernet42
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-SVC3A
+    peer_interface: Ethernet42
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet5
@@ -64,9 +68,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.66/31
-  peer: DC1-SVC3B
-  peer_interface: Ethernet42
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-SVC3B
+    peer_interface: Ethernet42
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet6
@@ -75,9 +80,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.82/31
-  peer: DC1-BL1A
-  peer_interface: Ethernet42
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL1A
+    peer_interface: Ethernet42
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet7
@@ -86,9 +92,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.98/31
-  peer: DC1-BL1B
-  peer_interface: Ethernet46
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL1B
+    peer_interface: Ethernet46
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: DC1-SPINE2
@@ -170,12 +177,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
@@ -187,72 +196,86 @@ router_bgp:
   - ip_address: 172.31.255.3
     peer_group: UNDERLAY-PEERS
     remote_as: '65101'
-    peer: DC1-LEAF1A
+    metadata:
+      peer: DC1-LEAF1A
     description: DC1-LEAF1A_Ethernet2
   - ip_address: 172.31.255.19
     peer_group: UNDERLAY-PEERS
     remote_as: '65102'
-    peer: DC1-LEAF2A
+    metadata:
+      peer: DC1-LEAF2A
     description: DC1-LEAF2A_Ethernet2
   - ip_address: 172.31.255.35
     peer_group: UNDERLAY-PEERS
     remote_as: '65102'
-    peer: DC1-LEAF2B
+    metadata:
+      peer: DC1-LEAF2B
     description: DC1-LEAF2B_Ethernet2
   - ip_address: 172.31.255.51
     peer_group: UNDERLAY-PEERS
     remote_as: '65103'
-    peer: DC1-SVC3A
+    metadata:
+      peer: DC1-SVC3A
     description: DC1-SVC3A_Ethernet42
   - ip_address: 172.31.255.67
     peer_group: UNDERLAY-PEERS
     remote_as: '65103'
-    peer: DC1-SVC3B
+    metadata:
+      peer: DC1-SVC3B
     description: DC1-SVC3B_Ethernet42
   - ip_address: 172.31.255.83
     peer_group: UNDERLAY-PEERS
     remote_as: '65104'
-    peer: DC1-BL1A
+    metadata:
+      peer: DC1-BL1A
     description: DC1-BL1A_Ethernet42
   - ip_address: 172.31.255.99
     peer_group: UNDERLAY-PEERS
     remote_as: '65105'
-    peer: DC1-BL1B
+    metadata:
+      peer: DC1-BL1B
     description: DC1-BL1B_Ethernet46
   - ip_address: 192.168.255.14
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65104'
-    peer: DC1-BL1A
+    metadata:
+      peer: DC1-BL1A
     description: DC1-BL1A_Loopback0
   - ip_address: 192.168.255.15
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65105'
-    peer: DC1-BL1B
+    metadata:
+      peer: DC1-BL1B
     description: DC1-BL1B_Loopback0
   - ip_address: 192.168.255.9
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
-    peer: DC1-LEAF1A
+    metadata:
+      peer: DC1-LEAF1A
     description: DC1-LEAF1A_Loopback0
   - ip_address: 192.168.255.10
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65102'
-    peer: DC1-LEAF2A
+    metadata:
+      peer: DC1-LEAF2A
     description: DC1-LEAF2A_Loopback0
   - ip_address: 192.168.255.11
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65102'
-    peer: DC1-LEAF2B
+    metadata:
+      peer: DC1-LEAF2B
     description: DC1-LEAF2B_Loopback0
   - ip_address: 192.168.255.12
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65103'
-    peer: DC1-SVC3A
+    metadata:
+      peer: DC1-SVC3A
     description: DC1-SVC3A_Loopback0
   - ip_address: 192.168.255.13
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65103'
-    peer: DC1-SVC3B
+    metadata:
+      peer: DC1-SVC3B
     description: DC1-SVC3B_Loopback0
   redistribute:
     connected:

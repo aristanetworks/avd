@@ -29,12 +29,12 @@ class RouterBgpMixin(Protocol):
 
         peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
             name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-            type=af_type,
             password=self.shared_utils.get_bgp_password(self.inputs.bgp_peer_groups.ipv4_underlay_peers),
             bfd=self.inputs.bgp_peer_groups.ipv4_underlay_peers.bfd or None,
             maximum_routes=12000,
             send_community="all",
         )
+        peer_group.metadata.type = af_type
         if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
             self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)._deepmerge(
                 self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
@@ -76,7 +76,7 @@ class RouterBgpMixin(Protocol):
                     name=link.interface,
                     peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
                     remote_as=self.shared_utils.get_asn(link.peer_bgp_as),
-                    peer=link.peer,
+                    metadata=EosCliConfigGen.RouterBgp.NeighborInterfacesItem.Metadata(peer=link.peer),
                     description=f"{link.peer}_{link.peer_interface}",
                 )
 
@@ -103,10 +103,10 @@ class RouterBgpMixin(Protocol):
                     ip_address=cast("str", link.peer_ip_address),
                     peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
                     remote_as=self.shared_utils.get_asn(link.peer_bgp_as),
-                    peer=link.peer,
                     description=f"{link.peer}_{link.peer_interface}",
                     bfd=link.bfd,
                 )
+                neighbor.metadata.peer = link.peer
 
                 if self.inputs.shutdown_bgp_towards_undeployed_peers and not link.peer_is_deployed:
                     neighbor.shutdown = True

@@ -3518,9 +3518,11 @@
                 "enabled": false
             },
             "mtu": 1500,
-            "peer": "MY-own-peer",
-            "peer_interface": "Ethernet123",
-            "peer_type": "my_precious"
+            "metadata": {
+                "peer": "MY-own-peer",
+                "peer_interface": "Ethernet123",
+                "peer_type": "my_precious"
+            }
         }
     ],
     "override_ntp": null,

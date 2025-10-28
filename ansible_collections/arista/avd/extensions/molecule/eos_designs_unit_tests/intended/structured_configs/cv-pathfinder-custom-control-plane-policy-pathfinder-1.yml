@@ -85,21 +85,24 @@ ethernet_interfaces:
   description: Bouygues_Telecom_777
   shutdown: false
   ip_address: 10.7.7.7/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2
   description: Colt_10000
   shutdown: false
   ip_address: 172.16.0.1/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet3
   description: Another-ISP_999
   shutdown: false
   ip_address: 10.9.9.9/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:
@@ -406,9 +409,10 @@ port_channel_interfaces:
   description: Another-ISP_peer2_Port-Channel16
   shutdown: false
   ip_address: 10.7.7.5/31
-  peer: peer2
-  peer_interface: Port-Channel16
-  peer_type: l3_port_channel
+  metadata:
+    peer: peer2
+    peer_interface: Port-Channel16
+    peer_type: l3_port_channel
   switchport:
     enabled: false
 prefix_lists:
@@ -504,12 +508,14 @@ router_bgp:
     remote_as: '65000'
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     route_reflector_client: true
@@ -523,7 +529,8 @@ router_bgp:
     maximum_routes: 0
     ttl_maximum_hops: 1
   - name: WAN-RR-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     route_reflector_client: true
@@ -538,7 +545,8 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.144.1
     peer_group: WAN-RR-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder
+    metadata:
+      peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder_Dps1
   redistribute:
     connected:

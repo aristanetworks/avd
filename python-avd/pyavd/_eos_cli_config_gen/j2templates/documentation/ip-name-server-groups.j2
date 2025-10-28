@@ -26,7 +26,18 @@ DNS Domain: {{ group.dns_domain }}
 | {{ domain }} |
 {%             endfor %}
 {%         endif %}
-{%         if group.name_servers is arista.avd.defined %}
+{%         if group.vrfs is arista.avd.defined %}
+
+###### Name Server
+
+| VRF | IP Address | Priority |
+| --- | ---------- | -------- |
+{%             for vrf in group.vrfs | arista.avd.natural_sort("name") %}
+{%                 for server in vrf.name_servers | arista.avd.natural_sort("ip_address") %}
+| {{ vrf.name }} | {{ server.ip_address }} | {{ server.priority | arista.avd.default('-') }} |
+{%                 endfor %}
+{%             endfor %}
+{%         elif group.name_servers is arista.avd.defined %}
 
 ###### Name Server
 
