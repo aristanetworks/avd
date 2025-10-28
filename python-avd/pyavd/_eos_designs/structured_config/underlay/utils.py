@@ -90,10 +90,17 @@ class UtilsMixin(Protocol):
                 )
 
                 if self.shared_utils.node_config.link_tracking.downlinks.enabled and self.shared_utils.link_tracking_groups is not None:
-                    downlink.link_tracking_groups.extend(
-                        EosDesignsFacts.UplinksItem.LinkTrackingGroupsItem(name=lt_group.name, direction="downstream")
-                        for lt_group in self.shared_utils.link_tracking_groups
-                    )
+                    if (downlink_group := self.shared_utils.node_config.link_tracking.downlinks.group) is not None:
+                        if downlink_group not in self.shared_utils.link_tracking_groups:
+                            msg = (
+                                f"Link tracking group '{downlink_group}' referenced under node setting 'link_tracking.downlinks.group' "
+                                f"is not defined in 'link_tracking.groups' for device '{self.shared_utils.hostname}'."
+                            )
+                            raise AristaAvdError(msg)
+                        downlink.link_tracking_groups.append_new(name=downlink_group, direction="downstream")
+                    else:
+                        first_group = next(iter(self.shared_utils.link_tracking_groups.values()))
+                        downlink.link_tracking_groups.append_new(name=first_group.name, direction="downstream")
 
                 if peer_facts.inband_ztp:
                     # l2 inband ztp

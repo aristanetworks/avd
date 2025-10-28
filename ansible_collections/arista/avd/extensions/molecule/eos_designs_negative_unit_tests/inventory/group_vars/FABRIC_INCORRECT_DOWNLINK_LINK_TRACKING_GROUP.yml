@@ -1,0 +1,40 @@
+fabric_name: FABRIC_INCORRECT_DOWNLINK_LINK_TRACKING_GROUP
+default_node_types:
+  - match_hostnames:
+      - incorrect-downlink-group-l3leaf.*
+    node_type: l3leaf
+  - match_hostnames:
+      - incorrect-downlink-group-l2leaf.*
+    node_type: l2leaf
+
+l3leaf:
+  defaults:
+    uplink_ipv4_pool: 172.31.254.0/30
+    loopback_ipv4_pool: 172.31.253.0/24
+    vtep_loopback_ipv4_pool: 172.31.252.0/24
+  nodes:
+    - name: incorrect-downlink-group-l3leaf1
+      id: 4
+      mgmt_ip: 192.168.200.108/24
+      mac_address: '0c:1d:c0:1d:62:01'
+      bgp_as: 65103
+      link_tracking:
+        enabled: true
+        downlinks:
+          enabled: true
+          group: DOWNLINK_GROUP1
+l2leaf:
+  defaults:
+    platform: vEOS-LAB
+    uplink_switches: [incorrect-downlink-group-l3leaf1]
+    uplink_interfaces: [Ethernet1]
+  nodes:
+    - name: incorrect-downlink-group-l2leaf1
+      id: 9
+      mgmt_ip: 192.168.200.113/24
+      mac_address: '0c:1d:c0:1d:62:01'
+      uplink_switch_interfaces: [Ethernet7]
+
+expected_error_message: >-
+  Link tracking group 'DOWNLINK_GROUP1' referenced under node setting 'link_tracking.downlinks.group' is
+  not defined in 'link_tracking.groups' for device 'incorrect-downlink-group-l3leaf1'.

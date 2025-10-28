@@ -23793,7 +23793,7 @@ class EosDesigns(EosDesignsRootModel):
                         class Downlinks(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                             enabled: bool
                             """
                             Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
@@ -23801,10 +23801,15 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `False`
                             """
+                            group: str | None
+                            """
+                            Link Tracking Group Name.
+                            Group name should be any one of the groups defined under "groups".
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                                     """
                                     Downlinks.
 
@@ -23815,6 +23820,9 @@ class EosDesigns(EosDesignsRootModel):
                                         enabled:
                                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
                                            Tracking Group(s).
+                                        group:
+                                           Link Tracking Group Name.
+                                           Group name should be any one of the groups defined under "groups".
 
                                     """
 
@@ -28758,7 +28766,7 @@ class EosDesigns(EosDesignsRootModel):
                             class Downlinks(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                                 enabled: bool
                                 """
                                 Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
@@ -28766,10 +28774,15 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Default value: `False`
                                 """
+                                group: str | None
+                                """
+                                Link Tracking Group Name.
+                                Group name should be any one of the groups defined under "groups".
+                                """
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                                         """
                                         Downlinks.
 
@@ -28780,6 +28793,9 @@ class EosDesigns(EosDesignsRootModel):
                                             enabled:
                                                Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
                                                Tracking Group(s).
+                                            group:
+                                               Link Tracking Group Name.
+                                               Group name should be any one of the groups defined under "groups".
 
                                         """
 
@@ -33686,7 +33702,7 @@ class EosDesigns(EosDesignsRootModel):
                         class Downlinks(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                             enabled: bool
                             """
                             Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
@@ -33694,10 +33710,15 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `False`
                             """
+                            group: str | None
+                            """
+                            Link Tracking Group Name.
+                            Group name should be any one of the groups defined under "groups".
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                                     """
                                     Downlinks.
 
@@ -33708,6 +33729,9 @@ class EosDesigns(EosDesignsRootModel):
                                         enabled:
                                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
                                            Tracking Group(s).
+                                        group:
+                                           Link Tracking Group Name.
+                                           Group name should be any one of the groups defined under "groups".
 
                                     """
 
@@ -38677,7 +38701,7 @@ class EosDesigns(EosDesignsRootModel):
                         class Downlinks(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                             enabled: bool
                             """
                             Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
@@ -38685,10 +38709,15 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `False`
                             """
+                            group: str | None
+                            """
+                            Link Tracking Group Name.
+                            Group name should be any one of the groups defined under "groups".
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                                     """
                                     Downlinks.
 
@@ -38699,6 +38728,9 @@ class EosDesigns(EosDesignsRootModel):
                                         enabled:
                                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
                                            Tracking Group(s).
+                                        group:
+                                           Link Tracking Group Name.
+                                           Group name should be any one of the groups defined under "groups".
 
                                     """
 
@@ -55718,7 +55750,7 @@ class EosDesigns(EosDesignsRootModel):
                         class Downlinks(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                             enabled: bool
                             """
                             Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
@@ -55726,10 +55758,15 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `False`
                             """
+                            group: str | None
+                            """
+                            Link Tracking Group Name.
+                            Group name should be any one of the groups defined under "groups".
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                                     """
                                     Downlinks.
 
@@ -55740,6 +55777,9 @@ class EosDesigns(EosDesignsRootModel):
                                         enabled:
                                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
                                            Tracking Group(s).
+                                        group:
+                                           Link Tracking Group Name.
+                                           Group name should be any one of the groups defined under "groups".
 
                                     """
 
@@ -60683,7 +60723,7 @@ class EosDesigns(EosDesignsRootModel):
                             class Downlinks(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                                 enabled: bool
                                 """
                                 Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
@@ -60691,10 +60731,15 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Default value: `False`
                                 """
+                                group: str | None
+                                """
+                                Link Tracking Group Name.
+                                Group name should be any one of the groups defined under "groups".
+                                """
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                                         """
                                         Downlinks.
 
@@ -60705,6 +60750,9 @@ class EosDesigns(EosDesignsRootModel):
                                             enabled:
                                                Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
                                                Tracking Group(s).
+                                            group:
+                                               Link Tracking Group Name.
+                                               Group name should be any one of the groups defined under "groups".
 
                                         """
 
@@ -65611,7 +65659,7 @@ class EosDesigns(EosDesignsRootModel):
                         class Downlinks(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                             enabled: bool
                             """
                             Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
@@ -65619,10 +65667,15 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `False`
                             """
+                            group: str | None
+                            """
+                            Link Tracking Group Name.
+                            Group name should be any one of the groups defined under "groups".
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                                     """
                                     Downlinks.
 
@@ -65633,6 +65686,9 @@ class EosDesigns(EosDesignsRootModel):
                                         enabled:
                                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
                                            Tracking Group(s).
+                                        group:
+                                           Link Tracking Group Name.
+                                           Group name should be any one of the groups defined under "groups".
 
                                     """
 
@@ -70602,7 +70658,7 @@ class EosDesigns(EosDesignsRootModel):
                         class Downlinks(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                             enabled: bool
                             """
                             Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
@@ -70610,10 +70666,15 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `False`
                             """
+                            group: str | None
+                            """
+                            Link Tracking Group Name.
+                            Group name should be any one of the groups defined under "groups".
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
                                     """
                                     Downlinks.
 
@@ -70624,6 +70685,9 @@ class EosDesigns(EosDesignsRootModel):
                                         enabled:
                                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
                                            Tracking Group(s).
+                                        group:
+                                           Link Tracking Group Name.
+                                           Group name should be any one of the groups defined under "groups".
 
                                     """
 

@@ -9910,6 +9910,13 @@ $defs:
                     description: Add all underlay downlinks of the switch as the downstream
                       interfaces of the configured Link Tracking Group(s).
                     default: false
+                  group:
+                    type: str
+                    description: 'Link Tracking Group Name.
+
+                      Group name should be any one of the groups defined under "groups".
+
+                      '
               groups:
                 type: list
                 primary_key: name
