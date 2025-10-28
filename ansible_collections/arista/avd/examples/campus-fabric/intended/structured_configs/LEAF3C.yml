@@ -3365,7 +3365,8 @@ vlan_interfaces:
   shutdown: false
   ip_address: 10.10.10.11/24
   mtu: 1500
-  type: inband_mgmt
+  metadata:
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:

@@ -109,11 +109,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
@@ -124,47 +126,56 @@ router_bgp:
   - ip_address: 10.0.2.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65019'
-    peer: downlink-pools-l3leaf2
+    metadata:
+      peer: downlink-pools-l3leaf2
     description: downlink-pools-l3leaf2_Ethernet1
   - ip_address: 10.0.2.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65019'
-    peer: downlink-pools-l3leaf2
+    metadata:
+      peer: downlink-pools-l3leaf2
     description: downlink-pools-l3leaf2_Ethernet2
   - ip_address: 10.0.4.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65029'
-    peer: downlink-pools-l3leaf3
+    metadata:
+      peer: downlink-pools-l3leaf3
     description: downlink-pools-l3leaf3_Ethernet2
   - ip_address: 10.0.4.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65039'
-    peer: downlink-pools-l3leaf4
+    metadata:
+      peer: downlink-pools-l3leaf4
     description: downlink-pools-l3leaf4_Ethernet2
   - ip_address: 10.0.4.5
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65029'
-    peer: downlink-pools-l3leaf3
+    metadata:
+      peer: downlink-pools-l3leaf3
     description: downlink-pools-l3leaf3_Ethernet4
   - ip_address: 10.0.4.7
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65039'
-    peer: downlink-pools-l3leaf4
+    metadata:
+      peer: downlink-pools-l3leaf4
     description: downlink-pools-l3leaf4_Ethernet4
   - ip_address: 192.168.1.20
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65019'
-    peer: downlink-pools-l3leaf2
+    metadata:
+      peer: downlink-pools-l3leaf2
     description: downlink-pools-l3leaf2_Loopback0
   - ip_address: 192.168.1.30
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65029'
-    peer: downlink-pools-l3leaf3
+    metadata:
+      peer: downlink-pools-l3leaf3
     description: downlink-pools-l3leaf3_Loopback0
   - ip_address: 192.168.1.40
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65039'
-    peer: downlink-pools-l3leaf4
+    metadata:
+      peer: downlink-pools-l3leaf4
     description: downlink-pools-l3leaf4_Loopback0
   redistribute:
     connected:

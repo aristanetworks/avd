@@ -74,7 +74,8 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address: 2a00:106::9/64
   mtu: 1500
-  type: inband_mgmt
+  metadata:
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:

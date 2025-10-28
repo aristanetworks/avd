@@ -131,7 +131,8 @@ vlan_interfaces:
   description: L2LEAF_INBAND_MGMT
   shutdown: false
   ip_address: 172.21.110.5/24
-  type: inband_mgmt
+  metadata:
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:

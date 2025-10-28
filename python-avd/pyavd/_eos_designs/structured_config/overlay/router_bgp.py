@@ -80,7 +80,7 @@ class RouterBgpMixin(Protocol):
 
         return EosCliConfigGen.RouterBgp.PeerGroupsItem(
             name=peer_group.name,
-            type=pg_type,
+            metadata=EosCliConfigGen.RouterBgp.PeerGroupsItem.Metadata(type=pg_type),
             update_source=update_source,
             bfd=peer_group.bfd,
             password=self.shared_utils.get_bgp_password(peer_group),
@@ -430,11 +430,11 @@ class RouterBgpMixin(Protocol):
         neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
             ip_address=ip_address,
             peer_group=peer_group,
-            peer=name,
             description=AvdStringFormatter().format(
                 self.inputs.overlay_bgp_peer_description, **strip_empties_from_dict({"peer": name, "peer_interface": overlay_peering_interface})
             ),
         )
+        neighbor.metadata.peer = name
 
         if remote_as is not None:
             neighbor.remote_as = self.shared_utils.get_asn(remote_as)
@@ -525,7 +525,7 @@ class RouterBgpMixin(Protocol):
             if self.shared_utils.wan_ha:
                 neighbors.append_new(
                     ip_address=self.shared_utils._wan_ha_peer_vtep_ip,
-                    peer=self.shared_utils.wan_ha_peer,
+                    metadata=EosCliConfigGen.RouterBgp.NeighborsItem.Metadata(peer=self.shared_utils.wan_ha_peer),
                     description=self.shared_utils.wan_ha_peer,
                     remote_as=self.shared_utils.formatted_bgp_as,
                     update_source="Dps1",
