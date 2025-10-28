@@ -6824,6 +6824,7 @@ keys:
         sequence_numbers:
           type: list
           required: true
+          min_length: 1
           primary_key: sequence
           items:
             type: dict
@@ -7236,9 +7237,11 @@ keys:
             keys:
               begin:
                 type: int
+                required: true
                 description: Minimum LACP port-ID range.
               end:
                 type: int
+                required: true
                 description: Maximum LACP port-ID range.
       rate_limit:
         type: dict
@@ -7947,6 +7950,8 @@ keys:
           type: bool
         entries:
           type: list
+          required: true
+          min_length: 1
           items:
             type: dict
             keys:
@@ -7956,6 +7961,7 @@ keys:
                 - str
               action:
                 type: str
+                required: true
   mac_address_table:
     type: dict
     keys:

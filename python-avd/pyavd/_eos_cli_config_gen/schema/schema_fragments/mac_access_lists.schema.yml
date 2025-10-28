@@ -20,6 +20,8 @@ keys:
           type: bool
         entries:
           type: list
+          required: true
+          min_length: 1
           items:
             type: dict
             keys:
@@ -29,3 +31,4 @@ keys:
                 - str
               action:
                 type: str
+                required: true
