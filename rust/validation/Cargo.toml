@@ -11,7 +11,7 @@ pyo3-build-config = { workspace = true }
 avdschema = { path = "../avdschema" }
 derive_more = { workspace = true, features = ["display", "from"] }
 ordermap = { workspace = true, features = ["serde"] }
-pyo3 = { workspace = true, features = ["abi3", "extension-module"], optional = true }
+pyo3 = { workspace = true, features = ["abi3-py310"], optional = true }
 regex = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true, features = [
