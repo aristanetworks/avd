@@ -682,7 +682,8 @@ jobs:
         # This is needed for arm machines since they don't ship with 2024 edition.
       - name: Upgrade rust and cargo
         run: rustup update stable
-        # This is needed because we have pyo3 tests.
+        # This is needed because we have pyo3 tests and our minimum python version is 3.10.
+        # On some test containers (looking at you windows-latest) the included Python is 3.9.
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
