@@ -78,11 +78,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
@@ -93,22 +95,26 @@ router_bgp:
   - ip_address: 172.31.255.21
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: CUSTOM-TEMPLATES-L3LEAF1A
+    metadata:
+      peer: CUSTOM-TEMPLATES-L3LEAF1A
     description: CUSTOM-TEMPLATES-L3LEAF1A_Ethernet1
   - ip_address: 172.31.255.23
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: CUSTOM-TEMPLATES-L3LEAF1B
+    metadata:
+      peer: CUSTOM-TEMPLATES-L3LEAF1B
     description: CUSTOM-TEMPLATES-L3LEAF1B_Ethernet1
   - ip_address: 192.168.255.21
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
-    peer: CUSTOM-TEMPLATES-L3LEAF1A
+    metadata:
+      peer: CUSTOM-TEMPLATES-L3LEAF1A
     description: CUSTOM-TEMPLATES-L3LEAF1A_Loopback0
   - ip_address: 192.168.255.22
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
-    peer: CUSTOM-TEMPLATES-L3LEAF1B
+    metadata:
+      peer: CUSTOM-TEMPLATES-L3LEAF1B
     description: CUSTOM-TEMPLATES-L3LEAF1B_Loopback0
   redistribute:
     connected:

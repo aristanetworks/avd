@@ -141,12 +141,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 5
@@ -157,29 +159,34 @@ router_bgp:
   - ip_address: 172.17.120.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65120'
-    peer: DC1-POD2-SPINE1
+    metadata:
+      peer: DC1-POD2-SPINE1
     description: DC1-POD2-SPINE1_Ethernet3
   - ip_address: 172.17.120.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65120'
-    peer: DC1-POD2-SPINE2
+    metadata:
+      peer: DC1-POD2-SPINE2
     description: DC1-POD2-SPINE2_Ethernet3
   - ip_address: 172.17.10.13
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
-    peer: DC1-RS2
+    metadata:
+      peer: DC1-RS2
     description: DC1-RS2_Ethernet3
     bfd: true
   - ip_address: 172.16.120.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65120'
-    peer: DC1-POD2-SPINE1
+    metadata:
+      peer: DC1-POD2-SPINE1
     description: DC1-POD2-SPINE1_Loopback0
     route_map_out: RM-EVPN-FILTER-AS65120
   - ip_address: 172.16.120.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65120'
-    peer: DC1-POD2-SPINE2
+    metadata:
+      peer: DC1-POD2-SPINE2
     description: DC1-POD2-SPINE2_Loopback0
     route_map_out: RM-EVPN-FILTER-AS65120
   redistribute:
@@ -188,7 +195,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 110
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 172.16.120.3:99110
     route_targets:
       both:
@@ -204,7 +212,8 @@ router_bgp:
 
       '
   - id: 111
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 172.16.120.3:50111
     route_targets:
       both:
@@ -220,7 +229,8 @@ router_bgp:
 
       '
   - id: 112
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 172.16.120.3:20112
     route_targets:
       both:
@@ -236,7 +246,8 @@ router_bgp:
 
       '
   - id: 2500
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 172.16.120.3:2500
     route_targets:
       both:
@@ -244,7 +255,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 2600
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 172.16.120.3:32600
     route_targets:
       both:
@@ -364,25 +376,28 @@ vlan_interfaces:
   shutdown: false
   vrf: Common_VRF
   ip_address_virtual: 10.1.10.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan111
   description: Tenant_A_OP_Zone_2
   shutdown: true
   vrf: Common_VRF
   ip_address_virtual: 10.1.11.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan112
   description: Tenant_A_OP_Zone_3
   shutdown: false
   vrf: Common_VRF
   ip_address_virtual: 10.1.12.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
@@ -395,36 +410,40 @@ vlan_interfaces:
   shutdown: false
   vrf: Common_VRF
   ip_address_virtual: 10.10.13.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan1102
   description: test_svi
   shutdown: false
   vrf: vrf_with_loopbacks_dc1_pod1_only
   ip_address_virtual: 10.102.100.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    - web
 - name: Vlan1100
   description: test_svi
   shutdown: false
   vrf: vrf_with_loopbacks_from_overlapping_pool
   ip_address_virtual: 10.100.100.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    - web
 - name: Vlan1101
   description: test_svi
   shutdown: false
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address_virtual: 10.101.100.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    - web
 vlan_internal_order:
   allocation: ascending
   range:

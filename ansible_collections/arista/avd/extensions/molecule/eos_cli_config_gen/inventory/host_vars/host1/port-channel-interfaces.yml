@@ -357,6 +357,8 @@ port_channel_interfaces:
     description: IFL for TENANT02
     mtu: 1500
     ip_address: 10.1.2.3/31
+    ip_address_secondaries:
+      - 10.1.2.5/31
     vrf: C2
     encapsulation_dot1q:
       vlan: 102

@@ -131,7 +131,8 @@ vlan_interfaces:
   shutdown: false
   ip_address: 172.21.110.6/24
   mtu: 1500
-  type: inband_mgmt
+  metadata:
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:

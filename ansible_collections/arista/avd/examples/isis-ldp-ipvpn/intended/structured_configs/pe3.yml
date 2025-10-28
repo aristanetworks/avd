@@ -145,7 +145,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     remote_as: '65001'
     update_source: Loopback0
     bfd: true
@@ -155,11 +156,13 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.2.1
     peer_group: MPLS-OVERLAY-PEERS
-    peer: rr1
+    metadata:
+      peer: rr1
     description: rr1_Loopback0
   - ip_address: 10.255.2.2
     peer_group: MPLS-OVERLAY-PEERS
-    peer: rr2
+    metadata:
+      peer: rr2
     description: rr2_Loopback0
   address_family_ipv4:
     peer_groups:
