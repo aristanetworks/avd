@@ -204,12 +204,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: UNDERLAY_PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: af6F4WLl4wUrWRZcwbEwkQ==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -220,57 +222,68 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1_Loopback0
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2_Loopback0
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3_Loopback0
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4_Loopback0
   - ip_address: 10.23.23.2
     peer_group: UNDERLAY_PEERS
     remote_as: '64900'
-    peer: outside-r1
+    metadata:
+      peer: outside-r1
     description: outside-r1
   neighbor_interfaces:
   - name: Ethernet1
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     peer_group: UNDERLAY_PEERS
     description: DC1-SPINE1_Ethernet6
   - name: Ethernet2
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     peer_group: UNDERLAY_PEERS
     description: DC1-SPINE2_Ethernet6
   - name: Ethernet3
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     peer_group: UNDERLAY_PEERS
     description: DC1-SPINE3_Ethernet6
   - name: Ethernet4
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     peer_group: UNDERLAY_PEERS
     description: DC1-SPINE4_Ethernet6
   - name: Ethernet9
     remote_as: '65105'
-    peer: DC1-BL1B
+    metadata:
+      peer: DC1-BL1B
     peer_group: UNDERLAY_PEERS
     description: DC1-BL1B
   - name: Ethernet10
     remote_as: '65105'
-    peer: DC1-BL1B
+    metadata:
+      peer: DC1-BL1B
     peer_group: UNDERLAY_PEERS
     description: DC1-BL1B
   redistribute:
@@ -433,25 +446,28 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_WAN_Zone
   ip_address_virtual: 10.1.40.1/24
-  tenant: Tenant_A
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - wan
 - name: Vlan250
   description: Tenant_B_WAN_Zone_1
   shutdown: false
   vrf: Tenant_B_WAN_Zone
   ip_address_virtual: 10.2.50.1/24
-  tenant: Tenant_B
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_B
+    tags:
+    - wan
 - name: Vlan350
   description: Tenant_C_WAN_Zone_1
   shutdown: false
   vrf: Tenant_C_WAN_Zone
   ip_address_virtual: 10.3.50.1/24
-  tenant: Tenant_C
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_C
+    tags:
+    - wan
 vlan_internal_order:
   allocation: ascending
   range:

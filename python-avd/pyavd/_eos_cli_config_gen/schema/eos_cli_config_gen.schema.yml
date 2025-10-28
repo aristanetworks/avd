@@ -6199,10 +6199,43 @@ keys:
       keys:
         name:
           type: str
+        vrfs:
+          type: list
+          primary_key: name
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                convert_types:
+                - int
+                description: VRF name. Use "default" for the default VRF.
+              name_servers:
+                type: list
+                required: true
+                primary_key: ip_address
+                min_length: 1
+                items:
+                  type: dict
+                  keys:
+                    ip_address:
+                      type: str
+                      description: IPv4 or IPv6 address for DNS server.
+                    priority:
+                      description: Priority value (lower is first).
+                      type: int
+                      convert_types:
+                      - str
+                      min: 0
+                      max: 15
         name_servers:
           type: list
           primary_key: ip_address
           allow_duplicate_primary_key: true
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
           items:
             type: dict
             keys:
@@ -14779,9 +14812,12 @@ keys:
             name:
               type: str
               description: Peer-group name.
-            type:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            metadata:
+              type: dict
+              keys:
+                type:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
             remote_as:
               type: str
               description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -15078,9 +15114,12 @@ keys:
                 prepend_own_disabled:
                   type: bool
                   description: Disable prepending own AS number to AS path.
-            peer:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            metadata:
+              type: dict
+              keys:
+                peer:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
             description:
               type: str
             route_reflector_client:
@@ -15329,9 +15368,12 @@ keys:
 
                 For asdot notation in YAML inputs, the value must be put in quotes,
                 to prevent it from being interpreted as a float number.'
-            peer:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            metadata:
+              type: dict
+              keys:
+                peer:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
             peer_group:
               type: str
               default: Peer-group name
@@ -15603,12 +15645,15 @@ keys:
             name:
               type: str
               description: VLAN aware bundle name.
-            tenant:
-              type: str
-              description: Key only used for documentation or validation purposes.
-            description:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            metadata:
+              type: dict
+              keys:
+                tenant:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
+                description:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
             rd:
               description: Route distinguisher.
               type: str
@@ -15701,9 +15746,12 @@ keys:
               type: int
               convert_types:
               - str
-            tenant:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            metadata:
+              type: dict
+              keys:
+                tenant:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
             rd:
               description: Route distinguisher.
               type: str
@@ -24395,17 +24443,20 @@ keys:
         pvlan_mapping:
           type: str
           description: List of VLANs as string.
-        tenant:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        tags:
-          type: list
-          items:
-            type: str
-          description: Key only used for documentation or validation purposes.
-        type:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          keys:
+            tenant:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            tags:
+              type: list
+              items:
+                type: str
+              description: Key only used for documentation or validation purposes.
+            type:
+              type: str
+              description: Key only used for documentation or validation purposes.
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the VLAN interface in

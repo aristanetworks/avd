@@ -127,11 +127,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 5
@@ -141,17 +143,20 @@ router_bgp:
   - ip_address: 172.17.210.4
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65210'
-    peer: DC2-POD1-SPINE1
+    metadata:
+      peer: DC2-POD1-SPINE1
     description: DC2-POD1-SPINE1_Ethernet4
   - ip_address: 172.17.210.6
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65210'
-    peer: DC2-POD1-SPINE2
+    metadata:
+      peer: DC2-POD1-SPINE2
     description: DC2-POD1-SPINE2_Ethernet4
   - ip_address: 172.16.210.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65211'
-    peer: DC2-POD1-LEAF1A
+    metadata:
+      peer: DC2-POD1-LEAF1A
     description: DC2-POD1-LEAF1A_Loopback0
   redistribute:
     attached_host:

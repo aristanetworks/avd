@@ -97,7 +97,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     remote_as: '65000'
     update_source: Loopback0
     route_reflector_client: true
@@ -106,7 +107,8 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   - name: RR-OVERLAY-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     remote_as: '65000'
     update_source: Loopback0
     bfd: true
@@ -116,23 +118,28 @@ router_bgp:
   neighbors:
   - ip_address: 100.70.0.5
     peer_group: MPLS-OVERLAY-PEERS
-    peer: SITE1-LER1
+    metadata:
+      peer: SITE1-LER1
     description: SITE1-LER1_Loopback0
   - ip_address: 100.70.0.6
     peer_group: MPLS-OVERLAY-PEERS
-    peer: SITE1-LER2
+    metadata:
+      peer: SITE1-LER2
     description: SITE1-LER2_Loopback0
   - ip_address: 100.70.0.7
     peer_group: MPLS-OVERLAY-PEERS
-    peer: SITE2-LER1
+    metadata:
+      peer: SITE2-LER1
     description: SITE2-LER1_Loopback0
   - ip_address: 100.70.0.8
     peer_group: RR-OVERLAY-PEERS
-    peer: SITE1-RR1
+    metadata:
+      peer: SITE1-RR1
     description: SITE1-RR1_Loopback0
   - ip_address: 100.70.0.12
     peer_group: RR-OVERLAY-PEERS
-    peer: SITE3-RR1
+    metadata:
+      peer: SITE3-RR1
     description: SITE3-RR1_Loopback0
   address_family_evpn:
     neighbor_default:

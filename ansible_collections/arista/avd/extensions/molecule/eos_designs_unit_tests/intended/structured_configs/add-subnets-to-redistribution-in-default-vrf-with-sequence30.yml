@@ -245,7 +245,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65100'
     update_source: Dps1
     bfd: true
@@ -257,7 +258,8 @@ router_bgp:
     maximum_routes: 0
     ttl_maximum_hops: 1
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   redistribute:
     connected:

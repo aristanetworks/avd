@@ -167,7 +167,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     remote_as: '65000'
     update_source: Loopback0
     bfd: true
@@ -177,11 +178,13 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.255.1
     peer_group: OVERLAY-PEERS
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1_Loopback0
   - ip_address: 192.168.255.4
     peer_group: OVERLAY-PEERS
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4_Loopback0
   address_family_evpn:
     peer_groups:

@@ -121,7 +121,7 @@ repos:
         types: [python]
         additional_dependencies:
           - 'anta==1.6.0'
-          - 'ansible-core>=2.16.0,<2.19.0'
+          - 'ansible-core>=2.16.0,<2.20.0'
           - 'deepmerge>=1.1.0'
           - 'PyYAML>=6.0.0'
           - 'pydantic>=2.3.0'
@@ -198,6 +198,7 @@ repos:
           --markdown "docs/plugins/Modules_and_action_plugins/"
         language: python
         types: [python]
+        # Issue with Ansible 2.19 and the doc extractor.
         additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.16.0,<2.19.0']
         files: ansible_collections/arista/avd/plugins/modules/
 
