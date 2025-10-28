@@ -491,6 +491,18 @@ vlan_interfaces:
   ip_address: 10.255.1.68/31
   mtu: 1500
   no_autostate: true
+- name: Vlan4085
+  description: Inband Management
+  shutdown: false
+  ip_address: 172.21.110.2/24
+  ip_virtual_router_addresses:
+  - 172.21.110.1
+  mtu: 1500
+  ip_attached_host_route_export:
+    enabled: true
+    distance: 19
+  metadata:
+    tenant: inband_mgmt
 - name: Vlan11
   description: VRF10_VLAN11
   shutdown: false
@@ -537,16 +549,6 @@ vlan_interfaces:
   metadata:
     tenant: TENANT1
     type: underlay_peering
-- name: Vlan4085
-  description: Inband Management
-  shutdown: false
-  ip_address: 172.21.110.2/24
-  ip_virtual_router_addresses:
-  - 172.21.110.1
-  mtu: 1500
-  ip_attached_host_route_export:
-    enabled: true
-    distance: 19
 vlan_internal_order:
   allocation: ascending
   range:
@@ -563,6 +565,9 @@ vlans:
   trunk_groups:
   - MLAG
   tenant: system
+- id: 4085
+  name: INBAND_MGMT
+  tenant: inband_mgmt
 - id: 11
   name: VRF10_VLAN11
   tenant: TENANT1
@@ -591,9 +596,6 @@ vlans:
 - id: 3402
   name: L2_VLAN3402
   tenant: TENANT1
-- id: 4085
-  name: INBAND_MGMT
-  tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

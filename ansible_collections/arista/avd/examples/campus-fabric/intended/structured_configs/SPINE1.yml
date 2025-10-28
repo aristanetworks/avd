@@ -314,6 +314,8 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 10.10.10.1
   mtu: 1500
+  metadata:
+    tenant: MY_FABRIC
 vlan_internal_order:
   allocation: ascending
   range:
@@ -359,7 +361,7 @@ vlans:
   tenant: MY_FABRIC
 - id: 10
   name: INBAND_MGMT
-  tenant: system
+  tenant: MY_FABRIC
 vrfs:
 - name: MGMT
   ip_routing: false
