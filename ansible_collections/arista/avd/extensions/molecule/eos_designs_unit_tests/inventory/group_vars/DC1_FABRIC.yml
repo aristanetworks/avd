@@ -146,9 +146,9 @@ l3leaf:
                 recovery_delay: 301
               - name: l2leaf-server02
                 recovery_delay: 300
+            # test without downlinks.group, this will take the first link tracking group from above list
             downlinks:
               enabled: true
-              # group: l2leaf-server02
           # Commented out for automatic downlink allocation on spine
           # uplink_switch_interfaces: [ Ethernet2, Ethernet2, Ethernet2, Ethernet2 ]
         - name: DC1-LEAF2B

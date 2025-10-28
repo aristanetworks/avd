@@ -22,6 +22,7 @@ l2leaf:
       mgmt_ip: 192.168.201.201/24
       uplink_switch_interfaces: [ Ethernet2 ]
       link_tracking:
+        # testing downlinks with group defined, this will take the defined link tracking group
         downlinks:
           enabled: true
           group: l2leaf-server01

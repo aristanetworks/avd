@@ -15,7 +15,8 @@ l3leaf:
     - group: MH_L3LEAF1
       link_tracking:
         enabled: true
-        # test downlinks.enabled: true without link_tracking.groups and downlinks.group
+        # test 'downlinks.enabled: true' without link_tracking.groups and downlinks.group
+        # this will take the default link tracking group i.e. LT_GROUP1
         downlinks:
           enabled: true
       lacp_port_id_range:
