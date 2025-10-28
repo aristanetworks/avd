@@ -395,7 +395,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
     maximum_routes: 12000
@@ -405,7 +406,8 @@ router_bgp:
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65101'
     update_source: Dps1
     bfd: true
@@ -421,24 +423,29 @@ router_bgp:
   - ip_address: 10.255.255.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: dc1-leaf1a
+    metadata:
+      peer: dc1-leaf1a
     description: dc1-leaf1a_Ethernet6
   - ip_address: 10.255.255.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: dc1-leaf1b
+    metadata:
+      peer: dc1-leaf1b
     description: dc1-leaf1b_Ethernet6
   - ip_address: 10.255.255.10
     peer_group: WAN-OVERLAY-PEERS
-    peer: dc1-leaf1a
+    metadata:
+      peer: dc1-leaf1a
     description: dc1-leaf1a_Dps1
   - ip_address: 10.255.255.20
     peer_group: WAN-OVERLAY-PEERS
-    peer: dc1-leaf1b
+    metadata:
+      peer: dc1-leaf1b
     description: dc1-leaf1b_Dps1
   - ip_address: 10.255.1.2
     remote_as: '65101'
-    peer: dc1-wan2
+    metadata:
+      peer: dc1-wan2
     description: dc1-wan2
     route_reflector_client: true
     update_source: Dps1

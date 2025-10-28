@@ -17,7 +17,7 @@ from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AvdSwitchFactsDefaultDict, get_templar, write_file
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import ANSIBLE_ABOVE_2_19, ActionPluginVars, AvdSwitchFactsDefaultDict, get_templar, write_file
 
 PLUGIN_NAME = "arista.avd.eos_designs_structured_config"
 try:
@@ -61,29 +61,28 @@ class ActionModule(ActionBase):
         eos_designs_custom_templates = self._task.args.get("eos_designs_custom_templates", [])
         filename = str(self._task.args.get("dest", ""))
         file_mode = str(self._task.args.get("mode", "0o664"))
-        template_output = self._task.args.get("template_output", False)
+
+        # Only template output on ansible versions < 2.19.
+        template_output = bool(self._task.args.get("template_output", False)) and not ANSIBLE_ABOVE_2_19
+
         validation_mode = self._task.args.get("validation_mode")
         digital_twin = self._task.args.get("digital_twin", False)
 
-        avd_switch_facts = get(task_vars, "avd_switch_facts", required=True)
+        # Get updated templar instance to be passed along to our simplified "templater"
+        self.templar = get_templar(self, task_vars)
+
+        # Create the "Ansible Hostvars Manager"-like object which includes task, role and play vars,
+        # and take the HostVarsVars for this host.
+        # All variables will be templated on access and cached by Ansible's tooling.
+        host_hostvars = ActionPluginVars(self)[hostname]
+        # The dict() here will force templating of all variables at once, potentially triggering issues for
+        # missing variables in inline templates in Ansible 2.19.
+        host_hostvars = dict(host_hostvars)
+
+        avd_switch_facts = get(host_hostvars, "avd_switch_facts", required=True)
 
         # Initialise defaultdict that loads facts from json files on demand.
         all_facts = AvdSwitchFactsDefaultDict(avd_switch_facts)
-
-        # Read ansible variables and perform templating to support inline jinja2
-        for var in task_vars:
-            if str(var).startswith(("ansible", "molecule", "hostvars", "vars", "avd_switch_facts")):
-                continue
-            if self._templar.is_template(task_vars[var]):
-                # Var contains a jinja2 template.
-                try:
-                    task_vars[var] = self._templar.template(task_vars[var], fail_on_undefined=False)
-                except Exception as e:
-                    msg = f"Exception during templating of task_var '{var}'"
-                    raise AnsibleActionFail(msg) from e
-
-        # Get updated templar instance to be passed along to our simplified "templater"
-        self.templar = get_templar(self, task_vars)
 
         # Load schema tools for input schema
         input_schema_tools = AvdSchemaTools(
@@ -91,7 +90,6 @@ class ActionModule(ActionBase):
             ansible_display=display,
             schema_id="eos_designs",
             validation_mode=validation_mode,
-            plugin_name="arista.avd.eos_designs",
         )
 
         # Get Structured Config from modules in PyAVD using internal api so we can supply our own templar
@@ -99,7 +97,7 @@ class ActionModule(ActionBase):
             structured_config = get_structured_config(
                 hostname=hostname,
                 all_facts=all_facts,
-                hostvars=dict(task_vars),
+                hostvars=host_hostvars,
                 input_schema_tools=input_schema_tools,
                 result=result,
                 templar=self.templar,
@@ -119,7 +117,7 @@ class ActionModule(ActionBase):
         #  - output (containing structured_config at this point)
         #  - templated, converted and validated version of all other vars
         # Any var assignments will end up in output, so all other objects are protected.
-        template_vars = ChainMap(output, task_vars)
+        template_vars = ChainMap(output, host_hostvars)
 
         # eos_designs_custom_templates can contain a list of jinja templates to run after PyAVD
         if eos_designs_custom_templates:
@@ -129,7 +127,6 @@ class ActionModule(ActionBase):
                 ansible_display=display,
                 schema_id="eos_cli_config_gen",
                 validation_mode=validation_mode,
-                plugin_name="arista.avd.eos_cli_config_gen",
             )
 
             for template_item in eos_designs_custom_templates:

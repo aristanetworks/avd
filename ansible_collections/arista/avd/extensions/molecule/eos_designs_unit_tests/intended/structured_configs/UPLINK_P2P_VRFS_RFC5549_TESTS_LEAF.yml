@@ -67,13 +67,15 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   neighbor_interfaces:
   - name: Ethernet1
     remote_as: '65000'
-    peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
+    metadata:
+      peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
     peer_group: IPv4-UNDERLAY-PEERS
     description: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1_Ethernet3
   redistribute:

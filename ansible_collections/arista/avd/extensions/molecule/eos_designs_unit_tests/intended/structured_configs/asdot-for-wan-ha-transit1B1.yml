@@ -339,7 +339,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     allowas_in:
@@ -348,7 +349,8 @@ router_bgp:
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000.100'
     update_source: Dps1
     bfd: true
@@ -364,11 +366,13 @@ router_bgp:
   - ip_address: 172.17.0.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65199'
-    peer: asdot-for-wan-ha-leaf11
+    metadata:
+      peer: asdot-for-wan-ha-leaf11
     description: asdot-for-wan-ha-leaf11_Ethernet2
   - ip_address: 192.168.142.1
     remote_as: '65000.100'
-    peer: asdot-for-wan-ha-transit1A1
+    metadata:
+      peer: asdot-for-wan-ha-transit1A1
     description: asdot-for-wan-ha-transit1A1
     route_reflector_client: true
     update_source: Dps1
