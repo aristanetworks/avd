@@ -27,6 +27,7 @@ keys:
               server:
                 type: str
                 description: Hostname or IP address.
+                required: true
               vrf:
                 type: str
                 description: VRF name.

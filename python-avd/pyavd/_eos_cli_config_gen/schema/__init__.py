@@ -1080,14 +1080,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
 
             _fields: ClassVar[dict] = {"server": {"type": str}, "vrf": {"type": str}}
-            server: str | None
+            server: str
             """Hostname or IP address."""
             vrf: str | None
             """VRF name."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, server: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, server: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                     """
                     ServersItem.
 

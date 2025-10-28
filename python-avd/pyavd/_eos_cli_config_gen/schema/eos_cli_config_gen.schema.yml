@@ -426,6 +426,7 @@ keys:
               server:
                 type: str
                 description: Hostname or IP address.
+                required: true
               vrf:
                 type: str
                 description: VRF name.
@@ -1689,7 +1690,6 @@ keys:
           type: str
           description: VRF in which to configure the DHCP server, use `default` to
             indicate default VRF.
-          required: true
           convert_types:
           - int
         lease_time_ipv4:

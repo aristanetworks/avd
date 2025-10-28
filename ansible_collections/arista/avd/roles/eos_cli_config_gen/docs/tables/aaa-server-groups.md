@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "aaa_server_groups.[].name") | String | Required, Unique |  |  | Group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "aaa_server_groups.[].type") | String | Required |  | Valid Values:<br>- <code>tacacs+</code><br>- <code>radius</code><br>- <code>ldap</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "aaa_server_groups.[].servers") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;server</samp>](## "aaa_server_groups.[].servers.[].server") | String |  |  |  | Hostname or IP address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;server</samp>](## "aaa_server_groups.[].servers.[].server") | String | Required |  |  | Hostname or IP address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "aaa_server_groups.[].servers.[].vrf") | String |  |  |  | VRF name. |
 
 === "YAML"
@@ -25,7 +25,7 @@
         servers:
 
             # Hostname or IP address.
-          - server: <str>
+          - server: <str; required>
 
             # VRF name.
             vrf: <str>
