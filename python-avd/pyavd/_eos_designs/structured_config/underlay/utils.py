@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol, overload
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError, AristaAvdInvalidInputsError
 from pyavd._utils import Undefined, default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -96,7 +96,7 @@ class UtilsMixin(Protocol):
                                 f"Link tracking group '{downlink_group}' referenced under node setting 'link_tracking.downlinks.group' "
                                 f"is not defined in 'link_tracking.groups' for device '{self.shared_utils.hostname}'."
                             )
-                            raise AristaAvdError(msg)
+                            raise AristaAvdInvalidInputsError(msg)
                         downlink.link_tracking_groups.append_new(name=downlink_group, direction="downstream")
                     else:
                         first_group = next(iter(self.shared_utils.link_tracking_groups.values()))
