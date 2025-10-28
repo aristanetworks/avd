@@ -205,12 +205,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: UNDERLAY_PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: af6F4WLl4wUrWRZcwbEwkQ==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -221,57 +223,68 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1_Loopback0
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2_Loopback0
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3_Loopback0
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4_Loopback0
   - ip_address: 10.23.23.6
     peer_group: UNDERLAY_PEERS
     remote_as: '64900'
-    peer: outside-r1
+    metadata:
+      peer: outside-r1
     description: outside-r1
   neighbor_interfaces:
   - name: Ethernet1
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     peer_group: UNDERLAY_PEERS
     description: DC1-SPINE1_Ethernet7
   - name: Ethernet2
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     peer_group: UNDERLAY_PEERS
     description: DC1-SPINE2_Ethernet7
   - name: Ethernet3
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     peer_group: UNDERLAY_PEERS
     description: DC1-SPINE3_Ethernet7
   - name: Ethernet4
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     peer_group: UNDERLAY_PEERS
     description: DC1-SPINE4_Ethernet7
   - name: Ethernet9
     remote_as: '65104'
-    peer: DC1-BL1A
+    metadata:
+      peer: DC1-BL1A
     peer_group: UNDERLAY_PEERS
     description: DC1-BL1A
   - name: Ethernet10
     remote_as: '65104'
-    peer: DC1-BL1A
+    metadata:
+      peer: DC1-BL1A
     peer_group: UNDERLAY_PEERS
     description: DC1-BL1A
   redistribute:

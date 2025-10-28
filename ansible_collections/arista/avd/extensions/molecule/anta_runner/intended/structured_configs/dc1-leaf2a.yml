@@ -229,7 +229,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65102'
     description: dc1-leaf2b
     next_hop_self: true
@@ -238,12 +239,14 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -251,7 +254,8 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   - name: EVPN-OVERLAY-CORE
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 15
@@ -260,37 +264,44 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.1.101
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: dc1-leaf2b
+    metadata:
+      peer: dc1-leaf2b
     description: dc1-leaf2b_Vlan4093
   - ip_address: 10.255.255.8
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine1
+    metadata:
+      peer: dc1-spine1
     description: dc1-spine1_Ethernet3
   - ip_address: 10.255.255.10
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine2
+    metadata:
+      peer: dc1-spine2
     description: dc1-spine2_Ethernet3
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine1
+    metadata:
+      peer: dc1-spine1
     description: dc1-spine1_Loopback0
   - ip_address: 10.255.0.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine2
+    metadata:
+      peer: dc1-spine2
     description: dc1-spine2_Loopback0
   - ip_address: 10.255.128.15
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65202'
-    peer: dc2-leaf2a
+    metadata:
+      peer: dc2-leaf2a
     description: dc2-leaf2a_Loopback0
   - ip_address: 192.168.100.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65202'
-    peer: dc2-leaf2a
+    metadata:
+      peer: dc2-leaf2a
     description: dc2-leaf2a
   redistribute:
     attached_host:
@@ -300,7 +311,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 11
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.5:10011
     rd_evpn_domain:
       domain: remote
@@ -314,7 +326,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 12
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.5:10012
     rd_evpn_domain:
       domain: remote
@@ -328,7 +341,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 21
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.5:10021
     rd_evpn_domain:
       domain: remote
@@ -342,7 +356,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 22
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.5:10022
     rd_evpn_domain:
       domain: remote
@@ -356,7 +371,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 3401
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.5:13401
     rd_evpn_domain:
       domain: remote
@@ -370,7 +386,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 3402
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.5:13402
     rd_evpn_domain:
       domain: remote

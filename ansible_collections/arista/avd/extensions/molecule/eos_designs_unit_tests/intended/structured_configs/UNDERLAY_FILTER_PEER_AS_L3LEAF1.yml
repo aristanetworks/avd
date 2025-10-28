@@ -64,20 +64,23 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   neighbors:
   - ip_address: 192.168.0.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: UNDERLAY_FILTER_PEER_AS_SPINE1
+    metadata:
+      peer: UNDERLAY_FILTER_PEER_AS_SPINE1
     description: UNDERLAY_FILTER_PEER_AS_SPINE1_Ethernet1
     route_map_out: RM-BGP-AS65000-OUT
   - ip_address: 192.168.0.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: UNDERLAY_FILTER_PEER_AS_SPINE2
+    metadata:
+      peer: UNDERLAY_FILTER_PEER_AS_SPINE2
     description: UNDERLAY_FILTER_PEER_AS_SPINE2_Ethernet1
     route_map_out: RM-BGP-AS65000-OUT
   redistribute:

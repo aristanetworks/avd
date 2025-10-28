@@ -522,7 +522,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65112.100'
     description: DC1-POD1-LEAF2B
     next_hop_self: true
@@ -531,12 +532,14 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 5
@@ -544,7 +547,8 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   - name: EVPN-OVERLAY-CORE
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 15
@@ -553,60 +557,71 @@ router_bgp:
   neighbors:
   - ip_address: 172.20.110.3
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: DC1-POD1-LEAF2B
+    metadata:
+      peer: DC1-POD1-LEAF2B
     description: DC1-POD1-LEAF2B_Vlan4094
   - ip_address: 172.17.110.8
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
-    peer: DC1-POD1-SPINE1
+    metadata:
+      peer: DC1-POD1-SPINE1
     description: DC1-POD1-SPINE1_Ethernet4
   - ip_address: 172.17.110.10
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
-    peer: DC1-POD1-SPINE2
+    metadata:
+      peer: DC1-POD1-SPINE2
     description: DC1-POD1-SPINE2_Ethernet4
   - ip_address: 172.17.110.12
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
-    peer: DC1-POD1-SPINE1
+    metadata:
+      peer: DC1-POD1-SPINE1
     description: DC1-POD1-SPINE1_Ethernet7
   - ip_address: 172.17.110.14
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
-    peer: DC1-POD1-SPINE2
+    metadata:
+      peer: DC1-POD1-SPINE2
     description: DC1-POD1-SPINE2_Ethernet7
   - ip_address: 172.17.110.13
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65111.100'
-    peer: DC1-POD1-LEAF1B
+    metadata:
+      peer: DC1-POD1-LEAF1B
     description: DC1-POD1-LEAF1B_Ethernet1
   - ip_address: 172.16.110.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65111.100'
-    peer: DC1-POD1-LEAF1A
+    metadata:
+      peer: DC1-POD1-LEAF1A
     description: DC1-POD1-LEAF1A_Loopback0
     route_map_out: RM-EVPN-FILTER-AS65111.100
   - ip_address: 172.16.110.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65110.100'
-    peer: DC1-POD1-SPINE1
+    metadata:
+      peer: DC1-POD1-SPINE1
     description: DC1-POD1-SPINE1_Loopback0
     route_map_out: RM-EVPN-FILTER-AS65110.100
   - ip_address: 172.16.10.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
-    peer: DC1-RS1
+    metadata:
+      peer: DC1-RS1
     description: DC1-RS1_Loopback0
     route_map_out: RM-EVPN-FILTER-AS65101
   - ip_address: 172.16.120.3
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65121'
-    peer: DC1-POD2-LEAF1A
+    metadata:
+      peer: DC1-POD2-LEAF1A
     description: DC1-POD2-LEAF1A_Loopback0
   - ip_address: 100.100.100.201
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65211'
-    peer: DC2-POD1-LEAF1A
+    metadata:
+      peer: DC2-POD1-LEAF1A
     description: DC2-POD1-LEAF1A
   redistribute:
     attached_host:
@@ -615,7 +630,8 @@ router_bgp:
       enabled: true
   vlans:
   - id: 110
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 172.16.110.4:99110
     route_targets:
       both:
@@ -631,7 +647,8 @@ router_bgp:
 
       '
   - id: 111
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 172.16.110.4:50111
     route_targets:
       both:
@@ -647,7 +664,8 @@ router_bgp:
 
       '
   - id: 112
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 172.16.110.4:20112
     route_targets:
       both:
@@ -663,7 +681,8 @@ router_bgp:
 
       '
   - id: 2500
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 172.16.110.4:2500
     route_targets:
       both:
@@ -671,7 +690,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 2600
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 172.16.110.4:32600
     route_targets:
       both:

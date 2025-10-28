@@ -147,7 +147,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     bfd: true
@@ -162,11 +163,13 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.131.1
     peer_group: WAN-OVERLAY-PEERS
-    peer: autovpn-rr1
+    metadata:
+      peer: autovpn-rr1
     description: autovpn-rr1_Dps1
   - ip_address: 192.168.131.2
     peer_group: WAN-OVERLAY-PEERS
-    peer: autovpn-rr2
+    metadata:
+      peer: autovpn-rr2
     description: autovpn-rr2_Dps1
   redistribute:
     connected:

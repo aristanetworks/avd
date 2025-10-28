@@ -223,7 +223,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65109'
     description: MLAG_PEER_DC1-CL1A
     next_hop_self: true
@@ -232,12 +233,14 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -247,47 +250,56 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.251.18
     peer_group: MLAG-PEERS
-    peer: DC1-CL1A
+    metadata:
+      peer: DC1-CL1A
     description: DC1-CL1A
   - ip_address: 172.31.255.64
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet27
   - ip_address: 172.31.255.66
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet27
   - ip_address: 172.31.255.68
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet27
   - ip_address: 172.31.255.70
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet27
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4
   redistribute:
     connected:
@@ -335,7 +347,8 @@ router_bgp:
     - learned
     vlan: 120-121
   - name: Tenant_A_NFS
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.19:20161
     route_targets:
       both:
@@ -344,7 +357,8 @@ router_bgp:
     - learned
     vlan: '161'
   - name: Tenant_A_VMOTION
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.19:20160
     route_targets:
       both:

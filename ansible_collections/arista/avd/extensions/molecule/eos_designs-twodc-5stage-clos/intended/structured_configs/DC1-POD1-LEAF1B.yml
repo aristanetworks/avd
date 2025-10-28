@@ -188,7 +188,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     send_community: all
     maximum_routes: 12000
@@ -196,12 +197,14 @@ router_bgp:
   - ip_address: 172.17.110.12
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
-    peer: DC1.POD1.LEAF2A
+    metadata:
+      peer: DC1.POD1.LEAF2A
     description: DC1.POD1.LEAF2A_Ethernet13
   - ip_address: 172.17.110.14
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
-    peer: DC1-POD1-LEAF2B
+    metadata:
+      peer: DC1-POD1-LEAF2B
     description: DC1-POD1-LEAF2B_Ethernet13
   redistribute:
     connected:

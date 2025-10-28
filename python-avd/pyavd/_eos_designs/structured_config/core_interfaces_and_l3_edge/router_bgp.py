@@ -40,7 +40,7 @@ class RouterBgpMixin(Protocol):
                 self.structured_config.router_bgp.neighbor_interfaces.append_new(
                     name=p2p_link_data["interface"],
                     remote_as=self.shared_utils.get_asn(p2p_link_data["peer_bgp_as"]),
-                    peer=p2p_link_data["peer"],
+                    metadata=EosCliConfigGen.RouterBgp.NeighborInterfacesItem.Metadata(peer=p2p_link_data["peer"]),
                     description=p2p_link_data["peer"],
                     peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
                 )
@@ -54,7 +54,7 @@ class RouterBgpMixin(Protocol):
             self.structured_config.router_bgp.neighbors.append_new(
                 ip_address=get_ip_from_ip_prefix(p2p_link_data["peer_ip"]),
                 remote_as=self.shared_utils.get_asn(p2p_link_data["peer_bgp_as"]),
-                peer=p2p_link_data["peer"],
+                metadata=EosCliConfigGen.RouterBgp.NeighborsItem.Metadata(peer=p2p_link_data["peer"]),
                 description=p2p_link_data["peer"],
                 peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name if p2p_link.include_in_underlay_protocol else Undefined,
                 bfd=p2p_link.bfd,

@@ -143,7 +143,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65102'
     description: UNDERLAY-MULTICAST-L3LEAF2B
     next_hop_self: true
@@ -151,11 +152,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -164,27 +167,32 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.252.5
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: UNDERLAY-MULTICAST-L3LEAF2B
+    metadata:
+      peer: UNDERLAY-MULTICAST-L3LEAF2B
     description: UNDERLAY-MULTICAST-L3LEAF2B_Vlan4094
   - ip_address: 172.31.255.8
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    peer: UNDERLAY-MULTICAST-SPINE1
+    metadata:
+      peer: UNDERLAY-MULTICAST-SPINE1
     description: UNDERLAY-MULTICAST-SPINE1_Ethernet3
   - ip_address: 172.31.255.10
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    peer: UNDERLAY-MULTICAST-SPINE2
+    metadata:
+      peer: UNDERLAY-MULTICAST-SPINE2
     description: UNDERLAY-MULTICAST-SPINE2_Ethernet3
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: UNDERLAY-MULTICAST-SPINE1
+    metadata:
+      peer: UNDERLAY-MULTICAST-SPINE1
     description: UNDERLAY-MULTICAST-SPINE1_Loopback0
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: UNDERLAY-MULTICAST-SPINE2
+    metadata:
+      peer: UNDERLAY-MULTICAST-SPINE2
     description: UNDERLAY-MULTICAST-SPINE2_Loopback0
   redistribute:
     connected:

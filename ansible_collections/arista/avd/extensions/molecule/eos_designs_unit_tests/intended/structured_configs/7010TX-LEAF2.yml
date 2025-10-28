@@ -97,7 +97,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '923'
     description: 7010TX-LEAF1
     next_hop_self: true
@@ -105,11 +106,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -118,7 +121,8 @@ router_bgp:
   neighbors:
   - ip_address: 10.10.224.4
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: 7010TX-LEAF1
+    metadata:
+      peer: 7010TX-LEAF1
     description: 7010TX-LEAF1_Vlan4093
   redistribute:
     connected:

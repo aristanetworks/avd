@@ -197,7 +197,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65001'
     description: HARDWARE_FEATURES_720XP
     next_hop_self: true
@@ -205,11 +206,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -218,33 +221,39 @@ router_bgp:
   neighbors:
   - ip_address: 10.10.40.5
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: HARDWARE_FEATURES_720XP
+    metadata:
+      peer: HARDWARE_FEATURES_720XP
     description: HARDWARE_FEATURES_720XP_Vlan4093
   - ip_address: 10.10.50.4
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    peer: HARDWARE_FEATURES_VEOS_LAB
+    metadata:
+      peer: HARDWARE_FEATURES_VEOS_LAB
     description: HARDWARE_FEATURES_VEOS_LAB_Ethernet2
   - ip_address: 10.10.50.9
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    peer: HARDWARE_FEATURES_7280R
+    metadata:
+      peer: HARDWARE_FEATURES_7280R
     description: HARDWARE_FEATURES_7280R_Ethernet1
   - ip_address: 10.10.30.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: HARDWARE_FEATURES_VEOS_LAB
+    metadata:
+      peer: HARDWARE_FEATURES_VEOS_LAB
     description: HARDWARE_FEATURES_VEOS_LAB
   - ip_address: 10.10.30.40
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+    metadata:
+      peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
     description: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
   - ip_address: 10.10.60.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     local_as: '65100'
-    peer: HARDWARE_FEATURES_720XP
+    metadata:
+      peer: HARDWARE_FEATURES_720XP
     description: HARDWARE_FEATURES_720XP
   redistribute:
     connected:

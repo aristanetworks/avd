@@ -277,7 +277,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65105'
     description: flow-tracking-tests-leaf4
     next_hop_self: true
@@ -285,11 +286,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -298,27 +301,32 @@ router_bgp:
   neighbors:
   - ip_address: 10.254.1.105
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: flow-tracking-tests-leaf4
+    metadata:
+      peer: flow-tracking-tests-leaf4
     description: flow-tracking-tests-leaf4_Vlan4093
   - ip_address: 10.254.2.16
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
-    peer: flow-tracking-tests-spine1
+    metadata:
+      peer: flow-tracking-tests-spine1
     description: flow-tracking-tests-spine1_Ethernet5
   - ip_address: 10.254.2.18
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
-    peer: flow-tracking-tests-spine2
+    metadata:
+      peer: flow-tracking-tests-spine2
     description: flow-tracking-tests-spine2_Ethernet6
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65200'
-    peer: flow-tracking-tests-spine1
+    metadata:
+      peer: flow-tracking-tests-spine1
     description: flow-tracking-tests-spine1_Loopback0
   - ip_address: 10.255.0.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65200'
-    peer: flow-tracking-tests-spine2
+    metadata:
+      peer: flow-tracking-tests-spine2
     description: flow-tracking-tests-spine2_Loopback0
   redistribute:
     attached_host:
@@ -328,7 +336,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 11
-    tenant: FLOW_TRACKING
+    metadata:
+      tenant: FLOW_TRACKING
     rd: 10.254.1.5:10011
     route_targets:
       both:
