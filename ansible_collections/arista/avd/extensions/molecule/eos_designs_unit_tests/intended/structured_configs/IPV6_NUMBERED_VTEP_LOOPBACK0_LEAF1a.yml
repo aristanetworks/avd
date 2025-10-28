@@ -125,7 +125,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65101'
     description: IPV6_NUMBERED_VTEP_LOOPBACK0_LEAF1b
     next_hop_self: true
@@ -133,11 +134,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv6
+    metadata:
+      type: ipv6
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -146,17 +149,20 @@ router_bgp:
   neighbors:
   - ip_address: 2001:db8:4::2
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: IPV6_NUMBERED_VTEP_LOOPBACK0_LEAF1b
+    metadata:
+      peer: IPV6_NUMBERED_VTEP_LOOPBACK0_LEAF1b
     description: IPV6_NUMBERED_VTEP_LOOPBACK0_LEAF1b_Vlan4093
   - ip_address: 2001:db8:2::1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
-    peer: IPV6_NUMBERED_VTEP_LOOPBACK0_SPINE
+    metadata:
+      peer: IPV6_NUMBERED_VTEP_LOOPBACK0_SPINE
     description: IPV6_NUMBERED_VTEP_LOOPBACK0_SPINE_Ethernet1
   - ip_address: 2001:db8:0:a::1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
-    peer: IPV6_NUMBERED_VTEP_LOOPBACK0_SPINE
+    metadata:
+      peer: IPV6_NUMBERED_VTEP_LOOPBACK0_SPINE
     description: IPV6_NUMBERED_VTEP_LOOPBACK0_SPINE_Loopback0
   redistribute:
     connected:
@@ -164,7 +170,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 11
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.1.1:10011
     route_targets:
       both:
@@ -172,7 +179,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 12
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.1.1:10012
     route_targets:
       both:
@@ -242,21 +250,24 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.11.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan12
   description: VRF10_VLAN12
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan3009
   description: MLAG_L3_VRF_VRF10
   shutdown: false
   vrf: VRF10
   ipv6_address: 2001:db8:4::1/64
   mtu: 1500
-  tenant: TENANT1
-  type: underlay_peering
+  metadata:
+    tenant: TENANT1
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:
