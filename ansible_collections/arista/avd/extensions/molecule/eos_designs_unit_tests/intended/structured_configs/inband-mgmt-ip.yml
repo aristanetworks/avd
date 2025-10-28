@@ -72,6 +72,7 @@ vlan_interfaces:
   ip_address: 192.168.103.22/24
   mtu: 1500
   metadata:
+    tenant: inband_mgmt
     type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
@@ -81,8 +82,9 @@ vlan_internal_order:
 vlans:
 - id: 103
   name: MYVLANNAME
-  tenant: system
+  tenant: INBAND_MGMT_TESTS
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: INBANDMGMT
+  tenant: INBAND_MGMT_TESTS

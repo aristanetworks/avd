@@ -379,6 +379,25 @@ vlan_interfaces:
   ip_address: 100.64.0.5/31
   mtu: 9214
   no_autostate: true
+- name: Vlan104
+  description: Inband Management
+  shutdown: false
+  ip_address: 192.168.104.3/24
+  ip_virtual_router_addresses:
+  - 192.168.104.1
+  ipv6_enable: true
+  ipv6_address: 2a00:104::3/64
+  ipv6_virtual_router_addresses:
+  - 2a00:104::1
+  mtu: 1500
+  ip_attached_host_route_export:
+    enabled: true
+    distance: 19
+  ipv6_attached_host_route_export:
+    enabled: true
+    distance: 19
+  metadata:
+    tenant: inband_mgmt
 - name: Vlan105
   description: Inband_management_vlan_ipv6
   shutdown: true
@@ -401,23 +420,6 @@ vlan_interfaces:
   metadata:
     tenant: INBAND_MGMT_TESTS
     type: underlay_peering
-- name: Vlan104
-  description: Inband Management
-  shutdown: false
-  ip_address: 192.168.104.3/24
-  ip_virtual_router_addresses:
-  - 192.168.104.1
-  ipv6_enable: true
-  ipv6_address: 2a00:104::3/64
-  ipv6_virtual_router_addresses:
-  - 2a00:104::1
-  mtu: 1500
-  ip_attached_host_route_export:
-    enabled: true
-    distance: 19
-  ipv6_attached_host_route_export:
-    enabled: true
-    distance: 19
 vlan_internal_order:
   allocation: ascending
   range:
@@ -434,6 +436,9 @@ vlans:
   trunk_groups:
   - MLAG
   tenant: system
+- id: 104
+  name: INBAND_MGMT
+  tenant: inband_mgmt
 - id: 105
   name: Inband_management_vlan_ipv6
   tenant: INBAND_MGMT_TESTS
@@ -442,9 +447,6 @@ vlans:
   trunk_groups:
   - MLAG
   tenant: INBAND_MGMT_TESTS
-- id: 104
-  name: INBAND_MGMT
-  tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

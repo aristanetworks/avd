@@ -20207,6 +20207,8 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
+                "ip_attached_host_route_export": {"type": EosCliConfigGen.VlanInterfacesItem.IpAttachedHostRouteExport},
+                "ipv6_attached_host_route_export": {"type": EosCliConfigGen.VlanInterfacesItem.Ipv6AttachedHostRouteExport},
                 "ip_helpers": {"type": IpHelpers},
                 "static_routes": {"type": StaticRoutes},
                 "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -20306,6 +20308,8 @@ class EosDesigns(EosDesignsRootModel):
             The access-list must be defined
             under `ipv4_acls` and supports substitution of the field "interface_ip".
             """
+            ip_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.IpAttachedHostRouteExport
+            ipv6_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.Ipv6AttachedHostRouteExport
             ip_helpers: IpHelpers
             """
             IP helper for DHCP relay.
@@ -20450,6 +20454,8 @@ class EosDesigns(EosDesignsRootModel):
                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                    ip_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.IpAttachedHostRouteExport | UndefinedType = Undefined,
+                    ipv6_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.Ipv6AttachedHostRouteExport | UndefinedType = Undefined,
                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
                     ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -20532,6 +20538,8 @@ class EosDesigns(EosDesignsRootModel):
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports substitution of the field "interface_ip".
+                        ip_attached_host_route_export: ip_attached_host_route_export
+                        ipv6_attached_host_route_export: ipv6_attached_host_route_export
                         ip_helpers:
                            IP helper for DHCP relay.
 
@@ -21188,6 +21196,8 @@ class EosDesigns(EosDesignsRootModel):
             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
             "ipv4_acl_in": {"type": str},
             "ipv4_acl_out": {"type": str},
+            "ip_attached_host_route_export": {"type": EosCliConfigGen.VlanInterfacesItem.IpAttachedHostRouteExport},
+            "ipv6_attached_host_route_export": {"type": EosCliConfigGen.VlanInterfacesItem.Ipv6AttachedHostRouteExport},
             "ip_helpers": {"type": IpHelpers},
             "static_routes": {"type": StaticRoutes},
             "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -21303,6 +21313,8 @@ class EosDesigns(EosDesignsRootModel):
         The access-list must be defined
         under `ipv4_acls` and supports substitution of the field "interface_ip".
         """
+        ip_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.IpAttachedHostRouteExport
+        ipv6_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.Ipv6AttachedHostRouteExport
         ip_helpers: IpHelpers
         """
         IP helper for DHCP relay.
@@ -21449,6 +21461,8 @@ class EosDesigns(EosDesignsRootModel):
                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                ip_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.IpAttachedHostRouteExport | UndefinedType = Undefined,
+                ipv6_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.Ipv6AttachedHostRouteExport | UndefinedType = Undefined,
                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                 static_routes: StaticRoutes | UndefinedType = Undefined,
                 ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -21543,6 +21557,8 @@ class EosDesigns(EosDesignsRootModel):
                        Name of the IPv4 Access-list to be assigned in the egress direction.
                        The access-list must be defined
                        under `ipv4_acls` and supports substitution of the field "interface_ip".
+                    ip_attached_host_route_export: ip_attached_host_route_export
+                    ipv6_attached_host_route_export: ipv6_attached_host_route_export
                     ip_helpers:
                        IP helper for DHCP relay.
 
@@ -49441,6 +49457,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
+                                "ip_attached_host_route_export": {"type": EosCliConfigGen.VlanInterfacesItem.IpAttachedHostRouteExport},
+                                "ipv6_attached_host_route_export": {"type": EosCliConfigGen.VlanInterfacesItem.Ipv6AttachedHostRouteExport},
                                 "ip_helpers": {"type": IpHelpers},
                                 "static_routes": {"type": StaticRoutes},
                                 "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -49550,6 +49568,8 @@ class EosDesigns(EosDesignsRootModel):
                             The access-list must be defined
                             under `ipv4_acls` and supports substitution of the field "interface_ip".
                             """
+                            ip_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.IpAttachedHostRouteExport
+                            ipv6_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.Ipv6AttachedHostRouteExport
                             ip_helpers: IpHelpers
                             """
                             IP helper for DHCP relay.
@@ -49695,6 +49715,8 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                    ip_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.IpAttachedHostRouteExport | UndefinedType = Undefined,
+                                    ipv6_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.Ipv6AttachedHostRouteExport | UndefinedType = Undefined,
                                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
                                     ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -49783,6 +49805,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                        ip_attached_host_route_export: ip_attached_host_route_export
+                                        ipv6_attached_host_route_export: ipv6_attached_host_route_export
                                         ip_helpers:
                                            IP helper for DHCP relay.
 
@@ -50451,6 +50475,8 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ip_attached_host_route_export": {"type": EosCliConfigGen.VlanInterfacesItem.IpAttachedHostRouteExport},
+                            "ipv6_attached_host_route_export": {"type": EosCliConfigGen.VlanInterfacesItem.Ipv6AttachedHostRouteExport},
                             "ip_helpers": {"type": IpHelpers},
                             "static_routes": {"type": StaticRoutes},
                             "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -50590,6 +50616,8 @@ class EosDesigns(EosDesignsRootModel):
                         The access-list must be defined
                         under `ipv4_acls` and supports substitution of the field "interface_ip".
                         """
+                        ip_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.IpAttachedHostRouteExport
+                        ipv6_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.Ipv6AttachedHostRouteExport
                         ip_helpers: IpHelpers
                         """
                         IP helper for DHCP relay.
@@ -50739,6 +50767,8 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ip_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.IpAttachedHostRouteExport | UndefinedType = Undefined,
+                                ipv6_attached_host_route_export: EosCliConfigGen.VlanInterfacesItem.Ipv6AttachedHostRouteExport | UndefinedType = Undefined,
                                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -50849,6 +50879,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                    ip_attached_host_route_export: ip_attached_host_route_export
+                                    ipv6_attached_host_route_export: ipv6_attached_host_route_export
                                     ip_helpers:
                                        IP helper for DHCP relay.
 

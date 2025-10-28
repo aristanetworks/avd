@@ -36,6 +36,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].nodes.[].ipv6_virtual_router_addresses.[]") | String |  |  |  | IPv6_address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "svi_profiles.[].nodes.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "svi_profiles.[].nodes.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_attached_host_route_export</samp>](## "svi_profiles.[].nodes.[].ip_attached_host_route_export") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].nodes.[].ip_attached_host_route_export.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distance</samp>](## "svi_profiles.[].nodes.[].ip_attached_host_route_export.distance") | Integer |  |  | Min: 1<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_attached_host_route_export</samp>](## "svi_profiles.[].nodes.[].ipv6_attached_host_route_export") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].nodes.[].ipv6_attached_host_route_export.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distance</samp>](## "svi_profiles.[].nodes.[].ipv6_attached_host_route_export.distance") | Integer |  |  | Min: 1<br>Max: 255 | Administrative distance for generated routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_length</samp>](## "svi_profiles.[].nodes.[].ipv6_attached_host_route_export.prefix_length") | Integer |  |  | Min: 0<br>Max: 128 | Prefix length for generated routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_helpers</samp>](## "svi_profiles.[].nodes.[].ip_helpers") | List, items: Dictionary |  |  |  | IP helper for DHCP relay. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_helper</samp>](## "svi_profiles.[].nodes.[].ip_helpers.[].ip_helper") | String | Required, Unique |  |  | IPv4 DHCP server IP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "svi_profiles.[].nodes.[].ip_helpers.[].source_interface") | String |  |  |  | Interface name to originate DHCP relay packets to DHCP server. |
@@ -71,7 +78,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "svi_profiles.[].nodes.[].bgp.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "svi_profiles.[].nodes.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the VLAN interface in the final EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "svi_profiles.[].nodes.[].structured_config") | Dictionary |  |  |  | Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "svi_profiles.[].nodes.[].evpn_l2_multi_domain") | Boolean |  |  |  | Explicitly extend SVI to remote EVPN domains.<br>Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.<br>Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "svi_profiles.[].nodes.[].evpn_l2_multi_domain") | Boolean |  |  |  | Explicitly extend SVI to remote EVPN domains.<br>Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.<br>Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "svi_profiles.[].name") | String |  |  |  | VLAN name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].enabled") | Boolean |  |  |  | Enable or disable interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "svi_profiles.[].description") | String |  |  |  | SVI description. By default set to VLAN name.<br> |
@@ -96,6 +103,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].ipv6_virtual_router_addresses.[]") | String |  |  |  | IPv6_address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "svi_profiles.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "svi_profiles.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_attached_host_route_export</samp>](## "svi_profiles.[].ip_attached_host_route_export") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].ip_attached_host_route_export.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distance</samp>](## "svi_profiles.[].ip_attached_host_route_export.distance") | Integer |  |  | Min: 1<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_attached_host_route_export</samp>](## "svi_profiles.[].ipv6_attached_host_route_export") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].ipv6_attached_host_route_export.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distance</samp>](## "svi_profiles.[].ipv6_attached_host_route_export.distance") | Integer |  |  | Min: 1<br>Max: 255 | Administrative distance for generated routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_length</samp>](## "svi_profiles.[].ipv6_attached_host_route_export.prefix_length") | Integer |  |  | Min: 0<br>Max: 128 | Prefix length for generated routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_helpers</samp>](## "svi_profiles.[].ip_helpers") | List, items: Dictionary |  |  |  | IP helper for DHCP relay. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_helper</samp>](## "svi_profiles.[].ip_helpers.[].ip_helper") | String | Required, Unique |  |  | IPv4 DHCP server IP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "svi_profiles.[].ip_helpers.[].source_interface") | String |  |  |  | Interface name to originate DHCP relay packets to DHCP server. |
@@ -131,7 +145,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "svi_profiles.[].bgp.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "svi_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the VLAN interface in the final EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "svi_profiles.[].structured_config") | Dictionary |  |  |  | Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "svi_profiles.[].evpn_l2_multi_domain") | Boolean |  |  |  | Explicitly extend SVI to remote EVPN domains.<br>Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.<br>Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "svi_profiles.[].evpn_l2_multi_domain") | Boolean |  |  |  | Explicitly extend SVI to remote EVPN domains.<br>Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.<br>Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`. |
 
 === "YAML"
 
@@ -240,6 +254,17 @@
             # Name of the IPv4 Access-list to be assigned in the egress direction.
             # The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
             ipv4_acl_out: <str>
+            ip_attached_host_route_export:
+              enabled: <bool; required>
+              distance: <int; 1-255>
+            ipv6_attached_host_route_export:
+              enabled: <bool; required>
+
+              # Administrative distance for generated routes.
+              distance: <int; 1-255>
+
+              # Prefix length for generated routes.
+              prefix_length: <int; 0-128>
 
             # IP helper for DHCP relay.
             ip_helpers:
@@ -418,6 +443,17 @@
         # Name of the IPv4 Access-list to be assigned in the egress direction.
         # The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
         ipv4_acl_out: <str>
+        ip_attached_host_route_export:
+          enabled: <bool; required>
+          distance: <int; 1-255>
+        ipv6_attached_host_route_export:
+          enabled: <bool; required>
+
+          # Administrative distance for generated routes.
+          distance: <int; 1-255>
+
+          # Prefix length for generated routes.
+          prefix_length: <int; 0-128>
 
         # IP helper for DHCP relay.
         ip_helpers:

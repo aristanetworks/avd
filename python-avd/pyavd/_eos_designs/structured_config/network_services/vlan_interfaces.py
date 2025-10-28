@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Protocol
+from typing import TYPE_CHECKING, Any, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
@@ -32,6 +32,7 @@ class VlanInterfacesMixin(Protocol):
         Consist of svis and mlag peering vlans from filtered tenants
         """
         if not (self.shared_utils.network_services_l2 and self.shared_utils.network_services_l3):
+            self._set_l2_device_inband_mgmt_svi()
             return
 
         for tenant in self.shared_utils.filtered_tenants:
@@ -45,6 +46,39 @@ class VlanInterfacesMixin(Protocol):
                     continue
 
                 self.structured_config.vlan_interfaces.append(self._get_vlan_interface_config_for_mlag_peering(vrf, tenant, vlan_id), ignore_fields=("tenant",))
+
+    def _set_l2_device_inband_mgmt_svi(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
+        """
+        On devices without l2 or l3 services, there may be the inband mgmt svi to configure.
+
+        For other devices the SVI is injected in the filtered tenants by AVD.
+        """
+        if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
+            _ = self.structured_config.vlan_interfaces.append_new(
+                name=cast("str", self.shared_utils.inband_mgmt_interface),
+                description=self.shared_utils.node_config.inband_mgmt_description,
+                shutdown=False,
+                mtu=self.shared_utils.inband_mgmt_mtu,
+                vrf=self.shared_utils.inband_mgmt_vrf,
+                ip_address=self.shared_utils.inband_mgmt_ip,
+                ipv6_enable=None if not self.shared_utils.configure_inband_mgmt_ipv6 else True,
+                ipv6_address=self.shared_utils.inband_mgmt_ipv6_address,
+                metadata=EosCliConfigGen.VlanInterfacesItem.Metadata(type="inband_mgmt", tenant="inband_mgmt"),
+            )
+            # TODO: this is not great we should do this someplace else
+            vlan = self.structured_config.vlans.obtain(self.shared_utils.node_config.inband_mgmt_vlan)
+            vlan.name = self.shared_utils.node_config.inband_mgmt_vlan_name
+            # The following raises duplicate (as expected) when name is set
+            # But name must be set on the SVIs for other nodes so we need to override scenario on these
+            # devices.
+            # It could be done in filtered tenants but this looks weird.
+            # - self.structured_config.vlans.append(
+            # -    EosCliConfigGen.VlansItem(
+            # -        id=self.shared_utils.node_config.inband_mgmt_vlan,
+            # -        name=self.shared_utils.node_config.inband_mgmt_vlan_name,
+            # -    ),
+            # -    ignore_fields=("tenant",),
+            # -)
 
     def _check_virtual_router_mac_address(self: AvdStructuredConfigNetworkServicesProtocol, variable: str) -> None:
         """Raise if virtual router mac address is required but missing, otherwise return None."""
@@ -72,6 +106,8 @@ class VlanInterfacesMixin(Protocol):
             ip_address_secondaries=EosCliConfigGen.VlanInterfacesItem.IpAddressSecondaries(svi.ip_address_secondaries),
             ipv6_address=svi.ipv6_address,
             ipv6_enable=svi.ipv6_enable,
+            ip_attached_host_route_export=svi.ip_attached_host_route_export,
+            ipv6_attached_host_route_export=svi.ipv6_attached_host_route_export,
             arp_gratuitous_accept=svi.arp_gratuitous_accept,
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,

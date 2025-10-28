@@ -235,6 +235,10 @@ prefix_lists:
     action: permit 10.0.255.0/24 eq 32
   - sequence: 20
     action: permit 10.0.254.0/24 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 100.64.1.8/31
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
@@ -249,6 +253,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 router_bfd:
   multihop:
     interval: 300
@@ -337,6 +349,8 @@ vlan_interfaces:
   ipv6_attached_host_route_export:
     enabled: true
     distance: 19
+  metadata:
+    tenant: inband_mgmt
 - name: Vlan107
   description: Inband Management
   shutdown: false
@@ -349,6 +363,17 @@ vlan_interfaces:
   ipv6_attached_host_route_export:
     enabled: true
     distance: 19
+  metadata:
+    tenant: inband_mgmt
+- name: Vlan3665
+  description: MLAG_L3_VRF_INBANDMGMT
+  shutdown: false
+  vrf: INBANDMGMT
+  ip_address: 100.64.1.9/31
+  mtu: 9214
+  metadata:
+    tenant: inband_mgmt
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:
@@ -367,14 +392,22 @@ vlans:
   tenant: system
 - id: 106
   name: INBAND_MGMT
-  tenant: system
+  tenant: inband_mgmt
 - id: 107
   name: INBAND_MGMT
-  tenant: system
+  tenant: inband_mgmt
+- id: 3665
+  name: MLAG_L3_VRF_INBANDMGMT
+  trunk_groups:
+  - MLAG
+  tenant: inband_mgmt
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: INBANDMGMT
+  ip_routing: true
+  ipv6_routing: true
+  tenant: inband_mgmt
 vxlan_interface:
   vxlan1:
     description: inband-mgmt-parent-ipv6-2_VTEP

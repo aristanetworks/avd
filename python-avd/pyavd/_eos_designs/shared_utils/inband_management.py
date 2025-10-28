@@ -156,13 +156,14 @@ class InbandManagementMixin(Protocol):
         return None
 
     @cached_property
-    def inband_management_parent_vlans(self: SharedUtilsProtocol) -> dict:
+    def inband_management_parent_vlans(self: SharedUtilsProtocol) -> dict[int, dict[str, str | None]]:
+        """List of SVIs to configure on this switch to be allow downlink switches management VLANs."""
         if not self.underlay_router:
             return {}
 
         svis = {}
-        subnets = []
-        ipv6_subnets = []
+        subnets: list[str] = []
+        ipv6_subnets: list[str] = []
         for peer in self.switch_facts.downlink_switches:
             peer_facts = self.get_peer_facts(peer)
             if (vlan := peer_facts.inband_mgmt_vlan) is None:
@@ -173,11 +174,11 @@ class InbandManagementMixin(Protocol):
             if vlan not in svis:
                 svis[vlan] = {"ipv4": None, "ipv6": None}
 
-            if subnet not in subnets:
+            if subnet is not None and subnet not in subnets:
                 subnets.append(subnet)
                 svis[vlan]["ipv4"] = subnet
 
-            if ipv6_subnet not in ipv6_subnets:
+            if ipv6_subnet is not None and ipv6_subnet not in ipv6_subnets:
                 ipv6_subnets.append(ipv6_subnet)
                 svis[vlan]["ipv6"] = ipv6_subnet
 

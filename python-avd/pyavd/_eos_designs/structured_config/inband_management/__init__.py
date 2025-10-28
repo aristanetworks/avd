@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from functools import cached_property
 from ipaddress import ip_network
-from typing import cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
@@ -13,45 +12,6 @@ from pyavd._errors import AristaAvdInvalidInputsError
 
 
 class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
-    @structured_config_contributor
-    def vlans(self) -> None:
-        if not self.shared_utils.inband_management_parent_vlans and not (
-            self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6
-        ):
-            return
-
-        if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
-            self.structured_config.vlans.append_new(
-                id=self.shared_utils.node_config.inband_mgmt_vlan, tenant="system", name=self.shared_utils.node_config.inband_mgmt_vlan_name
-            )
-            return
-        for svi in self.shared_utils.inband_management_parent_vlans:
-            self.structured_config.vlans.append_new(id=svi, tenant="system", name=self.shared_utils.node_config.inband_mgmt_vlan_name)
-
-    @structured_config_contributor
-    def vlan_interfaces(self) -> None:
-        """VLAN interfaces can be our own management interface and/or SVIs created on behalf of child switches using us as uplink_switch."""
-        if not self.shared_utils.inband_management_parent_vlans and not (
-            self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6
-        ):
-            return
-
-        if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
-            self.structured_config.vlan_interfaces.append_new(
-                name=cast("str", self.shared_utils.inband_mgmt_interface),
-                description=self.shared_utils.node_config.inband_mgmt_description,
-                shutdown=False,
-                mtu=self.shared_utils.inband_mgmt_mtu,
-                vrf=self.shared_utils.inband_mgmt_vrf,
-                ip_address=self.shared_utils.inband_mgmt_ip,
-                ipv6_enable=None if not self.shared_utils.configure_inband_mgmt_ipv6 else True,
-                ipv6_address=self.shared_utils.inband_mgmt_ipv6_address,
-                metadata=EosCliConfigGen.VlanInterfacesItem.Metadata(type="inband_mgmt"),
-            )
-            return
-        for vlan, subnet in self.shared_utils.inband_management_parent_vlans.items():
-            self.structured_config.vlan_interfaces.append(self.get_parent_svi_cfg(vlan, subnet["ipv4"], subnet["ipv6"]))
-
     @cached_property
     def _inband_mgmt_ipv6_parent(self) -> bool:
         if self.shared_utils.inband_management_parent_vlans:
@@ -85,15 +45,6 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
         self.structured_config.ipv6_static_routes.append_new(
             prefix="::/0", next_hop=self.shared_utils.inband_mgmt_ipv6_gateway, vrf=self.shared_utils.inband_mgmt_vrf
         )
-
-    @structured_config_contributor
-    def vrfs(self) -> None:
-        if self.shared_utils.inband_mgmt_vrf is None:
-            return
-
-        if not self.shared_utils.inband_management_parent_vlans and not self.shared_utils.configure_inband_mgmt:
-            return
-        self.structured_config.vrfs.append_new(name=self.shared_utils.inband_mgmt_vrf)
 
     @structured_config_contributor
     def ip_virtual_router_mac_address(self) -> None:

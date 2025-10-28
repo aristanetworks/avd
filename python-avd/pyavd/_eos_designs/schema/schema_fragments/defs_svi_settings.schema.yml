@@ -1,3 +1,4 @@
+---
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
@@ -108,6 +109,12 @@ $defs:
         type: str
         convert_types:
           - int
+      ip_attached_host_route_export:
+        type: dict
+        $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items/keys/ip_attached_host_route_export"
+      ipv6_attached_host_route_export:
+        type: dict
+        $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items/keys/ipv6_attached_host_route_export"
       ip_helpers:
         type: list
         primary_key: ip_helper
@@ -362,7 +369,7 @@ $defs:
         $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items"
       evpn_l2_multi_domain:
         type: bool
-        description: |
+        description: |-
           Explicitly extend SVI to remote EVPN domains.
           Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
           Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.

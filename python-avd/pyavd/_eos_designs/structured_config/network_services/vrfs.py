@@ -32,6 +32,7 @@ class VrfsMixin(Protocol):
         all Tenants deployed on this device.
         """
         if not self.shared_utils.network_services_l3:
+            self._set_l2_device_inband_mgmt_vrf()
             return
 
         for tenant in self.shared_utils.filtered_tenants:
@@ -44,8 +45,7 @@ class VrfsMixin(Protocol):
                 # MLAG IBGP Peering VLANs per VRF
                 if self.inputs.overlay_mlag_rfc5549 and self._mlag_ibgp_peering_enabled(vrf, tenant):
                     new_vrf._update(ip_routing_ipv6_interfaces=True, ipv6_routing=True)
-                else:
-                    new_vrf.ip_routing = True
+                new_vrf.ip_routing = True
 
                 if self._has_ipv6(vrf):
                     new_vrf.ipv6_routing = True
@@ -53,6 +53,23 @@ class VrfsMixin(Protocol):
                 if vrf.description:
                     new_vrf.description = vrf.description
                 self.structured_config.vrfs.append(new_vrf, ignore_fields=("tenant",))
+
+    def _set_l2_device_inband_mgmt_vrf(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
+        """
+        On devices without l3 services, there may be the inband mgmt VRF to configure.
+
+        For other devices the VRF is injected in the filtered tenants by AVD.
+        """
+        if (self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6) and (
+            vrf := self.shared_utils.filtered_mgmt_inband_vrf
+        ) is not None:
+            if vrf.name == "default":
+                return
+            tenant_name = self.shared_utils.filtered_mgmt_inband_tenant.name if self.shared_utils.filtered_mgmt_inband_tenant is not None else "inband_mgmt"
+            new_vrf = EosCliConfigGen.VrfsItem(name=vrf.name, tenant=tenant_name)
+            if vrf.description:
+                new_vrf.description = vrf.description
+            self.structured_config.vrfs.append(new_vrf, ignore_fields=("metadata",))
 
     def _has_ipv6(
         self: AvdStructuredConfigNetworkServicesProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem

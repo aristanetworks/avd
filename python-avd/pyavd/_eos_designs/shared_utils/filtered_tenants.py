@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from ipaddress import ip_network
 from typing import TYPE_CHECKING, Literal, Protocol, cast, overload
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -42,6 +43,8 @@ class FilteredTenantsMixin(Protocol):
 
         filtered_tenants = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServices()
         filter_tenants = self.node_config.filter.tenants
+        all_vlans: set[int] = set()
+        """Keeping a set of all vlans injected to check at the end if we must inject inband_management vlan."""
         for network_services_key in self.inputs._dynamic_keys.network_services:
             for original_tenant in network_services_key.value:
                 if original_tenant.name not in filter_tenants and "all" not in filter_tenants:
@@ -49,9 +52,13 @@ class FilteredTenantsMixin(Protocol):
                 tenant = original_tenant._deepcopy()
                 tenant._internal_data.context = f"{network_services_key.key}"
                 tenant.l2vlans = self.filtered_l2vlans(tenant)
+                # TODO: can consider updating this as we go along.
+                all_vlans.update(l2vlan.id for l2vlan in tenant.l2vlans)
                 tenant.vrfs = self.filtered_vrfs(tenant)
+                all_vlans.update(svi.id for vrf in tenant.vrfs for svi in vrf.svis)
                 filtered_tenants.append(tenant)
 
+        # TODO: Make a separate method
         no_vrf_default = all("default" not in tenant.vrfs for tenant in filtered_tenants)
         if self.is_wan_router and no_vrf_default:
             filtered_tenants.append(
@@ -78,7 +85,79 @@ class FilteredTenantsMixin(Protocol):
                     raise AristaAvdError(msg)
                 break
 
+        # TODO: Make a separated method
+        if self.inband_management_parent_vlans or self.configure_inband_mgmt or self.configure_inband_mgmt_ipv6:
+            # First, look for any mgmt VRF defined in networks services named the same as inband_mgmt_vrf
+            mgmt_inband_tuple: (
+                tuple[
+                    EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+                    EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+                ]
+                | tuple[None, None]
+            ) = next(((vrf, tenant) for tenant in filtered_tenants for vrf in tenant.vrfs if self.node_config.inband_mgmt_vrf == vrf.name), (None, None))
+            # Looks like pyright is limited on this one... and does not understand properly if mgmt_inband_tuple != (None, None):
+            mgmt_inband_vrf, mgmt_inband_tenant = mgmt_inband_tuple
+            if mgmt_inband_vrf is not None and mgmt_inband_tenant is not None:
+                self.inject_management_vlans(mgmt_inband_vrf, mgmt_inband_tenant, all_vlans)
+                self.filtered_mgmt_inband_vrf = mgmt_inband_vrf
+                self.filtered_mgmt_inband_tenant = mgmt_inband_tenant
+            else:
+                # Using obtain to avoid name clash.
+                mgmt_inband_tenant = filtered_tenants.obtain("inband_mgmt")
+                mgmt_inband_vrf = mgmt_inband_tenant.vrfs.append_new(
+                    name=self.inband_mgmt_vrf or "default",
+                    vrf_id=666,
+                    address_families=EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.AddressFamilies(),
+                )
+                self.inject_management_vlans(mgmt_inband_vrf, mgmt_inband_tenant, all_vlans)
+                self.filtered_mgmt_inband_vrf = mgmt_inband_vrf
+                self.filtered_mgmt_inband_tenant = mgmt_inband_tenant
+                filtered_tenants.append(mgmt_inband_tenant)
+
         return filtered_tenants._natural_sorted()
+
+    filtered_mgmt_inband_vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem | None = None
+    filtered_mgmt_inband_tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem | None = None
+
+    def inject_management_vlans(
+        self: SharedUtilsProtocol,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+        all_vlans: set[int],
+    ) -> None:
+        """Return a tenant if any additional vlan has to be configured for inband management."""
+        if (self.configure_inband_mgmt or self.configure_inband_mgmt_ipv6) and self.node_config.inband_mgmt_vlan not in all_vlans:
+            _ = tenant.l2vlans.append_new(
+                id=self.node_config.inband_mgmt_vlan,
+                name=self.node_config.inband_mgmt_vlan_name,
+            )
+
+        for vlan, subnet in self.inband_management_parent_vlans.items():
+            if vlan not in all_vlans:
+                svi = vrf.svis.append_new(
+                    id=vlan,
+                    name=self.node_config.inband_mgmt_vlan_name,
+                    mtu=self.inband_mgmt_mtu,
+                    enabled=True,
+                    description=self.node_config.inband_mgmt_description,
+                    vxlan=False,
+                )
+                if subnet["ipv4"] is not None:
+                    network = ip_network(subnet["ipv4"], strict=False)
+                    ip = str(network[3]) if self.mlag_role == "secondary" else str(network[2])
+                    svi.ip_address = f"{ip}/{network.prefixlen}"
+                    svi.ip_virtual_router_addresses.append(str(network[1]))
+                    if self.underlay_routing_protocol == "ebgp":
+                        svi.ip_attached_host_route_export._update(enabled=True, distance=19)
+                if subnet["ipv6"] is not None:
+                    network = ip_network(subnet["ipv6"], strict=False)
+                    ip = str(network[3]) if self.mlag_role == "secondary" else str(network[2])
+                    svi.ipv6_address = f"{ip}/{network.prefixlen}"
+                    svi.ipv6_enable = True
+                    svi.ipv6_virtual_router_addresses.append(str(network[1]))
+                    if self.underlay_routing_protocol == "ebgp":
+                        svi.ipv6_attached_host_route_export._update(enabled=True, distance=19)
+                all_vlans.add(vlan)
 
     def filtered_l2vlans(
         self: SharedUtilsProtocol, tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem

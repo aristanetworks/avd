@@ -349,6 +349,8 @@ vlan_interfaces:
   ipv6_attached_host_route_export:
     enabled: true
     distance: 19
+  metadata:
+    tenant: inband_mgmt
 - name: Vlan107
   description: Inband Management
   shutdown: false
@@ -360,6 +362,8 @@ vlan_interfaces:
   ipv6_attached_host_route_export:
     enabled: true
     distance: 19
+  metadata:
+    tenant: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
@@ -378,10 +382,10 @@ vlans:
   tenant: system
 - id: 106
   name: INBAND_MGMT
-  tenant: system
+  tenant: inband_mgmt
 - id: 107
   name: INBAND_MGMT
-  tenant: system
+  tenant: inband_mgmt
 vrfs:
 - name: MGMT
   ip_routing: false
