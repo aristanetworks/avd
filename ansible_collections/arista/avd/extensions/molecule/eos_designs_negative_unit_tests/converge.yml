@@ -952,7 +952,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FABRIC_INCORRECT_DOWNLINK_LINK_TRACKING_GROUP
+  hosts: incorrect-downlink-group-l3leaf1
   connection: local
   tasks:
     - name: Run failure scenario Test
