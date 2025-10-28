@@ -122,6 +122,15 @@ mod tests {
     const EOS_DESIGNS_FRAGMENTS_DIR: &str =
         "../../../python-avd/pyavd/_eos_designs/schema/schema_fragments";
 
+    static INIT_PY: std::sync::Once = std::sync::Once::new();
+
+    fn setup() {
+        INIT_PY.call_once(|| {
+            pyo3::append_to_inittab!(validation);
+            pyo3::Python::initialize();
+        })
+    }
+
     fn get_dir(fragments_dir: &str) -> std::path::PathBuf {
         std::path::PathBuf::from(CRATE_DIR).join(fragments_dir)
     }
@@ -142,8 +151,7 @@ mod tests {
             kwargs
                 .set_item("eos_designs", get_dir(EOS_DESIGNS_FRAGMENTS_DIR))
                 .unwrap();
-            let _ = module
-                .call_method("init_store_from_fragments", args, Some(&kwargs));
+            let _ = module.call_method("init_store_from_fragments", args, Some(&kwargs));
         };
     }
 
@@ -151,8 +159,7 @@ mod tests {
     fn validate_json_py() {
         // Partial implementation of the pytest but here using pyo3 wrappers in Rust, to ensure we get coverage data
         // and that we can catch issues in Rust without building the Python first.
-        pyo3::append_to_inittab!(validation);
-        pyo3::Python::initialize();
+        setup();
         pyo3::Python::attach(|py| {
             shared_init_store(py);
 
@@ -200,8 +207,7 @@ mod tests {
 
     #[test]
     fn init_store_py_invalid_fragment_paths() {
-        pyo3::append_to_inittab!(validation);
-        pyo3::Python::initialize();
+        setup();
         pyo3::Python::attach(|py| {
             let module = py.import("validation").unwrap();
 
@@ -248,8 +254,7 @@ mod tests {
 
     #[test]
     fn init_store_py_twice() {
-        pyo3::append_to_inittab!(validation);
-        pyo3::Python::initialize();
+        setup();
         pyo3::Python::attach(|py| {
             shared_init_store(py);
 
@@ -281,8 +286,7 @@ mod tests {
 
     #[test]
     fn validate_json_py_invalid_json() {
-        pyo3::append_to_inittab!(validation);
-        pyo3::Python::initialize();
+        setup();
         pyo3::Python::attach(|py| {
             shared_init_store(py);
 
