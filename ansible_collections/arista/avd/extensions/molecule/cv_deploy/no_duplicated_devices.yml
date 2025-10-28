@@ -162,7 +162,7 @@
             that:
               # errors and warnings
               - cv_deploy_results.errors == []
-              - cv_deploy_results.warnings == []
+              - cv_deploy_results.warnings | default([]) | length == 0
 
       always:
 

@@ -334,12 +334,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -350,42 +352,50 @@ router_bgp:
   - ip_address: 172.31.255.16
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet2
   - ip_address: 172.31.255.18
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet2
   - ip_address: 172.31.255.20
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet2
   - ip_address: 172.31.255.22
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet2
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1_Loopback0
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2_Loopback0
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3_Loopback0
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4_Loopback0
   redistribute:
     connected:
@@ -425,7 +435,8 @@ router_bgp:
     - learned
     vlan: 120-124
   - name: Tenant_A_FTP
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.10:10162
     route_targets:
       both:
@@ -434,7 +445,8 @@ router_bgp:
     - learned
     vlan: '162'
   - name: Tenant_A_NFS
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.10:10161
     route_targets:
       both:
@@ -443,7 +455,8 @@ router_bgp:
     - learned
     vlan: '161'
   - name: Tenant_A_VMOTION
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.10:10160
     route_targets:
       both:
@@ -598,35 +611,39 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.30.1/24
-  tenant: Tenant_A
-  tags:
-  - app
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - app
+    - erp1
 - name: Vlan131
   description: Tenant_A_APP_Zone_2
   shutdown: false
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.31.1/24
-  tenant: Tenant_A
-  tags:
-  - app
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - app
 - name: Vlan140
   description: Tenant_A_DB_BZone_1
   shutdown: false
   vrf: Tenant_A_DB_Zone
   ip_address_virtual: 10.1.40.1/24
-  tenant: Tenant_A
-  tags:
-  - db
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - db
+    - erp1
 - name: Vlan141
   description: Tenant_A_DB_Zone_2
   shutdown: false
   vrf: Tenant_A_DB_Zone
   ip_address_virtual: 10.1.41.1/24
-  tenant: Tenant_A
-  tags:
-  - db
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - db
 - name: Vlan110
   description: SVI 110 CUSTOM DESCRIPTION
   shutdown: false
@@ -634,9 +651,10 @@ vlan_interfaces:
   ip_address_virtual: 10.1.10.1/24
   ip_helpers:
   - ip_helper: 1.2.3.4
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan111
   description: SVI 111 CUSTOM DESCRIPTION
   shutdown: false
@@ -646,9 +664,10 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     source_interface: lo100
     vrf: MGMT
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan120
   description: Tenant_A_WEB_Zone_1
   shutdown: false
@@ -658,19 +677,21 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     source_interface: lo100
     vrf: TEST
-  tenant: Tenant_A
-  tags:
-  - web
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
+    - erp1
 - name: Vlan121
   description: Tenant_A_WEBZone_2
   shutdown: true
   vrf: Tenant_A_WEB_Zone
   ip_address_virtual: 10.1.10.254/24
   mtu: 1560
-  tenant: Tenant_A
-  tags:
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
 - name: Vlan122
   description: Tenant_a_WEB_DHCP_no_source_int_no_vrf
   shutdown: false
@@ -678,9 +699,10 @@ vlan_interfaces:
   ip_address_virtual: 10.1.22.1/24
   ip_helpers:
   - ip_helper: 1.1.1.1
-  tenant: Tenant_A
-  tags:
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
 - name: Vlan123
   description: Tenant_a_WEB_DHCP_source_int_no_vrf
   shutdown: false
@@ -689,9 +711,10 @@ vlan_interfaces:
   ip_helpers:
   - ip_helper: 1.1.1.1
     source_interface: lo100
-  tenant: Tenant_A
-  tags:
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
 - name: Vlan124
   description: Tenant_a_WEB_DHCP_vrf_no_source_int
   shutdown: false
@@ -700,41 +723,46 @@ vlan_interfaces:
   ip_helpers:
   - ip_helper: 1.1.1.1
     vrf: TEST
-  tenant: Tenant_A
-  tags:
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
 - name: Vlan210
   description: Tenant_B_OP_Zone_1
   shutdown: false
   vrf: Tenant_B_OP_Zone
   ip_address_virtual: 10.2.10.1/24
-  tenant: Tenant_B
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_B
+    tags:
+    - opzone
 - name: Vlan211
   description: Tenant_B_OP_Zone_2
   shutdown: false
   vrf: Tenant_B_OP_Zone
   ip_address_virtual: 10.2.11.1/24
-  tenant: Tenant_B
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_B
+    tags:
+    - opzone
 - name: Vlan310
   description: Tenant_C_OP_Zone_1
   shutdown: false
   vrf: Tenant_C_OP_Zone
   ip_address_virtual: 10.3.10.1/24
-  tenant: Tenant_C
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_C
+    tags:
+    - opzone
 - name: Vlan311
   description: Tenant_C_OP_Zone_2
   shutdown: false
   vrf: Tenant_C_OP_Zone
   ip_address_virtual: 10.3.11.1/24
-  tenant: Tenant_C
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_C
+    tags:
+    - opzone
 vlan_internal_order:
   allocation: ascending
   range:

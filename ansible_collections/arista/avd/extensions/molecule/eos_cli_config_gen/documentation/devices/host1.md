@@ -521,11 +521,11 @@ ip name-server vrf TEST 2001:db8::2 priority 3
 
 ###### Name Server
 
-| IP Address | VRF | Priority |
-| ---------- | --- | -------- |
-| 1.1.1.1 | default | 0 |
-| 2.2.2.2 | default | 1 |
-| 8.8.8.8 | default | - |
+| VRF | IP Address | Priority |
+| --- | ---------- | -------- |
+| default | 1.1.1.1 | 0 |
+| default | 2.2.2.2 | 1 |
+| default | 8.8.8.8 | - |
 
 ##### mynameserver1
 
@@ -539,15 +539,15 @@ DNS Domain: arista.avd.com
 
 ###### Name Server
 
-| IP Address | VRF | Priority |
-| ---------- | --- | -------- |
-| 1.1.1.1 | default | - |
-| 2.2.2.1 | vrf1 | - |
-| 2.2.2.2 | vrf1 | 1 |
-| 2.2.2.4 | vrf1 | 4 |
-| 2.2.2.6 | b_vrf | 3 |
-| 2.2.2.7 | a_vrf | 3 |
-| 8.8.8.8 | vrf1 | - |
+| VRF | IP Address | Priority |
+| --- | ---------- | -------- |
+| a_vrf | 2.2.2.7 | 3 |
+| b_vrf | 2.2.2.6 | 3 |
+| default | 1.1.1.1 | - |
+| vrf1 | 2.2.2.1 | - |
+| vrf1 | 2.2.2.2 | 1 |
+| vrf1 | 2.2.2.4 | 4 |
+| vrf1 | 8.8.8.8 | - |
 
 ##### mynameserver2
 

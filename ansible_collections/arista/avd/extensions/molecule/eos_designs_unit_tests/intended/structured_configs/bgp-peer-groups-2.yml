@@ -86,7 +86,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65001'
     description: Description for mlag_ipv4_underlay_peer via structured_config
     bfd: true
@@ -95,7 +96,8 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: MLAG-IPv4-VRFS-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65001'
     description: Description for mlag_ipv4_vrfs_peer via structured_config
     next_hop_self: true
@@ -103,13 +105,15 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     description: Description for ipv4_underlay_peers via structured_config
     bfd: true
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     remote_as: '65001'
     description: Description for evpn_overlay_peers via structured_config
     update_source: Loopback0
@@ -118,7 +122,8 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   - name: RR-OVERLAY-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     remote_as: '65001'
     description: Description for rr_overlay_peers via structured_config
     update_source: Loopback0
@@ -128,11 +133,13 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.253.204
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: bgp-peer-groups-1
+    metadata:
+      peer: bgp-peer-groups-1
     description: bgp-peer-groups-1_Vlan4094
   - ip_address: 192.168.255.111
     peer_group: EVPN-OVERLAY-PEERS
-    peer: bgp-peer-groups-1
+    metadata:
+      peer: bgp-peer-groups-1
     description: bgp-peer-groups-1_Loopback0
   redistribute:
     connected:

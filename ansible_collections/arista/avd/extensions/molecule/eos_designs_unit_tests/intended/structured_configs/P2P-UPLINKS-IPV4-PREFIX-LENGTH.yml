@@ -65,11 +65,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
@@ -80,12 +82,14 @@ router_bgp:
   - ip_address: 10.254.255.249
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '923'
-    peer: MLAG_ODD_ID_L3LEAF1A
+    metadata:
+      peer: MLAG_ODD_ID_L3LEAF1A
     description: MLAG_ODD_ID_L3LEAF1A_Ethernet10
   - ip_address: 10.254.255.253
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '923'
-    peer: MLAG_ODD_ID_L3LEAF1B
+    metadata:
+      peer: MLAG_ODD_ID_L3LEAF1B
     description: MLAG_ODD_ID_L3LEAF1B_Ethernet10
   redistribute:
     connected:

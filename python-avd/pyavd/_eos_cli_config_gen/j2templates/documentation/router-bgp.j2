@@ -164,8 +164,8 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 | Settings | Value |
 | -------- | ----- |
-{%             if peer_group.type is arista.avd.defined %}
-| Address Family | {{ peer_group.type }} |
+{%             if peer_group.metadata.type is arista.avd.defined %}
+| Address Family | {{ peer_group.metadata.type }} |
 {%             endif %}
 {%             if peer_group.shutdown is arista.avd.defined(true) %}
 | Shutdown | {{ peer_group.shutdown }} |
