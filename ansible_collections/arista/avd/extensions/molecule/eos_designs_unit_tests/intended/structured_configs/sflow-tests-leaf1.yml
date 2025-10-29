@@ -127,11 +127,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -141,17 +143,20 @@ router_bgp:
   - ip_address: 10.254.2.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
-    peer: sflow-tests-spine1
+    metadata:
+      peer: sflow-tests-spine1
     description: sflow-tests-spine1_Ethernet1
   - ip_address: 10.254.2.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
-    peer: sflow-tests-spine1
+    metadata:
+      peer: sflow-tests-spine1
     description: sflow-tests-spine1_Ethernet2
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65200'
-    peer: sflow-tests-spine1
+    metadata:
+      peer: sflow-tests-spine1
     description: sflow-tests-spine1_Loopback0
   redistribute:
     connected:
@@ -159,7 +164,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 11
-    tenant: SFLOW
+    metadata:
+      tenant: SFLOW
     rd: 10.254.1.1:10011
     route_targets:
       both:

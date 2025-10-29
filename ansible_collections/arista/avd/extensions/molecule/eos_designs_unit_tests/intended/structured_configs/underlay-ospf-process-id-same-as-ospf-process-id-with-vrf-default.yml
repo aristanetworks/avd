@@ -38,7 +38,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -49,7 +50,8 @@ router_bgp:
       enabled: true
   vlans:
   - id: 42
-    tenant: Tenant-A
+    metadata:
+      tenant: Tenant-A
     rd: 192.168.255.110:50111
     route_targets:
       both:

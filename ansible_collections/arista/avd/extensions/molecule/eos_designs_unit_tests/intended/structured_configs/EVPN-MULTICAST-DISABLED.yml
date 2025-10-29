@@ -125,11 +125,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -139,12 +141,14 @@ router_bgp:
   - ip_address: 172.31.255.10
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    peer: EVPN-MULTICAST-SPINE1
+    metadata:
+      peer: EVPN-MULTICAST-SPINE1
     description: EVPN-MULTICAST-SPINE1_Ethernet6
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: EVPN-MULTICAST-SPINE1
+    metadata:
+      peer: EVPN-MULTICAST-SPINE1
     description: EVPN-MULTICAST-SPINE1_Loopback0
   redistribute:
     connected:
@@ -152,7 +156,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 310
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.8:10310
     route_targets:
       both:
@@ -160,7 +165,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 311
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.8:10311
     route_targets:
       both:
@@ -168,7 +174,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 110
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.8:10110
     route_targets:
       both:
@@ -176,7 +183,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 111
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.8:10111
     route_targets:
       both:
@@ -184,7 +192,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 210
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.8:10210
     route_targets:
       both:
@@ -192,7 +201,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 211
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.8:10211
     route_targets:
       both:
@@ -200,7 +210,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 256
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.8:10256
     route_targets:
       both:
@@ -208,7 +219,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 257
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.8:10257
     route_targets:
       both:
@@ -216,7 +228,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 4092
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.8:14092
     route_targets:
       both:
@@ -224,7 +237,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 5
-    tenant: Tenant_B
+    metadata:
+      tenant: Tenant_B
     rd: 192.168.255.8:10005
     route_targets:
       both:
@@ -232,7 +246,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 6
-    tenant: Tenant_B
+    metadata:
+      tenant: Tenant_B
     rd: 192.168.255.8:10006
     route_targets:
       both:
@@ -240,7 +255,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 1
-    tenant: Tenant_B
+    metadata:
+      tenant: Tenant_B
     rd: 192.168.255.8:10001
     route_targets:
       both:
@@ -248,7 +264,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 2
-    tenant: Tenant_B
+    metadata:
+      tenant: Tenant_B
     rd: 192.168.255.8:10002
     route_targets:
       both:
@@ -256,7 +273,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 3
-    tenant: Tenant_B
+    metadata:
+      tenant: Tenant_B
     rd: 192.168.255.8:10003
     route_targets:
       both:
@@ -264,7 +282,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 4
-    tenant: Tenant_B
+    metadata:
+      tenant: Tenant_B
     rd: 192.168.255.8:10004
     route_targets:
       both:
@@ -272,7 +291,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 7
-    tenant: Tenant_B
+    metadata:
+      tenant: Tenant_B
     rd: 192.168.255.8:10007
     route_targets:
       both:
@@ -280,7 +300,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 8
-    tenant: Tenant_B
+    metadata:
+      tenant: Tenant_B
     rd: 192.168.255.8:10008
     route_targets:
       both:
@@ -288,7 +309,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 9
-    tenant: Tenant_B
+    metadata:
+      tenant: Tenant_B
     rd: 192.168.255.8:10009
     route_targets:
       both:
@@ -296,7 +318,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 10
-    tenant: Tenant_B
+    metadata:
+      tenant: Tenant_B
     rd: 192.168.255.8:10010
     route_targets:
       both:
@@ -304,7 +327,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 330
-    tenant: Tenant_C
+    metadata:
+      tenant: Tenant_C
     rd: 192.168.255.8:10330
     route_targets:
       both:
@@ -312,7 +336,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 331
-    tenant: Tenant_C
+    metadata:
+      tenant: Tenant_C
     rd: 192.168.255.8:10331
     route_targets:
       both:
@@ -320,7 +345,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 130
-    tenant: Tenant_C
+    metadata:
+      tenant: Tenant_C
     rd: 192.168.255.8:10130
     route_targets:
       both:
@@ -328,7 +354,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 131
-    tenant: Tenant_C
+    metadata:
+      tenant: Tenant_C
     rd: 192.168.255.8:10131
     route_targets:
       both:
@@ -336,7 +363,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 136
-    tenant: Tenant_C
+    metadata:
+      tenant: Tenant_C
     rd: 192.168.255.8:10136
     route_targets:
       both:
@@ -344,7 +372,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 137
-    tenant: Tenant_C
+    metadata:
+      tenant: Tenant_C
     rd: 192.168.255.8:10137
     route_targets:
       both:
@@ -352,7 +381,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 230
-    tenant: Tenant_C
+    metadata:
+      tenant: Tenant_C
     rd: 192.168.255.8:10230
     route_targets:
       both:
@@ -360,7 +390,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 231
-    tenant: Tenant_C
+    metadata:
+      tenant: Tenant_C
     rd: 192.168.255.8:10231
     route_targets:
       both:
@@ -368,7 +399,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 240
-    tenant: Tenant_D
+    metadata:
+      tenant: Tenant_D
     rd: 192.168.255.8:10240
     route_targets:
       both:
@@ -376,7 +408,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 241
-    tenant: Tenant_D
+    metadata:
+      tenant: Tenant_D
     rd: 192.168.255.8:10241
     route_targets:
       both:
@@ -384,7 +417,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 140
-    tenant: Tenant_D
+    metadata:
+      tenant: Tenant_D
     rd: 192.168.255.8:10140
     route_targets:
       both:
@@ -392,7 +426,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 141
-    tenant: Tenant_D
+    metadata:
+      tenant: Tenant_D
     rd: 192.168.255.8:10141
     route_targets:
       both:
@@ -400,7 +435,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 550
-    tenant: Tenant_E
+    metadata:
+      tenant: Tenant_E
     rd: 192.168.255.8:10550
     route_targets:
       both:
@@ -408,7 +444,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 260
-    tenant: Tenant_E
+    metadata:
+      tenant: Tenant_E
     rd: 192.168.255.8:10260
     route_targets:
       both:
@@ -416,7 +453,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 250
-    tenant: Tenant_E
+    metadata:
+      tenant: Tenant_E
     rd: 192.168.255.8:10250
     route_targets:
       both:
@@ -424,7 +462,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 150
-    tenant: Tenant_E
+    metadata:
+      tenant: Tenant_E
     rd: 192.168.255.8:10150
     route_targets:
       both:
@@ -432,7 +471,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 251
-    tenant: Tenant_F
+    metadata:
+      tenant: Tenant_F
     rd: 192.168.255.8:10251
     route_targets:
       both:
@@ -440,7 +480,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 252
-    tenant: Tenant_F
+    metadata:
+      tenant: Tenant_F
     rd: 192.168.255.8:10252
     route_targets:
       both:

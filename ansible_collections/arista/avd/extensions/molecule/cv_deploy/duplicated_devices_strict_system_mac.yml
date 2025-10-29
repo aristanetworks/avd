@@ -234,7 +234,7 @@
               # confirm that cv_deploy has failed
               - cv_deploy_results.failed is defined and cv_deploy_results.failed
               # confirm there are no warnings returned
-              - cv_deploy_results.warnings is defined and cv_deploy_results.warnings == []
+              - cv_deploy_results.warnings | default([]) | length == 0
               # confirm there are returned errors
               - cv_deploy_results.errors is defined and cv_deploy_results.errors != []
               # confirm that there is an error regarding both overlapping serial_number between avd-ci-leaf1 and avd-ci-leaf2

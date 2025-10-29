@@ -316,7 +316,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65101'
     description: EVPN-MULTICAST-L3LEAF1B
     next_hop_self: true
@@ -324,7 +325,8 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: MLAG-IPv4-VRFS-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65101'
     description: EVPN-MULTICAST-L3LEAF1B
     next_hop_self: true
@@ -332,11 +334,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -345,17 +349,20 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.251.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: EVPN-MULTICAST-L3LEAF1B
+    metadata:
+      peer: EVPN-MULTICAST-L3LEAF1B
     description: EVPN-MULTICAST-L3LEAF1B_Vlan4093
   - ip_address: 172.31.255.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    peer: EVPN-MULTICAST-SPINE1
+    metadata:
+      peer: EVPN-MULTICAST-SPINE1
     description: EVPN-MULTICAST-SPINE1_Ethernet1
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: EVPN-MULTICAST-SPINE1
+    metadata:
+      peer: EVPN-MULTICAST-SPINE1
     description: EVPN-MULTICAST-SPINE1_Loopback0
   redistribute:
     connected:
@@ -389,7 +396,8 @@ router_bgp:
     - igmp
     vlan: 210-211
   - name: MULTICAST_DISABLED_256
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.3:10256
     route_targets:
       both:
@@ -398,7 +406,8 @@ router_bgp:
     - learned
     vlan: '256'
   - name: MULTICAST_ENABLED_257
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.3:10257
     route_targets:
       both:
@@ -408,7 +417,8 @@ router_bgp:
     - igmp
     vlan: '257'
   - name: MULTICAST_ENABLED_4092
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.3:14092
     route_targets:
       both:
@@ -444,7 +454,8 @@ router_bgp:
     - igmp
     vlan: 3-4
   - name: MULTICAST_DISABLED_7
-    tenant: Tenant_B
+    metadata:
+      tenant: Tenant_B
     rd: 192.168.255.3:10007
     route_targets:
       both:
@@ -453,7 +464,8 @@ router_bgp:
     - learned
     vlan: '7'
   - name: MULTICAST_ENABLED_8
-    tenant: Tenant_B
+    metadata:
+      tenant: Tenant_B
     rd: 192.168.255.3:10008
     route_targets:
       both:
@@ -463,7 +475,8 @@ router_bgp:
     - igmp
     vlan: '8'
   - name: MULTICAST_ENABLED_9
-    tenant: Tenant_B
+    metadata:
+      tenant: Tenant_B
     rd: 192.168.255.3:10009
     route_targets:
       both:
@@ -473,7 +486,8 @@ router_bgp:
     - igmp
     vlan: '9'
   - name: MULTICAST_VXLAN_FLOOD_ENABLED_WITH_UNDERLAY_MULTICAST_GROUP
-    tenant: Tenant_B
+    metadata:
+      tenant: Tenant_B
     rd: 192.168.255.3:10010
     route_targets:
       both:
@@ -555,7 +569,8 @@ router_bgp:
     - learned
     vlan: '150'
   - name: MULTICAST_DISABLED_251
-    tenant: Tenant_F
+    metadata:
+      tenant: Tenant_F
     rd: 192.168.255.3:10251
     route_targets:
       both:
@@ -564,7 +579,8 @@ router_bgp:
     - learned
     vlan: '251'
   - name: MULTICAST_ENABLED_252
-    tenant: Tenant_F
+    metadata:
+      tenant: Tenant_F
     rd: 192.168.255.3:10252
     route_targets:
       both:

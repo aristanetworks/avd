@@ -129,7 +129,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65002'
     description: trunk-group-tests-l3leaf2b
     next_hop_self: true
@@ -137,11 +138,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -150,7 +153,8 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.247.5
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: trunk-group-tests-l3leaf2b
+    metadata:
+      peer: trunk-group-tests-l3leaf2b
     description: trunk-group-tests-l3leaf2b_Vlan4093
   redistribute:
     connected:
@@ -158,7 +162,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 200
-    tenant: TRUNK_GROUP_TESTS
+    metadata:
+      tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.11:10200
     route_targets:
       both:
@@ -166,7 +171,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 210
-    tenant: TRUNK_GROUP_TESTS
+    metadata:
+      tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.11:10210
     route_targets:
       both:

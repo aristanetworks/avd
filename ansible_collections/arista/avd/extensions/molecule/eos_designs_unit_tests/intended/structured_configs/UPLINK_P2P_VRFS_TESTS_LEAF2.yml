@@ -111,19 +111,22 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv6
+    metadata:
+      type: ipv6
     send_community: all
     maximum_routes: 12000
   neighbors:
   - ip_address: 2001:db8:3:8::1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+    metadata:
+      peer: UPLINK_P2P_VRFS_TESTS_SPINE1
     description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet2
   - ip_address: 2001:db8:3:9::1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+    metadata:
+      peer: UPLINK_P2P_VRFS_TESTS_SPINE2
     description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet1
   redistribute:
     connected:

@@ -103,7 +103,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65003'
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
     next_hop_self: true
@@ -111,13 +112,15 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   neighbors:
   - ip_address: 192.168.253.5
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
+    metadata:
+      peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Vlan4093
   redistribute:
     connected:

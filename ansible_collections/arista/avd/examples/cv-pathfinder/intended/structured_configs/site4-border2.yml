@@ -190,7 +190,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65104'
     description: site4-border1
     next_hop_self: true
@@ -198,11 +199,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -211,12 +214,14 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.251.24
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: site4-border1
+    metadata:
+      peer: site4-border1
     description: site4-border1_Vlan4093
   - ip_address: 10.0.4.59
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: site4-wan1
+    metadata:
+      peer: site4-wan1
     description: site4-wan1_Ethernet2
   redistribute:
     connected:
@@ -224,7 +229,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 666
-    tenant: WAN-EXAMPLE-TENANT
+    metadata:
+      tenant: WAN-EXAMPLE-TENANT
     rd: 192.168.255.14:10666
     route_targets:
       both:
@@ -232,7 +238,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 42
-    tenant: WAN-EXAMPLE-TENANT
+    metadata:
+      tenant: WAN-EXAMPLE-TENANT
     rd: 192.168.255.14:10042
     route_targets:
       both:

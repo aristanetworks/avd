@@ -460,7 +460,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65001'
     description: BGP-SPINE1
     next_hop_self: true
@@ -468,33 +469,39 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   neighbors:
   - ip_address: 192.168.254.0
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: BGP-SPINE1
+    metadata:
+      peer: BGP-SPINE1
     description: BGP-SPINE1_Vlan4094
   - ip_address: 192.168.253.7
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: DUMMY-CORE
+    metadata:
+      peer: DUMMY-CORE
     description: DUMMY-CORE
   - ip_address: 192.168.253.11
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: DUMMY-CORE
+    metadata:
+      peer: DUMMY-CORE
     description: DUMMY-CORE
   - ip_address: 192.168.253.15
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: DUMMY-CORE
+    metadata:
+      peer: DUMMY-CORE
     description: DUMMY-CORE
   - ip_address: 192.168.253.19
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: DUMMY-CORE
+    metadata:
+      peer: DUMMY-CORE
     description: DUMMY-CORE
   redistribute:
     attached_host:

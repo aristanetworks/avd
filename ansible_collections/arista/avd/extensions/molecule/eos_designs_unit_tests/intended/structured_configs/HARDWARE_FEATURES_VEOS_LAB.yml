@@ -263,7 +263,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65001'
     description: HARDWARE_FEATURES_CEOS_LAB
     next_hop_self: true
@@ -271,11 +272,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -284,29 +287,34 @@ router_bgp:
   neighbors:
   - ip_address: 10.10.40.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: HARDWARE_FEATURES_CEOS_LAB
+    metadata:
+      peer: HARDWARE_FEATURES_CEOS_LAB
     description: HARDWARE_FEATURES_CEOS_LAB_Vlan4093
   - ip_address: 10.10.50.5
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    peer: HARDWARE_FEATURES_CLOUDEOS
+    metadata:
+      peer: HARDWARE_FEATURES_CLOUDEOS
     description: HARDWARE_FEATURES_CLOUDEOS_Ethernet1
   - ip_address: 10.10.50.15
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+    metadata:
+      peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
     description: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_Ethernet1.1
   - ip_address: 10.10.30.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     local_as: '65000'
-    peer: HARDWARE_FEATURES_CLOUDEOS
+    metadata:
+      peer: HARDWARE_FEATURES_CLOUDEOS
     description: HARDWARE_FEATURES_CLOUDEOS
   - ip_address: 10.10.60.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     local_as: '65100'
-    peer: HARDWARE_FEATURES_CEOS_LAB
+    metadata:
+      peer: HARDWARE_FEATURES_CEOS_LAB
     description: HARDWARE_FEATURES_CEOS_LAB
   redistribute:
     connected:

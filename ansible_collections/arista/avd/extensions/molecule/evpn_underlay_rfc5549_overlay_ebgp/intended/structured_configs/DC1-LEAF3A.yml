@@ -200,7 +200,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG_PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65106'
     description: DC1-LEAF3B
     next_hop_self: true
@@ -209,7 +210,8 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: MLAG_VRFS_PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65106'
     description: DC1-LEAF3B
     next_hop_self: true
@@ -217,12 +219,14 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: UNDERLAY_PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: af6F4WLl4wUrWRZcwbEwkQ==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -233,22 +237,26 @@ router_bgp:
   - ip_address: 2001:1::5
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE5
+    metadata:
+      peer: DC1-SPINE5
     description: DC1-SPINE5_Loopback0
   neighbor_interfaces:
   - name: Vlan4093
     remote_as: '65106'
-    peer: DC1-LEAF3B
+    metadata:
+      peer: DC1-LEAF3B
     peer_group: MLAG_PEER
     description: DC1-LEAF3B_Vlan4093
   - name: Ethernet1
     remote_as: '65001'
-    peer: DC1-SPINE5
+    metadata:
+      peer: DC1-SPINE5
     peer_group: UNDERLAY_PEERS
     description: DC1-SPINE5_Ethernet1
   - name: Ethernet2
     remote_as: '65001'
-    peer: DC1-SPINE5
+    metadata:
+      peer: DC1-SPINE5
     peer_group: UNDERLAY_PEERS
     description: DC1-SPINE5_Ethernet3
   redistribute:
@@ -289,7 +297,8 @@ router_bgp:
     - learned
     vlan: 120-121
   - name: Tenant_A_NFS
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.12:10161
     route_targets:
       both:
@@ -298,7 +307,8 @@ router_bgp:
     - learned
     vlan: '161'
   - name: Tenant_A_VMOTION
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.12:10160
     route_targets:
       both:

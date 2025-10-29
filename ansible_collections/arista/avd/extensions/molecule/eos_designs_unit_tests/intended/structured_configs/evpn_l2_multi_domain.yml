@@ -57,18 +57,21 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
   - name: EVPN-OVERLAY-CORE
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 15
@@ -78,7 +81,8 @@ router_bgp:
   - ip_address: 192.168.100.10
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65002'
-    peer: DCI_TEST
+    metadata:
+      peer: DCI_TEST
     description: DCI_TEST
   redistribute:
     connected:
@@ -86,7 +90,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 150
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    metadata:
+      tenant: L2_MULTI_DOMAIN_DISABLED
     rd: 192.168.255.5:10150
     rd_evpn_domain:
       domain: remote
@@ -100,7 +105,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 160
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    metadata:
+      tenant: L2_MULTI_DOMAIN_DISABLED
     rd: 192.168.255.5:10160
     rd_evpn_domain:
       domain: remote
@@ -114,7 +120,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 170
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    metadata:
+      tenant: L2_MULTI_DOMAIN_DISABLED
     rd: 192.168.255.5:10170
     route_targets:
       both:
@@ -122,7 +129,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 110
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    metadata:
+      tenant: L2_MULTI_DOMAIN_DISABLED
     rd: 192.168.255.5:10110
     route_targets:
       both:
@@ -130,7 +138,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 111
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    metadata:
+      tenant: L2_MULTI_DOMAIN_DISABLED
     rd: 192.168.255.5:10111
     rd_evpn_domain:
       domain: remote
@@ -144,7 +153,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 190
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    metadata:
+      tenant: L2_MULTI_DOMAIN_DISABLED
     rd: 192.168.255.5:10190
     rd_evpn_domain:
       domain: remote
@@ -158,7 +168,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 180
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    metadata:
+      tenant: L2_MULTI_DOMAIN_DISABLED
     rd: 192.168.255.5:10180
     route_targets:
       both:
@@ -166,7 +177,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 250
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    metadata:
+      tenant: L2_MULTI_DOMAIN_ENABLED
     rd: 192.168.255.5:20250
     route_targets:
       both:
@@ -174,7 +186,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 260
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    metadata:
+      tenant: L2_MULTI_DOMAIN_ENABLED
     rd: 192.168.255.5:20260
     route_targets:
       both:
@@ -182,7 +195,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 270
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    metadata:
+      tenant: L2_MULTI_DOMAIN_ENABLED
     rd: 192.168.255.5:20270
     rd_evpn_domain:
       domain: remote
@@ -196,7 +210,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 210
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    metadata:
+      tenant: L2_MULTI_DOMAIN_ENABLED
     rd: 192.168.255.5:20210
     rd_evpn_domain:
       domain: remote
@@ -210,7 +225,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 211
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    metadata:
+      tenant: L2_MULTI_DOMAIN_ENABLED
     rd: 192.168.255.5:20211
     route_targets:
       both:
@@ -218,7 +234,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 290
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    metadata:
+      tenant: L2_MULTI_DOMAIN_ENABLED
     rd: 192.168.255.5:20290
     route_targets:
       both:
@@ -226,7 +243,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 280
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    metadata:
+      tenant: L2_MULTI_DOMAIN_ENABLED
     rd: 192.168.255.5:20280
     rd_evpn_domain:
       domain: remote

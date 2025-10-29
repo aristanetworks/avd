@@ -72,44 +72,56 @@ router_bgp:
     - name: SR-TE-PG-2
       remote_as: 65000
     - name: STARDARD-COMMUNITY
-      type: ipv4
+      metadata:
+        type: ipv4
       send_community: standard
     - name: EXTENDED-COMMUNITY
-      type: ipv4
+      metadata:
+        type: ipv4
       send_community: extended
     - name: LARGE-COMMUNITY
-      type: ipv4
+      metadata:
+        type: ipv4
       send_community: large
     - name: MULTIPLE-COMMUNITY
-      type: ipv4
+      metadata:
+        type: ipv4
       send_community: standard large
     - name: NO-COMMUNITY
-      type: ipv4
+      metadata:
+        type: ipv4
       send_community: null
     - name: LOCAL-AS
-      type: ipv4
+      metadata:
+        type: ipv4
       local_as: 65000
     - name: PATH-SELECTION-PG-1
-      type: ipv4
+      metadata:
+        type: ipv4
       remote_as: 65001
     - name: PATH-SELECTION-PG-2
-      type: ipv4
+      metadata:
+        type: ipv4
       remote_as: 65001
     - name: PATH-SELECTION-PG-3
-      type: ipv4
+      metadata:
+        type: ipv4
       remote_as: 65001
     - name: PATH-SELECTION-PG-4
-      type: ipv4
+      metadata:
+        type: ipv4
       remote_as: 65001
     - name: PATH-SELECTION-PG-5
-      type: ipv4
+      metadata:
+        type: ipv4
       remote_as: 65001
     - name: PG-1
       remote_as: "65001.0002"
     - name: PG-2
       remote_as: "65001.0003"
     - name: EVPN-OVERLAY-RS-PEERS
-      type: evpn
+      metadata:
+        type: evpn
       remote_as: 65001
       update_source: Loopback0
       bfd: true
@@ -120,14 +132,16 @@ router_bgp:
       peer_tag_in: PEER_TAG_IN
       peer_tag_out_discard: PEER_TAG_DISCARD_OUT
     - name: MPLS-IBGP-PEERS
-      type: "vpn-ipv4, vpn-ipv6"
+      metadata:
+        type: "vpn-ipv4, vpn-ipv6"
       remote_as: 65000
       local_as: 65000
       password: "mWV4B6WpLCfOTyKATLWuBg=="
       send_community: all
       maximum_routes: 0
     - name: IPv4-UNDERLAY-PEERS
-      type: ipv4
+      metadata:
+        type: ipv4
       remote_as: 65001
       password: "AQQvKeimxJu+uGQ/yYvv9w=="
       maximum_routes: 12000
@@ -140,7 +154,8 @@ router_bgp:
       maximum_routes: 12000
       send_community: all
     - name: EVPN-OVERLAY-PEERS
-      type: evpn
+      metadata:
+        type: evpn
       remote_as: 65001
       weight: 100
       timers: 1600 1600
@@ -184,7 +199,8 @@ router_bgp:
       remove_private_as_ingress:
         enabled: false
     - name: MLAG-IPv4-UNDERLAY-PEER
-      type: ipv4
+      metadata:
+        type: ipv4
       remote_as: 65101
       next_hop_self: true
       password: "vnEaG8gMeQf3d3cN6PktXQ=="
@@ -233,7 +249,8 @@ router_bgp:
     - name: TEST
       ttl_maximum_hops: 42
     - name: OBS_WAN
-      type: ipv4
+      metadata:
+        type: ipv4
       description: 'BGP Connection to OBS WAN CPE'
       remote_as: 65000
       as_path:
@@ -245,22 +262,26 @@ router_bgp:
         min_rx: 2000
         multiplier: 3
     - name: WELCOME_ROUTERS
-      type: ipv4
+      metadata:
+        type: ipv4
       description: 'BGP Connection to WELCOME ROUTER 02'
       remote_as: 65001
     - name: SEDI
-      type: ipv4
+      metadata:
+        type: ipv4
       description: 'BGP Connection to OBS WAN CPE'
       remote_as: 65003
       update_source: Loopback101
       ebgp_multihop: 10
       bfd: false
     - name: SEDI-shut
-      type: ipv4
+      metadata:
+        type: ipv4
       description: 'BGP Peer Shutdown'
       shutdown: true
     - name: TEST-PASSIVE
-      type: ipv4
+      metadata:
+        type: ipv4
       description: 'BGP Connection in passive mode'
       remote_as: 65003
       passive: true
@@ -1447,7 +1468,8 @@ router_bgp:
   vlan_aware_bundles:
     - name: TENANT_A_PROJECT01
       rd: "192.168.255.3:11"
-      description: TENANT_A_PROJECT01
+      metadata:
+        description: TENANT_A_PROJECT01
       route_targets:
         both:
           - "11:11"
@@ -1478,7 +1500,8 @@ router_bgp:
         - learned
       vlan: 112
     - name: B-ELAN-201
-      tenant: Tenant_B
+      metadata:
+        tenant: Tenant_B
       rd: "192.168.255.3:20201"
       route_targets:
         export:
