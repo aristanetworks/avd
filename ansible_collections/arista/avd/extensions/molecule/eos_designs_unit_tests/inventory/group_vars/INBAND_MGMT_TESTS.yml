@@ -16,17 +16,16 @@ default_node_types:
     node_type: l2leaf
 
 default_interfaces:
-  - types: [ spine ]
-    platforms: [ default ]
-    downlink_interfaces: [ Ethernet1-10 ]
-  - types: [ l3leaf, l2leaf ]
-    platforms: [ default ]
-    uplink_interfaces: [ Ethernet1-10 ]
-    mlag_interfaces: [ Ethernet11-20 ]
-    downlink_interfaces: [ Ethernet21-30 ]
+  - types: [spine]
+    platforms: [default]
+    downlink_interfaces: [Ethernet1-10]
+  - types: [l3leaf, l2leaf]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-10]
+    mlag_interfaces: [Ethernet11-20]
+    downlink_interfaces: [Ethernet21-30]
     # Test for setting mlag interfaces speed via default_interfaces
     mlag_interfaces_speed: forced 100gfull
-
 default_mgmt_method: inband
 
 cv_settings:
@@ -142,6 +141,7 @@ l2leaf:
     - name: inband-mgmt-dualstack-ips
       inband_mgmt_vlan: 105
       uplink_switches: [inband-mgmt-parent-dualstack1, inband-mgmt-parent-dualstack2]
+      # TODO: this is weird behavior to have not inband_mgmt_vrf defined here when the SVI is in the VRF in tenants.
       inband_mgmt_ip: 192.168.105.22/24
       inband_mgmt_gateway: 192.168.105.1
       inband_mgmt_ipv6_address: 2a00:105::123/64

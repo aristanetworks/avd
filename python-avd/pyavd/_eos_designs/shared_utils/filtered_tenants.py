@@ -51,6 +51,7 @@ class FilteredTenantsMixin(Protocol):
                     continue
                 tenant = original_tenant._deepcopy()
                 tenant._internal_data.context = f"{network_services_key.key}"
+                tenant._internal_data.inband_mgmt = False
                 tenant.l2vlans = self.filtered_l2vlans(tenant)
                 # TODO: can consider updating this as we go along.
                 all_vlans.update(l2vlan.id for l2vlan in tenant.l2vlans)
@@ -58,80 +59,73 @@ class FilteredTenantsMixin(Protocol):
                 all_vlans.update(svi.id for vrf in tenant.vrfs for svi in vrf.svis)
                 filtered_tenants.append(tenant)
 
-        # TODO: Make a separate method
-        no_vrf_default = all("default" not in tenant.vrfs for tenant in filtered_tenants)
-        if self.is_wan_router and no_vrf_default:
-            filtered_tenants.append(
-                EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem(
-                    name="WAN_DEFAULT",
-                    vrfs=EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.Vrfs(
-                        [
-                            EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem(
-                                name="default",
-                                vrf_id=1,
-                            )
-                        ]
-                    ),
-                )
-            )
-        elif self.is_wan_router:
-            # It is enough to check only the first occurrence of default VRF as some other piece of code
-            # checks that if the VRF is in multiple tenants, the configuration is consistent.
-            for tenant in filtered_tenants:
-                if "default" not in tenant.vrfs:
-                    continue
-                if self.inputs.underlay_filter_peer_as:
-                    msg = "WAN configuration is not compatible with 'underlay_filter_peer_as'"
-                    raise AristaAvdError(msg)
-                break
+        # Inject default VRF for WAN routers if this is missing
+        self.ensure_defaut_vrf_for_wan(filtered_tenants)
 
-        # TODO: Make a separated method
-        if self.inband_management_parent_vlans or self.configure_inband_mgmt or self.configure_inband_mgmt_ipv6:
-            # First, look for any mgmt VRF defined in networks services named the same as inband_mgmt_vrf
-            mgmt_inband_tuple: (
-                tuple[
-                    EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
-                    EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
-                ]
-                | tuple[None, None]
-            ) = next(((vrf, tenant) for tenant in filtered_tenants for vrf in tenant.vrfs if self.node_config.inband_mgmt_vrf == vrf.name), (None, None))
-            # Looks like pyright is limited on this one... and does not understand properly if mgmt_inband_tuple != (None, None):
-            mgmt_inband_vrf, mgmt_inband_tenant = mgmt_inband_tuple
-            if mgmt_inband_vrf is not None and mgmt_inband_tenant is not None:
-                self.inject_management_vlans(mgmt_inband_vrf, mgmt_inband_tenant, all_vlans)
-                self.filtered_mgmt_inband_vrf = mgmt_inband_vrf
-                self.filtered_mgmt_inband_tenant = mgmt_inband_tenant
-            else:
-                # Using obtain to avoid name clash.
-                mgmt_inband_tenant = filtered_tenants.obtain("inband_mgmt")
-                mgmt_inband_vrf = mgmt_inband_tenant.vrfs.append_new(
-                    name=self.inband_mgmt_vrf or "default",
-                    vrf_id=666,
-                    address_families=EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.AddressFamilies(),
-                )
-                self.inject_management_vlans(mgmt_inband_vrf, mgmt_inband_tenant, all_vlans)
-                self.filtered_mgmt_inband_vrf = mgmt_inband_vrf
-                self.filtered_mgmt_inband_tenant = mgmt_inband_tenant
-                filtered_tenants.append(mgmt_inband_tenant)
+        self.ensure_inband_mgmt_vrf(filtered_tenants, all_vlans)
 
         return filtered_tenants._natural_sorted()
 
-    filtered_mgmt_inband_vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem | None = None
-    filtered_mgmt_inband_tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem | None = None
+    @cached_property
+    def filtered_inband_mgmt_tenant(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem | None:
+        for tenant in self.filtered_tenants:
+            if hasattr(tenant._internal_data, "inband_mgmt") and tenant._internal_data.inband_mgmt is True:
+                return tenant
+        return None
+
+    @cached_property
+    def filtered_inband_mgmt_vrf(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem | None:
+        if self.filtered_inband_mgmt_tenant is None:
+            return None
+
+        for vrf in self.filtered_inband_mgmt_tenant.vrfs:
+            if hasattr(vrf._internal_data, "inband_mgmt") and vrf._internal_data.inband_mgmt is True:
+                return vrf
+        return None
+
+    def ensure_inband_mgmt_vrf(
+        self: SharedUtilsProtocol,
+        filtered_tenants: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServices,
+        all_vlans: set[int],
+    ) -> None:
+        """For devices where a child device requires its inband management VLAN to be configured, add a SVI."""
+        if not (self.inband_management_parent_vlans or self.configure_inband_mgmt or self.configure_inband_mgmt_ipv6):
+            return
+
+        # First, look for any mgmt VRF defined in networks services named the same as inband_mgmt_vrf
+        mgmt_inband_tuple: (
+            tuple[
+                EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+                EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+            ]
+            | tuple[None, None]
+        ) = next(((vrf, tenant) for tenant in filtered_tenants for vrf in tenant.vrfs if self.node_config.inband_mgmt_vrf == vrf.name), (None, None))
+        # Looks like pyright is limited on this one... and does not understand properly if mgmt_inband_tuple != (None, None):
+        mgmt_inband_vrf, mgmt_inband_tenant = mgmt_inband_tuple
+        if mgmt_inband_vrf is not None and mgmt_inband_tenant is not None:
+            mgmt_inband_vrf._internal_data.inband_mgmt = True
+            mgmt_inband_tenant._internal_data.inband_mgmt = True
+            self.inject_management_vlans(mgmt_inband_vrf, all_vlans)
+        # Using obtain to avoid name clash.
+        mgmt_inband_tenant = filtered_tenants.obtain("inband_mgmt")
+        mgmt_inband_tenant._internal_data.inband_mgmt = True
+        mgmt_inband_vrf = mgmt_inband_tenant.vrfs.append_new(
+            name=self.inband_mgmt_vrf or "default",
+            vrf_id=666,
+            address_families=EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.AddressFamilies(),
+        )
+        mgmt_inband_vrf._internal_data.inband_mgmt = True
+        self.inject_management_vlans(mgmt_inband_vrf, all_vlans)
+        filtered_tenants.append(mgmt_inband_tenant)
 
     def inject_management_vlans(
         self: SharedUtilsProtocol,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
-        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
         all_vlans: set[int],
     ) -> None:
         """Return a tenant if any additional vlan has to be configured for inband management."""
-        if (self.configure_inband_mgmt or self.configure_inband_mgmt_ipv6) and self.node_config.inband_mgmt_vlan not in all_vlans:
-            _ = tenant.l2vlans.append_new(
-                id=self.node_config.inband_mgmt_vlan,
-                name=self.node_config.inband_mgmt_vlan_name,
-            )
-
+        if not self.inband_management_parent_vlans:
+            return
         for vlan, subnet in self.inband_management_parent_vlans.items():
             if vlan not in all_vlans:
                 svi = vrf.svis.append_new(
@@ -158,6 +152,44 @@ class FilteredTenantsMixin(Protocol):
                     if self.underlay_routing_protocol == "ebgp":
                         svi.ipv6_attached_host_route_export._update(enabled=True, distance=19)
                 all_vlans.add(vlan)
+
+    def ensure_defaut_vrf_for_wan(self: SharedUtilsProtocol, filtered_tenants: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServices) -> None:
+        """
+        Ensure the VRF default is present in filtered tenants for WAN routers.
+
+        If not present, add it.
+        If present, make sure no incompatible configuration exists on the VRF:
+            * underlay_filter_peer_as
+
+        Raises:
+            AristaAvdError
+                If incompatible configuration is found.
+        """
+        no_vrf_default = all("default" not in tenant.vrfs for tenant in filtered_tenants)
+        if self.is_wan_router and no_vrf_default:
+            filtered_tenants.append(
+                EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem(
+                    name="WAN_DEFAULT",
+                    vrfs=EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.Vrfs(
+                        [
+                            EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem(
+                                name="default",
+                                vrf_id=1,
+                            )
+                        ]
+                    ),
+                )
+            )
+        elif self.is_wan_router:
+            # It is enough to check only the first occurrence of default VRF as some other piece of code
+            # checks that if the VRF is in multiple tenants, the configuration is consistent.
+            for tenant in filtered_tenants:
+                if "default" not in tenant.vrfs:
+                    continue
+                if self.inputs.underlay_filter_peer_as:
+                    msg = "WAN configuration is not compatible with 'underlay_filter_peer_as'"
+                    raise AristaAvdError(msg)
+                break
 
     def filtered_l2vlans(
         self: SharedUtilsProtocol, tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem

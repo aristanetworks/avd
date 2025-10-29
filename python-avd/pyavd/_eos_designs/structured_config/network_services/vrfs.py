@@ -61,11 +61,11 @@ class VrfsMixin(Protocol):
         For other devices the VRF is injected in the filtered tenants by AVD.
         """
         if (self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6) and (
-            vrf := self.shared_utils.filtered_mgmt_inband_vrf
+            vrf := self.shared_utils.filtered_inband_mgmt_vrf
         ) is not None:
             if vrf.name == "default":
                 return
-            tenant_name = self.shared_utils.filtered_mgmt_inband_tenant.name if self.shared_utils.filtered_mgmt_inband_tenant is not None else "inband_mgmt"
+            tenant_name = self.shared_utils.filtered_inband_mgmt_tenant.name if self.shared_utils.filtered_inband_mgmt_tenant is not None else "inband_mgmt"
             new_vrf = EosCliConfigGen.VrfsItem(name=vrf.name, tenant=tenant_name)
             if vrf.description:
                 new_vrf.description = vrf.description

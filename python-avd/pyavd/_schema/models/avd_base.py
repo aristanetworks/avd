@@ -23,6 +23,7 @@ class InternalData:
         "evpn_l3_multicast_enabled",
         "evpn_l3_multicast_evpn_peg_transit",
         "evpn_l3_multicast_group_ip",
+        "inband_mgmt",
         "interface",
         "interfaces",
         "pim_rp_addresses",
@@ -35,6 +36,7 @@ class InternalData:
     evpn_l3_multicast_enabled: bool | None
     evpn_l3_multicast_evpn_peg_transit: bool | None
     evpn_l3_multicast_group_ip: str | None
+    inband_mgmt: bool | None
     interface: str
     interfaces: list
     pim_rp_addresses: list[dict]

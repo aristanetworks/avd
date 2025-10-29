@@ -32,7 +32,8 @@ class VlanInterfacesMixin(Protocol):
         Consist of svis and mlag peering vlans from filtered tenants
         """
         if not (self.shared_utils.network_services_l2 and self.shared_utils.network_services_l3):
-            self._set_l2_device_inband_mgmt_svi()
+            if not self.shared_utils.network_services_l3 and not self.shared_utils.underlay_router:
+                self._set_l2_device_inband_mgmt_svi()
             return
 
         for tenant in self.shared_utils.filtered_tenants:
@@ -67,18 +68,10 @@ class VlanInterfacesMixin(Protocol):
             )
             # TODO: this is not great we should do this someplace else
             vlan = self.structured_config.vlans.obtain(self.shared_utils.node_config.inband_mgmt_vlan)
+            # This works because it comes after network_services.
             vlan.name = self.shared_utils.node_config.inband_mgmt_vlan_name
-            # The following raises duplicate (as expected) when name is set
-            # But name must be set on the SVIs for other nodes so we need to override scenario on these
-            # devices.
-            # It could be done in filtered tenants but this looks weird.
-            # - self.structured_config.vlans.append(
-            # -    EosCliConfigGen.VlansItem(
-            # -        id=self.shared_utils.node_config.inband_mgmt_vlan,
-            # -        name=self.shared_utils.node_config.inband_mgmt_vlan_name,
-            # -    ),
-            # -    ignore_fields=("tenant",),
-            # -)
+            if self.shared_utils.filtered_inband_mgmt_tenant is not None:
+                vlan.tenant = self.shared_utils.filtered_inband_mgmt_tenant.name
 
     def _check_virtual_router_mac_address(self: AvdStructuredConfigNetworkServicesProtocol, variable: str) -> None:
         """Raise if virtual router mac address is required but missing, otherwise return None."""

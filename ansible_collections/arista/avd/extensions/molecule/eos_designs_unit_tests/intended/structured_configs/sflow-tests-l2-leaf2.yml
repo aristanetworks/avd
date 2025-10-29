@@ -86,12 +86,12 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vlans:
-- id: 4092
-  name: INBAND_MGMT
-  tenant: inband_mgmt
 - id: 11
   name: VLAN11
   tenant: SFLOW
+- id: 4092
+  name: INBAND_MGMT
+  tenant: inband_mgmt
 vrfs:
 - name: MGMT
   ip_routing: false
