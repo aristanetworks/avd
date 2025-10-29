@@ -22,9 +22,10 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
   service_profile: TEST-QOS-PROFILE
-  peer: peer1
-  peer_interface: ethernet1
-  peer_type: other
+  metadata:
+    peer: peer1
+    peer_interface: ethernet1
+    peer_type: other
   switchport:
     enabled: false
 - name: ethernet2
@@ -34,9 +35,10 @@ ethernet_interfaces:
   ip_address: 192.168.0.2/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer: peer2
-  peer_interface: ethernet2
-  peer_type: other
+  metadata:
+    peer: peer2
+    peer_interface: ethernet2
+    peer_type: other
   switchport:
     enabled: false
 - name: ethernet3
@@ -46,9 +48,10 @@ ethernet_interfaces:
   ip_address: 192.168.0.4/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer: peer3
-  peer_interface: ethernet3
-  peer_type: other
+  metadata:
+    peer: peer3
+    peer_interface: ethernet3
+    peer_type: other
   switchport:
     enabled: false
 - name: ethernet4
@@ -58,9 +61,10 @@ ethernet_interfaces:
   ip_address: 192.168.0.6/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer: peer4
-  peer_interface: ethernet4
-  peer_type: other
+  metadata:
+    peer: peer4
+    peer_interface: ethernet4
+    peer_type: other
   switchport:
     enabled: false
 hostname: l3_edge_ospf

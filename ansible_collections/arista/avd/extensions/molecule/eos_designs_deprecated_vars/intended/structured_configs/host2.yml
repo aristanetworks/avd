@@ -15,9 +15,10 @@ ethernet_interfaces:
   isis_circuit_type: level-2
   mpls:
     ip: true
-  peer: host1
-  peer_interface: Ethernet42
-  peer_type: l3leaf
+  metadata:
+    peer: host1
+    peer_interface: Ethernet42
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: host2
@@ -63,7 +64,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     remote_as: '102'
     update_source: Loopback0
     bfd: true

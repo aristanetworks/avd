@@ -12,9 +12,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC2-POD1-SPINE1
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: DC2-POD1-SPINE1
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -24,18 +25,20 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC2-POD1-SPINE2
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: DC2-POD1-SPINE2
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet4
   description: P2P_DC1-SUPER-SPINE2_Ethernet6
   shutdown: false
   ip_address: 11.1.2.3/31
-  peer: DC1-SUPER-SPINE2
-  peer_interface: Ethernet6
-  peer_type: super-spine
+  metadata:
+    peer: DC1-SUPER-SPINE2
+    peer_interface: Ethernet6
+    peer_type: super-spine
   switchport:
     enabled: false
 hostname: DC2-SUPER-SPINE2
@@ -97,24 +100,28 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   neighbors:
   - ip_address: 172.16.21.65
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65210'
-    peer: DC2-POD1-SPINE1
+    metadata:
+      peer: DC2-POD1-SPINE1
     description: DC2-POD1-SPINE1_Ethernet2
   - ip_address: 172.16.21.67
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65210'
-    peer: DC2-POD1-SPINE2
+    metadata:
+      peer: DC2-POD1-SPINE2
     description: DC2-POD1-SPINE2_Ethernet2
   - ip_address: 11.1.2.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
-    peer: DC1-SUPER-SPINE2
+    metadata:
+      peer: DC1-SUPER-SPINE2
     description: DC1-SUPER-SPINE2
   redistribute:
     connected:

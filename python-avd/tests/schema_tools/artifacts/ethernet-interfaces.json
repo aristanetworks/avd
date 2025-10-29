@@ -20,9 +20,11 @@
     "ethernet_interfaces": [
         {
             "name": "Ethernet1",
-            "peer": "DC1-SPINE1",
-            "peer_interface": "Ethernet1",
-            "peer_type": "spine",
+            "metadata": {
+                "peer": "DC1-SPINE1",
+                "peer_interface": "Ethernet1",
+                "peer_type": "spine"
+            },
             "description": "P2P_LINK_TO_DC1-SPINE1_Ethernet1",
             "speed": "forced 100gfull",
             "mtu": 1500,
@@ -219,9 +221,11 @@
         },
         {
             "name": "Ethernet2",
-            "peer": "SRV-POD03",
-            "peer_interface": "Eth1",
-            "peer_type": "server",
+            "metadata": {
+                "peer": "SRV-POD03",
+                "peer_interface": "Eth1",
+                "peer_type": "server"
+            },
             "description": "SRV-POD02_Eth1",
             "tcp_mss_ceiling": {
                 "ipv4": 70,
@@ -297,9 +301,11 @@
         },
         {
             "name": "Ethernet3",
-            "peer": "DC1-SPINE2",
-            "peer_interface": "Ethernet2",
-            "peer_type": "spine",
+            "metadata": {
+                "peer": "DC1-SPINE2",
+                "peer_interface": "Ethernet2",
+                "peer_type": "spine"
+            },
             "description": "P2P_LINK_TO_DC1-SPINE2_Ethernet2",
             "mtu": 1500,
             "ip_address": "172.31.128.1/31",
@@ -485,9 +491,11 @@
                     "storm_control_discards": true
                 }
             },
-            "peer": "SRV-POD02",
-            "peer_interface": "Eth1",
-            "peer_type": "server",
+            "metadata": {
+                "peer": "SRV-POD02",
+                "peer_interface": "Eth1",
+                "peer_type": "server"
+            },
             "description": "SRV-POD02_Eth1",
             "switchport": {
                 "enabled": true,
@@ -670,9 +678,11 @@
                     "link_status": true
                 }
             },
-            "peer": "SRV-POD02",
-            "peer_interface": "Eth1",
-            "peer_type": "server",
+            "metadata": {
+                "peer": "SRV-POD02",
+                "peer_interface": "Eth1",
+                "peer_type": "server"
+            },
             "description": "SRV-POD02_Eth1",
             "switchport": {
                 "enabled": true,

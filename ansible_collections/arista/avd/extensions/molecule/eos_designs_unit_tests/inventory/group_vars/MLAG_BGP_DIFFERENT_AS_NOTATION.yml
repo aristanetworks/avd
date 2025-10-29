@@ -14,7 +14,7 @@ l3leaf:
     virtual_router_mac_address: 00:1c:73:00:00:99
   node_groups:
     - group: MLAG_BGP_DIFFERENT_AS_NOTATION
-      bgp_as: 923.923
+      bgp_as: "923.923"
       nodes:
         - name: MLAG_BGP_DIFFERENT_AS_NOTATION_1
           id: 0
