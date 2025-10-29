@@ -22574,6 +22574,11 @@ keys:
 
                 The remote_address and udp_port are used for remote users.
 
+                A `snmp_server.engine_ids.remotes` entry with a matching address is
+                required when this is set
+
+                and `localized` is not set.
+
                 '
             udp_port:
               type: int
