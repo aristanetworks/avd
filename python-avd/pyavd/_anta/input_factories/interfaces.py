@@ -100,7 +100,7 @@ class VerifyStormControlDropsInputFactory(AntaTestInputFactory[VerifyStormContro
     """
     Input factory class for the `VerifyStormControlDrops` test.
 
-    Run the test if find at least one Ethernet or Port-Channel interface configured with storm-control on the device. Otherwise skip the test.
+    Generate the test inputs only if any Ethernet or Port-Channel interfaces are configured with storm-control.
     """
 
     def create(self) -> list[VerifyStormControlDrops.Input] | None:
