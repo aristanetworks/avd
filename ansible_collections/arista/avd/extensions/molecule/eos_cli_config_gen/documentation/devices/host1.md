@@ -2309,6 +2309,8 @@ mcs client
 | local | 424242424242424242 | - | - |
 | remote | 6172697374615F6970 | 1.1.1.1 | - |
 | remote | DEADBEEFCAFE123456 | 2.2.2.2 | 1337 |
+| remote | 424242424242DEAD | 42.42.42.42 | - |
+| remote | 424242424242DEAD6666 | 42.42.42.42 | 666 |
 
 #### SNMP ACLs
 
@@ -2403,9 +2405,6 @@ snmp-server community <removed> view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
 snmp-server community <removed> ro
 snmp-server group GRP-READ-ONLY v3 priv read v3read
 snmp-server group GRP-READ-WRITE v3 auth read v3read write v3write
-snmp-server user REMOTE-USER-IP-LOCALIZED GRP-REMOTE remote 42.42.42.42 v3 localized DEADBEEFCAFE123456 auth sha <removed>
-snmp-server user REMOTE-USER-IP-ONLY GRP-REMOTE remote 42.42.42.42 v3
-snmp-server user REMOTE-USER-IP-PORT GRP-REMOTE remote 42.42.42.42 udp-port 666 v3
 snmp-server user USER-READ-AUTH-NO-PRIV GRP-READ-ONLY v3 auth sha <removed>
 snmp-server user USER-READ-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3 localized 424242424242424242 auth sha <removed>
 snmp-server user USER-READ-AUTH-PRIV GRP-READ-ONLY v3 auth sha <removed> priv aes <removed>
@@ -2415,12 +2414,17 @@ snmp-server user USER-READ-NO-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3
 snmp-server user USER-WRITE GRP-READ-WRITE v3 auth sha <removed> priv aes <removed>
 snmp-server engineID remote 1.1.1.1 6172697374615F6970
 snmp-server engineID remote 2.2.2.2 udp-port 1337 DEADBEEFCAFE123456
-snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-READ-AUTH-NO-PRIV
-snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-WRITE
+snmp-server engineID remote 42.42.42.42 424242424242DEAD
+snmp-server engineID remote 42.42.42.42 udp-port 666 424242424242DEAD6666
+snmp-server user REMOTE-USER-IP-LOCALIZED GRP-REMOTE remote 42.42.42.42 v3 localized DEADBEEFCAFE123456 auth sha <removed>
+snmp-server user REMOTE-USER-IP-ONLY GRP-REMOTE remote 42.42.42.42 v3
+snmp-server user REMOTE-USER-IP-PORT GRP-REMOTE remote 42.42.42.42 udp-port 666 v3
 snmp-server host 10.6.75.100 vrf MGMT version 3 priv USER-READ-AUTH-PRIV
 snmp-server host 10.6.75.121 vrf MGMT version 1 <removed>
 snmp-server host 10.6.75.121 vrf MGMT version 2c <removed>
 snmp-server host 10.6.75.122 vrf MGMT version 2c <removed>
+snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-READ-AUTH-NO-PRIV
+snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-WRITE
 snmp-server enable traps
 snmp-server enable traps bgp
 no snmp-server enable traps bgp arista-backward-transition
