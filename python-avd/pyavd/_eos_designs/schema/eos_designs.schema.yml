@@ -269,7 +269,6 @@ keys:
     documentation_options:
       table: role-settings
     type: bool
-    default: true
     deprecation:
       warning: true
       removed: true
