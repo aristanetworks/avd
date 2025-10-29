@@ -18,9 +18,10 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: ptp-tests-spine1
-  peer_interface: Ethernet17
-  peer_type: spine
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet17
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -28,9 +29,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.1.11/31
-  peer: ptp-tests-spine2
-  peer_interface: Ethernet17
-  peer_type: spine
+  metadata:
+    peer: ptp-tests-spine2
+    peer_interface: Ethernet17
+    peer_type: spine
   switchport:
     enabled: false
 hostname: ptp-tests-leaf5
@@ -98,11 +100,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -112,22 +116,26 @@ router_bgp:
   - ip_address: 192.168.1.8
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
-    peer: ptp-tests-spine1
+    metadata:
+      peer: ptp-tests-spine1
     description: ptp-tests-spine1_Ethernet17
   - ip_address: 192.168.1.10
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
-    peer: ptp-tests-spine2
+    metadata:
+      peer: ptp-tests-spine2
     description: ptp-tests-spine2_Ethernet17
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65200'
-    peer: ptp-tests-spine1
+    metadata:
+      peer: ptp-tests-spine1
     description: ptp-tests-spine1_Loopback0
   - ip_address: 10.255.0.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65200'
-    peer: ptp-tests-spine2
+    metadata:
+      peer: ptp-tests-spine2
     description: ptp-tests-spine2_Loopback0
   redistribute:
     connected:
@@ -135,7 +143,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 11
-    tenant: PTP
+    metadata:
+      tenant: PTP
     rd: 192.168.3.3:10011
     route_targets:
       both:
@@ -179,7 +188,8 @@ vlan_interfaces:
   description: VLAN11
   shutdown: false
   vrf: VRF1
-  tenant: PTP
+  metadata:
+    tenant: PTP
 vlan_internal_order:
   allocation: ascending
   range:

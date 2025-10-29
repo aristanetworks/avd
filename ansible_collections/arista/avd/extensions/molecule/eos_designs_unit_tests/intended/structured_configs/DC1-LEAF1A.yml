@@ -22,9 +22,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.1/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet1/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet1/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet28
@@ -33,9 +34,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.3/31
-  peer: DC1-SPINE2
-  peer_interface: Ethernet1/1/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet1/1/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet29
@@ -44,9 +46,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.5/31
-  peer: DC1-SPINE3
-  peer_interface: Ethernet1/1/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet1/1/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet30
@@ -55,9 +58,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.7/31
-  peer: DC1-SPINE4
-  peer_interface: Ethernet1/1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet1/1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet6
@@ -68,11 +72,12 @@ ethernet_interfaces:
   spanning_tree_bpdufilter: 'False'
   spanning_tree_bpduguard: 'False'
   spanning_tree_portfast: edge
-  peer: server02_SINGLE_NODE_TRUNK
-  peer_interface: Eth1
-  peer_type: server
-  peer_key: servers
-  port_profile: ALL_WITH_SECURITY
+  metadata:
+    peer: server02_SINGLE_NODE_TRUNK
+    peer_interface: Eth1
+    peer_type: server
+    peer_key: servers
+    port_profile: ALL_WITH_SECURITY
   switchport:
     enabled: true
     mode: trunk
@@ -81,11 +86,12 @@ ethernet_interfaces:
 - name: Ethernet7
   description: server02_SINGLE_NODE_Eth1
   shutdown: false
-  peer: server02_SINGLE_NODE
-  peer_interface: Eth1
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_A
+  metadata:
+    peer: server02_SINGLE_NODE
+    peer_interface: Eth1
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_A
   switchport:
     enabled: true
     mode: access
@@ -93,10 +99,11 @@ ethernet_interfaces:
 - name: Ethernet8
   description: PHONE01_untagged_Eth0
   shutdown: false
-  peer: PHONE01_untagged
-  peer_interface: Eth0
-  peer_type: phone
-  peer_key: phones
+  metadata:
+    peer: PHONE01_untagged
+    peer_interface: Eth0
+    peer_type: phone
+    peer_key: phones
   switchport:
     enabled: true
     mode: trunk phone
@@ -108,10 +115,11 @@ ethernet_interfaces:
 - name: Ethernet9
   description: PHONE02_tagged_Eth0
   shutdown: false
-  peer: PHONE02_tagged
-  peer_interface: Eth0
-  peer_type: phone
-  peer_key: phones
+  metadata:
+    peer: PHONE02_tagged
+    peer_interface: Eth0
+    peer_type: phone
+    peer_key: phones
   switchport:
     enabled: true
     mode: trunk phone
@@ -239,12 +247,14 @@ router_bgp:
       ipv4_unicast: true
   peer_groups:
   - name: UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -255,47 +265,51 @@ router_bgp:
   - ip_address: 172.31.254.0
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet1/1
   - ip_address: 172.31.254.2
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet1/1/1
   - ip_address: 172.31.254.4
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet1/1/1
   - ip_address: 172.31.254.6
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet1/1
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4
-  aggregate_addresses:
-  - prefix: 10.1.1.0/8
-    advertise_only: true
-  - prefix: 10.2.1.0/8
   redistribute:
     connected:
       enabled: true
@@ -382,6 +396,10 @@ router_bgp:
         enabled: true
       ospf:
         enabled: true
+    aggregate_addresses:
+    - prefix: 10.1.1.0/8
+      advertise_only: true
+    - prefix: 10.2.1.0/8
   - name: Tenant_A_WEB_Zone
     rd: 1.1.1.1:11
     route_targets:
@@ -458,18 +476,20 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.30.1/24
-  tenant: Tenant_A
-  tags:
-  - app
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - app
+    - erp1
 - name: Vlan131
   description: Tenant_A_APP_Zone_2
   shutdown: false
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.31.1/24
-  tenant: Tenant_A
-  tags:
-  - app
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - app
 - name: Vlan132
   description: Tenant_A_APP_Zone_3
   shutdown: false
@@ -479,9 +499,10 @@ vlan_interfaces:
   - 10.1.32.254
   - 10.2.32.254/24
   - 10.3.32.254/24
-  tenant: Tenant_A
-  tags:
-  - erp2
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - erp2
 - name: Vlan113
   description: Tenant_A_OP_Zone_4
   shutdown: false
@@ -496,9 +517,10 @@ vlan_interfaces:
   - id: 2
     hash_algorithm: sha512
     key: AQQvKeimxJu+uGQ/yYvv9w==
-  tenant: Tenant_A
-  tags:
-  - DC1_LEAF1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - DC1_LEAF1
 - name: Vlan120
   description: Tenant_A_WEB_Zone_1
   shutdown: false
@@ -511,19 +533,21 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     source_interface: lo100
     vrf: TEST
-  tenant: Tenant_A
-  tags:
-  - web
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
+    - erp1
 - name: Vlan121
   description: Tenant_A_WEBZone_2
   shutdown: true
   vrf: Tenant_A_WEB_Zone
   ip_address_virtual: 10.1.10.254/24
   mtu: 1560
-  tenant: Tenant_A
-  tags:
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
 - name: Vlan450
   description: Tenant_D_v6_WAN_Zone_1
   shutdown: false
@@ -531,9 +555,10 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:db8:355::1/64
-  tenant: Tenant_D
-  tags:
-  - v6wan
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6wan
 - name: Vlan451
   description: Tenant_D_v6_WAN_Zone_2
   shutdown: false
@@ -542,9 +567,10 @@ vlan_interfaces:
   ipv6_address_virtuals:
   - 2001:db8:451::1/64
   mtu: 1560
-  tenant: Tenant_D
-  tags:
-  - v6wan
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6wan
 - name: Vlan452
   description: Tenant_D_v6_WAN_Zone_3
   shutdown: false
@@ -554,9 +580,10 @@ vlan_interfaces:
   ipv6_address_virtuals:
   - 2001:db8:412::1/64
   mtu: 1560
-  tenant: Tenant_D
-  tags:
-  - v6wan
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6wan
 vlan_internal_order:
   allocation: ascending
   range:

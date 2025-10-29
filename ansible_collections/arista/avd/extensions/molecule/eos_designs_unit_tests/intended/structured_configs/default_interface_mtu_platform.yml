@@ -11,10 +11,12 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 10
   ip_address: 10.10.10.10/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet10
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 hostname: default_interface_mtu_platform
@@ -66,11 +68,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3

@@ -46,7 +46,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                 ip_address=self.shared_utils.inband_mgmt_ip,
                 ipv6_enable=None if not self.shared_utils.configure_inband_mgmt_ipv6 else True,
                 ipv6_address=self.shared_utils.inband_mgmt_ipv6_address,
-                type="inband_mgmt",
+                metadata=EosCliConfigGen.VlanInterfacesItem.Metadata(type="inband_mgmt"),
             )
             return
         for vlan, subnet in self.shared_utils.inband_management_parent_vlans.items():

@@ -1,0 +1,150 @@
+{
+    "payload": [
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
+                },
+                "createdAt": "2025-05-06T16:28:02.014825088",
+                "createdBy": "agorbunov",
+                "lastModifiedAt": "2025-05-06T16:28:02.169589878",
+                "lastModifiedBy": "agorbunov",
+                "state": "PENDING",
+                "lastBuildId": "",
+                "responses": {},
+                "ccIds": {},
+                "needsBuild": false,
+                "needsRebase": false,
+                "displayName": "MOCKED_WS_NAME",
+                "description": "MOCKED_WS_DESCRIPTION"
+            },
+            "time": "2025-05-06T16:28:02.222973524",
+            "type": "INITIAL"
+        },
+        {
+            "type": "INITIAL_SYNC_COMPLETE"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
+                },
+                "createdAt": "2025-05-06T16:28:02.014825088",
+                "createdBy": "agorbunov",
+                "lastModifiedAt": "2025-05-06T16:28:02.169589878",
+                "lastModifiedBy": "agorbunov",
+                "state": "PENDING",
+                "lastBuildId": "req-914310f3-08dd-4239-bd42-6d78bf781229",
+                "responses": {},
+                "ccIds": {},
+                "needsBuild": false,
+                "needsRebase": false,
+                "displayName": "MOCKED_WS_NAME",
+                "description": "MOCKED_WS_DESCRIPTION"
+            },
+            "time": "2025-05-06T16:28:02.306694057",
+            "type": "UPDATED"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
+                },
+                "createdAt": "2025-05-06T16:28:02.014825088",
+                "createdBy": "agorbunov",
+                "lastModifiedAt": "2025-05-06T16:28:02.169589878",
+                "lastModifiedBy": "agorbunov",
+                "state": "PENDING",
+                "lastBuildId": "req-914310f3-08dd-4239-bd42-6d78bf781229",
+                "responses": {
+                    "values": {
+                        "req-914310f3-08dd-4239-bd42-6d78bf781229": {
+                            "status": "SUCCESS",
+                            "message": "Build req-914310f3-08dd-4239-bd42-6d78bf781229 finished successfully"
+                        },
+                        "req-914310f3-08dd-4239-bd42-6d78b0000000": {
+                            "status": "FAIL",
+                            "message": "Build req-914310f3-08dd-4239-bd42-6d78b0000000 failed"
+                        },
+                        "req-18654b6a-9f75-4a57-878d-d40d73701238": {
+                        "status": "FAIL",
+                        "message": "some devices are inactive",
+                        "code": "INACTIVE_DEVICES_EXIST"
+                        },
+                        "req-725669d2-2ec5-4572-8c6a-453b1fea27c0": {
+                        "status": "FAIL",
+                        "message": "Unknown exception faced",
+                        "code": "UNSPECIFIED"
+                        }
+                    }
+                },
+                "ccIds": {},
+                "needsBuild": false,
+                "needsRebase": false,
+                "displayName": "MOCKED_WS_NAME",
+                "description": "MOCKED_WS_DESCRIPTION"
+            },
+            "time": "2025-05-06T16:28:02.453411785",
+            "type": "UPDATED"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
+                },
+                "createdAt": "2025-05-07T01:26:41.597047964",
+                "createdBy": "agorbunov",
+                "lastModifiedAt": "2025-05-07T01:26:42.288965861",
+                "lastModifiedBy": "agorbunov",
+                "state": "SUBMITTED",
+                "lastBuildId": "req-914310f3-08dd-4239-bd42-6d78bf781229",
+                "responses": {
+                    "values": {
+                        "req-914310f3-08dd-4239-bd42-6d78bf781229": {
+                            "status": "SUCCESS",
+                            "message": "Build req-914310f3-08dd-4239-bd42-6d78bf781229 finished successfully"
+                        },
+                        "req-b8f4e511-58de-4afe-99f0-b75abf980131": {
+                            "status": "SUCCESS",
+                            "message": "Submitted successfully. No change control was created because no config or software changes were created."
+                        }
+                    }
+                },
+                "ccIds": {},
+                "needsBuild": false,
+                "needsRebase": false,
+                "displayName": "MOCKED_WS_NAME",
+                "description": "MOCKED_WS_DESCRIPTION"
+            },
+            "time": "2025-05-07T01:26:43.432802896",
+            "type": "UPDATED"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
+                },
+                "createdAt": "2025-05-14T22:49:40.714107277",
+                "createdBy": "agorbunov",
+                "lastModifiedAt": "2025-05-14T22:49:53.648243775",
+                "lastModifiedBy": "agorbunov",
+                "state": "ABANDONED",
+                "lastBuildId": "",
+                "responses": {
+                    "values": {
+                        "req-b65374c1-4333-4c68-9b09-d753e8560609": {
+                            "status": "SUCCESS",
+                            "message": "Abandoned"
+                        }
+                    }
+                },
+                "ccIds": {},
+                "needsBuild": false,
+                "needsRebase": false,
+                "displayName": "MOCKED_WS_NAME",
+                "description": "MOCKED_WS_DESCRIPTION"
+            },
+            "time": "2025-05-14T22:49:53.648243775"
+        }
+    ]
+}

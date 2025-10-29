@@ -16,5 +16,5 @@
     that:
       - result is success
       - result.changed == true
-      - result.warnings
+      - result.warnings | length > 0
       - result.warnings[0] == "Could not find structured config files for 'testhost'. The documentation may be incomplete."

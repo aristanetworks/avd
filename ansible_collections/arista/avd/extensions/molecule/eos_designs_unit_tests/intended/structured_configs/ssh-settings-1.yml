@@ -18,6 +18,7 @@ management_ssh:
   ip_access_group_in: IPv4-ACL-SSH-VRF-DEFAULT
   ipv6_access_group_in: ACL-SSH-VRF-DEFAULT
   idle_timeout: 15
+  enable: false
   vrfs:
   - name: default
     enable: true

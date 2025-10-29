@@ -10,9 +10,10 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: IGMP-QUERIER-L3LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: IGMP-QUERIER-L3LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
 hostname: IGMP-QUERIER-L2LEAF1A
 ip_igmp_snooping:
   globally_enabled: true

@@ -33,9 +33,6 @@ class OverlayMixin(Protocol):
     def evpn_role(self: SharedUtilsProtocol) -> str | None:
         if self.underlay_router:
             default_evpn_role = self.node_type_key_data.default_evpn_role
-            if self.is_wan_router and not self.inputs.wan_use_evpn_node_settings_for_lan:
-                # For WAN routers without the knob, evpn_role should be ignored.
-                return None
             return default(self.node_config.evpn_role, default_evpn_role)
         return None
 
@@ -66,7 +63,7 @@ class OverlayMixin(Protocol):
             return self.vtep_ip
 
         if admin_subfield == "bgp_as":
-            return cast("str", self.bgp_as)
+            return cast("str", self.formatted_bgp_as)
 
         if admin_subfield == "vrf_router_id":
             return "vrf_router_id"
@@ -132,6 +129,9 @@ class OverlayMixin(Protocol):
 
             peer_fact = self.get_peer_facts(cast("str", self.wan_ha_peer))
             return f"{peer_fact.router_id}:{self.wan_site.id}"
+
+        if self.vtep_loopback.lower() == "loopback0":
+            return f"{self.router_id}:1"
 
         return f"{self.vtep_ip}:1"
 
