@@ -49,6 +49,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65222.13'
+  as_notation: asdot
   router_id: 192.168.255.16
   maximum_paths:
     paths: 4
@@ -61,11 +62,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3

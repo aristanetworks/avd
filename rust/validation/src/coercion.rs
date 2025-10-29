@@ -13,7 +13,7 @@ use crate::{
     validation::Validation,
 };
 
-pub(crate) trait Coercion
+pub trait Coercion
 where
     for<'x> &'x Self: TryFrom<&'x AnySchema>,
 {

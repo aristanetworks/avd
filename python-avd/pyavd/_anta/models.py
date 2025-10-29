@@ -111,7 +111,9 @@ class DeviceTestContext:
         """
         from_default_vrf = isinstance(neighbor_interface, EosCliConfigGen.RouterBgp.NeighborInterfacesItem)
         if from_default_vrf:
-            identifier = f"{neighbor_interface.name}" if neighbor_interface.peer is None else f"{neighbor_interface.peer} ({neighbor_interface.name})"
+            identifier = (
+                f"{neighbor_interface.name}" if neighbor_interface.metadata.peer is None else f"{neighbor_interface.metadata.peer} ({neighbor_interface.name})"
+            )
         else:
             identifier = f"{neighbor_interface.name} (VRF {vrf})"
 
@@ -127,8 +129,11 @@ class DeviceTestContext:
         # When peer field is set, check if the peer device is in the fabric and deployed
         if (
             from_default_vrf
-            and neighbor_interface.peer
-            and (neighbor_interface.peer not in self.minimal_structured_configs or not self.minimal_structured_configs[neighbor_interface.peer].is_deployed)
+            and neighbor_interface.metadata.peer
+            and (
+                neighbor_interface.metadata.peer not in self.minimal_structured_configs
+                or not self.minimal_structured_configs[neighbor_interface.metadata.peer].is_deployed
+            )
         ):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None
@@ -145,7 +150,7 @@ class DeviceTestContext:
         """
         from_default_vrf = isinstance(neighbor, EosCliConfigGen.RouterBgp.NeighborsItem)
         if from_default_vrf:
-            identifier = f"{neighbor.ip_address}" if neighbor.peer is None else f"{neighbor.peer} ({neighbor.ip_address})"
+            identifier = f"{neighbor.ip_address}" if neighbor.metadata.peer is None else f"{neighbor.metadata.peer} ({neighbor.ip_address})"
         else:
             identifier = f"{neighbor.ip_address} (VRF {vrf})"
 
@@ -166,8 +171,8 @@ class DeviceTestContext:
         # When peer field is set, check if the peer device is in the fabric and deployed
         if (
             from_default_vrf
-            and neighbor.peer
-            and (neighbor.peer not in self.minimal_structured_configs or not self.minimal_structured_configs[neighbor.peer].is_deployed)
+            and neighbor.metadata.peer
+            and (neighbor.metadata.peer not in self.minimal_structured_configs or not self.minimal_structured_configs[neighbor.metadata.peer].is_deployed)
         ):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None

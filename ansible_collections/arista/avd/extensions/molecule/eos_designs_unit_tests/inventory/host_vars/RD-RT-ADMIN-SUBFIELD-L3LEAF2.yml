@@ -1,6 +1,8 @@
 ---
 
 # Expected result: rd 192.168.254.2:<vlan_id>
+bgp_as_notation: asdot
+# bgp_as will not convert to asdot since the value is less than 65536
 overlay_rd_type:
   admin_subfield: vtep_loopback
   vlan_assigned_number_subfield: vlan_id

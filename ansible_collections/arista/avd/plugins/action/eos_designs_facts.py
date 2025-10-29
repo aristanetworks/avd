@@ -16,13 +16,12 @@ from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import ANSIBLE_ABOVE_2_19, ActionPluginVars, get_templar
 
 PLUGIN_NAME = "arista.avd.eos_designs_facts"
 
 if TYPE_CHECKING:
     from ansible.template import Templar
-    from ansible.vars.hostvars import HostVars
 
 try:
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
@@ -51,7 +50,9 @@ class ActionModule(ActionBase):
             profiler = cProfile.Profile()
             profiler.enable()
 
-        self.template_output = self._task.args.get("template_output", False)
+        # Only template output on ansible versions < 2.19.
+        self.template_output = bool(self._task.args.get("template_output", False)) and not ANSIBLE_ABOVE_2_19
+
         self._validation_mode = self._task.args.get("validation_mode")
         self._digital_twin = self._task.args.get("digital_twin", False)
         output_dir = self._task.args.get("output_dir")
@@ -71,8 +72,9 @@ class ActionModule(ActionBase):
             )
             raise AnsibleActionFail(msg)
 
-        # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
-        hostvars: HostVars = task_vars["hostvars"]
+        # This is an "Ansible Hostvars Manager"-like object where we can retrieve hostvars for each host on-demand.
+        # This is special because it contains role, play and task vars as well.
+        hostvars = ActionPluginVars(self)
 
         # Get updated templar instance to be passed along to our simplified "templater"
         templar = get_templar(self, task_vars)
@@ -98,7 +100,7 @@ class ActionModule(ActionBase):
 
         return result
 
-    def parse_inputs(self, fabric_hosts: list, hostvars: HostVars, result: dict) -> tuple[dict[str, EosDesigns], dict[str, dict]]:
+    def parse_inputs(self, fabric_hosts: list, hostvars: ActionPluginVars, result: dict) -> tuple[dict[str, EosDesigns], dict[str, dict]]:
         """
         Fetch hostvars for all hosts and perform data conversion & validation.
 
@@ -121,7 +123,6 @@ class ActionModule(ActionBase):
             ansible_display=display,
             schema_id="eos_designs",
             validation_mode=self._validation_mode,
-            plugin_name="arista.avd.eos_designs",
         )
 
         all_inputs: dict[str, EosDesigns] = {}
@@ -129,7 +130,10 @@ class ActionModule(ActionBase):
         data_validation_errors = 0
         for host in fabric_hosts:
             # Fetch all templated Ansible vars for this host
-            host_hostvars = dict(hostvars.get(host))
+            # In Ansible versions <2.19 the vars will be templated best-effort. Ignoring failures.
+            # From Ansible version 2.19 the vars will be templated on access and errors will be raised for any undefined vars.
+            # NOTE: We need the dict() for conversion to work below, since it is inplace updating stuff. Otherwise it looses the updates.
+            host_hostvars = dict(hostvars[host])
 
             # Set correct hostname in schema tools and perform conversion and validation
             avdschematools.hostname = host

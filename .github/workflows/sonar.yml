@@ -18,7 +18,7 @@ jobs:
 
       - name: Download coverage from ansible-test units
         continue-on-error: true
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: ansible-test-units-coverage
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -28,7 +28,7 @@ jobs:
 
       - name: Download coverage from ansible-test integration
         continue-on-error: true
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: ansible-test-integration-coverage
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -38,7 +38,7 @@ jobs:
 
       - name: Download coverage from pytest
         continue-on-error: true
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pytest-coverage
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -46,19 +46,19 @@ jobs:
           path: python-avd/
           merge-multiple: true
 
-      - name: Download coverage from pytest avdutils (bindings for rust)
+      - name: Download coverage from pytest pyavd-utils (bindings for rust)
         continue-on-error: true
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
-          name: pytest-avdutils-coverage
+          name: pytest-pyavd-utils-coverage
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
-          path: python/avdutils/
+          path: pyavd-utils/
           merge-multiple: true
 
       - name: Download eos_designs compiled templates from pytest
         continue-on-error: true
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pytest-eos-designs-compiled-templates
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -68,7 +68,7 @@ jobs:
 
       - name: Download eos_cli_config_gen compiled templates from pytest
         continue-on-error: true
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pytest-eos-cli-config-gen-compiled-templates
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -78,7 +78,7 @@ jobs:
 
       - name: Download coverage report from rust tests
         continue-on-error: true
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: rust-llvm-cov
           github-token: ${{ secrets.GITHUB_TOKEN }}

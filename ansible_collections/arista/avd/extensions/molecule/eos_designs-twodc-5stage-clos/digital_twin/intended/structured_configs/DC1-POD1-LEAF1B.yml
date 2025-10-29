@@ -18,9 +18,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC1.POD1.LEAF2A
-  peer_interface: Ethernet13
-  peer_type: l3leaf
+  metadata:
+    peer: DC1.POD1.LEAF2A
+    peer_interface: Ethernet13
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet1.1025
@@ -30,9 +31,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1025
   ip_address: 172.17.110.13/31
-  peer: DC1.POD1.LEAF2A
-  peer_interface: Ethernet13.1025
-  peer_type: l3leaf
+  metadata:
+    peer: DC1.POD1.LEAF2A
+    peer_interface: Ethernet13.1025
+    peer_type: l3leaf
 - name: Ethernet1.1102
   description: P2P_DC1.POD1.LEAF2A_Ethernet13.1102_VRF_vrf_with_loopbacks_dc1_pod1_only
   shutdown: false
@@ -40,9 +42,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1102
   ip_address: 172.17.110.13/31
-  peer: DC1.POD1.LEAF2A
-  peer_interface: Ethernet13.1102
-  peer_type: l3leaf
+  metadata:
+    peer: DC1.POD1.LEAF2A
+    peer_interface: Ethernet13.1102
+    peer_type: l3leaf
 - name: Ethernet1.1100
   description: P2P_DC1.POD1.LEAF2A_Ethernet13.1100_VRF_vrf_with_loopbacks_from_overlapping_pool
   shutdown: false
@@ -50,9 +53,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1100
   ip_address: 172.17.110.13/31
-  peer: DC1.POD1.LEAF2A
-  peer_interface: Ethernet13.1100
-  peer_type: l3leaf
+  metadata:
+    peer: DC1.POD1.LEAF2A
+    peer_interface: Ethernet13.1100
+    peer_type: l3leaf
 - name: Ethernet1.1101
   description: P2P_DC1.POD1.LEAF2A_Ethernet13.1101_VRF_vrf_with_loopbacks_from_pod_pools
   shutdown: false
@@ -60,9 +64,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1101
   ip_address: 172.17.110.13/31
-  peer: DC1.POD1.LEAF2A
-  peer_interface: Ethernet13.1101
-  peer_type: l3leaf
+  metadata:
+    peer: DC1.POD1.LEAF2A
+    peer_interface: Ethernet13.1101
+    peer_type: l3leaf
 - name: Ethernet2
   description: P2P_DC1-POD1-LEAF2B_Ethernet13
   shutdown: false
@@ -72,9 +77,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC1-POD1-LEAF2B
-  peer_interface: Ethernet13
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF2B
+    peer_interface: Ethernet13
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2.1025
@@ -84,9 +90,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1025
   ip_address: 172.17.110.15/31
-  peer: DC1-POD1-LEAF2B
-  peer_interface: Ethernet13.1025
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF2B
+    peer_interface: Ethernet13.1025
+    peer_type: l3leaf
 - name: Ethernet2.1102
   description: P2P_DC1-POD1-LEAF2B_Ethernet13.1102_VRF_vrf_with_loopbacks_dc1_pod1_only
   shutdown: false
@@ -94,9 +101,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1102
   ip_address: 172.17.110.15/31
-  peer: DC1-POD1-LEAF2B
-  peer_interface: Ethernet13.1102
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF2B
+    peer_interface: Ethernet13.1102
+    peer_type: l3leaf
 - name: Ethernet2.1100
   description: P2P_DC1-POD1-LEAF2B_Ethernet13.1100_VRF_vrf_with_loopbacks_from_overlapping_pool
   shutdown: false
@@ -104,9 +112,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1100
   ip_address: 172.17.110.15/31
-  peer: DC1-POD1-LEAF2B
-  peer_interface: Ethernet13.1100
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF2B
+    peer_interface: Ethernet13.1100
+    peer_type: l3leaf
 - name: Ethernet2.1101
   description: P2P_DC1-POD1-LEAF2B_Ethernet13.1101_VRF_vrf_with_loopbacks_from_pod_pools
   shutdown: false
@@ -114,9 +123,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1101
   ip_address: 172.17.110.15/31
-  peer: DC1-POD1-LEAF2B
-  peer_interface: Ethernet13.1101
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF2B
+    peer_interface: Ethernet13.1101
+    peer_type: l3leaf
 hostname: DC1-POD1-LEAF1B
 ip_igmp_snooping:
   globally_enabled: true
@@ -172,6 +182,7 @@ metadata:
     password: cvp123!
 router_bgp:
   as: '65111.100'
+  as_notation: asdot
   router_id: 172.16.110.6
   maximum_paths:
     paths: 4
@@ -184,7 +195,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     send_community: all
     maximum_routes: 12000
@@ -192,12 +204,14 @@ router_bgp:
   - ip_address: 172.17.110.12
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
-    peer: DC1.POD1.LEAF2A
+    metadata:
+      peer: DC1.POD1.LEAF2A
     description: DC1.POD1.LEAF2A_Ethernet13
   - ip_address: 172.17.110.14
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
-    peer: DC1-POD1-LEAF2B
+    metadata:
+      peer: DC1-POD1-LEAF2B
     description: DC1-POD1-LEAF2B_Ethernet13
   redistribute:
     connected:
@@ -326,25 +340,28 @@ vlan_interfaces:
   shutdown: false
   vrf: Common_VRF
   ip_address_virtual: 10.1.10.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan111
   description: Tenant_A_OP_Zone_2
   shutdown: true
   vrf: Common_VRF
   ip_address_virtual: 10.1.11.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan112
   description: Tenant_A_OP_Zone_3
   shutdown: false
   vrf: Common_VRF
   ip_address_virtual: 10.1.12.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
@@ -357,36 +374,40 @@ vlan_interfaces:
   shutdown: false
   vrf: Common_VRF
   ip_address_virtual: 10.10.13.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan1102
   description: test_svi
   shutdown: false
   vrf: vrf_with_loopbacks_dc1_pod1_only
   ip_address_virtual: 10.102.100.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    - web
 - name: Vlan1100
   description: test_svi
   shutdown: false
   vrf: vrf_with_loopbacks_from_overlapping_pool
   ip_address_virtual: 10.100.100.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    - web
 - name: Vlan1101
   description: test_svi
   shutdown: false
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address_virtual: 10.101.100.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    - web
 vlan_internal_order:
   allocation: ascending
   range:

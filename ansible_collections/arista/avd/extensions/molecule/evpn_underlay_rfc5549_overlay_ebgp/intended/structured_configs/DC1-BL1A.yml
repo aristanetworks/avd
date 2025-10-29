@@ -19,9 +19,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE1
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -29,9 +30,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE2
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -39,9 +41,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE3
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet4
@@ -49,9 +52,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-SPINE4
-  peer_interface: Ethernet6
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet6
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet9
@@ -59,9 +63,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-BL1B
-  peer_interface: Ethernet9
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL1B
+    peer_interface: Ethernet9
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet10
@@ -69,9 +74,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  peer: DC1-BL1B
-  peer_interface: Ethernet10
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-BL1B
+    peer_interface: Ethernet10
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet11
@@ -79,9 +85,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.23.23.1/30
-  peer: outside-r1
-  peer_interface: other1
-  peer_type: other
+  metadata:
+    peer: outside-r1
+    peer_interface: other1
+    peer_type: other
   switchport:
     enabled: false
 - name: Ethernet4000
@@ -89,9 +96,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.1.2.3/12
-  peer: MY-own-peer
-  peer_interface: Ethernet123
-  peer_type: my_precious
+  metadata:
+    peer: MY-own-peer
+    peer_interface: Ethernet123
+    peer_type: my_precious
   switchport:
     enabled: false
 hostname: DC1-BL1A
@@ -196,12 +204,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: UNDERLAY_PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: af6F4WLl4wUrWRZcwbEwkQ==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -212,57 +222,68 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1_Loopback0
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2_Loopback0
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3_Loopback0
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4_Loopback0
   - ip_address: 10.23.23.2
     peer_group: UNDERLAY_PEERS
     remote_as: '64900'
-    peer: outside-r1
+    metadata:
+      peer: outside-r1
     description: outside-r1
   neighbor_interfaces:
   - name: Ethernet1
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     peer_group: UNDERLAY_PEERS
     description: DC1-SPINE1_Ethernet6
   - name: Ethernet2
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     peer_group: UNDERLAY_PEERS
     description: DC1-SPINE2_Ethernet6
   - name: Ethernet3
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     peer_group: UNDERLAY_PEERS
     description: DC1-SPINE3_Ethernet6
   - name: Ethernet4
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     peer_group: UNDERLAY_PEERS
     description: DC1-SPINE4_Ethernet6
   - name: Ethernet9
     remote_as: '65105'
-    peer: DC1-BL1B
+    metadata:
+      peer: DC1-BL1B
     peer_group: UNDERLAY_PEERS
     description: DC1-BL1B
   - name: Ethernet10
     remote_as: '65105'
-    peer: DC1-BL1B
+    metadata:
+      peer: DC1-BL1B
     peer_group: UNDERLAY_PEERS
     description: DC1-BL1B
   redistribute:
@@ -425,25 +446,28 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_WAN_Zone
   ip_address_virtual: 10.1.40.1/24
-  tenant: Tenant_A
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - wan
 - name: Vlan250
   description: Tenant_B_WAN_Zone_1
   shutdown: false
   vrf: Tenant_B_WAN_Zone
   ip_address_virtual: 10.2.50.1/24
-  tenant: Tenant_B
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_B
+    tags:
+    - wan
 - name: Vlan350
   description: Tenant_C_WAN_Zone_1
   shutdown: false
   vrf: Tenant_C_WAN_Zone
   ip_address_virtual: 10.3.50.1/24
-  tenant: Tenant_C
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_C
+    tags:
+    - wan
 vlan_internal_order:
   allocation: ascending
   range:

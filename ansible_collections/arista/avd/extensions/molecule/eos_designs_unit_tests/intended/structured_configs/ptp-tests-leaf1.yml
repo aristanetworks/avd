@@ -10,18 +10,20 @@ ethernet_interfaces:
   channel_group:
     id: 9
     mode: active
-  peer: ptp-tests-leaf2
-  peer_interface: Ethernet9
-  peer_type: mlag_peer
+  metadata:
+    peer: ptp-tests-leaf2
+    peer_interface: Ethernet9
+    peer_type: mlag_peer
 - name: Ethernet10
   description: MLAG_ptp-tests-leaf2_Ethernet10
   shutdown: false
   channel_group:
     id: 9
     mode: active
-  peer: ptp-tests-leaf2
-  peer_interface: Ethernet10
-  peer_type: mlag_peer
+  metadata:
+    peer: ptp-tests-leaf2
+    peer_interface: Ethernet10
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_ptp-tests-spine1_Ethernet1
   shutdown: false
@@ -36,9 +38,10 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: ptp-tests-spine1
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -55,9 +58,10 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: ptp-tests-spine1
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet11
@@ -66,27 +70,30 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: ptp-tests-l2leaf1-ptp-disabled
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: ptp-tests-l2leaf1-ptp-disabled
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet12
   description: L2_ptp-tests-l2leaf2-ptp-enabled_Ethernet1
   shutdown: false
   channel_group:
     id: 12
     mode: active
-  peer: ptp-tests-l2leaf2-ptp-enabled
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: ptp-tests-l2leaf2-ptp-enabled
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet14
   description: L2_ptp-tests-l2leaf2-ptp-enabled-uplink-disabled_Ethernet1
   shutdown: false
   channel_group:
     id: 14
     mode: active
-  peer: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet13
   description: SERVER_dynamic-endpoint_eth1
   shutdown: false
@@ -99,11 +106,12 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: dynamic-endpoint
-  peer_interface: eth1
-  peer_type: server
-  peer_key: servers
-  port_profile: PTP-profile-dynamic
+  metadata:
+    peer: dynamic-endpoint
+    peer_interface: eth1
+    peer_type: server
+    peer_key: servers
+    port_profile: PTP-profile-dynamic
   switchport:
     enabled: true
     mode: access
@@ -122,10 +130,11 @@ ethernet_interfaces:
     role: master
     transport: ipv4
   spanning_tree_portfast: edge
-  peer: video-endpoint
-  peer_interface: PCI1
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: video-endpoint
+    peer_interface: PCI1
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -136,10 +145,11 @@ ethernet_interfaces:
   channel_group:
     id: 6
     mode: active
-  peer: Endpoint-with-mpass
-  peer_interface: PCI1
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: Endpoint-with-mpass
+    peer_interface: PCI1
+    peer_type: server
+    peer_key: servers
 - name: Ethernet3
   description: SERVER_Endpoint-with-specific-PTP-profile_eth3
   shutdown: false
@@ -153,10 +163,11 @@ ethernet_interfaces:
       interval: -4
     role: master
     transport: ipv4
-  peer: Endpoint-with-specific-PTP-profile
-  peer_interface: eth3
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: Endpoint-with-specific-PTP-profile
+    peer_interface: eth3
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -335,7 +346,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65101'
     description: ptp-tests-leaf2
     next_hop_self: true
@@ -343,11 +355,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -356,22 +370,26 @@ router_bgp:
   neighbors:
   - ip_address: 10.254.1.97
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: ptp-tests-leaf2
+    metadata:
+      peer: ptp-tests-leaf2
     description: ptp-tests-leaf2_Vlan4093
   - ip_address: 10.254.2.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
-    peer: ptp-tests-spine1
+    metadata:
+      peer: ptp-tests-spine1
     description: ptp-tests-spine1_Ethernet1
   - ip_address: 10.254.2.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
-    peer: ptp-tests-spine1
+    metadata:
+      peer: ptp-tests-spine1
     description: ptp-tests-spine1_Ethernet2
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65200'
-    peer: ptp-tests-spine1
+    metadata:
+      peer: ptp-tests-spine1
     description: ptp-tests-spine1_Loopback0
   redistribute:
     connected:
@@ -379,7 +397,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 11
-    tenant: PTP
+    metadata:
+      tenant: PTP
     rd: 10.254.1.1:10011
     route_targets:
       both:
@@ -448,15 +467,17 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF1
   ip_address: 172.16.11.1/24
-  tenant: PTP
+  metadata:
+    tenant: PTP
 - name: Vlan3000
   description: MLAG_L3_VRF_VRF1
   shutdown: false
   vrf: VRF1
   ip_address: 10.254.1.96/31
   mtu: 9214
-  tenant: PTP
-  type: underlay_peering
+  metadata:
+    tenant: PTP
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:
