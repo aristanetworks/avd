@@ -144,14 +144,14 @@ traffic-policies
 {%                 if match.ttl is arista.avd.defined %}
          ttl {{ match.ttl }}
 {%                 endif %}
-{%                 if match.packet_type_vxlan.decap is arista.avd.defined(true) or match.packet_type_vxlan.decap_exclude is arista.avd.defined(true) %}
+{%                 if match.packet_type.vxlan is arista.avd.defined or match.packet_type.multicast is arista.avd.defined(true) %}
          !
          packet type
-{%                     if match.packet_type_vxlan.decap is arista.avd.defined(true) %}
-            vxlan decap
+{%                     if match.packet_type.multicast is arista.avd.defined(true) %}
+            multicast
 {%                     endif %}
-{%                     if match.packet_type_vxlan.decap_exclude is arista.avd.defined(true) %}
-            vxlan decap exclude
+{%                     if match.packet_type.vxlan is arista.avd.defined %}
+            vxlan {{ match.packet_type.vxlan }}
 {%                     endif %}
 {%                 endif %}
 {#       -- ACTIONS SECTION -- #}

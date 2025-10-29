@@ -63283,27 +63283,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Protocols._item_type = ProtocolsItem
 
-                class PacketTypeVxlan(AvdModel):
+                class PacketType(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"decap": {"type": bool}, "decap_exclude": {"type": bool}}
-                    decap: bool | None
-                    """VXLAN decapsulated packet type match."""
-                    decap_exclude: bool | None
-                    """Non-VXLAN decapsulated packet type match."""
+                    Vxlan: TypeAlias = Literal["decap", "decap exclude"]
+                    _fields: ClassVar[dict] = {"vxlan": {"type": str}, "multicast": {"type": bool}}
+                    vxlan: Vxlan | None
+                    """Configure VXLAN decapsulation match."""
+                    multicast: bool | None
+                    """Configure multicast packet type match."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, decap: bool | None | UndefinedType = Undefined, decap_exclude: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, vxlan: Vxlan | None | UndefinedType = Undefined, multicast: bool | None | UndefinedType = Undefined) -> None:
                             """
-                            PacketTypeVxlan.
+                            PacketType.
 
 
                             Subclass of AvdModel.
 
                             Args:
-                                decap: VXLAN decapsulated packet type match.
-                                decap_exclude: Non-VXLAN decapsulated packet type match.
+                                vxlan: Configure VXLAN decapsulation match.
+                                multicast: Configure multicast packet type match.
 
                             """
 
@@ -63546,7 +63547,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "ttl": {"type": str},
                     "fragment": {"type": Fragment},
                     "protocols": {"type": Protocols},
-                    "packet_type_vxlan": {"type": PacketTypeVxlan},
+                    "packet_type": {"type": PacketType},
                     "actions": {"type": Actions},
                 }
                 name: str
@@ -63569,7 +63570,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 protocols: Protocols
                 """Subclass of AvdIndexedList with `ProtocolsItem` items. Primary key is `protocol` (`str`)."""
-                packet_type_vxlan: PacketTypeVxlan
+                packet_type: PacketType
                 """Subclass of AvdModel."""
                 actions: Actions
                 """Subclass of AvdModel."""
@@ -63586,7 +63587,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         ttl: str | None | UndefinedType = Undefined,
                         fragment: Fragment | UndefinedType = Undefined,
                         protocols: Protocols | UndefinedType = Undefined,
-                        packet_type_vxlan: PacketTypeVxlan | UndefinedType = Undefined,
+                        packet_type: PacketType | UndefinedType = Undefined,
                         actions: Actions | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -63609,7 +63610,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                Subclass of AvdModel.
                             protocols: Subclass of AvdIndexedList with `ProtocolsItem` items. Primary key is `protocol` (`str`).
-                            packet_type_vxlan: Subclass of AvdModel.
+                            packet_type: Subclass of AvdModel.
                             actions: Subclass of AvdModel.
 
                         """

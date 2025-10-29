@@ -13033,8 +13033,8 @@ Counters: DROP-PACKETS
 
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Packet Type | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ----------- | ------ |
-| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | 1,10-20<br/>any | -<br/>SERVICE-DEMO | any<br/>any | -<br/>- | decap, decap exclude | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:db8::1 fd00::abcd:1234 |
-| BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | -<br/>- | any<br/>- | SERVICE-DEMO<br/>- | - | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop IPv4 address: 2.2.2.1 2.2.2.2 |
+| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | 1,10-20<br/>any | -<br/>SERVICE-DEMO | any<br/>any | -<br/>- | decap, multicast | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:db8::1 fd00::abcd:1234 |
+| BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | -<br/>- | any<br/>- | SERVICE-DEMO<br/>- | decap exclude | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop IPv4 address: 2.2.2.1 2.2.2.2 |
 | BLUE-C1-POLICY-03 | ipv4 | DEMO-01 | any | icmp | - | - | - | - | - | action: DROP<br/>counter: DROP-PACKETS<br/>logging<br/>redirect aggregation groups: group1 group2 group3<br/>redirect interface: Ethernet 1-4 |
 | BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22<br/>- | -<br/>- | 80<br/>- | -<br/>- | - | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv4 address: 1.1.1.1 3.3.3.3 vrf: VRF_IPv4 |
 | BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | bgp | - | - | - | - | - | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:0db8:0000:0000:0000:0000:0000:0001 fe80:0000:0000:0000:f2de:f1ff:fe3f:307e vrf: VRF_IPv6 |
@@ -13113,8 +13113,8 @@ traffic-policies
          ttl 10, 20-30
          !
          packet type
+            multicast
             vxlan decap
-            vxlan decap exclude
          !
          actions
             redirect next-hop 2001:db8::1 fd00::abcd:1234
@@ -13125,6 +13125,9 @@ traffic-policies
          protocol tcp flags established
          protocol tcp destination port field-set SERVICE-DEMO
          protocol icmp
+         !
+         packet type
+            vxlan decap exclude
          !
          actions
             count DEMO-TRAFFIC

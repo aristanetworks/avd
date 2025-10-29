@@ -63,11 +63,11 @@ Counters: {{ policy.counters | join(", ") }}
 {%                     set row.type = match.type | lower %}
 {#                     -- Packet Type #}
 {%                     set row.packet_type = [] %}
-{%                     if match.packet_type_vxlan.decap is arista.avd.defined(true) %}
-{%                         do row.packet_type.append("decap") %}
+{%                     if match.packet_type.vxlan is arista.avd.defined %}
+{%                         do row.packet_type.append(match.packet_type.vxlan) %}
 {%                     endif %}
-{%                     if match.packet_type_vxlan.decap_exclude is arista.avd.defined(true) %}
-{%                         do row.packet_type.append("decap exclude") %}
+{%                     if match.packet_type.multicast is arista.avd.defined(true) %}
+{%                         do row.packet_type.append("multicast") %}
 {%                     endif %}
 {%                     if row.packet_type != [] %}
 {%                         set row.packet_type = row.packet_type | join(', ') %}
