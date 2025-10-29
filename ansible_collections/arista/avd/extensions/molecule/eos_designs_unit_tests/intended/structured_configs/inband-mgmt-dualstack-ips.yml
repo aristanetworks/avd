@@ -87,7 +87,7 @@ vlan_internal_order:
     ending: 1199
 vlans:
 - id: 105
-  name: Inband_management_vlan_ipv6
+  name: INBAND_MGMT
   tenant: INBAND_MGMT_TESTS
 vrfs:
 - name: MGMT

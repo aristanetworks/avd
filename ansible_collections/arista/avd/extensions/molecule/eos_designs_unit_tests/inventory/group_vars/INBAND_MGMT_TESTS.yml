@@ -127,6 +127,8 @@ l2leaf:
       inband_mgmt_ip: 192.168.103.22/24
       inband_mgmt_vrf: INBANDMGMT
       inband_mgmt_description: My description
+      # This vlan name overrides the vlan name from tenants.
+      inband_mgmt_vlan_name: MYVLANNAME
       inband_ztp: false
       id: 3
     - name: inband-mgmt-dualstack-subnets

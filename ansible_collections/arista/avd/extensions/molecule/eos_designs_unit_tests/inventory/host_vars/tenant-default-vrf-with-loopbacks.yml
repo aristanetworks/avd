@@ -21,7 +21,7 @@ tenants:
     l2vlans:
       - id: 10
         name: storage_prod
-        tags: ["storageProd"]
+        tags: [storageProd]
     vrfs:
       # Testing default vrf with loopbacks, this will not generate config for virtual_source_nat_vrfs
       - name: default
@@ -34,4 +34,4 @@ tenants:
           - id: 1008
             name: SVI_1
             enabled: true
-            tags: ["sit"]
+            tags: [sit]
