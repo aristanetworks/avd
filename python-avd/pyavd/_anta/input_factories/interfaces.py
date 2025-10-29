@@ -52,20 +52,19 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
                 continue
             status = "adminDown" if intf.shutdown or (intf.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown) else "up"
 
-            # TODO: Remove the pyright warning once fixed in ANTA https://github.com/aristanetworks/anta/issues/1340
-            interfaces.append(InterfaceState(name=intf.name, status=status))  # pyright: ignore[reportCallIssue]
+            interfaces.append(InterfaceState(name=intf.name, status=status))
 
         # Add Port-Channel interfaces, considering `validate_state` knob
         for intf in self.structured_config.port_channel_interfaces:
             if intf.validate_state is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
-            interfaces.append(InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up"))  # pyright: ignore[reportCallIssue]
+            interfaces.append(InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up"))
 
         # Add VLAN, Loopback, and DPS interfaces
         interfaces.extend(
             [
-                InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up")  # pyright: ignore[reportCallIssue]
+                InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up")
                 for intf in chain(self.structured_config.vlan_interfaces, self.structured_config.loopback_interfaces, self.structured_config.dps_interfaces)
             ]
         )
@@ -73,7 +72,7 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
         # If the device is a VTEP, add the Vxlan1 interface to the list
         if self.device.is_vtep:
             if self.structured_config.vxlan_interface.vxlan1.vxlan.shutdown:
-                interfaces.append(InterfaceState(name="Vxlan1", status="down"))  # pyright: ignore[reportCallIssue]
+                interfaces.append(InterfaceState(name="Vxlan1", status="down"))
             elif self.device.vxlan_source_interface_status and self.device.vxlan_source_interface_status.shutdown:
                 self.logger_adapter.debug(
                     LogMessage.SOURCE_INTERFACE_SHUTDOWN, interface="Vxlan1", source_interface=self.device.vxlan_source_interface_status.name
@@ -81,7 +80,7 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
             elif not self.structured_config.vxlan_interface.vxlan1.vxlan.vlans and not self.structured_config.vxlan_interface.vxlan1.vxlan.vrfs:
                 self.logger_adapter.debug(LogMessage.VNI_NOT_CONFIGURED, interface="Vxlan1")
             else:
-                interfaces.append(InterfaceState(name="Vxlan1", status="up"))  # pyright: ignore[reportCallIssue]
+                interfaces.append(InterfaceState(name="Vxlan1", status="up"))
 
         return [VerifyInterfacesStatus.Input(interfaces=natural_sort(interfaces, sort_key="name"))] if interfaces else None
 
