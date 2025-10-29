@@ -17,7 +17,6 @@ keys:
           description: Dynamic prefix-list name.
         match_map:
           type: str
-          required: true
           description: Route-map name.
         prefix_list:
           type: dict

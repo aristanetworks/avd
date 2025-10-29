@@ -5747,7 +5747,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {"name": {"type": str}, "match_map": {"type": str}, "prefix_list": {"type": PrefixList}}
         name: str
         """Dynamic prefix-list name."""
-        match_map: str
+        match_map: str | None
         """Route-map name."""
         prefix_list: PrefixList
         """Subclass of AvdModel."""
@@ -5755,7 +5755,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         if TYPE_CHECKING:
 
             def __init__(
-                self, *, name: str | UndefinedType = Undefined, match_map: str | UndefinedType = Undefined, prefix_list: PrefixList | UndefinedType = Undefined
+                self,
+                *,
+                name: str | UndefinedType = Undefined,
+                match_map: str | None | UndefinedType = Undefined,
+                prefix_list: PrefixList | UndefinedType = Undefined,
             ) -> None:
                 """
                 DynamicPrefixListsItem.
@@ -14875,7 +14879,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "information_option": {"type": InformationOption},
             "vlan": {"type": str},
         }
-        enabled: bool
+        enabled: bool | None
         bridging: bool | None
         information_option: InformationOption
         """Subclass of AvdModel."""
@@ -14891,7 +14895,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                enabled: bool | UndefinedType = Undefined,
+                enabled: bool | None | UndefinedType = Undefined,
                 bridging: bool | None | UndefinedType = Undefined,
                 information_option: InformationOption | UndefinedType = Undefined,
                 vlan: str | None | UndefinedType = Undefined,

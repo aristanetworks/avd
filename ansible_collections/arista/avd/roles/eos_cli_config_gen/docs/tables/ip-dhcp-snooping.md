@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>ip_dhcp_snooping</samp>](## "ip_dhcp_snooping") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;enabled</samp>](## "ip_dhcp_snooping.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "ip_dhcp_snooping.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;bridging</samp>](## "ip_dhcp_snooping.bridging") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;information_option</samp>](## "ip_dhcp_snooping.information_option") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ip_dhcp_snooping.information_option.enabled") | Boolean | Required |  |  | Enable insertion of option-82 in DHCP request packets. |
@@ -20,7 +20,7 @@
 
     ```yaml
     ip_dhcp_snooping:
-      enabled: <bool; required>
+      enabled: <bool>
       bridging: <bool>
       information_option:
 
