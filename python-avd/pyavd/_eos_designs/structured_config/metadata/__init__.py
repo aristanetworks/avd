@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from typing import Protocol
 
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import (
     StructuredConfigGenerator,
     StructuredConfigGeneratorProtocol,
@@ -37,6 +38,9 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
         self._set_cv_pathfinder()
         if self.shared_utils.digital_twin:
             self._set_digital_twin()
+        validate_hardware_inventory = self.shared_utils.platform_settings.validate_hardware_inventory
+        if validate_hardware_inventory:
+            self.structured_config.metadata.hardware_requirements = validate_hardware_inventory._cast_as(EosCliConfigGen.Metadata.HardwareRequirements)
 
 
 class AvdStructuredConfigMetadata(StructuredConfigGenerator, AvdStructuredConfigMetadataProtocol):
