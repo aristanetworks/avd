@@ -7,9 +7,10 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal, Protocol, overload
 
-from pyavd._eos_designs.schema import EosDesigns
+from pyavd._eos_designs.schema import EosCliConfigGen, EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import template_var
+from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Sequence
@@ -166,3 +167,29 @@ class UtilsMixin(Protocol):
         if not nodes:
             return True
         return self.match_regexes(nodes, self.hostname)
+
+    @cached_property
+    def underlay_vlan_trunk_groups(self: SharedUtilsProtocol) -> EosCliConfigGen.Vlans:
+        """
+        Return an EosCliConfigGen.Vlans object containing all the underlay VLAN with their trunk groups.
+        """
+        vlans = EosCliConfigGen.Vlans()
+        for peer in self.switch_facts.downlink_switches:
+            peer_facts = self.get_peer_facts(peer)
+            for uplink in peer_facts.uplinks:
+                if uplink.peer != self.hostname or not uplink.peer_trunk_groups or not uplink.vlans:
+                    continue
+
+                for vlan_id in map(int, range_expand(uplink.vlans)):
+                    vlan_item_trunk_groups = vlans.obtain(vlan_id).trunk_groups
+                    for trunk_group in uplink.peer_trunk_groups:
+                        vlan_item_trunk_groups.append_unique(trunk_group)
+        return vlans
+
+    def get_vlan_trunk_groups_for_underlay(self: SharedUtilsProtocol, vlan: EosCliConfigGen.VlansItem) -> EosCliConfigGen.VlansItem.TrunkGroups:
+        """
+        Return trunk groups on the vlan for the underlay link if any.
+
+        Used in network_services and probably inband_mgmt
+        """
+        return self.underlay_vlan_trunk_groups.obtain(vlan.id).trunk_groups

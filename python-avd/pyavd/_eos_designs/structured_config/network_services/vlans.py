@@ -41,7 +41,7 @@ class VlansMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 for svi in vrf.svis:
-                    self.structured_config.vlans.append(self._get_vlan_config(svi, tenant), ignore_fields=("tenant", "trunk_groups", "name"))
+                    self.structured_config.vlans.append(self._get_vlan_config(svi, tenant), ignore_fields=("tenant"))
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Continue to next VRF if mlag vlan_id is not set
@@ -54,7 +54,7 @@ class VlansMixin(Protocol):
                     trunk_groups=EosCliConfigGen.VlansItem.TrunkGroups([self.inputs.trunk_groups.mlag_l3.name]),
                     tenant=tenant.name,
                 )
-                self.structured_config.vlans.append(vlan, ignore_fields=("tenant", "trunk_groups", "name"))
+                self.structured_config.vlans.append(vlan, ignore_fields=("tenant"))
 
             # L2 Vlans per Tenant
             for l2vlan in tenant.l2vlans:
@@ -71,7 +71,7 @@ class VlansMixin(Protocol):
                     all_primary_vlans.add(l2vlan.private_vlan.primary_vlan)
                     vlan.private_vlan._update(type=l2vlan.private_vlan.type, primary_vlan=l2vlan.private_vlan.primary_vlan)
 
-                self.structured_config.vlans.append(vlan, ignore_fields=("tenant", "trunk_groups", "name"))
+                self.structured_config.vlans.append(vlan, ignore_fields=("tenant"))
 
         # Check that all referenced primary vlans exist
         if not all_primary_vlans.issubset(self.structured_config.vlans.keys()):
@@ -124,6 +124,8 @@ class VlansMixin(Protocol):
                 trunk_groups.append(self.inputs.trunk_groups.mlag.name)
             if self.shared_utils.uplink_type == "port-channel":
                 trunk_groups.append(self.inputs.trunk_groups.uplink.name)
+            # Add trunk groups required for underlay
+            trunk_groups.extend(self.shared_utils.get_vlan_trunk_groups_for_underlay(vlans_vlan))
             vlans_vlan.trunk_groups.extend(natural_sort(trunk_groups))
 
         return vlans_vlan
