@@ -112,6 +112,8 @@ mod validation {
     }
 }
 
+// Partial implementation of the pytests but here using pyo3 wrappers in Rust, to ensure we get coverage data
+// and that we can catch issues in Rust without building the Python first.
 #[cfg(test)]
 mod tests {
     use super::validation;
@@ -122,8 +124,8 @@ mod tests {
     const EOS_DESIGNS_FRAGMENTS_DIR: &str =
         "../../../python-avd/pyavd/_eos_designs/schema/schema_fragments";
 
+    // Initializing python only once. Otherwise things may crash when running in multiple threads.
     static INIT_PY: std::sync::Once = std::sync::Once::new();
-
     fn setup() {
         INIT_PY.call_once(|| {
             pyo3::append_to_inittab!(validation);
@@ -156,9 +158,7 @@ mod tests {
     }
 
     #[test]
-    fn validate_json_py() {
-        // Partial implementation of the pytest but here using pyo3 wrappers in Rust, to ensure we get coverage data
-        // and that we can catch issues in Rust without building the Python first.
+    fn validate_json_py_ok() {
         setup();
         pyo3::Python::attach(|py| {
             shared_init_store(py);
@@ -305,6 +305,116 @@ mod tests {
             assert_eq!(
                 err.value(py).to_string(),
                 "Invalid JSON in data: expected value at line 1 column 1"
+            )
+        });
+    }
+
+    #[test]
+    fn validate_json_with_adhoc_schema_py_ok() {
+        setup();
+        pyo3::Python::attach(|py| {
+            shared_init_store(py);
+
+            let module = py.import("validation").unwrap();
+            let validation_result = {
+                let args = ();
+                let kwargs = pyo3::types::PyDict::new(py);
+                kwargs
+                    .set_item("data_as_json", serde_json::json!(1234).to_string())
+                    .unwrap();
+                kwargs
+                    .set_item(
+                        "schema_as_json",
+                        serde_json::json!({"type": "int", "max": 1233}).to_string(),
+                    )
+                    .unwrap();
+                module
+                    .call_method("validate_json_with_adhoc_schema", args, Some(&kwargs))
+                    .unwrap()
+            };
+            assert!(validation_result.hasattr("violations").unwrap());
+            let violations = validation_result.getattr("violations").unwrap();
+            assert!(violations.is_instance_of::<pyo3::types::PyList>());
+            assert_eq!(violations.len().unwrap(), 1);
+
+            let issue_enum = module.getattr("Issue").unwrap();
+            let violation_enum = module.getattr("Violation").unwrap();
+
+            // Checking the first violation only. The rest are checked in the pytest implementation.
+            let feedback = violations.get_item(0).unwrap();
+            let path = feedback
+                .getattr("path")
+                .unwrap()
+                .cast_into_exact::<pyo3::types::PyList>()
+                .unwrap();
+            assert_eq!(path.len().unwrap(), 0);
+            let issue = feedback.getattr("issue").unwrap();
+            let expected_issue = issue_enum.getattr("Validation").unwrap();
+            assert!(issue.get_type().eq(expected_issue).unwrap());
+            let violation = issue.getattr("_0").unwrap();
+            let expected_violation = violation_enum.getattr("ValueAboveMaximum").unwrap();
+            assert!(violation.get_type().eq(expected_violation).unwrap());
+            let expected_maximum = pyo3::types::PyInt::new(py, 1233);
+            let maximum = violation.getattr("maximum").unwrap();
+            assert!(maximum.eq(expected_maximum).unwrap());
+            let expected_found = pyo3::types::PyInt::new(py, 1234);
+            let found = violation.getattr("found").unwrap();
+            assert!(found.eq(expected_found).unwrap());
+        });
+    }
+
+    #[test]
+    fn validate_json_with_adhoc_schema_py_invalid_json() {
+        setup();
+        pyo3::Python::attach(|py| {
+            shared_init_store(py);
+
+            let module = py.import("validation").unwrap();
+            let err = {
+                let args = ();
+                let kwargs = pyo3::types::PyDict::new(py);
+                kwargs.set_item("data_as_json", "invalid_json").unwrap();
+                kwargs
+                    .set_item(
+                        "schema_as_json",
+                        serde_json::json!({"type": "dict"}).to_string(),
+                    )
+                    .unwrap();
+                module
+                    .call_method("validate_json_with_adhoc_schema", args, Some(&kwargs))
+                    .unwrap_err()
+            };
+            assert_eq!(
+                err.value(py).to_string(),
+                "Invalid JSON in data: expected value at line 1 column 1"
+            )
+        });
+    }
+
+    #[test]
+    fn validate_json_with_adhoc_schema_py_invalid_schema() {
+        setup();
+        pyo3::Python::attach(|py| {
+            shared_init_store(py);
+
+            let module = py.import("validation").unwrap();
+            let err = {
+                let args = ();
+                let kwargs = pyo3::types::PyDict::new(py);
+                kwargs.set_item("data_as_json", "{}").unwrap();
+                kwargs
+                    .set_item(
+                        "schema_as_json",
+                        serde_json::json!({"tpe": "dict"}).to_string(),
+                    )
+                    .unwrap();
+                module
+                    .call_method("validate_json_with_adhoc_schema", args, Some(&kwargs))
+                    .unwrap_err()
+            };
+            assert_eq!(
+                err.value(py).to_string(),
+                "Invalid JSON in adhoc schema: missing field `type` at line 1 column 14"
             )
         });
     }
