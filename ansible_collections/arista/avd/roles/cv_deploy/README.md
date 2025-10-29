@@ -366,7 +366,9 @@ If proxy-related settings are passed to `cv_deploy` explicitly and execution env
 ### Configure proxy settings explicitly
 
 To enable the proxy explicitly, set `proxy_host`. Setting `proxy_port` (port `TCP/8080` will be used by default), `proxy_username` and `proxy_password` is optional.
+
 If valid `proxy_host` (must be non-empty string) and `proxy_port` (greater than 0, less than 65536) are set, `cv_deploy` will ignore (for both REST and gRPC calls) any proxy-related environment variables (`https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY`/`no_proxy`/`NO_PROXY`).
+
 If valid `proxy_host` (must be non-empty string) and `proxy_port` (greater than 0, less than 65536) are not set, `cv_deploy` will try to discover usable proxy server using environment variables.
 
 Below settings allow modifying the default proxy-related behavior as needed. The values below are the default values.
@@ -405,8 +407,11 @@ If proxy-related settings are not passed to `cv_deploy` explicitly, `cv_deploy` 
 1. Discover proxy server
 
     - Check `https_proxy` environment variable. If valid proxy settings are discovered, proceed to step 2. Otherwise, check next environment variable.
+
     - Check `HTTPS_PROXY` environment variable. If valid proxy settings are discovered, proceed to step 2. Otherwise, check next environment variable.
+
     - Check `all_proxy` environment variable. If valid proxy settings are discovered, proceed to step 2. Otherwise, check next environment variable.
+
     - Check `ALL_PROXY` environment variable. If valid proxy settings are discovered, proceed to step 2. Otherwise, check next environment variable.
 
     If no valid proxy settings are discovered after checking all interesting environment variables in step 1, `cv_deploy` will not use any proxy server for its outbound REST and gRPC requests.
@@ -414,6 +419,7 @@ If proxy-related settings are not passed to `cv_deploy` explicitly, `cv_deploy` 
 2. Check if proxy bypass is requested for CloudVision
 
     - Check `no_proxy` environment variable. If it is a non-empty string, check if target CloudVision is part of this string. Do not use proxy if it is. Otherwise proceed to next environment variable.
+
     - Check `NO_PROXY` environment variable. If it is a non-empty string, check if target CloudVision is part of this string. Do not use proxy if it is. Otherwise `cv_deploy` will use proxy server discovered in step 1 for all outbound REST and gRPC requests.
 
 Examples below show values that can be used for `https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY` environment variables to influence proxy server settings in `cv_deploy`:
