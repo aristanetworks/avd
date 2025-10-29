@@ -52,7 +52,7 @@ class CVClientProtocol(
     _username: str | None
     _password: str | None
     _cv_version: CvVersion | None = None
-    _proxy_manager: HTTPProxyManager | None = None
+    _proxy_manager: HTTPProxyManager
 
     async def __aenter__(self) -> Self:
         """Using asynchronous context manager since grpclib must be initialized inside an asyncio loop."""
@@ -77,10 +77,7 @@ class CVClientProtocol(
         self._set_version()
 
         if self._channel is None:
-            if self._proxy_manager is not None:
-                self._channel = await self._create_proxy_channel(ssl_context)
-            else:
-                self._channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
+            self._channel = await self._create_proxy_channel(ssl_context)
 
         self._metadata = {"authorization": "Bearer " + self._token}
 
@@ -96,6 +93,9 @@ class CVClientProtocol(
         """
         # Create the channel first
         channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
+
+        if not self._proxy_manager.use_proxy:
+            return channel
 
         # Create custom connector that uses proxy
         async def proxy_connection() -> H2Protocol:
@@ -161,7 +161,7 @@ class CVClientProtocol(
                 "https://" + self._servers[0] + "/cvpservice/login/authenticate.do",
                 auth=(self._username, self._password),
                 verify=self._verify_certs,
-                proxies=self._proxy_manager.get_requests_proxies() if self._proxy_manager is not None else None,
+                proxies=self._proxy_manager.get_requests_proxies,
                 json={},
             )
             response.raise_for_status()
@@ -192,7 +192,7 @@ class CVClientProtocol(
                 "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
                 headers={"Authorization": f"Bearer {self._token}"},
                 verify=self._verify_certs,
-                proxies=self._proxy_manager.get_requests_proxies() if self._proxy_manager is not None else None,
+                proxies=self._proxy_manager.get_requests_proxies,
                 json={},
             )
             response.raise_for_status()
@@ -216,6 +216,7 @@ class CVClient(CVClientProtocol):
         password: str | None = None,
         port: int = 443,
         verify_certs: bool = True,
+        proxy_scheme: str = "http",
         proxy_host: str | None = None,
         proxy_port: int = 8080,
         proxy_username: str | None = None,
@@ -234,10 +235,11 @@ class CVClient(CVClientProtocol):
             password: Password to use for authentication if token is not set.
             port: TCP port to use for the connection.
             verify_certs: Disables SSL certificate verification if set to False. Not recommended for production.
-            proxy_host: HTTP proxy hostname.
-            proxy_port: HTTP proxy port.
-            proxy_username: Proxy authentication username.
-            proxy_password: Proxy authentication password.
+            proxy_scheme: Proxy server scheme (http/https).
+            proxy_host: Proxy server hostname.
+            proxy_port: Proxy server port.
+            proxy_username: Proxy server authentication username.
+            proxy_password: Proxy server authentication password.
         """
         if isinstance(servers, list):
             self._servers = servers
@@ -249,15 +251,14 @@ class CVClient(CVClientProtocol):
         self._username = username
         self._password = password
         self._verify_certs = verify_certs
-        self._proxy_manager = None
 
-        # Initialize proxy manager if proxy is configured
-        if proxy_host is not None:
-            self._proxy_manager = HTTPProxyManager(
-                proxy_host=proxy_host,
-                proxy_port=proxy_port,
-                proxy_username=proxy_username,
-                proxy_password=proxy_password,
-                target_host=self._servers[0],
-                target_port=self._port,
-            )
+        # Initialize Proxy manager
+        self._proxy_manager = HTTPProxyManager(
+            scheme=proxy_scheme,
+            host=proxy_host,
+            port=proxy_port,
+            username=proxy_username,
+            password=proxy_password,
+            target_host=self._servers[0],
+            target_port=self._port,
+        )
