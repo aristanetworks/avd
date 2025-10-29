@@ -83,7 +83,7 @@ ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
   - type: permit
-    extcommunities: soo 192.168.254.5:1
+    extcommunities: soo 192.168.255.5:1
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_servers:
@@ -147,7 +147,7 @@ route_maps:
   - sequence: 10
     type: permit
     set:
-    - extcommunity soo 192.168.254.5:1 additive
+    - extcommunity soo 192.168.255.5:1 additive
 router_bfd:
   multihop:
     interval: 1200
