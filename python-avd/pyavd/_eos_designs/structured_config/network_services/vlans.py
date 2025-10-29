@@ -125,7 +125,7 @@ class VlansMixin(Protocol):
             if self.shared_utils.uplink_type == "port-channel":
                 trunk_groups.append(self.inputs.trunk_groups.uplink.name)
             # Add trunk groups required for underlay
-            trunk_groups.extend(self.shared_utils.get_vlan_trunk_groups_for_underlay(vlans_vlan))
+            trunk_groups.extend(self.shared_utils.underlay_vlan_trunk_groups.obtain(vlans_vlan.id).trunk_groups)
             vlans_vlan.trunk_groups.extend(natural_sort(trunk_groups))
 
         return vlans_vlan
