@@ -41,6 +41,7 @@
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
   - [Route-maps](#route-maps)
+  - [AS Path Lists](#as-path-lists)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -1207,21 +1208,21 @@ router bfd
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65101 | - | - | - |
+| 10 | deny | as-path AS65101 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65110.100
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65110.100 | - | - | - |
+| 10 | deny | as-path AS65110.100 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65111.100
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65111.100 | - | - | - |
+| 10 | deny | as-path AS65111.100 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-MLAG-PEER-IN
@@ -1235,23 +1236,42 @@ router bfd
 ```eos
 !
 route-map RM-EVPN-FILTER-AS65101 deny 10
-   match as 65101
+   match as-path AS65101
 !
 route-map RM-EVPN-FILTER-AS65101 permit 20
 !
 route-map RM-EVPN-FILTER-AS65110.100 deny 10
-   match as 65110.100
+   match as-path AS65110.100
 !
 route-map RM-EVPN-FILTER-AS65110.100 permit 20
 !
 route-map RM-EVPN-FILTER-AS65111.100 deny 10
-   match as 65111.100
+   match as-path AS65111.100
 !
 route-map RM-EVPN-FILTER-AS65111.100 permit 20
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
    set origin incomplete
+```
+
+### AS Path Lists
+
+#### AS Path Lists Summary
+
+| List Name | Type | Match | Origin |
+| --------- | ---- | ----- | ------ |
+| AS65101 | permit | `_65101_` | any |
+| AS65110.100 | permit | `_65110\.100_` | any |
+| AS65111.100 | permit | `_65111\.100_` | any |
+
+#### AS Path Lists Device Configuration
+
+```eos
+!
+ip as-path access-list AS65101 permit _65101_ any
+ip as-path access-list AS65110.100 permit _65110\.100_ any
+ip as-path access-list AS65111.100 permit _65111\.100_ any
 ```
 
 ## VRF Instances
