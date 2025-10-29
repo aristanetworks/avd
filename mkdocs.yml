@@ -99,7 +99,7 @@ plugins:
         - development/*
         - galaxy-importer/*
         - python-avd/*
-        - python/*
+        - pyavd-utils/*
         - rust/*
       regex:
         # Exclude examples common md snippets

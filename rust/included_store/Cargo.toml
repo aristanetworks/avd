@@ -7,4 +7,4 @@ license.workspace = true
 [dependencies]
 avdschema = { path = "../avdschema" }
 avdschema_macros = { path = "../avdschema_macros" }
-log = "0.4.26"
+log = { workspace = true }

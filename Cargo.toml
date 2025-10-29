@@ -8,8 +8,22 @@ members = [
     "rust/avdschema_macros",
     "rust/validation",
     "rust/passwords",
+    "pyavd-utils/rust/pypasswords",
+    "pyavd-utils/rust/pyvalidation",
     ]
 resolver = "2"
+
+[workspace.dependencies]
+derive_more = { version = "2.0.1" }
+log = { version = "0.4.26" }
+ordermap = { version = "0.5.4" }
+pyo3 = { version = "0.26.0" }
+pyo3-build-config = { version = "0.26.0"}
+pyo3-log = { version = "0.13.1" }
+regex = { version = "1.11.1" }
+serde = { version = "1.0.217" }
+serde_json = { version = "1.0.135" }
+serde_yaml = { version = "0.9.33" }
 
 [profile.release-lto]
 inherits = "release"
