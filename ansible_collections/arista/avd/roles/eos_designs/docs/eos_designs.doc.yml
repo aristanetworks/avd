@@ -1165,9 +1165,10 @@
 
           # Outbound prefix-list name.
           prefix_list_out: <str>
+        metadata:
 
-        # Key only used for documentation or validation purposes.
-        type: <str>
+          # Key only used for documentation or validation purposes.
+          type: <str>
 
         # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
         # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
@@ -1711,6 +1712,10 @@
 
                 # IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
                 ip_address: <str>
+                ip_address_secondaries:
+
+                    # IPv4_address/Mask.
+                  - <str>
 
                 # IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                 ipv6_address: <str>
@@ -1954,6 +1959,10 @@
 
             # IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
             ip_address: <str>
+            ip_address_secondaries:
+
+                # IPv4_address/Mask.
+              - <str>
 
             # IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
             ipv6_address: <str>
@@ -2408,6 +2417,10 @@
 
             # IPv4 address/Mask.
             ip_address: <str>
+            ip_address_secondaries:
+
+                # IPv4 address/Mask.
+              - <str>
 
             # For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
             encapsulation_dot1q_vlan: <int; 1-4094>
@@ -2758,9 +2771,10 @@
 
               # Outbound prefix-list name.
               prefix_list_out: <str>
+            metadata:
 
-            # Key only used for documentation or validation purposes.
-            type: <str>
+              # Key only used for documentation or validation purposes.
+              type: <str>
 
             # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
             # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
@@ -8268,6 +8282,13 @@ bfd_multihop: # (1)!
 # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>" to use to configure overlay when "overlay_routing_protocol" == ibgp.
 # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
 bgp_as: <str>
+
+# AS number representation.
+# asdot - AS number representation in asdot format (Ex. 123.12).
+# asplain - AS number representation in asplain format (Ex. 12312).
+# auto - Will look at the configured ASN and if there is a dot in it,
+#        it will use asdot otherwise asplain.
+bgp_as_notation: <str; "auto" | "asdot" | "asplain"; default="auto">
 
 # Default activation of IPv4 unicast address-family on all IPv4 neighbors.
 # It is best practice to disable activation.
@@ -13955,6 +13976,9 @@ source_interfaces:
     # `inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.
     inband_mgmt_interface: <bool; default=False>
 ssh_settings:
+
+  # Explicitly enable or disable management ssh for all VRFs. By default EOS enables management ssh for all VRFs.
+  enabled: <bool>
   vrfs:
 
       # VRF name.
@@ -14018,6 +14042,10 @@ svi_profiles:
 
         # IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
         ip_address: <str>
+        ip_address_secondaries:
+
+            # IPv4_address/Mask.
+          - <str>
 
         # IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
         ipv6_address: <str>
@@ -14264,6 +14292,10 @@ svi_profiles:
 
     # IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
     ip_address: <str>
+    ip_address_secondaries:
+
+        # IPv4_address/Mask.
+      - <str>
 
     # IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
     ipv6_address: <str>
@@ -14881,12 +14913,6 @@ wan_stun_dtls_profile_name: <str; default="STUN-DTLS">
 # - `true`: For older EOS versions use an agent environment variable. Changing this requires a restart of the KernelFib agent.
 # - `false`: For newer EOS versions (starting 4.33.2) use the proper CLI.
 wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: <bool; default=False>
-
-# PREVIEW: This key is currently not supported and may produce invalid configuration.
-# When true, `eos_designs` will use `overlay_routing_protocol`, `evpn_role` and `vtep`
-# node settings for LAN side on WAN devices. Otherwise these will be ignored for WAN.
-# This will be the default in AVD version 6.0.0 and this option will be removed.
-wan_use_evpn_node_settings_for_lan: <bool; default=False>
 
 # Configure Virtual Topologies for CV Pathfinder and AutoVPN.
 # Auto create a control plane profile/policy/application and enforce it being first in the default VRF.
