@@ -81,6 +81,10 @@ class HTTPProxyManager:
         """
         Generate proxy configuration for requests library.
 
+        When proxy server is used we explicitly pass `"no_proxy": "_"` to prevent `requests`/`urllib` from reading `no_proxy`/`NO_PROXY`
+        again as we already did this.
+        When proxy server is not used we pass `"no_proxy": self.target_host` to make sure `requests`/`urllib` don't fallback to using proxy for cv_deploy flows.
+
         Returns:
             Dictionary with proxy configuration for requests.
         """
@@ -101,6 +105,7 @@ class HTTPProxyManager:
 
     @cached_property
     def use_proxy(self) -> bool:
+        """Boolean defining if proxy server should be used for CloudVision (both REST and gRPC) or not."""
         # First check if usable proxy-related settings were passed to CVClient explicitly
         if self.proxy_candidate_is_usable(
             CVProxyServerCandidate(
@@ -118,11 +123,11 @@ class HTTPProxyManager:
 
     @cached_property
     def bypass_proxy(self) -> bool:
-        """Checks if target CloudVision server is included in environment variable `no_proxy`/`NO_PROXY`."""
+        """Checks if target CloudVision server is included in environment variables `no_proxy` or `NO_PROXY` forcing proxy bypass."""
         for env_variable_candidate in ["no_proxy", "NO_PROXY"]:
             if isinstance(no_proxy_candidate := environ.get(env_variable_candidate), str) and len(no_proxy_candidate) > 0:
                 return bool({f"{self.target_host}", f"{self.target_host + ':' + str(self.target_port)}"} & set(no_proxy_candidate.split(",")))
-        # No ENV varisbales are set
+        # No interesting environment variables are set
         return False
 
     @cached_property
@@ -130,12 +135,12 @@ class HTTPProxyManager:
         """
         Verifies if usable proxy-related settings are set via either `https_proxy`, `HTTPS_PROXY`, `all_proxy` or `ALL_PROXY` environment variables.
 
-        Parses value of the `https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY` environment variable to obtain Proxy server parameters.
+        Parses value of the `https_proxy`, `HTTPS_PROXY`, `all_proxy` and `ALL_PROXY` environment variables to obtain Proxy server parameters.
         Order of preference: `https_proxy` else `HTTPS_PROXY` else `all_proxy` else `ALL_PROXY`.
         Updates HTTPProxyManager if usable Proxy server is found.
 
         Returns:
-            True if usable Proxy server has been identified via ENV variables, otherwise False.
+            True if usable Proxy server has been identified via interesting environment variables, otherwise False.
         """
         for env_variable_candidate in ["https_proxy", "HTTPS_PROXY", "all_proxy", "ALL_PROXY"]:
             if isinstance(proxy_candidate := environ.get(env_variable_candidate), str) and len(proxy_candidate) > 0:
@@ -147,6 +152,7 @@ class HTTPProxyManager:
 
     @staticmethod
     def parse_https_proxy_uri(https_proxy_uri: str) -> CVProxyServerCandidate:
+        """Parses string representing discovered proxy URI."""
         urlparse_result: ParseResult = urlparse(https_proxy_uri)
         return CVProxyServerCandidate(
             scheme=urlparse_result.scheme,
@@ -168,6 +174,7 @@ class HTTPProxyManager:
         )
 
     def update_proxy_manager(self, proxy_candidate: CVProxyServerCandidate) -> None:
+        """Updates proxy-related attributes once usable proxy candidate is found."""
         self.scheme = proxy_candidate.scheme
         self.host = proxy_candidate.host
         self.port = proxy_candidate.port

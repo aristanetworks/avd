@@ -67,7 +67,7 @@ async def test_cv_client_unauthenticated_proxy() -> None:
 
 
 def unset_proxy_related_env_vars(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Unset all proxy-related env variables prior to the start of the tests."""
+    """Unsets all proxy-related environment variables prior to the start of the proxy tests."""
     for env_var in ["https_proxy", "HTTPS_PROXY", "all_proxy", "ALL_PROXY", "no_proxy", "NO_PROXY"]:
         monkeypatch.delenv(env_var, raising=False)
 
@@ -75,6 +75,7 @@ def unset_proxy_related_env_vars(monkeypatch: pytest.MonkeyPatch) -> None:
 def form_proxy_string(
     proxy_schema: str | None, proxy_username: str | None, proxy_password: str | None, proxy_host: str | None, proxy_port: str | int | None
 ) -> str:
+    """Forms proxy server URI based on the input variables."""
     if proxy_username and proxy_password:
         return f"{proxy_schema}://{proxy_username}:{proxy_password}@{proxy_host}:{proxy_port!s}"  # NOSONAR
 
@@ -466,6 +467,7 @@ async def test_cv_client_proxy_settings_explicit(
     proxy_username: str | None,
     proxy_password: str | None,
 ) -> None:
+    """Test ability of explicitly-passed (to `cv_deploy`) proxy settings to override any proxy-related environment variables."""
     servers = "www.arista.io"
     token = "secret_access_token"  # noqa: S105
     proxy_host = "127.0.0.1"
@@ -564,6 +566,7 @@ async def test_cv_client_proxy_settings_env_vars(
     proxy_username: str | None,
     proxy_password: str | None,
 ) -> None:
+    """Test order of preference for proxy-related environment variables (`https_proxy` -> `HTTPS_PROXY` -> `all_proxy` -> `ALL_PROXY`)."""
     servers = "www.arista.io"
     token = "secret_access_token"  # noqa: S105
 
@@ -629,6 +632,7 @@ async def test_cv_client_proxy_settings_no_proxy_override(
     no_proxy_env_variable_name: str | None,
     no_proxy_env_variable_value: str | None,
 ) -> None:
+    """Test ability of `no_proxy` and `NO_PROXY` to override `https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY` leading to proxy bypass for `cv_deploy`."""
     servers = "www.arista.io"
     token = "secret_access_token"  # noqa: S105
 

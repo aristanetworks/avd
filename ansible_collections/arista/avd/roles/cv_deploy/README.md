@@ -351,8 +351,6 @@ Click "Save" to exit the dialogue box.
 
 The `arista.avd.cv_deploy` role supports connecting to CloudVision through an [HTTP CONNECT](https://en.wikipedia.org/wiki/HTTP_tunnel#HTTP_CONNECT_method) proxy server, with or without basic authentication.
 
-To enable the proxy, set `proxy_host` (port `TCP/8080` will be used by default). If this variable is not defined, a proxy will not be used (default mode).
-
 !!! Warning
 
     Authentication credentials (when used) are sent to the proxy server using ***HTTP Basic authentication*** over non-encrypted HTTP transport (credentials are only `Base64` encoded, not encrypted). Credentials can be exposed by intercepting and analyzing raw TCP/IP traffic between AVD and Proxy server.
@@ -360,6 +358,16 @@ To enable the proxy, set `proxy_host` (port `TCP/8080` will be used by default).
     Please use AVD proxy authentication only when absolutely necessary. Always use other filtering and identification mechanisms (like HTTP filtering based on the client's SRC IP, requested destination domains, etc.) to limit the security risks.
 
     It is important to note that plain HTTP is used by AVD only for the initial CONNECT request to establish the tunnel with the CloudVision through proxy server. Once the TCP tunnel to CloudVision through proxy server is active, all subsequent AVD communication — including both REST and gRPC calls — is protected within a secure TLS session(s) established between AVD and CloudVision ***inside*** the TCP proxy tunnel.
+
+There are two ways to enable proxy server for `cv_deploy`: explicitly and via environment variables.
+
+If proxy-related settings are passed to `cv_deploy` explicitly and execution environment has proxy-related environment variables set (`https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY`/`no_proxy`/`NO_PROXY`), such environment variables will be ignored for all REST and gRPC calls initiated by `cv_deploy`.
+
+### Configure proxy settings explicitly
+
+To enable the proxy explicitly, set `proxy_host`. Setting `proxy_port` (port `TCP/8080` will be used by default), `proxy_username` and `proxy_password` is optional.
+If valid `proxy_host` (must be non-empty string) and `proxy_port` (greater than 0, less than 65536) are set, `cv_deploy` will ignore (for both REST and gRPC calls) any proxy-related environment variables (`https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY`/`no_proxy`/`NO_PROXY`).
+If valid `proxy_host` (must be non-empty string) and `proxy_port` (greater than 0, less than 65536) are not set, `cv_deploy` will try to discover usable proxy server using environment variables.
 
 Below settings allow modifying the default proxy-related behavior as needed. The values below are the default values.
 
@@ -388,6 +396,56 @@ proxy_host: proxy.local.domain
 proxy_port: 3128
 proxy_username: "avd_proxy_user"
 proxy_password: "avd_proxy_password"
+```
+
+### Configure proxy settings using environment variables
+
+If proxy-related settings are not passed to `cv_deploy` explicitly, `cv_deploy` will try to discover usable proxy server (scheme is `http`, host is a non-empty string, port is greater than 0 and less than 65536) using environment variables in the following order:
+
+1. Discover proxy server
+
+    - Check `https_proxy` environment variable. If valid proxy settings are discovered, proceed to step 2. Otherwise, check next environment variable.
+    - Check `HTTPS_PROXY` environment variable. If valid proxy settings are discovered, proceed to step 2. Otherwise, check next environment variable.
+    - Check `all_proxy` environment variable. If valid proxy settings are discovered, proceed to step 2. Otherwise, check next environment variable.
+    - Check `ALL_PROXY` environment variable. If valid proxy settings are discovered, proceed to step 2. Otherwise, check next environment variable.
+
+    If no valid proxy settings are discovered after checking all interesting environment variables in step 1, `cv_deploy` will not use any proxy server for its outbound REST and gRPC requests.
+
+2. Check if proxy bypass is requested for CloudVision
+
+    - Check `no_proxy` environment variable. If it is a non-empty string, check if target CloudVision is part of this string. Do not use proxy if it is. Otherwise proceed to next environment variable.
+    - Check `NO_PROXY` environment variable. If it is a non-empty string, check if target CloudVision is part of this string. Do not use proxy if it is. Otherwise `cv_deploy` will use proxy server discovered in step 1 for all outbound REST and gRPC requests.
+
+Examples below show values that can be used for `https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY` environment variables to influence proxy server settings in `cv_deploy`:
+
+```code
+# Asumming 10.10.10.10 and proxy-server.local being examples of the proxy servers
+http://10.10.10.10:8081
+http://proxy-server.local:8081
+http://user1:pass1@10.10.10.10:8081
+http://user1:pass1@proxy-server.local:8081
+```
+
+Examples below show invalid values of `https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY` environment variables which will be ignored by `cv_deploy`:
+
+```code
+# Asumming 10.10.10.10 and proxy-server.local being examples of the proxy servers
+# `https` scheme is not supported. Only `http`.
+https://10.10.10.10:8081
+# Unspecified proxy server port
+http://proxy-server.local
+# Specified proxy server port is out of expected range
+http://proxy-server.local:65555
+```
+
+Examples below show values that can be used for `no_proxy`/`NO_PROXY` environment variables to influence proxy server settings in `cv_deploy`:
+
+```code
+# Assuming 192.168.10.10, 192.168.10.11 and 192.168.10.12 being IPv4 addresses of the members of the 3-nodes CVP cluster
+192.168.10.10,192.168.10.11,192.168.10.12
+9.9.9.9:555,192.168.10.10:443,192.168.10.11:443,192.168.10.12:443,11.11.11.11:666
+www.arista.io,www.arista.com
+www.arista.io:443,www.arista.com:443
 ```
 
 ## License
