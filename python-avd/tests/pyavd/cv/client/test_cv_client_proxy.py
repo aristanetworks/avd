@@ -393,19 +393,19 @@ async def test_cvclient_with_onprem_via_proxy_env_vars(
 @pytest.mark.parametrize(
     ("https_proxy"),
     [
-        pytest.param(None, id="LOWER_HTTPS_SERVER_NONE"),
-        pytest.param("http://127.0.0.1", id="LOWER_HTTPS_SERVER_MATCHING"),
-        pytest.param("http://127.0.0.2", id="LOWER_HTTPS_SERVER_NONMATCHING"),
-        pytest.param("http://new_user:new_password@127.0.0.2:8090", id="LOWER_HTTPS_SERVER_NONMATCHING_FULL"),
+        pytest.param(None, id="LOWER_HTTPS_PROXY_NONE"),
+        pytest.param("http://127.0.0.1", id="LOWER_HTTPS_PROXY_MATCHING"),
+        pytest.param("http://127.0.0.2", id="LOWER_HTTPS_PROXY_NONMATCHING"),
+        pytest.param("http://new_user:new_password@127.0.0.2:8090", id="LOWER_HTTPS_PROXY_NONMATCHING_FULL"),
     ],
 )
 @pytest.mark.parametrize(
     ("HTTPS_PROXY"),
     [
-        pytest.param(None, id="UPPER_HTTPS_SERVER_NONE"),
-        pytest.param("http://127.0.0.1", id="UPPER_HTTPS_SERVER_MATCHING"),
-        pytest.param("http://127.0.0.2", id="UPPER_HTTPS_SERVER_NONMATCHING"),
-        pytest.param("http://new_user:new_password@127.0.0.2:8090", id="UPPER_HTTPS_SERVER_NONMATCHING_FULL"),
+        pytest.param(None, id="UPPER_HTTPS_PROXY_NONE"),
+        pytest.param("http://127.0.0.1", id="UPPER_HTTPS_PROXY_MATCHING"),
+        pytest.param("http://127.0.0.2", id="UPPER_HTTPS_PROXY_NONMATCHING"),
+        pytest.param("http://new_user:new_password@127.0.0.2:8090", id="UPPER_HTTPS_PROXY_NONMATCHING_FULL"),
     ],
 )
 @pytest.mark.parametrize(
@@ -518,14 +518,21 @@ async def test_cv_client_proxy_settings_explicit(
             "http://new_user2:new_password2@127.0.0.2:8082",
             None,
             None,
-            id="LOWER_HTTPS_SERVER_WINS",
+            id="LOWER_HTTPS_PROXY_WINS",
+        ),
+        pytest.param(
+            "https://new_user2:new_password2@127.0.0.2:8082",
+            "http://new_user1:new_password1@127.0.0.1:8081",
+            None,
+            None,
+            id="INVALID_SCHEME_UPPER_HTTPS_PROXY_WINS",
         ),
         pytest.param(
             None,
             "http://new_user1:new_password1@127.0.0.1:8081",
             "http://new_user2:new_password2@127.0.0.2:8082",
             None,
-            id="UPPER_HTTPS_SERVER_WINS",
+            id="UPPER_HTTPS_PROXY_WINS",
         ),
         pytest.param(
             None,
