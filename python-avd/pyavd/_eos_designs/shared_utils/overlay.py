@@ -130,6 +130,9 @@ class OverlayMixin(Protocol):
             peer_fact = self.get_peer_facts(cast("str", self.wan_ha_peer))
             return f"{peer_fact.router_id}:{self.wan_site.id}"
 
+        if self.vtep_loopback.lower() == "loopback0":
+            return f"{self.router_id}:1"
+
         return f"{self.vtep_ip}:1"
 
     @cached_property
