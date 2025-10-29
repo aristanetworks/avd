@@ -22,6 +22,7 @@ l3leaf:
       nodes:
         - name: dc1-leaf1a
           id: 1
+          platform: vEOS-lab_with_storm_control
           mgmt_ip: 172.16.1.101/24
           uplink_switch_interfaces:
             - Ethernet1
