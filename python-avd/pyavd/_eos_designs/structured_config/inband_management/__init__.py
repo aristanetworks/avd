@@ -102,8 +102,8 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
 
         if not self.shared_utils.inband_management_parent_vlans and not self.shared_utils.configure_inband_mgmt:
             return
-        # Obtain will create the VRF if it does not exist yet
-        _ = self.structured_config.vrfs.obtain(self.shared_utils.inband_mgmt_vrf)
+        if self.shared_utils.inband_mgmt_vrf not in self.structured_config.vrfs:
+            self.structured_config.vrfs.append_new(name=self.shared_utils.inband_mgmt_vrf)
 
     @structured_config_contributor
     def ip_virtual_router_mac_address(self) -> None:
