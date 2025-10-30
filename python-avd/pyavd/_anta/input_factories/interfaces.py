@@ -72,12 +72,21 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
         # If the device is a VTEP, add the Vxlan1 interface to the list
         if self.device.is_vtep:
             if self.structured_config.vxlan_interface.vxlan1.vxlan.shutdown:
-                interfaces.append(InterfaceState(name="Vxlan1", status="down"))
-            elif self.device.vxlan_source_interface_status and self.device.vxlan_source_interface_status.shutdown:
+                interfaces.append(InterfaceState(name="Vxlan1", status="adminDown"))
+            elif self.is_source_interface_shutdown(
+                self.structured_config.vxlan_interface.vxlan1.vxlan.source_interface,  # pyright: ignore[reportArgumentType]
+                ipv6_enabled=self.structured_config.vxlan_interface.vxlan1.vxlan.encapsulations.ipv6,  # pyright: ignore[reportArgumentType]
+            ):
                 self.logger_adapter.debug(
-                    LogMessage.SOURCE_INTERFACE_SHUTDOWN, interface="Vxlan1", source_interface=self.device.vxlan_source_interface_status.name
+                    LogMessage.SOURCE_INTERFACE_SHUTDOWN,
+                    interface="Vxlan1",
+                    source_interface=self.structured_config.vxlan_interface.vxlan1.vxlan.source_interface,
                 )
-            elif not self.structured_config.vxlan_interface.vxlan1.vxlan.vlans and not self.structured_config.vxlan_interface.vxlan1.vxlan.vrfs:
+            elif not (
+                self.structured_config.vxlan_interface.vxlan1.vxlan.vlans
+                or self.structured_config.vxlan_interface.vxlan1.vxlan.vlan_range
+                or self.structured_config.vxlan_interface.vxlan1.vxlan.vrfs
+            ):
                 self.logger_adapter.debug(LogMessage.VNI_NOT_CONFIGURED, interface="Vxlan1")
             else:
                 interfaces.append(InterfaceState(name="Vxlan1", status="up"))

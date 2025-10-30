@@ -184,17 +184,3 @@ class DeviceTestContext:
         )
 
         return BgpNeighbor(ip_address=ip_interface(neighbor.ip_address).ip, vrf=vrf, update_source=update_source)
-
-    @cached_property
-    def vxlan_source_interface_status(self) -> EosCliConfigGen.DpsInterfacesItem | EosCliConfigGen.LoopbackInterfacesItem | None:
-        """Returns the source interface item from structured configs."""
-        source_interface = self.structured_config.vxlan_interface.vxlan1.vxlan.source_interface
-
-        # Fetch the source interface details from structured config
-        # Ignoring py-right warnings here as this function calls only if the device is vtep device
-        source_interface_item = None
-        if dps_item := self.structured_config.dps_interfaces.get(source_interface, None):  # pyright: ignore[reportArgumentType]
-            source_interface_item = dps_item
-        if loopback_item := self.structured_config.loopback_interfaces.get(source_interface, None):  # pyright: ignore[reportArgumentType]
-            source_interface_item = loopback_item
-        return source_interface_item

@@ -98,3 +98,21 @@ class AntaTestInputFactory(ABC, Generic[Input]):
             self.logger_adapter.debug(LogMessage.PEER_INTERFACE_SHUTDOWN, interface=interface, peer=peer, peer_interface=peer_interface)
 
         return shutdown_status
+
+    def is_source_interface_shutdown(self, source_interface: str, ipv6_enabled: bool = False) -> bool:
+        """
+        Check if a source interface is in a shutdown state.
+
+        Args:
+            source_interface: The name of the Ethernet interface on the peer device.
+            ipv6_enabled: Check whether IPV6 enabled on interface
+
+        Returns:
+            The shutdown state (True or False).
+        """
+        # Added loopback and dps interfaces here only(vxlan source interface use case)
+        interfaces_to_check = [self.structured_config.loopback_interfaces, self.structured_config.dps_interfaces]
+        source_intf = next((intf for intf_type in interfaces_to_check for intf in intf_type if intf.name == source_interface), None)
+
+        # Return shutdown=True if interface not found/adminDown/ip not configured
+        return not source_intf or source_intf.shutdown or (ipv6_enabled and not source_intf.ipv6_address) or (not ipv6_enabled and not source_intf.ip_address)
