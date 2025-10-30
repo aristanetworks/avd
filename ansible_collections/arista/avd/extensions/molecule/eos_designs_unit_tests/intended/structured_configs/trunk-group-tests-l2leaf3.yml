@@ -10,25 +10,28 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: trunk-group-tests-l3leaf1a
-  peer_interface: Ethernet5
-  peer_type: l3leaf
+  metadata:
+    peer: trunk-group-tests-l3leaf1a
+    peer_interface: Ethernet5
+    peer_type: l3leaf
 - name: Ethernet2
   description: L2_trunk-group-tests-l3leaf1b_Ethernet5
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: trunk-group-tests-l3leaf1b
-  peer_interface: Ethernet5
-  peer_type: l3leaf
+  metadata:
+    peer: trunk-group-tests-l3leaf1b
+    peer_interface: Ethernet5
+    peer_type: l3leaf
 - name: Ethernet12
   description: SERVER_server_with_tg_200_Nic2
   shutdown: false
-  peer: server_with_tg_200
-  peer_interface: Nic2
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: server_with_tg_200
+    peer_interface: Nic2
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk

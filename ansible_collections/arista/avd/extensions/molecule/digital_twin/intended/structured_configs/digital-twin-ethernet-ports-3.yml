@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.3.113/31
-  peer: digital-twin-ethernet-ports-1
-  peer_interface: Ethernet6
-  peer_type: l3leaf
+  metadata:
+    peer: digital-twin-ethernet-ports-1
+    peer_interface: Ethernet6
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: digital-twin-ethernet-ports-3
@@ -73,11 +74,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -87,7 +90,8 @@ router_bgp:
   - ip_address: 192.168.3.112
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    peer: digital-twin-ethernet-ports-1
+    metadata:
+      peer: digital-twin-ethernet-ports-1
     description: digital-twin-ethernet-ports-1_Ethernet6
   redistribute:
     connected:
@@ -126,7 +130,8 @@ vlan_interfaces:
   description: TENANT_A_VRF_A_SVI_A
   shutdown: false
   vrf: TENANT_A_VRF_A
-  tenant: TENANT_A
+  metadata:
+    tenant: TENANT_A
 vlan_internal_order:
   allocation: ascending
   range:

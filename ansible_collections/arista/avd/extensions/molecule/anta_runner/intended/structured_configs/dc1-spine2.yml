@@ -10,9 +10,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.2/31
-  peer: dc1-leaf1a
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf1a
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -20,9 +21,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.6/31
-  peer: dc1-leaf1b
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf1b
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3
@@ -30,9 +32,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.10/31
-  peer: dc1-leaf2a
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf2a
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4
@@ -40,9 +43,10 @@ ethernet_interfaces:
   shutdown: true
   mtu: 1500
   ip_address: 10.255.255.14/31
-  peer: dc1-leaf2b
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf2b
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet5
@@ -50,9 +54,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.33.255.18/31
-  peer: dc1-svc-leaf1a
-  peer_interface: Ethernet2
-  peer_type: service_leaf
+  metadata:
+    peer: dc1-svc-leaf1a
+    peer_interface: Ethernet2
+    peer_type: service_leaf
   switchport:
     enabled: false
 - name: Ethernet6
@@ -60,9 +65,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.33.255.22/31
-  peer: dc1-svc-leaf1b
-  peer_interface: Ethernet2
-  peer_type: service_leaf
+  metadata:
+    peer: dc1-svc-leaf1b
+    peer_interface: Ethernet2
+    peer_type: service_leaf
   switchport:
     enabled: false
 hostname: dc1-spine2
@@ -126,12 +132,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
@@ -140,76 +148,91 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   - name: IPv4-EXTERNAL-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '577'
   - name: IPv6-EXTERNAL-PEERS
-    type: ipv6
+    metadata:
+      type: ipv6
     remote_as: '577'
   - name: EVPN-EXTERNAL-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     remote_as: '577'
   neighbors:
   - ip_address: 10.255.255.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: dc1-leaf1a
+    metadata:
+      peer: dc1-leaf1a
     description: dc1-leaf1a_Ethernet2
   - ip_address: 10.255.255.7
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: dc1-leaf1b
+    metadata:
+      peer: dc1-leaf1b
     description: dc1-leaf1b_Ethernet2
   - ip_address: 10.255.255.11
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
-    peer: dc1-leaf2a
+    metadata:
+      peer: dc1-leaf2a
     description: dc1-leaf2a_Ethernet2
   - ip_address: 10.255.255.15
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
-    peer: dc1-leaf2b
+    metadata:
+      peer: dc1-leaf2b
     description: dc1-leaf2b_Ethernet2
     shutdown: true
   - ip_address: 10.33.255.19
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65133'
-    peer: dc1-svc-leaf1a
+    metadata:
+      peer: dc1-svc-leaf1a
     description: dc1-svc-leaf1a_Ethernet2
   - ip_address: 10.33.255.23
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65133'
-    peer: dc1-svc-leaf1b
+    metadata:
+      peer: dc1-svc-leaf1b
     description: dc1-svc-leaf1b_Ethernet2
   - ip_address: 10.255.0.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
-    peer: dc1-leaf1a
+    metadata:
+      peer: dc1-leaf1a
     description: dc1-leaf1a_Loopback0
   - ip_address: 10.255.0.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
-    peer: dc1-leaf1b
+    metadata:
+      peer: dc1-leaf1b
     description: dc1-leaf1b_Loopback0
   - ip_address: 10.255.0.5
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65102'
-    peer: dc1-leaf2a
+    metadata:
+      peer: dc1-leaf2a
     description: dc1-leaf2a_Loopback0
   - ip_address: 10.255.0.6
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65102'
-    peer: dc1-leaf2b
+    metadata:
+      peer: dc1-leaf2b
     description: dc1-leaf2b_Loopback0
     shutdown: true
   - ip_address: 10.33.0.5
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65133'
-    peer: dc1-svc-leaf1a
+    metadata:
+      peer: dc1-svc-leaf1a
     description: dc1-svc-leaf1a_Loopback0
   - ip_address: 10.33.0.6
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65133'
-    peer: dc1-svc-leaf1b
+    metadata:
+      peer: dc1-svc-leaf1b
     description: dc1-svc-leaf1b_Loopback0
   - ip_address: 142.112.39.2
     peer_group: IPv4-EXTERNAL-PEERS

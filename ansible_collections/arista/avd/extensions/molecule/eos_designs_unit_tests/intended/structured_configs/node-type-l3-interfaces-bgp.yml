@@ -8,7 +8,8 @@ ethernet_interfaces:
   description: INTERNET
   shutdown: true
   ip_address: 192.168.42.42/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 hostname: node-type-l3-interfaces-bgp
