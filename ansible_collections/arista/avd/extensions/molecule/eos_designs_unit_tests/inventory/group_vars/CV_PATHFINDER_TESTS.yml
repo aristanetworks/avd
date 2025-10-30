@@ -122,7 +122,6 @@ wan_router:
         - name: cv-pathfinder-edge
           id: 1
           uplink_switch_interfaces: [Ethernet1]
-          platform: vEOS-LAB
           l3_interfaces:
             - name: Ethernet1
               peer: peer3
