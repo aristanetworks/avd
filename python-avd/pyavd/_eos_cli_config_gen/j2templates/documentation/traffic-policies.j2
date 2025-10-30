@@ -64,7 +64,7 @@ Counters: {{ policy.counters | join(", ") }}
 {#                     -- Packet Type #}
 {%                     set row.packet_type = [] %}
 {%                     if match.packet_type.vxlan is arista.avd.defined %}
-{%                         do row.packet_type.append(match.packet_type.vxlan) %}
+{%                         do row.packet_type.append("vxlan " ~ match.packet_type.vxlan) %}
 {%                     endif %}
 {%                     if match.packet_type.multicast is arista.avd.defined(true) %}
 {%                         do row.packet_type.append("multicast") %}
