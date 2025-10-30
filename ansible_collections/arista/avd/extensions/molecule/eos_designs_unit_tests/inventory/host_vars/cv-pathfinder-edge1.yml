@@ -62,5 +62,5 @@ ipv4_acls:
 
 platform_settings:
   - platforms:
-      - vEOS-LAB
-    kernel_ecmp_cli: false
+      - default
+    kernel_ecmp_cli: true
