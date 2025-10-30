@@ -24502,6 +24502,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "cv_tags": {"type": CvTags},
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
+            "validate_no_errors_period": {"type": int},
         }
         is_deployed: bool | None
         """Key only used for documentation or validation purposes."""
@@ -24531,6 +24532,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdModel.
         """
+        validate_no_errors_period: int | None
+        """
+        Threshold (in minutes) defining the recent time window during which no error-level logs should have
+        been generated for the validation to pass.
+        """
 
         if TYPE_CHECKING:
 
@@ -24548,6 +24554,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 cv_tags: CvTags | UndefinedType = Undefined,
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
+                validate_no_errors_period: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -24576,6 +24583,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Metadata used to generate Digital Twin topology.
 
                        Subclass of AvdModel.
+                    validate_no_errors_period:
+                       Threshold (in minutes) defining the recent time window during which no error-level logs should have
+                       been generated for the validation to pass.
 
                 """
 

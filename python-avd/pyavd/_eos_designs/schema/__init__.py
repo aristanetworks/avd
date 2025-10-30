@@ -11657,6 +11657,7 @@ class EosDesigns(EosDesignsRootModel):
             "policy": {"type": EosCliConfigGen.Logging.Policy},
             "event": {"type": EosCliConfigGen.Logging.Event},
             "level": {"type": EosCliConfigGen.Logging.Level},
+            "validate_no_errors_period": {"type": int},
         }
         hosts: Hosts
         """Subclass of AvdList with `HostsItem` items."""
@@ -11678,6 +11679,11 @@ class EosDesigns(EosDesignsRootModel):
         event: EosCliConfigGen.Logging.Event
         level: EosCliConfigGen.Logging.Level
         """Configure logging severity."""
+        validate_no_errors_period: int | None
+        """
+        Threshold (in minutes) defining the recent time window during which no error-level logs should have
+        been generated for the validation to pass.
+        """
 
         if TYPE_CHECKING:
 
@@ -11697,6 +11703,7 @@ class EosDesigns(EosDesignsRootModel):
                 policy: EosCliConfigGen.Logging.Policy | UndefinedType = Undefined,
                 event: EosCliConfigGen.Logging.Event | UndefinedType = Undefined,
                 level: EosCliConfigGen.Logging.Level | UndefinedType = Undefined,
+                validate_no_errors_period: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 LoggingSettings.
@@ -11718,6 +11725,9 @@ class EosDesigns(EosDesignsRootModel):
                     policy: policy
                     event: event
                     level: Configure logging severity.
+                    validate_no_errors_period:
+                       Threshold (in minutes) defining the recent time window during which no error-level logs should have
+                       been generated for the validation to pass.
 
                 """
 

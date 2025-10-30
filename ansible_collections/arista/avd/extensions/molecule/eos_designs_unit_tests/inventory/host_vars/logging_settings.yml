@@ -85,3 +85,4 @@ logging_settings:
       match_lists:
         - name: molecule
           action: discard
+  validate_no_errors_period: 2
