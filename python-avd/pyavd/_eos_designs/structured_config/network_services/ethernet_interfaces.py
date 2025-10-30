@@ -312,8 +312,3 @@ class EthernetInterfacesMixin(Protocol):
             interface.metadata.peer_type = "l3_interface"
             interface.switchport.enabled = False
             self.structured_config.ethernet_interfaces.append(interface)
-
-    def set_direct_ie_connection_ethernet_interfaces(self: AvdStructuredConfigNetworkServicesProtocol, source_interface: str) -> None:
-        """This method expects that the source_interface was configured in the underlay."""
-        interface = self.structured_config.ethernet_interfaces.obtain(source_interface, required=True)
-        interface.ip_nat.service_profile = self.INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME

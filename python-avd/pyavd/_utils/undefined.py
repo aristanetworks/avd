@@ -3,6 +3,9 @@
 # that can be found in the LICENSE file.
 from typing import Any, Literal
 
+# TypeIs was added to python in 3.13
+from typing_extensions import TypeIs
+
 
 class UndefinedType:
     """Singleton used instead of None to detect fields that are not set specifically."""
@@ -19,3 +22,7 @@ class UndefinedType:
 
 
 Undefined = UndefinedType()
+
+
+def is_undefined(val: Any | UndefinedType) -> TypeIs[UndefinedType]:
+    return val is Undefined
