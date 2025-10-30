@@ -33,7 +33,7 @@ if TYPE_CHECKING:
     from .structured_config_generator import StructuredConfigGenerator
 
 AVD_STRUCTURED_CONFIG_CLASSES: list[type[StructuredConfigGenerator]] = [
-    # TODO: for now the order is important
+    # TODO: Rewrite the world to not rely on the order of classes
     AvdStructuredConfigBase,
     AvdStructuredConfigMlag,
     AvdStructuredConfigUnderlay,
