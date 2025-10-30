@@ -1,28 +1,9 @@
 # Copyright (c) 2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-import sys
-from pathlib import Path
-from typing import cast
-
 import pytest
 
-from pyavd_utils.validation import Issue, Value, Violation, init_store_from_fragments, validate_json
-
-
-@pytest.fixture
-def init_store() -> None:
-    org_path = sys.path
-    # Insert /python-avd into the python path to be able to import constants from schema_tools.
-    mocked_path = [str(Path(__file__).parents[3] / "python-avd")]
-    sys.path = mocked_path
-    from schema_tools.constants import SCHEMAS
-
-    init_store_from_fragments(
-        eos_cli_config_gen=cast("Path", SCHEMAS["eos_cli_config_gen"].fragments_dir),
-        eos_designs=cast("Path", SCHEMAS["eos_designs"].fragments_dir),
-    )
-    sys.path = org_path
+from pyavd_utils.validation import Issue, Value, Violation, validate_json
 
 
 @pytest.mark.usefixtures("init_store")

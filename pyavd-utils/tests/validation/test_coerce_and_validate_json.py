@@ -1,0 +1,28 @@
+# Copyright (c) 2025 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+import pytest
+
+from pyavd_utils.validation import Issue, Value, coerce_and_validate_json
+
+
+@pytest.mark.usefixtures("init_store")
+def test_validate_json() -> None:
+    coercion_and_validation_result = coerce_and_validate_json('{"ethernet_interfaces": [{"name": "Ethernet1", "description": 12345}]}', "eos_cli_config_gen")
+    coerced_json = coercion_and_validation_result.coerced_json
+    assert coerced_json == (
+        '{"ethernet_interfaces":[{"name":"Ethernet1","description":"12345"}],"avd_data_validation_mode":"error",'
+        '"config_end":false,"generate_default_config":false,"generate_device_documentation":true,"transceiver_qsfp_default_mode_4x10":true}'
+    )
+    validation_result = coercion_and_validation_result.validation_result
+    assert len(validation_result.violations) == 0
+
+    coercion_feedbacks = list(filter(lambda feedback: (isinstance(feedback.issue, Issue.Coercion)), validation_result.coercions))
+    assert len(coercion_feedbacks) == 1
+    feedback = coercion_feedbacks[0]
+    assert feedback.path == ["ethernet_interfaces", "0", "description"]
+    assert isinstance(feedback.issue, Issue.Coercion)
+    assert isinstance(feedback.issue._0.found, Value.Int)
+    assert feedback.issue._0.found._0 == 12345
+    assert isinstance(feedback.issue._0.made, Value.Str)
+    assert feedback.issue._0.made._0 == "12345"

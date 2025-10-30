@@ -21,18 +21,20 @@ fn get_store() -> &'static Store {
 
 #[pymodule]
 mod validation {
-    use log::info;
-    use std::path::PathBuf;
-
+    use super::{STORE, get_store};
     use avdschema::{LoadFromFragments, Store, any::AnySchema, resolve_schema};
-
-    use pyo3::{Bound, PyResult, exceptions::PyRuntimeError, pyfunction, types::PyModule};
-
+    use log::info;
+    use pyo3::{Bound, PyResult, exceptions::PyRuntimeError, pyclass, pyfunction, types::PyModule};
+    use std::path::PathBuf;
     use validation::{
         Coercion as _, Context, StoreValidate as _, Validation as _, ValidationResult,
     };
 
-    use super::{STORE, get_store};
+    #[pyclass(frozen, get_all)]
+    pub struct CoercionAndValidationResult {
+        pub validation_result: ValidationResult,
+        pub coerced_json: String,
+    }
 
     #[pymodule_init]
     fn init(_m: &Bound<'_, PyModule>) -> PyResult<()> {
@@ -89,6 +91,23 @@ mod validation {
         get_store()
             .validate_json(data_as_json, schema_name, None)
             .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))
+    }
+
+    #[pyfunction]
+    pub fn coerce_and_validate_json(
+        data_as_json: &str,
+        schema_name: &str,
+    ) -> PyResult<CoercionAndValidationResult> {
+        // The Value here will be in-place coerced to the correct data types.
+        let mut data_as_value = serde_json::from_str::<serde_json::Value>(data_as_json)
+            .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?;
+
+        Ok(CoercionAndValidationResult {
+            validation_result: get_store().validate_value(&mut data_as_value, schema_name, None),
+            coerced_json: serde_json::to_string(&data_as_value).map_err(|err| {
+                PyRuntimeError::new_err(format!("Invalid JSON in coerced data: {err}"))
+            })?,
+        })
     }
 
     #[pyfunction]
@@ -416,6 +435,78 @@ mod tests {
                 err.value(py).to_string(),
                 "Invalid JSON in adhoc schema: missing field `type` at line 1 column 14"
             )
+        });
+    }
+
+    #[test]
+    fn coerce_and_validate_json_ok() {
+        setup();
+        pyo3::Python::attach(|py| {
+            shared_init_store(py);
+
+            let module = py.import("validation").unwrap();
+            let data_as_json_str = serde_json::json!({"ethernet_interfaces": [{"name": "Ethernet1", "description": 12345}]}).to_string();
+            let coercion_and_validation_result = {
+                let args = ();
+                let kwargs = pyo3::types::PyDict::new(py);
+                kwargs.set_item("data_as_json", data_as_json_str).unwrap();
+                kwargs
+                    .set_item("schema_name", "eos_cli_config_gen")
+                    .unwrap();
+                module
+                    .call_method("coerce_and_validate_json", args, Some(&kwargs))
+                    .unwrap()
+            };
+            let validation_result = coercion_and_validation_result
+                .getattr("validation_result")
+                .unwrap();
+            let violations = validation_result.getattr("violations").unwrap();
+            assert!(violations.is_instance_of::<pyo3::types::PyList>());
+            assert_eq!(violations.len().unwrap(), 0);
+
+            let coercions = validation_result.getattr("coercions").unwrap();
+            assert!(coercions.is_instance_of::<pyo3::types::PyList>());
+
+            // The coercions also contains feedback for insertion of default values, so we first filter to only have actual coercions.
+            let issue_enum = module.getattr("Issue").unwrap();
+            let coercion_feedbacks = coercions
+                .cast_exact::<pyo3::types::PyList>()
+                .unwrap()
+                .into_iter()
+                .filter(|feedback| {
+                    let issue = feedback.getattr("issue").unwrap();
+                    let coercion_type = issue_enum.getattr("Coercion").unwrap();
+                    issue.get_type().eq(coercion_type).unwrap()
+                })
+                .collect::<Vec<pyo3::Bound<'_, pyo3::PyAny>>>();
+            assert_eq!(coercion_feedbacks.len(), 1);
+
+            let feedback = coercion_feedbacks.first().unwrap();
+            let path = feedback.getattr("path").unwrap();
+            let expected_path =
+                pyo3::types::PyList::new(py, ["ethernet_interfaces", "0", "description"]).unwrap();
+            assert!(path.eq(expected_path).unwrap());
+            let issue = feedback.getattr("issue").unwrap();
+
+            let coercion_note = issue.getattr("_0").unwrap();
+            let found = coercion_note
+                .getattr("found")
+                .unwrap()
+                .getattr("_0")
+                .unwrap();
+            let expected_found = pyo3::types::PyInt::new(py, 12345);
+            assert!(
+                found.eq(expected_found).unwrap(),
+                "Found something else: {}",
+                found
+            );
+            let made = coercion_note
+                .getattr("made")
+                .unwrap()
+                .getattr("_0")
+                .unwrap();
+            let expected_made = pyo3::types::PyString::new(py, "12345");
+            assert!(made.eq(expected_made).unwrap());
         });
     }
 }
