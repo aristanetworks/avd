@@ -23829,15 +23829,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                             enabled: bool
-                            """
-                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                            Tracking Group.
-                            If no `group` is specified for downlinks, the downlinks will be linked to the first
-                            available tracking group
-                            i.e. either the default `LT_GROUP1` or the first from the configured list.
-
-                            Default value: `False`
-                            """
+                            """Default value: `False`"""
                             group: str | None
                             """
                             Link Tracking Group Name.
@@ -23855,12 +23847,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled:
-                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                           Tracking Group.
-                                           If no `group` is specified for downlinks, the downlinks will be linked to the first
-                                           available tracking group
-                                           i.e. either the default `LT_GROUP1` or the first from the configured list.
+                                        enabled: enabled
                                         group:
                                            Link Tracking Group Name.
                                            Group name should be any one of the groups defined under
@@ -23915,7 +23902,17 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         """Default value: `False`"""
                         downlinks: Downlinks
-                        """Subclass of AvdModel."""
+                        """
+                        Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                        Tracking Group.
+                        If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                        to the first available tracking group
+                        i.e. either the default `LT_GROUP1` or the first from the
+                        configured list.
+
+
+                        Subclass of AvdModel.
+                        """
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -23946,7 +23943,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    downlinks: Subclass of AvdModel.
+                                    downlinks:
+                                       Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                       Tracking Group.
+                                       If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                       to the first available tracking group
+                                       i.e. either the default `LT_GROUP1` or the first from the
+                                       configured list.
+
+
+                                       Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -28810,15 +28816,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                                 enabled: bool
-                                """
-                                Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                Tracking Group.
-                                If no `group` is specified for downlinks, the downlinks will be linked to the first
-                                available tracking group
-                                i.e. either the default `LT_GROUP1` or the first from the configured list.
-
-                                Default value: `False`
-                                """
+                                """Default value: `False`"""
                                 group: str | None
                                 """
                                 Link Tracking Group Name.
@@ -28836,12 +28834,7 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            enabled:
-                                               Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                               Tracking Group.
-                                               If no `group` is specified for downlinks, the downlinks will be linked to the first
-                                               available tracking group
-                                               i.e. either the default `LT_GROUP1` or the first from the configured list.
+                                            enabled: enabled
                                             group:
                                                Link Tracking Group Name.
                                                Group name should be any one of the groups defined under
@@ -28896,7 +28889,17 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool
                             """Default value: `False`"""
                             downlinks: Downlinks
-                            """Subclass of AvdModel."""
+                            """
+                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                            Tracking Group.
+                            If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                            to the first available tracking group
+                            i.e. either the default `LT_GROUP1` or the first from the
+                            configured list.
+
+
+                            Subclass of AvdModel.
+                            """
                             groups: Groups
                             """
                             Link Tracking Groups.
@@ -28927,7 +28930,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
-                                        downlinks: Subclass of AvdModel.
+                                        downlinks:
+                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                           Tracking Group.
+                                           If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                           to the first available tracking group
+                                           i.e. either the default `LT_GROUP1` or the first from the
+                                           configured list.
+
+
+                                           Subclass of AvdModel.
                                         groups:
                                            Link Tracking Groups.
                                            By default a single group named "LT_GROUP1" is defined with default values.
@@ -33754,15 +33766,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                             enabled: bool
-                            """
-                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                            Tracking Group.
-                            If no `group` is specified for downlinks, the downlinks will be linked to the first
-                            available tracking group
-                            i.e. either the default `LT_GROUP1` or the first from the configured list.
-
-                            Default value: `False`
-                            """
+                            """Default value: `False`"""
                             group: str | None
                             """
                             Link Tracking Group Name.
@@ -33780,12 +33784,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled:
-                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                           Tracking Group.
-                                           If no `group` is specified for downlinks, the downlinks will be linked to the first
-                                           available tracking group
-                                           i.e. either the default `LT_GROUP1` or the first from the configured list.
+                                        enabled: enabled
                                         group:
                                            Link Tracking Group Name.
                                            Group name should be any one of the groups defined under
@@ -33840,7 +33839,17 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         """Default value: `False`"""
                         downlinks: Downlinks
-                        """Subclass of AvdModel."""
+                        """
+                        Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                        Tracking Group.
+                        If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                        to the first available tracking group
+                        i.e. either the default `LT_GROUP1` or the first from the
+                        configured list.
+
+
+                        Subclass of AvdModel.
+                        """
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -33871,7 +33880,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    downlinks: Subclass of AvdModel.
+                                    downlinks:
+                                       Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                       Tracking Group.
+                                       If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                       to the first available tracking group
+                                       i.e. either the default `LT_GROUP1` or the first from the
+                                       configured list.
+
+
+                                       Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -38761,15 +38779,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                             enabled: bool
-                            """
-                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                            Tracking Group.
-                            If no `group` is specified for downlinks, the downlinks will be linked to the first
-                            available tracking group
-                            i.e. either the default `LT_GROUP1` or the first from the configured list.
-
-                            Default value: `False`
-                            """
+                            """Default value: `False`"""
                             group: str | None
                             """
                             Link Tracking Group Name.
@@ -38787,12 +38797,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled:
-                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                           Tracking Group.
-                                           If no `group` is specified for downlinks, the downlinks will be linked to the first
-                                           available tracking group
-                                           i.e. either the default `LT_GROUP1` or the first from the configured list.
+                                        enabled: enabled
                                         group:
                                            Link Tracking Group Name.
                                            Group name should be any one of the groups defined under
@@ -38847,7 +38852,17 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         """Default value: `False`"""
                         downlinks: Downlinks
-                        """Subclass of AvdModel."""
+                        """
+                        Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                        Tracking Group.
+                        If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                        to the first available tracking group
+                        i.e. either the default `LT_GROUP1` or the first from the
+                        configured list.
+
+
+                        Subclass of AvdModel.
+                        """
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -38878,7 +38893,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    downlinks: Subclass of AvdModel.
+                                    downlinks:
+                                       Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                       Tracking Group.
+                                       If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                       to the first available tracking group
+                                       i.e. either the default `LT_GROUP1` or the first from the
+                                       configured list.
+
+
+                                       Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -55890,15 +55914,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                             enabled: bool
-                            """
-                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                            Tracking Group.
-                            If no `group` is specified for downlinks, the downlinks will be linked to the first
-                            available tracking group
-                            i.e. either the default `LT_GROUP1` or the first from the configured list.
-
-                            Default value: `False`
-                            """
+                            """Default value: `False`"""
                             group: str | None
                             """
                             Link Tracking Group Name.
@@ -55916,12 +55932,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled:
-                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                           Tracking Group.
-                                           If no `group` is specified for downlinks, the downlinks will be linked to the first
-                                           available tracking group
-                                           i.e. either the default `LT_GROUP1` or the first from the configured list.
+                                        enabled: enabled
                                         group:
                                            Link Tracking Group Name.
                                            Group name should be any one of the groups defined under
@@ -55976,7 +55987,17 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         """Default value: `False`"""
                         downlinks: Downlinks
-                        """Subclass of AvdModel."""
+                        """
+                        Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                        Tracking Group.
+                        If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                        to the first available tracking group
+                        i.e. either the default `LT_GROUP1` or the first from the
+                        configured list.
+
+
+                        Subclass of AvdModel.
+                        """
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -56007,7 +56028,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    downlinks: Subclass of AvdModel.
+                                    downlinks:
+                                       Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                       Tracking Group.
+                                       If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                       to the first available tracking group
+                                       i.e. either the default `LT_GROUP1` or the first from the
+                                       configured list.
+
+
+                                       Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -60871,15 +60901,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                                 enabled: bool
-                                """
-                                Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                Tracking Group.
-                                If no `group` is specified for downlinks, the downlinks will be linked to the first
-                                available tracking group
-                                i.e. either the default `LT_GROUP1` or the first from the configured list.
-
-                                Default value: `False`
-                                """
+                                """Default value: `False`"""
                                 group: str | None
                                 """
                                 Link Tracking Group Name.
@@ -60897,12 +60919,7 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            enabled:
-                                               Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                               Tracking Group.
-                                               If no `group` is specified for downlinks, the downlinks will be linked to the first
-                                               available tracking group
-                                               i.e. either the default `LT_GROUP1` or the first from the configured list.
+                                            enabled: enabled
                                             group:
                                                Link Tracking Group Name.
                                                Group name should be any one of the groups defined under
@@ -60957,7 +60974,17 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool
                             """Default value: `False`"""
                             downlinks: Downlinks
-                            """Subclass of AvdModel."""
+                            """
+                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                            Tracking Group.
+                            If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                            to the first available tracking group
+                            i.e. either the default `LT_GROUP1` or the first from the
+                            configured list.
+
+
+                            Subclass of AvdModel.
+                            """
                             groups: Groups
                             """
                             Link Tracking Groups.
@@ -60988,7 +61015,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
-                                        downlinks: Subclass of AvdModel.
+                                        downlinks:
+                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                           Tracking Group.
+                                           If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                           to the first available tracking group
+                                           i.e. either the default `LT_GROUP1` or the first from the
+                                           configured list.
+
+
+                                           Subclass of AvdModel.
                                         groups:
                                            Link Tracking Groups.
                                            By default a single group named "LT_GROUP1" is defined with default values.
@@ -65815,15 +65851,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                             enabled: bool
-                            """
-                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                            Tracking Group.
-                            If no `group` is specified for downlinks, the downlinks will be linked to the first
-                            available tracking group
-                            i.e. either the default `LT_GROUP1` or the first from the configured list.
-
-                            Default value: `False`
-                            """
+                            """Default value: `False`"""
                             group: str | None
                             """
                             Link Tracking Group Name.
@@ -65841,12 +65869,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled:
-                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                           Tracking Group.
-                                           If no `group` is specified for downlinks, the downlinks will be linked to the first
-                                           available tracking group
-                                           i.e. either the default `LT_GROUP1` or the first from the configured list.
+                                        enabled: enabled
                                         group:
                                            Link Tracking Group Name.
                                            Group name should be any one of the groups defined under
@@ -65901,7 +65924,17 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         """Default value: `False`"""
                         downlinks: Downlinks
-                        """Subclass of AvdModel."""
+                        """
+                        Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                        Tracking Group.
+                        If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                        to the first available tracking group
+                        i.e. either the default `LT_GROUP1` or the first from the
+                        configured list.
+
+
+                        Subclass of AvdModel.
+                        """
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -65932,7 +65965,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    downlinks: Subclass of AvdModel.
+                                    downlinks:
+                                       Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                       Tracking Group.
+                                       If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                       to the first available tracking group
+                                       i.e. either the default `LT_GROUP1` or the first from the
+                                       configured list.
+
+
+                                       Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -70822,15 +70864,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
                             enabled: bool
-                            """
-                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                            Tracking Group.
-                            If no `group` is specified for downlinks, the downlinks will be linked to the first
-                            available tracking group
-                            i.e. either the default `LT_GROUP1` or the first from the configured list.
-
-                            Default value: `False`
-                            """
+                            """Default value: `False`"""
                             group: str | None
                             """
                             Link Tracking Group Name.
@@ -70848,12 +70882,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled:
-                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                           Tracking Group.
-                                           If no `group` is specified for downlinks, the downlinks will be linked to the first
-                                           available tracking group
-                                           i.e. either the default `LT_GROUP1` or the first from the configured list.
+                                        enabled: enabled
                                         group:
                                            Link Tracking Group Name.
                                            Group name should be any one of the groups defined under
@@ -70908,7 +70937,17 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         """Default value: `False`"""
                         downlinks: Downlinks
-                        """Subclass of AvdModel."""
+                        """
+                        Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                        Tracking Group.
+                        If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                        to the first available tracking group
+                        i.e. either the default `LT_GROUP1` or the first from the
+                        configured list.
+
+
+                        Subclass of AvdModel.
+                        """
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -70939,7 +70978,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    downlinks: Subclass of AvdModel.
+                                    downlinks:
+                                       Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                       Tracking Group.
+                                       If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                       to the first available tracking group
+                                       i.e. either the default `LT_GROUP1` or the first from the
+                                       configured list.
+
+
+                                       Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.

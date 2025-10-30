@@ -11,8 +11,8 @@
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "<node_type_keys.key>.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<node_type_keys.key>.defaults.link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.link_tracking.enabled") | Boolean |  | `False` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "<node_type_keys.key>.defaults.link_tracking.downlinks") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.link_tracking.downlinks.enabled") | Boolean |  | `False` |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "<node_type_keys.key>.defaults.link_tracking.downlinks") | Dictionary |  |  |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.link_tracking.downlinks.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "<node_type_keys.key>.defaults.link_tracking.downlinks.group") | String |  |  |  | Link Tracking Group Name.<br>Group name should be any one of the groups defined under "link_tracking.groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<node_type_keys.key>.defaults.link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.defaults.link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
@@ -57,8 +57,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].downlink_pools.[].downlink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.downlinks") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.downlinks.enabled") | Boolean |  | `False` |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.downlinks") | Dictionary |  |  |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.downlinks.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.downlinks.group") | String |  |  |  | Link Tracking Group Name.<br>Group name should be any one of the groups defined under "link_tracking.groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
@@ -94,8 +94,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_structured_config") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>uplink_port_channel_structured_config or uplink_ethernet_structured_config or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.downlinks") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.downlinks.enabled") | Boolean |  | `False` |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.downlinks") | Dictionary |  |  |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.downlinks.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.downlinks.group") | String |  |  |  | Link Tracking Group Name.<br>Group name should be any one of the groups defined under "link_tracking.groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
@@ -138,8 +138,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].downlink_pools.[].downlink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<node_type_keys.key>.nodes.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.downlinks") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.downlinks.enabled") | Boolean |  | `False` |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.downlinks") | Dictionary |  |  |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.downlinks.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.downlinks.group") | String |  |  |  | Link Tracking Group Name.<br>Group name should be any one of the groups defined under "link_tracking.groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
@@ -186,11 +186,11 @@
         # Useful in EVPN multhoming designs.
         link_tracking:
           enabled: <bool; default=False>
-          downlinks:
 
-            # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
-            # If no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
-            # i.e. either the default `LT_GROUP1` or the first from the configured list.
+          # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
+          # If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
+          # i.e. either the default `LT_GROUP1` or the first from the configured list.
+          downlinks:
             enabled: <bool; default=False>
 
             # Link Tracking Group Name.
@@ -348,11 +348,11 @@
               # Useful in EVPN multhoming designs.
               link_tracking:
                 enabled: <bool; default=False>
-                downlinks:
 
-                  # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
-                  # If no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
-                  # i.e. either the default `LT_GROUP1` or the first from the configured list.
+                # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
+                # If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
+                # i.e. either the default `LT_GROUP1` or the first from the configured list.
+                downlinks:
                   enabled: <bool; default=False>
 
                   # Link Tracking Group Name.
@@ -482,11 +482,11 @@
           # Useful in EVPN multhoming designs.
           link_tracking:
             enabled: <bool; default=False>
-            downlinks:
 
-              # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
-              # If no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
-              # i.e. either the default `LT_GROUP1` or the first from the configured list.
+            # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
+            # If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
+            # i.e. either the default `LT_GROUP1` or the first from the configured list.
+            downlinks:
               enabled: <bool; default=False>
 
               # Link Tracking Group Name.
@@ -637,11 +637,11 @@
           # Useful in EVPN multhoming designs.
           link_tracking:
             enabled: <bool; default=False>
-            downlinks:
 
-              # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
-              # If no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
-              # i.e. either the default `LT_GROUP1` or the first from the configured list.
+            # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
+            # If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
+            # i.e. either the default `LT_GROUP1` or the first from the configured list.
+            downlinks:
               enabled: <bool; default=False>
 
               # Link Tracking Group Name.
