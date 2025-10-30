@@ -80,6 +80,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyStormControlDrops,
+        input_factory=VerifyStormControlDropsInputFactory,
     ),
     TestSpec(
         test_class=VerifyLLDPNeighbors,

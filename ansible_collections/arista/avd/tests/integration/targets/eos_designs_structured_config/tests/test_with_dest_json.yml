@@ -8,7 +8,7 @@
   ansible.builtin.shell: >-
     diff "{{ expected_output_dir }}/eos_designs_structured_config_test_with_dest.json"
     "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.json"
-  failed_when: diff_output.rc
+  failed_when: diff_output.rc > 0
   register: diff_output
   delegate_to: localhost
 

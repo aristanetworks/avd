@@ -193,12 +193,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
@@ -210,77 +212,91 @@ router_bgp:
   - ip_address: 172.16.11.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
-    peer: DC1-SUPER-SPINE1
+    metadata:
+      peer: DC1-SUPER-SPINE1
     description: DC1-SUPER-SPINE1_Ethernet1
   - ip_address: 172.16.11.64
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
-    peer: DC1-SUPER-SPINE2
+    metadata:
+      peer: DC1-SUPER-SPINE2
     description: DC1-SUPER-SPINE2_Ethernet1
   - ip_address: 172.17.110.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65111.100'
-    peer: DC1-POD1-LEAF1A
+    metadata:
+      peer: DC1-POD1-LEAF1A
     description: DC1-POD1-LEAF1A_Ethernet1
   - ip_address: 172.17.110.9
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
-    peer: DC1.POD1.LEAF2A
+    metadata:
+      peer: DC1.POD1.LEAF2A
     description: DC1.POD1.LEAF2A_Ethernet1
   - ip_address: 172.17.110.17
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
-    peer: DC1-POD1-LEAF2B
+    metadata:
+      peer: DC1-POD1-LEAF2B
     description: DC1-POD1-LEAF2B_Ethernet1
   - ip_address: 172.17.10.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: DC1-RS1
+    metadata:
+      peer: DC1-RS1
     description: DC1-RS1_Ethernet2
     bfd: true
   - ip_address: 172.17.110.13
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
-    peer: DC1.POD1.LEAF2A
+    metadata:
+      peer: DC1.POD1.LEAF2A
     description: DC1.POD1.LEAF2A_Ethernet11
   - ip_address: 172.17.110.21
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
-    peer: DC1-POD1-LEAF2B
+    metadata:
+      peer: DC1-POD1-LEAF2B
     description: DC1-POD1-LEAF2B_Ethernet11
   - ip_address: 172.16.210.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65211'
-    peer: DC2-POD1-LEAF1A
+    metadata:
+      peer: DC2-POD1-LEAF1A
     description: DC2-POD1-LEAF1A_Loopback0
     route_map_out: RM-EVPN-FILTER-AS65211
   - ip_address: 172.16.210.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65210'
-    peer: DC2-POD1-SPINE1
+    metadata:
+      peer: DC2-POD1-SPINE1
     description: DC2-POD1-SPINE1_Loopback0
     route_map_out: RM-EVPN-FILTER-AS65210
   - ip_address: 172.16.20.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65201'
-    peer: DC2-RS1
+    metadata:
+      peer: DC2-RS1
     description: DC2-RS1_Loopback0
     route_map_out: RM-EVPN-FILTER-AS65201
   - ip_address: 172.16.200.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65200'
-    peer: DC2-SUPER-SPINE1
+    metadata:
+      peer: DC2-SUPER-SPINE1
     description: DC2-SUPER-SPINE1_Loopback0
     route_map_out: RM-EVPN-FILTER-AS65200
   - ip_address: 172.16.110.5
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65112.100'
-    peer: DC1-POD1-LEAF2B
+    metadata:
+      peer: DC1-POD1-LEAF2B
     description: DC1-POD1-LEAF2B_Loopback0
   - ip_address: 172.16.110.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65112.100'
-    peer: DC1.POD1.LEAF2A
+    metadata:
+      peer: DC1.POD1.LEAF2A
     description: DC1.POD1.LEAF2A_Loopback0
   redistribute:
     connected:

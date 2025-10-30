@@ -168,12 +168,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: UNDERLAY_PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: af6F4WLl4wUrWRZcwbEwkQ==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
@@ -185,72 +187,86 @@ router_bgp:
   - ip_address: 192.168.255.10
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65104'
-    peer: DC1-BL1A
+    metadata:
+      peer: DC1-BL1A
     description: DC1-BL1A_Loopback0
   - ip_address: 192.168.255.11
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65105'
-    peer: DC1-BL1B
+    metadata:
+      peer: DC1-BL1B
     description: DC1-BL1B_Loopback0
   - ip_address: 192.168.255.5
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
-    peer: DC1-LEAF1A
+    metadata:
+      peer: DC1-LEAF1A
     description: DC1-LEAF1A_Loopback0
   - ip_address: 192.168.255.6
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65102'
-    peer: DC1-LEAF2A
+    metadata:
+      peer: DC1-LEAF2A
     description: DC1-LEAF2A_Loopback0
   - ip_address: 192.168.255.7
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65102'
-    peer: DC1-LEAF2B
+    metadata:
+      peer: DC1-LEAF2B
     description: DC1-LEAF2B_Loopback0
   - ip_address: 192.168.255.8
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65103'
-    peer: DC1-SVC3A
+    metadata:
+      peer: DC1-SVC3A
     description: DC1-SVC3A_Loopback0
   - ip_address: 192.168.255.9
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65103'
-    peer: DC1-SVC3B
+    metadata:
+      peer: DC1-SVC3B
     description: DC1-SVC3B_Loopback0
   neighbor_interfaces:
   - name: Ethernet1
     remote_as: '65101'
-    peer: DC1-LEAF1A
+    metadata:
+      peer: DC1-LEAF1A
     peer_group: UNDERLAY_PEERS
     description: DC1-LEAF1A_Ethernet1
   - name: Ethernet2
     remote_as: '65102'
-    peer: DC1-LEAF2A
+    metadata:
+      peer: DC1-LEAF2A
     peer_group: UNDERLAY_PEERS
     description: DC1-LEAF2A_Ethernet1
   - name: Ethernet3
     remote_as: '65102'
-    peer: DC1-LEAF2B
+    metadata:
+      peer: DC1-LEAF2B
     peer_group: UNDERLAY_PEERS
     description: DC1-LEAF2B_Ethernet1
   - name: Ethernet4
     remote_as: '65103'
-    peer: DC1-SVC3A
+    metadata:
+      peer: DC1-SVC3A
     peer_group: UNDERLAY_PEERS
     description: DC1-SVC3A_Ethernet1
   - name: Ethernet5
     remote_as: '65103'
-    peer: DC1-SVC3B
+    metadata:
+      peer: DC1-SVC3B
     peer_group: UNDERLAY_PEERS
     description: DC1-SVC3B_Ethernet1
   - name: Ethernet6
     remote_as: '65104'
-    peer: DC1-BL1A
+    metadata:
+      peer: DC1-BL1A
     peer_group: UNDERLAY_PEERS
     description: DC1-BL1A_Ethernet1
   - name: Ethernet7
     remote_as: '65105'
-    peer: DC1-BL1B
+    metadata:
+      peer: DC1-BL1B
     peer_group: UNDERLAY_PEERS
     description: DC1-BL1B_Ethernet1
   redistribute:

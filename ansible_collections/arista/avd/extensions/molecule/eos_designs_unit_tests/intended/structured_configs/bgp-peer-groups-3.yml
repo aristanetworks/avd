@@ -40,7 +40,8 @@ router_bgp:
       d_path: true
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     remote_as: '65001'
     description: Description for mpls_overlay_peers via structured_config
     update_source: Loopback0
@@ -48,7 +49,8 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   - name: IPVPN-GATEWAY-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     description: Description for ipvpn_gateway_peers via structured_config
     update_source: Loopback0
     bfd: false
