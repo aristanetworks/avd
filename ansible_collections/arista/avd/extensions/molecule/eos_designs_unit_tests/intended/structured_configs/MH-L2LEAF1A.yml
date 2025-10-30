@@ -52,8 +52,6 @@ ip_name_servers:
 - ip_address: 2001:db8::2
   vrf: MGMT
 link_tracking_groups:
-- name: l2leaf-server01
-  recovery_delay: 310
 - name: l2leaf-server02
   recovery_delay: 300
 local_users:
@@ -102,8 +100,6 @@ port_channel_interfaces:
   description: MH-LEAF2A_Po2
   shutdown: false
   link_tracking_groups:
-  - name: l2leaf-server01
-    direction: upstream
   - name: l2leaf-server02
     direction: upstream
   switchport:

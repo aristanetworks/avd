@@ -10,8 +10,6 @@ l2leaf:
     link_tracking:
       enabled: true
       groups:
-        - name: l2leaf-server01
-          recovery_delay: 310
         - name: l2leaf-server02
           recovery_delay: 300
     filter:
@@ -21,8 +19,3 @@ l2leaf:
       id: 1
       mgmt_ip: 192.168.201.201/24
       uplink_switch_interfaces: [ Ethernet2 ]
-      link_tracking:
-        # testing downlinks with group defined, this will take the defined link tracking group
-        downlinks:
-          enabled: true
-          group: l2leaf-server01
