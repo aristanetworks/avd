@@ -127,7 +127,7 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: vEOS-lab_with_storm_control
   dc_name: DC1
   fabric_name: FABRIC
 mlag_configuration:
@@ -166,6 +166,19 @@ port_channel_interfaces:
   description: SERVER_dc1-leaf2-server1_PortChannel dc1-leaf2-server1
   shutdown: false
   mlag: 5
+  storm_control:
+    all:
+      level: '10.0'
+      unit: percent
+    broadcast:
+      level: '100.0'
+      unit: pps
+    multicast:
+      level: '1.5'
+      unit: percent
+    unknown_unicast:
+      level: '2.8'
+      unit: percent
   spanning_tree_portfast: edge
   switchport:
     enabled: true

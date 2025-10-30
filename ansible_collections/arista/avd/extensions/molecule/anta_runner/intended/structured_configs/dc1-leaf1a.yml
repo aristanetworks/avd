@@ -94,6 +94,19 @@ ethernet_interfaces:
 - name: Ethernet31
   description: WORKSTATION_dc1-leaf1-workstation1_e1
   shutdown: false
+  storm_control:
+    all:
+      level: '10.0'
+      unit: percent
+    broadcast:
+      level: '100.0'
+      unit: pps
+    multicast:
+      level: '1.5'
+      unit: percent
+    unknown_unicast:
+      level: '2.8'
+      unit: percent
   spanning_tree_portfast: edge
   metadata:
     peer: dc1-leaf1-workstation1
@@ -184,7 +197,7 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: vEOS-lab_with_storm_control
   dc_name: DC1
   fabric_name: FABRIC
 mlag_configuration:
