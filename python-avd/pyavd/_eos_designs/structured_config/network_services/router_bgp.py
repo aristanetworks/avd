@@ -325,7 +325,7 @@ class RouterBgpMixin(Protocol):
         interface_name = f"Vlan{vlan_id}"
 
         if self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549:
-            bgp_vrf.neighbor_interfaces.append_new(
+            neighbor_interface = bgp_vrf.neighbor_interfaces.append_new(
                 name=interface_name,
                 peer_group=self.shared_utils.mlag_vrfs_peer_group_name,
                 remote_as=self.shared_utils.formatted_bgp_as,
@@ -337,7 +337,7 @@ class RouterBgpMixin(Protocol):
                 )
                 or None,
             )
-            bgp_vrf.neighbor_interfaces.obtain(interface_name).metadata.validate_state = vrf.validate_bgp_peers
+            neighbor_interface.metadata.validate_state = vrf.validate_bgp_peers
         else:
             if not vrf.mlag_ibgp_peering_ipv4_pool:
                 ip_address = self.shared_utils.mlag_peer_ibgp_ip
@@ -346,7 +346,7 @@ class RouterBgpMixin(Protocol):
             else:
                 ip_address = self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(vrf.mlag_ibgp_peering_ipv4_pool)
 
-            bgp_vrf.neighbors.append_new(
+            neighbor = bgp_vrf.neighbors.append_new(
                 ip_address=ip_address,
                 peer_group=self.shared_utils.mlag_vrfs_peer_group_name,
                 description=AvdStringFormatter().format(
@@ -357,7 +357,7 @@ class RouterBgpMixin(Protocol):
                 )
                 or None,
             )
-            bgp_vrf.neighbors.obtain(ip_address).metadata.validate_state = vrf.validate_bgp_peers
+            neighbor.metadata.validate_state = vrf.validate_bgp_peers
             # In case of only underlay_rfc5549 but not overlay_mlag_rfc5549, we need to remove the ipv6 next-hop per neighbor/vrf
             # This is only needed when we use the same MLAG peer-group for both underlay and overlay.
             if self.inputs.underlay_rfc5549 and not self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
