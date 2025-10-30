@@ -27,8 +27,8 @@ class AntaTestInputFactory(ABC, Generic[Input]):
     Attributes:
         device: `DeviceTestContext` instance for the test.
         structured_config: `EosCliConfigGen` model of the device.
-        fabric_data: `AvdFabricData` instance containing data of all devices in the fabric
-        logger_adapter: Custom `TestLoggerAdapter` logger adapter used for the input factory.
+        fabric_data: `AvdFabricData` instance containing data of all devices in the fabric.
+        logger_adapter: Custom `TestLoggerAdapter` logger adapter used for logging in the input factory.
     """
 
     def __init__(self, device_context: DeviceTestContext, test_name: str) -> None:
