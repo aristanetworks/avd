@@ -56,11 +56,11 @@ class AntaTestInputFactory(ABC, Generic[Input]):
         if not self.is_peer_available(peer, identity=interface):
             return None
 
-        if (peer_interface_obj := self.fabric_data.devices[peer].ethernet_interfaces.get(peer_interface)) is None:
+        if (peer_intf := self.fabric_data.devices[peer].ethernet_interfaces.get(peer_interface)) is None:
             self.logger_adapter.debug(LogMessage.PEER_INTERFACE_NOT_FOUND, interface=interface, peer=peer, peer_interface=peer_interface)
             return None
 
-        peer_interface_ip = peer_interface_obj.ip_address
+        peer_interface_ip = peer_intf.ip_address
 
         if peer_interface_ip is None:
             log_message = LogMessage.PEER_INTERFACE_NO_IP
@@ -69,11 +69,13 @@ class AntaTestInputFactory(ABC, Generic[Input]):
         elif "unnumbered" in peer_interface_ip:
             log_message = LogMessage.PEER_INTERFACE_UNNUMBERED
         else:
-            return peer_interface_ip
+            log_message = None
 
-        # We only get here if one of the above was true
-        self.logger_adapter.debug(log_message, interface=interface, peer=peer, peer_interface=peer_interface)
-        return None
+        if log_message:
+            self.logger_adapter.debug(log_message, interface=interface, peer=peer, peer_interface=peer_interface)
+            return None
+
+        return peer_interface_ip
 
     def is_peer_interface_shutdown(self, peer: str, peer_interface: str, interface: str) -> bool | None:
         """
@@ -89,11 +91,11 @@ class AntaTestInputFactory(ABC, Generic[Input]):
         Returns:
             The shutdown state (True or False) if the interface is found, otherwise None.
         """
-        if (peer_interface_obj := self.fabric_data.devices[peer].ethernet_interfaces.get(peer_interface)) is None:
+        if (peer_intf := self.fabric_data.devices[peer].ethernet_interfaces.get(peer_interface)) is None:
             self.logger_adapter.debug(LogMessage.PEER_INTERFACE_NOT_FOUND, interface=interface, peer=peer, peer_interface=peer_interface)
             return None
 
-        shutdown_status = peer_interface_obj.shutdown
+        shutdown_status = peer_intf.shutdown
         if shutdown_status:
             self.logger_adapter.debug(LogMessage.PEER_INTERFACE_SHUTDOWN, interface=interface, peer=peer, peer_interface=peer_interface)
 
