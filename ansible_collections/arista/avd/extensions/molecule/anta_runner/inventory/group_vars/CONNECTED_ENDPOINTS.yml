@@ -101,12 +101,13 @@ servers:
           endpoint_port_channel: PortChannel dc2-leaf2-server1
           mode: active
 
-      - endpoint_ports: [iLO]
+      - endpoint_ports: [Eth1]
         switch_ports: [Ethernet5]
         switches: [dc2-leaf2c]
         vlans: 11
         mode: access
         spanning_tree_portfast: edge
+        validate_lldp: true
 
 workstations:
   - name: dc1-leaf1-workstation1

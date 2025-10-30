@@ -190,7 +190,7 @@ class EthernetInterfacesMixin(Protocol):
             speed=adapter.speed,
             shutdown=not (adapter.enabled if adapter.enabled is not None else True),
             validate_state=None if (adapter.validate_state if adapter.validate_state is not None else True) else False,
-            validate_lldp=None if (adapter.validate_lldp if adapter.validate_lldp is not None else True) else False,
+            validate_lldp=adapter.validate_lldp,
             dot1x=adapter.dot1x,
             poe=adapter.poe if self.shared_utils.platform_settings.feature_support.poe else Undefined,
             eos_cli=adapter.raw_eos_cli,

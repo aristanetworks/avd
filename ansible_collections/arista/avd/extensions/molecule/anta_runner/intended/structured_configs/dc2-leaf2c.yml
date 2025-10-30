@@ -25,14 +25,15 @@ ethernet_interfaces:
     peer_interface: Ethernet8
     peer_type: l3leaf
 - name: Ethernet5
-  description: SERVER_dc2-leaf2-server1_iLO
+  description: SERVER_dc2-leaf2-server1_Eth1
   shutdown: false
   spanning_tree_portfast: edge
   metadata:
     peer: dc2-leaf2-server1
-    peer_interface: iLO
+    peer_interface: Eth1
     peer_type: server
     peer_key: servers
+  validate_lldp: true
   switchport:
     enabled: true
     mode: access

@@ -50,16 +50,17 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
                 self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="metadata.peer, metadata.peer_interface")
                 continue
 
-            if not self.is_peer_available(intf.metadata.peer, identity=intf.name):
-                continue
+            if intf.validate_lldp is not True:
+                if not self.is_peer_available(intf.metadata.peer, identity=intf.name):
+                    continue
 
-            if self.is_peer_interface_shutdown(intf.metadata.peer, intf.metadata.peer_interface, intf.name):
-                continue
+                if self.is_peer_interface_shutdown(intf.metadata.peer, intf.metadata.peer_interface, intf.name):
+                    continue
 
             # LLDP neighbor is the FQDN when dns domain is set in EOS
             fqdn = (
                 f"{intf.metadata.peer}.{dns_domain}"
-                if (dns_domain := self.minimal_structured_configs[intf.metadata.peer].dns_domain) is not None
+                if intf.validate_lldp is not True and (dns_domain := self.minimal_structured_configs[intf.metadata.peer].dns_domain) is not None
                 else intf.metadata.peer
             )
 
