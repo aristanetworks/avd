@@ -10,7 +10,7 @@
 
 #### MAC Access-lists Summary
 {%     for mac_access_list in mac_access_lists | arista.avd.natural_sort('name') %}
-{%         if mac_access_list.name is arista.avd.defined and mac_access_list.entries is arista.avd.defined %}
+{%         if mac_access_list.entries is arista.avd.defined %}
 
 ##### {{ mac_access_list.name }}
 {%             if mac_access_list.counters_per_entry is arista.avd.defined(true) %}

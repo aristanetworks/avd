@@ -20019,7 +20019,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"id": {"type": str}, "encrypted_key": {"type": str}, "fallback": {"type": bool}}
                 id: str
-                encrypted_key: str | None
+                encrypted_key: str
                 fallback: bool | None
 
                 if TYPE_CHECKING:
@@ -20028,7 +20028,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         id: str | UndefinedType = Undefined,
-                        encrypted_key: str | None | UndefinedType = Undefined,
+                        encrypted_key: str | UndefinedType = Undefined,
                         fallback: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """

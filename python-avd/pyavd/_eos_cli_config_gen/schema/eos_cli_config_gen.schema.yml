@@ -8076,6 +8076,7 @@ keys:
                     type: str
                   encrypted_key:
                     type: str
+                    required: true
                   fallback:
                     type: bool
             mka:
