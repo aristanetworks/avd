@@ -23831,14 +23831,18 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool
                             """
                             Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                            Tracking Group(s).
+                            Tracking Group.
+                            If no `group` is specified for downlinks, the downlinks will be linked to the first
+                            available tracking group
+                            i.e. either the default `LT_GROUP1` or the first from the configured list.
 
                             Default value: `False`
                             """
                             group: str | None
                             """
                             Link Tracking Group Name.
-                            Group name should be any one of the groups defined under "groups".
+                            Group name should be any one of the groups defined under
+                            "link_tracking.groups".
                             """
 
                             if TYPE_CHECKING:
@@ -23853,10 +23857,14 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled:
                                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                           Tracking Group(s).
+                                           Tracking Group.
+                                           If no `group` is specified for downlinks, the downlinks will be linked to the first
+                                           available tracking group
+                                           i.e. either the default `LT_GROUP1` or the first from the configured list.
                                         group:
                                            Link Tracking Group Name.
-                                           Group name should be any one of the groups defined under "groups".
+                                           Group name should be any one of the groups defined under
+                                           "link_tracking.groups".
 
                                     """
 
@@ -28804,14 +28812,18 @@ class EosDesigns(EosDesignsRootModel):
                                 enabled: bool
                                 """
                                 Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                Tracking Group(s).
+                                Tracking Group.
+                                If no `group` is specified for downlinks, the downlinks will be linked to the first
+                                available tracking group
+                                i.e. either the default `LT_GROUP1` or the first from the configured list.
 
                                 Default value: `False`
                                 """
                                 group: str | None
                                 """
                                 Link Tracking Group Name.
-                                Group name should be any one of the groups defined under "groups".
+                                Group name should be any one of the groups defined under
+                                "link_tracking.groups".
                                 """
 
                                 if TYPE_CHECKING:
@@ -28826,10 +28838,14 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             enabled:
                                                Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                               Tracking Group(s).
+                                               Tracking Group.
+                                               If no `group` is specified for downlinks, the downlinks will be linked to the first
+                                               available tracking group
+                                               i.e. either the default `LT_GROUP1` or the first from the configured list.
                                             group:
                                                Link Tracking Group Name.
-                                               Group name should be any one of the groups defined under "groups".
+                                               Group name should be any one of the groups defined under
+                                               "link_tracking.groups".
 
                                         """
 
@@ -33740,14 +33756,18 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool
                             """
                             Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                            Tracking Group(s).
+                            Tracking Group.
+                            If no `group` is specified for downlinks, the downlinks will be linked to the first
+                            available tracking group
+                            i.e. either the default `LT_GROUP1` or the first from the configured list.
 
                             Default value: `False`
                             """
                             group: str | None
                             """
                             Link Tracking Group Name.
-                            Group name should be any one of the groups defined under "groups".
+                            Group name should be any one of the groups defined under
+                            "link_tracking.groups".
                             """
 
                             if TYPE_CHECKING:
@@ -33762,10 +33782,14 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled:
                                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                           Tracking Group(s).
+                                           Tracking Group.
+                                           If no `group` is specified for downlinks, the downlinks will be linked to the first
+                                           available tracking group
+                                           i.e. either the default `LT_GROUP1` or the first from the configured list.
                                         group:
                                            Link Tracking Group Name.
-                                           Group name should be any one of the groups defined under "groups".
+                                           Group name should be any one of the groups defined under
+                                           "link_tracking.groups".
 
                                     """
 
@@ -38739,14 +38763,18 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool
                             """
                             Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                            Tracking Group(s).
+                            Tracking Group.
+                            If no `group` is specified for downlinks, the downlinks will be linked to the first
+                            available tracking group
+                            i.e. either the default `LT_GROUP1` or the first from the configured list.
 
                             Default value: `False`
                             """
                             group: str | None
                             """
                             Link Tracking Group Name.
-                            Group name should be any one of the groups defined under "groups".
+                            Group name should be any one of the groups defined under
+                            "link_tracking.groups".
                             """
 
                             if TYPE_CHECKING:
@@ -38761,10 +38789,14 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled:
                                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                           Tracking Group(s).
+                                           Tracking Group.
+                                           If no `group` is specified for downlinks, the downlinks will be linked to the first
+                                           available tracking group
+                                           i.e. either the default `LT_GROUP1` or the first from the configured list.
                                         group:
                                            Link Tracking Group Name.
-                                           Group name should be any one of the groups defined under "groups".
+                                           Group name should be any one of the groups defined under
+                                           "link_tracking.groups".
 
                                     """
 
@@ -55860,14 +55892,18 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool
                             """
                             Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                            Tracking Group(s).
+                            Tracking Group.
+                            If no `group` is specified for downlinks, the downlinks will be linked to the first
+                            available tracking group
+                            i.e. either the default `LT_GROUP1` or the first from the configured list.
 
                             Default value: `False`
                             """
                             group: str | None
                             """
                             Link Tracking Group Name.
-                            Group name should be any one of the groups defined under "groups".
+                            Group name should be any one of the groups defined under
+                            "link_tracking.groups".
                             """
 
                             if TYPE_CHECKING:
@@ -55882,10 +55918,14 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled:
                                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                           Tracking Group(s).
+                                           Tracking Group.
+                                           If no `group` is specified for downlinks, the downlinks will be linked to the first
+                                           available tracking group
+                                           i.e. either the default `LT_GROUP1` or the first from the configured list.
                                         group:
                                            Link Tracking Group Name.
-                                           Group name should be any one of the groups defined under "groups".
+                                           Group name should be any one of the groups defined under
+                                           "link_tracking.groups".
 
                                     """
 
@@ -60833,14 +60873,18 @@ class EosDesigns(EosDesignsRootModel):
                                 enabled: bool
                                 """
                                 Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                Tracking Group(s).
+                                Tracking Group.
+                                If no `group` is specified for downlinks, the downlinks will be linked to the first
+                                available tracking group
+                                i.e. either the default `LT_GROUP1` or the first from the configured list.
 
                                 Default value: `False`
                                 """
                                 group: str | None
                                 """
                                 Link Tracking Group Name.
-                                Group name should be any one of the groups defined under "groups".
+                                Group name should be any one of the groups defined under
+                                "link_tracking.groups".
                                 """
 
                                 if TYPE_CHECKING:
@@ -60855,10 +60899,14 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             enabled:
                                                Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                               Tracking Group(s).
+                                               Tracking Group.
+                                               If no `group` is specified for downlinks, the downlinks will be linked to the first
+                                               available tracking group
+                                               i.e. either the default `LT_GROUP1` or the first from the configured list.
                                             group:
                                                Link Tracking Group Name.
-                                               Group name should be any one of the groups defined under "groups".
+                                               Group name should be any one of the groups defined under
+                                               "link_tracking.groups".
 
                                         """
 
@@ -65769,14 +65817,18 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool
                             """
                             Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                            Tracking Group(s).
+                            Tracking Group.
+                            If no `group` is specified for downlinks, the downlinks will be linked to the first
+                            available tracking group
+                            i.e. either the default `LT_GROUP1` or the first from the configured list.
 
                             Default value: `False`
                             """
                             group: str | None
                             """
                             Link Tracking Group Name.
-                            Group name should be any one of the groups defined under "groups".
+                            Group name should be any one of the groups defined under
+                            "link_tracking.groups".
                             """
 
                             if TYPE_CHECKING:
@@ -65791,10 +65843,14 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled:
                                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                           Tracking Group(s).
+                                           Tracking Group.
+                                           If no `group` is specified for downlinks, the downlinks will be linked to the first
+                                           available tracking group
+                                           i.e. either the default `LT_GROUP1` or the first from the configured list.
                                         group:
                                            Link Tracking Group Name.
-                                           Group name should be any one of the groups defined under "groups".
+                                           Group name should be any one of the groups defined under
+                                           "link_tracking.groups".
 
                                     """
 
@@ -70768,14 +70824,18 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool
                             """
                             Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                            Tracking Group(s).
+                            Tracking Group.
+                            If no `group` is specified for downlinks, the downlinks will be linked to the first
+                            available tracking group
+                            i.e. either the default `LT_GROUP1` or the first from the configured list.
 
                             Default value: `False`
                             """
                             group: str | None
                             """
                             Link Tracking Group Name.
-                            Group name should be any one of the groups defined under "groups".
+                            Group name should be any one of the groups defined under
+                            "link_tracking.groups".
                             """
 
                             if TYPE_CHECKING:
@@ -70790,10 +70850,14 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled:
                                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
-                                           Tracking Group(s).
+                                           Tracking Group.
+                                           If no `group` is specified for downlinks, the downlinks will be linked to the first
+                                           available tracking group
+                                           i.e. either the default `LT_GROUP1` or the first from the configured list.
                                         group:
                                            Link Tracking Group Name.
-                                           Group name should be any one of the groups defined under "groups".
+                                           Group name should be any one of the groups defined under
+                                           "link_tracking.groups".
 
                                     """
 

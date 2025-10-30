@@ -102,13 +102,16 @@ $defs:
                 keys:
                   enabled:
                     type: bool
-                    description: Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group(s).
+                    description: |
+                      Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
+                      If no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
+                      i.e. either the default `LT_GROUP1` or the first from the configured list.
                     default: false
                   group:
                     type: str
                     description: |
                       Link Tracking Group Name.
-                      Group name should be any one of the groups defined under "groups".
+                      Group name should be any one of the groups defined under "link_tracking.groups".
               groups:
                 type: list
                 primary_key: name
