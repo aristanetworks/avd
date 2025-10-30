@@ -10,9 +10,10 @@ ethernet_interfaces:
   flow_tracker:
     sampled: FLOW-TRACKER
   spanning_tree_portfast: edge
-  peer: uplink_lan_wan_router1
-  peer_interface: Ethernet2
-  peer_type: wan_router
+  metadata:
+    peer: uplink_lan_wan_router1
+    peer_interface: Ethernet2
+    peer_type: wan_router
   switchport:
     enabled: true
     mode: trunk
@@ -25,9 +26,10 @@ ethernet_interfaces:
   flow_tracker:
     sampled: FLOW-TRACKER
   spanning_tree_portfast: edge
-  peer: uplink_lan_wan_router2
-  peer_interface: Ethernet2
-  peer_type: wan_router
+  metadata:
+    peer: uplink_lan_wan_router2
+    peer_interface: Ethernet2
+    peer_type: wan_router
   switchport:
     enabled: true
     mode: trunk

@@ -9,8 +9,8 @@ pub mod feedback;
 mod validation;
 mod validation_result;
 
-#[cfg(feature = "python_bindings")]
-mod python_bindings;
-
+pub use self::coercion::Coercion;
+pub use self::context::{Configuration, Context};
+pub use self::validation::Validation;
 pub use self::validation::store::StoreValidate;
-pub use self::context::Configuration;
+pub use self::validation_result::ValidationResult;
