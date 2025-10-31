@@ -529,6 +529,8 @@ keys:
           description: Encrypted password.
         ospf_authentication_key_type:
           type: str
+          convert_types:
+            - int
           description: Authentication key type.
           default: "7"
           valid_values:
@@ -552,6 +554,8 @@ keys:
                 description: Encrypted password.
               key_type:
                 type: str
+                convert_types:
+                  - int
                 description: Authentication key type.
                 default: "7"
                 valid_values:
