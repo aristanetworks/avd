@@ -15766,6 +15766,7 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
+            "kernel_ecmp_cli": {"type": bool, "default": True},
             "feature_support": {"type": FeatureSupport},
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
@@ -15792,6 +15793,18 @@ class EosDesigns(EosDesignsRootModel):
         Set MTU on point to point uplink interfaces.
         Takes precedence over the root key "p2p_uplinks_mtu".
         <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+        """
+        kernel_ecmp_cli: bool
+        """
+        Use EOS CLI to configure kernel forwarding ECMP programming.
+        For EOS kernel forwarding, ECMP
+        programming can be enabled in two different ways, depending on the EOS version.
+        - For newer EOS
+        versions (starting 4.33.2) use the proper CLI.
+        - For older EOS versions use an agent environment
+        variable. Changing this requires restarting the KernelFib agent.
+
+        Default value: `True`
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
@@ -15828,6 +15841,7 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 default_interface_mtu: int | None | UndefinedType = Undefined,
                 p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
+                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
@@ -15855,6 +15869,14 @@ class EosDesigns(EosDesignsRootModel):
                        Set MTU on point to point uplink interfaces.
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+                    kernel_ecmp_cli:
+                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                       For EOS kernel forwarding, ECMP
+                       programming can be enabled in two different ways, depending on the EOS version.
+                       - For newer EOS
+                       versions (starting 4.33.2) use the proper CLI.
+                       - For older EOS versions use an agent environment
+                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:
@@ -16507,6 +16529,7 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
+            "kernel_ecmp_cli": {"type": bool, "default": True},
             "feature_support": {"type": FeatureSupport},
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
@@ -16533,6 +16556,18 @@ class EosDesigns(EosDesignsRootModel):
         Set MTU on point to point uplink interfaces.
         Takes precedence over the root key "p2p_uplinks_mtu".
         <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+        """
+        kernel_ecmp_cli: bool
+        """
+        Use EOS CLI to configure kernel forwarding ECMP programming.
+        For EOS kernel forwarding, ECMP
+        programming can be enabled in two different ways, depending on the EOS version.
+        - For newer EOS
+        versions (starting 4.33.2) use the proper CLI.
+        - For older EOS versions use an agent environment
+        variable. Changing this requires restarting the KernelFib agent.
+
+        Default value: `True`
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
@@ -16569,6 +16604,7 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 default_interface_mtu: int | None | UndefinedType = Undefined,
                 p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
+                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
@@ -16596,6 +16632,14 @@ class EosDesigns(EosDesignsRootModel):
                        Set MTU on point to point uplink interfaces.
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+                    kernel_ecmp_cli:
+                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                       For EOS kernel forwarding, ECMP
+                       programming can be enabled in two different ways, depending on the EOS version.
+                       - For newer EOS
+                       versions (starting 4.33.2) use the proper CLI.
+                       - For older EOS versions use an agent environment
+                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:
@@ -75986,7 +76030,6 @@ class EosDesigns(EosDesignsRootModel):
         "wan_route_servers": {"type": WanRouteServers},
         "wan_stun_dtls_disable": {"type": bool, "default": False},
         "wan_stun_dtls_profile_name": {"type": str, "default": "STUN-DTLS"},
-        "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp": {"type": bool, "default": False},
         "wan_virtual_topologies": {"type": WanVirtualTopologies},
         "zscaler_endpoints": {"type": ZscalerEndpoints},
         "_custom_structured_configurations": {"type": _CustomStructuredConfigurations},
@@ -77909,18 +77952,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"STUN-DTLS"`
     """
-    wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: bool
-    """
-    For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
-    EOS version.
-
-    - `true`: For older EOS versions use an agent environment variable. Changing this
-    requires a restart of the KernelFib agent.
-    - `false`: For newer EOS versions (starting 4.33.2) use
-    the proper CLI.
-
-    Default value: `False`
-    """
     wan_virtual_topologies: WanVirtualTopologies
     """
     Configure Virtual Topologies for CV Pathfinder and AutoVPN.
@@ -78151,7 +78182,6 @@ class EosDesigns(EosDesignsRootModel):
             wan_route_servers: WanRouteServers | UndefinedType = Undefined,
             wan_stun_dtls_disable: bool | UndefinedType = Undefined,
             wan_stun_dtls_profile_name: str | UndefinedType = Undefined,
-            wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: bool | UndefinedType = Undefined,
             wan_virtual_topologies: WanVirtualTopologies | UndefinedType = Undefined,
             zscaler_endpoints: ZscalerEndpoints | UndefinedType = Undefined,
             _custom_structured_configurations: _CustomStructuredConfigurations | UndefinedType = Undefined,
@@ -79531,14 +79561,6 @@ class EosDesigns(EosDesignsRootModel):
                    Name of the SSL profile used for DTLS on WAN STUN connections.
                    When using automatic ceritficate
                    deployment via CloudVision this name must be the same on all WAN routers.
-                wan_use_agent_env_var_for_kernel_software_forwarding_ecmp:
-                   For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
-                   EOS version.
-
-                   - `true`: For older EOS versions use an agent environment variable. Changing this
-                   requires a restart of the KernelFib agent.
-                   - `false`: For newer EOS versions (starting 4.33.2) use
-                   the proper CLI.
                 wan_virtual_topologies:
                    Configure Virtual Topologies for CV Pathfinder and AutoVPN.
                    Auto create a control plane
