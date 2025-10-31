@@ -118,7 +118,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '923'
     description: MLAG_SAME_SUBNET_L3LEAF2B
     next_hop_self: true
@@ -126,11 +127,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -139,7 +142,8 @@ router_bgp:
   neighbors:
   - ip_address: 10.10.224.2
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: MLAG_SAME_SUBNET_L3LEAF2B
+    metadata:
+      peer: MLAG_SAME_SUBNET_L3LEAF2B
     description: MLAG_SAME_SUBNET_L3LEAF2B_Vlan4093
   redistribute:
     connected:
@@ -147,7 +151,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 10
-    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+    metadata:
+      tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
     rd: 192.168.255.34:10
     route_targets:
       both:
@@ -155,7 +160,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 101
-    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+    metadata:
+      tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
     rd: 192.168.255.34:101
     route_targets:
       both:

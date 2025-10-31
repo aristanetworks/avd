@@ -106,7 +106,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65105'
     description: AUTO_BGP_ASN_LEAF3A
     next_hop_self: true
@@ -114,11 +115,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -127,7 +130,8 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.251.8
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: AUTO_BGP_ASN_LEAF3A
+    metadata:
+      peer: AUTO_BGP_ASN_LEAF3A
     description: AUTO_BGP_ASN_LEAF3A_Vlan4093
   redistribute:
     connected:

@@ -107,12 +107,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
@@ -124,42 +126,50 @@ router_bgp:
   - ip_address: 10.255.255.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: dc1-leaf1a
+    metadata:
+      peer: dc1-leaf1a
     description: dc1-leaf1a_Ethernet2
   - ip_address: 10.255.255.7
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: dc1-leaf1b
+    metadata:
+      peer: dc1-leaf1b
     description: dc1-leaf1b_Ethernet2
   - ip_address: 10.255.255.11
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
-    peer: dc1-leaf2a
+    metadata:
+      peer: dc1-leaf2a
     description: dc1-leaf2a_Ethernet2
   - ip_address: 10.255.255.15
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
-    peer: dc1-leaf2b
+    metadata:
+      peer: dc1-leaf2b
     description: dc1-leaf2b_Ethernet2
   - ip_address: 10.255.0.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
-    peer: dc1-leaf1a
+    metadata:
+      peer: dc1-leaf1a
     description: dc1-leaf1a_Loopback0
   - ip_address: 10.255.0.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
-    peer: dc1-leaf1b
+    metadata:
+      peer: dc1-leaf1b
     description: dc1-leaf1b_Loopback0
   - ip_address: 10.255.0.5
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65102'
-    peer: dc1-leaf2a
+    metadata:
+      peer: dc1-leaf2a
     description: dc1-leaf2a_Loopback0
   - ip_address: 10.255.0.6
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65102'
-    peer: dc1-leaf2b
+    metadata:
+      peer: dc1-leaf2b
     description: dc1-leaf2b_Loopback0
   redistribute:
     connected:

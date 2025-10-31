@@ -59,18 +59,21 @@ router_bgp:
       d_path: true
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
   - name: EVPN-OVERLAY-CORE
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 15
@@ -80,7 +83,8 @@ router_bgp:
   - ip_address: 192.168.100.10
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65002'
-    peer: DCI_TEST
+    metadata:
+      peer: DCI_TEST
     description: DCI_TEST
   redistribute:
     connected:
@@ -88,7 +92,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 11
-    tenant: EVPN_GATEWAY_TESTS
+    metadata:
+      tenant: EVPN_GATEWAY_TESTS
     rd: 192.168.255.1:10011
     rd_evpn_domain:
       domain: remote
@@ -102,7 +107,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 12
-    tenant: EVPN_GATEWAY_TESTS
+    metadata:
+      tenant: EVPN_GATEWAY_TESTS
     rd: 192.168.255.1:10012
     rd_evpn_domain:
       domain: remote
@@ -116,7 +122,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 21
-    tenant: EVPN_GATEWAY_TESTS
+    metadata:
+      tenant: EVPN_GATEWAY_TESTS
     rd: 192.168.255.1:10021
     rd_evpn_domain:
       domain: remote
@@ -130,7 +137,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 22
-    tenant: EVPN_GATEWAY_TESTS
+    metadata:
+      tenant: EVPN_GATEWAY_TESTS
     rd: 192.168.255.1:10022
     rd_evpn_domain:
       domain: remote
@@ -144,7 +152,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 300
-    tenant: EVPN_GATEWAY_TESTS
+    metadata:
+      tenant: EVPN_GATEWAY_TESTS
     rd: 192.168.255.1:10300
     rd_evpn_domain:
       domain: remote
@@ -158,7 +167,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 3401
-    tenant: EVPN_GATEWAY_TESTS
+    metadata:
+      tenant: EVPN_GATEWAY_TESTS
     rd: 192.168.255.1:13401
     rd_evpn_domain:
       domain: remote
@@ -172,7 +182,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 3402
-    tenant: EVPN_GATEWAY_TESTS
+    metadata:
+      tenant: EVPN_GATEWAY_TESTS
     rd: 192.168.255.1:13402
     rd_evpn_domain:
       domain: remote

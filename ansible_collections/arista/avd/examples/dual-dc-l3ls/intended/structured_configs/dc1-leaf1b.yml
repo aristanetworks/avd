@@ -201,7 +201,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65101'
     description: dc1-leaf1a
     next_hop_self: true
@@ -210,12 +211,14 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -225,27 +228,32 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.1.96
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: dc1-leaf1a
+    metadata:
+      peer: dc1-leaf1a
     description: dc1-leaf1a_Vlan4093
   - ip_address: 10.255.255.4
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine1
+    metadata:
+      peer: dc1-spine1
     description: dc1-spine1_Ethernet2
   - ip_address: 10.255.255.6
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine2
+    metadata:
+      peer: dc1-spine2
     description: dc1-spine2_Ethernet2
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine1
+    metadata:
+      peer: dc1-spine1
     description: dc1-spine1_Loopback0
   - ip_address: 10.255.0.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine2
+    metadata:
+      peer: dc1-spine2
     description: dc1-spine2_Loopback0
   redistribute:
     connected:
@@ -253,7 +261,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 11
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.4:10011
     route_targets:
       both:
@@ -261,7 +270,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 12
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.4:10012
     route_targets:
       both:
@@ -269,7 +279,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 21
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.4:10021
     route_targets:
       both:
@@ -277,7 +288,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 22
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.4:10022
     route_targets:
       both:
@@ -285,7 +297,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 3401
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.4:13401
     route_targets:
       both:
@@ -293,7 +306,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 3402
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.4:13402
     route_targets:
       both:

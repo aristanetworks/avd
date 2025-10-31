@@ -83,12 +83,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -105,7 +107,8 @@ router_bgp:
       enabled: true
   vlans:
   - id: 111
-    tenant: TEST
+    metadata:
+      tenant: TEST
     rd: 10.10.0.3:10111
     route_targets:
       both:

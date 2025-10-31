@@ -438,7 +438,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65005'
     update_source: Dps1
     bfd: true
