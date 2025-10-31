@@ -55,7 +55,7 @@ class NodeConfigMixin(Protocol):
         return None
 
     @cached_property
-    def node_config(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem | EosDesigns.DevicesItem:
+    def node_config(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem:
         """
         NodesItem object containing the fully inherited node config.
 
