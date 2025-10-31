@@ -303,8 +303,8 @@ class EthernetInterfacesMixin(Protocol):
             for policy in l3_interface.cv_pathfinder_internet_exit.policies:
                 if is_undefined(policy_def := self.inputs.cv_pathfinder_internet_exit_policies.get(policy.name)):
                     msg = (
-                        f"The Internet Exit policy {policy.name} configured under l3_interface {l3_interface.name} "
-                        "is not configured under 'cv_pathfinder_internet_exit_policies'"
+                        f"The Internet Exit policy '{policy.name}' configured under node l3_interface '{l3_interface.name}' "
+                        "is not defined under 'cv_pathfinder_internet_exit_policies'."
                     )
                     raise AristaAvdInvalidInputsError(msg)
                 if policy_def.type == "direct":
