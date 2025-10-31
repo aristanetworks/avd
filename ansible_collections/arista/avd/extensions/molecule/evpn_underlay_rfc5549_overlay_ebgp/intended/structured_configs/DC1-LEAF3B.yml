@@ -383,8 +383,6 @@ router_bgp:
     - ip_address: 10.255.251.14
       peer_group: MLAG_VRFS_PEER
       description: DC1-LEAF3A_Vlan3011
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -407,8 +405,6 @@ router_bgp:
     - ip_address: 10.255.251.14
       peer_group: MLAG_VRFS_PEER
       description: DC1-LEAF3A_Vlan3012
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -431,8 +427,6 @@ router_bgp:
     - ip_address: 10.255.251.14
       peer_group: MLAG_VRFS_PEER
       description: DC1-LEAF3A_Vlan3009
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -455,8 +449,6 @@ router_bgp:
     - ip_address: 10.255.251.14
       peer_group: MLAG_VRFS_PEER
       description: DC1-LEAF3A_Vlan3010
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -479,8 +471,6 @@ router_bgp:
     - ip_address: 10.255.251.14
       peer_group: MLAG_VRFS_PEER
       description: DC1-LEAF3A_Vlan3019
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -503,8 +493,6 @@ router_bgp:
     - ip_address: 10.255.251.14
       peer_group: MLAG_VRFS_PEER
       description: DC1-LEAF3A_Vlan2
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true

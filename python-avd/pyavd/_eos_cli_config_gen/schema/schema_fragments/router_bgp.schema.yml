@@ -539,6 +539,7 @@ keys:
                   description: Key only used for documentation or validation purposes.
                 validate_state:
                   type: bool
+                  default: true
                   description: Key only used for documentation or validation purposes.
             description:
               type: str
@@ -783,6 +784,7 @@ keys:
                   description: Key only used for documentation or validation purposes.
                 validate_state:
                   type: bool
+                  default: true
                   description: Key only used for documentation or validation purposes.
             peer_group:
               type: str
@@ -3963,6 +3965,7 @@ keys:
                     keys:
                       validate_state:
                         type: bool
+                        default: false
                         description: Key only used for documentation or validation purposes.
             neighbor_interfaces:
               type: list
@@ -3993,6 +3996,7 @@ keys:
                     keys:
                       validate_state:
                         type: bool
+                        default: false
                         description: Key only used for documentation or validation purposes.
             redistribute:
               type: dict

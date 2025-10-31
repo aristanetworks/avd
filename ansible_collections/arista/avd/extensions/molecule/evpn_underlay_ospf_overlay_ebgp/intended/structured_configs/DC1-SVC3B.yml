@@ -332,8 +332,6 @@ router_bgp:
     - ip_address: 10.255.252.6
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: DC1-SVC3A_Vlan3019
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true

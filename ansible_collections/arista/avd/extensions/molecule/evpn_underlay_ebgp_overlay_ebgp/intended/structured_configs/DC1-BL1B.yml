@@ -373,8 +373,6 @@ router_bgp:
       update_source: Loopback123
       route_map_in: RM-123-1-1-10-IN
       route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
-      metadata:
-        validate_state: false
     - ip_address: 123.1.1.11
       remote_as: '1234'
       password: oBztv71m2uhR7hh58/OCNA==
@@ -388,18 +386,12 @@ router_bgp:
       update_source: Loopback123
       route_map_in: RM-123-1-1-11-IN
       route_map_out: RM-123-1-1-11-OUT
-      metadata:
-        validate_state: false
     - ip_address: fd5a:fe45:8831:06c5::a
       remote_as: '12345'
       send_community: all
       route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
-      metadata:
-        validate_state: false
     - ip_address: fd5a:fe45:8831:06c5::b
       remote_as: '12345'
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true

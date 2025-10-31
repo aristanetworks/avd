@@ -225,7 +225,6 @@ class RouterBgpMixin(Protocol):
                     bgp_peer_config = bgp_peer._cast_as(bgp_vrf.NeighborsItem, ignore_extra_keys=True)
                     # encrypt password if needed
                     bgp_peer_config.password = self.shared_utils.get_bgp_password(bgp_peer)
-                    bgp_peer_config.metadata.validate_state = vrf.validate_bgp_peers
 
                     if bgp_peer.set_ipv4_next_hop or bgp_peer.set_ipv6_next_hop:
                         route_map = f"RM-{vrf.name}-{peer_ip}-SET-NEXT-HOP-OUT"
@@ -238,10 +237,14 @@ class RouterBgpMixin(Protocol):
                         # VRF default is added directly under router_bgp
                         bgp_vrf = cast("EosCliConfigGen.RouterBgp", bgp_vrf)
                         bgp_peer_config = cast("EosCliConfigGen.RouterBgp.NeighborsItem", bgp_peer_config)
+                        if vrf.validate_bgp_peers is False:
+                            bgp_peer_config.metadata.validate_state = False
                         bgp_vrf.neighbors.append(bgp_peer_config)
                     else:
                         bgp_vrf = cast("EosCliConfigGen.RouterBgp.VrfsItem", bgp_vrf)
                         bgp_peer_config = cast("EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem", bgp_peer_config)
+                        if vrf.validate_bgp_peers is True:
+                            bgp_peer_config.metadata.validate_state = True
                         bgp_vrf.neighbors.append(bgp_peer_config)
 
                 if vrf.ospf.enabled and vrf.redistribute_ospf and (not vrf.ospf.nodes or self.shared_utils.hostname in vrf.ospf.nodes):
@@ -338,6 +341,11 @@ class RouterBgpMixin(Protocol):
                 or None,
             )
             neighbor_interface.metadata.validate_state = vrf.validate_bgp_peers
+            if isinstance(bgp_vrf, EosCliConfigGen.RouterBgp.VrfsItem):
+                if vrf.validate_bgp_peers is True:
+                    neighbor_interface.metadata.validate_state = True
+            elif vrf.validate_bgp_peers is False:
+                neighbor_interface.metadata.validate_state = False
         else:
             if not vrf.mlag_ibgp_peering_ipv4_pool:
                 ip_address = self.shared_utils.mlag_peer_ibgp_ip
@@ -357,7 +365,11 @@ class RouterBgpMixin(Protocol):
                 )
                 or None,
             )
-            neighbor.metadata.validate_state = vrf.validate_bgp_peers
+            if isinstance(bgp_vrf, EosCliConfigGen.RouterBgp.VrfsItem):
+                if vrf.validate_bgp_peers is True:
+                    neighbor.metadata.validate_state = True
+            elif vrf.validate_bgp_peers is False:
+                neighbor.metadata.validate_state = False
             # In case of only underlay_rfc5549 but not overlay_mlag_rfc5549, we need to remove the ipv6 next-hop per neighbor/vrf
             # This is only needed when we use the same MLAG peer-group for both underlay and overlay.
             if self.inputs.underlay_rfc5549 and not self.shared_utils.use_separate_peer_group_for_mlag_vrfs:

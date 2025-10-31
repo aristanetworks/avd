@@ -199,8 +199,6 @@ router_bgp:
     - ip_address: 10.10.224.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: MLAG_SAME_SUBNET_L3LEAF1A_Vlan3000
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -223,8 +221,6 @@ router_bgp:
     - ip_address: 10.255.240.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: MLAG_SAME_SUBNET_L3LEAF1A_Vlan3001
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true

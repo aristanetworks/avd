@@ -468,8 +468,6 @@ router_bgp:
       remote_as: '65201'
       password: toZKiUFLVUTU4hdS5V8F4Q==
       description: TENANT_B_CPE_SITE3
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true

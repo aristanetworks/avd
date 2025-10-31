@@ -331,8 +331,6 @@ router_bgp:
     - ip_address: 10.254.1.104
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: sflow-tests-leaf3_Vlan3000
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true

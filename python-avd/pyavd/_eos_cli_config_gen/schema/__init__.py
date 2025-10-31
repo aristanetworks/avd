@@ -38770,15 +38770,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Metadata(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"peer": {"type": str}, "validate_state": {"type": bool}}
+                _fields: ClassVar[dict] = {"peer": {"type": str}, "validate_state": {"type": bool, "default": True}}
                 peer: str | None
                 """Key only used for documentation or validation purposes."""
-                validate_state: bool | None
-                """Key only used for documentation or validation purposes."""
+                validate_state: bool
+                """
+                Key only used for documentation or validation purposes.
+
+                Default value: `True`
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, peer: str | None | UndefinedType = Undefined, validate_state: bool | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, peer: str | None | UndefinedType = Undefined, validate_state: bool | UndefinedType = Undefined) -> None:
                         """
                         Metadata.
 
@@ -39378,15 +39382,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Metadata(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"peer": {"type": str}, "validate_state": {"type": bool}}
+                _fields: ClassVar[dict] = {"peer": {"type": str}, "validate_state": {"type": bool, "default": True}}
                 peer: str | None
                 """Key only used for documentation or validation purposes."""
-                validate_state: bool | None
-                """Key only used for documentation or validation purposes."""
+                validate_state: bool
+                """
+                Key only used for documentation or validation purposes.
+
+                Default value: `True`
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, peer: str | None | UndefinedType = Undefined, validate_state: bool | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, peer: str | None | UndefinedType = Undefined, validate_state: bool | UndefinedType = Undefined) -> None:
                         """
                         Metadata.
 
@@ -49449,13 +49457,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Metadata(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"validate_state": {"type": bool}}
-                    validate_state: bool | None
-                    """Key only used for documentation or validation purposes."""
+                    _fields: ClassVar[dict] = {"validate_state": {"type": bool, "default": False}}
+                    validate_state: bool
+                    """
+                    Key only used for documentation or validation purposes.
+
+                    Default value: `False`
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, validate_state: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, validate_state: bool | UndefinedType = Undefined) -> None:
                             """
                             Metadata.
 
@@ -49698,13 +49710,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Metadata(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"validate_state": {"type": bool}}
-                    validate_state: bool | None
-                    """Key only used for documentation or validation purposes."""
+                    _fields: ClassVar[dict] = {"validate_state": {"type": bool, "default": False}}
+                    validate_state: bool
+                    """
+                    Key only used for documentation or validation purposes.
+
+                    Default value: `False`
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, validate_state: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, validate_state: bool | UndefinedType = Undefined) -> None:
                             """
                             Metadata.
 

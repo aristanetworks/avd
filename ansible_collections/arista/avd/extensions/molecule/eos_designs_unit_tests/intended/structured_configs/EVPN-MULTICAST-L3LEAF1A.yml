@@ -622,8 +622,6 @@ router_bgp:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-VRFS-PEER
       description: EVPN-MULTICAST-L3LEAF1B_Vlan3012
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -646,8 +644,6 @@ router_bgp:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-VRFS-PEER
       description: EVPN-MULTICAST-L3LEAF1B_Vlan3010
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -670,8 +666,6 @@ router_bgp:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-VRFS-PEER
       description: EVPN-MULTICAST-L3LEAF1B_Vlan3011
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -694,8 +688,6 @@ router_bgp:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-VRFS-PEER
       description: EVPN-MULTICAST-L3LEAF1B_Vlan3022
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -718,8 +710,6 @@ router_bgp:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-VRFS-PEER
       description: EVPN-MULTICAST-L3LEAF1B_Vlan3020
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -742,8 +732,6 @@ router_bgp:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-VRFS-PEER
       description: EVPN-MULTICAST-L3LEAF1B_Vlan3021
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -767,8 +755,6 @@ router_bgp:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-VRFS-PEER
       description: EVPN-MULTICAST-L3LEAF1B_Vlan3032
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -792,8 +778,6 @@ router_bgp:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-VRFS-PEER
       description: EVPN-MULTICAST-L3LEAF1B_Vlan3065
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -817,8 +801,6 @@ router_bgp:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-VRFS-PEER
       description: EVPN-MULTICAST-L3LEAF1B_Vlan3031
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -842,8 +824,6 @@ router_bgp:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-VRFS-PEER
       description: EVPN-MULTICAST-L3LEAF1B_Vlan3041
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -867,8 +847,6 @@ router_bgp:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-VRFS-PEER
       description: EVPN-MULTICAST-L3LEAF1B_Vlan3040
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -892,8 +870,6 @@ router_bgp:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-VRFS-PEER
       description: EVPN-MULTICAST-L3LEAF1B_Vlan3054
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -920,8 +896,6 @@ router_bgp:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-VRFS-PEER
       description: EVPN-MULTICAST-L3LEAF1B_Vlan3059
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
@@ -948,8 +922,6 @@ router_bgp:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-VRFS-PEER
       description: EVPN-MULTICAST-L3LEAF1B_Vlan3051
-      metadata:
-        validate_state: false
     redistribute:
       connected:
         enabled: true
