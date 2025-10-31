@@ -10828,6 +10828,7 @@ $defs:
             type: list
             items:
               type: str
+              pattern: Ethernet\d+(-\d+)?(,\d+(-\d+)?)*(/\d+(-\d+)?(,\d+(-\d+)?)*)*
           mlag_interfaces_speed:
             documentation_options:
               table: node-type-l2-mlag-configuration
