@@ -1,31 +1,26 @@
 ---
+ansible:
+  executor:
+    backend: ansible-playbook
+    args:
+      ansible_playbook:
+        - --inventory=${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/single-dc-l3ls-ipv6/inventory.yml
+  env:
+    ANSIBLE_FORCE_COLOR: true
+  cfg:
+    defaults:
+      jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
+      gathering: explicit
+  playbooks:
+    converge: '${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/single-dc-l3ls-ipv6/build.yml'
+dependency:
+  name: galaxy
+  enabled: false
 scenario:
-  converge_sequence:
-    - converge
   test_sequence:
     - converge
     - idempotence
   cleanup_sequence:
     - destroy
-dependency:
-  name: galaxy
-  enabled: false
-driver:
-  name: default
-  options:
-    managed: false
-platforms:
-  - name: dummy
-provisioner:
-  name: ansible
-  config_options:
-    defaults:
-      jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
-      duplicate_dict_key: error
-  playbooks:
-    converge: '../../../examples/single-dc-l3ls-ipv6/build.yml'
-  ansible_args:
-    - --inventory
-    - ${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/single-dc-l3ls-ipv6/inventory.yml
 verifier:
   name: ansible
