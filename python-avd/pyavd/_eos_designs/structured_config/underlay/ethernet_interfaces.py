@@ -309,6 +309,7 @@ class EthernetInterfacesMixin(Protocol):
                     raise AristaAvdInvalidInputsError(msg)
                 if policy_def.type == "direct":
                     interface.ip_nat.service_profile = self.shared_utils.INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME
+                    break
 
         self.structured_config.ethernet_interfaces.append(interface)
 
