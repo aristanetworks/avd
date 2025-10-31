@@ -219,10 +219,10 @@ interface Loopback0
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
-| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
-| Vlan110 | SVI_110 | default | - | False | - | - |
-| Vlan4092 | Inband Management | default | 1500 | False | - | - |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan110 | SVI_110 | default | - | False |
+| Vlan4092 | Inband Management | default | 1500 | False |
 
 ##### IPv4
 

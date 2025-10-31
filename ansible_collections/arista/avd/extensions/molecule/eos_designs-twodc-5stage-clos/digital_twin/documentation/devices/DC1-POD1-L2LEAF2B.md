@@ -307,10 +307,10 @@ interface Port-Channel3
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
-| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
-| Vlan4085 | L2LEAF_INBAND_MGMT | default | 1500 | False | - | - |
-| Vlan4094 | MLAG | default | 1500 | False | - | - |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan4085 | L2LEAF_INBAND_MGMT | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 

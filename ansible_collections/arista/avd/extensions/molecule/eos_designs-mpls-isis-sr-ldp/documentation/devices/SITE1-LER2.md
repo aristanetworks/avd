@@ -439,9 +439,9 @@ interface Loopback0
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
-| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
-| Vlan2020 | TENANT_B_INSIDE_FW | TENANT_B_INTRA | - | False | - | - |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan2020 | TENANT_B_INSIDE_FW | TENANT_B_INTRA | - | False |
 
 ##### IPv4
 

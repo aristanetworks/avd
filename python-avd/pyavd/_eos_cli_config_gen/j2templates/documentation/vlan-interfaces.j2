@@ -10,16 +10,14 @@
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
-| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
 {%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%         set description = vlan_interface.description | arista.avd.default('-') %}
 {%         set vrf = vlan_interface.vrf | arista.avd.default('default') %}
 {%         set mtu = vlan_interface.mtu | arista.avd.default('-') %}
 {%         set shutdown = vlan_interface.shutdown | arista.avd.default('-') %}
-{%         set traffic_policy_input = vlan_interface.traffic_policy_input | arista.avd.default('-') %}
-{%         set traffic_policy_output = vlan_interface.traffic_policy_output | arista.avd.default('-') %}
-| {{ vlan_interface.name }} | {{ description }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ traffic_policy_input }} | {{ traffic_policy_output }} |
+| {{ vlan_interface.name }} | {{ description }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} |
 {%     endfor %}
 {# PVLAN #}
 {%     set vlan_interface_pvlan = namespace() %}

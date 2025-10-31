@@ -239,9 +239,9 @@ interface Loopback1
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
-| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
-| Vlan4085 | L2LEAF_INBAND_MGMT | default | - | False | - | - |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan4085 | L2LEAF_INBAND_MGMT | default | - | False |
 
 ##### IPv4
 

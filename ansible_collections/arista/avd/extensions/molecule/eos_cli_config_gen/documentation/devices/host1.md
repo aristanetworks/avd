@@ -6764,46 +6764,46 @@ interface Tunnel4
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
-| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
-| Vlan24 | SVI Description | default | - | False | - | - |
-| Vlan25 | SVI Description | default | - | False | - | - |
-| Vlan26 | - | default | - | - | - | - |
-| Vlan41 | SVI Description | default | - | False | - | - |
-| Vlan42 | SVI Description | default | - | False | - | - |
-| Vlan43 | SVI Description | default | - | False | - | - |
-| Vlan44 | SVI Description | default | - | False | - | - |
-| Vlan50 | IP NAT Testing | default | - | - | - | - |
-| Vlan75 | SVI Description | default | - | False | - | - |
-| Vlan81 | IPv6 Virtual Address | Tenant_C | - | - | - | - |
-| Vlan83 | SVI Description | default | - | False | - | - |
-| Vlan84 | SVI Description | default | - | - | - | - |
-| Vlan85 | SVI Description | default | - | - | - | - |
-| Vlan86 | SVI Description | default | - | - | - | - |
-| Vlan87 | SVI Description | default | - | True | - | - |
-| Vlan88 | SVI Description | default | - | True | - | - |
-| Vlan89 | SVI Description | default | - | False | - | - |
-| Vlan90 | SVI Description | default | - | - | - | - |
-| Vlan91 | PBR Description | default | - | True | - | - |
-| Vlan92 | SVI Description | default | - | - | - | - |
-| Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | False | - | - |
-| Vlan111 | PR01-DEMO | TENANT_A_PROJECT01 | - | False | - | - |
-| Vlan333 | Multiple VRIDs and tracking | default | - | False | - | - |
-| Vlan334 | v6 attached host exports | default | - | - | - | - |
-| Vlan335 | v6 attached host exports | default | - | - | - | - |
-| Vlan336 | v6 attached host exports | default | - | - | - | - |
-| Vlan337 | v4 dhcp relay all-subnets | default | - | - | - | - |
-| Vlan338 | v6 dhcp relay all-subnets | default | - | - | - | - |
-| Vlan339 | v6 nd options | default | - | - | - | - |
-| Vlan501 | SVI Description | default | - | False | - | - |
-| Vlan667 | Multiple VRIDs | default | - | False | - | - |
-| Vlan1001 | SVI Description | Tenant_A | - | False | - | - |
-| Vlan1002 | SVI Description | Tenant_A | - | False | - | - |
-| Vlan2001 | SVI Description | Tenant_B | - | - | Policy-01 | Policy-02 |
-| Vlan2002 | SVI Description | Tenant_B | - | - | - | - |
-| Vlan4092 | MLAG_PEER | default | 1500 | - | - | - |
-| Vlan4093 | MLAG_PEER_L3_PEERING | default | - | - | - | - |
-| Vlan4094 | SVI Description | default | 9214 | - | - | - |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan24 | SVI Description | default | - | False |
+| Vlan25 | SVI Description | default | - | False |
+| Vlan26 | - | default | - | - |
+| Vlan41 | SVI Description | default | - | False |
+| Vlan42 | SVI Description | default | - | False |
+| Vlan43 | SVI Description | default | - | False |
+| Vlan44 | SVI Description | default | - | False |
+| Vlan50 | IP NAT Testing | default | - | - |
+| Vlan75 | SVI Description | default | - | False |
+| Vlan81 | IPv6 Virtual Address | Tenant_C | - | - |
+| Vlan83 | SVI Description | default | - | False |
+| Vlan84 | SVI Description | default | - | - |
+| Vlan85 | SVI Description | default | - | - |
+| Vlan86 | SVI Description | default | - | - |
+| Vlan87 | SVI Description | default | - | True |
+| Vlan88 | SVI Description | default | - | True |
+| Vlan89 | SVI Description | default | - | False |
+| Vlan90 | SVI Description | default | - | - |
+| Vlan91 | PBR Description | default | - | True |
+| Vlan92 | SVI Description | default | - | - |
+| Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | False |
+| Vlan111 | PR01-DEMO | TENANT_A_PROJECT01 | - | False |
+| Vlan333 | Multiple VRIDs and tracking | default | - | False |
+| Vlan334 | v6 attached host exports | default | - | - |
+| Vlan335 | v6 attached host exports | default | - | - |
+| Vlan336 | v6 attached host exports | default | - | - |
+| Vlan337 | v4 dhcp relay all-subnets | default | - | - |
+| Vlan338 | v6 dhcp relay all-subnets | default | - | - |
+| Vlan339 | v6 nd options | default | - | - |
+| Vlan501 | SVI Description | default | - | False |
+| Vlan667 | Multiple VRIDs | default | - | False |
+| Vlan1001 | SVI Description | Tenant_A | - | False |
+| Vlan1002 | SVI Description | Tenant_A | - | False |
+| Vlan2001 | SVI Description | Tenant_B | - | - |
+| Vlan2002 | SVI Description | Tenant_B | - | - |
+| Vlan4092 | MLAG_PEER | default | 1500 | - |
+| Vlan4093 | MLAG_PEER_L3_PEERING | default | - | - |
+| Vlan4094 | SVI Description | default | 9214 | - |
 
 ##### Private VLAN
 
@@ -13083,6 +13083,7 @@ Counters: test
 | --------- | -------------------- | --------------------- |
 | Ethernet1 | BLUE-C1-POLICY | BLUE-C2-POLICY |
 | Port-Channel15 | BLUE-C1-POLICY | BLUE-C2-POLICY |
+| Vlan2001 | Policy-01 | Policy-02 |
 
 #### Traffic Policies Device Configuration
 

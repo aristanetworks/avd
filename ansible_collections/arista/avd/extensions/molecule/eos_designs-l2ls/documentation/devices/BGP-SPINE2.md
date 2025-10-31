@@ -455,15 +455,15 @@ interface Loopback0
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
-| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
-| Vlan1 | SVI_1 | default | - | False | - | - |
-| Vlan100 | SVI_100 | default | - | False | - | - |
-| Vlan200 | SVI_200 | default | - | False | - | - |
-| Vlan220 | SVI_220 | default | - | False | - | - |
-| Vlan3100 | MLAG_L3_VRF_New_VRF | New_VRF | 9214 | False | - | - |
-| Vlan4092 | Inband Management | default | 1500 | False | - | - |
-| Vlan4094 | MLAG | default | 9214 | False | - | - |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan1 | SVI_1 | default | - | False |
+| Vlan100 | SVI_100 | default | - | False |
+| Vlan200 | SVI_200 | default | - | False |
+| Vlan220 | SVI_220 | default | - | False |
+| Vlan3100 | MLAG_L3_VRF_New_VRF | New_VRF | 9214 | False |
+| Vlan4092 | Inband Management | default | 1500 | False |
+| Vlan4094 | MLAG | default | 9214 | False |
 
 ##### IPv4
 

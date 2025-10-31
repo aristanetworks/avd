@@ -635,17 +635,17 @@ interface Loopback102
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown | Ingress Traffic-policy | Egress Traffic-policy |
-| --------- | ----------- | --- | ---- | -------- | ---------------------- | --------------------- |
-| Vlan110 | set from structured_config on svi for DC1.POD1.LEAF2A (was Tenant_A_OP_Zone_1) | Common_VRF | - | False | - | - |
-| Vlan111 | Tenant_A_OP_Zone_2 | Common_VRF | - | True | - | - |
-| Vlan112 | Tenant_A_OP_Zone_3 | Common_VRF | - | False | - | - |
-| Vlan113 | SVI_with_no_vxlan | Common_VRF | - | False | - | - |
-| Vlan1100 | test_svi | vrf_with_loopbacks_from_overlapping_pool | - | False | - | - |
-| Vlan1101 | test_svi | vrf_with_loopbacks_from_pod_pools | - | False | - | - |
-| Vlan1102 | test_svi | vrf_with_loopbacks_dc1_pod1_only | - | False | - | - |
-| Vlan4085 | L2LEAF_INBAND_MGMT | default | - | False | - | - |
-| Vlan4094 | MLAG | default | - | False | - | - |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan110 | set from structured_config on svi for DC1.POD1.LEAF2A (was Tenant_A_OP_Zone_1) | Common_VRF | - | False |
+| Vlan111 | Tenant_A_OP_Zone_2 | Common_VRF | - | True |
+| Vlan112 | Tenant_A_OP_Zone_3 | Common_VRF | - | False |
+| Vlan113 | SVI_with_no_vxlan | Common_VRF | - | False |
+| Vlan1100 | test_svi | vrf_with_loopbacks_from_overlapping_pool | - | False |
+| Vlan1101 | test_svi | vrf_with_loopbacks_from_pod_pools | - | False |
+| Vlan1102 | test_svi | vrf_with_loopbacks_dc1_pod1_only | - | False |
+| Vlan4085 | L2LEAF_INBAND_MGMT | default | - | False |
+| Vlan4094 | MLAG | default | - | False |
 
 ##### IPv4
 
