@@ -63,7 +63,7 @@ keys:
           transceiver_manufacturers:
             type: list
             description: |-
-              Expected list of approved transceiver manufacturers for the device.
+              List of approved transceiver manufacturers for the device.
             items:
               type: str
             default:

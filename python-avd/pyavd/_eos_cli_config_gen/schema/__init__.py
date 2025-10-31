@@ -23343,10 +23343,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Minimum number of fabric cards required for the device."""
             transceiver_manufacturers: TransceiverManufacturers
             """
-            Expected list of approved transceiver manufacturers for the device.
+            List of approved transceiver manufacturers for the device.
 
-            Subclass of AvdList with `str`
-            items.
+            Subclass of AvdList with `str` items.
 
             Default value: `lambda cls: coerce_type(["Arastra, Inc.", "Arista Networks"], target_type=cls)`
             """
@@ -23376,10 +23375,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         min_line_cards: Minimum number of line cards required for the device.
                         min_fabric_cards: Minimum number of fabric cards required for the device.
                         transceiver_manufacturers:
-                           Expected list of approved transceiver manufacturers for the device.
+                           List of approved transceiver manufacturers for the device.
 
-                           Subclass of AvdList with `str`
-                           items.
+                           Subclass of AvdList with `str` items.
 
                     """
 

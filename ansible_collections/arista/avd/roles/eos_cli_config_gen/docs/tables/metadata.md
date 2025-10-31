@@ -22,7 +22,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "metadata.hardware_requirements.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_line_cards</samp>](## "metadata.hardware_requirements.min_line_cards") | Integer |  |  |  | Minimum number of line cards required for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "metadata.hardware_requirements.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "metadata.hardware_requirements.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | Expected list of approved transceiver manufacturers for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "metadata.hardware_requirements.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "metadata.hardware_requirements.transceiver_manufacturers.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;cv_tags</samp>](## "metadata.cv_tags") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;device_tags</samp>](## "metadata.cv_tags.device_tags") | List, items: Dictionary |  |  |  |  |
@@ -180,7 +180,7 @@
         # Minimum number of fabric cards required for the device.
         min_fabric_cards: <int>
 
-        # Expected list of approved transceiver manufacturers for the device.
+        # List of approved transceiver manufacturers for the device.
         transceiver_manufacturers: # (1)!
           - <str>
       cv_tags:

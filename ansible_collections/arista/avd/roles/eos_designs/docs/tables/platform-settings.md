@@ -86,7 +86,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_line_cards</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_line_cards") | Integer |  |  |  | Minimum number of line cards required for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "custom_platform_settings.[].validate_hardware_inventory.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | Expected list of approved transceiver manufacturers for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "custom_platform_settings.[].validate_hardware_inventory.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "custom_platform_settings.[].validate_hardware_inventory.transceiver_manufacturers.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "custom_platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "custom_platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
@@ -169,7 +169,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "platform_settings.[].validate_hardware_inventory.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_line_cards</samp>](## "platform_settings.[].validate_hardware_inventory.min_line_cards") | Integer |  |  |  | Minimum number of line cards required for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "platform_settings.[].validate_hardware_inventory.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "platform_settings.[].validate_hardware_inventory.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | Expected list of approved transceiver manufacturers for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "platform_settings.[].validate_hardware_inventory.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "platform_settings.[].validate_hardware_inventory.transceiver_manufacturers.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
@@ -376,7 +376,7 @@
           # Minimum number of fabric cards required for the device.
           min_fabric_cards: <int>
 
-          # Expected list of approved transceiver manufacturers for the device.
+          # List of approved transceiver manufacturers for the device.
           transceiver_manufacturers: # (1)!
             - <str>
 
@@ -579,7 +579,7 @@
           # Minimum number of fabric cards required for the device.
           min_fabric_cards: <int>
 
-          # Expected list of approved transceiver manufacturers for the device.
+          # List of approved transceiver manufacturers for the device.
           transceiver_manufacturers: # (3)!
             - <str>
 
