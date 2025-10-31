@@ -51,3 +51,28 @@ tenants:
             remote_as: 65991
             next_hop_self: true
             bfd: true
+      # Test to validate the BGP peers under non default vrf
+      - name: validate_bgp_peers
+        vrf_id: 101
+        validate_bgp_peers: true
+        address_families: []
+        static_routes:
+          - prefix: 0.0.0.0
+            next_hop: 10.10.2.1
+            nodes: [bgp-from-network-services-2]
+        l3_interfaces:
+          - interfaces:
+              - Ethernet42
+            ip_addresses:
+              - 10.10.2.1/30
+            nodes:
+              - bgp-from-network-services-2
+        bgp_peers:
+          - ip_address: 10.10.2.2
+            peer_group: VALIDATE_BGP_PEERS
+            nodes: [bgp-from-network-services-1, bgp-from-network-services-2]
+        bgp_peer_groups:
+          - name: VALIDATE_BGP_PEERS
+            remote_as: 65991
+            next_hop_self: true
+            bfd: true
