@@ -6,6 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._eos_designs.structured_config.constants import INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME, INTERNET_EXIT_ZSCALER_NAT_PROFILE_NAME
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigNetworkServicesProtocol
@@ -23,8 +24,8 @@ class IpNatMixin(Protocol):
 
     def _set_direct_ie_policy_ip_nat(self: AvdStructuredConfigNetworkServicesProtocol, ip_interfaces: set[str]) -> None:
         """Set the structured config for ip_nat."""
-        profile = EosCliConfigGen.IpNat.ProfilesItem(name=self.shared_utils.INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME)
-        acl_name = self.get_internet_exit_nat_acl_name(self.shared_utils.INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME)
+        profile = EosCliConfigGen.IpNat.ProfilesItem(name=INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME)
+        acl_name = self.get_internet_exit_nat_acl_name(INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME)
         profile.source.dynamic.append_new(access_list=acl_name, nat_type="overload")
         self.structured_config.ip_nat.profiles.append(profile)
 
@@ -36,9 +37,9 @@ class IpNatMixin(Protocol):
         pool = EosCliConfigGen.IpNat.PoolsItem(name="PORT-ONLY-POOL", type="port-only")
         pool.ranges.append_new(first_port=1500, last_port=65535)
         self.structured_config.ip_nat.pools.append(pool)
-        profile = EosCliConfigGen.IpNat.ProfilesItem(name=self.shared_utils.INTERNET_EXIT_ZSCALER_NAT_PROFILE_NAME)
+        profile = EosCliConfigGen.IpNat.ProfilesItem(name=INTERNET_EXIT_ZSCALER_NAT_PROFILE_NAME)
 
-        acl_name = self.get_internet_exit_nat_acl_name(self.shared_utils.INTERNET_EXIT_ZSCALER_NAT_PROFILE_NAME)
+        acl_name = self.get_internet_exit_nat_acl_name(INTERNET_EXIT_ZSCALER_NAT_PROFILE_NAME)
 
         profile.source.dynamic.append_new(access_list=acl_name, pool_name="PORT-ONLY-POOL", nat_type="pool")
         self.structured_config.ip_nat.profiles.append(profile)

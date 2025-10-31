@@ -25,9 +25,9 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             # Note that an attempt was made for this in #6073 but it has been postponed
             # To keep current behavior we need to overwrite the existing values if the vlan was introduced via network_services
             # otherwise it is created via obtain and updated accordingly.
-            mgmt_vlan = self.structured_config.vlans.obtain(self.shared_utils.node_config.inband_mgmt_vlan)
-            mgmt_vlan.name = self.shared_utils.node_config.inband_mgmt_vlan_name
-            mgmt_vlan.tenant = "system"
+            inband_mgmt_vlan = self.structured_config.vlans.obtain(self.shared_utils.node_config.inband_mgmt_vlan)
+            inband_mgmt_vlan.name = self.shared_utils.node_config.inband_mgmt_vlan_name
+            inband_mgmt_vlan.tenant = "system"
             return
         for svi in self.shared_utils.inband_management_parent_vlans:
             self.structured_config.vlans.append_new(id=svi, tenant="system", name=self.shared_utils.node_config.inband_mgmt_vlan_name)

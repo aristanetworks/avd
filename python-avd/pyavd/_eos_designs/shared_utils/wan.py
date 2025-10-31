@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 from re import findall
-from typing import TYPE_CHECKING, Final, Literal, Protocol
+from typing import TYPE_CHECKING, Literal, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema.protocol import EosDesignsFactsProtocol
@@ -627,6 +627,3 @@ class WanMixin(Protocol):
             raise AristaAvdError(msg)
 
         return gateway
-
-    INTERNET_EXIT_ZSCALER_NAT_PROFILE_NAME: Final[str] = "NAT-IE-ZSCALER"
-    INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME: Final[str] = "NAT-IE-DIRECT"
