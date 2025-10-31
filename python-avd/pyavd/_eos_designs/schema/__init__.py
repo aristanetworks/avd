@@ -15789,10 +15789,10 @@ class EosDesigns(EosDesignsRootModel):
         For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
         EOS version.
 
-        - `true`: For older EOS versions use an agent environment variable. Changing this
-        requires a restart of the KernelFib agent.
-        - `false`: For newer EOS versions (starting 4.33.2) use
-        the proper CLI.
+        - `true`: For newer EOS versions (starting 4.33.2) use the proper CLI.
+        - `false`: For
+        older EOS versions use an agent environment variable. Changing this requires a restart of the
+        KernelFib agent.
 
         Default value: `True`
         """
@@ -15863,10 +15863,10 @@ class EosDesigns(EosDesignsRootModel):
                        For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
                        EOS version.
 
-                       - `true`: For older EOS versions use an agent environment variable. Changing this
-                       requires a restart of the KernelFib agent.
-                       - `false`: For newer EOS versions (starting 4.33.2) use
-                       the proper CLI.
+                       - `true`: For newer EOS versions (starting 4.33.2) use the proper CLI.
+                       - `false`: For
+                       older EOS versions use an agent environment variable. Changing this requires a restart of the
+                       KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:
@@ -16552,10 +16552,10 @@ class EosDesigns(EosDesignsRootModel):
         For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
         EOS version.
 
-        - `true`: For older EOS versions use an agent environment variable. Changing this
-        requires a restart of the KernelFib agent.
-        - `false`: For newer EOS versions (starting 4.33.2) use
-        the proper CLI.
+        - `true`: For newer EOS versions (starting 4.33.2) use the proper CLI.
+        - `false`: For
+        older EOS versions use an agent environment variable. Changing this requires a restart of the
+        KernelFib agent.
 
         Default value: `True`
         """
@@ -16626,10 +16626,10 @@ class EosDesigns(EosDesignsRootModel):
                        For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
                        EOS version.
 
-                       - `true`: For older EOS versions use an agent environment variable. Changing this
-                       requires a restart of the KernelFib agent.
-                       - `false`: For newer EOS versions (starting 4.33.2) use
-                       the proper CLI.
+                       - `true`: For newer EOS versions (starting 4.33.2) use the proper CLI.
+                       - `false`: For
+                       older EOS versions use an agent environment variable. Changing this requires a restart of the
+                       KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:

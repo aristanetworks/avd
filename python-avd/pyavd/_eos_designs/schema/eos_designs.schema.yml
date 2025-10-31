@@ -4435,10 +4435,10 @@ keys:
             in two different ways depending on the EOS version.
 
 
-            - `true`: For older EOS versions use an agent environment variable. Changing
-            this requires a restart of the KernelFib agent.
+            - `true`: For newer EOS versions (starting 4.33.2) use the proper CLI.
 
-            - `false`: For newer EOS versions (starting 4.33.2) use the proper CLI.'
+            - `false`: For older EOS versions use an agent environment variable. Changing
+            this requires a restart of the KernelFib agent.'
         feature_support:
           type: dict
           keys:
