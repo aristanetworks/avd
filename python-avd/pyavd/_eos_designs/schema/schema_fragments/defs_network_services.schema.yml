@@ -1595,6 +1595,8 @@ $defs:
                         type: str
                         description: Node name or regex pattern matching the full hostname.
               validate_bgp_peers:
+                documentation_options:
+                  table: network-services-vrfs-bgp-settings
                 type: bool
                 description: Enable or disable BGP peer state validation on a per-VRF basis.
                 default: false
