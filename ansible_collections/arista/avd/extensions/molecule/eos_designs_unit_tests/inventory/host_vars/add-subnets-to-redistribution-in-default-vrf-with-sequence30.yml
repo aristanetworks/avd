@@ -30,6 +30,8 @@ custom_platform_settings:
   - platforms: [ custom_platform ]
     feature_support:
       per_interface_mtu: false
+    # test for kernel_ecmp_cli
+    kernel_ecmp_cli: false
 
 tenants: # dynamic_key: network_services
   - name: TEST
