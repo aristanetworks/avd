@@ -344,7 +344,7 @@ keys:
                           name:
                             type: str
                             description: Interface name such as 'Ethernet2'.
-                            # pattern: "Ethernet(\\d+/){0,2}\\d+"
+                            # pattern: "Ethernet(\\d+/)*\\d+"
                           rx_queue:
                             type: dict
                             description: Receive queue parameters for the selected interface.

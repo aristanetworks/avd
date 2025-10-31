@@ -212,7 +212,7 @@ $defs:
             type: list
             items:
               type: str
-              pattern: "Ethernet\\d+(-\\d+)?(,\\d+(-\\d+)?)*(/\\d+(-\\d+)?(,\\d+(-\\d+)?)*){0,2}"
+              pattern: "Ethernet\\d+(-\\d+)?(,\\d+(-\\d+)?)*(/\\d+(-\\d+)?(,\\d+(-\\d+)?)*)*"
           uplink_switch_interfaces:
             documentation_options:
               table: node-type-uplink-configuration
@@ -220,7 +220,7 @@ $defs:
             type: list
             items:
               type: str
-              pattern: "Ethernet\\d+(-\\d+)?(,\\d+(-\\d+)?)*(/\\d+(-\\d+)?(,\\d+(-\\d+)?)*){0,2}"
+              pattern: "Ethernet\\d+(-\\d+)?(,\\d+(-\\d+)?)*(/\\d+(-\\d+)?(,\\d+(-\\d+)?)*)*"
           uplink_switches:
             documentation_options:
               table: node-type-uplink-configuration
@@ -1473,7 +1473,7 @@ $defs:
                 type: list
                 items:
                   type: str
-                  pattern: "Ethernet(\\d+/){0,2}\\d+(\\.\\d+)?"
+                  pattern: "Ethernet(\\d+/)*\\d+(\\.\\d+)?"
               ha_ipv4_pool:
                 description: |-
                   Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).

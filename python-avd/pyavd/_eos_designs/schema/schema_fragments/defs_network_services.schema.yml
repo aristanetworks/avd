@@ -1027,7 +1027,7 @@ $defs:
                             description: |-
                               Ethernet interface name like 'Ethernet2'.
                               Member interface cannot be subinterface.
-                            pattern: "Ethernet(\\d+/){0,2}\\d+"
+                            pattern: "Ethernet(\\d+/)*\\d+"
                           description:
                             type: str
                             description: |-
