@@ -21760,6 +21760,9 @@ keys:
           ssm_range:
             type: str
             description: IPv4 Prefix associated with SSM.
+          register_local_interface:
+            type: str
+            description: Local interface to use for PIM register messages.
           rp_addresses:
             type: list
             primary_key: address
@@ -21830,6 +21833,9 @@ keys:
                 make_before_break:
                   type: bool
                   description: Enable/Disable Make-Before-Break.
+                register_local_interface:
+                  type: str
+                  description: Local interface to use for PIM register messages.
                 rp_addresses:
                   type: list
                   items:
