@@ -47,11 +47,12 @@ class AvdDeviceData:
             An `AvdDeviceData` instance populated with data.
         """
         # Get the Ethernet interfaces
+        default_shutdown = get(structured_config, "interface_defaults.ethernet.shutdown", False)
         ethernet_interfaces: dict[str, AvdEthernetInterface] = {
             intf["name"]: AvdEthernetInterface(
                 name=intf["name"],
                 ip_address=get(intf, "ip_address"),
-                shutdown=get(intf, "shutdown", get(structured_config, "interface_defaults.ethernet.shutdown", False)),
+                shutdown=get(intf, "shutdown", default_shutdown),
             )
             for intf in get(structured_config, "ethernet_interfaces", default=[])
         }
