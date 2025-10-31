@@ -6824,7 +6824,6 @@ keys:
         sequence_numbers:
           type: list
           required: true
-          min_length: 1
           primary_key: sequence
           items:
             type: dict
@@ -7951,7 +7950,6 @@ keys:
         entries:
           type: list
           required: true
-          min_length: 1
           items:
             type: dict
             keys:
