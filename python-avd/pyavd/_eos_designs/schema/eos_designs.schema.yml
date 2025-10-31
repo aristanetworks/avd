@@ -1303,7 +1303,7 @@ keys:
                   type: str
                   description: Short name for the CVaaS cluster. Required here, but
                     only used when configuring multiple clusters.
-                  pattern: ^[a-zA-Z0-9-_]+$
+                  pattern: '[a-zA-Z0-9-_]+'
                 region:
                   type: str
                   description: 'Optionally set the region to stream to.
@@ -1372,7 +1372,7 @@ keys:
               type: str
               description: Short name for the cluster. Required here, but only used
                 when configuring multiple clusters.
-              pattern: ^[a-zA-Z0-9-_]+$
+              pattern: '[a-zA-Z0-9-_]+'
             servers:
               type: list
               required: true
@@ -1660,12 +1660,14 @@ keys:
           items:
             type: str
             description: Interface range or interface.
+            pattern: Ethernet\d+(-\d+)?(,\d+(-\d+)?)*(/\d+(-\d+)?(,\d+(-\d+)?)*){0,2}
         mlag_interfaces:
           type: list
           description: List of MLAG interfaces or MLAG interface ranges.
           items:
             type: str
             description: Interface range or interface.
+            pattern: Ethernet\d+(-\d+)?(,\d+(-\d+)?)*(/\d+(-\d+)?(,\d+(-\d+)?)*){0,2}
         mlag_interfaces_speed:
           type: str
           $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
@@ -1678,6 +1680,7 @@ keys:
           items:
             type: str
             description: Interface range or interface.
+            pattern: Ethernet\d+(-\d+)?(,\d+(-\d+)?)*(/\d+(-\d+)?(,\d+(-\d+)?)*){0,2}
         uplink_interface_speed:
           type: str
           $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
@@ -8919,7 +8922,7 @@ $defs:
 
                         For a Port-Channel subinterface, the parent Port-Channel interface
                         must be defined as well.'
-                      pattern: Port-Channel[\d/]+(\.[\d]+)?
+                      pattern: Port-Channel\d+(\.\d+)?
                     node:
                       type: str
                       required: true
@@ -8958,7 +8961,7 @@ $defs:
                             description: 'Ethernet interface name like ''Ethernet2''.
 
                               Member interface cannot be subinterface.'
-                            pattern: Ethernet[\d/]+
+                            pattern: Ethernet(\d+/){0,2}\d+
                           description:
                             type: str
                             description: 'Interface description for this member.
@@ -10056,7 +10059,7 @@ $defs:
             type: list
             items:
               type: str
-              pattern: Ethernet[\d/]+
+              pattern: Ethernet\d+(-\d+)?(,\d+(-\d+)?)*(/\d+(-\d+)?(,\d+(-\d+)?)*){0,2}
           uplink_switch_interfaces:
             documentation_options:
               table: node-type-uplink-configuration
@@ -10064,7 +10067,7 @@ $defs:
             type: list
             items:
               type: str
-              pattern: Ethernet[\d/]+
+              pattern: Ethernet\d+(-\d+)?(,\d+(-\d+)?)*(/\d+(-\d+)?(,\d+(-\d+)?)*){0,2}
           uplink_switches:
             documentation_options:
               table: node-type-uplink-configuration
@@ -10472,7 +10475,7 @@ $defs:
               table: node-type-loopback-vtep-configuration
             description: Set VXLAN source interface.
             type: str
-            pattern: Loopback[\d/]+
+            pattern: Loopback\d+
           bgp_as:
             documentation_options:
               table: node-type-bgp-configuration
@@ -11596,7 +11599,7 @@ $defs:
                 type: list
                 items:
                   type: str
-                  pattern: Ethernet[\d/]+
+                  pattern: Ethernet(\d+/){0,2}\d+(\.\d+)?
               ha_ipv4_pool:
                 description: 'Comma separated list of prefixes (IPv4 address/Mask)
                   or ranges (IPv4_address-IPv4_address).
@@ -11895,7 +11898,7 @@ $defs:
             name like ''Ethernet2.42''.
 
             For a subinterface, the parent physical interface is automatically created.'
-          pattern: Ethernet[\d/]+(\.[\d]+)?
+          pattern: Ethernet(\d+/){0,2}\d+(\.\d+)?
         description:
           type: str
           description: 'Interface description.
@@ -12111,7 +12114,7 @@ $defs:
 
             For a Port-Channel subinterface, the parent Port-Channel interface must
             be defined as well.'
-          pattern: Port-Channel[\d/]+(\.[\d]+)?
+          pattern: Port-Channel\d+(\.\d+)?
         description:
           type: str
           description: 'Interface description.
@@ -12142,7 +12145,7 @@ $defs:
                 description: 'Ethernet interface name like ''Ethernet2''.
 
                   Member interface cannot be subinterface.'
-                pattern: Ethernet[\d/]+
+                pattern: Ethernet(\d+/){0,2}\d+
               description:
                 type: str
                 description: 'Interface description for this member.

@@ -36,12 +36,14 @@ keys:
           items:
             type: str
             description: Interface range or interface.
+            pattern: "Ethernet\\d+(-\\d+)?(,\\d+(-\\d+)?)*(/\\d+(-\\d+)?(,\\d+(-\\d+)?)*){0,2}"
         mlag_interfaces:
           type: list
           description: List of MLAG interfaces or MLAG interface ranges.
           items:
             type: str
             description: Interface range or interface.
+            pattern: "Ethernet\\d+(-\\d+)?(,\\d+(-\\d+)?)*(/\\d+(-\\d+)?(,\\d+(-\\d+)?)*){0,2}"
         mlag_interfaces_speed:
           type: str
           $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
@@ -53,6 +55,7 @@ keys:
           items:
             type: str
             description: Interface range or interface.
+            pattern: "Ethernet\\d+(-\\d+)?(,\\d+(-\\d+)?)*(/\\d+(-\\d+)?(,\\d+(-\\d+)?)*){0,2}"
         uplink_interface_speed:
           type: str
           $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
