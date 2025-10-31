@@ -3622,3 +3622,18 @@ releases:
     fragments:
     - v5.7.1.yml
     release_date: '2025-10-24'
+  5.7.2:
+    changes:
+      bugfixes:
+      - 'Doc: Add Redhat AAP support text to Collection documentation (#6062) by @ClausHolbechArista
+        in https://github.com/aristanetworks/avd/pull/6091'
+      - 'Fix(eos_cli_config_gen): Address wrong config order for SNMP Engine ID and
+        remote users by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6092'
+      - 'Fix(eos_designs): Apply VRF aggregate-addresses correctly under VRF config
+        by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6090'
+      release_summary: 'Release 5.7.2 - See documentation on avd.arista.com for details.
+
+        '
+    fragments:
+    - v5.7.2.yml
+    release_date: '2025-10-31'

@@ -1,0 +1,13 @@
+release_summary: |
+  Release 5.7.2 - See documentation on avd.arista.com for details.
+bugfixes:
+## What's Changed
+### Fixed issues in eos_cli_config_gen
+- |-
+ Fix(eos_cli_config_gen): Address wrong config order for SNMP Engine ID and remote users by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6092
+### Fixed issues in eos_designs
+- |-
+ Fix(eos_designs): Apply VRF aggregate-addresses correctly under VRF config by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6090
+### Documentation
+- |-
+ Doc: Add Redhat AAP support text to Collection documentation (#6062) by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6091

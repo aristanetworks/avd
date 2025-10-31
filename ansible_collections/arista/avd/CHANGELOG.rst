@@ -4,6 +4,21 @@ Arista.Avd Release Notes
 
 .. contents:: Topics
 
+v5.7.2
+======
+
+Release Summary
+---------------
+
+Release 5.7.2 - See documentation on avd.arista.com for details.
+
+Bugfixes
+--------
+
+- Doc: Add Redhat AAP support text to Collection documentation (#6062) by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6091
+- Fix(eos_cli_config_gen): Address wrong config order for SNMP Engine ID and remote users by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6092
+- Fix(eos_designs): Apply VRF aggregate-addresses correctly under VRF config by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6090
+
 v5.7.1
 ======
 
