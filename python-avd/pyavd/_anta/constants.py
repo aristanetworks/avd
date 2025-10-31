@@ -21,6 +21,7 @@ class StructuredConfigKey(Enum):
     SERVICE_ROUTING_PROTOCOLS_MODEL = "service_routing_protocols_model"
     ROUTER_AVT = "router_adaptive_virtual_topology"
     ROUTER_PATH_SELECTION = "router_path_selection"
+    ROUTER_OSPF = "router_ospf"
 
     @classmethod
     def to_string_list(cls, keys: list[StructuredConfigKey]) -> list[str]:
