@@ -112,6 +112,14 @@ AVD_TEST_INDEX: list[TestSpec] = [
         test_class=VerifyNTP,
     ),
     TestSpec(
+        test_class=VerifyOSPFNeighborState,
+        conditional_keys=[StructuredConfigKey.ROUTER_OSPF],
+    ),
+    TestSpec(
+        test_class=VerifyOSPFMaxLSA,
+        conditional_keys=[StructuredConfigKey.ROUTER_OSPF],
+    ),
+    TestSpec(
         test_class=VerifySpecificPath,
         conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION],
         input_factory=VerifySpecificPathInputFactory,

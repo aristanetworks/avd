@@ -59202,6 +59202,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "bfd": {"type": bool},
                 "make_before_break": {"type": bool},
                 "ssm_range": {"type": str},
+                "register_local_interface": {"type": str},
                 "rp_addresses": {"type": RpAddresses},
                 "anycast_rps": {"type": AnycastRps},
             }
@@ -59211,6 +59212,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Enable/Disable Make-Before-Break."""
             ssm_range: str | None
             """IPv4 Prefix associated with SSM."""
+            register_local_interface: str | None
+            """Local interface to use for PIM register messages."""
             rp_addresses: RpAddresses
             """Subclass of AvdList with `RpAddressesItem` items."""
             anycast_rps: AnycastRps
@@ -59224,6 +59227,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     make_before_break: bool | None | UndefinedType = Undefined,
                     ssm_range: str | None | UndefinedType = Undefined,
+                    register_local_interface: str | None | UndefinedType = Undefined,
                     rp_addresses: RpAddresses | UndefinedType = Undefined,
                     anycast_rps: AnycastRps | UndefinedType = Undefined,
                 ) -> None:
@@ -59237,6 +59241,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bfd: Enable/Disable BFD.
                         make_before_break: Enable/Disable Make-Before-Break.
                         ssm_range: IPv4 Prefix associated with SSM.
+                        register_local_interface: Local interface to use for PIM register messages.
                         rp_addresses: Subclass of AvdList with `RpAddressesItem` items.
                         anycast_rps: Subclass of AvdIndexedList with `AnycastRpsItem` items. Primary key is `address` (`str`).
 
@@ -59315,6 +59320,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {
                     "bfd": {"type": bool},
                     "make_before_break": {"type": bool},
+                    "register_local_interface": {"type": str},
                     "rp_addresses": {"type": RpAddresses},
                     "ssm_range": {"type": str},
                 }
@@ -59322,6 +59328,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Enable/Disable BFD."""
                 make_before_break: bool | None
                 """Enable/Disable Make-Before-Break."""
+                register_local_interface: str | None
+                """Local interface to use for PIM register messages."""
                 rp_addresses: RpAddresses
                 """Subclass of AvdList with `RpAddressesItem` items."""
                 ssm_range: str | None
@@ -59338,6 +59346,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         bfd: bool | None | UndefinedType = Undefined,
                         make_before_break: bool | None | UndefinedType = Undefined,
+                        register_local_interface: str | None | UndefinedType = Undefined,
                         rp_addresses: RpAddresses | UndefinedType = Undefined,
                         ssm_range: str | None | UndefinedType = Undefined,
                     ) -> None:
@@ -59350,6 +59359,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             bfd: Enable/Disable BFD.
                             make_before_break: Enable/Disable Make-Before-Break.
+                            register_local_interface: Local interface to use for PIM register messages.
                             rp_addresses: Subclass of AvdList with `RpAddressesItem` items.
                             ssm_range:
                                Standard access list name or use the specific keyword 'standard' as a shortcut to apply
