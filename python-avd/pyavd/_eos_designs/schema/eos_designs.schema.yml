@@ -4431,14 +4431,15 @@ keys:
         kernel_ecmp_cli:
           type: bool
           default: true
-          description: 'For EOS kernel forwarding, ECMP programming can be enabled
-            in two different ways depending on the EOS version.
+          description: 'Use EOS CLI to configure kernel forwarding ECMP programming.
 
+            For EOS kernel forwarding, ECMP programming can be enabled in two different
+            ways, depending on the EOS version.
 
-            - `true`: For newer EOS versions (starting 4.33.2) use the proper CLI.
+            - For newer EOS versions (starting 4.33.2) use the proper CLI.
 
-            - `false`: For older EOS versions use an agent environment variable. Changing
-            this requires a restart of the KernelFib agent.'
+            - For older EOS versions use an agent environment variable. Changing this
+            requires restarting the KernelFib agent.   '
         feature_support:
           type: dict
           keys:

@@ -15786,13 +15786,13 @@ class EosDesigns(EosDesignsRootModel):
         """
         kernel_ecmp_cli: bool
         """
-        For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
-        EOS version.
-
-        - `true`: For newer EOS versions (starting 4.33.2) use the proper CLI.
-        - `false`: For
-        older EOS versions use an agent environment variable. Changing this requires a restart of the
-        KernelFib agent.
+        Use EOS CLI to configure kernel forwarding ECMP programming.
+        For EOS kernel forwarding, ECMP
+        programming can be enabled in two different ways, depending on the EOS version.
+        - For newer EOS
+        versions (starting 4.33.2) use the proper CLI.
+        - For older EOS versions use an agent environment
+        variable. Changing this requires restarting the KernelFib agent.
 
         Default value: `True`
         """
@@ -15860,13 +15860,13 @@ class EosDesigns(EosDesignsRootModel):
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
                     kernel_ecmp_cli:
-                       For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
-                       EOS version.
-
-                       - `true`: For newer EOS versions (starting 4.33.2) use the proper CLI.
-                       - `false`: For
-                       older EOS versions use an agent environment variable. Changing this requires a restart of the
-                       KernelFib agent.
+                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                       For EOS kernel forwarding, ECMP
+                       programming can be enabled in two different ways, depending on the EOS version.
+                       - For newer EOS
+                       versions (starting 4.33.2) use the proper CLI.
+                       - For older EOS versions use an agent environment
+                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:
@@ -16549,13 +16549,13 @@ class EosDesigns(EosDesignsRootModel):
         """
         kernel_ecmp_cli: bool
         """
-        For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
-        EOS version.
-
-        - `true`: For newer EOS versions (starting 4.33.2) use the proper CLI.
-        - `false`: For
-        older EOS versions use an agent environment variable. Changing this requires a restart of the
-        KernelFib agent.
+        Use EOS CLI to configure kernel forwarding ECMP programming.
+        For EOS kernel forwarding, ECMP
+        programming can be enabled in two different ways, depending on the EOS version.
+        - For newer EOS
+        versions (starting 4.33.2) use the proper CLI.
+        - For older EOS versions use an agent environment
+        variable. Changing this requires restarting the KernelFib agent.
 
         Default value: `True`
         """
@@ -16623,13 +16623,13 @@ class EosDesigns(EosDesignsRootModel):
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
                     kernel_ecmp_cli:
-                       For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
-                       EOS version.
-
-                       - `true`: For newer EOS versions (starting 4.33.2) use the proper CLI.
-                       - `false`: For
-                       older EOS versions use an agent environment variable. Changing this requires a restart of the
-                       KernelFib agent.
+                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                       For EOS kernel forwarding, ECMP
+                       programming can be enabled in two different ways, depending on the EOS version.
+                       - For newer EOS
+                       versions (starting 4.33.2) use the proper CLI.
+                       - For older EOS versions use an agent environment
+                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:
