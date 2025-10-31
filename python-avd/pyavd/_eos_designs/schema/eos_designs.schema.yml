@@ -4439,7 +4439,7 @@ keys:
             - For newer EOS versions (starting 4.33.2) use the proper CLI.
 
             - For older EOS versions use an agent environment variable. Changing this
-            requires restarting the KernelFib agent.   '
+            requires restarting the KernelFib agent.'
         feature_support:
           type: dict
           keys:
