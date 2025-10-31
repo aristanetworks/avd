@@ -24,6 +24,8 @@ platform_settings:
       min_supervisors: 2
       min_line_cards: 10
       min_fabric_cards: 5
+      transceiver_manufacturers:
+        - Arastra, Inc.
 
 type: l3leaf
 l3leaf:

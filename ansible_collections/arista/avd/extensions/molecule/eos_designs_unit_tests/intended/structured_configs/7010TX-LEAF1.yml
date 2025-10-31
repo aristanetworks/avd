@@ -54,6 +54,8 @@ metadata:
     min_supervisors: 2
     min_line_cards: 10
     min_fabric_cards: 5
+    transceiver_manufacturers:
+    - Arastra, Inc.
 mlag_configuration:
   domain_id: MLAG_PER_MTU_INTERFACE
   local_interface: Vlan4094

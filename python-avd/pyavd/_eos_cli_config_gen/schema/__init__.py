@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, ClassVar, Literal, TypeAlias
 
+from pyavd._schema.coerce_type import coerce_type
 from pyavd._schema.models.avd_indexed_list import AvdIndexedList
 from pyavd._schema.models.avd_list import AvdList
 from pyavd._schema.models.avd_model import AvdModel
@@ -23325,47 +23326,29 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "min_supervisors": {"type": int},
                 "min_line_cards": {"type": int},
                 "min_fabric_cards": {"type": int},
-                "transceiver_manufacturers": {"type": TransceiverManufacturers},
+                "transceiver_manufacturers": {
+                    "type": TransceiverManufacturers,
+                    "default": lambda cls: coerce_type(["Arastra, Inc.", "Arista Networks"], target_type=cls),
+                },
             }
             min_power_supplies: int | None
-            """
-            Minimum number of power supplies required for the device.
-            Used for documentation and validation by
-            the `anta_runner` role.
-            """
+            """Minimum number of power supplies required for the device."""
             min_fans: int | None
-            """
-            Minimum number of fans required for the device.
-            Used for documentation and validation by the
-            `anta_runner` role.
-            """
+            """Minimum number of fans required for the device."""
             min_supervisors: int | None
-            """
-            Minimum number of supervisor modules required for the device.
-            Used for documentation and validation
-            by the `anta_runner` role.
-            """
+            """Minimum number of supervisor modules required for the device."""
             min_line_cards: int | None
-            """
-            Minimum number of line cards required for the device.
-            Used for documentation and validation by the
-            `anta_runner` role.
-            """
+            """Minimum number of line cards required for the device."""
             min_fabric_cards: int | None
-            """
-            Minimum number of fabric cards required for the device.
-            Used for documentation and validation by the
-            `anta_runner` role.
-            """
+            """Minimum number of fabric cards required for the device."""
             transceiver_manufacturers: TransceiverManufacturers
             """
             Expected list of approved transceiver manufacturers for the device.
-            For all platforms, it would be
-            populated with ['Arastra, Inc.', 'Arista Networks'] by default.
-            Used for documentation and
-            validation by the `anta_runner` role.
 
-            Subclass of AvdList with `str` items.
+            Subclass of AvdList with `str`
+            items.
+
+            Default value: `lambda cls: coerce_type(["Arastra, Inc.", "Arista Networks"], target_type=cls)`
             """
 
             if TYPE_CHECKING:
@@ -23387,34 +23370,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        min_power_supplies:
-                           Minimum number of power supplies required for the device.
-                           Used for documentation and validation by
-                           the `anta_runner` role.
-                        min_fans:
-                           Minimum number of fans required for the device.
-                           Used for documentation and validation by the
-                           `anta_runner` role.
-                        min_supervisors:
-                           Minimum number of supervisor modules required for the device.
-                           Used for documentation and validation
-                           by the `anta_runner` role.
-                        min_line_cards:
-                           Minimum number of line cards required for the device.
-                           Used for documentation and validation by the
-                           `anta_runner` role.
-                        min_fabric_cards:
-                           Minimum number of fabric cards required for the device.
-                           Used for documentation and validation by the
-                           `anta_runner` role.
+                        min_power_supplies: Minimum number of power supplies required for the device.
+                        min_fans: Minimum number of fans required for the device.
+                        min_supervisors: Minimum number of supervisor modules required for the device.
+                        min_line_cards: Minimum number of line cards required for the device.
+                        min_fabric_cards: Minimum number of fabric cards required for the device.
                         transceiver_manufacturers:
                            Expected list of approved transceiver manufacturers for the device.
-                           For all platforms, it would be
-                           populated with ['Arastra, Inc.', 'Arista Networks'] by default.
-                           Used for documentation and
-                           validation by the `anta_runner` role.
 
-                           Subclass of AvdList with `str` items.
+                           Subclass of AvdList with `str`
+                           items.
 
                     """
 
@@ -24628,8 +24593,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         hardware_requirements: HardwareRequirements
         """
         Defines the minimum hardware specifications required for the device.
-        This section is used for
-        validation and documentation purposes, primarily by the `anta_runner` role.
+        Used for documentation and
+        validation by the `anta_runner` role.
 
         Subclass of AvdModel.
         """
@@ -24686,8 +24651,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        'cv_deploy' role.
                     hardware_requirements:
                        Defines the minimum hardware specifications required for the device.
-                       This section is used for
-                       validation and documentation purposes, primarily by the `anta_runner` role.
+                       Used for documentation and
+                       validation by the `anta_runner` role.
 
                        Subclass of AvdModel.
                     cv_tags: Subclass of AvdModel.

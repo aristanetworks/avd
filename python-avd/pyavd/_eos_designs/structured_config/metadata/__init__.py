@@ -40,7 +40,7 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
             self._set_digital_twin()
         validate_hardware_inventory = self.shared_utils.platform_settings.validate_hardware_inventory
         if validate_hardware_inventory:
-            self.structured_config.metadata.hardware_requirements = validate_hardware_inventory._cast_as(EosCliConfigGen.Metadata.HardwareRequirements)
+            self.structured_config.metadata.hardware_requirements = validate_hardware_inventory
 
 
 class AvdStructuredConfigMetadata(StructuredConfigGenerator, AvdStructuredConfigMetadataProtocol):
