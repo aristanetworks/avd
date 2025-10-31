@@ -61155,6 +61155,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             Hostname or ip of remote engine.
             The remote_address and udp_port are used for remote users.
+            A
+            `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
+            and
+            `localized` is not set.
             """
             udp_port: int | None
             """udp_port will not be used if no remote_address is configured."""
@@ -61198,6 +61202,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         remote_address:
                            Hostname or ip of remote engine.
                            The remote_address and udp_port are used for remote users.
+                           A
+                           `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
+                           and
+                           `localized` is not set.
                         udp_port: udp_port will not be used if no remote_address is configured.
                         version: version
                         localized: Engine ID in hexadecimal for localizing auth and/or priv.
