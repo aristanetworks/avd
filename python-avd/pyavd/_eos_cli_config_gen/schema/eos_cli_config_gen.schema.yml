@@ -21762,10 +21762,7 @@ keys:
             description: IPv4 Prefix associated with SSM.
           register_local_interface:
             type: str
-            description: 'Local interface to use for PIM register messages.
-
-              Supported types include Ethernet, Loopback, Management, Port-Channel,
-              Tunnel, Vlan and iif.'
+            description: Local interface to use for PIM register messages.
           rp_addresses:
             type: list
             primary_key: address
@@ -21838,10 +21835,7 @@ keys:
                   description: Enable/Disable Make-Before-Break.
                 register_local_interface:
                   type: str
-                  description: 'Local interface to use for PIM register messages.
-
-                    Supported types include Ethernet, Loopback, Management, Port-Channel,
-                    Tunnel, Vlan and iif.'
+                  description: Local interface to use for PIM register messages.
                 rp_addresses:
                   type: list
                   items:

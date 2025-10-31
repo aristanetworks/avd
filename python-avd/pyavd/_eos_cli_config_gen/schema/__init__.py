@@ -59213,11 +59213,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ssm_range: str | None
             """IPv4 Prefix associated with SSM."""
             register_local_interface: str | None
-            """
-            Local interface to use for PIM register messages.
-            Supported types include Ethernet, Loopback,
-            Management, Port-Channel, Tunnel, Vlan and iif.
-            """
+            """Local interface to use for PIM register messages."""
             rp_addresses: RpAddresses
             """Subclass of AvdList with `RpAddressesItem` items."""
             anycast_rps: AnycastRps
@@ -59245,10 +59241,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bfd: Enable/Disable BFD.
                         make_before_break: Enable/Disable Make-Before-Break.
                         ssm_range: IPv4 Prefix associated with SSM.
-                        register_local_interface:
-                           Local interface to use for PIM register messages.
-                           Supported types include Ethernet, Loopback,
-                           Management, Port-Channel, Tunnel, Vlan and iif.
+                        register_local_interface: Local interface to use for PIM register messages.
                         rp_addresses: Subclass of AvdList with `RpAddressesItem` items.
                         anycast_rps: Subclass of AvdIndexedList with `AnycastRpsItem` items. Primary key is `address` (`str`).
 
@@ -59336,11 +59329,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 make_before_break: bool | None
                 """Enable/Disable Make-Before-Break."""
                 register_local_interface: str | None
-                """
-                Local interface to use for PIM register messages.
-                Supported types include Ethernet, Loopback,
-                Management, Port-Channel, Tunnel, Vlan and iif.
-                """
+                """Local interface to use for PIM register messages."""
                 rp_addresses: RpAddresses
                 """Subclass of AvdList with `RpAddressesItem` items."""
                 ssm_range: str | None
@@ -59370,10 +59359,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             bfd: Enable/Disable BFD.
                             make_before_break: Enable/Disable Make-Before-Break.
-                            register_local_interface:
-                               Local interface to use for PIM register messages.
-                               Supported types include Ethernet, Loopback,
-                               Management, Port-Channel, Tunnel, Vlan and iif.
+                            register_local_interface: Local interface to use for PIM register messages.
                             rp_addresses: Subclass of AvdList with `RpAddressesItem` items.
                             ssm_range:
                                Standard access list name or use the specific keyword 'standard' as a shortcut to apply

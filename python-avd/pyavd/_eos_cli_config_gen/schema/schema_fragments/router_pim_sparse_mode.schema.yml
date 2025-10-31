@@ -25,7 +25,6 @@ keys:
             type: str
             description: |-
               Local interface to use for PIM register messages.
-              Supported types include Ethernet, Loopback, Management, Port-Channel, Tunnel, Vlan and iif.
           rp_addresses:
             type: list
             primary_key: address
@@ -100,7 +99,6 @@ keys:
                   type: str
                   description: |-
                     Local interface to use for PIM register messages.
-                    Supported types include Ethernet, Loopback, Management, Port-Channel, Tunnel, Vlan and iif.
                 rp_addresses:
                   type: list
                   items:
