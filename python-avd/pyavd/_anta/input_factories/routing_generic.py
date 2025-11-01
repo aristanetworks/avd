@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from ipaddress import IPv4Address, ip_interface
+from typing import TYPE_CHECKING
 
 from anta.tests.routing.generic import VerifyRoutingProtocolModel, VerifyRoutingTableEntry
 
@@ -11,6 +11,9 @@ from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
+
+if TYPE_CHECKING:
+    from ipaddress import IPv4Address
 
 
 class VerifyRoutingProtocolModelInputFactory(AntaTestInputFactory[VerifyRoutingProtocolModel.Input]):
@@ -32,40 +35,28 @@ class VerifyRoutingTableEntryInputFactory(AntaTestInputFactory[VerifyRoutingTabl
     Input factory class for the `VerifyRoutingTableEntry` test.
 
     On VTEP devices (excluding WAN routers), generates inputs to verify IPv4 routing table entries
-    of other fabric device Loopback0 and VTEP IPs in the underlay. Only IPv4 (not IPv6) underlays are supported.
+    for other fabric devices' Loopback0 and VTEP IPs in the underlay. Only IPv4 (not IPv6) underlays are supported.
 
-    Test is skipped if `vtep_fabric_reachability` is disabled.
+    No inputs are generated if `extra_fabric_validation` is disabled.
     """
 
     def create(self) -> list[VerifyRoutingTableEntry.Input] | None:
         """Create a list of inputs for the `VerifyRoutingTableEntry` test."""
-        if not self.device.input_factory_settings.vtep_fabric_reachability:
-            self.logger_adapter.debug(LogMessage.VTEP_FABRIC_REACHABILITY_DISABLED)
+        if not self.device.settings.extra_fabric_validation:
+            self.logger_adapter.debug(LogMessage.EXTRA_FABRIC_VALIDATION_DISABLED)
             return None
 
-        if not self.device.is_vtep or self.device.is_wan_router:
-            self.logger_adapter.debug(LogMessage.DEVICE_NOT_VTEP)
+        if self.device.is_wan_router:
+            self.logger_adapter.debug(LogMessage.DEVICE_IS_WAN_ROUTER)
             return None
 
-        # Using a set to avoid duplicate tests for the same IP address (e.g. MLAG VTEPs)
-        ips: set[str] = set()
+        # Using a set to deduplicate IPs across devices (e.g., MLAG pairs sharing the same VTEP IP)
+        routes: set[IPv4Address] = set()
 
-        # TODO: Consider converting minimal_structured_configs to a dataclass with computed mappings of all
-        #       fabric device Loopback0 and VTEP IPs to avoid repeating the same logic below for every device
-        for device_name, device_config in self.minimal_structured_configs.items():
-            if self.device.hostname == device_name:
-                # No need to check ourself
+        for device_name, special_ips in self.fabric_data.special_ips.items():
+            if not self.is_peer_available(peer=device_name, identity=", ".join(sorted(str(ip) for ip in special_ips))):
                 continue
 
-            if not device_config.is_deployed:
-                self.logger_adapter.debug(LogMessage.PEER_NOT_DEPLOYED, peer=device_name)
-                continue
+            routes.update(special_ips)
 
-            if device_config.loopback0_ip is not None:
-                ips.add(device_config.loopback0_ip)
-            if device_config.vtep_ip is not None:
-                ips.add(device_config.vtep_ip)
-
-        # Convert to IPv4Address objects
-        routes = {ip_obj for ip in ips if isinstance((ip_obj := ip_interface(ip).ip), IPv4Address)}
-        return [VerifyRoutingTableEntry.Input(routes=natural_sort(routes), collect="all")] if routes else None
+        return [VerifyRoutingTableEntry.Input(routes=natural_sort(list(routes)), collect="all")] if routes else None

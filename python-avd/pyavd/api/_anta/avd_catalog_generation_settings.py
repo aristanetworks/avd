@@ -18,12 +18,9 @@ class InputFactorySettings(BaseModel):
     ----------
         allow_bgp_vrfs : bool
             Whether to include BGP neighbors in VRFs.
-        vtep_fabric_reachability: bool
-            Whether to include fabric reachability tests on VTEP devices.
     """
 
     allow_bgp_vrfs: bool = Field(default=False)
-    vtep_fabric_reachability: bool = Field(default=False)
 
 
 class AvdCatalogGenerationSettings(BaseModel):
@@ -47,6 +44,8 @@ class AvdCatalogGenerationSettings(BaseModel):
         ignore_is_deployed : bool
             Whether to ignore the `is_deployed` key in the structured config.
             When set to `True`, the catalog will still be generated even if the `is_deployed` key is `False`.
+        extra_fabric_validation : bool
+            Whether to include extra fabric-wide validation tests in the catalog.
     """
 
     model_config = ConfigDict(extra="forbid", arbitrary_types_allowed=True)
@@ -57,6 +56,7 @@ class AvdCatalogGenerationSettings(BaseModel):
     custom_test_specs: list[TestSpec] = Field(default_factory=list)
     output_dir: str | Path | None = Field(default=None)
     ignore_is_deployed: bool = Field(default=False)
+    extra_fabric_validation: bool = Field(default=False)
 
     @field_validator("output_dir")
     @classmethod

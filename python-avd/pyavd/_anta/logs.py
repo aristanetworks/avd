@@ -81,7 +81,6 @@ class LogMessage(Enum):
     """
 
     # Peer-related messages
-    PEER_NOT_DEPLOYED = "Peer {peer} skipped - not deployed"
     PEER_UNAVAILABLE = "{identity} skipped - Peer {peer} not in fabric or not deployed"
     PEER_INTERFACE_NOT_FOUND = "{interface} skipped - Peer {peer} interface {peer_interface} not found"
     PEER_INTERFACE_NO_IP = "{interface} skipped - Peer {peer} interface {peer_interface} has no IP address"
@@ -108,7 +107,7 @@ class LogMessage(Enum):
     INPUT_NONE_FOUND = "skipped - No inputs available"
     INPUT_NO_DATA_MODELS = "skipped - Data models {data_models} not found"
     INPUT_MISSING_FIELDS = "{identity} skipped - Missing required fields: {fields}"
-    VTEP_FABRIC_REACHABILITY_DISABLED = "skipped - VTEP fabric reachability tests disabled"
+    EXTRA_FABRIC_VALIDATION_DISABLED = "skipped - Extra fabric-wide validation tests disabled"
 
     # Device role message
-    DEVICE_NOT_VTEP = "skipped - device is not a VTEP or is a WAN router"
+    DEVICE_IS_WAN_ROUTER = "skipped - Device is a WAN router"

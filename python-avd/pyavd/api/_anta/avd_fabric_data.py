@@ -33,6 +33,7 @@ class AvdDeviceData:
     ethernet_interfaces: dict[str, AvdEthernetInterface]
     loopback0_ip: IPv4Address | None
     vtep_ip: IPv4Address | None
+    mlag_vtep_ip: IPv4Address | None
 
     @classmethod
     def from_structured_config(cls, structured_config: dict[str, Any]) -> AvdDeviceData:
@@ -60,26 +61,63 @@ class AvdDeviceData:
         # Get the Loopback0 IP
         loopback0_ip = get(get_item(get(structured_config, "loopback_interfaces", []), "name", "Loopback0", default={}), "ip_address")
 
-        # Get the VTEP IP
-        vxlan_source_interface = get(structured_config, "vxlan_interface.vxlan1.vxlan.source_interface")
-        if vxlan_source_interface is not None:
-            if "Dps" in vxlan_source_interface:
-                interface_model = get(structured_config, "dps_interfaces", default=[])
-            else:
-                interface_model = get(structured_config, "loopback_interfaces", default=[])
-            vtep_ip = get(get_item(interface_model, "name", vxlan_source_interface, default={}), "ip_address")
-        else:
-            vtep_ip = None
+        # Get the VTEP IPs
+        vtep_ip, mlag_vtep_ip = cls._get_vtep_ips(structured_config)
 
         # Create and return the device AvdDeviceData
-        return AvdDeviceData(
+        return cls(
             hostname=structured_config["hostname"],
             is_deployed=get(structured_config, "metadata.is_deployed", default=False),
             dns_domain=get(structured_config, "dns_domain"),
             ethernet_interfaces=ethernet_interfaces,
             loopback0_ip=ip_interface(loopback0_ip).ip if loopback0_ip else None,
-            vtep_ip=ip_interface(vtep_ip).ip if vtep_ip else None,
+            vtep_ip=vtep_ip,
+            mlag_vtep_ip=mlag_vtep_ip,
         )
+
+    @staticmethod
+    def _get_vtep_ips(structured_config: dict[str, Any]) -> tuple[IPv4Address | None, IPv4Address | None]:
+        """
+        Get the VTEP and MLAG VTEP IPv4 addresses from the structured configuration.
+
+        Args:
+            structured_config: Device structured configuration dictionary.
+
+        Returns:
+            A tuple of VTEP IP and MLAG VTEP IP. Either or both may be None if not configured or if IPv6-only encapsulation is used.
+
+        """
+        vtep_ip = None
+        mlag_vtep_ip = None
+
+        # Check VXLAN encapsulation type to determine which IP address family is used on source interfaces
+        # If not explicitly configured, EOS defaults to IPv4 encapsulation
+        vxlan_encap_ipv4 = get(structured_config, "vxlan_interface.vxlan1.vxlan.encapsulations.ipv4")
+        vxlan_encap_ipv6 = get(structured_config, "vxlan_interface.vxlan1.vxlan.encapsulations.ipv6")
+
+        # Return early if IPv6-only encapsulation is configured
+        if vxlan_encap_ipv6 is True and vxlan_encap_ipv4 is not True:
+            return vtep_ip, mlag_vtep_ip
+
+        # Get the VTEP IP
+        vxlan_source_interface = get(structured_config, "vxlan_interface.vxlan1.vxlan.source_interface")
+        if vxlan_source_interface is not None:
+            # Determine which interface model to search based on source interface type
+            if "Dps" in vxlan_source_interface:
+                interface_model = get(structured_config, "dps_interfaces", default=[])
+            else:
+                interface_model = get(structured_config, "loopback_interfaces", default=[])
+
+            vtep_ip_str = get(get_item(interface_model, "name", vxlan_source_interface, default={}), "ip_address")
+            vtep_ip = vtep_ip_addr if vtep_ip_str and isinstance((vtep_ip_addr := ip_interface(vtep_ip_str).ip), IPv4Address) else None
+
+        # Get the MLAG VTEP IP (for Multi-VTEP MLAG feature)
+        vxlan_mlag_source_interface = get(structured_config, "vxlan_interface.vxlan1.vxlan.mlag_source_interface")
+        if vxlan_mlag_source_interface is not None:
+            mlag_vtep_ip_str = get(get_item(interface_model, "name", vxlan_mlag_source_interface, default={}), "ip_address")
+            mlag_vtep_ip = mlag_vtep_ip_addr if mlag_vtep_ip_str and isinstance((mlag_vtep_ip_addr := ip_interface(mlag_vtep_ip_str).ip), IPv4Address) else None
+
+        return vtep_ip, mlag_vtep_ip
 
 
 @dataclass(frozen=True)
@@ -96,8 +134,13 @@ class AvdFabricData:
     """Mapping of device hostname to its Loopback0 IPv4 address. Only includes devices that have a Loopback0 IP configured."""
     vtep_ips: dict[str, IPv4Address]
     """Mapping of device hostname to its VTEP IPv4 address. Only includes devices that have a VTEP IP configured."""
-    special_ips: defaultdict[str, list[IPv4Address]]
-    """Mapping of device hostname to a list of 'special' IPs (Loopback0 and VTEP). Only includes devices with at least one special IP."""
+    mlag_vtep_ips: dict[str, IPv4Address]
+    """Mapping of device hostname to its MLAG VTEP IPv4 address. Only includes devices that have an MLAG VTEP IP configured (Multi-VTEP)."""
+    special_ips: defaultdict[str, set[IPv4Address]]
+    """Mapping of device hostname to a set of 'special' IPs (Loopback0, VTEP, and MLAG VTEP). Only includes devices with at least one special IP.
+
+    Uses a set to deduplicate IPs, which is common in Multi-VTEP scenarios where Loopback0 is reused as the local VTEP IP.
+    """
 
     @classmethod
     def from_structured_configs(cls, structured_configs: dict[str, dict[str, Any]]) -> AvdFabricData:
@@ -114,25 +157,38 @@ class AvdFabricData:
         devices: dict[str, AvdDeviceData] = {}
         loopback0_ips: dict[str, IPv4Address] = {}
         vtep_ips: dict[str, IPv4Address] = {}
-        special_ips: defaultdict[str, list[IPv4Address]] = defaultdict(list)
+        mlag_vtep_ips: dict[str, IPv4Address] = {}
+        special_ips: defaultdict[str, set[IPv4Address]] = defaultdict(set)
 
         for device, structured_config in structured_configs.items():
             device_data = AvdDeviceData.from_structured_config(structured_config)
 
+            # Track which IPs were skipped for consolidated logging
+            skipped: list[str] = []
+
             # Update the IP mappings
             if device_data.loopback0_ip:
                 loopback0_ips[device] = device_data.loopback0_ip
-                special_ips[device].append(device_data.loopback0_ip)
+                special_ips[device].add(device_data.loopback0_ip)
             else:
-                LOGGER.debug("<%s> Skipped Loopback0 IP mapping - IP not found", device)
+                skipped.append("Loopback0")
 
             if device_data.vtep_ip:
                 vtep_ips[device] = device_data.vtep_ip
-                special_ips[device].append(device_data.vtep_ip)
+                special_ips[device].add(device_data.vtep_ip)
             else:
-                LOGGER.debug("<%s> Skipped VTEP IP mapping - IP not found", device)
+                skipped.append("VTEP")
+
+            if device_data.mlag_vtep_ip:
+                mlag_vtep_ips[device] = device_data.mlag_vtep_ip
+                special_ips[device].add(device_data.mlag_vtep_ip)
+            else:
+                skipped.append("MLAG VTEP")
+
+            if skipped:
+                LOGGER.debug("<%s> Skipped from IPv4 mappings: %s - Not configured or IPv6-only", device, ", ".join(skipped))
 
             # Update the devices mapping
             devices[device] = device_data
 
-        return AvdFabricData(devices=devices, loopback0_ips=loopback0_ips, vtep_ips=vtep_ips, special_ips=special_ips)
+        return AvdFabricData(devices=devices, loopback0_ips=loopback0_ips, vtep_ips=vtep_ips, mlag_vtep_ips=mlag_vtep_ips, special_ips=special_ips)
