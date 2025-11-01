@@ -18,6 +18,7 @@ l3leaf:
 
   node_groups:
     - group: DC1_L3_LEAF1
+      platform: vEOS-lab_with_storm_control
       bgp_as: 65101
       nodes:
         - name: dc1-leaf1a
@@ -34,6 +35,7 @@ l3leaf:
             - Ethernet2
 
     - group: DC1_L3_LEAF2
+      platform: vEOS-lab_with_storm_control
       bgp_as: 65102
       evpn_gateway:
         evpn_l2:

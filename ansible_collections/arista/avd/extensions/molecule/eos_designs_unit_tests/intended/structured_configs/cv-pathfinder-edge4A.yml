@@ -1,10 +1,5 @@
 aaa_root:
   disabled: true
-agents:
-- name: KernelFib
-  environment_variables:
-  - name: KERNELFIB_PROGRAM_ALL_ECMP
-    value: '1'
 application_traffic_recognition:
   categories:
   - name: VIDEO1
@@ -92,10 +87,12 @@ ethernet_interfaces:
     vlan: 42
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet1
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet42
@@ -105,9 +102,10 @@ ethernet_interfaces:
   channel_group:
     id: 666
     mode: active
-  peer: cv-pathfinder-edge4B
-  peer_interface: Ethernet42
-  peer_type: wan_ha_peer
+  metadata:
+    peer: cv-pathfinder-edge4B
+    peer_interface: Ethernet42
+    peer_type: wan_ha_peer
 - name: Ethernet43
   description: WAN_HA_cv-pathfinder-edge4B_Ethernet43
   shutdown: false
@@ -115,9 +113,10 @@ ethernet_interfaces:
   channel_group:
     id: 666
     mode: active
-  peer: cv-pathfinder-edge4B
-  peer_interface: Ethernet43
-  peer_type: wan_ha_peer
+  metadata:
+    peer: cv-pathfinder-edge4B
+    peer_interface: Ethernet43
+    peer_type: wan_ha_peer
 flow_tracking:
   hardware:
     trackers:
@@ -174,6 +173,8 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+kernel:
+  software_forwarding_ecmp: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -238,9 +239,10 @@ port_channel_interfaces:
   ip_address: 10.10.10.1/24
   flow_tracker:
     hardware: FLOW-TRACKER
-  peer: cv-pathfinder-edge4B
-  peer_interface: Port-Channel666
-  peer_type: l3_interface
+  metadata:
+    peer: cv-pathfinder-edge4B
+    peer_interface: Port-Channel666
+    peer_type: l3_interface
   switchport:
     enabled: false
 prefix_lists:
@@ -413,13 +415,15 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     bfd: true
@@ -434,11 +438,13 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder
+    metadata:
+      peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder_Dps1
   - ip_address: 192.168.142.9
     remote_as: '65000'
-    peer: cv-pathfinder-edge4B
+    metadata:
+      peer: cv-pathfinder-edge4B
     description: cv-pathfinder-edge4B
     route_reflector_client: true
     update_source: Dps1

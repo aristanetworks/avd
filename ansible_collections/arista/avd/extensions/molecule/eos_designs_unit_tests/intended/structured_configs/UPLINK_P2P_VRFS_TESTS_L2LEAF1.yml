@@ -10,22 +10,25 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
-  peer_interface: Ethernet51
-  peer_type: l3leaf
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+    peer_interface: Ethernet51
+    peer_type: l3leaf
 - name: Ethernet2
   description: L2_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet52
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
-  peer_interface: Ethernet52
-  peer_type: l3leaf
+  metadata:
+    peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+    peer_interface: Ethernet52
+    peer_type: l3leaf
 - name: Ethernet10
   shutdown: false
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   switchport:
     enabled: true
 hostname: UPLINK_P2P_VRFS_TESTS_L2LEAF1

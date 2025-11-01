@@ -10,18 +10,20 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  peer: 7010TX-LEAF2
-  peer_interface: Ethernet5
-  peer_type: mlag_peer
+  metadata:
+    peer: 7010TX-LEAF2
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
 - name: Ethernet6
   description: MLAG_7010TX-LEAF2_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: 7010TX-LEAF2
-  peer_interface: Ethernet6
-  peer_type: mlag_peer
+  metadata:
+    peer: 7010TX-LEAF2
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
 hostname: 7010TX-LEAF1
 ip_igmp_snooping:
   globally_enabled: true
@@ -101,7 +103,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '923'
     description: 7010TX-LEAF2
     next_hop_self: true
@@ -109,11 +112,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -122,7 +127,8 @@ router_bgp:
   neighbors:
   - ip_address: 10.10.224.5
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: 7010TX-LEAF2
+    metadata:
+      peer: 7010TX-LEAF2
     description: 7010TX-LEAF2_Vlan4093
   redistribute:
     connected:

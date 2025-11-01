@@ -59,3 +59,8 @@ ipv4_acls:
         protocol: ip
         source: any
         destination: any
+
+platform_settings:
+  - platforms:
+      - default
+    kernel_ecmp_cli: true

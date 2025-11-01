@@ -10,26 +10,29 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: dc1-leaf2a
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
+  metadata:
+    peer: dc1-leaf2a
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
 - name: Ethernet4
   description: MLAG_dc1-leaf2a_Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: dc1-leaf2a
-  peer_interface: Ethernet4
-  peer_type: mlag_peer
+  metadata:
+    peer: dc1-leaf2a
+    peer_interface: Ethernet4
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_dc1-spine1_Ethernet4
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.13/31
-  peer: dc1-spine1
-  peer_interface: Ethernet4
-  peer_type: spine
+  metadata:
+    peer: dc1-spine1
+    peer_interface: Ethernet4
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -37,9 +40,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.15/31
-  peer: dc1-spine2
-  peer_interface: Ethernet4
-  peer_type: spine
+  metadata:
+    peer: dc1-spine2
+    peer_interface: Ethernet4
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet8
@@ -48,17 +52,19 @@ ethernet_interfaces:
   channel_group:
     id: 8
     mode: active
-  peer: dc1-leaf2c
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: dc1-leaf2c
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet6
   description: P2P_dc2-leaf2b_Ethernet6
   shutdown: false
   mtu: 1500
   ip_address: 172.16.100.2/31
-  peer: dc2-leaf2b
-  peer_interface: Ethernet6
-  peer_type: l3leaf
+  metadata:
+    peer: dc2-leaf2b
+    peer_interface: Ethernet6
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet5
@@ -67,10 +73,11 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  peer: dc1-leaf2-server1
-  peer_interface: PCI2
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: dc1-leaf2-server1
+    peer_interface: PCI2
+    peer_type: server
+    peer_key: servers
 hostname: dc1-leaf2b
 ip_igmp_snooping:
   globally_enabled: true
@@ -205,7 +212,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65102'
     description: dc1-leaf2a
     next_hop_self: true
@@ -214,12 +222,14 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -227,7 +237,8 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   - name: EVPN-OVERLAY-CORE
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 15
@@ -236,37 +247,44 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.1.100
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: dc1-leaf2a
+    metadata:
+      peer: dc1-leaf2a
     description: dc1-leaf2a_Vlan4093
   - ip_address: 10.255.255.12
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine1
+    metadata:
+      peer: dc1-spine1
     description: dc1-spine1_Ethernet4
   - ip_address: 10.255.255.14
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine2
+    metadata:
+      peer: dc1-spine2
     description: dc1-spine2_Ethernet4
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine1
+    metadata:
+      peer: dc1-spine1
     description: dc1-spine1_Loopback0
   - ip_address: 10.255.0.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine2
+    metadata:
+      peer: dc1-spine2
     description: dc1-spine2_Loopback0
   - ip_address: 10.255.128.16
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65202'
-    peer: dc2-leaf2b
+    metadata:
+      peer: dc2-leaf2b
     description: dc2-leaf2b_Loopback0
   - ip_address: 172.16.100.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65202'
-    peer: dc2-leaf2b
+    metadata:
+      peer: dc2-leaf2b
     description: dc2-leaf2b
   redistribute:
     connected:
@@ -274,7 +292,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 11
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.6:10011
     rd_evpn_domain:
       domain: remote
@@ -288,7 +307,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 12
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.6:10012
     rd_evpn_domain:
       domain: remote
@@ -302,7 +322,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 21
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.6:10021
     rd_evpn_domain:
       domain: remote
@@ -316,7 +337,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 22
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.6:10022
     rd_evpn_domain:
       domain: remote
@@ -330,7 +352,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 3401
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.6:13401
     rd_evpn_domain:
       domain: remote
@@ -344,7 +367,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 3402
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.0.6:13402
     rd_evpn_domain:
       domain: remote
@@ -453,41 +477,47 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.11.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan12
   description: VRF10_VLAN12
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan3009
   description: MLAG_L3_VRF_VRF10
   shutdown: false
   vrf: VRF10
   ip_address: 10.255.1.101/31
   mtu: 1500
-  tenant: TENANT1
-  type: underlay_peering
+  metadata:
+    tenant: TENANT1
+    type: underlay_peering
 - name: Vlan21
   description: VRF11_VLAN21
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.21.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan22
   description: VRF11_VLAN22
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.22.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan3010
   description: MLAG_L3_VRF_VRF11
   shutdown: false
   vrf: VRF11
   ip_address: 10.255.1.101/31
   mtu: 1500
-  tenant: TENANT1
-  type: underlay_peering
+  metadata:
+    tenant: TENANT1
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:

@@ -213,6 +213,7 @@
     | [<samp>&nbsp;&nbsp;level</samp>](## "logging_settings.level") | List, items: Dictionary |  |  |  | Configure logging severity. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;facility</samp>](## "logging_settings.level.[].facility") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;severity</samp>](## "logging_settings.level.[].severity") | String |  |  | Valid Values:<br>- <code>alerts</code><br>- <code>critical</code><br>- <code>debugging</code><br>- <code>emergencies</code><br>- <code>errors</code><br>- <code>informational</code><br>- <code>notifications</code><br>- <code>warnings</code><br>- <code>0</code><br>- <code>1</code><br>- <code>2</code><br>- <code>3</code><br>- <code>4</code><br>- <code>5</code><br>- <code>6</code><br>- <code>7</code> | Severity of facility. Below are the supported severities.<br>emergencies    System is unusable                (severity=0)<br>alerts         Immediate action needed           (severity=1)<br>critical       Critical conditions               (severity=2)<br>errors         Error conditions                  (severity=3)<br>warnings       Warning conditions                (severity=4)<br>notifications  Normal but significant conditions (severity=5)<br>informational  Informational messages            (severity=6)<br>debugging      Debugging messages                (severity=7)<br><0-7>          Severity level value |
+    | [<samp>&nbsp;&nbsp;validate_no_errors_period</samp>](## "logging_settings.validate_no_errors_period") | Integer |  |  |  | Threshold (in minutes) defining the recent time window during which no error-level logs should have been generated for the validation to pass. |
     | [<samp>management_eapi</samp>](## "management_eapi") | Dictionary |  |  |  | Default is HTTPS management eAPI enabled.<br> |
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "management_eapi.enabled") | Boolean |  |  |  | Enable/Disable api http-commands. |
     | [<samp>&nbsp;&nbsp;enable_http</samp>](## "management_eapi.enable_http") | Boolean |  |  |  |  |
@@ -244,6 +245,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "ntp_settings.authentication_keys.[].hash_algorithm") | String | Required |  | Valid Values:<br>- <code>md5</code><br>- <code>sha1</code> |  |
     | [<samp>&nbsp;&nbsp;trusted_keys</samp>](## "ntp_settings.trusted_keys") | String |  |  |  | List of trusted-keys as string ex. 10-12,15. |
     | [<samp>ssh_settings</samp>](## "ssh_settings") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "ssh_settings.enabled") | Boolean |  |  |  | Explicitly enable or disable management ssh for all VRFs. By default EOS enables management ssh for all VRFs. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "ssh_settings.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ssh_settings.vrfs.[].name") | String | Required, Unique |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure SSH for the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure SSH for the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ssh_settings.vrfs.[].enabled") | Boolean | Required |  |  | Enable SSH in VRF. |
@@ -752,6 +754,9 @@
           # <0-7>          Severity level value
           severity: <str; "alerts" | "critical" | "debugging" | "emergencies" | "errors" | "informational" | "notifications" | "warnings" | "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7">
 
+      # Threshold (in minutes) defining the recent time window during which no error-level logs should have been generated for the validation to pass.
+      validate_no_errors_period: <int>
+
     # Default is HTTPS management eAPI enabled.
     management_eapi:
 
@@ -833,6 +838,9 @@
       # List of trusted-keys as string ex. 10-12,15.
       trusted_keys: <str>
     ssh_settings:
+
+      # Explicitly enable or disable management ssh for all VRFs. By default EOS enables management ssh for all VRFs.
+      enabled: <bool>
       vrfs:
 
           # VRF name.

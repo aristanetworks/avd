@@ -274,6 +274,13 @@ traffic_policies:
               next_hop:
                 # Testing negative ttl it should not reflect.
                 ttl: 44
+        - name: BLUE-C2-POLICY-08
+          type: ipv6
+          protocols:
+            - protocol: icmpv6
+              icmp_type:
+                - echo-reply
+                - echo-request
     - name: BLUE-C3-POLICY
       default_actions:
         ipv4:

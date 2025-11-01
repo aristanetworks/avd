@@ -15,7 +15,7 @@ use serde_json::Value;
 
 use crate::context::Context;
 
-pub(crate) trait Validation<T> {
+pub trait Validation<T> {
     /// Validate the given value T according to the schema where the trait is implemented.
     /// Validation updates the given Context with any found violations.
     fn validate(&self, value: &T, ctx: &mut Context);

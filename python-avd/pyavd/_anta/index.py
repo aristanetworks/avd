@@ -80,6 +80,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyStormControlDrops,
+        input_factory=VerifyStormControlDropsInputFactory,
     ),
     TestSpec(
         test_class=VerifyLLDPNeighbors,
@@ -109,6 +110,14 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyNTP,
+    ),
+    TestSpec(
+        test_class=VerifyOSPFNeighborState,
+        conditional_keys=[StructuredConfigKey.ROUTER_OSPF],
+    ),
+    TestSpec(
+        test_class=VerifyOSPFMaxLSA,
+        conditional_keys=[StructuredConfigKey.ROUTER_OSPF],
     ),
     TestSpec(
         test_class=VerifySpecificPath,

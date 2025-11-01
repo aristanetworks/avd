@@ -1,10 +1,5 @@
 aaa_root:
   disabled: true
-agents:
-- name: KernelFib
-  environment_variables:
-  - name: KERNELFIB_PROGRAM_ALL_ECMP
-    value: '1'
 application_traffic_recognition:
   categories:
   - name: VIDEO1
@@ -90,9 +85,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.1/31
-  peer: site-ha-disabled-leaf
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-disabled-leaf
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet52.1000
@@ -103,9 +99,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1000
   ip_address: 172.17.0.1/31
-  peer: site-ha-disabled-leaf
-  peer_interface: Ethernet1.1000
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-disabled-leaf
+    peer_interface: Ethernet1.1000
+    peer_type: l3leaf
 - name: Ethernet52.142
   description: P2P_site-ha-disabled-leaf_Ethernet1.142_VRF_PROD
   shutdown: false
@@ -114,9 +111,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 142
   ip_address: 172.17.0.1/31
-  peer: site-ha-disabled-leaf
-  peer_interface: Ethernet1.142
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-disabled-leaf
+    peer_interface: Ethernet1.142
+    peer_type: l3leaf
 - name: Ethernet52.666
   description: P2P_site-ha-disabled-leaf_Ethernet1.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
@@ -125,9 +123,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 666
   ip_address: 172.17.0.1/31
-  peer: site-ha-disabled-leaf
-  peer_interface: Ethernet1.666
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-disabled-leaf
+    peer_interface: Ethernet1.666
+    peer_type: l3leaf
 - name: Ethernet1
   description: ATT_666_peer3_Ethernet42
   shutdown: false
@@ -135,9 +134,10 @@ ethernet_interfaces:
     hardware: FLOW-TRACKER
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer: peer3
-  peer_interface: Ethernet42
-  peer_type: l3_interface
+  metadata:
+    peer: peer3
+    peer_interface: Ethernet42
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2
@@ -146,7 +146,8 @@ ethernet_interfaces:
   ip_address: 172.15.5.5/31
   ip_nat:
     service_profile: NAT-IE-DIRECT
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2/1
@@ -155,14 +156,16 @@ ethernet_interfaces:
   ip_address: 172.15.5.6/31
   ip_nat:
     service_profile: NAT-IE-DIRECT
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet3
   description: Comcast-5G_AF830
   shutdown: false
   ip_address: 172.20.20.20/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:
@@ -286,6 +289,8 @@ ip_security:
       action: clear
   key_controller:
     profile: DP-PROFILE
+kernel:
+  software_forwarding_ecmp: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -668,13 +673,15 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     bfd: true
@@ -700,11 +707,13 @@ router_bgp:
   - ip_address: 172.17.0.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65199'
-    peer: site-ha-disabled-leaf
+    metadata:
+      peer: site-ha-disabled-leaf
     description: site-ha-disabled-leaf_Ethernet1
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder
+    metadata:
+      peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder_Dps1
   redistribute:
     connected:
