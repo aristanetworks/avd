@@ -180,4 +180,6 @@ class UtilsMixin(Protocol):
 
                 for vlan_id in map(int, range_expand(uplink.vlans)):
                     vlans.setdefault(vlan_id, set()).update(uplink.peer_trunk_groups)
+                # No need to go through the other uplinks as the configuration is the same
+                break
         return vlans
