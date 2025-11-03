@@ -23,29 +23,24 @@ class DeviceConfigMixin(Protocol):
     """
 
     @cached_property
-    def device_config(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem | None:
+    def device_config(self: SharedUtilsProtocol) -> EosDesigns.DevicesItem | None:
         """
         Get device config and inherit from device profile.
 
         If there is no device config we still check for the global 'device_profile' and inherit from that.
-
-        TODO: For now we are returning the node_config object type because it is used widely in the code base as type hint for various helper functions.
-        TODO: Once devices model stabilizes (out of preview) we should implement a proper type for both of them (protocol?)
         """
         if self.hostname not in self.inputs.devices and not self.inputs.device_profile:
             return None
 
-        # Recast to node config mode - this also copies the data, so we don't touch the original data.
-        device_config = self.inputs.devices.get(self.hostname, EosDesigns.DevicesItem())._cast_as(
-            EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True
-        )
+        # Create a copy so we don't touch the original data.
+        device_config = self.inputs.devices.get(self.hostname, EosDesigns.DevicesItem())._deepcopy()
 
         if device_profile := default(device_config.profile, self.inputs.device_profile):
             if not (device_profile := self.inputs.device_profiles.get(device_profile)):
                 msg = f"The Device Profile '{device_profile}' applied for the device '{self.hostname}' does not exist under `device_profiles`."
                 raise AristaAvdInvalidInputsError(msg)
 
-            device_config._deepinherit(device_profile._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True))
+            device_config._deepinherit(device_profile._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
 
             if device_profile.parent_profile:
                 if not (parent_profile := self.inputs.device_profiles.get(device_profile.parent_profile)):
@@ -55,6 +50,6 @@ class DeviceConfigMixin(Protocol):
                     )
                     raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
-                device_config._deepinherit(parent_profile._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True))
+                device_config._deepinherit(parent_profile._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
 
         return device_config

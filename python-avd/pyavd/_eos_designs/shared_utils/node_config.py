@@ -59,7 +59,7 @@ class NodeConfigMixin(Protocol):
         """
         NodesItem object containing the fully inherited node config.
 
-        This is coming from either node_type_config (like 'l3leaf:') or from the new 'devices'/'device_profile'/'device_profiles' models.
+        This is coming from either node_type_config (like 'l3leaf:') or from the new 'devices'/'device_profiles' models.
 
         For node_type_config vars are inherited like (first one wins):
         <node_type_key>.nodes.[<node>] ->
@@ -73,7 +73,7 @@ class NodeConfigMixin(Protocol):
                 devices[name=hostname]
         """
         if self.device_config is not None:
-            return self.device_config
+            return self.device_config._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True)
 
         if self.node_type_config is None:
             msg = (
