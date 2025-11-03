@@ -8,7 +8,7 @@ from re import findall
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get_ip_from_ip_prefix
 from pyavd._utils.format_string import AvdStringFormatter
 from pyavd.j2filters import natural_sort, range_expand
@@ -102,14 +102,8 @@ class MlagMixin(Protocol):
         if self.switch_facts.mlag_peer:
             return self.switch_facts.mlag_peer
 
-        # Excepting 'mlag_group' if we are using the new devices model.
-        if self.device_config is not None:
-            msg = f"devices[name={self.hostname}].mlag_group"
-            raise AristaAvdMissingVariableError(msg, host=self.hostname)
-
-        # Otherwise expecting 'group' as part of the node group.
-        msg = "Unable to find MLAG peer within same node group"
-        raise AristaAvdError(msg)
+        msg = "Unable to find MLAG peer within same node group. 'shared_utils.mlag_peer' should not be called unless MLAG is configured."
+        raise NotImplementedError(msg)
 
     @cached_property
     def mlag_l3(self: SharedUtilsProtocol) -> bool:
