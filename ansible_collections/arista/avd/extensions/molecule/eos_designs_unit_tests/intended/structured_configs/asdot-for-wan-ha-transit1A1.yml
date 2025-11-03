@@ -17,7 +17,7 @@ as_path:
   - name: ASPATH-WAN
     entries:
     - type: permit
-      match: 65000\.100
+      match: _65000\.100_
 config_end: true
 dps_interfaces:
 - name: Dps1
