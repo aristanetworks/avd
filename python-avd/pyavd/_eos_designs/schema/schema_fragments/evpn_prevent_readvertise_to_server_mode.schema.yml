@@ -1,3 +1,4 @@
+---
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
@@ -13,7 +14,7 @@ keys:
       `evpn_prevent_readvertise_to_server_mode` controls the method of identifying EVPN routes that should not be advertised to the EVPN route-servers.
       Only used when `evpn_prevent_readvertise_to_server` is set to `true`.
       `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers which filter out BGP updates learned directly from the ASN of the route-server. This mode will still allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.
-      `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP updates with the  uses the outbound `route-map` towards EVPN route-server to filter out BGP routes containing the route-server's ASN anywhere in the AS-path.
+      `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP updates with the route-server ASN anywhere in the AS-path.
     type: str
     valid_values:
       - source_peer_asn

@@ -76692,13 +76692,14 @@ class EosDesigns(EosDesignsRootModel):
     """
     evpn_prevent_readvertise_to_server: bool
     """
-    When set to `true`, EVPN BGP routes will not be advertised to an EVPN route-server if they were
-    originated in, or have already traversed, the route-server's AS.
-    This is very useful in large-scale
-    networks, where convergence will be quicker by not returning all updates received
-    from Route-
-    server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop
-    detection.
+    Prevent sending EVPN BGP updates to the route-server if they came from or passed through the route-
+    server already.
+    Refer to `evpn_prevent_readvertise_to_server_mode` to control which configuration
+    style to use.
+    This is very useful in large-scale networks, where convergence will be quicker by not
+    returning all updates received
+    from Route-server-1 to Router-server-2 just for Route-server-2 to
+    throw them away because of AS Path loop detection.
 
     Default value: `False`
     """
@@ -76708,11 +76709,11 @@ class EosDesigns(EosDesignsRootModel):
     not be advertised to the EVPN route-servers.
     Only used when `evpn_prevent_readvertise_to_server` is
     set to `true`.
-    `source_peer_asn` method uses the outbound `route-map` towards EVPN route-server to
-    filter out BGP routes with the source peer's ASN matching ASN of the route-server.
-    `as_path_acl`
-    method uses the outbound `route-map` towards EVPN route-server to filter out BGP routes containing
-    the route-server's ASN in the `AS PATH` attribute.
+    `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers
+    which filter out BGP updates learned directly from the ASN of the route-server. This mode will still
+    allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.
+    `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
+    updates with the route-server ASN anywhere in the AS-path.
 
     Default value: `"source_peer_asn"`
     """
@@ -78696,23 +78697,24 @@ class EosDesigns(EosDesignsRootModel):
                    4.25.1F).
                    Requires use eBGP as overlay protocol.
                 evpn_prevent_readvertise_to_server:
-                   When set to `true`, EVPN BGP routes will not be advertised to an EVPN route-server if they were
-                   originated in, or have already traversed, the route-server's AS.
-                   This is very useful in large-scale
-                   networks, where convergence will be quicker by not returning all updates received
-                   from Route-
-                   server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop
-                   detection.
+                   Prevent sending EVPN BGP updates to the route-server if they came from or passed through the route-
+                   server already.
+                   Refer to `evpn_prevent_readvertise_to_server_mode` to control which configuration
+                   style to use.
+                   This is very useful in large-scale networks, where convergence will be quicker by not
+                   returning all updates received
+                   from Route-server-1 to Router-server-2 just for Route-server-2 to
+                   throw them away because of AS Path loop detection.
                 evpn_prevent_readvertise_to_server_mode:
                    `evpn_prevent_readvertise_to_server_mode` controls the method of identifying EVPN routes that should
                    not be advertised to the EVPN route-servers.
                    Only used when `evpn_prevent_readvertise_to_server` is
                    set to `true`.
-                   `source_peer_asn` method uses the outbound `route-map` towards EVPN route-server to
-                   filter out BGP routes with the source peer's ASN matching ASN of the route-server.
-                   `as_path_acl`
-                   method uses the outbound `route-map` towards EVPN route-server to filter out BGP routes containing
-                   the route-server's ASN in the `AS PATH` attribute.
+                   `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers
+                   which filter out BGP updates learned directly from the ASN of the route-server. This mode will still
+                   allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.
+                   `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
+                   updates with the route-server ASN anywhere in the AS-path.
                 evpn_short_esi_prefix: Configure prefix for "short_esi" values.
                 evpn_vlan_aware_bundles:
                    Enable VLAN aware bundles for every EVPN MAC-VRF.
