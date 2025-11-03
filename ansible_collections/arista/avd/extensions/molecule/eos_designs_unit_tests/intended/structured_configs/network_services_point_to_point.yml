@@ -205,7 +205,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     remote_as: '101'
     update_source: Loopback0
     bfd: true

@@ -155,11 +155,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -169,19 +171,22 @@ router_bgp:
   - ip_address: 10.10.50.14
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    peer: HARDWARE_FEATURES_VEOS_LAB
+    metadata:
+      peer: HARDWARE_FEATURES_VEOS_LAB
     description: HARDWARE_FEATURES_VEOS_LAB_Ethernet2.2
   - ip_address: 10.10.30.41
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     local_as: '65000'
-    peer: HARDWARE_FEATURES_CLOUDEOS
+    metadata:
+      peer: HARDWARE_FEATURES_CLOUDEOS
     description: HARDWARE_FEATURES_CLOUDEOS
   - ip_address: 10.10.60.5
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     local_as: '65100'
-    peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
+    metadata:
+      peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
     description: HARDWARE_FEATURES_CUSTOM_PLATFORM
   redistribute:
     connected:

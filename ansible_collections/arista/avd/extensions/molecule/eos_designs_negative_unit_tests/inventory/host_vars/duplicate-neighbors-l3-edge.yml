@@ -29,6 +29,6 @@ l3_edge:
 
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for Neighbors. {'ip_address': '192.168.0.3',
-  'peer_group': 'IPv4-UNDERLAY-PEERS', 'remote_as': '65002', 'local_as': '65000', 'peer': 'peer2', 'description': 'peer2'}
+  'peer_group': 'IPv4-UNDERLAY-PEERS', 'remote_as': '65002', 'local_as': '65000', 'metadata': {'peer': 'peer2'}, 'description': 'peer2'}
   conflicts with {'ip_address': '192.168.0.3', 'peer_group': 'IPv4-UNDERLAY-PEERS', 'remote_as': '65002', 'local_as': '65000',
-  'peer': 'peer1', 'description': 'peer1'}.
+  'metadata': {'peer': 'peer1'}, 'description': 'peer1'}.

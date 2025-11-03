@@ -541,7 +541,8 @@ router_bgp:
     remote_as: '65000'
   peer_groups:
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     route_reflector_client: true
@@ -555,7 +556,8 @@ router_bgp:
     maximum_routes: 0
     ttl_maximum_hops: 1
   - name: WAN-RR-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     route_reflector_client: true
@@ -571,7 +573,8 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.42.1
     peer_group: WAN-RR-OVERLAY-PEERS
-    peer: pf1
+    metadata:
+      peer: pf1
     description: pf1_Dps1
   redistribute:
     connected:

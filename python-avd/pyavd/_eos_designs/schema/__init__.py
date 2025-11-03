@@ -11657,6 +11657,7 @@ class EosDesigns(EosDesignsRootModel):
             "policy": {"type": EosCliConfigGen.Logging.Policy},
             "event": {"type": EosCliConfigGen.Logging.Event},
             "level": {"type": EosCliConfigGen.Logging.Level},
+            "validate_no_errors_period": {"type": int},
         }
         hosts: Hosts
         """Subclass of AvdList with `HostsItem` items."""
@@ -11678,6 +11679,11 @@ class EosDesigns(EosDesignsRootModel):
         event: EosCliConfigGen.Logging.Event
         level: EosCliConfigGen.Logging.Level
         """Configure logging severity."""
+        validate_no_errors_period: int | None
+        """
+        Threshold (in minutes) defining the recent time window during which no error-level logs should have
+        been generated for the validation to pass.
+        """
 
         if TYPE_CHECKING:
 
@@ -11697,6 +11703,7 @@ class EosDesigns(EosDesignsRootModel):
                 policy: EosCliConfigGen.Logging.Policy | UndefinedType = Undefined,
                 event: EosCliConfigGen.Logging.Event | UndefinedType = Undefined,
                 level: EosCliConfigGen.Logging.Level | UndefinedType = Undefined,
+                validate_no_errors_period: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 LoggingSettings.
@@ -11718,6 +11725,9 @@ class EosDesigns(EosDesignsRootModel):
                     policy: policy
                     event: event
                     level: Configure logging severity.
+                    validate_no_errors_period:
+                       Threshold (in minutes) defining the recent time window during which no error-level logs should have
+                       been generated for the validation to pass.
 
                 """
 
@@ -15756,6 +15766,7 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
+            "kernel_ecmp_cli": {"type": bool, "default": True},
             "feature_support": {"type": FeatureSupport},
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
@@ -15782,6 +15793,18 @@ class EosDesigns(EosDesignsRootModel):
         Set MTU on point to point uplink interfaces.
         Takes precedence over the root key "p2p_uplinks_mtu".
         <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+        """
+        kernel_ecmp_cli: bool
+        """
+        Use EOS CLI to configure kernel forwarding ECMP programming.
+        For EOS kernel forwarding, ECMP
+        programming can be enabled in two different ways, depending on the EOS version.
+        - For newer EOS
+        versions (starting 4.33.2) use the proper CLI.
+        - For older EOS versions use an agent environment
+        variable. Changing this requires restarting the KernelFib agent.
+
+        Default value: `True`
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
@@ -15818,6 +15841,7 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 default_interface_mtu: int | None | UndefinedType = Undefined,
                 p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
+                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
@@ -15845,6 +15869,14 @@ class EosDesigns(EosDesignsRootModel):
                        Set MTU on point to point uplink interfaces.
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+                    kernel_ecmp_cli:
+                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                       For EOS kernel forwarding, ECMP
+                       programming can be enabled in two different ways, depending on the EOS version.
+                       - For newer EOS
+                       versions (starting 4.33.2) use the proper CLI.
+                       - For older EOS versions use an agent environment
+                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:
@@ -16497,6 +16529,7 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
+            "kernel_ecmp_cli": {"type": bool, "default": True},
             "feature_support": {"type": FeatureSupport},
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
@@ -16523,6 +16556,18 @@ class EosDesigns(EosDesignsRootModel):
         Set MTU on point to point uplink interfaces.
         Takes precedence over the root key "p2p_uplinks_mtu".
         <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+        """
+        kernel_ecmp_cli: bool
+        """
+        Use EOS CLI to configure kernel forwarding ECMP programming.
+        For EOS kernel forwarding, ECMP
+        programming can be enabled in two different ways, depending on the EOS version.
+        - For newer EOS
+        versions (starting 4.33.2) use the proper CLI.
+        - For older EOS versions use an agent environment
+        variable. Changing this requires restarting the KernelFib agent.
+
+        Default value: `True`
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
@@ -16559,6 +16604,7 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 default_interface_mtu: int | None | UndefinedType = Undefined,
                 p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
+                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
@@ -16586,6 +16632,14 @@ class EosDesigns(EosDesignsRootModel):
                        Set MTU on point to point uplink interfaces.
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+                    kernel_ecmp_cli:
+                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                       For EOS kernel forwarding, ECMP
+                       programming can be enabled in two different ways, depending on the EOS version.
+                       - For newer EOS
+                       versions (starting 4.33.2) use the proper CLI.
+                       - For older EOS versions use an agent environment
+                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:
@@ -47201,6 +47255,27 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class Metadata(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"type": {"type": str}}
+                        type: str | None
+                        """Key only used for documentation or validation purposes."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, type: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                Metadata.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    type: Key only used for documentation or validation purposes.
+
+                                """
+
                     class AsPath(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -47573,7 +47648,7 @@ class EosDesigns(EosDesignsRootModel):
                         "nodes": {"type": Nodes},
                         "address_family_ipv4": {"type": AddressFamilyIpv4},
                         "address_family_ipv6": {"type": AddressFamilyIpv6},
-                        "type": {"type": str},
+                        "metadata": {"type": Metadata},
                         "remote_as": {"type": str},
                         "local_as": {"type": str},
                         "description": {"type": str},
@@ -47637,8 +47712,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Subclass of AvdModel."""
                     address_family_ipv6: AddressFamilyIpv6
                     """Subclass of AvdModel."""
-                    type: str | None
-                    """Key only used for documentation or validation purposes."""
+                    metadata: Metadata
+                    """Subclass of AvdModel."""
                     remote_as: str | None
                     """
                     BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -47739,7 +47814,7 @@ class EosDesigns(EosDesignsRootModel):
                             nodes: Nodes | UndefinedType = Undefined,
                             address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                             address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
-                            type: str | None | UndefinedType = Undefined,
+                            metadata: Metadata | UndefinedType = Undefined,
                             remote_as: str | None | UndefinedType = Undefined,
                             local_as: str | None | UndefinedType = Undefined,
                             description: str | None | UndefinedType = Undefined,
@@ -47801,7 +47876,7 @@ class EosDesigns(EosDesignsRootModel):
                                    of AvdList with `str` items.
                                 address_family_ipv4: Subclass of AvdModel.
                                 address_family_ipv6: Subclass of AvdModel.
-                                type: Key only used for documentation or validation purposes.
+                                metadata: Subclass of AvdModel.
                                 remote_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -53149,6 +53224,27 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class Metadata(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"type": {"type": str}}
+                            type: str | None
+                            """Key only used for documentation or validation purposes."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, type: str | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    Metadata.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        type: Key only used for documentation or validation purposes.
+
+                                    """
+
                         class AsPath(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -53525,7 +53621,7 @@ class EosDesigns(EosDesignsRootModel):
                             "cleartext_password": {"type": str},
                             "address_family_ipv4": {"type": AddressFamilyIpv4},
                             "address_family_ipv6": {"type": AddressFamilyIpv6},
-                            "type": {"type": str},
+                            "metadata": {"type": Metadata},
                             "remote_as": {"type": str},
                             "local_as": {"type": str},
                             "description": {"type": str},
@@ -53589,8 +53685,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         address_family_ipv6: AddressFamilyIpv6
                         """Subclass of AvdModel."""
-                        type: str | None
-                        """Key only used for documentation or validation purposes."""
+                        metadata: Metadata
+                        """Subclass of AvdModel."""
                         remote_as: str | None
                         """
                         BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -53691,7 +53787,7 @@ class EosDesigns(EosDesignsRootModel):
                                 cleartext_password: str | None | UndefinedType = Undefined,
                                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
-                                type: str | None | UndefinedType = Undefined,
+                                metadata: Metadata | UndefinedType = Undefined,
                                 remote_as: str | None | UndefinedType = Undefined,
                                 local_as: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
@@ -53753,7 +53849,7 @@ class EosDesigns(EosDesignsRootModel):
                                        make use of a vault or similar.
                                     address_family_ipv4: Subclass of AvdModel.
                                     address_family_ipv6: Subclass of AvdModel.
-                                    type: Key only used for documentation or validation purposes.
+                                    metadata: Subclass of AvdModel.
                                     remote_as:
                                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                        For asdot notation in
@@ -75621,7 +75717,7 @@ class EosDesigns(EosDesignsRootModel):
                         "type": "leaf",
                         "connected_endpoints": True,
                         "mlag_support": True,
-                        "network_services": {"l2": "true,"},
+                        "network_services": {"l2": True},
                         "underlay_router": False,
                         "uplink_type": "port-channel",
                         "cv_tags_topology_type": "leaf",
@@ -75658,7 +75754,7 @@ class EosDesigns(EosDesignsRootModel):
                         "default_overlay_routing_protocol": "none",
                         "default_flow_tracker_type": "hardware",
                         "vtep": True,
-                        "network_services": {"l3": "true,"},
+                        "network_services": {"l3": True},
                     },
                 ],
                 target_type=cls,
@@ -75934,7 +76030,6 @@ class EosDesigns(EosDesignsRootModel):
         "wan_route_servers": {"type": WanRouteServers},
         "wan_stun_dtls_disable": {"type": bool, "default": False},
         "wan_stun_dtls_profile_name": {"type": str, "default": "STUN-DTLS"},
-        "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp": {"type": bool, "default": False},
         "wan_virtual_topologies": {"type": WanVirtualTopologies},
         "zscaler_endpoints": {"type": ZscalerEndpoints},
         "_custom_structured_configurations": {"type": _CustomStructuredConfigurations},
@@ -77191,7 +77286,7 @@ class EosDesigns(EosDesignsRootModel):
     Subclass of AvdIndexedList with `NodeTypeKeysItem` items. Primary key is `key`
     (`str`).
 
-    Default value: `lambda cls: coerce_type([{"key": "spine", "type": "spine", "default_evpn_role": "server", "default_ptp_priority1": 20, "cv_tags_topology_type": "spine"}, {"key": "l3leaf", "type": "l3leaf", "connected_endpoints": True, "default_evpn_role": "client", "mlag_support": True, "network_services": {"l2": True, "l3": True}, "vtep": True, "default_ptp_priority1": 30, "cv_tags_topology_type": "leaf"}, {"key": "l2leaf", "type": "l2leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "p", "type": "p", "mpls_lsr": True, "default_mpls_overlay_role": "none", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr"}, {"key": "pe", "type": "pe", "mpls_lsr": True, "connected_endpoints": True, "default_mpls_overlay_role": "client", "default_evpn_role": "client", "network_services": {"l1": True, "l2": True, "l3": True}, "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "rr", "type": "rr", "mpls_lsr": True, "default_mpls_overlay_role": "server", "default_evpn_role": "server", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "l3spine", "type": "l3spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True, "l3": True}, "default_overlay_routing_protocol": "none", "default_underlay_routing_protocol": "none", "cv_tags_topology_type": "spine"}, {"key": "leaf", "type": "leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": "true,"}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "l2spine", "type": "l2spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "spine"}, {"key": "super_spine", "type": "super-spine", "cv_tags_topology_type": "core"}, {"key": "overlay_controller", "type": "overlay-controller", "default_evpn_role": "server", "cv_tags_topology_type": "spine"}, {"key": "wan_router", "type": "wan_router", "default_evpn_role": "none", "default_wan_role": "client", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "none", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": True}}, {"key": "wan_rr", "type": "wan_rr", "default_evpn_role": "none", "default_wan_role": "server", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "none", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": "true,"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"key": "spine", "type": "spine", "default_evpn_role": "server", "default_ptp_priority1": 20, "cv_tags_topology_type": "spine"}, {"key": "l3leaf", "type": "l3leaf", "connected_endpoints": True, "default_evpn_role": "client", "mlag_support": True, "network_services": {"l2": True, "l3": True}, "vtep": True, "default_ptp_priority1": 30, "cv_tags_topology_type": "leaf"}, {"key": "l2leaf", "type": "l2leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "p", "type": "p", "mpls_lsr": True, "default_mpls_overlay_role": "none", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr"}, {"key": "pe", "type": "pe", "mpls_lsr": True, "connected_endpoints": True, "default_mpls_overlay_role": "client", "default_evpn_role": "client", "network_services": {"l1": True, "l2": True, "l3": True}, "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "rr", "type": "rr", "mpls_lsr": True, "default_mpls_overlay_role": "server", "default_evpn_role": "server", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "l3spine", "type": "l3spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True, "l3": True}, "default_overlay_routing_protocol": "none", "default_underlay_routing_protocol": "none", "cv_tags_topology_type": "spine"}, {"key": "leaf", "type": "leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "l2spine", "type": "l2spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "spine"}, {"key": "super_spine", "type": "super-spine", "cv_tags_topology_type": "core"}, {"key": "overlay_controller", "type": "overlay-controller", "default_evpn_role": "server", "cv_tags_topology_type": "spine"}, {"key": "wan_router", "type": "wan_router", "default_evpn_role": "none", "default_wan_role": "client", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "none", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": True}}, {"key": "wan_rr", "type": "wan_rr", "default_evpn_role": "none", "default_wan_role": "server", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "none", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": True}}], target_type=cls)`
     """
     ntp_settings: NtpSettings
     """
@@ -77857,18 +77952,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"STUN-DTLS"`
     """
-    wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: bool
-    """
-    For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
-    EOS version.
-
-    - `true`: For older EOS versions use an agent environment variable. Changing this
-    requires a restart of the KernelFib agent.
-    - `false`: For newer EOS versions (starting 4.33.2) use
-    the proper CLI.
-
-    Default value: `False`
-    """
     wan_virtual_topologies: WanVirtualTopologies
     """
     Configure Virtual Topologies for CV Pathfinder and AutoVPN.
@@ -78099,7 +78182,6 @@ class EosDesigns(EosDesignsRootModel):
             wan_route_servers: WanRouteServers | UndefinedType = Undefined,
             wan_stun_dtls_disable: bool | UndefinedType = Undefined,
             wan_stun_dtls_profile_name: str | UndefinedType = Undefined,
-            wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: bool | UndefinedType = Undefined,
             wan_virtual_topologies: WanVirtualTopologies | UndefinedType = Undefined,
             zscaler_endpoints: ZscalerEndpoints | UndefinedType = Undefined,
             _custom_structured_configurations: _CustomStructuredConfigurations | UndefinedType = Undefined,
@@ -79479,14 +79561,6 @@ class EosDesigns(EosDesignsRootModel):
                    Name of the SSL profile used for DTLS on WAN STUN connections.
                    When using automatic ceritficate
                    deployment via CloudVision this name must be the same on all WAN routers.
-                wan_use_agent_env_var_for_kernel_software_forwarding_ecmp:
-                   For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
-                   EOS version.
-
-                   - `true`: For older EOS versions use an agent environment variable. Changing this
-                   requires a restart of the KernelFib agent.
-                   - `false`: For newer EOS versions (starting 4.33.2) use
-                   the proper CLI.
                 wan_virtual_topologies:
                    Configure Virtual Topologies for CV Pathfinder and AutoVPN.
                    Auto create a control plane
