@@ -35,9 +35,9 @@ class DeviceConfigMixin(Protocol):
         # Create a copy so we don't touch the original data.
         device_config = self.inputs.devices.get(self.hostname, EosDesigns.DevicesItem())._deepcopy()
 
-        if device_profile := default(device_config.profile, self.inputs.device_profile):
-            if not (device_profile := self.inputs.device_profiles.get(device_profile)):
-                msg = f"The Device Profile '{device_profile}' applied for the device '{self.hostname}' does not exist under `device_profiles`."
+        if device_profile_name := default(device_config.profile, self.inputs.device_profile):
+            if not (device_profile := self.inputs.device_profiles.get(device_profile_name)):
+                msg = f"The Device Profile '{device_profile_name}' applied for the device '{self.hostname}' does not exist under `device_profiles`."
                 raise AristaAvdInvalidInputsError(msg)
 
             device_config._deepinherit(device_profile._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
@@ -46,7 +46,7 @@ class DeviceConfigMixin(Protocol):
                 if not (parent_profile := self.inputs.device_profiles.get(device_profile.parent_profile)):
                     msg = (
                         f"Device Profile '{device_profile.parent_profile}' applied as 'parent_profile' on the profile '{device_profile.name}' "
-                        "does not exist in `device_profiles`."
+                        "does not exist under 'device_profiles'."
                     )
                     raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
