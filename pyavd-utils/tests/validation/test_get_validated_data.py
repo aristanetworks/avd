@@ -3,14 +3,14 @@
 # that can be found in the LICENSE file.
 import pytest
 
-from pyavd_utils.validation import Issue, Value, coerce_and_validate_json
+from pyavd_utils.validation import Issue, Value, get_validated_data
 
 
 @pytest.mark.usefixtures("init_store")
-def test_validate_json() -> None:
-    coercion_and_validation_result = coerce_and_validate_json('{"ethernet_interfaces": [{"name": "Ethernet1", "description": 12345}]}', "eos_cli_config_gen")
-    coerced_json = coercion_and_validation_result.coerced_json
-    assert coerced_json == (
+def test_get_validated_data() -> None:
+    coercion_and_validation_result = get_validated_data('{"ethernet_interfaces": [{"name": "Ethernet1", "description": 12345}]}', "eos_cli_config_gen")
+    validated_data = coercion_and_validation_result.validated_data
+    assert validated_data == (
         '{"ethernet_interfaces":[{"name":"Ethernet1","description":"12345"}],"avd_data_validation_mode":"error",'
         '"config_end":false,"generate_default_config":false,"generate_device_documentation":true,"transceiver_qsfp_default_mode_4x10":true}'
     )

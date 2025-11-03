@@ -201,11 +201,11 @@ class ValidationResult:
     violations: list[Feedback]
     coercions: list[Feedback]
 
-class CoercionAndValidationResult:
-    """Result of data validation including the coerced data as JSON."""
+class GetValidatedDataResult:
+    """Result of data validation including the validated data as JSON."""
 
     validation_result: ValidationResult
-    coerced_json: str
+    validated_data: str
 
 def init_store_from_fragments(eos_cli_config_gen: Path, eos_designs: Path) -> None:
     """
@@ -234,19 +234,18 @@ def validate_json(data_as_json: str, schema_name: Literal["eos_cli_config_gen", 
         ValidationResult holding lists of violations and coercions as Feedback objects.
     """
 
-def coerce_and_validate_json(data_as_json: str, schema_name: Literal["eos_cli_config_gen", "eos_designs"]) -> CoercionAndValidationResult:
+def get_validated_data(data_as_json: str, schema_name: Literal["eos_cli_config_gen", "eos_designs"]) -> GetValidatedDataResult:
     """
-    Validate data against a schema specified by name.
+    Validate data against a schema specified by name and return the data after coercion and validation.
 
-    This function includes the coerced data encoded as JSON in the return value.
-    This data also contains default values that got inserted during validation.
+    This returned data is the type-coerced data encoded as JSON, which also contains default values that got inserted during validation.
 
     Args:
         data_as_json: Structured data dumped as JSON.
         schema_name: The name of the schema to validate against.
 
     Returns:
-        CoercionAndValidationResult holding the coerced data and the ValidationResult with lists of violations and coercions as Feedback objects.
+        CoercionAndValidationResult holding the validated data and the ValidationResult with lists of violations and coercions as Feedback objects.
     """
 
 def validate_json_with_adhoc_schema(data_as_json: str, schema_as_json: str) -> ValidationResult:

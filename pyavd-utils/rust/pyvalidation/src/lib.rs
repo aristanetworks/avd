@@ -31,9 +31,9 @@ mod validation {
     };
 
     #[pyclass(frozen, get_all)]
-    pub struct CoercionAndValidationResult {
+    pub struct GetValidatedDataResult {
         pub validation_result: ValidationResult,
-        pub coerced_json: String,
+        pub validated_data: String,
     }
 
     #[pymodule_init]
@@ -94,17 +94,17 @@ mod validation {
     }
 
     #[pyfunction]
-    pub fn coerce_and_validate_json(
+    pub fn get_validated_data(
         data_as_json: &str,
         schema_name: &str,
-    ) -> PyResult<CoercionAndValidationResult> {
+    ) -> PyResult<GetValidatedDataResult> {
         // The Value here will be in-place coerced to the correct data types.
         let mut data_as_value = serde_json::from_str::<serde_json::Value>(data_as_json)
             .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?;
 
-        Ok(CoercionAndValidationResult {
+        Ok(GetValidatedDataResult {
             validation_result: get_store().validate_value(&mut data_as_value, schema_name, None),
-            coerced_json: serde_json::to_string(&data_as_value).map_err(|err| {
+            validated_data: serde_json::to_string(&data_as_value).map_err(|err| {
                 PyRuntimeError::new_err(format!("Invalid JSON in coerced data: {err}"))
             })?,
         })
@@ -439,14 +439,14 @@ mod tests {
     }
 
     #[test]
-    fn coerce_and_validate_json_ok() {
+    fn get_validated_data_ok() {
         setup();
         pyo3::Python::attach(|py| {
             shared_init_store(py);
 
             let module = py.import("validation").unwrap();
             let data_as_json_str = serde_json::json!({"ethernet_interfaces": [{"name": "Ethernet1", "description": 12345}]}).to_string();
-            let coercion_and_validation_result = {
+            let get_validated_data_result = {
                 let args = ();
                 let kwargs = pyo3::types::PyDict::new(py);
                 kwargs.set_item("data_as_json", data_as_json_str).unwrap();
@@ -454,10 +454,34 @@ mod tests {
                     .set_item("schema_name", "eos_cli_config_gen")
                     .unwrap();
                 module
-                    .call_method("coerce_and_validate_json", args, Some(&kwargs))
+                    .call_method("get_validated_data", args, Some(&kwargs))
                     .unwrap()
             };
-            let validation_result = coercion_and_validation_result
+            let validated_data = get_validated_data_result.getattr("validated_data").unwrap();
+            let expected_data = pyo3::types::PyString::new(
+                py,
+                &serde_json::json!(
+                {
+                    "ethernet_interfaces":[
+                        {
+                            "name":"Ethernet1",
+                            "description":"12345"
+                        }
+                    ],
+                    // These are defaults inserted by the validation tooling.
+                    "avd_data_validation_mode":"error",
+                    "config_end":false,
+                    "generate_default_config":false,
+                    "generate_device_documentation":true,
+                    "transceiver_qsfp_default_mode_4x10":true
+                })
+                .to_string(),
+            );
+            assert!(
+                validated_data.eq(&expected_data).unwrap(),
+                "Different data: {validated_data} vs {expected_data}"
+            );
+            let validation_result = get_validated_data_result
                 .getattr("validation_result")
                 .unwrap();
             let violations = validation_result.getattr("violations").unwrap();
