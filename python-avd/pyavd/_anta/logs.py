@@ -82,10 +82,11 @@ class LogMessage(Enum):
 
     # Peer-related messages
     PEER_UNAVAILABLE = "{identity} skipped - Peer {peer} not in fabric or not deployed"
-    PEER_INTERFACE_NOT_FOUND = "{interface} skipped - peer {peer} interface {peer_interface} not found"
-    PEER_INTERFACE_USING_DHCP = "{interface} skipped - peer {peer} interface {peer_interface} using DHCP"
-    PEER_INTERFACE_UNNUMBERED = "{interface} skipped - peer {peer} interface {peer_interface} using IP unnumbered"
-    PEER_INTERFACE_SHUTDOWN = "{interface} skipped - peer {peer} interface {peer_interface} is shutdown"
+    PEER_INTERFACE_NOT_FOUND = "{interface} skipped - Peer {peer} interface {peer_interface} not found"
+    PEER_INTERFACE_NO_IP = "{interface} skipped - Peer {peer} interface {peer_interface} has no IP address"
+    PEER_INTERFACE_USING_DHCP = "{interface} skipped - Peer {peer} interface {peer_interface} using DHCP"
+    PEER_INTERFACE_UNNUMBERED = "{interface} skipped - Peer {peer} interface {peer_interface} using IP unnumbered"
+    PEER_INTERFACE_SHUTDOWN = "{interface} skipped - Peer {peer} interface {peer_interface} is shutdown"
 
     # Interface state messages
     INTERFACE_SHUTDOWN = "{interface} skipped - Interface is shutdown"
