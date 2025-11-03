@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: evpn-prevent-readvertise-to-server-4
+hostname: evpn-prevent-readvertise-to-server-5
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -11,11 +11,11 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.255.114/32
+  ip_address: 192.168.255.115/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 192.168.254.114/32
+  ip_address: 192.168.254.115/32
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -33,9 +33,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 router_bgp:
-  as: '65004'
-  router_id: 192.168.255.114
+  as: '65003'
+  router_id: 192.168.255.115
   maximum_paths:
     paths: 4
   updates:
@@ -49,14 +54,36 @@ router_bgp:
       type: ipv4
     send_community: all
     maximum_routes: 12000
+  - name: EVPN-OVERLAY-PEERS
+    metadata:
+      type: evpn
+    next_hop_unchanged: true
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.255.116
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65005'
+    metadata:
+      peer: evpn-prevent-readvertise-to-server-6
+    description: evpn-prevent-readvertise-to-server-6_Loopback0
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
 service_routing_protocols_model: multi-agent
 static_routes:
 - vrf: MGMT
@@ -73,7 +100,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: evpn-prevent-readvertise-to-server-4_VTEP
+    description: evpn-prevent-readvertise-to-server-5_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

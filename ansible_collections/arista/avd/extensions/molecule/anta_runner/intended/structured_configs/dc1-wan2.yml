@@ -20,7 +20,7 @@ as_path:
   - name: ASPATH-WAN
     entries:
     - type: permit
-      match: '65101'
+      match: _65101_
 config_end: true
 dns_domain: dc1.local
 dps_interfaces:
