@@ -245,7 +245,6 @@ class MlagMixin(Protocol):
         peer_group_name = bgp_peer_group.name
         peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
             name=peer_group_name,
-            type="ipv4",
             remote_as=self.formatted_bgp_as,
             next_hop_self=True,
             description=AvdStringFormatter().format(self.inputs.mlag_bgp_peer_group_description, mlag_peer=self.mlag_peer),
@@ -254,6 +253,7 @@ class MlagMixin(Protocol):
             maximum_routes=12000,
             send_community="all",
         )
+        peer_group.metadata.type = "ipv4"
 
         if bgp_peer_group.structured_config:
             custom_structured_configs.nested.router_bgp.peer_groups.obtain(peer_group_name)._deepmerge(

@@ -10,7 +10,7 @@ import pytest
 from pyavd import get_device_test_catalog
 from pyavd._anta.lib import AntaCatalog
 from pyavd._utils import get
-from pyavd.api._anta import AvdCatalogGenerationSettings, InputFactorySettings, get_minimal_structured_configs
+from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData, InputFactorySettings
 from tests.models import MoleculeHost, MoleculeScenario
 
 SETTINGS_WITH_BGP_VRFS = AvdCatalogGenerationSettings(input_factory_settings=InputFactorySettings(allow_bgp_vrfs=True))
@@ -42,14 +42,14 @@ RunName = Literal["default_run", "allow_bgp_vrfs_run", "filtered_run"]
 def test_get_device_test_catalog(molecule_host: MoleculeHost, molecule_scenario: MoleculeScenario, run_name: RunName) -> None:
     """Verify get_device_test_catalog generates the correct ANTA catalog."""
     all_configs = deepcopy(molecule_scenario.structured_configs)
-    minimal_configs = get_minimal_structured_configs(all_configs)
+    fabric_data = AvdFabricData.from_structured_configs(all_configs)
     host_config = deepcopy(molecule_host.structured_config)
 
     run_settings = TEST_SETTINGS_MAP[run_name]
     settings = get(run_settings, f"{molecule_host.name}", run_settings["default"])
 
     expected_data = deepcopy(molecule_host.get_test_catalog(run_name=run_name))
-    result_catalog = get_device_test_catalog(molecule_host.name, host_config, minimal_configs, settings=settings)
+    result_catalog = get_device_test_catalog(molecule_host.name, host_config, fabric_data, settings=settings)
 
     assert isinstance(result_catalog, AntaCatalog)
     result_data = json.loads(result_catalog.dump().to_json())

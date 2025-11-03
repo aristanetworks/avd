@@ -47,6 +47,19 @@ servers:
         port_channel:
           endpoint_port_channel: PortChannel dc1-leaf2-server1
           mode: active
+        storm_control:
+          all:
+            level: 10.0
+            unit: percent
+          broadcast:
+            level: 100.0
+            unit: pps
+          multicast:
+            level: 1.5
+            unit: percent
+          unknown_unicast:
+            level: 2.8
+            unit: percent
 
       - endpoint_ports: [iLO]
         switch_ports: [Ethernet5]
@@ -102,6 +115,19 @@ workstations:
         endpoint_ports: [e1]
         switch_ports: [Ethernet31]
         switches: [dc1-leaf1a]
+        storm_control:
+          all:
+            level: 10.0
+            unit: percent
+          broadcast:
+            level: 100.0
+            unit: pps
+          multicast:
+            level: 1.5
+            unit: percent
+          unknown_unicast:
+            level: 2.8
+            unit: percent
 
   - name: dc1-leaf1-workstation2
     adapters:

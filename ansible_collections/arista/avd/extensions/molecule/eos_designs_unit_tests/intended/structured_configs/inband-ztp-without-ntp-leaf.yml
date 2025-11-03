@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.16.255.13/31
-  peer: inband-ztp-without-ntp-spine
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: inband-ztp-without-ntp-spine
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 hostname: inband-ztp-without-ntp-leaf
@@ -61,11 +62,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -75,12 +78,14 @@ router_bgp:
   - ip_address: 172.16.255.12
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '64999'
-    peer: inband-ztp-without-ntp-spine
+    metadata:
+      peer: inband-ztp-without-ntp-spine
     description: inband-ztp-without-ntp-spine_Ethernet1
   - ip_address: 10.0.254.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '64999'
-    peer: inband-ztp-without-ntp-spine
+    metadata:
+      peer: inband-ztp-without-ntp-spine
     description: inband-ztp-without-ntp-spine_Loopback0
   redistribute:
     connected:

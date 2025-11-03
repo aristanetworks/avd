@@ -1,5 +1,10 @@
 aaa_root:
   disabled: true
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
 application_traffic_recognition:
   field_sets:
     ipv4_prefixes:
@@ -29,22 +34,25 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 111
   ip_address: 10.10.10.111/24
-  peer: tenant-default-vrf-settings
-  peer_interface: Ethernet1 VLAN 111
-  peer_type: l3leaf
+  metadata:
+    peer: tenant-default-vrf-settings
+    peer_interface: Ethernet1 VLAN 111
+    peer_type: l3leaf
 - name: Ethernet2
   description: L2_tenant-default-vrf-settings_Ethernet1
   shutdown: false
-  peer: tenant-default-vrf-settings
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: tenant-default-vrf-settings
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet1
   description: Comcast_999
   shutdown: false
   ip_address: 10.9.9.9/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:
@@ -90,8 +98,6 @@ ip_security:
     mode: transport
   key_controller:
     profile: CP-PROFILE
-kernel:
-  software_forwarding_ecmp: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -242,7 +248,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65100'
     update_source: Dps1
     bfd: true
@@ -254,7 +261,8 @@ router_bgp:
     maximum_routes: 0
     ttl_maximum_hops: 1
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   redistribute:
     connected:

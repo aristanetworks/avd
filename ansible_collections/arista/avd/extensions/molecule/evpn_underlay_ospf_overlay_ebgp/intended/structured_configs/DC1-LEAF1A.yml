@@ -26,9 +26,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: /wCirdje6f59x/1Ev+Oe6xok2+5jD3M/
-  peer: DC1-SPINE1
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -43,9 +44,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
-  peer: DC1-SPINE2
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -60,9 +62,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
-  peer: DC1-SPINE3
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet4
@@ -77,9 +80,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: QB0XEg/PJV6Y5HtvjDdiafrPx/g+JRKk
-  peer: DC1-SPINE4
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 hostname: DC1-LEAF1A
@@ -156,7 +160,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -167,22 +172,26 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1_Loopback0
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2_Loopback0
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3_Loopback0
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4_Loopback0
   address_family_evpn:
     peer_groups:

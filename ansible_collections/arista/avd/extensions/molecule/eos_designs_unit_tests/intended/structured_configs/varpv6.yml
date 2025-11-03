@@ -51,11 +51,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -67,7 +69,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 100
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 192.168.255.101:10100
     route_targets:
       both:
@@ -75,7 +78,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 200
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 192.168.255.101:10200
     route_targets:
       both:
@@ -83,7 +87,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 300
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 192.168.255.101:10300
     route_targets:
       both:
@@ -91,7 +96,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 400
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 192.168.255.101:10400
     route_targets:
       both:
@@ -99,7 +105,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 500
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 192.168.255.101:10500
     route_targets:
       both:
@@ -142,12 +149,14 @@ vlan_interfaces:
   ipv6_address: 2001:db8::2/64
   ipv6_virtual_router_addresses:
   - fe80::1
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan200
   description: VARPv6_not_configured_1
   shutdown: false
   vrf: VRF1
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan300
   description: VARPv6_configured_2
   shutdown: false
@@ -155,13 +164,15 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_virtual_router_addresses:
   - fe80::1
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan400
   description: VARPv6_not_configured_2
   shutdown: false
   vrf: VRF1
   ipv6_enable: false
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan500
   description: VARPv6_not_configured_3
   shutdown: false
@@ -169,7 +180,8 @@ vlan_interfaces:
   ipv6_enable: false
   ipv6_address_virtuals:
   - 2001:db8::1/64
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vlan_internal_order:
   allocation: ascending
   range:

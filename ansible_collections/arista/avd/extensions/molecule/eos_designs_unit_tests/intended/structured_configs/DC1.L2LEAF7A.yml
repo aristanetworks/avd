@@ -22,9 +22,10 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: DC1-LEAF2A
-  peer_interface: Ethernet32
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-LEAF2A
+    peer_interface: Ethernet32
+    peer_type: l3leaf
 hostname: DC1.L2LEAF7A
 ip_igmp_snooping:
   globally_enabled: true

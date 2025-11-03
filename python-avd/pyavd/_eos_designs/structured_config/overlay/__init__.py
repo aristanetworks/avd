@@ -5,6 +5,7 @@ from typing import Protocol
 
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, StructuredConfigGeneratorProtocol
 
+from .as_path import AsPathMixin
 from .cvx import CvxMixin
 from .ip_extcommunity_lists import IpExtCommunityListsMixin
 from .ip_security import IpSecurityMixin
@@ -29,6 +30,7 @@ class AvdStructuredConfigOverlayProtocol(
     RouterAdaptiveVirtualTopologyMixin,
     RouterBfdMixin,
     RouterBgpMixin,
+    AsPathMixin,
     RouteMapsMixin,
     RouterPathSelectionMixin,
     RouterTrafficEngineering,
