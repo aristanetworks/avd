@@ -12,6 +12,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "router_pim_sparse_mode.ipv4.bfd") | Boolean |  |  |  | Enable/Disable BFD. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;make_before_break</samp>](## "router_pim_sparse_mode.ipv4.make_before_break") | Boolean |  |  |  | Enable/Disable Make-Before-Break. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssm_range</samp>](## "router_pim_sparse_mode.ipv4.ssm_range") | String |  |  |  | IPv4 Prefix associated with SSM. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;register_local_interface</samp>](## "router_pim_sparse_mode.ipv4.register_local_interface") | String |  |  |  | Local interface to use for PIM register messages. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rp_addresses</samp>](## "router_pim_sparse_mode.ipv4.rp_addresses") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "router_pim_sparse_mode.ipv4.rp_addresses.[].address") | String | Required |  |  | RP Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "router_pim_sparse_mode.ipv4.rp_addresses.[].groups") | List, items: String |  |  |  |  |
@@ -31,6 +32,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "router_pim_sparse_mode.vrfs.[].ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "router_pim_sparse_mode.vrfs.[].ipv4.bfd") | Boolean |  |  |  | Enable/Disable BFD. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;make_before_break</samp>](## "router_pim_sparse_mode.vrfs.[].ipv4.make_before_break") | Boolean |  |  |  | Enable/Disable Make-Before-Break. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;register_local_interface</samp>](## "router_pim_sparse_mode.vrfs.[].ipv4.register_local_interface") | String |  |  |  | Local interface to use for PIM register messages. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rp_addresses</samp>](## "router_pim_sparse_mode.vrfs.[].ipv4.rp_addresses") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "router_pim_sparse_mode.vrfs.[].ipv4.rp_addresses.[].address") | String | Required |  |  | RP Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "router_pim_sparse_mode.vrfs.[].ipv4.rp_addresses.[].groups") | List, items: String |  |  |  |  |
@@ -56,6 +58,9 @@
 
         # IPv4 Prefix associated with SSM.
         ssm_range: <str>
+
+        # Local interface to use for PIM register messages.
+        register_local_interface: <str>
         rp_addresses:
 
             # RP Address.
@@ -87,6 +92,9 @@
 
             # Enable/Disable Make-Before-Break.
             make_before_break: <bool>
+
+            # Local interface to use for PIM register messages.
+            register_local_interface: <str>
             rp_addresses:
 
                 # RP Address.

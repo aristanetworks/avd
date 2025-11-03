@@ -14,7 +14,7 @@ from typing import TYPE_CHECKING
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
 if TYPE_CHECKING:
-    from pyavd.api._anta import InputFactorySettings, MinimalStructuredConfig
+    from pyavd.api._anta import AvdFabricData, InputFactorySettings
 
 LOGGER = getLogger(__name__)
 
@@ -42,7 +42,7 @@ class DeviceTestContext:
 
     hostname: str
     structured_config: EosCliConfigGen
-    minimal_structured_configs: dict[str, MinimalStructuredConfig]
+    fabric_data: AvdFabricData
     input_factory_settings: InputFactorySettings
 
     @cached_property
@@ -130,10 +130,7 @@ class DeviceTestContext:
         if (
             from_default_vrf
             and neighbor_interface.metadata.peer
-            and (
-                neighbor_interface.metadata.peer not in self.minimal_structured_configs
-                or not self.minimal_structured_configs[neighbor_interface.metadata.peer].is_deployed
-            )
+            and (neighbor_interface.metadata.peer not in self.fabric_data.devices or not self.fabric_data.devices[neighbor_interface.metadata.peer].is_deployed)
         ):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None
@@ -172,7 +169,7 @@ class DeviceTestContext:
         if (
             from_default_vrf
             and neighbor.metadata.peer
-            and (neighbor.metadata.peer not in self.minimal_structured_configs or not self.minimal_structured_configs[neighbor.metadata.peer].is_deployed)
+            and (neighbor.metadata.peer not in self.fabric_data.devices or not self.fabric_data.devices[neighbor.metadata.peer].is_deployed)
         ):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None

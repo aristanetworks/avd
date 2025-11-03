@@ -5,6 +5,7 @@ router_pim_sparse_mode:
   ipv4:
     bfd: true
     make_before_break: false
+    register_local_interface: Ethernet1
     rp_addresses:
       - address: 10.238.1.161
         groups:
@@ -34,6 +35,7 @@ router_pim_sparse_mode:
       ipv4:
         bfd: true
         make_before_break: false
+        register_local_interface: Loopback0
         ssm_range: SSM-MCAST
         rp_addresses:
           - address: 10.238.2.161
