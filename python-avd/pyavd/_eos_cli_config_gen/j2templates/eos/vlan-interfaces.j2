@@ -287,7 +287,7 @@ interface {{ vlan_interface.name }}
 {%         endif %}
 {%     endif %}
 {%     if vlan_interface.ospf_authentication_key is arista.avd.defined %}
-   ip ospf authentication-key 7 {{ vlan_interface.ospf_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
+   ip ospf authentication-key {{ vlan_interface.ospf_authentication_key_type | arista.avd.default("7") }} {{ vlan_interface.ospf_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
 {%     if vlan_interface.ospf_area is arista.avd.defined %}
    ip ospf area {{ vlan_interface.ospf_area }}
@@ -295,7 +295,7 @@ interface {{ vlan_interface.name }}
 {%     for ospf_message_digest_key in vlan_interface.ospf_message_digest_keys | arista.avd.natural_sort('id') %}
 {%         if ospf_message_digest_key.hash_algorithm is arista.avd.defined and
               ospf_message_digest_key.key is arista.avd.defined %}
-   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
+   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} {{ ospf_message_digest_key.key_type | arista.avd.default("7") }} {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%     endfor %}
 {%     if vlan_interface.ipv6_ospf_network_point_to_point is arista.avd.defined(true) %}
