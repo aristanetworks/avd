@@ -14835,7 +14835,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             CircuitIdFormat: TypeAlias = Literal["%h:%p", "%p:%v"]
             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "circuit_id_type": {"type": str}, "circuit_id_format": {"type": str}}
-            enabled: bool
+            enabled: bool | None
             """Enable insertion of option-82 in DHCP request packets."""
             circuit_id_type: str | None
             """"none" or <0 - 255>."""
@@ -14852,7 +14852,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | UndefinedType = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
                     circuit_id_type: str | None | UndefinedType = Undefined,
                     circuit_id_format: CircuitIdFormat | None | UndefinedType = Undefined,
                 ) -> None:
