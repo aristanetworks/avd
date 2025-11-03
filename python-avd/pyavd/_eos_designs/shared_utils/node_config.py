@@ -73,6 +73,14 @@ class NodeConfigMixin(Protocol):
                 devices[name=hostname]
         """
         if self.device_config is not None:
+            # Detect if the device is _also_ defined under the node type model. If so raise an error.
+            if self.node_type_config is not None and (self.hostname in self.node_type_config.nodes or self.node_group_config is not None):
+                msg = f"Found the device '{self.hostname}' under both '{self.node_type_key_data.key}' and 'devices'. Remove the device from one of the models."
+                raise AristaAvdInvalidInputsError(
+                    msg,
+                    host=self.hostname,
+                )
+
             return self.device_config._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True)
 
         if self.node_type_config is None:
@@ -80,7 +88,7 @@ class NodeConfigMixin(Protocol):
                 f"'type' is set to '{self.type}', for which node configs should use the key '{self.node_type_key_data.key}'"
                 f"but '{self.node_type_key_data.key}' was not found. Alternatively use the new 'devices[]' model."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         node_config = (
             self.node_type_config.nodes[self.hostname]
