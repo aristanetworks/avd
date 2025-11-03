@@ -7289,16 +7289,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
+        OspfAuthenticationKeyType: TypeAlias = Literal["7", "8a"]
 
         class OspfMessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
             HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
-            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}}
+            KeyType: TypeAlias = Literal["7", "8a"]
+            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}, "key_type": {"type": str, "default": "7"}}
             id: int
             hash_algorithm: HashAlgorithm | None
             key: str | None
-            """Encrypted password - only type 7 supported."""
+            """Encrypted password."""
+            key_type: KeyType
+            """
+            Authentication key type.
+
+            Default value: `"7"`
+            """
 
             if TYPE_CHECKING:
 
@@ -7308,6 +7316,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     id: int | UndefinedType = Undefined,
                     hash_algorithm: HashAlgorithm | None | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
+                    key_type: KeyType | UndefinedType = Undefined,
                 ) -> None:
                     """
                     OspfMessageDigestKeysItem.
@@ -7318,7 +7327,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         id: id
                         hash_algorithm: hash_algorithm
-                        key: Encrypted password - only type 7 supported.
+                        key: Encrypted password.
+                        key_type: Authentication key type.
 
                     """
 
@@ -12263,6 +12273,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ospf_cost": {"type": int},
             "ospf_authentication": {"type": str},
             "ospf_authentication_key": {"type": str},
+            "ospf_authentication_key_type": {"type": str, "default": "7"},
             "ospf_message_digest_keys": {"type": OspfMessageDigestKeys},
             "pim": {"type": Pim},
             "mac_security": {"type": MacSecurity},
@@ -12420,7 +12431,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ospf_cost: int | None
         ospf_authentication: OspfAuthentication | None
         ospf_authentication_key: str | None
-        """Encrypted password - only type 7 supported."""
+        """Encrypted password."""
+        ospf_authentication_key_type: OspfAuthenticationKeyType
+        """
+        Authentication key type.
+
+        Default value: `"7"`
+        """
         ospf_message_digest_keys: OspfMessageDigestKeys
         """Subclass of AvdIndexedList with `OspfMessageDigestKeysItem` items. Primary key is `id` (`int`)."""
         pim: Pim
@@ -12593,6 +12610,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ospf_cost: int | None | UndefinedType = Undefined,
                 ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
                 ospf_authentication_key: str | None | UndefinedType = Undefined,
+                ospf_authentication_key_type: OspfAuthenticationKeyType | UndefinedType = Undefined,
                 ospf_message_digest_keys: OspfMessageDigestKeys | UndefinedType = Undefined,
                 pim: Pim | UndefinedType = Undefined,
                 mac_security: MacSecurity | UndefinedType = Undefined,
@@ -12716,7 +12734,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ospf_area: ospf_area
                     ospf_cost: ospf_cost
                     ospf_authentication: ospf_authentication
-                    ospf_authentication_key: Encrypted password - only type 7 supported.
+                    ospf_authentication_key: Encrypted password.
+                    ospf_authentication_key_type: Authentication key type.
                     ospf_message_digest_keys: Subclass of AvdIndexedList with `OspfMessageDigestKeysItem` items. Primary key is `id` (`int`).
                     pim: Subclass of AvdModel.
                     mac_security: Subclass of AvdModel.
@@ -31415,16 +31434,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
+        OspfAuthenticationKeyType: TypeAlias = Literal["7", "8a"]
 
         class OspfMessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
             HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
-            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}}
+            KeyType: TypeAlias = Literal["7", "8a"]
+            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}, "key_type": {"type": str, "default": "7"}}
             id: int
             hash_algorithm: HashAlgorithm | None
             key: str | None
             """Encrypted password."""
+            key_type: KeyType
+            """
+            Authentication key type.
+
+            Default value: `"7"`
+            """
 
             if TYPE_CHECKING:
 
@@ -31434,6 +31461,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     id: int | UndefinedType = Undefined,
                     hash_algorithm: HashAlgorithm | None | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
+                    key_type: KeyType | UndefinedType = Undefined,
                 ) -> None:
                     """
                     OspfMessageDigestKeysItem.
@@ -31445,6 +31473,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         id: id
                         hash_algorithm: hash_algorithm
                         key: Encrypted password.
+                        key_type: Authentication key type.
 
                     """
 
@@ -33716,6 +33745,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ospf_cost": {"type": int},
             "ospf_authentication": {"type": str},
             "ospf_authentication_key": {"type": str},
+            "ospf_authentication_key_type": {"type": str, "default": "7"},
             "ospf_message_digest_keys": {"type": OspfMessageDigestKeys},
             "flow_tracker": {"type": FlowTracker},
             "bgp": {"type": Bgp},
@@ -33858,6 +33888,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ospf_authentication: OspfAuthentication | None
         ospf_authentication_key: str | None
         """Encrypted password."""
+        ospf_authentication_key_type: OspfAuthenticationKeyType
+        """
+        Authentication key type.
+
+        Default value: `"7"`
+        """
         ospf_message_digest_keys: OspfMessageDigestKeys
         """Subclass of AvdIndexedList with `OspfMessageDigestKeysItem` items. Primary key is `id` (`int`)."""
         flow_tracker: FlowTracker
@@ -33968,6 +34004,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ospf_cost: int | None | UndefinedType = Undefined,
                 ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
                 ospf_authentication_key: str | None | UndefinedType = Undefined,
+                ospf_authentication_key_type: OspfAuthenticationKeyType | UndefinedType = Undefined,
                 ospf_message_digest_keys: OspfMessageDigestKeys | UndefinedType = Undefined,
                 flow_tracker: FlowTracker | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
@@ -34067,6 +34104,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ospf_cost: ospf_cost
                     ospf_authentication: ospf_authentication
                     ospf_authentication_key: Encrypted password.
+                    ospf_authentication_key_type: Authentication key type.
                     ospf_message_digest_keys: Subclass of AvdIndexedList with `OspfMessageDigestKeysItem` items. Primary key is `id` (`int`).
                     flow_tracker: Subclass of AvdModel.
                     bgp: Subclass of AvdModel.
@@ -65107,16 +65145,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
+        OspfAuthenticationKeyType: TypeAlias = Literal["7", "8a"]
 
         class OspfMessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
             HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
-            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}}
+            KeyType: TypeAlias = Literal["7", "8a"]
+            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}, "key_type": {"type": str, "default": "7"}}
             id: int
             hash_algorithm: HashAlgorithm | None
             key: str | None
             """Encrypted password."""
+            key_type: KeyType
+            """
+            Authentication key type.
+
+            Default value: `"7"`
+            """
 
             if TYPE_CHECKING:
 
@@ -65126,6 +65172,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     id: int | UndefinedType = Undefined,
                     hash_algorithm: HashAlgorithm | None | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
+                    key_type: KeyType | UndefinedType = Undefined,
                 ) -> None:
                     """
                     OspfMessageDigestKeysItem.
@@ -65137,6 +65184,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         id: id
                         hash_algorithm: hash_algorithm
                         key: Encrypted password.
+                        key_type: Authentication key type.
 
                     """
 
@@ -66380,6 +66428,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ospf_cost": {"type": int},
             "ospf_authentication": {"type": str},
             "ospf_authentication_key": {"type": str},
+            "ospf_authentication_key_type": {"type": str, "default": "7"},
             "ospf_message_digest_keys": {"type": OspfMessageDigestKeys},
             "pim": {"type": Pim},
             "isis_enable": {"type": str},
@@ -66501,7 +66550,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ospf_cost: int | None
         ospf_authentication: OspfAuthentication | None
         ospf_authentication_key: str | None
-        """Encrypted password used for simple authentication."""
+        """Encrypted password."""
+        ospf_authentication_key_type: OspfAuthenticationKeyType
+        """
+        Authentication key type.
+
+        Default value: `"7"`
+        """
         ospf_message_digest_keys: OspfMessageDigestKeys
         """
         Keys used for message-digest authentication.
@@ -66601,6 +66656,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ospf_cost: int | None | UndefinedType = Undefined,
                 ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
                 ospf_authentication_key: str | None | UndefinedType = Undefined,
+                ospf_authentication_key_type: OspfAuthenticationKeyType | UndefinedType = Undefined,
                 ospf_message_digest_keys: OspfMessageDigestKeys | UndefinedType = Undefined,
                 pim: Pim | UndefinedType = Undefined,
                 isis_enable: str | None | UndefinedType = Undefined,
@@ -66694,7 +66750,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv6_ospf_area: ipv6_ospf_area
                     ospf_cost: ospf_cost
                     ospf_authentication: ospf_authentication
-                    ospf_authentication_key: Encrypted password used for simple authentication.
+                    ospf_authentication_key: Encrypted password.
+                    ospf_authentication_key_type: Authentication key type.
                     ospf_message_digest_keys:
                        Keys used for message-digest authentication.
 
