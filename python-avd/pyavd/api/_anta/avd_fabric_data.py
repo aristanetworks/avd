@@ -34,6 +34,8 @@ class AvdDeviceData:
     loopback0_ip: IPv4Address | None
     vtep_ip: IPv4Address | None
     mlag_vtep_ip: IPv4Address | None
+    is_vtep: bool
+    is_wan_router: bool
 
     @classmethod
     def from_structured_config(cls, structured_config: dict[str, Any]) -> AvdDeviceData:
@@ -64,6 +66,9 @@ class AvdDeviceData:
         # Get the VTEP IPs
         vtep_ip, mlag_vtep_ip = cls._get_vtep_ips(structured_config)
 
+        # Get the VTEP roles
+        is_vtep, is_wan_router = cls._get_vtep_roles(structured_config)
+
         # Create and return the device AvdDeviceData
         return cls(
             hostname=structured_config["hostname"],
@@ -73,6 +78,8 @@ class AvdDeviceData:
             loopback0_ip=ip_interface(loopback0_ip).ip if loopback0_ip else None,
             vtep_ip=vtep_ip,
             mlag_vtep_ip=mlag_vtep_ip,
+            is_vtep=is_vtep,
+            is_wan_router=is_wan_router,
         )
 
     @staticmethod
@@ -85,7 +92,6 @@ class AvdDeviceData:
 
         Returns:
             A tuple of VTEP IP and MLAG VTEP IP. Either or both may be None if not configured or if IPv6-only encapsulation is used.
-
         """
         vtep_ip = None
         mlag_vtep_ip = None
@@ -119,6 +125,22 @@ class AvdDeviceData:
 
         return vtep_ip, mlag_vtep_ip
 
+    @staticmethod
+    def _get_vtep_roles(structured_config: dict[str, Any]) -> tuple[bool, bool]:
+        """
+        Get the VTEP-related roles based on VXLAN configuration.
+
+        Args:
+            structured_config: Device structured configuration dictionary.
+
+        Returns:
+            A tuple of two booleans, indicating if the device is a VTEP and a WAN router.
+        """
+        vxlan_source_interface = get(structured_config, "vxlan_interface.vxlan1.vxlan.source_interface")
+        is_vtep = vxlan_source_interface is not None
+        is_wan_router = is_vtep and "Dps" in vxlan_source_interface
+        return is_vtep, is_wan_router
+
 
 @dataclass(frozen=True)
 class AvdFabricData:
@@ -141,6 +163,10 @@ class AvdFabricData:
 
     Uses a set to deduplicate IPs, which is common in Multi-VTEP scenarios where Loopback0 is reused as the local VTEP IP.
     """
+    vteps: set[str]
+    """Set VTEP devices in the fabric."""
+    wan_routers: set[str]
+    """Set of WAN routers in the fabric."""
 
     @classmethod
     def from_structured_configs(cls, structured_configs: dict[str, dict[str, Any]]) -> AvdFabricData:
@@ -159,6 +185,9 @@ class AvdFabricData:
         vtep_ips: dict[str, IPv4Address] = {}
         mlag_vtep_ips: dict[str, IPv4Address] = {}
         special_ips: defaultdict[str, set[IPv4Address]] = defaultdict(set)
+
+        vteps: set[str] = set()
+        wan_routers: set[str] = set()
 
         for device, structured_config in structured_configs.items():
             device_data = AvdDeviceData.from_structured_config(structured_config)
@@ -188,7 +217,21 @@ class AvdFabricData:
             if skipped:
                 LOGGER.debug("<%s> Skipped from IPv4 mappings: %s - Not configured or IPv6-only", device, ", ".join(skipped))
 
+            # Update the VTEP roles
+            if device_data.is_vtep:
+                vteps.add(device)
+            if device_data.is_wan_router:
+                wan_routers.add(device)
+
             # Update the devices mapping
             devices[device] = device_data
 
-        return AvdFabricData(devices=devices, loopback0_ips=loopback0_ips, vtep_ips=vtep_ips, mlag_vtep_ips=mlag_vtep_ips, special_ips=special_ips)
+        return AvdFabricData(
+            devices=devices,
+            loopback0_ips=loopback0_ips,
+            vtep_ips=vtep_ips,
+            mlag_vtep_ips=mlag_vtep_ips,
+            special_ips=special_ips,
+            vteps=vteps,
+            wan_routers=wan_routers,
+        )

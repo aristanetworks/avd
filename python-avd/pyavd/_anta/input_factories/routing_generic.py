@@ -35,7 +35,7 @@ class VerifyRoutingTableEntryInputFactory(AntaTestInputFactory[VerifyRoutingTabl
     Input factory class for the `VerifyRoutingTableEntry` test.
 
     On VTEP devices (excluding WAN routers), generates inputs to verify IPv4 routing table entries
-    for other fabric devices' Loopback0 and VTEP IPs in the underlay. Only IPv4 (not IPv6) underlays are supported.
+    for other fabric non-WAN devices' Loopback0 and VTEP IPs in the underlay. Only IPv4 underlays are supported.
 
     No inputs are generated if `extra_fabric_validation` is disabled.
     """
@@ -54,6 +54,10 @@ class VerifyRoutingTableEntryInputFactory(AntaTestInputFactory[VerifyRoutingTabl
         routes: set[IPv4Address] = set()
 
         for device_name, special_ips in self.fabric_data.special_ips.items():
+            # Skip WAN routers
+            if device_name in self.fabric_data.wan_routers:
+                continue
+
             if not self.is_peer_available(peer=device_name, identity=", ".join(sorted(str(ip) for ip in special_ips))):
                 continue
 

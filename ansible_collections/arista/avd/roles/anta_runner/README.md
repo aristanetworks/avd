@@ -217,6 +217,10 @@ avd_catalogs_enabled: true
 # Generate tests for BGP peers in VRFs.
 avd_catalogs_allow_bgp_vrfs: false
 
+# Generate extra fabric-wide validation tests (e.g., reachability and routing tests).
+# This can generate many additional test inputs in the catalogs, and validation may take longer on large fabrics.
+avd_catalogs_extra_fabric_validation: false
+
 # Global timeout for the ANTA runner. Depending on the scale this can be adjusted.
 anta_runner_timeout: 30
 
@@ -362,6 +366,7 @@ The table below shows which parts of the AVD structured configuration are used t
 | [**VerifyReachability**](https://anta.arista.com/stable/api/tests/connectivity/#anta.tests.connectivity.VerifyReachability){:target="_blank"} | Point-to-point ethernet links when:<br><ul><li>`peer`, `peer_interface` and `ip_address` are defined</li><li>`ip_address` is static - *not* 'dhcp' and *not* 'unnumbered'</li><li>Interface is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`</li><li>`peer` device is deployed - `is_deployed=True`</li><li>`peer_interface` on the `peer` device has a defined static `ip_address` - *not* 'dhcp' and *not* 'unnumbered'</li><li>`peer_interface` is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`</li></ul><br>BGP neighbors when: <br><ul><li>`update_source` IP address is defined</li></ul> | See description |
 | [**VerifyReloadCause**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyReloadCause){:target="_blank"} | Verifies that the last reload cause was expected. | allowed_causes=["USER", "FPGA", "ZTP"] |
 | [**VerifyRoutingProtocolModel**](https://anta.arista.com/stable/api/tests/routing.generic/#anta.tests.routing.generic.VerifyRoutingProtocolModel){:target="_blank"} | Verifies the configured routing protocol model. | `service_routing_protocols_model` |
+| [**VerifyRoutingTableEntry**](https://anta.arista.com/stable/api/tests/routing.generic/#anta.tests.routing.generic.VerifyRoutingTableEntry){:target="_blank"} | Verifies that Loopback0 and VTEP IPs from all fabric devices (excluding WAN routers) are present in the routing table of VTEP devices to ensure proper IPv4 underlay routing. IPv6 underlays are *not* tested. | Fabric-wide collection of:<ul><li>`loopback_interfaces[name=Loopback0].ip_address`</li><li>`vxlan_interface.vxlan1.vxlan.source_interface` → resolved interface IP</li><li>`vxlan_interface.vxlan1.vxlan.mlag_source_interface` → resolved interface IP</li></ul><br>**Requires:** `avd_catalogs_extra_fabric_validation: true` (role variable) |
 | [**VerifyRunningConfigDiffs**](https://anta.arista.com/stable/api/tests/configuration/#anta.tests.configuration.VerifyRunningConfigDiffs){:target="_blank"} | Verifies there are no differences between the running and startup configs. | *None* |
 | [**VerifySpecificIPSecConn**](https://anta.arista.com/stable/api/tests/security/#anta.tests.security.VerifySpecificIPSecConn){:target="_blank"} | Verifies the status of specific IPSec tunnels. | `router_path_selection` |
 | [**VerifySpecificPath**](https://anta.arista.com/stable/api/tests/path_selection/#anta.tests.path_selection.VerifySpecificPath){:target="_blank"} | Verifies the DPS path and telemetry state of an IPv4 peer. | `router_path_selection` |
