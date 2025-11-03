@@ -27,7 +27,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_IPV6_NUMBERED_VTEP_LOOPBACK0_SPINE_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ipv6_address: 2001:db8:2:1::2/64
   metadata:
     peer: IPV6_NUMBERED_VTEP_LOOPBACK0_SPINE
@@ -44,7 +44,7 @@ ipv6_prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY-V6
   sequence_numbers:
   - sequence: 10
-    action: permit 2001:db8:1::/48 eq 64
+    action: permit 2001:db8:1::/48 eq 128
 - name: PL-MLAG-PEER-VRFS
   sequence_numbers:
   - sequence: 10
@@ -54,7 +54,7 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ipv6_address: 2001:db8:1:2::1/64
+  ipv6_address: 2001:db8:1::2/128
 - name: Loopback10
   description: DIAG_VRF_VRF10
   shutdown: false
@@ -158,7 +158,7 @@ router_bgp:
     metadata:
       peer: IPV6_NUMBERED_VTEP_LOOPBACK0_SPINE
     description: IPV6_NUMBERED_VTEP_LOOPBACK0_SPINE_Ethernet2
-  - ip_address: 2001:db8:0:a::1
+  - ip_address: 2001:db8::1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
     metadata:
@@ -238,12 +238,12 @@ vlan_interfaces:
   description: MLAG_L3
   shutdown: false
   ipv6_address: 2001:db8:4::2/64
-  mtu: 1500
+  mtu: 9214
 - name: Vlan4094
   description: MLAG
   shutdown: false
   ipv6_address: 2001:db8:3::2/64
-  mtu: 1500
+  mtu: 9214
   no_autostate: true
 - name: Vlan11
   description: VRF10_VLAN11
@@ -264,7 +264,7 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF10
   ipv6_address: 2001:db8:4::2/64
-  mtu: 1500
+  mtu: 9214
   metadata:
     tenant: TENANT1
     type: underlay_peering

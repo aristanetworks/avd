@@ -74,7 +74,7 @@ class IpAddressingMixin(Protocol):
         return self.ip_addressing.vtep_ip()
 
     @cached_property
-    def vtep_ipv6(self: SharedUtilsProtocol) -> str | None:
+    def vtep_ipv6(self: SharedUtilsProtocol) -> str:
         """Render ipv6 address for vtep_ip using dynamically loaded python module."""
         if self.vtep_loopback.lower() == "loopback0" and self.ipv6_router_id:
             return self.ipv6_router_id

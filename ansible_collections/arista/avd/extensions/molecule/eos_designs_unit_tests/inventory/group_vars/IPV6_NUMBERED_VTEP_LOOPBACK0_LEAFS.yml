@@ -1,15 +1,7 @@
 ---
-# Common AVD group variables
-fabric_name: EOS_DESIGNS_UNIT_TESTS
-
 # Define underlay and overlay routing protocol to be used
 underlay_routing_protocol: ebgp
 overlay_routing_protocol: ebgp
-
-# P2P interfaces MTU, includes VLANs 4093 and 4094 that are over peer-link
-# If you're running vEOS-lab or cEOS, you should use MTU of 1500 instead as shown in the following line
-# p2p_uplinks_mtu: 9214
-p2p_uplinks_mtu: 1500
 
 # Set default uplink, downlink, and MLAG interfaces based on node type
 default_interfaces:
@@ -25,17 +17,6 @@ default_interfaces:
 
 underlay_ipv6: true
 underlay_ipv6_numbered: true
-
-fabric_ip_addressing:
-  mlag:
-    # Modifies the default MLAG peer-link prefix length of 64.
-    ipv6_prefix_length: 64
-  loopback:
-    # Modifies the default loopback prefix length of 128
-    ipv6_prefix_length: 64
-  p2p_uplinks:
-    # Modifies the default p2p uplink prefix length of 64
-    ipv6_prefix_length: 64
 
 type: l3leaf
 
