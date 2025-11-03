@@ -1,0 +1,29 @@
+---
+### group_vars/DC1_SPINES.yml
+
+type: spine
+
+# Spine switch group
+spine:
+  # Definition of default values that will be configured to all nodes defined in this group
+  defaults:
+    # Set the relevant platform as each platform has different default values in Ansible AVD
+    platform: vEOS-lab
+    # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
+    loopback_ipv4_pool: 10.255.0.0/27
+    # ASN to be used by BGP
+    bgp_as: 65100
+
+  # Definition of nodes contained in this group.
+  # Specific configuration of device must take place under the node definition. Each node inherits all values defined under 'defaults'
+  nodes:
+    # Name of the node to be defined (must be consistent with definition in inventory)
+    - name: dc1-spine1
+      # Device ID definition. An integer number used for internal calculations (ie. IPv4 address of the loopback_ipv4_pool among others)
+      id: 1
+      # Management IP to be assigned to the management interface
+      mgmt_ip: 172.16.1.11/24
+
+    - name: dc1-spine2
+      id: 2
+      mgmt_ip: 172.16.1.12/24
