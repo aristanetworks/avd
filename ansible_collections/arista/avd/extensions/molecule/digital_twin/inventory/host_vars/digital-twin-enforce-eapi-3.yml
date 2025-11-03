@@ -1,0 +1,23 @@
+---
+# Test the removal of the eAPI IPv4 ACL (in the default VRF) in ACT Digital Twin mode.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-enforce-eapi-3
+      id: 1
+      mgmt_ip: 192.168.0.3/32
+
+digital_twin:
+  environment: act
+  fabric:
+    act_ensure_eapi_access: true
+
+management_eapi:
+  enabled: true
+  enable_http: true
+  vrfs:
+    - name: default
+      enabled: true
+      ipv4_acl: eapi_ipv4_acl_in
+      ipv6_acl: eapi_ipv6_acl_in

@@ -62,7 +62,7 @@ class UtilsMixin(Protocol):
                     peer_interface=uplink.interface,
                     peer_type=peer_facts.type,
                     peer_is_deployed=peer_facts.is_deployed,
-                    peer_bgp_as=peer_facts.bgp_as,
+                    peer_bgp_as=self.shared_utils.get_asn(peer_facts.bgp_as),
                     type=uplink.type,
                     speed=uplink.peer_speed or uplink.speed,
                     ip_address=uplink.peer_ip_address,
@@ -85,7 +85,6 @@ class UtilsMixin(Protocol):
                     sflow_enabled=self.shared_utils.get_interface_sflow(uplink.peer_interface, self.inputs.fabric_sflow.downlinks),
                     flow_tracking=downlinks_flow_tracking,
                     spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
-                    structured_config=uplink.structured_config,
                     ethernet_structured_config=uplink.peer_ethernet_structured_config,
                     port_channel_structured_config=uplink.peer_port_channel_structured_config,
                 )
@@ -159,12 +158,12 @@ class UtilsMixin(Protocol):
         is_subinterface = "." in l3_generic_interface.name
         interface._update(
             name=l3_generic_interface.name,
-            peer=l3_generic_interface.peer,
             ip_address=l3_generic_interface.ip_address,
             shutdown=not l3_generic_interface.enabled,
             service_profile=l3_generic_interface.qos_profile,
             eos_cli=l3_generic_interface.raw_eos_cli,
         )
+        interface.metadata.peer = l3_generic_interface.peer
         interface.switchport.enabled = False if "." not in l3_generic_interface.name else None
 
         if is_subinterface:
@@ -236,20 +235,19 @@ class UtilsMixin(Protocol):
         interface_name = link.interface if is_native else f"{link.interface}.{svi.id}"
         subinterface = EosCliConfigGen.EthernetInterfacesItem(
             name=interface_name,
-            peer=link.peer,
-            peer_interface=f"{link.peer_interface} VLAN {svi.id}",
-            peer_type=link.peer_type,
             description=default(svi.description, svi.name),
             shutdown=not default(svi.enabled, False),  # noqa: FBT003
             switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False) if is_native else Undefined,
             encapsulation_dot1q=EosCliConfigGen.EthernetInterfacesItem.EncapsulationDot1q(vlan=svi.id) if not is_native else Undefined,
             vrf=vrf.name if vrf.name != "default" else None,
             ip_address=svi.ip_address,
+            ip_address_secondaries=EosCliConfigGen.EthernetInterfacesItem.IpAddressSecondaries(svi.ip_address_secondaries),
             ipv6_address=svi.ipv6_address,
             ipv6_enable=svi.ipv6_enable,
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
+        subinterface.metadata._update(peer_interface=f"{link.peer_interface} VLAN {svi.id}", peer=link.peer, peer_type=link.peer_type)
 
         if flow_tracker := self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker):
             subinterface.flow_tracker = flow_tracker

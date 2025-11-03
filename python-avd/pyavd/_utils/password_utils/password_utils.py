@@ -12,13 +12,8 @@ It is used  in the encrypt and decrypt filters
 import base64
 
 from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.decrepit.ciphers.algorithms import TripleDES
 from cryptography.hazmat.primitives.ciphers import Cipher, modes
-
-# Starting cyryptography 43.0.0, TripleDES cipher has been moved to cryptography.hazmat.decrepit module
-try:
-    from cryptography.hazmat.decrepit.ciphers.algorithms import TripleDES
-except ImportError:
-    from cryptography.hazmat.primitives.ciphers.algorithms import TripleDES
 
 SEED = b"\xd5\xa8\xc9\x1e\xf5\xd5\x8a\x23"
 

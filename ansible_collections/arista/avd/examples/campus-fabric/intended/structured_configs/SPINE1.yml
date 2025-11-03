@@ -13,54 +13,60 @@ ethernet_interfaces:
   channel_group:
     id: 551
     mode: active
-  peer: SPINE2
-  peer_interface: Ethernet55/1
-  peer_type: mlag_peer
+  metadata:
+    peer: SPINE2
+    peer_interface: Ethernet55/1
+    peer_type: mlag_peer
 - name: Ethernet56/1
   description: MLAG_SPINE2_Ethernet56/1
   shutdown: false
   channel_group:
     id: 551
     mode: active
-  peer: SPINE2
-  peer_interface: Ethernet56/1
-  peer_type: mlag_peer
+  metadata:
+    peer: SPINE2
+    peer_interface: Ethernet56/1
+    peer_type: mlag_peer
 - name: Ethernet1
   description: L2_LEAF1A_Ethernet51
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: LEAF1A
-  peer_interface: Ethernet51
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF1A
+    peer_interface: Ethernet51
+    peer_type: l2leaf
 - name: Ethernet49/1
   description: L2_LEAF2A_Ethernet1/1
   shutdown: false
   channel_group:
     id: 491
     mode: active
-  peer: LEAF2A
-  peer_interface: Ethernet1/1
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF2A
+    peer_interface: Ethernet1/1
+    peer_type: l2leaf
 - name: Ethernet50/1
   description: L2_LEAF3A_Ethernet97/1
   shutdown: false
   channel_group:
     id: 501
     mode: active
-  peer: LEAF3A
-  peer_interface: Ethernet97/1
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF3A
+    peer_interface: Ethernet97/1
+    peer_type: l2leaf
 - name: Ethernet51/1
   description: L2_LEAF3B_Ethernet97/1
   shutdown: false
   channel_group:
     id: 501
     mode: active
-  peer: LEAF3B
-  peer_interface: Ethernet97/1
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF3B
+    peer_interface: Ethernet97/1
+    peer_type: l2leaf
 - name: Ethernet52/1
   description: P2P_WAN_Ethernet1/1
   shutdown: false
@@ -68,9 +74,10 @@ ethernet_interfaces:
   ip_address: 10.0.0.3/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  peer: WAN
-  peer_interface: Ethernet1/1
-  peer_type: other
+  metadata:
+    peer: WAN
+    peer_interface: Ethernet1/1
+    peer_type: other
   switchport:
     enabled: false
 hostname: SPINE1
@@ -132,9 +139,8 @@ ntp:
   servers:
   - name: time.google.com
     preferred: true
-    vrf: MGMT
   - name: pool.ntp.org
-    vrf: MGMT
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel551
   description: MLAG_SPINE2_Port-Channel551
@@ -217,81 +223,90 @@ vlan_interfaces:
   ip_address: 10.1.10.2/23
   ip_virtual_router_addresses:
   - 10.1.10.1
-  tenant: MY_FABRIC
-  tags:
-  - '110'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '110'
 - name: Vlan120
   description: IDF1-Voice
   shutdown: false
   ip_address: 10.1.20.2/23
   ip_virtual_router_addresses:
   - 10.1.20.1
-  tenant: MY_FABRIC
-  tags:
-  - '120'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '120'
 - name: Vlan130
   description: IDF1-Guest
   shutdown: false
   ip_address: 10.1.30.2/23
   ip_virtual_router_addresses:
   - 10.1.30.1
-  tenant: MY_FABRIC
-  tags:
-  - '130'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '130'
 - name: Vlan210
   description: IDF2-Data
   shutdown: false
   ip_address: 10.2.10.2/23
   ip_virtual_router_addresses:
   - 10.2.10.1
-  tenant: MY_FABRIC
-  tags:
-  - '210'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '210'
 - name: Vlan220
   description: IDF2-Voice
   shutdown: false
   ip_address: 10.2.20.2/23
   ip_virtual_router_addresses:
   - 10.2.20.1
-  tenant: MY_FABRIC
-  tags:
-  - '220'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '220'
 - name: Vlan230
   description: IDF2-Guest
   shutdown: false
   ip_address: 10.2.30.2/23
   ip_virtual_router_addresses:
   - 10.2.30.1
-  tenant: MY_FABRIC
-  tags:
-  - '230'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '230'
 - name: Vlan310
   description: IDF3-Data
   shutdown: false
   ip_address: 10.3.10.2/23
   ip_virtual_router_addresses:
   - 10.3.10.1
-  tenant: MY_FABRIC
-  tags:
-  - '310'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '310'
 - name: Vlan320
   description: IDF3-Voice
   shutdown: false
   ip_address: 10.3.20.2/23
   ip_virtual_router_addresses:
   - 10.3.20.1
-  tenant: MY_FABRIC
-  tags:
-  - '320'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '320'
 - name: Vlan330
   description: IDF3-Guest
   shutdown: false
   ip_address: 10.3.30.2/23
   ip_virtual_router_addresses:
   - 10.3.30.1
-  tenant: MY_FABRIC
-  tags:
-  - '330'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '330'
 - name: Vlan10
   description: Inband Management
   shutdown: false

@@ -8,6 +8,7 @@ from copy import deepcopy
 from logging import getLogger
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, cast
 
+from pyavd._errors import AristaAvdDuplicateDataError
 from pyavd._schema.coerce_type import coerce_type
 from pyavd._utils import Undefined, UndefinedType, merge
 
@@ -44,7 +45,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
     _custom_data: dict[str, Any]
     """
     Dictionary holding extra keys given in _from_dict.
-    These keys are either keys starting with underscore or any non-schema key if _from_dict was called with 'keep_extra_keys'.
+    These keys start with an underscore.
     """
     _skipped_keys: set[str]
     """
@@ -58,12 +59,8 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
         return cls._from_dict(data)
 
     @classmethod
-    def _from_dict(cls: type[T_AvdModel], data: Mapping, keep_extra_keys: bool = False) -> T_AvdModel:
-        """
-        Returns a new instance loaded with the data from the given dict.
-
-        TODO: AVD6.0.0 remove the keep_extra_keys option so we no longer support custom keys without _ in structured config.
-        """
+    def _from_dict(cls: type[T_AvdModel], data: Mapping) -> T_AvdModel:
+        """Returns a new instance loaded with the data from the given dict."""
         if not isinstance(data, Mapping):
             msg = f"Expecting 'data' as a 'Mapping' when loading data into '{cls.__name__}'. Got '{type(data)}"
             raise TypeError(msg)
@@ -74,7 +71,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
 
         for key in data:
             if not (field := cls._get_field_name(key)):
-                if keep_extra_keys or str(key).startswith("_"):
+                if str(key).startswith("_"):
                     custom_data[key] = data[key]
                     continue
 
@@ -467,3 +464,50 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
 
         # Use regular __eq__ check on all nested models, since we do not carry over ignore_fields.
         return all(value == other.__dict__[field] for field, value in self.items() if field not in ignore_fields)
+
+    def _combine(self, other: Self) -> None:
+        """
+        Update instance by combining the other instance in.
+
+        Combining is different from merging in the sense that it will raise if there is a conflict
+        between one of our properties and the same property of the other.
+
+        Properties of types AvdModel, AvdList and AvdIndexedList are recursively combined.
+
+        Args:
+            other: The other instance of the same type to combine into this instance.
+
+        Raises:
+            AristaAvdDuplicateDataError: If any key from other, including custom_data, is conflicting with self.
+        """
+        cls = type(self)
+        if not isinstance(other, cls):
+            msg = f"Unable to combine type '{type(other)}' into '{cls}'"
+            raise TypeError(msg)
+
+        for field, new_value in other.items():
+            old_value = self._get_defined_attr(field)
+
+            if old_value is Undefined:
+                # value not set so we can just pick the new_value
+                setattr(self, field, new_value)
+                continue
+
+            # Combine new value
+            field_type = self._fields[field]["type"]
+            if issubclass(field_type, AvdBase):
+                # Combine into the existing object
+                old_value = cast("AvdBase", old_value)
+                new_value = cast("AvdBase", new_value)
+                old_value._combine(new_value)
+                continue
+
+            if old_value != new_value:
+                # this also applies to fields where field_type is dict
+                raise AristaAvdDuplicateDataError(type(self).__name__, str(self._dump()), str(other._dump()))
+
+        if other._custom_data:
+            try:
+                merge(self._custom_data, deepcopy(other._custom_data), list_merge="append_rp", same_key_strategy="must_match")
+            except ValueError as e:
+                raise AristaAvdDuplicateDataError(type(self).__name__, str(self._dump()), str(other._dump())) from e

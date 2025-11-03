@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -73,7 +73,7 @@ keys:
             type: bool
             description: Enforce strict host key checking.
       enable:
-        description: Enable SSH for VRF default.
+        description: Explicitly enable or disable SSH for all VRFs.
         type: bool
       connection:
         type: dict

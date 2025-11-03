@@ -32,4 +32,4 @@ Fixes #<ISSUE ID>
 - [ ] My code has been rebased from devel before I start
 - [ ] I have read the [**CONTRIBUTING**](https://avd.arista.com/devel/docs/contribution/overview.html) document.
 - [ ] My change requires a change to the documentation and the documentation has been updated accordingly.
-- [ ] I have updated [molecule CI](https://github.com/aristanetworks/avd/tree/devel/ansible_collections/arista/avd/molecule) testing accordingly. (check the box if not applicable)
+- [ ] I have updated [molecule CI](https://github.com/aristanetworks/avd/tree/devel/ansible_collections/arista/avd/extensions/molecule) testing accordingly. (check the box if not applicable)

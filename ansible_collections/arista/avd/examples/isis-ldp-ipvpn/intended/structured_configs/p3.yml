@@ -24,9 +24,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: rr1
-  peer_interface: Ethernet2
-  peer_type: rr
+  metadata:
+    peer: rr1
+    peer_interface: Ethernet2
+    peer_type: rr
   switchport:
     enabled: false
 - name: Ethernet4
@@ -49,9 +50,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: p4
-  peer_interface: Ethernet4
-  peer_type: p
+  metadata:
+    peer: p4
+    peer_interface: Ethernet4
+    peer_type: p
   switchport:
     enabled: false
 - name: Ethernet1
@@ -74,9 +76,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: pe3
-  peer_interface: Ethernet1
-  peer_type: pe
+  metadata:
+    peer: pe3
+    peer_interface: Ethernet1
+    peer_type: pe
   switchport:
     enabled: false
 hostname: p3

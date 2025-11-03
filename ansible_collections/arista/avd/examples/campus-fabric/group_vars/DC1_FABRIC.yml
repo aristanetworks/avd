@@ -19,6 +19,9 @@ ansible_httpapi_use_ssl: true
 # Do not try to validate certs
 ansible_httpapi_validate_certs: false
 
+management_eapi:
+  enabled: true
+
 # Spine Switches
 l3spine:
   defaults:

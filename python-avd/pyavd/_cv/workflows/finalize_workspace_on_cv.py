@@ -6,13 +6,13 @@ from __future__ import annotations
 from logging import getLogger
 from typing import TYPE_CHECKING
 
-from pyavd._cv.api.arista.workspace.v1 import ResponseStatus, WorkspaceState
-from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed
+from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus, WorkspaceState
+from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed, CVWorkspaceSubmitFailedInactiveDevices
 
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
 
-    from .models import CVWorkspace
+    from .models import CVDevice, CVWorkspace
 
 LOGGER = getLogger(__name__)
 
@@ -26,7 +26,7 @@ WORKSPACE_STATE_TO_FINAL_STATE_MAP = {
 }
 
 
-async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) -> None:
+async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, devices: list[CVDevice], warnings: list) -> None:
     """
     Finalize a Workspace from the given result.CVWorkspace object.
 
@@ -65,8 +65,31 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) 
             workspace_id=workspace.id,
             request_id=workspace_config.request_params.request_id,
         )
+        # Form a list of known inactive existing devices
+        if inactive_devices := [f"{device.hostname} ({device.serial_number})" for device in devices if device._streaming is False]:
+            msg = f"Inactive devices present: {inactive_devices}"
+            warnings.append(msg)
         if submit_result.status != ResponseStatus.SUCCESS:
             workspace.state = "submit failed"
+            # Unforced Workspace submission failed due to inactive devices.
+            if submit_result.code == ResponseCode.INACTIVE_DEVICES_EXIST:
+                # Use case where some of the devices that we targeted were known to be inactive prior to Workspace submission
+                if inactive_devices:
+                    msg = (
+                        f"Failed to submit CloudVision Workspace due to the presence of inactive devices: {inactive_devices}. "
+                        f"Use `cv_submit_workspace_force: true` (if using role `cv_deploy`) or `workspace['force']: true` "
+                        f"(if using action plugin `cv_workflow`) to override."
+                    )
+                    raise CVWorkspaceSubmitFailedInactiveDevices(msg)
+                # Use case where all devices were actively streaming prior to Workspace submission
+                msg = (
+                    "Failed to submit CloudVision Workspace due to the presence of inactive devices. "
+                    "Use `cv_submit_workspace_force: true` (if using role `cv_deploy`) or `workspace['force']: true` "
+                    "(if using action plugin `cv_workflow`) to override."
+                )
+                raise CVWorkspaceSubmitFailedInactiveDevices(msg)
+
+            # If Workspace submission failed for any other reason - raise general exception.
             LOGGER.info("finalize_workspace_on_cv: %s", workspace)
             msg = f"Failed to submit workspace {workspace.id}: {submit_result}"
             raise CVWorkspaceSubmitFailed(msg)

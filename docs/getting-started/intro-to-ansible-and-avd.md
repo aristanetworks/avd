@@ -352,7 +352,7 @@ The second role, ***arista.avd.eos_cli_config_gen*** uses the structured EOS con
 
 Running the play described above would result in several files containing the configuration and documentation for the devices in scope - in this case, DC1_FABRIC. Then, to apply the configuration to the actual devices, you would run additional roles such as:
 
-- [eos_config_deploy_cvp](../../ansible_collections/arista/avd/roles/eos_config_deploy_cvp/README.md), which deploys the EOS configuration via the CloudVision Management platform, including change control with RBAC and full rollback capability.
+- [cv_deploy](../../ansible_collections/arista/avd/roles/cv_deploy/README.md), which deploys the EOS configuration via the CloudVision Management platform, including change control with RBAC and full rollback capability.
 - [eos_config_deploy_eapi](../../ansible_collections/arista/avd/roles/eos_config_deploy_eapi/README.md), which deploys the EOS configuration directly to Arista devices using config replace. This option provides no change control and no rollback capability.
 
 While this play shows both the `eos_designs` and `eos_cli_config_gen` roles used together, it's entirely possible to make use of just `eos_cli_config_gen` by itself - this would allow (for example) generation of management configuration that could potentially be merged into an existing network as discussed earlier.
@@ -696,7 +696,7 @@ Below are a number of links to additional documentation about Ansible AVD and An
 - [Role documentation for eos_design](../../ansible_collections/arista/avd/roles/eos_designs/README.md)
 - [Role documentation for eos_cli_config_gen](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md)
 - [RedHat Ansible Tower Documentation](https://docs.ansible.com/ansible/latest/reference_appendices/tower.html)
-- [Role documentation for eos_config_deploy_cvp](../../ansible_collections/arista/avd/roles/eos_config_deploy_cvp/README.md) / [eos_config_deploy_eapi](../../ansible_collections/arista/avd/roles/eos_config_deploy_eapi/README.md)
+- [Role documentation for cv_deploy](../../ansible_collections/arista/avd/roles/cv_deploy/README.md) / [eos_config_deploy_eapi](../../ansible_collections/arista/avd/roles/eos_config_deploy_eapi/README.md)
 
 ## Next steps
 

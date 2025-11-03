@@ -64,7 +64,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.vrf") | String |  |  |  | VRF name of the GRE tunnel. EOS default is "default". |
     | [<samp>redundancy</samp>](## "redundancy") | Dictionary |  |  |  | Redundancy for chassis platforms with dual supervisors | Optional. |
     | [<samp>&nbsp;&nbsp;protocol</samp>](## "redundancy.protocol") | String |  |  | Valid Values:<br>- <code>sso</code><br>- <code>rpr</code> |  |
-    | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  | Serial Number of the device.<br>Used for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.<br>"serial_number" can also be set directly under node type settings.<br>If both are set, the value under node type settings takes precedence.<br> |
+    | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  | Serial Number of the device.<br>Used for documentation purpose in the fabric documentation as can also be used by the 'cv_deploy' role.<br>"serial_number" can also be set directly under node type settings.<br>If both are set, the value under node type settings takes precedence.<br> |
     | [<samp>system_mac_address</samp>](## "system_mac_address") | String |  |  |  | Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set under node type settings.<br>If both are set, the value under node type settings takes precedence.<br> |
 
 === "YAML"
@@ -254,7 +254,7 @@
       protocol: <str; "sso" | "rpr">
 
     # Serial Number of the device.
-    # Used for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.
+    # Used for documentation purpose in the fabric documentation as can also be used by the 'cv_deploy' role.
     # "serial_number" can also be set directly under node type settings.
     # If both are set, the value under node type settings takes precedence.
     serial_number: <str>

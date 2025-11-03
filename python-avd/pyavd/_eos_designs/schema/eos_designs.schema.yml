@@ -342,6 +342,19 @@ keys:
     type: str
     convert_types:
     - int
+  bgp_as_notation:
+    documentation_options:
+      table: bgp-settings
+    type: str
+    valid_values:
+    - auto
+    - asdot
+    - asplain
+    default: auto
+    description: "AS number representation.\nasdot - AS number representation in asdot
+      format (Ex. 123.12).\nasplain - AS number representation in asplain format (Ex.
+      12312).\nauto - Will look at the configured ASN and if there is a dot in it,\n
+      \      it will use asdot otherwise asplain."
   bgp_default_ipv4_unicast:
     documentation_options:
       table: bgp-settings
@@ -360,10 +373,7 @@ keys:
   bgp_ecmp:
     documentation_options:
       table: bgp-settings
-    description: 'Maximum ECMP for BGP multi-path.
-
-      The default value is 4 except for WAN Routers where the default value is unset
-      (falls back to EOS default).'
+    description: Maximum ECMP for BGP multi-path.
     type: int
     min: 1
     max: 600
@@ -883,6 +893,84 @@ keys:
       Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric`
       feature.'
     type: str
+  connected_endpoints:
+    type: list
+    primary_key: name
+    description: 'List of endpoint connected to the fabric.
+
+      This should be applied to group_vars or host_vars where endpoints are connecting.'
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Endpoint name will be used in the switchport description.
+        type:
+          type: str
+          description: 'Type of endpoint.
+
+            This is used in descriptions and in documentation.'
+        rack:
+          type: str
+          description: Rack is used for documentation purposes only.
+        adapters:
+          type: list
+          description: A list of adapters, group by adapters leveraging the same port-profile.
+          items:
+            $ref: eos_designs#/$defs/adapter_config
+            type: dict
+            keys:
+              switch_ports:
+                type: list
+                required: true
+                description: 'List of switch interfaces.
+
+                  The lists `endpoint_ports`, `switch_ports`, and `switches` must
+                  have the same length.
+
+                  '
+                items:
+                  type: str
+                  description: Switchport interface.
+              switches:
+                type: list
+                required: true
+                description: 'List of switches.
+
+                  The lists `endpoint_ports`, `switch_ports`, and `switches` must
+                  have the same length.
+
+                  '
+                items:
+                  type: str
+                  description: Device.
+              endpoint_ports:
+                type: list
+                description: 'Endpoint ports is used for description, required unless
+                  `description` or `descriptions` is set.
+
+                  The lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches`
+                  must have the same length.
+
+                  Each list item is one switchport.
+
+                  '
+                items:
+                  type: str
+                  description: Port name on the endpoint.
+              descriptions:
+                type: list
+                description: "Unique description per port. When set, takes priority
+                  over description.\nThis can be a template using the AVD string formatter
+                  syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+                  available template fields are:\n  - `endpoint_type` - the `type`
+                  of the connected endpoint either set on the endpoint or taken from
+                  `connected_endpoints_keys.type` like `server`, `router` etc.\n  -
+                  `endpoint` - The name of the connected endpoint\n  - `endpoint_port`
+                  - The value from `endpoint_ports` for this switch port if set.\n
+                  \ - `port_channel_id`: The port-channel number for the switch."
+                items:
+                  type: str
   custom_connected_endpoints_keys:
     $ref: eos_designs#/keys/connected_endpoints_keys
     default: null
@@ -1385,16 +1473,17 @@ keys:
     documentation_options:
       table: cv-topology
     type: list
-    description: 'Generate AVD configurations directly from the given CloudVision
-      topology.
-
-      Activate this feature by setting `use_cv_topology` to `true`.
-
-      Requires `default_interfaces` to be set for the relevant platforms and node
-      types to detect the proper interface roles automatically.
-
-      Neighbor hostnames must match the inventory hostnames of the AVD inventory to
-      be taken into consideration.'
+    description: "Generate AVD configurations directly from the given CloudVision
+      topology.\nActivate this feature by setting `use_cv_topology` to `true`.\nInterfaces
+      are assigned according to the following rules:\n  - All interfaces connected
+      to the MLAG peer (only other device in the same node group) will be `mlag_interfaces`.\n
+      \ - For connections between devices with different `cv_topology_levels[type=<type>].level`,
+      the lowest level will be considered the \"parent switch\"\n    and the highest
+      level will be considered the \"child switch\".\n  - Connections between devices
+      with the same `cv_topology_levels[type=<type>].level` will be ignored and must
+      be created manually.\n  - The first Management interface is assigned as `mgmt_interface`
+      unless it is set for the node or under platform_settings.\nNeighbor hostnames
+      must match the inventory hostnames of the AVD inventory to be taken into consideration."
     primary_key: hostname
     items:
       type: dict
@@ -1417,54 +1506,56 @@ keys:
                 type: str
               neighbor_interface:
                 type: str
+  cv_topology_levels:
+    documentation_options:
+      table: cv-topology
+    type: list
+    primary_key: type
+    description: 'Type to level assignment used for generation of the AVD topology
+      from the CloudVision topology.
+
+      See `cv_topology` for details.'
+    items:
+      type: dict
+      keys:
+        type:
+          type: str
+          description: Node type like l3leaf, l2spine etc.
+        level:
+          type: int
+          required: true
+          convert_types:
+          - str
+          description: 'Level value used to determine the relationship between two
+            devices for a connection.
+
+            The lower value is the "parent switch" (like Spine).
+
+            The higher value is the "child switch" (like Leaf).'
   cvp_ingestauth_key:
     documentation_options:
       table: cloudvision-settings
     type: str
-    description: 'On-premise CVP ingest auth key. If set, TerminAttr will be configured
-      with key-based authentication for on-premise CVP.
-
-      If not set, TerminAttr will be configured with certificate based authentication:
-
-      - On-premise using token onboarding. Default token path is ''/tmp/token''.
-
-      - CVaaS using token-secure onboarding. Default token path is ''/tmp/cv-onboarding-token''.
-
-      Token must be copied to the device first.'
     deprecation:
       warning: true
+      removed: true
       remove_in_version: 6.0.0
   cvp_instance_ips:
     documentation_options:
       table: cloudvision-settings
     type: list
-    description: 'List of IPv4 addresses or DNS names for CloudVision.
-
-      For on-premise CloudVision enter all the nodes of the cluster.
-
-      For CloudVision as a Service enter the DNS name of the instance.
-
-      `eos_designs` only supports one CloudVision cluster.
-
-      '
-    items:
-      type: str
-      description: IPv4 address or DNS name for CloudVision
     deprecation:
       warning: true
+      removed: true
       new_key: cv_settings
       remove_in_version: 6.0.0
   cvp_token_file:
     documentation_options:
       table: cloudvision-settings
     type: str
-    description: 'cvp_token_file is the path to the token file on the switch.
-
-      If not set the default locations for on-premise or CVaaS will be used.
-
-      See cvp_ingestauth_key for details.'
     deprecation:
       warning: true
+      removed: true
       new_key: cv_settings
       remove_in_version: 6.0.0
   dc_name:
@@ -1487,13 +1578,14 @@ keys:
     description: "Default description or description template to be used on all ports
       to connected endpoints.\nThis can be a template using the AVD string formatter
       syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
-      available template fields are:\n  - `endpoint_type`: The `type` from `connected_endpoints_keys`
+      available template fields are:\n  - `endpoint_type`: The `type` of the connected
+      endpoint either set on the endpoint or taken from `connected_endpoints_keys[].type`
       like `server`, `router` etc.\n  - `endpoint`: The name of the connected endpoint\n
       \ - `endpoint_port`: The value from `endpoint_ports` for this switch port if
       set.\n  - `port_channel_id`: The port-channel number for the switch.\n\nBy default
       the description is templated from the type, name and port of the endpoint if
       set."
-    default: '{endpoint_type!u}_{endpoint}{endpoint_port?<_}'
+    default: '{endpoint_type?>_!u}{endpoint}{endpoint_port?<_}'
   default_connected_endpoints_port_channel_description:
     type: str
     documentation_options:
@@ -1501,14 +1593,15 @@ keys:
     description: "Default description or description template to be used on all port-channels
       to connected endpoints.\nThis can be a template using the AVD string formatter
       syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
-      available template fields are:\n  - `endpoint_type`: The `type` from `connected_endpoints_keys`
+      available template fields are:\n  - `endpoint_type` - the `type` of the connected
+      endpoint either set on the endpoint or taken from `connected_endpoints_keys.type`
       like `server`, `router` etc.\n  - `endpoint`: The name of the connected endpoint\n
       \ - `endpoint_port_channel`: The value of `endpoint_port_channel` if set.\n
       \ - `port_channel_id`: The port-channel number for the switch.\n  - `adapter_description`:
       The adapter's description if set.\n  - `adapter_description_or_endpoint`: Helper
       alias of the adapter_description or endpoint.\n\nBy default the description
       is templated from the type, name and port-channel name of the endpoint if set."
-    default: '{endpoint_type!u}_{endpoint}{endpoint_port_channel?<_}'
+    default: '{endpoint_type?>_!u}{endpoint}{endpoint_port_channel?<_}'
   default_igmp_snooping_enabled:
     documentation_options:
       table: system-settings
@@ -1575,10 +1668,8 @@ keys:
             description: Interface range or interface.
         mlag_interfaces_speed:
           type: str
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
           description: 'Set MLAG interfaces speed.
-
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
-            or `auto <interface_speed>`.
 
             '
         downlink_interfaces:
@@ -1589,6 +1680,7 @@ keys:
             description: Interface range or interface.
         uplink_interface_speed:
           type: str
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
           description: Set point-to-Point uplink interface speed.
   default_mgmt_method:
     documentation_options:
@@ -1698,22 +1790,10 @@ keys:
       table: design
     deprecation:
       warning: true
-      removed: false
+      removed: true
       remove_in_version: 6.0.0
-      url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#deprecation-of-designtype
+      url: https://avd.arista.com/6.x/docs/porting-guides/6.x.x.html#removal-of-designtype
     type: dict
-    keys:
-      type:
-        type: str
-        description: 'By setting the design.type variable, the default node-types
-          and templates described in these documents will be used.
-
-          '
-        valid_values:
-        - l3ls-evpn
-        - mpls
-        - l2ls
-        default: l3ls-evpn
   digital_twin:
     documentation_options:
       table: digital-twin-configuration
@@ -2478,25 +2558,6 @@ keys:
                   name:
                     type: str
                     description: Exporter Name
-                  collector:
-                    type: dict
-                    keys:
-                      host:
-                        type: str
-                        description: Collector IPv4 address or IPv6 address or fully
-                          qualified domain name
-                      port:
-                        type: int
-                        description: Collector Port Number
-                        min: 1
-                        max: 65535
-                        convert_types:
-                        - str
-                    deprecation:
-                      warning: true
-                      removed: false
-                      remove_in_version: 6.0.0
-                      new_key: collectors
                   collectors:
                     type: list
                     primary_key: host
@@ -2518,6 +2579,13 @@ keys:
                     min: 5000
                     max: 3600000
                     description: Template interval in milliseconds
+                  collector:
+                    type: dict
+                    deprecation:
+                      warning: true
+                      removed: true
+                      remove_in_version: 6.0.0
+                      new_key: collectors
         default:
         - name: FLOW-TRACKER
           record_export:
@@ -2615,10 +2683,12 @@ keys:
     type: dict
   inband_ztp_bootstrap_file:
     type: str
-    description: "Bootstrap URL configured in DHCP to use for inband ZTP.\nIf not
-      set and `cvp_instance_ips` is set then the bootstrap value will be set to:\n
-      \   `https://{cvp_instance_ips[0]}/ztp/bootstrap`\nOtherwise no value will be
-      configured."
+    description: 'Bootstrap URL configured in DHCP to use for inband ZTP.
+
+      By default the URL will be `https://<first cv server>/ztp/bootstrap` if `cv_settings`
+      are used.
+
+      Otherwise no value will be configured.'
     documentation_options:
       table: management-settings
   internal_vlan_order:
@@ -2789,15 +2859,12 @@ keys:
   is_deployed:
     documentation_options:
       table: is-deployed
-    description: 'If the device is already deployed in the fabric.
-
-      When set to false, interfaces toward this device may be shutdown depending on
-      the `shutdown_interfaces_towards_undeployed_peers` setting.
-
-      Furthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations
-      to the device.
-
-      '
+    description: "If the device is already deployed in the fabric.\nWhen set to false:\n
+      \ - The `cv_deploy` role will not apply configurations to this device.\n  -
+      Peer interfaces toward this device may be shutdown based on the `shutdown_interfaces_towards_undeployed_peers`
+      setting.\n  - BGP peerings toward this device may be shutdown based on the `shutdown_bgp_towards_undeployed_peers`
+      setting.\n  - Validation tests by the `anta_runner` role are automatically skipped
+      for this device."
     type: bool
     default: true
   isis_advertise_passive_only:
@@ -2940,10 +3007,9 @@ keys:
       table: management-settings
     deprecation:
       warning: true
-      removed: false
+      removed: true
       remove_in_version: 6.0.0
       new_key: aaa_settings.local_users
-    $ref: eos_cli_config_gen#/keys/local_users
     type: list
   logging_settings:
     documentation_options:
@@ -3031,6 +3097,9 @@ keys:
       level:
         type: list
         $ref: eos_cli_config_gen#/keys/logging/keys/level
+      validate_no_errors_period:
+        type: int
+        $ref: eos_cli_config_gen#/keys/metadata/keys/validate_no_errors_period
   mac_address_table:
     documentation_options:
       table: system-settings
@@ -3047,7 +3116,6 @@ keys:
       enabled:
         description: Enable/Disable api http-commands.
         type: bool
-        default: true
       enable_http:
         type: bool
       enable_https:
@@ -3057,18 +3125,10 @@ keys:
         type: bool
       vrfs:
         default:
-        - name: use_mgmt_interface_vrf
+        - name: use_default_mgmt_method_vrf
           enabled: true
         type: list
         primary_key: name
-        description: 'Note: For backward compatibility, `mgmt_ip` presence is not
-          enforced when `vrfs` is **not** configured and the default value of `use_mgmt_interface_vrf`
-          is used.
-
-          To enforce the presence of `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`,
-          explicitly define an entry in `vrfs` using `name: use_mgmt_interface_vrf`.
-
-          This behavior will be removed in AVD 6.0.'
         items:
           type: dict
           keys:
@@ -3318,6 +3378,7 @@ keys:
             '
           items:
             type: str
+          min_length: 1
         platforms:
           type: list
           min_length: 1
@@ -3695,6 +3756,118 @@ keys:
           description: Device type that CloudVision should use when generating the
             Topology like "leaf", "spine", "core", "edge" or "member-leaf".
           type: str
+    default:
+    - key: spine
+      type: spine
+      default_evpn_role: server
+      default_ptp_priority1: 20
+      cv_tags_topology_type: spine
+    - key: l3leaf
+      type: l3leaf
+      connected_endpoints: true
+      default_evpn_role: client
+      mlag_support: true
+      network_services:
+        l2: true
+        l3: true
+      vtep: true
+      default_ptp_priority1: 30
+      cv_tags_topology_type: leaf
+    - key: l2leaf
+      type: l2leaf
+      connected_endpoints: true
+      mlag_support: true
+      network_services:
+        l2: true
+      underlay_router: false
+      uplink_type: port-channel
+      cv_tags_topology_type: leaf
+    - key: p
+      type: p
+      mpls_lsr: true
+      default_mpls_overlay_role: none
+      default_overlay_routing_protocol: ibgp
+      default_underlay_routing_protocol: isis-sr
+    - key: pe
+      type: pe
+      mpls_lsr: true
+      connected_endpoints: true
+      default_mpls_overlay_role: client
+      default_evpn_role: client
+      network_services:
+        l1: true
+        l2: true
+        l3: true
+      default_overlay_routing_protocol: ibgp
+      default_underlay_routing_protocol: isis-sr
+      default_overlay_address_families:
+      - vpn-ipv4
+      default_evpn_encapsulation: mpls
+    - key: rr
+      type: rr
+      mpls_lsr: true
+      default_mpls_overlay_role: server
+      default_evpn_role: server
+      default_overlay_routing_protocol: ibgp
+      default_underlay_routing_protocol: isis-sr
+      default_overlay_address_families:
+      - vpn-ipv4
+      default_evpn_encapsulation: mpls
+    - key: l3spine
+      type: l3spine
+      connected_endpoints: true
+      mlag_support: true
+      network_services:
+        l2: true
+        l3: true
+      default_overlay_routing_protocol: none
+      default_underlay_routing_protocol: none
+      cv_tags_topology_type: spine
+    - key: leaf
+      type: leaf
+      connected_endpoints: true
+      mlag_support: true
+      network_services:
+        l2: true
+      underlay_router: false
+      uplink_type: port-channel
+      cv_tags_topology_type: leaf
+    - key: l2spine
+      type: l2spine
+      connected_endpoints: true
+      mlag_support: true
+      network_services:
+        l2: true
+      underlay_router: false
+      uplink_type: port-channel
+      cv_tags_topology_type: spine
+    - key: super_spine
+      type: super-spine
+      cv_tags_topology_type: core
+    - key: overlay_controller
+      type: overlay-controller
+      default_evpn_role: server
+      cv_tags_topology_type: spine
+    - key: wan_router
+      type: wan_router
+      default_evpn_role: none
+      default_wan_role: client
+      default_underlay_routing_protocol: none
+      default_overlay_routing_protocol: none
+      default_flow_tracker_type: hardware
+      vtep: true
+      network_services:
+        l3: true
+    - key: wan_rr
+      type: wan_rr
+      default_evpn_role: none
+      default_wan_role: server
+      default_underlay_routing_protocol: none
+      default_overlay_routing_protocol: none
+      default_flow_tracker_type: hardware
+      vtep: true
+      network_services:
+        l3: true
   ntp_settings:
     documentation_options:
       table: management-settings
@@ -3703,6 +3876,7 @@ keys:
     keys:
       server_vrf:
         type: str
+        default: use_default_mgmt_method_vrf
         description: "EOS only supports NTP servers in one VRF, so this VRF is used
           for all NTP servers and one local-interface.\n- `use_mgmt_interface_vrf`
           will configure the NTP server(s) under the VRF set with `mgmt_interface_vrf`
@@ -3711,9 +3885,10 @@ keys:
           `use_inband_mgmt_vrf` will configure the NTP server(s) under the VRF set
           with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as NTP local-interface.\n
           \ An error will be raised if inband management is not configured for the
-          device.\n- Any other string will be used directly as the VRF name but local
-          interface must be set with `custom_structured_configuration_ntp` if needed.\nIf
-          not set, the VRF is automatically picked up from the global setting `default_mgmt_method`."
+          device.\n- `use_default_mgmt_method_vrf` will configure the VRF for NTP
+          server(s) and local-interface for NTP depending on the value of `default_mgmt_method`.\n-
+          Any other string will be used directly as the VRF name but local interface
+          must be set with `custom_structured_configuration_ntp` if needed."
       servers:
         type: list
         description: The first server is always set as "preferred".
@@ -3858,10 +4033,10 @@ keys:
   overlay_loopback_description:
     documentation_options:
       table: overlay-settings
-    description: Customize the description on overlay interface Loopback0.
     type: str
     deprecation:
       warning: true
+      removed: true
       remove_in_version: 6.0.0
       new_key: router_id_loopback_description
   overlay_mlag_rfc5549:
@@ -4182,22 +4357,22 @@ keys:
       table: platform-settings
     description: Custom Platform settings to override the default `platform_settings`.
       This list will be prepended to the list of `platform_settings`. The first entry
-      containing `platforms` matching the `platform` node setting will be chosen.
-      If no matches are found, the first entry containing a platform `default` will
-      be chosen.
+      found where the `platform` node setting is fully matched by any regex in the
+      `platforms` list will be chosen. If no matches are found, the first entry containing
+      a platform `default` will be chosen.
     type: list
   platform_settings:
     type: list
     documentation_options:
       table: platform-settings
-    description: Platform settings. The first entry containing `platforms` matching
-      the `platform` node setting will be chosen. If no matches are found, the first
-      entry containing a platform `default` will be chosen. The default values will
-      be overridden if `platform_settings` is defined. If you need to replace all
-      the default platforms, it is recommended to copy the defaults and modify them.
-      If you need to add custom platforms, create them under `custom_platform_settings`.
-      Entries under `custom_platform_settings` will be matched before the equivalent
-      entries from `platform_settings`.
+    description: Platform settings. The first entry found where the `platform` node
+      setting is fully matched by any regex in the `platforms` list will be chosen.
+      If no matches are found, the first entry containing a platform `default` will
+      be chosen. The default values will be overridden if `platform_settings` is defined.
+      If you need to replace all the default platforms, it is recommended to copy
+      the defaults and modify them. If you need to add custom platforms, create them
+      under `custom_platform_settings`. Entries under `custom_platform_settings` will
+      be matched before the equivalent entries from `platform_settings`.
     items:
       type: dict
       keys:
@@ -5009,7 +5184,7 @@ keys:
     description: 'Serial Number of the device.
 
       Used for documentation purpose in the fabric documentation as can also be used
-      by the ''eos_config_deploy_cvp'' role.
+      by the ''cv_deploy'' role.
 
       "serial_number" can also be set directly under node type settings.
 
@@ -5106,46 +5281,15 @@ keys:
       table: fabric-settings
     type: bool
     default: true
-    description: 'When a device is set undeployed using `is_deployed: false` and `shutdown_bgp_towards_undeployed_peers`
-      key is set to true, the BGP neighborship is shutdown on the peer.'
+    description: 'Administratively shuts down BGP peerings towards devices marked
+      with `is_deployed: false`.'
   shutdown_interfaces_towards_undeployed_peers:
     documentation_options:
       table: fabric-settings
     type: bool
     default: true
-    description: '- It is possible to provision configurations for a complete topology
-      but flag devices as undeployed using the host level variable `is_deployed: false`.
-
-
-      ```yaml
-
-      # Use at the host level
-
-      is_deployed: < true or false or default -> true >
-
-      ```
-
-
-      - By default, this will have no impact within the `eos_designs` role. Configs
-      will still be generated by the `eos_cli_config_gen` role and will still be pushed
-      by the `eos_config_deploy_eapi` directly to devices if used.
-
-      - However, if the `eos_config_deploy_cvp` role is used to push configurations,
-      CloudVision will ignore the devices flagged  as `is_deployed: false` and not
-      attempt to configure them.
-
-      - If the device is not present in the network due to CloudVision not configuring
-      the device, `eos_validate_state` role will fail tests on peers of the undeployed
-      device trying to verify that interfaces are up.
-
-      - To overcome this and shutdown interfaces towards undeployed peers, the variable
-      `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state`
-      role interface tests.
-
-      - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices
-      are not present in the network.
-
-      '
+    description: 'Administratively shuts down interfaces on deployed devices that
+      connect to a peer marked with `is_deployed: false`.'
   snmp_settings:
     documentation_options:
       table: management-snmp-settings
@@ -5160,8 +5304,15 @@ keys:
       location:
         type: bool
         default: false
-        description: Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name>
-          <switch_rack> <inventory_hostname>".
+        description: Enables SNMP location using `location_template` value.
+      location_template:
+        type: str
+        description: "Customize the SNMP location description.\nThe available template
+          fields are:\n  - fabric_name: The logical name of the fabric.\n  - dc_name:
+          The name of the data center associated with the fabric.\n  - pod_name: The
+          pod or cluster grouping within the data center.\n  - rack: Physical rack
+          location of switch.\n  - hostname: Hostname used in inventory."
+        default: '{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}'
       vrfs:
         type: list
         primary_key: name
@@ -5204,28 +5355,6 @@ keys:
               description: IPv6 access-list name.
               convert_types:
               - int
-      enable_mgmt_interface_vrf:
-        type: bool
-        description: 'Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
-
-          Ignored if ''mgmt_ip'' or ''ipv6_mgmt_ip'' are not configured for the device.
-
-          Can be used in combination with "vrfs" and "enable_inband_mgmt_vrf".'
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: vrfs[name="use_mgmt_interface_vrf"].enabled
-      enable_inband_mgmt_vrf:
-        type: bool
-        description: 'Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
-
-          Ignored if inband management is not configured for the device.
-
-          Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".'
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: vrfs[name="use_inband_mgmt_vrf"].enabled
       compute_local_engineid:
         type: bool
         default: false
@@ -5327,49 +5456,21 @@ keys:
               - int
             use_mgmt_interface_vrf:
               type: bool
-              description: 'Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
-
-                Ignored if ''mgmt_ip'' or ''ipv6_mgmt_ip'' are not configured for
-                the device, so if the host is only configured with this VRF, the host
-                will not be configured at all.
-
-                Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to
-                configure the SNMP host under multiple VRFs.'
               deprecation:
                 warning: true
+                removed: true
                 remove_in_version: 6.0.0
                 new_key: 'vrf: "use_mgmt_interface_vrf"'
             use_inband_mgmt_vrf:
               type: bool
-              description: 'Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
-
-                Ignored if inband management is not configured for the device, so
-                if the host is only configured with this VRF, the host will not be
-                configured at all.
-
-                Can be used in combination with "vrf" and "use_mgmt_interface_vrf"
-                to configure the SNMP host under multiple VRFs.'
               deprecation:
                 warning: true
+                removed: true
                 remove_in_version: 6.0.0
                 new_key: 'vrf: "use_inband_mgmt_vrf"'
       communities:
         type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/communities
-      ipv4_acls:
-        type: list
-        $ref: eos_cli_config_gen#/keys/snmp_server/keys/ipv4_acls
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: vrfs[].ipv4_acl
-      ipv6_acls:
-        type: list
-        $ref: eos_cli_config_gen#/keys/snmp_server/keys/ipv6_acls
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: vrfs[].ipv6_acl
       views:
         type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/views
@@ -5379,6 +5480,34 @@ keys:
       traps:
         type: dict
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/traps
+      enable_mgmt_interface_vrf:
+        type: bool
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[name="use_mgmt_interface_vrf"].enabled
+      enable_inband_mgmt_vrf:
+        type: bool
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[name="use_inband_mgmt_vrf"].enabled
+      ipv4_acls:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[].ipv4_acl
+      ipv6_acls:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[].ipv6_acl
   source_interfaces:
     documentation_options:
       table: management-source-interfaces-settings
@@ -5473,6 +5602,10 @@ keys:
     documentation_options:
       table: management-settings
     keys:
+      enabled:
+        type: bool
+        description: Explicitly enable or disable management ssh for all VRFs. By
+          default EOS enables management ssh for all VRFs.
       vrfs:
         type: list
         primary_key: name
@@ -5563,8 +5696,8 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: bool
-    default: false
     deprecation:
+      removed: true
       warning: true
       new_key: cv_settings
       remove_in_version: 6.0.0
@@ -5572,8 +5705,8 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: str
-    default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
     deprecation:
+      removed: true
       warning: true
       new_key: cv_settings
       remove_in_version: 6.0.0
@@ -5581,24 +5714,17 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: int
-    convert_types:
-    - str
-    default: 9910
-    description: 'Port number used for Terminattr connection to an on-premise CloudVision
-      cluster.
-
-      The port number is always 443 when using CloudVision as a Service, so this value
-      is ignored.'
     deprecation:
       warning: true
+      removed: true
       new_key: cv_settings
       remove_in_version: 6.0.0
   terminattr_smashexcludes:
     documentation_options:
       table: cloudvision-settings
     type: str
-    default: ale,flexCounter,hardware,kni,pulse,strata
     deprecation:
+      removed: true
       warning: true
       new_key: cv_settings
       remove_in_version: 6.0.0
@@ -5706,8 +5832,9 @@ keys:
       IPv6 addresses.\nCurrently BGP peer-groups are named with IPv4 by default. This
       can be modified under `bgp_peer_groups`.\nRequires:\n  - \"underlay_ipv6: true\"\n
       \ - \"loopback_ipv6_pool\"\n  - \"underlay_routing_protocol: ebgp\"\nSome settings
-      are not yet supported with IPv6 underlay:\n  - underlay_multicast\n  - underlay_multicast_rp_interfaces\n
-      \ - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n  - inband_ztp\n"
+      are not yet supported with IPv6 underlay:\n  - underlay_multicast_pim_sm\n  -
+      underlay_multicast_rp_interfaces\n  - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n
+      \ - inband_ztp\n"
     type: bool
     default: false
   underlay_isis_authentication_cleartext_key:
@@ -5782,43 +5909,11 @@ keys:
     documentation_options:
       table: fabric-settings
     type: bool
-    description: 'Enable Multicast in the underlay on all p2p uplink interfaces and
-      mlag l3 peer interface.
-
-      Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
-
-      No other configuration is added, so the underlay will only support Source-Specific
-      Multicast (SSM).
-
-      The configuration is intended to be used as multicast underlay for EVPN OISM
-      overlay.
-
-      '
-    default: false
     deprecation:
-      removed: false
+      removed: true
       warning: true
       new_key: underlay_multicast_pim_sm
       remove_in_version: 6.0.0
-  underlay_multicast_pim_sm:
-    documentation_options:
-      table: fabric-settings
-    type: bool
-    description: "When enabled, configures multicast routing and by default configures
-      PIM sparse-mode in the underlay on all:\n  - P2P uplink interfaces if enabled
-      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
-      l3_edge and core interfaces\n\nNote: This changes the default behavior for l3_edge
-      / core_interfaces to automatically include the interfaces\nin multicast, unless
-      `include_in_underlay_protocol: false` or `multicast_pim_sm: false`."
-  underlay_multicast_static:
-    documentation_options:
-      table: fabric-settings
-    type: bool
-    default: false
-    description: "When enabled, configures multicast routing and by default configures
-      static multicast in the underlay on all:\n  - P2P uplink interfaces if enabled
-      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
-      l3_edge and core interfaces"
   underlay_multicast_anycast_rp:
     documentation_options:
       table: fabric-settings
@@ -5844,6 +5939,17 @@ keys:
         - pim
         - msdp
         default: pim
+  underlay_multicast_pim_sm:
+    documentation_options:
+      table: fabric-settings
+    type: bool
+    default: false
+    description: "When enabled, configures multicast routing and by default configures
+      PIM sparse-mode in the underlay on all:\n  - P2P uplink interfaces if enabled
+      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
+      l3_edge and core interfaces\n\nNote: This changes the default behavior for l3_edge
+      / core_interfaces to automatically include the interfaces\nin multicast, unless
+      `include_in_underlay_protocol: false` or `multicast_pim_sm: false`."
   underlay_multicast_rps:
     documentation_options:
       table: fabric-settings
@@ -5912,6 +6018,15 @@ keys:
           description: 'Name of standard Access-List.
 
             '
+  underlay_multicast_static:
+    documentation_options:
+      table: fabric-settings
+    type: bool
+    default: false
+    description: "When enabled, configures multicast routing and by default configures
+      static multicast in the underlay on all:\n  - P2P uplink interfaces if enabled
+      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
+      l3_edge and core interfaces"
   underlay_ospf_area:
     documentation_options:
       table: ospf-settings
@@ -5978,7 +6093,7 @@ keys:
     documentation_options:
       table: ospf-settings
     type: bool
-    default: false
+    default: true
     description: Enable graceful restart for OSPF underlay.
   underlay_ospf_max_lsa:
     documentation_options:
@@ -5994,6 +6109,7 @@ keys:
     type: int
     min: 1
     max: 128
+    default: 128
     convert_types:
     - str
   underlay_ospf_process_id:
@@ -6050,7 +6166,9 @@ keys:
     type: bool
     description: 'Generate AVD configurations directly from a given CloudVision topology.
 
-      See `cv_topology` for details.'
+      See `cv_topology` for details.
+
+      Requires both `cv_topology` and `cv_topology_levels` to be set.'
   use_router_general_for_router_id:
     documentation_options:
       table: fabric-settings
@@ -6344,7 +6462,7 @@ keys:
     type: bool
     documentation_options:
       table: wan-settings
-    default: true
+    default: false
     description: 'For EOS kernel forwarding, ECMP programming can be enabled in two
       different ways depending on the EOS version.
 
@@ -6353,21 +6471,6 @@ keys:
       this requires a restart of the KernelFib agent.
 
       - `false`: For newer EOS versions (starting 4.33.2) use the proper CLI.'
-  wan_use_evpn_node_settings_for_lan:
-    type: bool
-    documentation_options:
-      table: wan-settings
-    default: false
-    description: 'PREVIEW: This key is currently not supported and may produce invalid
-      configuration.
-
-      When true, `eos_designs` will use `overlay_routing_protocol`, `evpn_role` and
-      `vtep`
-
-      node settings for LAN side on WAN devices. Otherwise these will be ignored for
-      WAN.
-
-      This will be the default in AVD version 6.0.0 and this option will be removed.'
   wan_virtual_topologies:
     type: dict
     description: 'Configure Virtual Topologies for CV Pathfinder and AutoVPN.
@@ -6608,24 +6711,58 @@ keys:
             type: str
             required: true
 dynamic_keys:
-  connected_endpoints_keys.key:
-    $ref: eos_designs#/$defs/connected_endpoints
-    type: list
-    display_name: Connected Endpoints
-    documentation_options:
-      table: connected-endpoints
-  custom_connected_endpoints_keys.key:
-    $ref: eos_designs#/$defs/connected_endpoints
-    type: list
-    display_name: Custom Connected Endpoints
-    documentation_options:
-      table: connected-endpoints
   custom_node_type_keys.key:
     $ref: eos_designs#/$defs/node_type
     type: dict
     display_name: Custom Node Types
     documentation_options:
       hide_keys: true
+  connected_endpoints_keys.key:
+    $ref: eos_designs#/keys/connected_endpoints
+    type: list
+    display_name: Connected Endpoints
+    description: 'List of endpoint connected to the fabric.
+
+      This should be applied to group_vars or host_vars where endpoints are connecting.
+
+      `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".'
+    documentation_options:
+      table: connected-endpoints
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+        type:
+          type: str
+          description: 'Type of endpoint.
+
+            This is used in descriptions and in documentation.
+
+            The default value is taken from `connected_endpoints_keys[].type`.'
+  custom_connected_endpoints_keys.key:
+    $ref: eos_designs#/keys/connected_endpoints
+    type: list
+    display_name: Custom Connected Endpoints
+    description: 'List of endpoint connected to the fabric.
+
+      This should be applied to group_vars or host_vars where endpoints are connecting.
+
+      `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".'
+    documentation_options:
+      table: connected-endpoints
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+        type:
+          type: str
+          description: 'Type of endpoint.
+
+            This is used in descriptions and in documentation.
+
+            The default value is taken from `connected_endpoints_keys[].type`.'
   network_services_keys.name:
     $ref: eos_designs#/$defs/network_services
     type: list
@@ -6644,8 +6781,8 @@ $defs:
     keys:
       speed:
         type: str
-        description: 'Set adapter speed in the format `<interface_speed>` or `forced
-          <interface_speed>` or `auto <interface_speed>`.
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
+        description: 'Set adapter speed.
 
           If not specified speed will be auto.
 
@@ -6654,7 +6791,8 @@ $defs:
         type: str
         description: "Description or description template to be used on all ports.\nThis
           can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
-          available template fields are:\n  - `endpoint_type` - the `type` from `connected_endpoints_keys`
+          available template fields are:\n  - `endpoint_type` - the `type` of the
+          connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type`
           like `server`, `router` etc.\n  - `endpoint` - The name of the connected
           endpoint\n  - `endpoint_port` - The value from `endpoint_ports` for this
           switch port if set.\n\nThe default description is set by `default_connected_endpoints_description`.\nBy
@@ -6962,12 +7100,12 @@ $defs:
             description: "Description or description template to be used on the port-channel
               interface.\nThis can be a template using the AVD string formatter syntax:
               https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
-              available template fields are:\n  - `endpoint_type` - the `type` from
-              `connected_endpoints_keys` like `server`, `router` etc.\n  - `endpoint`
-              - The name of the connected endpoint\n  - `endpoint_port_channel` -
-              The value from `endpoint_port_channel` if set.\n  - `port_channel_id`
-              - The port-channel number for the switch.\n  - `adapter_description`
-              - The adapter's description if set.\n  - `adapter_description_or_endpoint`
+              available template fields are:\n  - `endpoint_type` - the `type` of
+              the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type`
+              like `server`, `router` etc.\n  - `endpoint` - The name of the connected
+              endpoint\n  - `endpoint_port_channel` - The value from `endpoint_port_channel`
+              if set.\n  - `port_channel_id` - The port-channel number for the switch.\n
+              \ - `adapter_description` - The adapter's description if set.\n  - `adapter_description_or_endpoint`
               - Helper alias of the adapter_description or endpoint.\n\nThe default
               description is set by `default_connected_endpoints_port_channel_description`.\nBy
               default the description is templated from the type, name and port_channel
@@ -7186,81 +7324,6 @@ $defs:
       - fabric
       - mlag
       - uplink
-  connected_endpoints:
-    type: list
-    primary_key: name
-    description: 'This should be applied to group_vars or host_vars where endpoints
-      are connecting.
-
-      `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".
-
-      '
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          description: Endpoint name will be used in the switchport description.
-        rack:
-          type: str
-          description: Rack is used for documentation purposes only.
-        adapters:
-          type: list
-          description: A list of adapters, group by adapters leveraging the same port-profile.
-          items:
-            $ref: eos_designs#/$defs/adapter_config
-            type: dict
-            keys:
-              switch_ports:
-                type: list
-                required: true
-                description: 'List of switch interfaces.
-
-                  The lists `endpoint_ports`, `switch_ports`, and `switches` must
-                  have the same length.
-
-                  '
-                items:
-                  type: str
-                  description: Switchport interface.
-              switches:
-                type: list
-                required: true
-                description: 'List of switches.
-
-                  The lists `endpoint_ports`, `switch_ports`, and `switches` must
-                  have the same length.
-
-                  '
-                items:
-                  type: str
-                  description: Device.
-              endpoint_ports:
-                type: list
-                description: 'Endpoint ports is used for description, required unless
-                  `description` or `descriptions` is set.
-
-                  The lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches`
-                  must have the same length.
-
-                  Each list item is one switchport.
-
-                  '
-                items:
-                  type: str
-                  description: Port name on the endpoint.
-              descriptions:
-                type: list
-                description: "Unique description per port. When set, takes priority
-                  over description.\nThis can be a template using the AVD string formatter
-                  syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
-                  available template fields are:\n  - `endpoint_type` - the `type`
-                  from `connected_endpoints_keys` like `server`, `router` etc.\n  -
-                  `endpoint` - The name of the connected endpoint\n  - `endpoint_port`
-                  - The value from `endpoint_ports` for this switch port if set.\n
-                  \ - `port_channel_id`: The port-channel number for the switch."
-                items:
-                  type: str
   flow_tracking_link:
     type: dict
     keys:
@@ -7762,10 +7825,13 @@ $defs:
                 type: list
                 items:
                   type: str
-                description: 'Nodes is required to restrict configuration of BGP neighbors
-                  to certain nodes in the network.
+                description: 'List of node names or regular expressions to match against
+                  hostnames to configure the peer-group.
 
-                  If not set the peer-group is created on devices which have a bgp_peer
+                  The regexes need to match full hostname and be enclosed in quotes,
+                  e.g ''DC1-BL[12]A''.
+
+                  The peer-group is also created on devices which have a bgp_peer
                   mapped to the corresponding peer_group.
 
                   '
@@ -8757,6 +8823,7 @@ $defs:
                           max_length: 8
                         message_digest_keys:
                           type: list
+                          primary_key: id
                           items:
                             type: dict
                             keys:
@@ -8914,8 +8981,7 @@ $defs:
                               and documentation.
                           speed:
                             type: str
-                            description: Speed should be set in the format `<interface_speed>`
-                              or `forced <interface_speed>` or `auto <interface_speed>`.
+                            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
                           structured_config:
                             type: dict
                             relaxed_validation: true
@@ -8927,6 +8993,11 @@ $defs:
                     ip_address:
                       type: str
                       description: IPv4 address/Mask.
+                    ip_address_secondaries:
+                      type: list
+                      items:
+                        type: str
+                        description: IPv4 address/Mask.
                     encapsulation_dot1q_vlan:
                       description: For subinterfaces the dot1q vlan is derived from
                         the interface name by default, but can also be specified.
@@ -9020,6 +9091,7 @@ $defs:
                           max_length: 8
                         message_digest_keys:
                           type: list
+                          primary_key: id
                           items:
                             type: dict
                             keys:
@@ -9151,11 +9223,16 @@ $defs:
                 items:
                   type: dict
                   keys:
+                    nodes:
+                      type: list
+                      items:
+                        type: str
                     destination_address_prefix:
                       type: str
                       description: IPv4_address.
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: prefix
                     gateway:
@@ -9163,35 +9240,33 @@ $defs:
                       description: IPv4_address.
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: next_hop
-                    nodes:
-                      type: list
-                      items:
-                        type: str
               ipv6_static_routes:
                 type: list
                 $ref: eos_designs#/$defs/static_routes
                 items:
                   type: dict
                   keys:
+                    nodes:
+                      type: list
+                      items:
+                        type: str
                     destination_address_prefix:
                       type: str
-                      description: IPv6_address.
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: prefix
                     gateway:
                       type: str
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: next_hop
-                    nodes:
-                      type: list
-                      items:
-                        type: str
               redistribute_static:
                 type: bool
                 description: Enable or disable the redistribution of all static routes
@@ -9292,8 +9367,14 @@ $defs:
                       type: list
                       items:
                         type: str
-                      description: Nodes is required to restrict configuration of
-                        BGP neighbors to certain nodes in the network.
+                      description: 'List of node names or regular expressions to match
+                        against hostnames.
+
+                        The regexes need to match full hostname and be enclosed in
+                        quotes, e.g ''DC1-BL[12]A''.
+
+                        Nodes is required to restrict configuration of BGP neighbors
+                        to certain nodes in the network.'
                     set_ipv4_next_hop:
                       type: str
                       description: 'IPv4_address
@@ -9431,11 +9512,14 @@ $defs:
                       type: list
                       items:
                         type: str
-                      description: 'Nodes is required to restrict configuration of
-                        BGP neighbors to certain nodes in the network.
+                      description: 'List of node names or regular expressions to match
+                        against hostnames to configure the peer-group.
 
-                        If not set the peer-group is created on devices which have
-                        a bgp_peer mapped to the corresponding peer_group.
+                        The regexes need to match full hostname and be enclosed in
+                        quotes, e.g ''DC1-BL[12]A''.
+
+                        The peer-group is also created on devices which have a bgp_peer
+                        mapped to the corresponding peer_group.
 
                         '
                     password:
@@ -9614,7 +9698,7 @@ $defs:
 
             Only supported for node types with "network_services.l1: true".
 
-            By default this is only set for node type "pe" with "design.type: mpls"
+            By default this is only set for node type "pe".
 
             '
           items:
@@ -10013,17 +10097,16 @@ $defs:
 
               '
             type: str
+            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
           uplink_switch_interface_speed:
             documentation_options:
               table: node-type-uplink-configuration
             description: 'Set point-to-Point interface speed for the uplink switch
               interface only.
 
-              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
-              or `auto <interface_speed>`.
-
               '
             type: str
+            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
           uplink_mtu:
             documentation_options:
               table: node-type-uplink-configuration
@@ -10139,35 +10222,6 @@ $defs:
               not overlap with autogenerated Port-channel IDs in the Network Services.\nNote!
               For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches
               must have the same value.\n"
-          uplink_structured_config:
-            documentation_options:
-              table: node-type-uplink-configuration
-              hide_keys: true
-            type: dict
-            relaxed_validation: true
-            description: 'Custom structured config applied to "uplink_interfaces",
-              and "uplink_switch_interfaces".
-
-              When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-              for eos_cli_config_gen overrides the settings on the ethernet interface
-              level.
-
-              When uplink_type == "port-channel", custom structured config added under
-              port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides
-              the settings on the port-channel interface level.
-
-              "uplink_structured_config" is applied after "structured_config", so
-              it can override "structured_config" defined on node-level.
-
-              Note! The content of this dictionary is _not_ validated by the schema,
-              since it can be either ethernet_interfaces or port_channel_interfaces.
-
-              '
-            deprecation:
-              warning: true
-              remove_in_version: 6.0.0
-              new_key: uplink_port_channel_structured_config or uplink_ethernet_structured_config
-                or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config
           uplink_ethernet_structured_config:
             type: dict
             $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
@@ -10434,7 +10488,6 @@ $defs:
             type: str
             convert_types:
             - int
-            - float
           bgp_defaults:
             documentation_options:
               table: node-type-bgp-configuration
@@ -10604,7 +10657,6 @@ $defs:
                       type: str
                       convert_types:
                       - int
-                      - float
               evpn_l2:
                 description: Enable EVPN Gateway functionality for route-types 2 (MAC-IP)
                   and 3 (IMET).
@@ -10738,7 +10790,6 @@ $defs:
                       required: true
                       convert_types:
                       - int
-                      - float
           mlag:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -10782,11 +10833,9 @@ $defs:
               table: node-type-l2-mlag-configuration
             description: 'Set MLAG interface speed.
 
-              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
-              or `auto <interface_speed>`.
-
               '
             type: str
+            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
           mlag_peer_l3_vlan:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -11673,7 +11722,7 @@ $defs:
                       default configures static multicast in the underlay on all:\n
                       \ - P2P uplink interfaces if enabled on uplink peer\n  - MLAG
                       L3 peer interface if also enabled on MLAG peer\n  - l3_edge
-                      and core interfaces\nOverrides the global `underlay_multicast_multicast`."
+                      and core interfaces\nOverrides the global `underlay_multicast_static`."
                   uplinks:
                     type: bool
                     default: true
@@ -11759,6 +11808,17 @@ $defs:
                   devices by default.
 
                   Overrides global `digital_twin.fabric.act_internet_access` flag.'
+          uplink_structured_config:
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            type: dict
+            deprecation:
+              warning: true
+              removed: true
+              remove_in_version: 6.0.0
+              new_key: uplink_port_channel_structured_config or uplink_ethernet_structured_config
+                or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -11885,8 +11945,7 @@ $defs:
           description: Enable or Shutdown the interface.
         speed:
           type: str
-          description: Speed should be set in the format `<interface_speed>` or `forced
-            <interface_speed>` or `auto <interface_speed>`.
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
         receive_bandwidth:
           type: int
           description: 'Maximum allowed receive bandwidth (download) in Mbps for this
@@ -12103,8 +12162,7 @@ $defs:
                 description: The peer device interface. Used for description and documentation.
               speed:
                 type: str
-                description: Speed should be set in the format `<interface_speed>`
-                  or `forced <interface_speed>` or `auto <interface_speed>`.
+                $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
               rx_queue:
                 type: dict
                 $ref: eos_designs#/$defs/rx_queue_settings
@@ -12281,8 +12339,7 @@ $defs:
             '
         speed:
           type: str
-          description: Speed should be set in the format `<interface_speed>` or `forced
-            <interface_speed>` or `auto <interface_speed>`.
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
         ip_pool:
           type: str
           description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A
@@ -12293,6 +12350,8 @@ $defs:
         ip:
           type: list
           description: Specific IP addresses used on this P2P link.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: Node IPv4 address/Mask.
@@ -12304,6 +12363,8 @@ $defs:
         nodes:
           type: list
           description: Nodes where this link should be configured.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: 'The values can be < node_a >, < node_b >.
@@ -12315,6 +12376,8 @@ $defs:
           type: list
           description: Interfaces where this link should be configured and Required
             unless using port-channels.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: 'The value can be like < node_a_interface >, < node_b_interface
@@ -12338,6 +12401,8 @@ $defs:
         descriptions:
           type: list
           description: Interface descriptions.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: "Description or description template to be used on the ethernet
@@ -12438,21 +12503,6 @@ $defs:
         sflow:
           type: bool
           description: Enable sFlow. Overrides `fabric_sflow` setting.
-        underlay_multicast:
-          type: bool
-          description: 'Enable PIM sparse mode. Requires `include_in_underlay_protocol`
-            and the global `underlay_multicast` to be `true`.
-
-
-            Note: The default value for this key is `false` when using either the
-            new key `underlay_multicast.pim_sm.enabled: true
-
-            or, if unset, global `underlay_multicast_pim_sm: true`'
-          deprecation:
-            removed: false
-            warning: true
-            new_key: multicast_pim_sm
-            remove_in_version: 6.0.0
         multicast_pim_sm:
           type: bool
           description: 'Configure PIM sparse-mode on the P2P links.
@@ -12566,19 +12616,6 @@ $defs:
 
             - ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the
             RFC5549 underlay if configured.'
-        structured_config:
-          type: dict
-          relaxed_validation: true
-          documentation_options:
-            hide_keys: true
-          description: 'Custom structured config for interfaces.
-
-            Note! The content of this dictionary is _not_ validated by the schema,
-            since it can be either ethernet_interfaces or port_channel_interfaces.'
-          deprecation:
-            warning: true
-            remove_in_version: 6.0.0
-            new_key: ethernet_structured_config or port_channel_structured_config
         ethernet_structured_config:
           type: dict
           relaxed_validation: true
@@ -12593,6 +12630,20 @@ $defs:
           description: Custom structured config for port-channel links.
           documentation_options:
             hide_keys: true
+        underlay_multicast:
+          type: bool
+          deprecation:
+            removed: true
+            warning: true
+            new_key: multicast_pim_sm
+            remove_in_version: 6.0.0
+        structured_config:
+          type: dict
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: ethernet_structured_config or port_channel_structured_config
   rx_queue_settings:
     type: dict
     description: 'Receive queue parameters for platform SFE interface profile.
@@ -12636,6 +12687,7 @@ $defs:
       keys:
         prefix:
           type: str
+          required: true
         next_hop:
           type: str
         track_bfd:
@@ -12705,6 +12757,11 @@ $defs:
         type: str
         description: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4
           addresses per node.
+      ip_address_secondaries:
+        type: list
+        items:
+          type: str
+          description: IPv4_address/Mask.
       ipv6_address:
         type: str
         description: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6
@@ -12733,6 +12790,23 @@ $defs:
         items:
           type: str
           description: IPv6_address/Mask.
+      ipv6_nd:
+        type: dict
+        keys:
+          advertise_ipv6_address_virtuals:
+            type: bool
+            description: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals`
+              key.
+          valid_lifetime:
+            type: str
+            description: In seconds <0-4294967295> or infinite.
+            convert_types:
+            - int
+          preferred_lifetime:
+            type: str
+            description: In seconds <0-4294967295> or infinite.
+            convert_types:
+            - int
       ip_address_virtual_secondaries:
         type: list
         description: Secondary IPv4 VXLAN Anycast IP addresses.
@@ -13011,6 +13085,7 @@ $defs:
             max_length: 8
           message_digest_keys:
             type: list
+            primary_key: id
             items:
               type: dict
               keys:
