@@ -10677,6 +10677,7 @@ router multicast
 BFD enabled: True
 
 Make-before-break: False
+Register Local Interface: Ethernet1
 
 ##### IP Rendezvous Information
 
@@ -10693,11 +10694,11 @@ Make-before-break: False
 
 ##### IP Sparse Mode VRFs
 
-| VRF Name | SSM Range ACL | BFD Enabled | Make-before-break |
-| -------- | ------------- | ----------- | ----------------- |
-| MCAST_VRF1 | SSM-MCAST | True | False |
-| MCAST_VRF2_ALL_GROUPS | - | False | - |
-| Test_RP_ACL | - | False | True |
+| VRF Name | SSM Range ACL | BFD Enabled | Make-before-break | Register Local Interface |
+| -------- | ------------- | ----------- | ----------------- | ------------------------ |
+| MCAST_VRF1 | SSM-MCAST | True | False | Loopback0 |
+| MCAST_VRF2_ALL_GROUPS | - | False | - | - |
+| Test_RP_ACL | - | False | True | - |
 
 | VRF Name | Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
 | -------- | ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
@@ -10726,6 +10727,7 @@ router pim sparse-mode
       rp address 10.238.1.161 239.12.12.17/32
       rp address 10.238.1.161 access-list RP_ACL3
       anycast-rp 10.38.1.161 10.50.64.16 register-count 15
+      register local-interface Ethernet1
    !
    vrf MCAST_VRF1
       ipv4
@@ -10735,6 +10737,7 @@ router pim sparse-mode
          rp address 10.238.2.161 239.12.22.12/32
          rp address 10.238.2.161 239.12.22.13/32
          rp address 10.238.2.161 239.12.22.14/32
+         register local-interface Loopback0
    !
    vrf MCAST_VRF2_ALL_GROUPS
       ipv4

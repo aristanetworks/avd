@@ -25,22 +25,17 @@ class AntaTestInputFactory(ABC, Generic[Input]):
     a list of `AntaTest.Input` models or `None`.
 
     Attributes:
-    ----------
-    device : DeviceTestContext
-        The device context for the test.
-    structured_config : EosCliConfigGen
-        The structured configuration model of the device.
-    minimal_structured_configs : dict[str, MinimalStructuredConfig]
-        The minimal structured configurations of all devices in the fabric.
-    logger_adapter : TestLoggerAdapter
-        Custom logger adapter used for the input factory.
+        device: `DeviceTestContext` instance for the test.
+        structured_config: `EosCliConfigGen` model of the device.
+        fabric_data: `AvdFabricData` instance containing data of all devices in the fabric.
+        logger_adapter: Custom `TestLoggerAdapter` logger adapter used for logging in the input factory.
     """
 
     def __init__(self, device_context: DeviceTestContext, test_name: str) -> None:
         """Initialize the `AntaTestInputFactory`."""
         self.device = device_context
         self.structured_config = device_context.structured_config
-        self.minimal_structured_configs = device_context.minimal_structured_configs
+        self.fabric_data = device_context.fabric_data
 
         # Create the logger adapter for the test input factory
         self.logger_adapter = TestLoggerAdapter(logger=getLogger(self.__module__), extra={"device": self.device.hostname, "test": test_name})
@@ -51,27 +46,36 @@ class AntaTestInputFactory(ABC, Generic[Input]):
 
     def is_peer_available(self, peer: str, identity: str) -> bool:
         """Check if a peer is part of the fabric and is deployed."""
-        if peer not in self.minimal_structured_configs or not self.minimal_structured_configs[peer].is_deployed:
+        if peer not in self.fabric_data.devices or not self.fabric_data.devices[peer].is_deployed:
             self.logger_adapter.debug(LogMessage.PEER_UNAVAILABLE, identity=identity, peer=peer)
             return False
         return True
 
-    def get_interface_ip(self, peer: str, peer_interface: str, interface: str) -> str | None:
+    def get_peer_interface_ip(self, peer: str, peer_interface: str, interface: str) -> str | None:
         """Get the IP address of a peer interface."""
         if not self.is_peer_available(peer, identity=interface):
             return None
 
-        for intf in self.minimal_structured_configs[peer].ethernet_interfaces:
-            if intf.name == peer_interface:
-                if intf.ip_address == "dhcp":
-                    self.logger_adapter.debug(LogMessage.PEER_INTERFACE_USING_DHCP, interface=interface, peer=peer, peer_interface=peer_interface)
-                    return None
-                if "unnumbered" in intf.ip_address:
-                    self.logger_adapter.debug(LogMessage.PEER_INTERFACE_UNNUMBERED, interface=interface, peer=peer, peer_interface=peer_interface)
-                    return None
-                return intf.ip_address
-        self.logger_adapter.debug(LogMessage.PEER_INTERFACE_NOT_FOUND, interface=interface, peer=peer, peer_interface=peer_interface)
-        return None
+        if (peer_intf := self.fabric_data.devices[peer].ethernet_interfaces.get(peer_interface)) is None:
+            self.logger_adapter.debug(LogMessage.PEER_INTERFACE_NOT_FOUND, interface=interface, peer=peer, peer_interface=peer_interface)
+            return None
+
+        peer_interface_ip = peer_intf.ip_address
+
+        if peer_interface_ip is None:
+            log_message = LogMessage.PEER_INTERFACE_NO_IP
+        elif peer_interface_ip == "dhcp":
+            log_message = LogMessage.PEER_INTERFACE_USING_DHCP
+        elif "unnumbered" in peer_interface_ip:
+            log_message = LogMessage.PEER_INTERFACE_UNNUMBERED
+        else:
+            log_message = None
+
+        if log_message:
+            self.logger_adapter.debug(log_message, interface=interface, peer=peer, peer_interface=peer_interface)
+            return None
+
+        return peer_interface_ip
 
     def is_peer_interface_shutdown(self, peer: str, peer_interface: str, interface: str) -> bool | None:
         """
@@ -87,9 +91,7 @@ class AntaTestInputFactory(ABC, Generic[Input]):
         Returns:
             The shutdown state (True or False) if the interface is found, otherwise None.
         """
-        peer_intf = next((intf for intf in self.minimal_structured_configs[peer].ethernet_interfaces if intf.name == peer_interface), None)
-
-        if peer_intf is None:
+        if (peer_intf := self.fabric_data.devices[peer].ethernet_interfaces.get(peer_interface)) is None:
             self.logger_adapter.debug(LogMessage.PEER_INTERFACE_NOT_FOUND, interface=interface, peer=peer, peer_interface=peer_interface)
             return None
 
