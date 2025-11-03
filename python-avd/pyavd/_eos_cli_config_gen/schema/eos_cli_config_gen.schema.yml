@@ -15130,7 +15130,7 @@ keys:
                 validate_state:
                   type: bool
                   default: true
-                  description: Key only used for documentation or validation purposes.
+                  description: Used for validation by the `anta_runner` role..
             description:
               type: str
             route_reflector_client:
@@ -15388,7 +15388,7 @@ keys:
                 validate_state:
                   type: bool
                   default: true
-                  description: Key only used for documentation or validation purposes.
+                  description: Used for validation by the `anta_runner` role..
             peer_group:
               type: str
               default: Peer-group name
@@ -18707,8 +18707,7 @@ keys:
                       validate_state:
                         type: bool
                         default: false
-                        description: Key only used for documentation or validation
-                          purposes.
+                        description: Used for validation by the `anta_runner` role..
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -18741,8 +18740,7 @@ keys:
                       validate_state:
                         type: bool
                         default: false
-                        description: Key only used for documentation or validation
-                          purposes.
+                        description: Used for validation by the `anta_runner` role..
             redistribute:
               type: dict
               description: Redistribute routes in to BGP.

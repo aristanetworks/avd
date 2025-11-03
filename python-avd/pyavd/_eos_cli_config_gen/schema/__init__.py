@@ -38785,7 +38785,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Key only used for documentation or validation purposes."""
                 validate_state: bool
                 """
-                Key only used for documentation or validation purposes.
+                Used for validation by the `anta_runner` role..
 
                 Default value: `True`
                 """
@@ -38801,7 +38801,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             peer: Key only used for documentation or validation purposes.
-                            validate_state: Key only used for documentation or validation purposes.
+                            validate_state: Used for validation by the `anta_runner` role..
 
                         """
 
@@ -39397,7 +39397,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Key only used for documentation or validation purposes."""
                 validate_state: bool
                 """
-                Key only used for documentation or validation purposes.
+                Used for validation by the `anta_runner` role..
 
                 Default value: `True`
                 """
@@ -39413,7 +39413,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             peer: Key only used for documentation or validation purposes.
-                            validate_state: Key only used for documentation or validation purposes.
+                            validate_state: Used for validation by the `anta_runner` role..
 
                         """
 
@@ -49470,7 +49470,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"validate_state": {"type": bool, "default": False}}
                     validate_state: bool
                     """
-                    Key only used for documentation or validation purposes.
+                    Used for validation by the `anta_runner` role..
 
                     Default value: `False`
                     """
@@ -49485,7 +49485,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                validate_state: Key only used for documentation or validation purposes.
+                                validate_state: Used for validation by the `anta_runner` role..
 
                             """
 
@@ -49723,7 +49723,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"validate_state": {"type": bool, "default": False}}
                     validate_state: bool
                     """
-                    Key only used for documentation or validation purposes.
+                    Used for validation by the `anta_runner` role..
 
                     Default value: `False`
                     """
@@ -49738,7 +49738,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                validate_state: Key only used for documentation or validation purposes.
+                                validate_state: Used for validation by the `anta_runner` role..
 
                             """
 

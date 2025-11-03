@@ -54338,7 +54338,7 @@ class EosDesigns(EosDesignsRootModel):
                     """Subclass of AvdList with `AggregateAddressesItem` items."""
                     validate_bgp_peers: bool
                     """
-                    Enable or disable BGP peer state validation on a per-VRF basis.
+                    Enable or disable BGP peer state validation by the `anta_runner` role on a per-VRF basis.
 
                     Default value: `False`
                     """
@@ -54581,7 +54581,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `AdditionalRouteTargetsItem` items.
                                 aggregate_addresses: Subclass of AvdList with `AggregateAddressesItem` items.
-                                validate_bgp_peers: Enable or disable BGP peer state validation on a per-VRF basis.
+                                validate_bgp_peers: Enable or disable BGP peer state validation by the `anta_runner` role on a per-VRF basis.
                                 raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
                                 structured_config: Custom structured config for eos_cli_config_gen.
 
