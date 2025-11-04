@@ -584,47 +584,28 @@ mod tests {
             let violations = validation_result.getattr("violations").unwrap();
             assert!(violations.is_instance_of::<pyo3::types::PyList>());
             assert_eq!(violations.len().unwrap(), 1);
-            // Not checked further
 
             let issue_enum = module.getattr("Issue").unwrap();
+            let violation_enum = module.getattr("Violation").unwrap();
+
             let violation_feedbacks = violations
                 .cast_exact::<pyo3::types::PyList>()
-                .unwrap()
-                .into_iter()
-                .filter(|feedback| {
-                    let issue = feedback.getattr("issue").unwrap();
-                    let coercion_type = issue_enum.getattr("Coercion").unwrap();
-                    issue.get_type().eq(coercion_type).unwrap()
-                })
-                .collect::<Vec<pyo3::Bound<'_, pyo3::PyAny>>>();
-            assert_eq!(violation_feedbacks.len(), 1);
+                .unwrap();
+            assert_eq!(violation_feedbacks.len().unwrap(), 1);
 
-            let feedback = violation_feedbacks.first().unwrap();
+            let feedback = violations.get_item(0).unwrap();
             let path = feedback.getattr("path").unwrap();
             let expected_path =
-                pyo3::types::PyList::new(py, ["ethernet_interfaces", "0", "no"]).unwrap();
+                pyo3::types::PyList::new(py, ["ethernet_interfaces", "0", "unknown"]).unwrap();
             assert!(path.eq(expected_path).unwrap());
-            let issue = feedback.getattr("issue").unwrap();
 
-            let coercion_note = issue.getattr("_0").unwrap();
-            let found = coercion_note
-                .getattr("found")
-                .unwrap()
-                .getattr("_0")
-                .unwrap();
-            let expected_found = pyo3::types::PyInt::new(py, 12345);
-            assert!(
-                found.eq(expected_found).unwrap(),
-                "Found something else: {}",
-                found
-            );
-            let made = coercion_note
-                .getattr("made")
-                .unwrap()
-                .getattr("_0")
-                .unwrap();
-            let expected_made = pyo3::types::PyString::new(py, "12345");
-            assert!(made.eq(expected_made).unwrap());
+            let issue = feedback.getattr("issue").unwrap();
+            let expected_issue = issue_enum.getattr("Validation").unwrap();
+            assert!(issue.get_type().eq(expected_issue).unwrap());
+
+            let violation = issue.getattr("_0").unwrap();
+            let expected_violation = violation_enum.getattr("UnexpectedKey").unwrap();
+            assert!(violation.get_type().eq(expected_violation).unwrap());
         });
     }
 }
