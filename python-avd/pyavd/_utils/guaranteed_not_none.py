@@ -8,13 +8,10 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import TypeVar
 
-    # TODO: Once we drop 3.13 support this can be imported from typing.
-    from typing_extensions import TypeIs
-
     T = TypeVar("T")
 
 
-def guaranteed_not_none(value: T | None) -> TypeIs[T]:
+def guaranteed_not_none(value: T | None) -> T:
     """
     Guarantee the value is not None.
 
@@ -22,10 +19,10 @@ def guaranteed_not_none(value: T | None) -> TypeIs[T]:
         value: Optional value to test
 
     Raises:
-        RuntimeError: if the value is None.
+        ValueError: if the value is None.
 
     """
     if value is None:
-        msg = "value is 'None' and was not expected to be."
+        msg = "Value should never be None here."
         raise RuntimeError(msg)
-    return True
+    return value

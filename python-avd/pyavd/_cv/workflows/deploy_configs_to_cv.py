@@ -141,14 +141,13 @@ async def deploy_configlet_containers_to_cv(configs: list[CVEosConfig], workspac
 
         # Create dict keyed by container id with value of tuple containing key container parameters. Used later to detect changes.
         existing_device_containers_by_id = {
-            cv_container.key.configlet_assignment_id: (
+            guaranteed_not_none(cv_container.key.configlet_assignment_id): (
                 cv_container.display_name,
                 cv_container.description,
                 cv_container.query,
                 cv_container.configlet_ids.values,
             )
             for cv_container in existing_device_containers
-            if guaranteed_not_none(cv_container.key.configlet_assignment_id)
         }
     else:
         existing_device_containers = []

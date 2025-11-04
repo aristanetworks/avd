@@ -45,7 +45,7 @@ class LimitCvVersion:
     The decorator will only work in CvClient class methods since it expects the _cv_client attribute on 'self'.
     """
 
-    versioned_funcs: ClassVar[dict[str, dict[tuple[CvVersion, CvVersion], Callable[..., Any]]]] = {}
+    versioned_funcs: ClassVar[dict[str, dict[tuple[CvVersion, CvVersion], Callable[..., Coroutine[Any, Any, Any]]]]] = {}
     """
     Map of versioned functions keyed by function name.
 
@@ -70,7 +70,7 @@ class LimitCvVersion:
             )
             raise ValueError(msg)
 
-    def __call__(self, func: Callable[P, T]) -> Callable[P, Coroutine[Any, Any, T]]:
+    def __call__(self, func: Callable[P, Coroutine[Any, Any, T]]) -> Callable[P, Coroutine[Any, Any, T]]:
         """
         Store the method in the map of versioned functions after checking for overlapping decorators for the same method.
 
@@ -133,7 +133,7 @@ class GRPCRequestHandler:
 
     # These instance variables are set when the decorator is called
     # Mark them as Optional and initialize to None for Pyright's sake.
-    func: Callable[..., Any] | None = None
+    func: Callable[..., Coroutine[Any, Any, Any]] | None = None
     func_signature: Signature | None = None
     bound_arguments: BoundArguments | None = None
     current_arguments_dict: dict[str, Any] | None = None
@@ -152,7 +152,7 @@ class GRPCRequestHandler:
         self.list_field = list_field
         self.min_items_for_splitting_attempt = max(2, min_items_for_splitting_attempt)
 
-    def __call__(self, func: Callable[P, T]) -> Callable[P, Coroutine[Any, Any, T]]:
+    def __call__(self, func: Callable[P, Coroutine[Any, Any, T]]) -> Callable[P, Coroutine[Any, Any, T]]:
         self.func = func
         self.func_signature = signature(func)
 
@@ -206,8 +206,7 @@ class GRPCRequestHandler:
 
     async def _execute_single_call_with_retries(self, call_args: tuple[Any, ...], call_kwargs: dict[str, Any]) -> None:
         """Executes a single call to self.func with retry logic for gRPC UNAVAILABLE."""
-        if not guaranteed_not_none(self.func):
-            return None
+        self.func = guaranteed_not_none(self.func)
         func_name = self.func.__name__
 
         for attempt in range(1, self.max_retries + 2):
@@ -263,8 +262,7 @@ class GRPCRequestHandler:
         return None
 
     async def _execute_with_splitting(self, original_call_args: tuple[Any, ...], original_call_kwargs: dict[str, Any]) -> Any:
-        if not guaranteed_not_none(self.func):
-            return None
+        self.func = guaranteed_not_none(self.func)
 
         func_name = self.func.__name__
 
