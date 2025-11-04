@@ -13,6 +13,10 @@ loopback_interfaces:
   shutdown: false
   ip_address: 10.10.0.3/32
 - name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 10.11.0.3/32
+- name: Loopback42
   shutdown: false
   ip_address: 192.168.1.1/32
 metadata:

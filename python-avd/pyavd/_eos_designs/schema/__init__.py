@@ -75504,7 +75504,6 @@ class EosDesigns(EosDesignsRootModel):
         "avd_data_validation_mode": {"type": str, "default": "error"},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_debug": {"type": bool, "default": False},
-        "avd_eos_designs_enforce_duplication_checks_across_all_models": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_eos_designs_unset_facts": {"type": bool, "default": True},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
@@ -76076,24 +76075,6 @@ class EosDesigns(EosDesignsRootModel):
     avd_eos_designs_debug: bool
     """
     Dump all vars and facts per device after generating `avd_switch_facts`.
-
-    Default value: `False`
-    """
-    avd_eos_designs_enforce_duplication_checks_across_all_models: bool
-    """
-    PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described
-    behavior.
-    When this is enabled, the generation of Structured Config in `eos_designs` will prevent
-    duplicate objects generated
-    by different input models. This will also improve performance since
-    `eos_designs` will not maintain separate copied of the Structured Configuration.
-    As an example, if
-    you define an Ethernet interface under `l3_edge` and use the same interface for connectivity under
-    `servers`:
-    - With this option disabled (default), AVD will merge these configurations together for
-    the interface and not raise an error.
-    - With this option enabled, AVD will raise an error about
-    duplicate interface definitions.
 
     Default value: `False`
     """
@@ -78008,7 +77989,6 @@ class EosDesigns(EosDesignsRootModel):
             avd_data_validation_mode: AvdDataValidationMode | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_debug: bool | UndefinedType = Undefined,
-            avd_eos_designs_enforce_duplication_checks_across_all_models: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_eos_designs_unset_facts: bool | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
@@ -78238,20 +78218,6 @@ class EosDesigns(EosDesignsRootModel):
                    `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a
                    dedicated output location.
                 avd_eos_designs_debug: Dump all vars and facts per device after generating `avd_switch_facts`.
-                avd_eos_designs_enforce_duplication_checks_across_all_models:
-                   PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described
-                   behavior.
-                   When this is enabled, the generation of Structured Config in `eos_designs` will prevent
-                   duplicate objects generated
-                   by different input models. This will also improve performance since
-                   `eos_designs` will not maintain separate copied of the Structured Configuration.
-                   As an example, if
-                   you define an Ethernet interface under `l3_edge` and use the same interface for connectivity under
-                   `servers`:
-                   - With this option disabled (default), AVD will merge these configurations together for
-                   the interface and not raise an error.
-                   - With this option enabled, AVD will raise an error about
-                   duplicate interface definitions.
                 avd_eos_designs_structured_config: Generate structured configuration per device.
                 avd_eos_designs_unset_facts:
                    Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer
