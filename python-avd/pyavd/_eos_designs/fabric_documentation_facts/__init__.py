@@ -286,7 +286,7 @@ class FabricDocumentationFacts(AvdFacts):
                         "peer_type": get(ethernet_interface, "metadata.peer_type"),
                         "peer_interface": get(ethernet_interface, "metadata.peer_interface", default="-"),
                         "fabric_switch": hostname,
-                        "fabric_port": ethernet_interface["name"],
+                        "fabric_port": get(port_channel_interface, "name") or ethernet_interface["name"],
                         "description": get(ethernet_interface, "description", default="-"),
                         "shutdown": default(get(ethernet_interface, "shutdown"), get(port_channel_interface, "shutdown"), "-"),
                         "mode": default(get(ethernet_interface, "switchport.mode"), get(port_channel_interface, "switchport.mode"), "-"),
