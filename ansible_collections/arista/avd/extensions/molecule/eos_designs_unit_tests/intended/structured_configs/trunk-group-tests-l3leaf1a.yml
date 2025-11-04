@@ -512,74 +512,37 @@ vlans:
 - id: 100
   name: svi100_with_trunk_groups
   trunk_groups:
-  - TRUNK_GROUP_TESTS_L2LEAF1
   - MLAG
   - TG_100
   - TG_NOT_MATCHING_ANY_SERVERS
-  tenant: TRUNK_GROUP_TESTS
-- id: 110
-  name: l2vlan110_with_trunk_groups
-  trunk_groups:
   - TRUNK_GROUP_TESTS_L2LEAF1
-  - MLAG
-  - TG_100
-  - TG_NOT_MATCHING_ANY_SERVERS
-  tenant: TRUNK_GROUP_TESTS
-- id: 200
-  name: svi200_with_trunk_groups
-  trunk_groups:
-  - trunk-group-tests-l2leaf3
-  - TRUNK_GROUP_TESTS_L2LEAF1
-  - MLAG
-  - TG_200
-  - TG_NOT_MATCHING_ANY_SERVERS
-  tenant: TRUNK_GROUP_TESTS
-- id: 210
-  name: l2vlan210_with_trunk_groups
-  trunk_groups:
-  - trunk-group-tests-l2leaf3
-  - TRUNK_GROUP_TESTS_L2LEAF1
-  - MLAG
-  - TG_200
-  - TG_NOT_MATCHING_ANY_SERVERS
-  tenant: TRUNK_GROUP_TESTS
-- id: 300
-  name: svi300_with_trunk_groups
-  trunk_groups:
-  - TRUNK_GROUP_TESTS_L2LEAF1
-  - MLAG
-  - TG_300
-  - TG_NOT_MATCHING_ANY_SERVERS
-  tenant: TRUNK_GROUP_TESTS
-- id: 310
-  name: l2vlan310_with_trunk_groups
-  trunk_groups:
-  - TRUNK_GROUP_TESTS_L2LEAF1
-  - MLAG
-  - TG_300
-  - TG_NOT_MATCHING_ANY_SERVERS
-  tenant: TRUNK_GROUP_TESTS
-- id: 398
-  name: svi398_without_trunk_groups
-  trunk_groups:
-  - TRUNK_GROUP_TESTS_L2LEAF1
-  - MLAG
-  tenant: TRUNK_GROUP_TESTS
-- id: 399
-  name: l2vlan399_without_trunk_groups
-  trunk_groups:
-  - TRUNK_GROUP_TESTS_L2LEAF1
-  - MLAG
   tenant: TRUNK_GROUP_TESTS
 - id: 3099
   name: MLAG_L3_VRF_TG_100
   trunk_groups:
   - MLAG
   tenant: TRUNK_GROUP_TESTS
+- id: 200
+  name: svi200_with_trunk_groups
+  trunk_groups:
+  - MLAG
+  - TG_200
+  - TG_NOT_MATCHING_ANY_SERVERS
+  - trunk-group-tests-l2leaf3
+  - TRUNK_GROUP_TESTS_L2LEAF1
+  tenant: TRUNK_GROUP_TESTS
 - id: 3199
   name: MLAG_L3_VRF_TG_200
   trunk_groups:
   - MLAG
+  tenant: TRUNK_GROUP_TESTS
+- id: 300
+  name: svi300_with_trunk_groups
+  trunk_groups:
+  - MLAG
+  - TG_300
+  - TG_NOT_MATCHING_ANY_SERVERS
+  - TRUNK_GROUP_TESTS_L2LEAF1
   tenant: TRUNK_GROUP_TESTS
 - id: 301
   name: svi301_with_trunk_groups_only_l3leaf
@@ -588,10 +551,41 @@ vlans:
   - TG_300
   - TG_NOT_MATCHING_ANY_SERVERS
   tenant: TRUNK_GROUP_TESTS
+- id: 398
+  name: svi398_without_trunk_groups
+  trunk_groups:
+  - MLAG
+  - TRUNK_GROUP_TESTS_L2LEAF1
+  tenant: TRUNK_GROUP_TESTS
 - id: 3299
   name: MLAG_L3_VRF_TG_300
   trunk_groups:
   - MLAG
+  tenant: TRUNK_GROUP_TESTS
+- id: 110
+  name: l2vlan110_with_trunk_groups
+  trunk_groups:
+  - MLAG
+  - TG_100
+  - TG_NOT_MATCHING_ANY_SERVERS
+  - TRUNK_GROUP_TESTS_L2LEAF1
+  tenant: TRUNK_GROUP_TESTS
+- id: 210
+  name: l2vlan210_with_trunk_groups
+  trunk_groups:
+  - MLAG
+  - TG_200
+  - TG_NOT_MATCHING_ANY_SERVERS
+  - trunk-group-tests-l2leaf3
+  - TRUNK_GROUP_TESTS_L2LEAF1
+  tenant: TRUNK_GROUP_TESTS
+- id: 310
+  name: l2vlan310_with_trunk_groups
+  trunk_groups:
+  - MLAG
+  - TG_300
+  - TG_NOT_MATCHING_ANY_SERVERS
+  - TRUNK_GROUP_TESTS_L2LEAF1
   tenant: TRUNK_GROUP_TESTS
 - id: 311
   name: l2vlan310_with_trunk_groups_only_l3leaf
@@ -599,6 +593,12 @@ vlans:
   - MLAG
   - TG_300
   - TG_NOT_MATCHING_ANY_SERVERS
+  tenant: TRUNK_GROUP_TESTS
+- id: 399
+  name: l2vlan399_without_trunk_groups
+  trunk_groups:
+  - MLAG
+  - TRUNK_GROUP_TESTS_L2LEAF1
   tenant: TRUNK_GROUP_TESTS
 vrfs:
 - name: MGMT

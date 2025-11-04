@@ -4833,6 +4833,7 @@ interface Ethernet5
    ip ospf authentication-key 7 <removed>
    ip ospf area 100
    ip ospf message-digest-key 1 sha512 7 <removed>
+   ip ospf message-digest-key 2 sha512 8a <removed>
    pim ipv4 sparse-mode
    pim ipv4 bidirectional
    pim ipv4 border-router
@@ -4864,6 +4865,7 @@ interface Ethernet6
       address-family ipv4 disabled
       locked-address ipv4 enforcement disabled
    no lldp transmit
+   ip ospf authentication-key 8a <removed>
    ptp enable
    ptp announce interval 3
    ptp announce timeout 9
@@ -5976,6 +5978,7 @@ interface Port-Channel5
    l2 mru 8000
    mlag 5
    ntp serve
+   ip ospf authentication-key 8a <removed>
    ptp enable
    ptp mpass
    ptp delay-mechanism e2e
@@ -6127,6 +6130,7 @@ interface Port-Channel18
    ip ospf authentication message-digest
    ip ospf area 0.0.0.12
    ip ospf message-digest-key 55 md5 7 <removed>
+   ip ospf message-digest-key 56 sha512 8a <removed>
 !
 interface Port-Channel20
    description Po_in_mode_access_accepting_tagged_LACP_frames
@@ -6960,6 +6964,7 @@ interface Vlan25
    description SVI Description
    no shutdown
    ipv6 address 1b11:3a00:22b0:16::16/64
+   ip ospf authentication-key 8a <removed>
    ipv6 virtual-router address 1b11:3a00:22b0:16::14
    ipv6 virtual-router address 1b11:3a00:22b0:16::15
 !
@@ -6970,6 +6975,7 @@ interface Vlan26
    ip ospf authentication message-digest
    ip ospf area 0.0.0.24
    ip ospf message-digest-key 55 md5 7 <removed>
+   ip ospf message-digest-key 56 sha512 8a <removed>
    ipv6 ospf network point-to-point
    ipv6 ospf area 0.0.0.29
 !
@@ -7287,6 +7293,8 @@ interface Vlan1002
    ip address virtual 10.1.2.1/24
 !
 interface Vlan2001
+   traffic-policy input Policy-01
+   traffic-policy output Policy-02
    description SVI Description
    logging event link-status
    vrf Tenant_B
@@ -13088,6 +13096,7 @@ Counters: test
 | --------- | -------------------- | --------------------- |
 | Ethernet1 | BLUE-C1-POLICY | BLUE-C2-POLICY |
 | Port-Channel15 | BLUE-C1-POLICY | BLUE-C2-POLICY |
+| Vlan2001 | Policy-01 | Policy-02 |
 
 #### Traffic Policies Device Configuration
 
