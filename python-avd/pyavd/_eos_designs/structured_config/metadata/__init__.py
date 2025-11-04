@@ -19,8 +19,6 @@ from .digital_twin import DigitalTwinMixin
 class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, DigitalTwinMixin, StructuredConfigGeneratorProtocol, Protocol):
     """Protocol for the AvdStructuredConfigMetadata Class."""
 
-    ignore_avd_eos_designs_enforce_duplication_checks_across_all_models = True
-
     @structured_config_contributor
     def metadata(self) -> None:
         self.structured_config.metadata._update(

@@ -6788,6 +6788,8 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    EvpnPreventReadvertiseToServerMode: TypeAlias = Literal["source_peer_asn", "as_path_acl"]
+
     class EvpnVlanBundlesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -75502,7 +75504,6 @@ class EosDesigns(EosDesignsRootModel):
         "avd_data_validation_mode": {"type": str, "default": "error"},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_debug": {"type": bool, "default": False},
-        "avd_eos_designs_enforce_duplication_checks_across_all_models": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_eos_designs_unset_facts": {"type": bool, "default": True},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
@@ -75584,6 +75585,7 @@ class EosDesigns(EosDesignsRootModel):
         "evpn_multicast": {"type": bool, "default": False},
         "evpn_overlay_bgp_rtc": {"type": bool, "default": False},
         "evpn_prevent_readvertise_to_server": {"type": bool, "default": False},
+        "evpn_prevent_readvertise_to_server_mode": {"type": str, "default": "source_peer_asn"},
         "evpn_short_esi_prefix": {"type": str, "default": "0000:0000:"},
         "evpn_vlan_aware_bundles": {"type": bool, "default": False},
         "evpn_vlan_bundles": {"type": EvpnVlanBundles},
@@ -76073,24 +76075,6 @@ class EosDesigns(EosDesignsRootModel):
     avd_eos_designs_debug: bool
     """
     Dump all vars and facts per device after generating `avd_switch_facts`.
-
-    Default value: `False`
-    """
-    avd_eos_designs_enforce_duplication_checks_across_all_models: bool
-    """
-    PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described
-    behavior.
-    When this is enabled, the generation of Structured Config in `eos_designs` will prevent
-    duplicate objects generated
-    by different input models. This will also improve performance since
-    `eos_designs` will not maintain separate copied of the Structured Configuration.
-    As an example, if
-    you define an Ethernet interface under `l3_edge` and use the same interface for connectivity under
-    `servers`:
-    - With this option disabled (default), AVD will merge these configurations together for
-    the interface and not raise an error.
-    - With this option enabled, AVD will raise an error about
-    duplicate interface definitions.
 
     Default value: `False`
     """
@@ -76742,14 +76726,30 @@ class EosDesigns(EosDesignsRootModel):
     """
     evpn_prevent_readvertise_to_server: bool
     """
-    Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in
-    the AS Path are filtered away.
-    This is very useful in large-scale networks, where convergence will
-    be quicker by not returning all updates received
-    from Route-server-1 to Router-server-2 just for
-    Route-server-2 to throw them away because of AS Path loop detection.
+    Prevent sending EVPN BGP updates to the route-server if they came from or passed through the route-
+    server already.
+    Refer to `evpn_prevent_readvertise_to_server_mode` to control which configuration
+    style to use.
+    This is very useful in large-scale networks, where convergence will be quicker by not
+    returning all updates received
+    from Route-server-1 to Router-server-2 just for Route-server-2 to
+    throw them away because of AS Path loop detection.
 
     Default value: `False`
+    """
+    evpn_prevent_readvertise_to_server_mode: EvpnPreventReadvertiseToServerMode
+    """
+    `evpn_prevent_readvertise_to_server_mode` controls the method of identifying EVPN routes that should
+    not be advertised to the EVPN route-servers.
+    Only used when `evpn_prevent_readvertise_to_server` is
+    set to `true`.
+    `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers
+    which filter out BGP updates learned directly from the ASN of the route-server. This mode will still
+    allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.
+    `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
+    updates with the route-server ASN anywhere in the AS-path.
+
+    Default value: `"source_peer_asn"`
     """
     evpn_short_esi_prefix: str
     """
@@ -77989,7 +77989,6 @@ class EosDesigns(EosDesignsRootModel):
             avd_data_validation_mode: AvdDataValidationMode | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_debug: bool | UndefinedType = Undefined,
-            avd_eos_designs_enforce_duplication_checks_across_all_models: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_eos_designs_unset_facts: bool | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
@@ -78049,6 +78048,7 @@ class EosDesigns(EosDesignsRootModel):
             evpn_multicast: bool | UndefinedType = Undefined,
             evpn_overlay_bgp_rtc: bool | UndefinedType = Undefined,
             evpn_prevent_readvertise_to_server: bool | UndefinedType = Undefined,
+            evpn_prevent_readvertise_to_server_mode: EvpnPreventReadvertiseToServerMode | UndefinedType = Undefined,
             evpn_short_esi_prefix: str | UndefinedType = Undefined,
             evpn_vlan_aware_bundles: bool | UndefinedType = Undefined,
             evpn_vlan_bundles: EvpnVlanBundles | UndefinedType = Undefined,
@@ -78218,20 +78218,6 @@ class EosDesigns(EosDesignsRootModel):
                    `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a
                    dedicated output location.
                 avd_eos_designs_debug: Dump all vars and facts per device after generating `avd_switch_facts`.
-                avd_eos_designs_enforce_duplication_checks_across_all_models:
-                   PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described
-                   behavior.
-                   When this is enabled, the generation of Structured Config in `eos_designs` will prevent
-                   duplicate objects generated
-                   by different input models. This will also improve performance since
-                   `eos_designs` will not maintain separate copied of the Structured Configuration.
-                   As an example, if
-                   you define an Ethernet interface under `l3_edge` and use the same interface for connectivity under
-                   `servers`:
-                   - With this option disabled (default), AVD will merge these configurations together for
-                   the interface and not raise an error.
-                   - With this option enabled, AVD will raise an error about
-                   duplicate interface definitions.
                 avd_eos_designs_structured_config: Generate structured configuration per device.
                 avd_eos_designs_unset_facts:
                    Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer
@@ -78717,12 +78703,24 @@ class EosDesigns(EosDesignsRootModel):
                    4.25.1F).
                    Requires use eBGP as overlay protocol.
                 evpn_prevent_readvertise_to_server:
-                   Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in
-                   the AS Path are filtered away.
-                   This is very useful in large-scale networks, where convergence will
-                   be quicker by not returning all updates received
-                   from Route-server-1 to Router-server-2 just for
-                   Route-server-2 to throw them away because of AS Path loop detection.
+                   Prevent sending EVPN BGP updates to the route-server if they came from or passed through the route-
+                   server already.
+                   Refer to `evpn_prevent_readvertise_to_server_mode` to control which configuration
+                   style to use.
+                   This is very useful in large-scale networks, where convergence will be quicker by not
+                   returning all updates received
+                   from Route-server-1 to Router-server-2 just for Route-server-2 to
+                   throw them away because of AS Path loop detection.
+                evpn_prevent_readvertise_to_server_mode:
+                   `evpn_prevent_readvertise_to_server_mode` controls the method of identifying EVPN routes that should
+                   not be advertised to the EVPN route-servers.
+                   Only used when `evpn_prevent_readvertise_to_server` is
+                   set to `true`.
+                   `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers
+                   which filter out BGP updates learned directly from the ASN of the route-server. This mode will still
+                   allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.
+                   `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
+                   updates with the route-server ASN anywhere in the AS-path.
                 evpn_short_esi_prefix: Configure prefix for "short_esi" values.
                 evpn_vlan_aware_bundles:
                    Enable VLAN aware bundles for every EVPN MAC-VRF.
