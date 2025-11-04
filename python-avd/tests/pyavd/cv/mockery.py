@@ -52,6 +52,7 @@ def mocked_cvdevices(hostnames: list[str] | None = None, device_count: int | Non
 
 def get_recording_file(route: str, request: IProtoMessage, cv_server: str, recording_dir: Path = RECORDING_DIR) -> Path:
     digest = sha1(str(request).encode("UTF-8"), usedforsecurity=False).hexdigest()
+    raise Exception(digest, request, route)
     recording_file = recording_dir / Path(route.strip("/")) / cv_server / f"{digest}.json"
     if environ.get("RECORDING"):
         recording_file.parent.mkdir(parents=True, exist_ok=True)

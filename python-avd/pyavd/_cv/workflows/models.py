@@ -6,7 +6,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Literal, Protocol
+from typing import TYPE_CHECKING, Any, Literal
 from uuid import NAMESPACE_DNS, uuid4, uuid5
 
 from pyavd._cv.client.configlet import ASSIGNMENT_MATCH_POLICY_MAP, ConfigletApiTuple
@@ -115,18 +115,6 @@ class CVInterfaceTag:
             device_id=self.device.serial_number,
             interface_id=self.interface,
         )
-
-
-class BaseCVTagProtocol(Protocol):
-    """Protocol for common attributes shared by CVDeviceTag and CVInterfaceTag."""
-
-    label: str
-    value: str
-    device: CVDevice | None
-
-    def as_cv_tag(self) -> CVTag: ...
-
-    def as_cv_tag_assignment(self) -> CVTagAssignment | None: ...
 
 
 @dataclass
