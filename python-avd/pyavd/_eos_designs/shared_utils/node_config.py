@@ -68,33 +68,40 @@ class NodeConfigMixin(Protocol):
                     <node_type_key>.defaults
 
         For 'devices' vars are already inherited in self.device_config (first one wins):
-        parent_profiles[name=parent_profile] ->
+        devices[name=hostname] ->
             profile[name=profile] ->
-                devices[name=hostname]
+                parent_profiles[name=parent_profile]
         """
         if self.device_config is not None:
             # Detect if the device is _also_ defined under the node type model. If so raise an error.
             if self.node_type_config is not None and (self.hostname in self.node_type_config.nodes or self.node_group_config is not None):
-                msg = f"Found the device '{self.hostname}' under both '{self.node_type_key_data.key}' and 'devices'. Remove the device from one of the models."
+                if self.hostname in self.inputs.devices:
+                    msg = (
+                        f"Found the device '{self.hostname}' under both '{self.node_type_key_data.key}' and 'devices'. "
+                        "Remove the device from one of the models."
+                    )
+                else:
+                    # Device config was created only from the device_profile key.
+                    msg = (
+                        f"Found the device '{self.hostname}' under '{self.node_type_key_data.key}' but it also has 'device_profile' set. "
+                        "Those two models are mutually exclusive one of them must be removed for this device."
+                    )
                 raise AristaAvdInvalidInputsError(
                     msg,
                     host=self.hostname,
                 )
 
+            # Casting as NodesItem so all the code relying on this does not have to care which model the input came from.
             return self.device_config._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True)
 
         if self.node_type_config is None:
             msg = (
                 f"'type' is set to '{self.type}', for which node configs should use the key '{self.node_type_key_data.key}'"
-                f"but '{self.node_type_key_data.key}' was not found. Alternatively use the new 'devices[]' model."
+                f"but '{self.node_type_key_data.key}' was not found."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
-        node_config = (
-            self.node_type_config.nodes[self.hostname]
-            if self.node_type_config and self.hostname in self.node_type_config.nodes
-            else EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem()
-        )
+        node_config = self.node_type_config.nodes.get(self.hostname, default=EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem())
 
         if self.node_group_config is not None:
             node_config._deepinherit(
@@ -117,13 +124,10 @@ class NodeConfigMixin(Protocol):
         Returns True, <peer> if this device is the first one in the node_group.
         Returns False, <peer> if this device is the second one in the node_group.
         """
-        if self.node_group_config:
-            if len(self.node_group_config.nodes) != 2:
-                return None
+        if self.node_group_config is None or len(self.node_group_config.nodes) != 2:
+            return None
 
-            nodes = list(self.node_group_config.nodes.keys())
-            index = nodes.index(self.hostname)
-            peer_index = not index  # (0->1 and 1>0)
-            return index == 0, nodes[peer_index]
-
-        return None
+        nodes = list(self.node_group_config.nodes.keys())
+        index = nodes.index(self.hostname)
+        peer_index = not index  # (0->1 and 1>0)
+        return index == 0, nodes[peer_index]
