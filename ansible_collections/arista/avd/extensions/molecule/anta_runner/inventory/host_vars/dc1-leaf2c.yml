@@ -1,6 +1,4 @@
-# Custom vxlan structured_config to validate that the DPS interface is being used as the source interface for VXLAN,
-# and that IPv6 encapsulation is enabled on the VXLAN interface. Since the DPS interface does not support IPv6,
-# this causes the VXLAN interface to go down
+# Custom vxlan structured_config to validate that the vxlan interface is skipped when using ipv6 encapsulation in combination with dps source interface
 custom_structured_configuration_vxlan_interface:
   vxlan1:
     description: dc1-leaf1c_VTEP

@@ -77,12 +77,14 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
 
     def _is_vxlan_source_interface_operational(self) -> bool:
         """Check if the VXLAN source interface is operational (not shutdown and has IP configured)."""
-        vxlan_src_intf = self.structured_config.vxlan_interface.vxlan1.vxlan.source_interface
+        if (vxlan_src_intf := self.structured_config.vxlan_interface.vxlan1.vxlan.source_interface) is None:
+            return False
+
         ipv6_enabled = bool(self.structured_config.vxlan_interface.vxlan1.vxlan.encapsulations.ipv6)
 
         # Check DPS interfaces
         if "Dps" in vxlan_src_intf and vxlan_src_intf in self.structured_config.dps_interfaces:
-            # DPS interfaces don't support IPv6
+            # No ipv6_address supported in dps_interfaces models
             if ipv6_enabled:
                 return False
             interface = self.structured_config.dps_interfaces[vxlan_src_intf]

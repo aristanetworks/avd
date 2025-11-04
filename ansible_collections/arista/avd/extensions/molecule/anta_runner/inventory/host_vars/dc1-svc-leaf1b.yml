@@ -1,0 +1,5 @@
+# Custom vxlan structured_config to validate that the vxlan interface is skipped when the configured source interface is not present
+custom_structured_configuration_vxlan_interface:
+  vxlan1:
+    vxlan:
+      source_interface: Loopback10
