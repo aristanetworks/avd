@@ -1,9 +1,19 @@
 aaa_root:
   disabled: true
+as_path:
+  access_lists:
+  - name: AS65002
+    entries:
+    - type: permit
+      match: _65002_
+  - name: AS65003
+    entries:
+    - type: permit
+      match: _65003_
 config_end: true
 enable_password:
   disabled: true
-hostname: tenant-default-vrf-with-loopbacks
+hostname: evpn-prevent-readvertise-to-server-6
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -11,14 +21,11 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 10.10.0.3/32
+  ip_address: 192.168.255.116/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 10.11.0.3/32
-- name: Loopback42
-  shutdown: false
-  ip_address: 192.168.1.1/32
+  ip_address: 192.168.254.116/32
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -26,9 +33,9 @@ prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 10.10.0.0/24 eq 32
+    action: permit 192.168.255.0/24 eq 32
   - sequence: 20
-    action: permit 10.11.0.0/24 eq 32
+    action: permit 192.168.254.0/24 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -36,14 +43,30 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-EVPN-FILTER-AS65002
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - as-path AS65002
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-FILTER-AS65003
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - as-path AS65003
+  - sequence: 20
+    type: permit
 router_bfd:
   multihop:
     interval: 300
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '65101'
-  router_id: 10.10.0.3
+  as: '65005'
+  router_id: 192.168.255.116
   maximum_paths:
     paths: 4
   updates:
@@ -65,29 +88,32 @@ router_bgp:
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.255.112
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65002'
+    metadata:
+      peer: evpn-prevent-readvertise-to-server-2
+    description: evpn-prevent-readvertise-to-server-2_Loopback0
+    route_map_out: RM-EVPN-FILTER-AS65002
+  - ip_address: 192.168.255.113
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65003'
+    metadata:
+      peer: evpn-prevent-readvertise-to-server-3
+    description: evpn-prevent-readvertise-to-server-3_Loopback0
+    route_map_out: RM-EVPN-FILTER-AS65003
+  - ip_address: 192.168.255.115
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65003'
+    metadata:
+      peer: evpn-prevent-readvertise-to-server-5
+    description: evpn-prevent-readvertise-to-server-5_Loopback0
+    route_map_out: RM-EVPN-FILTER-AS65003
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  vlans:
-  - id: 1008
-    metadata:
-      tenant: SIT
-    rd: 10.10.0.3:21008
-    route_targets:
-      both:
-      - 21008:21008
-    redistribute_routes:
-    - learned
-  - id: 10
-    metadata:
-      tenant: SIT
-    rd: 10.10.0.3:20010
-    route_targets:
-      both:
-      - 20010:20010
-    redistribute_routes:
-    - learned
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -98,54 +124,23 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-  vrfs:
-  - name: default
-    rd: 10.10.0.3:789654
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 789654:789654
-      export:
-      - address_family: evpn
-        route_targets:
-        - 789654:789654
 service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.1
 transceiver_qsfp_default_mode_4x10: true
-vlan_interfaces:
-- name: Vlan1008
-  description: SVI_1
-  shutdown: false
-  metadata:
-    tenant: SIT
-    tags:
-    - sit
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
-vlans:
-- id: 1008
-  name: SVI_1
-  tenant: SIT
-- id: 10
-  name: storage_prod
-  tenant: SIT
 vrfs:
 - name: MGMT
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: tenant-default-vrf-with-loopbacks_VTEP
+    description: evpn-prevent-readvertise-to-server-6_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
-      vlans:
-      - id: 1008
-        vni: 21008
-      - id: 10
-        vni: 20010
-      vrfs:
-      - name: default
-        vni: 789654

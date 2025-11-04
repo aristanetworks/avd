@@ -5,18 +5,18 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet3
+  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet5
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.25/31
   metadata:
     peer: CUSTOM-PYTHON_MODULES-L3LEAF1A
-    peer_interface: Ethernet3
+    peer_interface: Ethernet5
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet1.1
-  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet3.1 VRF TEST_VRF
+  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet5.1 VRF TEST_VRF
   shutdown: false
   mtu: 9214
   vrf: TEST_VRF
@@ -25,7 +25,7 @@ ethernet_interfaces:
   ip_address: 172.16.0.25/31
   metadata:
     peer: CUSTOM-PYTHON_MODULES-L3LEAF1A
-    peer_interface: Ethernet3.1
+    peer_interface: Ethernet5.1
     peer_type: l3leaf
 hostname: CUSTOM-PYTHON_MODULES-L3LEAF2
 ip_igmp_snooping:
@@ -94,7 +94,7 @@ router_bgp:
     remote_as: '65101'
     metadata:
       peer: CUSTOM-PYTHON_MODULES-L3LEAF1A
-    description: CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet3
+    description: CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet5
   redistribute:
     connected:
       enabled: true
@@ -136,7 +136,7 @@ router_bgp:
     - ip_address: 172.16.0.24
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65101'
-      description: CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet3.1_vrf_TEST_VRF
+      description: CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet5.1_vrf_TEST_VRF
     redistribute:
       connected:
         enabled: true
