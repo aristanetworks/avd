@@ -57,6 +57,9 @@ router pim sparse-mode
       {{ other_anycast_rp_addresses_cli }}
 {%             endfor %}
 {%         endfor %}
+{%         if router_pim_sparse_mode.ipv4.register_local_interface is arista.avd.defined %}
+      register local-interface {{ router_pim_sparse_mode.ipv4.register_local_interface }}
+{%         endif %}
 {%     endif %}
 {%     for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
    !
@@ -102,6 +105,9 @@ router pim sparse-mode
          rp address {{ rp_address.address }}{{ rp_options_cli }}
 {%                 endif %}
 {%             endfor %}
+{%             if vrf.ipv4.register_local_interface is arista.avd.defined %}
+         register local-interface {{ vrf.ipv4.register_local_interface }}
+{%             endif %}
 {%         endif %}
 {%     endfor %}
 {% endif %}

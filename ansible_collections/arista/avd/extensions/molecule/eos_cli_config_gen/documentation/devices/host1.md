@@ -4833,6 +4833,7 @@ interface Ethernet5
    ip ospf authentication-key 7 <removed>
    ip ospf area 100
    ip ospf message-digest-key 1 sha512 7 <removed>
+   ip ospf message-digest-key 2 sha512 8a <removed>
    pim ipv4 sparse-mode
    pim ipv4 bidirectional
    pim ipv4 border-router
@@ -4864,6 +4865,7 @@ interface Ethernet6
       address-family ipv4 disabled
       locked-address ipv4 enforcement disabled
    no lldp transmit
+   ip ospf authentication-key 8a <removed>
    ptp enable
    ptp announce interval 3
    ptp announce timeout 9
@@ -5976,6 +5978,7 @@ interface Port-Channel5
    l2 mru 8000
    mlag 5
    ntp serve
+   ip ospf authentication-key 8a <removed>
    ptp enable
    ptp mpass
    ptp delay-mechanism e2e
@@ -6127,6 +6130,7 @@ interface Port-Channel18
    ip ospf authentication message-digest
    ip ospf area 0.0.0.12
    ip ospf message-digest-key 55 md5 7 <removed>
+   ip ospf message-digest-key 56 sha512 8a <removed>
 !
 interface Port-Channel20
    description Po_in_mode_access_accepting_tagged_LACP_frames
@@ -6960,6 +6964,7 @@ interface Vlan25
    description SVI Description
    no shutdown
    ipv6 address 1b11:3a00:22b0:16::16/64
+   ip ospf authentication-key 8a <removed>
    ipv6 virtual-router address 1b11:3a00:22b0:16::14
    ipv6 virtual-router address 1b11:3a00:22b0:16::15
 !
@@ -6970,6 +6975,7 @@ interface Vlan26
    ip ospf authentication message-digest
    ip ospf area 0.0.0.24
    ip ospf message-digest-key 55 md5 7 <removed>
+   ip ospf message-digest-key 56 sha512 8a <removed>
    ipv6 ospf network point-to-point
    ipv6 ospf area 0.0.0.29
 !
@@ -10679,6 +10685,7 @@ router multicast
 BFD enabled: True
 
 Make-before-break: False
+Register Local Interface: Ethernet1
 
 ##### IP Rendezvous Information
 
@@ -10695,11 +10702,11 @@ Make-before-break: False
 
 ##### IP Sparse Mode VRFs
 
-| VRF Name | SSM Range ACL | BFD Enabled | Make-before-break |
-| -------- | ------------- | ----------- | ----------------- |
-| MCAST_VRF1 | SSM-MCAST | True | False |
-| MCAST_VRF2_ALL_GROUPS | - | False | - |
-| Test_RP_ACL | - | False | True |
+| VRF Name | SSM Range ACL | BFD Enabled | Make-before-break | Register Local Interface |
+| -------- | ------------- | ----------- | ----------------- | ------------------------ |
+| MCAST_VRF1 | SSM-MCAST | True | False | Loopback0 |
+| MCAST_VRF2_ALL_GROUPS | - | False | - | - |
+| Test_RP_ACL | - | False | True | - |
 
 | VRF Name | Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
 | -------- | ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
@@ -10728,6 +10735,7 @@ router pim sparse-mode
       rp address 10.238.1.161 239.12.12.17/32
       rp address 10.238.1.161 access-list RP_ACL3
       anycast-rp 10.38.1.161 10.50.64.16 register-count 15
+      register local-interface Ethernet1
    !
    vrf MCAST_VRF1
       ipv4
@@ -10737,6 +10745,7 @@ router pim sparse-mode
          rp address 10.238.2.161 239.12.22.12/32
          rp address 10.238.2.161 239.12.22.13/32
          rp address 10.238.2.161 239.12.22.14/32
+         register local-interface Loopback0
    !
    vrf MCAST_VRF2_ALL_GROUPS
       ipv4
@@ -11165,9 +11174,9 @@ AS Path Regex Mode is **asn**.
 
 | List Name | Type | Match | Origin |
 | --------- | ---- | ----- | ------ |
-| mylist1 | permit | ^(64512\|645115) | egp |
-| mylist1 | deny | (64513\|64515)$ | any |
-| mylist2 | deny | _64517$ | igp |
+| mylist1 | permit | `^(64512\|645115)` | egp |
+| mylist1 | deny | `(64513\|64515)$` | any |
+| mylist2 | deny | `_64517$` | igp |
 
 #### AS Path Lists Device Configuration
 
