@@ -77,7 +77,7 @@ impl StoreValidate<Schema> for Store {
         let mut ctx = Context::new(self, configuration);
         let schema = self.get(schema_name);
         schema.coerce(value, &mut ctx);
-        schema.validate_value(&value, &mut ctx);
+        schema.validate_value(value, &mut ctx);
         ctx.into()
     }
     fn coerce_value(&self, value: &mut Value, schema_name: Schema) -> ValidationResult {
@@ -88,6 +88,56 @@ impl StoreValidate<Schema> for Store {
     }
 }
 
+trait SchemaStringHelper {
+    fn process_schema_string<F>(
+        &self,
+        schema_name: &str,
+        func: F,
+    ) -> Result<ValidationResult, StoreValidateError>
+    where
+        F: FnOnce(Schema) -> Result<ValidationResult, StoreValidateError>;
+    fn process_schema_string_unfaillible<F>(&self, schema_name: &str, func: F) -> ValidationResult
+    where
+        F: FnOnce(Schema) -> ValidationResult;
+}
+
+impl SchemaStringHelper for Store {
+    fn process_schema_string<F>(
+        &self,
+        schema_name: &str,
+        func: F,
+    ) -> Result<ValidationResult, StoreValidateError>
+    where
+        F: FnOnce(Schema) -> Result<ValidationResult, StoreValidateError>,
+    {
+        match Schema::try_from(schema_name) {
+            Ok(schema_type) => func(schema_type),
+            Err(_) => Ok({
+                let mut ctx = Context::new(self, None);
+                ctx.add_violation(Violation::InvalidSchema {
+                    schema: schema_name.into(),
+                });
+                ctx.into()
+            }),
+        }
+    }
+    fn process_schema_string_unfaillible<F>(&self, schema_name: &str, func: F) -> ValidationResult
+    where
+        F: FnOnce(Schema) -> ValidationResult,
+    {
+        match Schema::try_from(schema_name) {
+            Ok(schema_type) => func(schema_type),
+            Err(_) => {
+                let mut ctx = Context::new(self, None);
+                ctx.add_violation(Violation::InvalidSchema {
+                    schema: schema_name.into(),
+                });
+                ctx.into()
+            }
+        }
+    }
+}
+
 impl StoreValidate<&str> for Store {
     fn validate_json(
         &self,
@@ -95,61 +145,36 @@ impl StoreValidate<&str> for Store {
         schema_name: &str,
         configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError> {
-        if let Ok(schema_type) = Schema::try_from(schema_name) {
+        self.process_schema_string(schema_name, |schema_type| {
             self.validate_json(json, schema_type, configuration)
-        } else {
-            let mut ctx = Context::new(self, None);
-            ctx.add_violation(Violation::InvalidSchema {
-                schema: schema_name.into(),
-            });
-
-            Ok(ctx.into())
-        }
+        })
     }
+
     fn validate_yaml(
         &self,
         yaml: &str,
         schema_name: &str,
         configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError> {
-        if let Ok(schema_type) = Schema::try_from(schema_name) {
+        self.process_schema_string(schema_name, |schema_type| {
             self.validate_yaml(yaml, schema_type, configuration)
-        } else {
-            let mut ctx = Context::new(self, None);
-            ctx.add_violation(Violation::InvalidSchema {
-                schema: schema_name.into(),
-            });
-
-            Ok(ctx.into())
-        }
+        })
     }
+
     fn validate_value(
         &self,
         value: &mut Value,
         schema_name: &str,
         configuration: Option<&Configuration>,
     ) -> ValidationResult {
-        if let Ok(schema_type) = Schema::try_from(schema_name) {
+        self.process_schema_string_unfaillible(schema_name, |schema_type| {
             self.validate_value(value, schema_type, configuration)
-        } else {
-            let mut ctx = Context::new(self, None);
-            ctx.add_violation(Violation::InvalidSchema {
-                schema: schema_name.into(),
-            });
-
-            ctx.into()
-        }
+        })
     }
     fn coerce_value(&self, value: &mut Value, schema_name: &str) -> ValidationResult {
-        if let Ok(schema_type) = Schema::try_from(schema_name) {
+        self.process_schema_string_unfaillible(schema_name, |schema_type| {
             self.coerce_value(value, schema_type)
-        } else {
-            let mut ctx = Context::new(self, None);
-            ctx.add_violation(Violation::InvalidSchema {
-                schema: schema_name.into(),
-            });
-            ctx.into()
-        }
+        })
     }
 }
 
@@ -183,6 +208,42 @@ mod tests {
                 issue: Violation::InvalidType {
                     expected: Type::Str,
                     found: Type::Dict
+                }
+                .into()
+            },]
+        )
+    }
+    #[test]
+    fn validate_yaml_invalid_schema() {
+        let input = "";
+        let store = get_test_store();
+        let result = store.validate_yaml(input, "invalid_schema", None);
+        assert!(result.is_ok());
+        let validation_result = result.unwrap();
+        assert!(validation_result.coercions.is_empty());
+        assert_eq!(
+            validation_result.violations,
+            vec![Feedback {
+                path: vec![],
+                issue: Violation::InvalidSchema {
+                    schema: "invalid_schema".to_string()
+                }
+                .into()
+            },]
+        )
+    }
+    #[test]
+    fn validate_value_invalid_schema() {
+        let mut input = serde_json::json!({});
+        let store = get_test_store();
+        let validation_result = store.validate_value(&mut input, "invalid_schema", None);
+        assert!(validation_result.coercions.is_empty());
+        assert_eq!(
+            validation_result.violations,
+            vec![Feedback {
+                path: vec![],
+                issue: Violation::InvalidSchema {
+                    schema: "invalid_schema".to_string()
                 }
                 .into()
             },]
