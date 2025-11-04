@@ -102,8 +102,9 @@ mod validation {
         let mut data_as_value = serde_json::from_str::<serde_json::Value>(data_as_json)
             .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?;
 
+        let validation_result = get_store().validate_value(&mut data_as_value, schema_name, None);
         Ok(GetValidatedDataResult {
-            validation_result: get_store().validate_value(&mut data_as_value, schema_name, None),
+            validation_result,
             validated_data: serde_json::to_string(&data_as_value).map_err(|err| {
                 PyRuntimeError::new_err(format!("Invalid JSON in coerced data: {err}"))
             })?,
@@ -509,6 +510,99 @@ mod tests {
             let path = feedback.getattr("path").unwrap();
             let expected_path =
                 pyo3::types::PyList::new(py, ["ethernet_interfaces", "0", "description"]).unwrap();
+            assert!(path.eq(expected_path).unwrap());
+            let issue = feedback.getattr("issue").unwrap();
+
+            let coercion_note = issue.getattr("_0").unwrap();
+            let found = coercion_note
+                .getattr("found")
+                .unwrap()
+                .getattr("_0")
+                .unwrap();
+            let expected_found = pyo3::types::PyInt::new(py, 12345);
+            assert!(
+                found.eq(expected_found).unwrap(),
+                "Found something else: {}",
+                found
+            );
+            let made = coercion_note
+                .getattr("made")
+                .unwrap()
+                .getattr("_0")
+                .unwrap();
+            let expected_made = pyo3::types::PyString::new(py, "12345");
+            assert!(made.eq(expected_made).unwrap());
+        });
+    }
+
+    #[test]
+    fn get_validated_data_not_ok() {
+        setup();
+        pyo3::Python::attach(|py| {
+            shared_init_store(py);
+
+            let module = py.import("validation").unwrap();
+            let data_as_json_str = serde_json::json!({"ethernet_interfaces": [{"name": "Ethernet1", "unknown": 12345}]}).to_string();
+            let get_validated_data_result = {
+                let args = ();
+                let kwargs = pyo3::types::PyDict::new(py);
+                kwargs.set_item("data_as_json", data_as_json_str).unwrap();
+                kwargs
+                    .set_item("schema_name", "eos_cli_config_gen")
+                    .unwrap();
+                module
+                    .call_method("get_validated_data", args, Some(&kwargs))
+                    .unwrap()
+            };
+            let validated_data = get_validated_data_result.getattr("validated_data").unwrap();
+            let expected_data = pyo3::types::PyString::new(
+                py,
+                &serde_json::json!(
+                {
+                    "ethernet_interfaces":[
+                        {
+                            "name":"Ethernet1",
+                            "unknown":12345
+                        }
+                    ],
+                    // These are defaults inserted by the validation tooling.
+                    "avd_data_validation_mode":"error",
+                    "config_end":false,
+                    "generate_default_config":false,
+                    "generate_device_documentation":true,
+                    "transceiver_qsfp_default_mode_4x10":true
+                })
+                .to_string(),
+            );
+            assert!(
+                validated_data.eq(&expected_data).unwrap(),
+                "Different data: {validated_data} vs {expected_data}"
+            );
+            let validation_result = get_validated_data_result
+                .getattr("validation_result")
+                .unwrap();
+            let violations = validation_result.getattr("violations").unwrap();
+            assert!(violations.is_instance_of::<pyo3::types::PyList>());
+            assert_eq!(violations.len().unwrap(), 1);
+            // Not checked further
+
+            let issue_enum = module.getattr("Issue").unwrap();
+            let violation_feedbacks = violations
+                .cast_exact::<pyo3::types::PyList>()
+                .unwrap()
+                .into_iter()
+                .filter(|feedback| {
+                    let issue = feedback.getattr("issue").unwrap();
+                    let coercion_type = issue_enum.getattr("Coercion").unwrap();
+                    issue.get_type().eq(coercion_type).unwrap()
+                })
+                .collect::<Vec<pyo3::Bound<'_, pyo3::PyAny>>>();
+            assert_eq!(violation_feedbacks.len(), 1);
+
+            let feedback = violation_feedbacks.first().unwrap();
+            let path = feedback.getattr("path").unwrap();
+            let expected_path =
+                pyo3::types::PyList::new(py, ["ethernet_interfaces", "0", "no"]).unwrap();
             assert!(path.eq(expected_path).unwrap());
             let issue = feedback.getattr("issue").unwrap();
 
