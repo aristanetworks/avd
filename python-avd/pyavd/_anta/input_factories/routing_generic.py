@@ -3,17 +3,12 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from anta.tests.routing.generic import VerifyRoutingProtocolModel, VerifyRoutingTableEntry
 
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
-
-if TYPE_CHECKING:
-    from ipaddress import IPv4Address
 
 
 class VerifyRoutingProtocolModelInputFactory(AntaTestInputFactory[VerifyRoutingProtocolModel.Input]):
@@ -50,17 +45,4 @@ class VerifyRoutingTableEntryInputFactory(AntaTestInputFactory[VerifyRoutingTabl
             self.logger_adapter.debug(LogMessage.DEVICE_IS_WAN_ROUTER)
             return None
 
-        # Using a set to deduplicate IPs across devices (e.g., MLAG pairs sharing the same VTEP IP)
-        routes: set[IPv4Address] = set()
-
-        for device_name, special_ips in self.fabric_data.special_ips.items():
-            # Skip WAN routers
-            if device_name in self.fabric_data.wan_routers:
-                continue
-
-            if not self.is_peer_available(peer=device_name, identity=", ".join(sorted(str(ip) for ip in special_ips))):
-                continue
-
-            routes.update(special_ips)
-
-        return [VerifyRoutingTableEntry.Input(routes=natural_sort(list(routes)), collect="all")] if routes else None
+        return [VerifyRoutingTableEntry.Input(routes=natural_sort(list(self.fabric_data.special_ips)), collect="all")] if self.fabric_data.special_ips else None
