@@ -21,7 +21,7 @@ keys:
           description: |-
             Inherit settings from a profile defined under `device_profiles`.
             Max two levels of profile inheritance: device -> profile -> parent_profile
-            This takes precedence over the global `profile` key.
+            This takes precedence over the global `device_profile` key.
         type:
           type: str
           description: |-
