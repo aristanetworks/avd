@@ -6,6 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._eos_designs.structured_config.constants import INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.password_utils.password import ospf_message_digest_encrypt
@@ -297,6 +298,18 @@ class EthernetInterfacesMixin(Protocol):
                 f"under 'wan_carriers'. 'ipv4_acl_in' is missing on L3 interface '{l3_interface.name}'."
             )
             raise AristaAvdInvalidInputsError(msg)
+
+        if self.shared_utils.is_cv_pathfinder_client and len(l3_interface.cv_pathfinder_internet_exit.policies) > 0:
+            for policy in l3_interface.cv_pathfinder_internet_exit.policies:
+                if policy.name not in self.inputs.cv_pathfinder_internet_exit_policies:
+                    msg = (
+                        f"The Internet Exit policy '{policy.name}' configured under node l3_interface '{l3_interface.name}' "
+                        "is not defined under 'cv_pathfinder_internet_exit_policies'."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
+                if self.inputs.cv_pathfinder_internet_exit_policies[policy.name].type == "direct":
+                    interface.ip_nat.service_profile = INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME
+                    break
 
         self.structured_config.ethernet_interfaces.append(interface)
 

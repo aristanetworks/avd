@@ -70,8 +70,10 @@ class StaticRoutesMixin(Protocol):
 
     def set_zscaler_ie_connection_static_route(self: AvdStructuredConfigNetworkServicesProtocol, destination_ip: str, name: str, next_hop: str) -> None:
         """Set the static route for one Zscaler Internet Exit connection."""
-        self.structured_config.static_routes.append_new(
-            prefix=f"{destination_ip}/32",
-            name=name,
-            next_hop=next_hop,
+        self.structured_config.static_routes.append_unique(
+            EosCliConfigGen.StaticRoutesItem(
+                prefix=f"{destination_ip}/32",
+                name=name,
+                next_hop=next_hop,
+            )
         )
