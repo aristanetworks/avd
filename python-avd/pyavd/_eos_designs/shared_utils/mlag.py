@@ -86,7 +86,6 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_role(self: SharedUtilsProtocol) -> Literal["primary", "secondary"] | None:
-        # Note: self.node_group_is_primary_and_peer_hostname is always set when self.mlag is true, so this is just to make type-checker happy.
         if not self.mlag:
             return None
         if self.node_group_is_primary_and_peer_hostname is not None:
