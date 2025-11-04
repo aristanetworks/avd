@@ -2,6 +2,11 @@ aaa_root:
   disabled: true
 config_end: true
 dns_domain: dc1.local
+dps_interfaces:
+- name: Dps1
+  description: DPS Interface
+  mtu: 9194
+  ip_address: 10.255.1.1/32
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -122,3 +127,17 @@ vlans:
 vrfs:
 - name: MGMT
   ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: dc1-leaf1c_VTEP
+    vxlan:
+      source_interface: Dps1
+      udp_port: 4789
+      encapsulations:
+        ipv6: true
+      vlans:
+      - id: 11
+        vni: 10011
+      vrfs:
+      - name: VRF10
+        vni: 10
