@@ -42,11 +42,9 @@ class InventoryMixin(Protocol):
         Returns:
             Device objects.
         """
-        request_time = TimeBounds()
-        if time is not None:
-            request_time.end = time
-
-        request = DeviceStreamRequest(partial_eq_filter=[], time=request_time)
+        # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
+        # Note that changing this will also impact the recorded calls hash
+        request = DeviceStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time))  # pyright: ignore[reportArgumentType]
         if devices:
             for serial_number, system_mac_address, hostname in devices:
                 request.partial_eq_filter.append(
