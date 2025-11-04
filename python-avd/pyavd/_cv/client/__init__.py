@@ -67,7 +67,7 @@ class CVClientProtocol(
     @property
     def channel(self) -> Channel:
         if self._channel is None:
-            msg = "'set_change_control' was called with _channel set to None"
+            msg = "'set_change_control' was called with '_channel' unset."
             raise RuntimeError(msg)
         return self._channel
 
@@ -108,6 +108,10 @@ class CVClientProtocol(
 
         # Create custom connector that uses proxy
         async def proxy_connection() -> H2Protocol:
+            if self._proxy_manager is None:
+                msg = "'proxy_connection' was called with '_proxy_manager' unset."
+                raise RuntimeError(msg)
+
             loop = asyncio.get_running_loop()
 
             try:
@@ -226,7 +230,7 @@ class CVClient(CVClientProtocol):
         port: int = 443,
         verify_certs: bool = True,
         proxy_host: str | None = None,
-        proxy_port: int = 8080,
+        proxy_port: int | None = 8080,
         proxy_username: str | None = None,
         proxy_password: str | None = None,
     ) -> None:
@@ -264,7 +268,7 @@ class CVClient(CVClientProtocol):
         if proxy_host is not None:
             self._proxy_manager = HTTPProxyManager(
                 proxy_host=proxy_host,
-                proxy_port=proxy_port,
+                proxy_port=proxy_port or 8080,
                 proxy_username=proxy_username,
                 proxy_password=proxy_password,
                 target_host=self._servers[0],

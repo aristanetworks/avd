@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 
 from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus, WorkspaceState
 from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed, CVWorkspaceSubmitFailedInactiveDevices
+from pyavd._utils import guaranteed_not_none
 
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
@@ -39,6 +40,9 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
         return
 
     workspace_config = await cv_client.build_workspace(workspace_id=workspace.id)
+    # TODO: this will raise so this looks weird find a better way to write this.
+    if not guaranteed_not_none(workspace_config.request_params.request_id):
+        return
     build_result, cv_workspace = await cv_client.wait_for_workspace_response(workspace_id=workspace.id, request_id=workspace_config.request_params.request_id)
     if build_result.status != ResponseStatus.SUCCESS:
         workspace.state = "build failed"
@@ -61,6 +65,9 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
     # We can only submit if the build was successful
     if workspace.requested_state == "submitted" and workspace.state == "built":
         workspace_config = await cv_client.submit_workspace(workspace_id=workspace.id, force=workspace.force)
+        # TODO: this will raise so this looks weird find a better way to write this.
+        if not guaranteed_not_none(workspace_config.request_params.request_id):
+            return
         submit_result, cv_workspace = await cv_client.wait_for_workspace_response(
             workspace_id=workspace.id,
             request_id=workspace_config.request_params.request_id,

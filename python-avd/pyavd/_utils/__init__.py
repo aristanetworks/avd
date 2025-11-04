@@ -15,6 +15,7 @@ from .get_ip_from_ip_prefix import get_ip_from_ip_prefix
 from .get_ip_from_pool import get_ip_from_pool, get_ipv4_networks_from_pool, get_ipv6_networks_from_pool, get_networks_from_pool
 from .get_item import get_item
 from .groupby import groupby, groupby_obj
+from .guaranteed_not_none import guaranteed_not_none
 from .load_python_class import load_python_class
 from .merge import merge
 from .remove_cached_property_type import remove_cached_property_type
@@ -49,6 +50,7 @@ __all__ = [
     "get_v2",
     "groupby",
     "groupby_obj",
+    "guaranteed_not_none",
     "load_python_class",
     "merge",
     "remove_cached_property_type",

@@ -129,6 +129,9 @@ repos:
           - 'referencing>=0.35.0'
           - 'ruff==0.11.11'
           - 'pytest>=8.2.0'
+          - "grpclib==0.4.8"
+          - "aristaproto>=0.1.1"
+          - "python-socks[asyncio]>=2.7.2"
 
   - repo: https://github.com/pycqa/pylint
     rev: "v4.0.2"

@@ -10,6 +10,8 @@ from pyavd._cv.api.arista.changecontrol.v1 import ChangeControl, ChangeControlSt
 from pyavd._cv.client.exceptions import CVChangeControlFailed
 
 if TYPE_CHECKING:
+    from aristaproto import _DateTime
+
     from pyavd._cv.client import CVClient
 
     from .models import CVChangeControl
@@ -47,6 +49,10 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
     """
     LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
+    if change_control.id is None:
+        msg = "'finalize_change_control_on_cv' was called with a CVChangeControl object with 'id' not set"
+        raise RuntimeError(msg)
+
     cv_change_control = await cv_client.get_change_control(change_control_id=change_control.id)
 
     # Update missing fields on our local model with data from the CloudVision object.
@@ -76,7 +82,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
     if change_control.state != "approved":
         await cv_client.approve_change_control(
             change_control_id=change_control.id,
-            timestamp=cv_change_control.change.time,
+            timestamp=cast("_DateTime", cv_change_control.change.time),
             description="Automatic approval by AVD",
         )
         change_control.state = "approved"

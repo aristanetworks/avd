@@ -124,6 +124,10 @@ class BaseCVTagProtocol(Protocol):
     value: str
     device: CVDevice | None
 
+    def as_cv_tag(self) -> CVTag: ...
+
+    def as_cv_tag_assignment(self) -> CVTagAssignment | None: ...
+
 
 @dataclass
 class CVStudioInputs:
@@ -180,7 +184,7 @@ class DeployToCvResult:
     failed: bool = False
     errors: list = field(default_factory=list)
     warnings: list = field(default_factory=list)
-    workspace: CVWorkspace | None = field(default_factory=CVWorkspace)
+    workspace: CVWorkspace = field(default_factory=CVWorkspace)
     change_control: CVChangeControl | None = None
     deployed_configs: list[CVEosConfig] = field(default_factory=list)
     deployed_static_config_containers: list[AvdContainer] = field(default_factory=list)

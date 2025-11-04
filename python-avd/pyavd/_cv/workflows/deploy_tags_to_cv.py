@@ -4,27 +4,51 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeVar, cast, overload
 
 from pyavd._cv.client.models import CVTag, CVTagAssignment
 
-from .models import BaseCVTagProtocol, CVDeviceTag, CVInterfaceTag, CVWorkspace
+from .models import CVDeviceTag, CVInterfaceTag, CVWorkspace
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
-
     from pyavd._cv.client import CVClient
 
 LOGGER = getLogger(__name__)
 
+T = TypeVar("T", CVInterfaceTag, CVDeviceTag)
 
+
+@overload
 async def deploy_tags_to_cv(
-    tags: Sequence[BaseCVTagProtocol],
+    tags: list[CVDeviceTag],
     workspace: CVWorkspace,
     strict: bool,
-    skipped_tags: Sequence[BaseCVTagProtocol],
-    deployed_tags: Sequence[BaseCVTagProtocol],
-    removed_tags: Sequence[BaseCVTagProtocol],
+    skipped_tags: list[CVDeviceTag],
+    deployed_tags: list[CVDeviceTag],
+    removed_tags: list[CVDeviceTag],
+    cv_client: CVClient,
+) -> None: ...
+
+
+@overload
+async def deploy_tags_to_cv(
+    tags: list[CVInterfaceTag],
+    workspace: CVWorkspace,
+    strict: bool,
+    skipped_tags: list[CVInterfaceTag],
+    deployed_tags: list[CVInterfaceTag],
+    removed_tags: list[CVInterfaceTag],
+    cv_client: CVClient,
+) -> None: ...
+
+
+async def deploy_tags_to_cv(
+    tags: list[T],
+    workspace: CVWorkspace,
+    strict: bool,
+    skipped_tags: list[T],
+    deployed_tags: list[T],
+    removed_tags: list[T],
     cv_client: CVClient,
 ) -> None:
     """
@@ -124,14 +148,17 @@ async def deploy_tags_to_cv(
         )
 
         if tag_type == "interface":
-            removed_tags.extend(
-                CVInterfaceTag(
-                    label=assignment.label, value=assignment.value, device=devices_by_serial_number[assignment.device_id], interface=assignment.interface_id
+            # Helping the type checker as value type narrowing is hard
+            output_list = cast("list[CVInterfaceTag]", removed_tags)
+            for assignment in assignments_to_unassign:
+                output_list.append(
+                    CVInterfaceTag(
+                        label=assignment.label, value=assignment.value, device=devices_by_serial_number[assignment.device_id], interface=assignment.interface_id
+                    )
                 )
-                for assignment in sorted_assignments_to_unassign
-            )
         else:
-            removed_tags.extend(
+            output_list = cast("list[CVDeviceTag]", removed_tags)
+            output_list.extend(
                 CVDeviceTag(label=assignment.label, value=assignment.value, device=devices_by_serial_number[assignment.device_id])
                 for assignment in sorted_assignments_to_unassign
             )

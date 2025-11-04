@@ -124,6 +124,10 @@ class ConfigletMixin(Protocol):
             container_id: Unique identifier for Container/Assignment.
             display_name: Container/Assignment Name.
             description: Container/Assignment description.
+            configlet_ids: List of configlet IDs.
+            query: Query.
+            child_assignment_ids: Child Assignments IDs.
+            match_policy: Match policy to use for the query.
             timeout: Timeout in seconds.
 
         Returns:
@@ -192,7 +196,7 @@ class ConfigletMixin(Protocol):
         workspace_id: str,
         containers: list[tuple[str, str | None, str | None, list[str] | None, str | None, list[str] | None, Literal["match_first", "match_all"] | None]],
         timeout: float = DEFAULT_API_TIMEOUT,
-    ) -> list[ConfigletAssignmentKey]:
+    ) -> list[ConfigletAssignmentConfig]:
         """
         Create batches of containers and do parallel calls to set_configlet_container for each batch.
 
@@ -203,7 +207,7 @@ class ConfigletMixin(Protocol):
             timeout: Timeout in seconds.
 
         Returns:
-            ConfigletAssignmentKey objects after being set including any server-generated values.
+            ConfigletAssignmentConfig objects after being set including any server-generated values.
         """
         coroutines = [
             self.set_configlet_container(
@@ -227,7 +231,6 @@ class ConfigletMixin(Protocol):
             LOGGER.info("set_configlet_containers: Batch %s", index)
             configlet_configs.extend(await gather(*batch_coroutines))
 
-        # TODO: gross typing error in return type here..
         return [
             await self.set_configlet_container(
                 workspace_id, container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy or "match_all", timeout

@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 
 from pyavd._cv.api.arista.inventory.v1 import StreamingStatus
 from pyavd._cv.client.exceptions import CVResourceNotFound
+from pyavd._utils import guaranteed_not_none
 
 from .models import CVDevice
 
@@ -137,7 +138,7 @@ async def verify_devices_in_topology_studio(existing_devices: list[CVDevice], wo
 
     cv_topology_inputs = await cv_client.get_topology_studio_inputs(
         workspace_id=workspace_id,
-        device_ids=list({device.serial_number for device in existing_devices}),
+        device_ids=list({device.serial_number for device in existing_devices if guaranteed_not_none(device.serial_number)}),
     )
     LOGGER.info("verify_devices_in_topology_studio: %s unique devices for %s device objects.", len(existing_device_tuples), len(existing_devices))
     LOGGER.info("verify_devices_in_topology_studio: got %s devices from I&T Studio.", len(cv_topology_inputs))

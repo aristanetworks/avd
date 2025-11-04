@@ -139,6 +139,11 @@ async def _sync_studio_roots(
         default_value=[],
     )
 
+    if not isinstance(existing_root_ids, list):
+        # TODO: correct error message to state CV did not return the correct type
+        msg = "Booh"
+        raise TypeError(msg)
+
     # Calculate which desired roots are missing and which existing AVD-managed roots are stale.
     desired_root_ids = [container.id for container in cv_manifest.containers if container.is_root]
     desired_root_ids_set = set(desired_root_ids)

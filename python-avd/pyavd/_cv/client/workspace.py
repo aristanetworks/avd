@@ -73,6 +73,9 @@ class WorkspaceMixin(Protocol):
                 workspace_id=workspace_id,
             ),
         )
+        if time is not None:
+            request.time = time
+
         client = WorkspaceServiceStub(self.channel)
 
         response = await client.get_one(request, metadata=self._metadata, timeout=timeout)

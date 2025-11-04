@@ -8,7 +8,7 @@ from logging import getLogger
 from typing import TYPE_CHECKING
 
 from pyavd._cv.client.exceptions import CVResourceNotFound
-from pyavd._utils import get, get_v2
+from pyavd._utils import get, get_v2, guaranteed_not_none
 from pyavd._utils.password_utils.password import simple_7_decrypt
 
 if TYPE_CHECKING:
@@ -364,50 +364,55 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     edges: list[CVPathfinderMetadata] = []
     pathfinders: list[CVPathfinderMetadata] = []
     for device_metadata in cv_pathfinder_metadata:
-        if not device_metadata.device._exists_on_cv:
-            LOGGER.info(
-                "deploy_cv_pathfinder_metadata_to_cv: Skipping metadata for device '%s' since the device is not found on CV.",
-                device_metadata.device.serial_number,
-            )
-            result.skipped_cv_pathfinder_metadata.append(device_metadata)
-            continue
+        if guaranteed_not_none(device_metadata.device) and guaranteed_not_none(device_metadata.device.serial_number):
+            if not device_metadata.device._exists_on_cv:
+                LOGGER.info(
+                    "deploy_cv_pathfinder_metadata_to_cv: Skipping metadata for device '%s' since the device is not found on CV.",
+                    device_metadata.device.serial_number,
+                )
+                result.skipped_cv_pathfinder_metadata.append(device_metadata)
+                continue
 
-        device_role = get(device_metadata.metadata, "role")
+            device_role = get(device_metadata.metadata, "role")
 
-        if device_role in ["edge", "transit region"]:
-            LOGGER.info(
-                "deploy_cv_pathfinder_metadata_to_cv: Adding metadata for device '%s' as role '%s'.",
-                device_metadata.device.serial_number,
-                device_role,
-            )
-            edges.append(device_metadata)
-        elif device_role == "pathfinder":
-            LOGGER.info(
-                "deploy_cv_pathfinder_metadata_to_cv: Adding metadata for device '%s' as role '%s'.",
-                device_metadata.device.serial_number,
-                device_role,
-            )
-            pathfinders.append(device_metadata)
-        else:
-            LOGGER.info(
-                "deploy_cv_pathfinder_metadata_to_cv: Skipping metadata for device '%s' since role '%s' is not supported.",
-                device_metadata.device.serial_number,
-                device_role,
-            )
-            result.skipped_cv_pathfinder_metadata.append(device_metadata)
-            continue
+            if device_role in ["edge", "transit region"]:
+                LOGGER.info(
+                    "deploy_cv_pathfinder_metadata_to_cv: Adding metadata for device '%s' as role '%s'.",
+                    device_metadata.device.serial_number,
+                    device_role,
+                )
+                edges.append(device_metadata)
+            elif device_role == "pathfinder":
+                LOGGER.info(
+                    "deploy_cv_pathfinder_metadata_to_cv: Adding metadata for device '%s' as role '%s'.",
+                    device_metadata.device.serial_number,
+                    device_role,
+                )
+                pathfinders.append(device_metadata)
+            else:
+                LOGGER.info(
+                    "deploy_cv_pathfinder_metadata_to_cv: Skipping metadata for device '%s' since role '%s' is not supported.",
+                    device_metadata.device.serial_number,
+                    device_role,
+                )
+                result.skipped_cv_pathfinder_metadata.append(device_metadata)
+                continue
 
     if pathfinders:
         # All pathfinders must have the same be general metadata, so we just set it in the studio based on the first one.
         result.warnings.extend(update_general_metadata(metadata=pathfinders[0].metadata, studio_inputs=studio_inputs, studio_schema=studio_schema))
 
     for pathfinder in pathfinders:
-        result.warnings.extend(
-            upsert_pathfinder(metadata=pathfinder.metadata, device=pathfinder.device, studio_inputs=studio_inputs, studio_schema=studio_schema),
-        )
+        # TODO: This is not satisfying as we know this cannot be None already based on the previous loop.
+        if guaranteed_not_none(pathfinder.device):
+            result.warnings.extend(
+                upsert_pathfinder(metadata=pathfinder.metadata, device=pathfinder.device, studio_inputs=studio_inputs, studio_schema=studio_schema),
+            )
 
     for edge in edges:
-        result.warnings.extend(upsert_edge(metadata=edge.metadata, device=edge.device, studio_inputs=studio_inputs, studio_schema=studio_schema))
+        # TODO: This is not satisfying as we know this cannot be None already based on the previous loop.
+        if guaranteed_not_none(edge.device):
+            result.warnings.extend(upsert_edge(metadata=edge.metadata, device=edge.device, studio_inputs=studio_inputs, studio_schema=studio_schema))
 
     if studio_inputs != existing_studio_inputs:
         await cv_client.set_studio_inputs(studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=result.workspace.id, inputs=studio_inputs)
