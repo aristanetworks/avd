@@ -450,6 +450,9 @@ vlan_interfaces:
     ipv6_virtual_router_addresses:
       - 1b11:3a00:22b0:16::15
       - 1b11:3a00:22b0:16::14
+    # test for ospf_authentication_key_type: "8a"
+    ospf_authentication_key: $kUVyoj7FVQ//yw9D2lbqjA==$kxxohBiofI46IX3pw18KYQ==$DOOM0l9uU4TrQt2kyA7XCKtjUA==
+    ospf_authentication_key_type: "8a"
 
   - name: Vlan26
     ntp_serve: true
@@ -463,6 +466,10 @@ vlan_interfaces:
       - id: 55
         hash_algorithm: md5
         key: "dRx9sULvl+hzkCMYJLEQCw=="
+      - id: 56
+        hash_algorithm: sha512
+        key: $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo
+        key_type: "8a"
 
   - name: Vlan1002
     description: SVI Description

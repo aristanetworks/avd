@@ -1,9 +1,19 @@
 aaa_root:
   disabled: true
+as_path:
+  access_lists:
+  - name: AS65002
+    entries:
+    - type: permit
+      match: _65002_
+  - name: AS65003
+    entries:
+    - type: permit
+      match: _65003_
 config_end: true
 enable_password:
   disabled: true
-hostname: evpn-prevent-readvertise-to-server-2
+hostname: evpn-prevent-readvertise-to-server-6
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -11,11 +21,11 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.255.112/32
+  ip_address: 192.168.255.116/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 192.168.254.112/32
+  ip_address: 192.168.254.116/32
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -33,14 +43,30 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-EVPN-FILTER-AS65002
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - as-path AS65002
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-FILTER-AS65003
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - as-path AS65003
+  - sequence: 20
+    type: permit
 router_bfd:
   multihop:
     interval: 300
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '65002'
-  router_id: 192.168.255.112
+  as: '65005'
+  router_id: 192.168.255.116
   maximum_paths:
     paths: 4
   updates:
@@ -57,25 +83,33 @@ router_bgp:
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
-    next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
   neighbors:
-  - ip_address: 192.168.255.111
+  - ip_address: 192.168.255.112
     peer_group: EVPN-OVERLAY-PEERS
-    remote_as: '65001'
+    remote_as: '65002'
     metadata:
-      peer: evpn-prevent-readvertise-to-server-1
-    description: evpn-prevent-readvertise-to-server-1_Loopback0
-  - ip_address: 192.168.255.116
+      peer: evpn-prevent-readvertise-to-server-2
+    description: evpn-prevent-readvertise-to-server-2_Loopback0
+    route_map_out: RM-EVPN-FILTER-AS65002
+  - ip_address: 192.168.255.113
     peer_group: EVPN-OVERLAY-PEERS
-    remote_as: '65005'
+    remote_as: '65003'
     metadata:
-      peer: evpn-prevent-readvertise-to-server-6
-    description: evpn-prevent-readvertise-to-server-6_Loopback0
+      peer: evpn-prevent-readvertise-to-server-3
+    description: evpn-prevent-readvertise-to-server-3_Loopback0
+    route_map_out: RM-EVPN-FILTER-AS65003
+  - ip_address: 192.168.255.115
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65003'
+    metadata:
+      peer: evpn-prevent-readvertise-to-server-5
+    description: evpn-prevent-readvertise-to-server-5_Loopback0
+    route_map_out: RM-EVPN-FILTER-AS65003
   redistribute:
     connected:
       enabled: true
@@ -106,7 +140,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: evpn-prevent-readvertise-to-server-2_VTEP
+    description: evpn-prevent-readvertise-to-server-6_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
