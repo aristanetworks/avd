@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 import pytest
 
-from pyavd_utils.validation import Issue, Value, get_validated_data
+from pyavd_utils.validation import Issue, Value, Violation, get_validated_data
 
 
 @pytest.mark.usefixtures("init_store")
@@ -38,13 +38,7 @@ def test_get_validated_data_not_ok() -> None:
     )
     validation_result = coercion_and_validation_result.validation_result
     assert len(validation_result.violations) == 1
-
-    coercion_feedbacks = list(filter(lambda feedback: (isinstance(feedback.issue, Issue.Coercion)), validation_result.coercions))
-    assert len(coercion_feedbacks) == 1
-    feedback = coercion_feedbacks[0]
-    assert feedback.path == ["ethernet_interfaces", "0", "description"]
-    assert isinstance(feedback.issue, Issue.Coercion)
-    assert isinstance(feedback.issue._0.found, Value.Int)
-    assert feedback.issue._0.found._0 == 12345
-    assert isinstance(feedback.issue._0.made, Value.Str)
-    assert feedback.issue._0.made._0 == "12345"
+    feedback = validation_result.violations[0]
+    assert feedback.path == ["ethernet_interfaces", "0", "unknown"]
+    assert isinstance(feedback.issue, Issue.Validation)
+    assert isinstance(feedback.issue._0, Violation.UnexpectedKey)
