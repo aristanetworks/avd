@@ -86,3 +86,6 @@ keys:
       level:
         type: list
         $ref: eos_cli_config_gen#/keys/logging/keys/level
+      validate_no_errors_period:
+        type: int
+        $ref: eos_cli_config_gen#/keys/metadata/keys/validate_no_errors_period

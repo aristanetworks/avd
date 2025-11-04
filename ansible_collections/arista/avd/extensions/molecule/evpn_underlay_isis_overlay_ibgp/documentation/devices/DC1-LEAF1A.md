@@ -587,7 +587,7 @@ router bfd
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | permit | - | extcommunity soo 192.168.254.5:1 additive | - | - |
+| 10 | permit | - | extcommunity soo 192.168.255.5:1 additive | - | - |
 
 #### Route-maps Device Configuration
 
@@ -599,7 +599,7 @@ route-map RM-EVPN-SOO-IN deny 10
 route-map RM-EVPN-SOO-IN permit 20
 !
 route-map RM-EVPN-SOO-OUT permit 10
-   set extcommunity soo 192.168.254.5:1 additive
+   set extcommunity soo 192.168.255.5:1 additive
 ```
 
 ### IP Extended Community Lists
@@ -608,13 +608,13 @@ route-map RM-EVPN-SOO-OUT permit 10
 
 | List Name | Type | Extended Communities |
 | --------- | ---- | -------------------- |
-| ECL-EVPN-SOO | permit | soo 192.168.254.5:1 |
+| ECL-EVPN-SOO | permit | soo 192.168.255.5:1 |
 
 #### IP Extended Community Lists Device Configuration
 
 ```eos
 !
-ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.254.5:1
+ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.5:1
 ```
 
 ## VRF Instances

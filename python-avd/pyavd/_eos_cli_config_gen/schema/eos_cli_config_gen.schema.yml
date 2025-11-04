@@ -3066,7 +3066,16 @@ keys:
           - message-digest
         ospf_authentication_key:
           type: str
-          description: Encrypted password - only type 7 supported.
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+          - int
+          description: Authentication key type.
+          default: '7'
+          valid_values:
+          - '7'
+          - 8a
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -3087,7 +3096,16 @@ keys:
                 - sha512
               key:
                 type: str
-                description: Encrypted password - only type 7 supported.
+                description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                - int
+                description: Authentication key type.
+                default: '7'
+                valid_values:
+                - '7'
+                - 8a
         pim:
           type: dict
           keys:
@@ -9615,6 +9633,13 @@ keys:
 
               ACT does not provide direct Internet access to `cloudeos` or `veos`
               devices by default.'
+      validate_no_errors_period:
+        type: int
+        convert_types:
+        - str
+        description: Threshold (in minutes) defining the recent time window during
+          which no error-level logs should have been generated for the validation
+          to pass.
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -12365,6 +12390,15 @@ keys:
         ospf_authentication_key:
           type: str
           description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+          - int
+          description: Authentication key type.
+          default: '7'
+          valid_values:
+          - '7'
+          - 8a
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -12386,6 +12420,15 @@ keys:
               key:
                 type: str
                 description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                - int
+                description: Authentication key type.
+                default: '7'
+                valid_values:
+                - '7'
+                - 8a
         flow_tracker:
           type: dict
           keys:
@@ -21760,6 +21803,9 @@ keys:
           ssm_range:
             type: str
             description: IPv4 Prefix associated with SSM.
+          register_local_interface:
+            type: str
+            description: Local interface to use for PIM register messages.
           rp_addresses:
             type: list
             primary_key: address
@@ -21830,6 +21876,9 @@ keys:
                 make_before_break:
                   type: bool
                   description: Enable/Disable Make-Before-Break.
+                register_local_interface:
+                  type: str
+                  description: Local interface to use for PIM register messages.
                 rp_addresses:
                   type: list
                   items:
@@ -24167,7 +24216,16 @@ keys:
           - message-digest
         ospf_authentication_key:
           type: str
-          description: Encrypted password used for simple authentication.
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+          - int
+          description: Authentication key type.
+          default: '7'
+          valid_values:
+          - '7'
+          - 8a
         ospf_message_digest_keys:
           type: list
           description: Keys used for message-digest authentication.
@@ -24190,6 +24248,15 @@ keys:
               key:
                 type: str
                 description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                - int
+                description: Authentication key type.
+                default: '7'
+                valid_values:
+                - '7'
+                - 8a
         pim:
           type: dict
           keys:
@@ -24442,6 +24509,15 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+        traffic_policy:
+          type: dict
+          keys:
+            input:
+              type: str
+              description: Ingress traffic policy.
+            output:
+              type: str
+              description: Egress traffic policy.
         ntp_serve:
           type: bool
           description: Enable/disable serving NTP to clients.
