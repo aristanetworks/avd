@@ -17,7 +17,7 @@ from grpclib import Status
 from grpclib.exceptions import GRPCError
 
 from pyavd._cv.client.exceptions import CVClientException, CVResourceNotFound, CVTimeoutError
-from pyavd._utils import batch
+from pyavd._utils import batch, guaranteed_not_none
 
 from .constants import CVAAS_VERSION_STRING
 from .exceptions import CVGRPCStatusUnavailable, CVMessageSizeExceeded
@@ -70,9 +70,7 @@ class LimitCvVersion:
             )
             raise ValueError(msg)
 
-    # Python 3.12 syntax
-    # def __call__[**P, T](self, func: Callable[P, Coroutine[Any, Any, T]]) -> Callable[P, Coroutine[Any, Any, T]]:
-    def __call__(self, func: Callable[P, Coroutine[Any, Any, T]]) -> Callable[P, Coroutine[Any, Any, T]]:
+    def __call__(self, func: Callable[P, T]) -> Callable[P, Coroutine[Any, Any, T]]:
         """
         Store the method in the map of versioned functions after checking for overlapping decorators for the same method.
 
@@ -154,7 +152,7 @@ class GRPCRequestHandler:
         self.list_field = list_field
         self.min_items_for_splitting_attempt = max(2, min_items_for_splitting_attempt)
 
-    def __call__(self, func: Callable[P, Coroutine[Any, Any, T]]) -> Callable[P, Coroutine[Any, Any, T]]:
+    def __call__(self, func: Callable[P, T]) -> Callable[P, Coroutine[Any, Any, T]]:
         self.func = func
         self.func_signature = signature(func)
 
@@ -206,10 +204,9 @@ class GRPCRequestHandler:
 
         return _string_based_annotation is list or get_origin(annotation) is list, _string_based_annotation
 
-    async def _execute_single_call_with_retries(self, *call_args: Any, **call_kwargs: Any) -> None:
+    async def _execute_single_call_with_retries(self, call_args: tuple[Any, ...], call_kwargs: dict[str, Any]) -> None:
         """Executes a single call to self.func with retry logic for gRPC UNAVAILABLE."""
-        if self.func is None:
-            # TODO: Add exception to indicate it should not be used directly
+        if not guaranteed_not_none(self.func):
             return None
         func_name = self.func.__name__
 
@@ -265,9 +262,8 @@ class GRPCRequestHandler:
         # Required by ruff
         return None
 
-    async def _execute_with_splitting(self, *original_call_args: Any, **original_call_kwargs: Any) -> Any:
-        if self.func is None:
-            # TODO: Add exception to indicate it should not be used directly
+    async def _execute_with_splitting(self, original_call_args: tuple[Any, ...], original_call_kwargs: dict[str, Any]) -> Any:
+        if not guaranteed_not_none(self.func):
             return None
 
         func_name = self.func.__name__

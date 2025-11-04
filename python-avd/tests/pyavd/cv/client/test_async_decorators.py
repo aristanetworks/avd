@@ -79,7 +79,7 @@ class CvClass:
         return (CVAAS_VERSION_STRING, CVAAS_VERSION_STRING)
 
     @GRPCRequestHandler(list_field="field")
-    async def msgsize_limited_method(self, field: list, max_accepted_len: int) -> list[bool]:
+    async def msgsize_limited_method(self, field: list[Any], max_accepted_len: int) -> list[int]:
         # Check if the number of entries is higher than the max accepted length and raise.
         if len(field) > max_accepted_len:
             raise GRPCError(status=Status.RESOURCE_EXHAUSTED, message=f"grpc: received message larger than max ({len(field)} vs. {max_accepted_len})")
@@ -170,7 +170,7 @@ async def test_valid_versions(version: str, expected_response: tuple[str, str]) 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(("data", "max_len", "expected_response"), MSG_SIZE_HANDLER_TESTS)
-async def test_msg_size_handler(data: list, max_len: int, expected_response: list[int]) -> None:
+async def test_msg_size_handler(data: list[Any], max_len: int, expected_response: list[int]) -> None:
     resp = await CvClass(CvVersion(CVAAS_VERSION_STRING)).msgsize_limited_method(field=data, max_accepted_len=max_len)
     assert resp == expected_response
 
