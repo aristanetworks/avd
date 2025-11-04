@@ -43,7 +43,9 @@ keys:
         keys:
           certificate:
             type: str
+            required: true
             description: Name of certificate; private key must also be specified.
           private_key:
             type: str
+            required: true
             description: Name of private key; certificate must also be specified.
