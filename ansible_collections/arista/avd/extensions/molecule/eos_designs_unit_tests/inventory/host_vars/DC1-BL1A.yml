@@ -2,7 +2,6 @@
 my_special_dci_ethernet_interfaces:
   - name: Ethernet4000
     ip_address: 10.3.2.1/21
-
 custom_structured_configuration_list_merge: append
 
 use_router_general_for_router_id: true
@@ -11,7 +10,6 @@ use_router_general_for_router_id: true
 override_ip_name_servers:
   - ip_address: 1.1.1.1
     vrf: MGMT
-
 # Testing router id loopback description override
 router_id_loopback_description: "MY_ROUTER_ID_LOOPBACK"
 
@@ -72,3 +70,11 @@ management_eapi:
   enable_https: false
   enable_http: false
   default_services: false
+
+# test setting keys directly with eos_cli_config_gen in eos_designs
+# This one is ignored because set by eos_designs just above
+management_api_http:
+  enable_http: true
+# This one is not set by eos_designs so will be nullified in structured_config
+aliases: |-
+  alias cry-for-help why are you ignoring me?

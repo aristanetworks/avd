@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import cProfile
 import pstats
-import warnings
 from collections import ChainMap
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -26,7 +25,7 @@ if TYPE_CHECKING:
 try:
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
     from pyavd._eos_designs.schema import EosDesigns
-    from pyavd._errors import AristaAvdError, AristaAvdModelDeprecationWarning
+    from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
 except ImportError as e:
     get_facts = EosDesigns = SharedUtils = PoolManager = RaiseOnUse(
@@ -146,23 +145,7 @@ class ActionModule(ActionBase):
                 result["failed"] = True
                 continue
 
-            # Load input vars into the EosDesigns data class.
-            with warnings.catch_warnings(record=True) as caught_warnings:
-                # Configure AristaAvdModelDeprecationWarning to be always captured
-                warnings.simplefilter("always", category=AristaAvdModelDeprecationWarning)
-                host_inputs = EosDesigns._from_dict(host_hostvars)
-                # handle warnings
-                for warning in caught_warnings:
-                    # warning is undocumented type WarningMessage.
-                    if isinstance(warning.message, DeprecationWarning):
-                        # Deprecation warnings are displayed using Ansible's deprecation notices.
-                        display.deprecated(
-                            msg=warning.message.args[0],
-                            version="6.0.0",
-                            date=None,
-                            collection_name="arista.avd",
-                            removed=False,
-                        )
+            host_inputs = EosDesigns._from_dict(host_hostvars)
 
             all_inputs[host] = host_inputs
             all_hostvars[host] = host_hostvars

@@ -14,5 +14,5 @@ Set of eos_cli_config_gen role keys.
 Note that for now this is manually maintained but this shall change.
 TODO: separate role inputs in their own schema.
 """
-EOS_CLI_CONFIG_GEN_INPUT_KEYS = set(EosCliConfigGen._fields.keys()) - EOS_CLI_CONFIG_GEN_ROLE_KEYS
+EOS_CLI_CONFIG_GEN_INPUT_KEYS: set[str] = set(EosCliConfigGen._fields.keys()) - EOS_CLI_CONFIG_GEN_ROLE_KEYS
 """Set of eos_cli_config_gen which are not role keys."""

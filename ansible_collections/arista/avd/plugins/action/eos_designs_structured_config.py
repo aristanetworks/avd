@@ -7,6 +7,7 @@ import cProfile
 import json
 import logging
 import pstats
+import warnings
 from collections import ChainMap
 from typing import Any
 
@@ -22,6 +23,9 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import ANSIBLE_AB
 PLUGIN_NAME = "arista.avd.eos_designs_structured_config"
 try:
     from pyavd._eos_designs.structured_config import get_structured_config
+
+    # TODO: find another warning that's not deprecation :)
+    from pyavd._errors import AristaAvdModelDeprecationWarning
     from pyavd._utils import get, merge, strip_null_from_data
     from pyavd._utils import template as templater
 except ImportError as e:
@@ -93,18 +97,28 @@ class ActionModule(ActionBase):
         )
 
         # Get Structured Config from modules in PyAVD using internal api so we can supply our own templar
-        try:
-            structured_config = get_structured_config(
-                hostname=hostname,
-                all_facts=all_facts,
-                hostvars=host_hostvars,
-                input_schema_tools=input_schema_tools,
-                result=result,
-                templar=self.templar,
-                digital_twin=digital_twin,
-            )
-        except Exception as error:
-            raise AnsibleActionFail(message=str(error)) from error
+        with warnings.catch_warnings(record=True) as caught_warnings:
+            # Configure AristaAvdModelDeprecationWarning to be always captured
+            warnings.simplefilter("always", category=AristaAvdModelDeprecationWarning)
+            try:
+                structured_config = get_structured_config(
+                    hostname=hostname,
+                    all_facts=all_facts,
+                    hostvars=host_hostvars,
+                    input_schema_tools=input_schema_tools,
+                    result=result,
+                    templar=self.templar,
+                    digital_twin=digital_twin,
+                )
+            except Exception as error:
+                raise AnsibleActionFail(message=str(error)) from error
+
+        # handle warnings
+        for warning in caught_warnings:
+            # warning is undocumented type WarningMessage.
+            if isinstance(warning.message, DeprecationWarning):
+                # Deprecation warnings are displayed using Ansible's deprecation notices.
+                result.setdefault("warnings", []).append(warning.message)
 
         if result.get("failed") or not structured_config:
             # Something failed in schema validation.
