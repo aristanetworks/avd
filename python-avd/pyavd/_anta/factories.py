@@ -19,13 +19,13 @@ from .logs import LogMessage, TestLoggerAdapter
 from .models import DeviceTestContext
 
 if TYPE_CHECKING:
-    from pyavd.api._anta import InputFactorySettings, MinimalStructuredConfig, TestSpec
+    from pyavd.api._anta import AvdFabricData, InputFactorySettings, TestSpec
 
 
 def create_catalog(
     hostname: str,
     structured_config: dict[str, Any],
-    minimal_structured_configs: dict[str, MinimalStructuredConfig],
+    fabric_data: AvdFabricData,
     input_factory_settings: InputFactorySettings,
     test_specs: list[TestSpec],
 ) -> AntaCatalog:
@@ -33,7 +33,7 @@ def create_catalog(
     device_context = DeviceTestContext(
         hostname=hostname,
         structured_config=EosCliConfigGen._load(structured_config),
-        minimal_structured_configs=minimal_structured_configs,
+        fabric_data=fabric_data,
         input_factory_settings=input_factory_settings,
     )
     tests: list[AntaTestDefinition] = []
