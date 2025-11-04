@@ -14496,8 +14496,8 @@ class EosDesigns(EosDesignsRootModel):
         Inherit settings from a profile defined under `device_profiles`.
         Max two levels of profile
         inheritance: device -> profile -> parent_profile
-        This takes precedence over the global `profile`
-        key.
+        This takes precedence over the global
+        `device_profile` key.
         """
         type: str | None
         """
@@ -15526,8 +15526,8 @@ class EosDesigns(EosDesignsRootModel):
                        Inherit settings from a profile defined under `device_profiles`.
                        Max two levels of profile
                        inheritance: device -> profile -> parent_profile
-                       This takes precedence over the global `profile`
-                       key.
+                       This takes precedence over the global
+                       `device_profile` key.
                     type:
                        Set the type of the device as defined under `node_type_keys`.
                        This takes precedence over the global

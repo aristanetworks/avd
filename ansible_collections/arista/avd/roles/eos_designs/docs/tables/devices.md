@@ -14,7 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "device_profiles.[].type") | String |  |  |  | Set the type of the device as defined under `node_type_keys`.<br>This takes precedence over the global `type` key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_group</samp>](## "device_profiles.[].mlag_group") | String |  |  |  | Name of MLAG group. Exactly two devices must share the same mlag_group.<br>The group is used for creating MLAG Pairs, for port-channel descriptions on peers and for MLAG domain-id (unless mlag_domain_id is set). |
     | [<samp>devices</samp>](## "devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
-    | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "devices.[].profile") | String |  |  |  | Inherit settings from a profile defined under `device_profiles`.<br>Max two levels of profile inheritance: device -> profile -> parent_profile<br>This takes precedence over the global `profile` key. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "devices.[].profile") | String |  |  |  | Inherit settings from a profile defined under `device_profiles`.<br>Max two levels of profile inheritance: device -> profile -> parent_profile<br>This takes precedence over the global `device_profile` key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "devices.[].type") | String |  |  |  | Set the type of the device as defined under `node_type_keys`.<br>This takes precedence over the global `type` key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_group</samp>](## "devices.[].mlag_group") | String |  |  |  | Name of MLAG group. Exactly two devices must share the same mlag_group.<br>The group is used for creating MLAG Pairs, for port-channel descriptions on peers and for MLAG domain-id (unless mlag_domain_id is set). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
@@ -51,7 +51,7 @@
 
         # Inherit settings from a profile defined under `device_profiles`.
         # Max two levels of profile inheritance: device -> profile -> parent_profile
-        # This takes precedence over the global `profile` key.
+        # This takes precedence over the global `device_profile` key.
       - profile: <str>
 
         # Set the type of the device as defined under `node_type_keys`.
