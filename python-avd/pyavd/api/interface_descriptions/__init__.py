@@ -603,7 +603,7 @@ class InterfaceDescriptionData:
         self.main_interface_wan_carrier = main_interface_wan_carrier
 
     @property
-    def hostname(self) -> str | None:
+    def hostname(self) -> str:
         return self._shared_utils.hostname
 
     @property
