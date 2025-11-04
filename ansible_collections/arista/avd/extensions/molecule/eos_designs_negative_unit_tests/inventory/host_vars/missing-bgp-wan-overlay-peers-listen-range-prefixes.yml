@@ -40,10 +40,6 @@ wan_router:
           dhcp_accept_default_route: true
           ip_address: dhcp
           peer_ip: 10.254.254.1
-          cv_pathfinder_internet_exit:
-            policies:
-              - name: ZSCALER-EXIT-POLICY-1
-                tunnel_interface_numbers: 100-102
 
 wan_path_groups:
   - name: INET
@@ -53,6 +49,5 @@ wan_carriers:
   - name: ATT
     path_group: INET
     trusted: true
-
 expected_error_message: >-
   'bgp_peer_groups.wan_overlay_peers.listen_range_prefixes' is required but was not found.
