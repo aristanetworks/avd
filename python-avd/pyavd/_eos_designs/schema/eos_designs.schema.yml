@@ -1780,6 +1780,79 @@ keys:
       remove_in_version: 6.0.0
       url: https://avd.arista.com/6.x/docs/porting-guides/6.x.x.html#removal-of-designtype
     type: dict
+  device_profile:
+    type: str
+    documentation_options:
+      table: devices
+    description: 'PREVIEW - This datamodel is still under development and may change
+      or get removed at any time.
+
+      Inherit settings from a device profile defined under `device_profiles`.
+
+      If the device is defined under `devices` it is recommended to set the `profile`
+      there instead.
+
+      Max two levels of profile inheritance: device -> profile -> parent_profile'
+  device_profiles:
+    type: list
+    primary_key: name
+    description: PREVIEW - This datamodel is still under development and may change
+      or get removed at any time.
+    documentation_options:
+      table: devices
+    items:
+      $ref: eos_designs#/$defs/node_type/keys/defaults
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Profile Name
+        parent_profile:
+          type: str
+          description: 'Inherit settings from a parent profile defined under `device_profiles`.
+
+            Max two levels of profile inheritance: device -> profile -> parent_profile'
+        type:
+          type: str
+          description: 'Set the type of the device as defined under `node_type_keys`.
+
+            This takes precedence over the global `type` key.'
+        mlag_group:
+          type: str
+          description: 'Name of MLAG group. Exactly two devices must share the same
+            mlag_group.
+
+            The group is used for creating MLAG Pairs, for port-channel descriptions
+            on peers and for MLAG domain-id (unless mlag_domain_id is set).'
+  devices:
+    $ref: eos_designs#/$defs/node_type/keys/nodes
+    documentation_options:
+      table: devices
+    description: PREVIEW - This datamodel is still under development and may change
+      or get removed at any time.
+    type: list
+    items:
+      type: dict
+      keys:
+        profile:
+          type: str
+          description: 'Inherit settings from a profile defined under `device_profiles`.
+
+            Max two levels of profile inheritance: device -> profile -> parent_profile
+
+            This takes precedence over the global `device_profile` key.'
+        type:
+          type: str
+          description: 'Set the type of the device as defined under `node_type_keys`.
+
+            This takes precedence over the global `type` key.'
+        mlag_group:
+          type: str
+          description: 'Name of MLAG group. Exactly two devices must share the same
+            mlag_group.
+
+            The group is used for creating MLAG Pairs, for port-channel descriptions
+            on peers and for MLAG domain-id (unless mlag_domain_id is set).'
   digital_twin:
     documentation_options:
       table: digital-twin-configuration
