@@ -17,7 +17,7 @@
     intended_tag_device: avd-ci-leaf1
     intended_tags: "{{ lookup('file', structured_dir ~ '/' ~ intended_tag_device ~ '.yml')| from_yaml }}"
     test_id: "workspace-invalid-configs"
-    cv_common_pattern: "avd-cv-deploy-{{ test_id }}"
+    cv_common_pattern: "avd_cv-deploy_{{ test_id }}"
 
   tasks:
     - name: "{{ test_id | upper }} Banner"
@@ -25,15 +25,15 @@
       run_once: true
       ansible.builtin.debug:
         msg:
-          - "######################################################################"
-          - "### STARTING MOLECULE TEST {{ '{:<38}'.format(test_id[:38]) | upper }} ####"
-          - "######################################################################"
+          - "{{ ('#' * (31 + test_id | length))[:100] }}"
+          - "### STARTING MOLECULE TEST {{ test_id[:69] | upper }} ###"
+          - "{{ ('#' * (31 + test_id | length))[:100] }}"
 
-    - name: "{{ test_id | upper }} Generate random string"
+    - name: "{{ test_id | upper }} {{ 'Read' if lookup('env', 'MOLECULE_EXECUTION_ID') else 'Generate' }} molecule execution ID"
       tags: ["{{ test_id }}"]
       run_once: true
       ansible.builtin.set_fact:
-        r: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
+        r: "{{ lookup('env', 'MOLECULE_EXECUTION_ID') or lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
 
     - name: "{{ test_id | upper }} Code block to provision CVP with AVD configuration"
       tags: ["{{ test_id }}"]
@@ -57,13 +57,17 @@
           arista.avd.cv_workflow:
             cv_servers: ["{{ cv_server }}"]
             cv_token: "{{ cv_token }}"
+            proxy_host: "{{ proxy_host }}"
+            proxy_port: "{{ proxy_port | int }}"
+            proxy_username: "{{ proxy_username }}"
+            proxy_password: "{{ proxy_password }}"
             cv_verify_certs: "{{ cv_verify_certs }}"
             configuration_dir: "{{ eos_config_dir }}"
             structured_config_dir: "{{ structured_dir }}"
             device_list: "{{ ansible_play_hosts_all }}"
             workspace:
-              name: "{{ cv_common_pattern }}-{{ r }}-converge"
-              description: "{{ (cv_common_pattern + '-' + r + '-converge') | upper }}"
+              name: "{{ cv_common_pattern }}_{{ r }}_converge"
+              description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
               requested_state: "abandoned"
             return_details: true
           register: cv_deploy_results
@@ -99,7 +103,7 @@
               - cv_deploy_results.workspace.requested_state == "abandoned"
               - cv_deploy_results.workspace.state == "abandoned"
               - cv_deploy_results.failed is true
-              - cv_deploy_results.warnings == []
+              - cv_deploy_results.warnings | default([]) | length == 0
               - cv_deploy_results.errors | length == 1
               - "'Failed to build workspace' in cv_deploy_results.errors[0]"
               - "'device build error' in cv_deploy_results.errors[0]"
@@ -126,10 +130,10 @@
           ansible.builtin.import_role:
             name: arista.avd.cv_deploy
           vars:
-            cv_workspace_name: "{{ cv_common_pattern }}-{{ r }}-cleanup"
-            cv_workspace_description: "{{ cv_common_pattern + '-' + r + '-cleanup' | upper }}"
-            cv_change_control_name: "{{ cv_common_pattern }}-{{ r }}-cleanup"
-            cv_change_control_description: "{{ cv_common_pattern + '-' + r + '-cleanup' | upper }}"
+            cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
+            cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
+            cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
+            cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
             cv_register_detailed_results: true
             cv_devices: "{{ ansible_play_hosts_all }}"
             eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"

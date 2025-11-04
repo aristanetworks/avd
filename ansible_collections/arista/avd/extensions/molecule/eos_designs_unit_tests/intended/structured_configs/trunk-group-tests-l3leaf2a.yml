@@ -272,23 +272,23 @@ vlans:
 - id: 200
   name: svi200_with_trunk_groups
   trunk_groups:
-  - trunk-group-tests-l2leaf4
   - MLAG
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
-  tenant: TRUNK_GROUP_TESTS
-- id: 210
-  name: l2vlan210_with_trunk_groups
-  trunk_groups:
   - trunk-group-tests-l2leaf4
-  - MLAG
-  - TG_200
-  - TG_NOT_MATCHING_ANY_SERVERS
   tenant: TRUNK_GROUP_TESTS
 - id: 3199
   name: MLAG_L3_VRF_TG_200
   trunk_groups:
   - MLAG
+  tenant: TRUNK_GROUP_TESTS
+- id: 210
+  name: l2vlan210_with_trunk_groups
+  trunk_groups:
+  - MLAG
+  - TG_200
+  - TG_NOT_MATCHING_ANY_SERVERS
+  - trunk-group-tests-l2leaf4
   tenant: TRUNK_GROUP_TESTS
 vrfs:
 - name: MGMT
