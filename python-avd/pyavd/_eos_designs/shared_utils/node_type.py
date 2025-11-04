@@ -24,7 +24,7 @@ class NodeTypeMixin(Protocol):
 
     @cached_property
     def type(self: SharedUtilsProtocol) -> str:
-        """Type fact set based on the type variable  or default_node_type."""
+        """Type fact set based on the type variable or default_node_type."""
         type_from_device_config = self.device_config.type if self.device_config is not None else None
         if (node_type := default(type_from_device_config, self.inputs.type)) is not None:
             return node_type
