@@ -78,9 +78,9 @@ class StudioMixin(Protocol):
         request = StudioRequest(
             # First attempt to fetch studio from workspace.
             key=StudioKey(studio_id=studio_id, workspace_id=workspace_id),
+            time=time,  # pyright: ignore[reportArgumentType]
         )
-        if time is not None:
-            request.time = time
+
         client = StudioServiceStub(self.channel)
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
@@ -97,9 +97,9 @@ class StudioMixin(Protocol):
 
         # If we get here, it means no studio was returned by the workspace call.
         # So now we fetch the studio config from the workspace to see if the studio was deleted in this workspace.
-        request_time = TimeBounds()
-        if time is not None:
-            request_time.end = time
+
+        # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
+        # Note that changing this will also impact the recorded calls hash
 
         request = StudioConfigStreamRequest(
             partial_eq_filter=[
@@ -108,7 +108,7 @@ class StudioMixin(Protocol):
                     remove=True,
                 ),
             ],
-            time=request_time,
+            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = StudioConfigServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
@@ -121,9 +121,8 @@ class StudioMixin(Protocol):
         request = StudioRequest(
             # First attempt to fetch studio from workspace.
             key=StudioKey(studio_id=studio_id, workspace_id=""),
+            time=time,  # pyright: ignore[reportArgumentType]
         )
-        if time is not None:
-            request.time = time
         client = StudioServiceStub(self.channel)
         response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
 
@@ -155,10 +154,8 @@ class StudioMixin(Protocol):
         Returns:
             Value of the studio inputs or the default_value if no inputs are found.
         """
-        request_time = TimeBounds()
-        if time is not None:
-            request_time.end = time
-
+        # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
+        # Note that changing this will also impact the recorded calls hash
         request = InputsStreamRequest(
             # First attempt to fetch inputs from workspace.
             partial_eq_filter=[
@@ -166,7 +163,7 @@ class StudioMixin(Protocol):
                     key=InputsKey(studio_id=studio_id, workspace_id=workspace_id),
                 ),
             ],
-            time=request_time,
+            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = InputsServiceStub(self.channel)
         studio_inputs = {}
@@ -199,7 +196,7 @@ class StudioMixin(Protocol):
                     remove=True,
                 ),
             ],
-            time=request_time,
+            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = InputsConfigServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
@@ -215,7 +212,7 @@ class StudioMixin(Protocol):
                     key=InputsKey(studio_id=studio_id, workspace_id=""),
                 ),
             ],
-            time=request_time,
+            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = InputsServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
@@ -266,9 +263,8 @@ class StudioMixin(Protocol):
                 workspace_id=workspace_id,
                 path=RepeatedString(values=input_path),
             ),
+            time=time,  # pyright: ignore[reportArgumentType]
         )
-        if time is not None:
-            request.time = time
 
         client = InputsServiceStub(self.channel)
         try:
@@ -288,10 +284,9 @@ class StudioMixin(Protocol):
 
         # If we get here, it means no inputs were returned by the workspace call.
         # So now we fetch the inputs config from the workspace to see if the inputs were deleted in this workspace.
-        request_time = TimeBounds()
-        if time is not None:
-            request_time.end = time
 
+        # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
+        # Note that changing this will also impact the recorded calls hash
         request = InputsConfigStreamRequest(
             partial_eq_filter=[
                 InputsConfig(
@@ -303,7 +298,7 @@ class StudioMixin(Protocol):
                     remove=True,
                 )
             ],
-            time=request_time,
+            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = InputsConfigServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
@@ -319,9 +314,8 @@ class StudioMixin(Protocol):
                 workspace_id="",
                 path=RepeatedString(values=input_path),
             ),
+            time=time,  # pyright: ignore[reportArgumentType]
         )
-        if time is not None:
-            request.time = time
 
         client = InputsServiceStub(self.channel)
         try:

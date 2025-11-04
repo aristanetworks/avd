@@ -68,13 +68,14 @@ class WorkspaceMixin(Protocol):
         Returns:
             Workspace object matching the workspace_id
         """
+        # TODO: Fix time type error once we settle on the correct type for time in Key
+        # Note that changing this will also impact the recorded calls hash and fail tests
         request = WorkspaceRequest(
             key=WorkspaceKey(
                 workspace_id=workspace_id,
             ),
+            time=time,  # pyright: ignore[reportArgumentType]
         )
-        if time is not None:
-            request.time = time
 
         client = WorkspaceServiceStub(self.channel)
 

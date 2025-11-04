@@ -81,10 +81,8 @@ class TagMixin(Protocol):
         Returns:
             List of Tag objects.
         """
-        request_time = TimeBounds()
-        if time is not None:
-            request_time.end = time
-
+        # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
+        # Note that changing this will also impact the recorded calls hash
         request = TagStreamRequest(
             partial_eq_filter=[
                 Tag(
@@ -93,7 +91,7 @@ class TagMixin(Protocol):
                     creator_type=CREATOR_TYPE_MAP[creator_type],
                 )
             ],
-            time=request_time,
+            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = TagServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
@@ -111,7 +109,7 @@ class TagMixin(Protocol):
                     key=TagKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
                 )
             ],
-            time=request_time,
+            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = TagConfigServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
@@ -188,10 +186,8 @@ class TagMixin(Protocol):
         Returns:
             Workspace object matching the workspace_id
         """
-        request_time = TimeBounds()
-        if time is not None:
-            request_time.end = time
-
+        # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
+        # Note that changing this will also impact the recorded calls hash
         request = TagAssignmentStreamRequest(
             partial_eq_filter=[
                 TagAssignment(
@@ -200,7 +196,7 @@ class TagMixin(Protocol):
                     tag_creator_type=CREATOR_TYPE_MAP[creator_type],
                 )
             ],
-            time=request_time,
+            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = TagAssignmentServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
@@ -219,7 +215,7 @@ class TagMixin(Protocol):
                     key=TagAssignmentKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
                 )
             ],
-            time=request_time,
+            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = TagAssignmentConfigServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)

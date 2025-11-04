@@ -70,9 +70,8 @@ class ChangeControlMixin(Protocol):
         """
         request = ChangeControlRequest(
             key=ChangeControlKey(id=change_control_id),
+            time=time,  # pyright: ignore[reportArgumentType]
         )
-        if time is not None:
-            request.time = time
 
         client = ChangeControlServiceStub(self.channel)
 

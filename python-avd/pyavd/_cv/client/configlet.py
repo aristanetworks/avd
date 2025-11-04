@@ -85,11 +85,9 @@ class ConfigletMixin(Protocol):
         Returns:
             ConfigletAssignment objects.
         """
-        request_time = TimeBounds()
-        if time is not None:
-            request_time.end = time
-
-        request = ConfigletAssignmentStreamRequest(partial_eq_filter=[], time=request_time)
+        # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
+        # Note that changing this will also impact the recorded calls hash
+        request = ConfigletAssignmentStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time))  # pyright: ignore[reportArgumentType]
         if container_ids:
             for container_id in container_ids:
                 request.partial_eq_filter.append(
@@ -288,11 +286,9 @@ class ConfigletMixin(Protocol):
         Returns:
             List of matching Configlet objects.
         """
-        request_time = TimeBounds()
-        if time is not None:
-            request_time.end = time
-
-        request = ConfigletStreamRequest(partial_eq_filter=[], time=request_time)
+        # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
+        # Note that changing this will also impact the recorded calls hash
+        request = ConfigletStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time))  # pyright: ignore[reportArgumentType]
         if configlet_ids:
             for configlet_id in configlet_ids:
                 request.partial_eq_filter.append(Configlet(key=ConfigletKey(workspace_id=workspace_id, configlet_id=configlet_id)))
