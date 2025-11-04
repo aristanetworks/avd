@@ -11,7 +11,7 @@ def test_get_validated_data() -> None:
     coercion_and_validation_result = get_validated_data('{"ethernet_interfaces": [{"name": "Ethernet1", "description": 12345}]}', "eos_cli_config_gen")
     validated_data = coercion_and_validation_result.validated_data
     assert validated_data == (
-        '{"ethernet_interfaces":[{"name":"Ethernet1","description":"12345"}],"avd_data_validation_mode":"error",'
+        '{"ethernet_interfaces":[{"name":"Ethernet1","description":"12345","ospf_authentication_key_type":"7"}],"avd_data_validation_mode":"error",'
         '"config_end":false,"generate_default_config":false,"generate_device_documentation":true,"transceiver_qsfp_default_mode_4x10":true}'
     )
     validation_result = coercion_and_validation_result.validation_result
@@ -33,7 +33,7 @@ def test_get_validated_data_not_ok() -> None:
     coercion_and_validation_result = get_validated_data('{"ethernet_interfaces": [{"name": "Ethernet1", "unknown": 12345}]}', "eos_cli_config_gen")
     validated_data = coercion_and_validation_result.validated_data
     assert validated_data == (
-        '{"ethernet_interfaces":[{"name":"Ethernet1","unknown":12345}],"avd_data_validation_mode":"error",'
+        '{"ethernet_interfaces":[{"name":"Ethernet1","unknown":12345,"ospf_authentication_key_type":"7"}],"avd_data_validation_mode":"error",'
         '"config_end":false,"generate_default_config":false,"generate_device_documentation":true,"transceiver_qsfp_default_mode_4x10":true}'
     )
     validation_result = coercion_and_validation_result.validation_result

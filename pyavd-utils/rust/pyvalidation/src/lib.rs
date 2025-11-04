@@ -466,7 +466,8 @@ mod tests {
                     "ethernet_interfaces":[
                         {
                             "name":"Ethernet1",
-                            "description":"12345"
+                            "description":"12345",
+                            "ospf_authentication_key_type":"7"
                         }
                     ],
                     // These are defaults inserted by the validation tooling.
@@ -562,7 +563,8 @@ mod tests {
                     "ethernet_interfaces":[
                         {
                             "name":"Ethernet1",
-                            "unknown":12345
+                            "unknown":12345,
+                            "ospf_authentication_key_type":"7"
                         }
                     ],
                     // These are defaults inserted by the validation tooling.
@@ -588,9 +590,7 @@ mod tests {
             let issue_enum = module.getattr("Issue").unwrap();
             let violation_enum = module.getattr("Violation").unwrap();
 
-            let violation_feedbacks = violations
-                .cast_exact::<pyo3::types::PyList>()
-                .unwrap();
+            let violation_feedbacks = violations.cast_exact::<pyo3::types::PyList>().unwrap();
             assert_eq!(violation_feedbacks.len().unwrap(), 1);
 
             let feedback = violations.get_item(0).unwrap();
