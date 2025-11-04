@@ -290,7 +290,7 @@ class TagMixin(Protocol):
 
         Returns:
             List of TagAssignmentKey objects after being deleted including any server-generated values.
-            TODO: this is probably the list of waht failed rather than this.
+            TODO: this is probably the list of what failed rather than this.
         """
         request = TagAssignmentConfigSetSomeRequest(values=[])
         for tag_assignment in tag_assignments:
