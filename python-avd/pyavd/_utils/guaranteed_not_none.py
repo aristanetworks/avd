@@ -29,9 +29,3 @@ def guaranteed_not_none(value: T | None) -> TypeIs[T]:
         msg = "value is 'None' and was not expected to be."
         raise RuntimeError(msg)
     return True
-
-
-a: int | None = None
-
-if guaranteed_not_none(a):
-    b = a + 10
