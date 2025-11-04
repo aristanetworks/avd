@@ -66332,6 +66332,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class TrafficPolicy(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"input": {"type": str}, "output": {"type": str}}
+            input: str | None
+            """Ingress traffic policy."""
+            output: str | None
+            """Egress traffic policy."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, input: str | None | UndefinedType = Undefined, output: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    TrafficPolicy.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        input: Ingress traffic policy.
+                        output: Egress traffic policy.
+
+                    """
+
         class Metadata(AvdModel):
             """Subclass of AvdModel."""
 
@@ -66444,6 +66468,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ipv6_attached_host_route_export": {"type": Ipv6AttachedHostRouteExport},
             "bfd": {"type": Bfd},
             "service_policy": {"type": ServicePolicy},
+            "traffic_policy": {"type": TrafficPolicy},
             "ntp_serve": {"type": bool},
             "pvlan_mapping": {"type": str},
             "metadata": {"type": Metadata},
@@ -66592,6 +66617,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         service_policy: ServicePolicy
         """Subclass of AvdModel."""
+        traffic_policy: TrafficPolicy
+        """Subclass of AvdModel."""
         ntp_serve: bool | None
         """Enable/disable serving NTP to clients."""
         pvlan_mapping: str | None
@@ -66672,6 +66699,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_attached_host_route_export: Ipv6AttachedHostRouteExport | UndefinedType = Undefined,
                 bfd: Bfd | UndefinedType = Undefined,
                 service_policy: ServicePolicy | UndefinedType = Undefined,
+                traffic_policy: TrafficPolicy | UndefinedType = Undefined,
                 ntp_serve: bool | None | UndefinedType = Undefined,
                 pvlan_mapping: str | None | UndefinedType = Undefined,
                 metadata: Metadata | UndefinedType = Undefined,
@@ -66775,6 +66803,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv6_attached_host_route_export: Subclass of AvdModel.
                     bfd: Subclass of AvdModel.
                     service_policy: Subclass of AvdModel.
+                    traffic_policy: Subclass of AvdModel.
                     ntp_serve: Enable/disable serving NTP to clients.
                     pvlan_mapping: List of VLANs as string.
                     metadata: Subclass of AvdModel.

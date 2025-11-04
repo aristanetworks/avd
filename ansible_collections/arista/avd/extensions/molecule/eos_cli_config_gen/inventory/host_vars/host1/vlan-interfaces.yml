@@ -5,6 +5,9 @@ vlan_interfaces:
     description: SVI Description
     vrf: Tenant_B
     ip_address_virtual: 10.2.1.1/24
+    traffic_policy:
+      input: Policy-01
+      output: Policy-02
     logging:
       event:
         link_status: true
