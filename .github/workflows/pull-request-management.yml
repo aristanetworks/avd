@@ -64,53 +64,53 @@ jobs:
         with:
           filters: |
             eos_design:
-              - 'ansible_collections/arista/avd/roles/eos_designs/*'
-              - 'ansible_collections/arista/avd/roles/eos_designs/**/*'
-              - '.github/workflows/pull-request-management.yml'
-              - 'ansible_collections/arista/avd/extensions/molecule/*'
-              - 'ansible_collections/arista/avd/extensions/molecule/**/*'
-              - 'python-avd/pyavd/_eos_designs/*'
-              - 'python-avd/pyavd/_eos_designs/**/*'
+            - 'ansible_collections/arista/avd/roles/eos_designs/*'
+            - 'ansible_collections/arista/avd/roles/eos_designs/**/*'
+            - '.github/workflows/pull-request-management.yml'
+            - 'ansible_collections/arista/avd/extensions/molecule/*'
+            - 'ansible_collections/arista/avd/extensions/molecule/**/*'
+            - 'python-avd/pyavd/_eos_designs/*'
+            - 'python-avd/pyavd/_eos_designs/**/*'
             config_gen:
-              - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
-              - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
-              - '.github/workflows/pull-request-management.yml'
-              - 'ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen*/*'
-              - 'ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen*/**/*'
-              - 'python-avd/pyavd/_eos_cli_config_gen/*'
-              - 'python-avd/pyavd/_eos_cli_config_gen/**/*'
+            - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
+            - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
+            - '.github/workflows/pull-request-management.yml'
+            - 'ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen*/*'
+            - 'ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen*/**/*'
+            - 'python-avd/pyavd/_eos_cli_config_gen/*'
+            - 'python-avd/pyavd/_eos_cli_config_gen/**/*'
             plugins:
-              - 'ansible_collections/arista/avd/plugins/filter/**'
-              - 'ansible_collections/arista/avd/plugins/test/**'
+            - 'ansible_collections/arista/avd/plugins/filter/**'
+            - 'ansible_collections/arista/avd/plugins/test/**'
             requirements:
-              - 'ansible_collections/arista/avd/requirements.txt'
-              - 'ansible_collections/arista/avd/requirements-dev.txt'
-              - 'ansible_collections/arista/avd/meta/runtime.yml'
-              - 'ansible_collections/arista/avd/requirements.yml'
-              - '.github/requirements-ci-dev.txt'
-              - '.github/workflows/pull-request-management.yml'
-              - 'sonar-project.properties'
-              - '.pre-commit-config.yaml'
+            - 'ansible_collections/arista/avd/requirements.txt'
+            - 'ansible_collections/arista/avd/requirements-dev.txt'
+            - 'ansible_collections/arista/avd/meta/runtime.yml'
+            - 'ansible_collections/arista/avd/requirements.yml'
+            - '.github/requirements-ci-dev.txt'
+            - '.github/workflows/pull-request-management.yml'
+            - 'sonar-project.properties'
+            - '.pre-commit-config.yaml'
             pyavd:
-              - 'python-avd/*'
-              - 'python-avd/**/*'
+            - 'python-avd/*'
+            - 'python-avd/**/*'
             anta_runner:
-              - 'ansible_collections/arista/avd/roles/anta_runner/*'
-              - 'ansible_collections/arista/avd/roles/anta_runner/**/*'
-              - 'python-avd/pyavd/_anta/*'
-              - 'python-avd/pyavd/_anta/**/*'
-              - 'python-avd/pyavd/api/_anta/*'
-              - 'python-avd/pyavd/api/_anta/**/*'
-              - 'python-avd/pyavd/get_device_anta_catalog.py'
+            - 'ansible_collections/arista/avd/roles/anta_runner/*'
+            - 'ansible_collections/arista/avd/roles/anta_runner/**/*'
+            - 'python-avd/pyavd/_anta/*'
+            - 'python-avd/pyavd/_anta/**/*'
+            - 'python-avd/pyavd/api/_anta/*'
+            - 'python-avd/pyavd/api/_anta/**/*'
+            - 'python-avd/pyavd/get_device_anta_catalog.py'
             rust_src_or_ci_changed:
-              - '.github/**/*'
-              - 'rust/**/*'
-              - 'pyavd-utils/**/*'
-              - 'Cargo.toml'
+            - '.github/**/*'
+            - 'rust/**/*'
+            - 'pyavd-utils/**/*'
+            - 'Cargo.toml'
 
-  # -------------------------------------- #
-  # Build PyAVD wheel and upload artifact
-  # -------------------------------------- #
+          # -------------------------------------- #
+          # Build PyAVD wheel and upload artifact
+          # -------------------------------------- #
   build_pyavd:
     name: Build pyavd
     runs-on: ubuntu-latest
@@ -136,9 +136,9 @@ jobs:
           name: pyavd
           path: ./python-avd/dist/*.whl
 
-  # -------------------------------------------- #
-  # Python type checking not covered in pre-commit
-  # -------------------------------------------- #
+          # -------------------------------------------- #
+          # Python type checking not covered in pre-commit
+          # -------------------------------------------- #
   python_type_checking:
     name: Python Linting not covered in pre-commit
     runs-on: ubuntu-latest
@@ -151,9 +151,9 @@ jobs:
         # Specific SHA as allowed by github org admins
         uses: jakebailey/pyright-action@6cabc0f01c4994be48fd45cd9dbacdd6e1ee6e5e
 
-  # ----------------------------------- #
-  # Test Requirements
-  # ----------------------------------- #
+        # ----------------------------------- #
+        # Test Requirements
+        # ----------------------------------- #
   python_requirements:
     name: Test Python requirements installation
     runs-on: ubuntu-latest
@@ -189,7 +189,10 @@ jobs:
     name: Validate eos_cli_config_gen
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
+    if: |
+      needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.requirements == 'true' ||
+      github.event_name == 'merge_group'
     strategy:
       fail-fast: true
       matrix:
@@ -232,7 +235,11 @@ jobs:
     name: Validate eos_designs
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
+    if: |
+      needs.file-changes.outputs.eos_design == 'true' ||
+      needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.requirements == 'true' ||
+      github.event_name == 'merge_group'
     strategy:
       fail-fast: true
       matrix:
@@ -289,7 +296,8 @@ jobs:
     name: Validate eos_designs with minimum requirements
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true' ||
+      github.event_name == 'merge_group'
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
@@ -327,7 +335,11 @@ jobs:
     name: Validate anta_runner
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.anta_runner == 'true' || needs.file-changes.outputs.requirements == 'true'
+    if: |
+      needs.file-changes.outputs.eos_design == 'true' ||
+      needs.file-changes.outputs.anta_runner == 'true' ||
+      needs.file-changes.outputs.requirements == 'true' ||
+      github.event_name == 'merge_group'
     strategy:
       fail-fast: true
       matrix:
@@ -567,7 +579,8 @@ jobs:
       needs.file-changes.outputs.eos_design == 'true' ||
       needs.file-changes.outputs.config_gen == 'true' ||
       needs.file-changes.outputs.pyavd == 'true' ||
-      needs.file-changes.outputs.requirements == 'true'
+      needs.file-changes.outputs.requirements == 'true' ||
+      github.event_name == 'merge_group'
     strategy:
       fail-fast: false
       matrix:
@@ -668,7 +681,9 @@ jobs:
     name: Cargo build, test and linting on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: [file-changes]
-    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true'
+    if: |
+      needs.file-changes.outputs.rust_src_or_ci_changed == 'true' ||
+      github.event_name == 'merge_group'
     strategy:
       fail-fast: false
       matrix:
@@ -732,7 +747,7 @@ jobs:
     name: Python ${{ matrix.python }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: [file-changes]
-    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true'
+    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
     strategy:
       fail-fast: false
       matrix:
