@@ -1,19 +1,6 @@
 ---
 type: wan_router
 wan_mode: cv-pathfinder
-underlay_routing_protocol: ebgp
-
-ipv4_prefix_list_catalog:
-  - name: ALLOW-DEFAULT
-    sequence_numbers:
-      - sequence: 10
-        action: permit 0.0.0.0/0
-  - name: PL2
-    sequence_numbers:
-      - sequence: 10
-        action: permit 5.0.0.0/0
-      - sequence: 20
-        action: deny 10.0.0.0/24
 
 cv_pathfinder_regions:
   - name: AVD_Land_East
@@ -30,13 +17,10 @@ bgp_peer_groups:
     listen_range_prefixes:
       - 192.168.142.0/24
       - 192.168.143.0/24
-wan_stun_dtls_profile_name: profileA
 
 wan_ipsec_profiles:
   control_plane:
     shared_key: ABCDEF1234567890
-  data_plane:
-    shared_key: ABCDEF1234567890666
 
 wan_router:
   defaults:
@@ -55,7 +39,7 @@ wan_router:
       wan_ha:
         enabled: false
       nodes:
-        - name: ipv4-acls-internet-exit-access-lists
+        - name: missing-cv-pathfinder-internet-exit-policy-configured-under-l3-interface
           id: 2
           uplink_switch_interfaces: [Ethernet2]
           l3_interfaces:
@@ -67,8 +51,8 @@ wan_router:
               dhcp_ip: 10.0.0.145
               cv_pathfinder_internet_exit:
                 policies:
+                  # This policy is not configured and will raise
                   - name: DIRECT-EXIT-POLICY-1
-                  - name: DIRECT-EXIT-POLICY-2
 
 wan_path_groups:
   - name: INET
@@ -89,41 +73,13 @@ wan_virtual_topologies:
       default_virtual_topology:
         path_groups:
           - names: [INET, Equinix]
-          - names: [MPLS]
-            preference: 4223
-      application_virtual_topologies:
-        - application_profile: VIDEO
-          path_groups:
-            - names: [MPLS, INET, Equinix]
-              preference: preferred
-          internet_exit:
-            policy: DIRECT-EXIT-POLICY-1
-          id: 3
+        internet_exit:
+          policy: DIRECT-EXIT-POLICY-1
+# This is commented out so it will raise.
+# cv_pathfinder_internet_exit_policies:
+#   - name: DIRECT-EXIT-POLICY-1
+#     fallback_to_system_default: false
+#     type: direct
 
-application_classification:
-  application_profiles:
-    - name: VIDEO
-      categories:
-        - name: VIDEO1
-
-  categories:
-    - name: VIDEO1
-
-cv_pathfinder_internet_exit_policies:
-  - name: DIRECT-EXIT-POLICY-1
-    fallback_to_system_default: false
-    type: direct
-  - name: DIRECT-EXIT-POLICY-2
-    fallback_to_system_default: false
-    type: direct
-
-ipv4_acls:
-  - name: ACL-NAT-IE-DIRECT
-    entries:
-      - sequence: 20
-        action: permit
-        protocol: ip
-        source: interface_ip
-        destination: any
 expected_error_message: >-
-  ipv4_acls[name=ACL-NAT-IE-DIRECT] field substitution is not supported for internet exit access lists
+  The Internet Exit policy 'DIRECT-EXIT-POLICY-1' configured under node l3_interface 'Ethernet3' is not defined under 'cv_pathfinder_internet_exit_policies'.

@@ -7,6 +7,12 @@
 {% for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 !
 interface {{ vlan_interface.name }}
+{%     if vlan_interface.traffic_policy.input is arista.avd.defined %}
+   traffic-policy input {{ vlan_interface.traffic_policy.input }}
+{%     endif %}
+{%     if vlan_interface.traffic_policy.output is arista.avd.defined %}
+   traffic-policy output {{ vlan_interface.traffic_policy.output }}
+{%     endif %}
 {%     if vlan_interface.description is arista.avd.defined %}
    description {{ vlan_interface.description }}
 {%     endif %}

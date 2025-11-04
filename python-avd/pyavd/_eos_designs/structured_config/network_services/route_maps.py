@@ -220,7 +220,8 @@ class RouteMapsMixin(Protocol):
 
         if not sequence_numbers:
             return
-        self.structured_config.route_maps.append_new(name="RM-CONN-2-BGP", sequence_numbers=sequence_numbers)
+        route_map = self.structured_config.route_maps.obtain("RM-CONN-2-BGP")
+        route_map.sequence_numbers.extend(sequence_numbers)
 
     def _redistribute_static_to_bgp_route_map(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """Append network services relevant entries to the route-map used to redistribute static routes to BGP."""

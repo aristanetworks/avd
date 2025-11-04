@@ -7293,6 +7293,8 @@ interface Vlan1002
    ip address virtual 10.1.2.1/24
 !
 interface Vlan2001
+   traffic-policy input Policy-01
+   traffic-policy output Policy-02
    description SVI Description
    logging event link-status
    vrf Tenant_B
@@ -13094,6 +13096,7 @@ Counters: test
 | --------- | -------------------- | --------------------- |
 | Ethernet1 | BLUE-C1-POLICY | BLUE-C2-POLICY |
 | Port-Channel15 | BLUE-C1-POLICY | BLUE-C2-POLICY |
+| Vlan2001 | Policy-01 | Policy-02 |
 
 #### Traffic Policies Device Configuration
 
