@@ -3,8 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from collections.abc import Iterator
 from itertools import chain
+from typing import TYPE_CHECKING
 
 from anta.input_models.interfaces import InterfaceState
 from anta.tests.interfaces import VerifyInterfacesStatus, VerifyPortChannels, VerifyStormControlDrops
@@ -13,6 +13,9 @@ from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesStatus.Input]):
