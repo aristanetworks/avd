@@ -280,24 +280,26 @@ Use this approach to replace a playbook whose **only** job was to upload configl
 
 When migrating AVD from `cvp_configlet_upload` to `cv_deploy` role, the EOS devices should be removed from CloudVision `Network Provisioning` to avoid multiple config sources and configuration overlap.
 
-Devices can be removed manually in the CloudVision Portal user interface or pragramatically with an ansible playbook
+Omiting to clean up Network Provisioning configlets mapping will result in configuration not being removed from device configuration when removing it from the static configlet studios because it would still be defined in the Network Provisioning configlet.
+
+Devices can be removed manually in the CloudVision Portal user interface or pragramatically with an ansible playbook.
 
 <div class="grid" markdown>
 
 === "Manual (single device)"
 
-    Under the `Provisioning / Network Provisioning` menu, right click the device and select `Remove`
+    Under the `Provisioning / Network Provisioning` menu, right click the device and select `Remove`.
 
 === "Manual (multiple devices)"
 
     Under the `Provisioning / Network Provisioning` menu, right click a container, select `Manage / Device` and tick the box next the the devices you want to remove from network provisioning.
 
     !!! note
-        The box next to `Name` field in the blue bar on top can be used to select all devices
+        The box next to `Name` field in the blue bar on top can be used to select all devices.
 
 === "Ansible"
 
-    The bellow example playbook will gather the required data from CVP and remove the devices from CVP Network Provisioning
+    The example playbook below gathers the required data from CVP and removes the devices from CVP Network Provisioning.
 
     ```yaml
     ---
@@ -325,7 +327,7 @@ Devices can be removed manually in the CloudVision Portal user interface or prag
     ```
 
     !!! note
-        For more details, refer to the full Ansible collection cv_device_v3 module [documentation](https://galaxy.ansible.com/ui/repo/published/arista/cvp/content/module/cv_device_v3/)
+        For more details, refer to the full Ansible collection cv_device_v3 module [documentation](https://galaxy.ansible.com/ui/repo/published/arista/cvp/content/module/cv_device_v3/).
 
 </div>
 
