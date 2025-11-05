@@ -8,10 +8,10 @@ from re import findall
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get_ip_from_ip_prefix
 from pyavd._utils.format_string import AvdStringFormatter
-from pyavd.j2filters import range_expand
+from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
     from typing import Literal
@@ -33,13 +33,23 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag(self: SharedUtilsProtocol) -> bool:
-        return self.node_type_key_data.mlag_support and self.node_config.mlag and self.node_group_is_primary_and_peer_hostname is not None
+        if not self.node_type_key_data.mlag_support or not self.node_config.mlag:
+            return False
+
+        # Node groups used for mlag peer.
+        if self.node_group_is_primary_and_peer_hostname:
+            return True
+
+        # devices[].mlag_group used for mlag peer.
+        return bool(self.device_config and self.device_config.mlag_group)
 
     @cached_property
     def group(self: SharedUtilsProtocol) -> str | None:
         """Group set to "node_group" name or None."""
         if self.node_group_config is not None:
             return self.node_group_config.group
+        if self.device_config is not None:
+            return self.device_config.mlag_group
         return None
 
     @cached_property
@@ -76,18 +86,23 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_role(self: SharedUtilsProtocol) -> Literal["primary", "secondary"] | None:
-        # Note: self.node_group_is_primary_and_peer_hostname is always set when self.mlag is true, so this is just to make type-checker happy.
-        if self.mlag and self.node_group_is_primary_and_peer_hostname is not None:
+        if not self.mlag:
+            return None
+        if self.node_group_is_primary_and_peer_hostname is not None:
             return "primary" if self.node_group_is_primary_and_peer_hostname[0] else "secondary"
+
+        if self.switch_facts.mlag_peer:
+            return "primary" if natural_sort([self.hostname, self.switch_facts.mlag_peer])[0] == self.hostname else "secondary"
 
         return None
 
     @cached_property
     def mlag_peer(self: SharedUtilsProtocol) -> str:
-        if self.node_group_is_primary_and_peer_hostname is not None:
-            return self.node_group_is_primary_and_peer_hostname[1]
-        msg = "Unable to find MLAG peer within same node group"
-        raise AristaAvdError(msg)
+        if self.switch_facts.mlag_peer:
+            return self.switch_facts.mlag_peer
+
+        msg = "Unable to find MLAG peer within same node group. 'shared_utils.mlag_peer' should not be called unless MLAG is configured."
+        raise NotImplementedError(msg)
 
     @cached_property
     def mlag_l3(self: SharedUtilsProtocol) -> bool:

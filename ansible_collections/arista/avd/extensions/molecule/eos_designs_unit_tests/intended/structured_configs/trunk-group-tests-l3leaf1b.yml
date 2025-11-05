@@ -498,64 +498,32 @@ vlans:
 - id: 100
   name: svi100_with_trunk_groups
   trunk_groups:
-  - TRUNK_GROUP_TESTS_L2LEAF1
   - CUSTOM_MLAG_TG_NAME
-  tenant: TRUNK_GROUP_TESTS
-- id: 110
-  name: l2vlan110_with_trunk_groups
-  trunk_groups:
   - TRUNK_GROUP_TESTS_L2LEAF1
-  - CUSTOM_MLAG_TG_NAME
-  tenant: TRUNK_GROUP_TESTS
-- id: 200
-  name: svi200_with_trunk_groups
-  trunk_groups:
-  - trunk-group-tests-l2leaf3
-  - TRUNK_GROUP_TESTS_L2LEAF1
-  - CUSTOM_MLAG_TG_NAME
-  tenant: TRUNK_GROUP_TESTS
-- id: 210
-  name: l2vlan210_with_trunk_groups
-  trunk_groups:
-  - trunk-group-tests-l2leaf3
-  - TRUNK_GROUP_TESTS_L2LEAF1
-  - CUSTOM_MLAG_TG_NAME
-  tenant: TRUNK_GROUP_TESTS
-- id: 300
-  name: svi300_with_trunk_groups
-  trunk_groups:
-  - TRUNK_GROUP_TESTS_L2LEAF1
-  - CUSTOM_MLAG_TG_NAME
-  - TG_300
-  tenant: TRUNK_GROUP_TESTS
-- id: 310
-  name: l2vlan310_with_trunk_groups
-  trunk_groups:
-  - TRUNK_GROUP_TESTS_L2LEAF1
-  - CUSTOM_MLAG_TG_NAME
-  - TG_300
-  tenant: TRUNK_GROUP_TESTS
-- id: 398
-  name: svi398_without_trunk_groups
-  trunk_groups:
-  - TRUNK_GROUP_TESTS_L2LEAF1
-  - CUSTOM_MLAG_TG_NAME
-  tenant: TRUNK_GROUP_TESTS
-- id: 399
-  name: l2vlan399_without_trunk_groups
-  trunk_groups:
-  - TRUNK_GROUP_TESTS_L2LEAF1
-  - CUSTOM_MLAG_TG_NAME
   tenant: TRUNK_GROUP_TESTS
 - id: 3099
   name: MLAG_L3_VRF_TG_100
   trunk_groups:
   - CUSTOM_LEAF_PEER_L3_TG_NAME
   tenant: TRUNK_GROUP_TESTS
+- id: 200
+  name: svi200_with_trunk_groups
+  trunk_groups:
+  - CUSTOM_MLAG_TG_NAME
+  - trunk-group-tests-l2leaf3
+  - TRUNK_GROUP_TESTS_L2LEAF1
+  tenant: TRUNK_GROUP_TESTS
 - id: 3199
   name: MLAG_L3_VRF_TG_200
   trunk_groups:
   - CUSTOM_LEAF_PEER_L3_TG_NAME
+  tenant: TRUNK_GROUP_TESTS
+- id: 300
+  name: svi300_with_trunk_groups
+  trunk_groups:
+  - CUSTOM_MLAG_TG_NAME
+  - TG_300
+  - TRUNK_GROUP_TESTS_L2LEAF1
   tenant: TRUNK_GROUP_TESTS
 - id: 301
   name: svi301_with_trunk_groups_only_l3leaf
@@ -563,16 +531,48 @@ vlans:
   - CUSTOM_MLAG_TG_NAME
   - TG_300
   tenant: TRUNK_GROUP_TESTS
+- id: 398
+  name: svi398_without_trunk_groups
+  trunk_groups:
+  - CUSTOM_MLAG_TG_NAME
+  - TRUNK_GROUP_TESTS_L2LEAF1
+  tenant: TRUNK_GROUP_TESTS
 - id: 3299
   name: MLAG_L3_VRF_TG_300
   trunk_groups:
   - CUSTOM_LEAF_PEER_L3_TG_NAME
+  tenant: TRUNK_GROUP_TESTS
+- id: 110
+  name: l2vlan110_with_trunk_groups
+  trunk_groups:
+  - CUSTOM_MLAG_TG_NAME
+  - TRUNK_GROUP_TESTS_L2LEAF1
+  tenant: TRUNK_GROUP_TESTS
+- id: 210
+  name: l2vlan210_with_trunk_groups
+  trunk_groups:
+  - CUSTOM_MLAG_TG_NAME
+  - trunk-group-tests-l2leaf3
+  - TRUNK_GROUP_TESTS_L2LEAF1
+  tenant: TRUNK_GROUP_TESTS
+- id: 310
+  name: l2vlan310_with_trunk_groups
+  trunk_groups:
+  - CUSTOM_MLAG_TG_NAME
+  - TG_300
+  - TRUNK_GROUP_TESTS_L2LEAF1
   tenant: TRUNK_GROUP_TESTS
 - id: 311
   name: l2vlan310_with_trunk_groups_only_l3leaf
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - TG_300
+  tenant: TRUNK_GROUP_TESTS
+- id: 399
+  name: l2vlan399_without_trunk_groups
+  trunk_groups:
+  - CUSTOM_MLAG_TG_NAME
+  - TRUNK_GROUP_TESTS_L2LEAF1
   tenant: TRUNK_GROUP_TESTS
 vrfs:
 - name: MGMT

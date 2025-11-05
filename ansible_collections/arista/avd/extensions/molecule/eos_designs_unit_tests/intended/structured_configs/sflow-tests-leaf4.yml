@@ -5,16 +5,15 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet11
-  description: SERVER_port-channel-interface-true_PCI2
+  description: MLAG_sflow-tests-leaf3_Ethernet11
   shutdown: false
   channel_group:
     id: 11
-    mode: 'on'
+    mode: active
   metadata:
-    peer: port-channel-interface-true
-    peer_interface: PCI2
-    peer_type: server
-    peer_key: servers
+    peer: sflow-tests-leaf3
+    peer_interface: Ethernet11
+    peer_type: mlag_peer
 - name: Ethernet12
   description: MLAG_sflow-tests-leaf3_Ethernet12
   shutdown: false
@@ -71,6 +70,17 @@ ethernet_interfaces:
     peer: sflow-tests-l2-leaf2
     peer_interface: Ethernet2
     peer_type: l2leaf
+- name: Ethernet21
+  description: SERVER_port-channel-interface-true_PCI2
+  shutdown: false
+  channel_group:
+    id: 21
+    mode: 'on'
+  metadata:
+    peer: port-channel-interface-true
+    peer_interface: PCI2
+    peer_type: server
+    peer_key: servers
 - name: Ethernet13
   description: SERVER_port-channel-interface-false_PCI12
   shutdown: false
@@ -128,16 +138,13 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel11
-  description: SERVER_port-channel-interface-true
+  description: MLAG_sflow-tests-leaf3_Port-Channel11
   shutdown: false
-  mlag: 11
-  spanning_tree_portfast: edge
   sflow:
     enable: true
   switchport:
     enabled: true
-    mode: access
-    access_vlan: 11
+    mode: trunk
     trunk:
       groups:
       - MLAG
@@ -163,6 +170,17 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: 11,4092
+- name: Port-Channel21
+  description: SERVER_port-channel-interface-true
+  shutdown: false
+  mlag: 21
+  spanning_tree_portfast: edge
+  sflow:
+    enable: true
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 11
 - name: Port-Channel13
   description: SERVER_port-channel-interface-false
   shutdown: false
