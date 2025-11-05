@@ -302,7 +302,7 @@ Devices can be removed manually in the CloudVision Portal user interface or prag
     ```yaml
     ---
     - name: "Trigger a provisioning reset on EOS devices"
-      hosts: all     
+      hosts: all
       connection: local
       gather_facts: false
       vars:
