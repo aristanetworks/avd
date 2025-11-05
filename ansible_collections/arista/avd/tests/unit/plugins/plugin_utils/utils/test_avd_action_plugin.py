@@ -6,7 +6,7 @@ import warnings
 from collections.abc import Generator
 from contextlib import ExitStack
 from typing import Any
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, call, patch
 
 import pytest
 from ansible.errors import AnsibleActionFail
@@ -353,3 +353,32 @@ class TestAvdActionPlugin:
 
         # Final cleanup for other tests
         logger.removeHandler(sticky_handler)
+
+    @pytest.mark.parametrize("verbosity", [0, 1, 2, 3, 4])
+    def test_forced_colored_logs(self, mock_display: MagicMock, verbosity: int) -> None:
+        """Test that logs with the 'color' extra are always displayed, regardless of the verbosity level."""
+
+        class ActionModule(AvdActionPlugin):
+            def main(self, task_vars: dict[str, Any]) -> None:
+                _task_vars = task_vars
+                # Log a message with a specific color that should always be displayed
+                self.logger.log(self.logger.level, "Forced colored message", extra={"color": "red"})
+                # Log a standard INFO message that should only be displayed if verbosity > 0
+                self.logger.info("Standard info message")
+
+        plugin = self._plugin_factory(ActionModule)
+
+        # Set the desired verbosity and run the plugin
+        mock_display.verbosity = verbosity
+        plugin.run()
+
+        # Verify "Forced colored message" is ALWAYS displayed
+        mock_display.display.assert_any_call("Forced colored message", color="red")
+
+        # Verify standard info message behavior depends on verbosity
+        if verbosity > 0:
+            mock_display.v.assert_any_call("Standard info message")
+        else:
+            # Ensure it was NOT called via any common display method for verbosity 0
+            assert call("Standard info message") not in mock_display.v.call_args_list
+            assert call("Standard info message") not in mock_display.display.call_args_list

@@ -379,15 +379,16 @@ def check_running_from_source() -> bool:
     from schema_tools.check_schemas import check_schemas, rebuild_schemas  # noqa: PLC0415
     from schema_tools.compile_templates import check_templates, recompile_templates  # noqa: PLC0415
 
+    # We always want Ansible to display the following logs in color, regardless of the verbosity level
     if schemas_recompiled := check_schemas():
-        LOGGER.info("Schemas have changed, rebuilding...", extra={"color": C.COLOR_CHANGED})
+        LOGGER.log(LOGGER.level, "Schemas have changed, rebuilding...", extra={"color": C.COLOR_CHANGED})
         rebuild_schemas()
-        LOGGER.info("Done.", extra={"color": C.COLOR_CHANGED})
+        LOGGER.log(LOGGER.level, "Done.", extra={"color": C.COLOR_CHANGED})
 
     if templates_recompiled := check_templates():
-        LOGGER.info("Templates have changed, recompiling...", extra={"color": C.COLOR_CHANGED})
+        LOGGER.log(LOGGER.level, "Templates have changed, recompiling...", extra={"color": C.COLOR_CHANGED})
         recompile_templates()
-        LOGGER.info("Done.", extra={"color": C.COLOR_CHANGED})
+        LOGGER.log(LOGGER.level, "Done.", extra={"color": C.COLOR_CHANGED})
 
     return schemas_recompiled or templates_recompiled
 
@@ -429,9 +430,10 @@ class ActionModule(AvdActionPlugin):
         if check_running_from_source():
             self.result["changed"] = True
 
-        self.logger.info("AVD version %s", info["ansible"]["collection"]["version"], extra={"color": C.COLOR_OK})
+        # We always want Ansible to display the following logs in color, regardless of the verbosity level
+        self.logger.log(LOGGER.level, "AVD version %s", info["ansible"]["collection"]["version"], extra={"color": C.COLOR_OK})
         if RUNNING_FROM_SOURCE:
-            self.logger.info("AVD is running from source using PyAVD at '%s'", PYTHON_AVD_PATH, extra={"color": C.COLOR_OK})
+            self.logger.log(LOGGER.level, "AVD is running from source using PyAVD at '%s'", PYTHON_AVD_PATH, extra={"color": C.COLOR_OK})
 
         if not _validate_python_version(info["python"]):
             self.result["failed"] = True
