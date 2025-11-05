@@ -120,11 +120,9 @@ class RouterBgpMixin(Protocol):
 
         # router bgp default vrf configuration for evpn
         if self._vrf_default_evpn and (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]):
-            self.structured_config.router_bgp.peer_groups.append_new(
-                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-                metadata=EosCliConfigGen.RouterBgp.PeerGroupsItem.Metadata(type="ipv4"),
-                route_map_out="RM-BGP-UNDERLAY-PEERS-OUT",
-            )
+            target_peer_group = self.structured_config.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
+            target_peer_group.metadata.type = "ipv4"
+            target_peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
 
     def _router_bgp_vrfs(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
@@ -260,7 +258,8 @@ class RouterBgpMixin(Protocol):
                 else:
                     bgp_vrf = cast("EosCliConfigGen.RouterBgp.VrfsItem", bgp_vrf)
                     bgp_vrf.name = vrf.name
-                    self.structured_config.router_bgp.vrfs.append(bgp_vrf)
+                    maybe_existing_vrf = self.structured_config.router_bgp.vrfs.obtain(vrf.name)
+                    maybe_existing_vrf._combine(bgp_vrf)
 
     def _update_router_bgp_vrf_evpn_or_mpls_cfg(
         self: AvdStructuredConfigNetworkServicesProtocol,

@@ -3066,7 +3066,16 @@ keys:
           - message-digest
         ospf_authentication_key:
           type: str
-          description: Encrypted password - only type 7 supported.
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+          - int
+          description: Authentication key type.
+          default: '7'
+          valid_values:
+          - '7'
+          - 8a
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -3087,7 +3096,16 @@ keys:
                 - sha512
               key:
                 type: str
-                description: Encrypted password - only type 7 supported.
+                description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                - int
+                description: Authentication key type.
+                default: '7'
+                valid_values:
+                - '7'
+                - 8a
         pim:
           type: dict
           keys:
@@ -12372,6 +12390,15 @@ keys:
         ospf_authentication_key:
           type: str
           description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+          - int
+          description: Authentication key type.
+          default: '7'
+          valid_values:
+          - '7'
+          - 8a
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -12393,6 +12420,15 @@ keys:
               key:
                 type: str
                 description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                - int
+                description: Authentication key type.
+                default: '7'
+                valid_values:
+                - '7'
+                - 8a
         flow_tracker:
           type: dict
           keys:
@@ -24192,7 +24228,16 @@ keys:
           - message-digest
         ospf_authentication_key:
           type: str
-          description: Encrypted password used for simple authentication.
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+          - int
+          description: Authentication key type.
+          default: '7'
+          valid_values:
+          - '7'
+          - 8a
         ospf_message_digest_keys:
           type: list
           description: Keys used for message-digest authentication.
@@ -24215,6 +24260,15 @@ keys:
               key:
                 type: str
                 description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                - int
+                description: Authentication key type.
+                default: '7'
+                valid_values:
+                - '7'
+                - 8a
         pim:
           type: dict
           keys:
@@ -24467,6 +24521,15 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+        traffic_policy:
+          type: dict
+          keys:
+            input:
+              type: str
+              description: Ingress traffic policy.
+            output:
+              type: str
+              description: Egress traffic policy.
         ntp_serve:
           type: bool
           description: Enable/disable serving NTP to clients.
