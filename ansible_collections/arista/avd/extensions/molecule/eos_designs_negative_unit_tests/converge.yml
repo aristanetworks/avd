@@ -1,4 +1,123 @@
 ---
+- name: Converge Negative tests for 'eos_designs_facts' - failure-devices-and-node-key-1
+  hosts: failure-devices-and-node-key-1
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts' - failure-devices-and-node-key-2
+  hosts: failure-devices-and-node-key-2
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts' - failure-devices-mlag-group
+  hosts: failure-devices-mlag-group
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts' - missing-devices-profile
+  hosts: missing-devices-profile
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts' - missing-devices-parent-profile
+  hosts: missing-devices-parent-profile
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts' - missing-devices-type
+  hosts: missing-devices-type
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts' - missing-cv-topology-levels
+  hosts: missing-cv-topology-levels
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
 - name: Converge Negative tests for 'eos_designs_facts' - missing-cv-topology-levels
   hosts: missing-cv-topology-levels
   gather_facts: false
