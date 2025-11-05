@@ -1,0 +1,29 @@
+# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+dynamic_keys:
+  "connected_endpoints_keys.key":
+    $ref: "eos_designs#/keys/connected_endpoints"
+    type: list
+    display_name: Connected Endpoints
+    description: |-
+      List of endpoint connected to the fabric.
+      This should be applied to group_vars or host_vars where endpoints are connecting.
+      `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".
+    documentation_options:
+      table: connected-endpoints
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+        type:
+          type: str
+          description: |-
+            Type of endpoint.
+            This is used in descriptions and in documentation.
+            The default value is taken from `connected_endpoints_keys[].type`.

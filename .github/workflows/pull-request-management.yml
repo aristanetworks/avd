@@ -67,16 +67,16 @@ jobs:
               - 'ansible_collections/arista/avd/roles/eos_designs/*'
               - 'ansible_collections/arista/avd/roles/eos_designs/**/*'
               - '.github/workflows/pull-request-management.yml'
-              - 'ansible_collections/arista/avd/molecule/*'
-              - 'ansible_collections/arista/avd/molecule/**/*'
+              - 'ansible_collections/arista/avd/extensions/molecule/*'
+              - 'ansible_collections/arista/avd/extensions/molecule/**/*'
               - 'python-avd/pyavd/_eos_designs/*'
               - 'python-avd/pyavd/_eos_designs/**/*'
             config_gen:
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
               - '.github/workflows/pull-request-management.yml'
-              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/*'
-              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/**/*'
+              - 'ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen*/*'
+              - 'ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen*/**/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/**/*'
             plugins:
@@ -89,6 +89,8 @@ jobs:
               - 'ansible_collections/arista/avd/requirements.yml'
               - '.github/requirements-ci-dev.txt'
               - '.github/workflows/pull-request-management.yml'
+              - 'sonar-project.properties'
+              - '.pre-commit-config.yaml'
             pyavd:
               - 'python-avd/*'
               - 'python-avd/**/*'
@@ -103,7 +105,7 @@ jobs:
             rust_src_or_ci_changed:
               - '.github/**/*'
               - 'rust/**/*'
-              - 'python/avdutils/**/*'
+              - 'pyavd-utils/**/*'
               - 'Cargo.toml'
 
   # -------------------------------------- #
@@ -129,7 +131,7 @@ jobs:
           WHEEL_FILE=$(find ./dist/*.whl -print0 -type f | xargs -0 -n 1 basename)
           echo "wheel_file=/tmp/pyavd/$WHEEL_FILE" >> "$GITHUB_OUTPUT"
       - name: Upload pyavd artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: pyavd
           path: ./python-avd/dist/*.whl
@@ -172,7 +174,7 @@ jobs:
         with:
           python-version: ${{ matrix.python_version }}
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -196,7 +198,7 @@ jobs:
           - "eos_cli_config_gen_deprecated_vars"
           - "eos_cli_config_gen_negative_unit_tests"
         ansible_version:
-          - "ansible-core<2.19.0"
+          - "ansible-core<2.20.0"
         # Also test minimum ansible version for one scenario.
         include:
           - avd_scenario: "eos_cli_config_gen"
@@ -204,7 +206,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -218,10 +220,10 @@ jobs:
       - name: Check GIT status
         run: |
           sh .github/check-git-status.sh
-      # - uses: actions/upload-artifact@v4
+      # - uses: actions/upload-artifact@v5
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
-      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+      #     path: ${PWD}/ansible_collections/arista/avd/extensions/molecule/${{ matrix.avd_scenario }}
 
   # ----------------------------------- #
   # EOS Design MOLECULE
@@ -240,7 +242,6 @@ jobs:
           - "eos_designs_deprecated_vars"
           - "eos_designs-l2ls"
           - "eos_designs-mpls-isis-sr-ldp"
-          - "eos_designs_negative_unit_tests"
           - "eos_designs-twodc-5stage-clos"
           - "eos_designs_unit_tests"
           - "evpn_underlay_ebgp_overlay_ebgp"
@@ -255,9 +256,13 @@ jobs:
           - "example-single-dc-l3ls-ipv6"
           - "example-cv-pathfinder"
         ansible_version:
-          # Testing all scenario with 2.16.x, due to bug with in 2.17.0 with and the way we test eos_designs_negative_unit_tests https://github.com/ansible/ansible/issues/83292
-          - "ansible-core>=2.16.0,<2.17.0"
+          - "ansible-core>=2.16.0,<2.20.0"
         include:
+          - avd_scenario: "eos_designs_negative_unit_tests"
+            # Testing with 2.16.x, due to bug with in 2.17.0 with and the way we test eos_designs_negative_unit_tests https://github.com/ansible/ansible/issues/83292
+            ansible_version: "ansible-core<2.17.0"
+          - avd_scenario: "eos_designs_unit_tests"
+            ansible_version: "ansible-core<2.17.0"
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.18.0"
           - avd_scenario: "eos_designs_unit_tests"
@@ -265,7 +270,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -288,7 +293,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -329,14 +334,14 @@ jobs:
         avd_scenario:
           - "anta_runner"
         ansible_version:
-          - "ansible-core<2.19.0"
+          - "ansible-core<2.20.0"
         include:
           - avd_scenario: "anta_runner"
             ansible_version: "ansible-core==2.16.0"
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -364,7 +369,7 @@ jobs:
         ansible_version: [stable, devel]
         include:
           - ansibe_version: stable
-            pip_installation: "ansible-core<2.19.0"
+            pip_installation: "ansible-core<2.20.0"
           - ansibe_version: devel
             pip_installation: "--user https://github.com/ansible/ansible/archive/devel.tar.gz"
             skip_test: "--skip-test ansible-doc"
@@ -379,7 +384,7 @@ jobs:
             3.12
             3.13
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -404,13 +409,13 @@ jobs:
           python-version: |
             3.12
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
       - name: Install pyavd and ansible requirements
         run: |
-          pip install "ansible-core<2.19.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
+          pip install "ansible-core<2.20.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
       - name: Run ansible-test units
         working-directory: ansible_collections/arista/avd
         run: |
@@ -418,7 +423,7 @@ jobs:
           ansible-test coverage xml
           mv tests/output/reports/coverage.xml ./units-coverage.xml
       - name: Upload coverage from ansible-test units
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ansible-test-units-coverage
           path: ansible_collections/arista/avd/units-coverage.xml
@@ -432,12 +437,14 @@ jobs:
       - name: Set up Python 3
         uses: actions/setup-python@v6
         with:
+          # Testing 3.10 to ensure ansible-core < 2.19 still works.
           python-version: |
+            3.10
             3.12
             3.13
       - name: Install Python requirements
         run: |
-          pip install "ansible-core<2.19.0" -r .github/requirements-ci-dev.txt --upgrade
+          pip install "ansible-core<2.20.0" -r .github/requirements-ci-dev.txt --upgrade
       - name: Run ansible-test integration test cases
         working-directory: ansible_collections/arista/avd
         run: |
@@ -445,7 +452,7 @@ jobs:
           ansible-test coverage xml
           mv tests/output/reports/coverage.xml ./integration-coverage.xml
       - name: Upload coverage from ansible-test integration
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ansible-test-integration-coverage
           path: ansible_collections/arista/avd/integration-coverage.xml
@@ -465,12 +472,12 @@ jobs:
       - name: Install Python & Ansible requirements
         run: |
           # distlib is required when using manifest
-          pip install "ansible-core<2.19.0" distlib --upgrade
+          pip install "ansible-core<2.20.0" distlib --upgrade
       - name: Build Ansible collection
         run: |
           ansible-galaxy collection build -vvv --force ansible_collections/arista/avd
       - name: Upload collection
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: avd-collection
           path: ./arista-avd-*.tar.gz
@@ -492,7 +499,7 @@ jobs:
         run: |
           pip install "ansible-core==2.16.0"
       - name: Download collection
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: avd-collection
       - name: Install galaxy-importer
@@ -503,7 +510,7 @@ jobs:
           pip install "galaxy-importer==0.4.31"
       - name: Run galaxy-importer checks
         run: python -m galaxy_importer.main *.tar.gz
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: importer-logs
           path: ./importer_result.json
@@ -529,7 +536,7 @@ jobs:
             3.12
             3.13
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -537,7 +544,7 @@ jobs:
         run: |
           pip install "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
       - name: Download collection
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: avd-collection
       - name: Extract collection
@@ -595,19 +602,19 @@ jobs:
           mv ./python-avd/.coverage.* ./coverage-${{ matrix.suite.id }}.dat
       - name: Upload pytest coverage data
         if: matrix.python == '3.11'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: coverage-data-${{ matrix.suite.id }}
           path: coverage-${{ matrix.suite.id }}.dat
       - name: Upload eos_designs compiled templates from pytest
         if: matrix.suite.upload_compiled_templates == true && matrix.python == '3.11'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: pytest-eos-designs-compiled-templates
           path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
       - name: Upload eos_cli_config_gen compiled templates from pytest
         if: matrix.suite.upload_compiled_templates == true && matrix.python == '3.11'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: pytest-eos-cli-config-gen-compiled-templates
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
@@ -626,18 +633,18 @@ jobs:
         working-directory: python-avd
         run: pip install --group coverage
       - name: Download coverage artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           pattern: coverage-data-*
           path: python-avd
           merge-multiple: true
       - name: Download eos_designs compiled templates artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pytest-eos-designs-compiled-templates
           path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
       - name: Download eos_cli_config_gen compiled templates artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: pytest-eos-cli-config-gen-compiled-templates
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
@@ -649,7 +656,7 @@ jobs:
           coverage report --rcfile=pyproject.toml
           coverage xml --rcfile=pyproject.toml
       - name: Upload pytest coverage report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: pytest-coverage
           path: python-avd/coverage.xml
@@ -680,6 +687,11 @@ jobs:
         # This is needed for arm machines since they don't ship with 2024 edition.
       - name: Upgrade rust and cargo
         run: rustup update stable
+        # This is needed because we have pyo3 tests and our minimum python version is 3.10.
+        # On some test containers (looking at you windows-latest) the included Python is 3.9.
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
       - name: Check code formatting with cargo fmt
         run: cargo fmt --verbose
         if: |
@@ -698,7 +710,7 @@ jobs:
         if: |
           matrix.os == 'ubuntu-latest'
       - name: Upload coverage report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: rust-llvm-cov
           path: lcov.info
@@ -747,7 +759,7 @@ jobs:
         run: |
           pip install tox tox-gh-actions --upgrade
       - name: Run pytest via tox
-        working-directory: python/avdutils
+        working-directory: pyavd-utils
         # Running tox  which will build the package (including rust).
         # For most runs without an environment set here. The environment is mapped with the tox gh-action plugin.
         run: |
@@ -770,11 +782,11 @@ jobs:
         run: |
           pip install tox tox-gh-actions --upgrade
       - name: Run pytest via tox
-        working-directory: python/avdutils
+        working-directory: pyavd-utils
         run: |
           tox -e coverage,report
       - name: Upload coverage from pytest
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
-          name: pytest-avdutils-coverage
-          path: python/avdutils/coverage.xml
+          name: pytest-pyavd-utils-coverage
+          path: pyavd-utils/coverage.xml

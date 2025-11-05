@@ -3,11 +3,6 @@ aaa_authorization:
     default: local
 aaa_root:
   disabled: true
-agents:
-- name: KernelFib
-  environment_variables:
-  - name: KERNELFIB_PROGRAM_ALL_ECMP
-    value: '1'
 application_traffic_recognition:
   field_sets:
     l4_ports:
@@ -93,9 +88,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.0.4.57/31
-  peer: site4-border1
-  peer_interface: Ethernet3
-  peer_type: l3leaf
+  metadata:
+    peer: site4-border1
+    peer_interface: Ethernet3
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -105,9 +101,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.0.4.59/31
-  peer: site4-border2
-  peer_interface: Ethernet3
-  peer_type: l3leaf
+  metadata:
+    peer: site4-border2
+    peer_interface: Ethernet3
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3
@@ -116,9 +113,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 172.18.40.2/24
-  peer: mpls-cloud
-  peer_interface: Ethernet8
-  peer_type: l3_interface
+  metadata:
+    peer: mpls-cloud
+    peer_interface: Ethernet8
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet4
@@ -128,9 +126,10 @@ ethernet_interfaces:
     hardware: FLOW-TRACKER
   ip_address: 100.64.40.2/24
   access_group_in: ACL-INTERNET-IN_Ethernet4
-  peer: inet-cloud
-  peer_interface: Ethernet10
-  peer_type: l3_interface
+  metadata:
+    peer: inet-cloud
+    peer_interface: Ethernet10
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:
@@ -218,6 +217,8 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+kernel:
+  software_forwarding_ecmp: true
 local_users:
 - name: admin
   privilege: 15
@@ -470,19 +471,22 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     bfd: true
@@ -498,25 +502,30 @@ router_bgp:
   - ip_address: 10.0.4.56
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65104'
-    peer: site4-border1
+    metadata:
+      peer: site4-border1
     description: site4-border1_Ethernet3
   - ip_address: 10.0.4.58
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65104'
-    peer: site4-border2
+    metadata:
+      peer: site4-border2
     description: site4-border2_Ethernet3
   - ip_address: 192.168.255.13
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65104'
-    peer: site4-border1
+    metadata:
+      peer: site4-border1
     description: site4-border1_Loopback0
   - ip_address: 192.168.42.1
     peer_group: WAN-OVERLAY-PEERS
-    peer: pf1
+    metadata:
+      peer: pf1
     description: pf1_Dps1
   - ip_address: 192.168.42.2
     peer_group: WAN-OVERLAY-PEERS
-    peer: pf2
+    metadata:
+      peer: pf2
     description: pf2_Dps1
   redistribute:
     connected:

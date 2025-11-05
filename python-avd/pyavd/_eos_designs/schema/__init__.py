@@ -675,6 +675,8 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    BgpAsNotation: TypeAlias = Literal["auto", "asdot", "asplain"]
+
     class BgpGracefulRestart(AvdModel):
         """Subclass of AvdModel."""
 
@@ -1653,6 +1655,1718 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdModel.
 
                 """
+
+    class ConnectedEndpointsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class AdaptersItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class SwitchPorts(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            SwitchPorts._item_type = str
+
+            class Switches(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Switches._item_type = str
+
+            class EndpointPorts(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            EndpointPorts._item_type = str
+
+            class Descriptions(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Descriptions._item_type = str
+
+            Speed: TypeAlias = Literal[
+                "100full",
+                "100g",
+                "100g-1",
+                "100g-2",
+                "100g-4",
+                "100half",
+                "10full",
+                "10g",
+                "10half",
+                "1g",
+                "200g",
+                "200g-2",
+                "200g-4",
+                "25g",
+                "400g",
+                "400g-4",
+                "400g-8",
+                "40g",
+                "50g",
+                "50g-1",
+                "50g-2",
+                "800g-8",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
+                "auto",
+                "auto 10000full",
+                "auto 1000full",
+                "auto 100full",
+                "auto 100g-1",
+                "auto 100g-2",
+                "auto 100g-4",
+                "auto 100gfull",
+                "auto 100half",
+                "auto 10full",
+                "auto 10gfull",
+                "auto 10half",
+                "auto 1gfull",
+                "auto 2.5gfull",
+                "auto 200g-2",
+                "auto 200g-4",
+                "auto 25gfull",
+                "auto 400g-4",
+                "auto 400g-8",
+                "auto 40gfull",
+                "auto 50g-1",
+                "auto 50g-2",
+                "auto 50gfull",
+                "auto 5gfull",
+                "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
+                "forced 10000full",
+                "forced 1000full",
+                "forced 1000half",
+                "forced 100full",
+                "forced 100gfull",
+                "forced 100half",
+                "forced 10full",
+                "forced 10half",
+                "forced 25gfull",
+                "forced 40gfull",
+                "forced 50gfull",
+            ]
+            Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
+            PhoneTrunkMode: TypeAlias = Literal["tagged", "untagged", "tagged phone", "untagged phone"]
+
+            class TrunkGroups(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            TrunkGroups._item_type = str
+
+            SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+            SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+            SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+
+            class Ptp(AvdModel):
+                """Subclass of AvdModel."""
+
+                EndpointRole: TypeAlias = Literal["follower", "dynamic", "bmca", "default"]
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": False},
+                    "endpoint_role": {"type": str, "default": "follower"},
+                    "profile": {"type": str, "default": "aes67-r16-2016"},
+                }
+                enabled: bool
+                """Default value: `False`"""
+                endpoint_role: EndpointRole
+                """
+                PTP role of the endpoint.
+                `follower` will configure the switch port as `ptp role master`.
+                `dynamic`
+                will use BMCA.
+                `default` is deprecated in favor of `follower`.
+                `bmca` is deprecated in favor of
+                `dynamic`.
+
+                Default value: `"follower"`
+                """
+                profile: str
+                """
+                Default available profiles are:
+                  - "aes67"
+                  - "aes67-r16-2016"
+                  - "smpte2059-2"
+
+                Default value: `"aes67-r16-2016"`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        endpoint_role: EndpointRole | UndefinedType = Undefined,
+                        profile: str | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ptp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            endpoint_role:
+                               PTP role of the endpoint.
+                               `follower` will configure the switch port as `ptp role master`.
+                               `dynamic`
+                               will use BMCA.
+                               `default` is deprecated in favor of `follower`.
+                               `bmca` is deprecated in favor of
+                               `dynamic`.
+                            profile:
+                               Default available profiles are:
+                                 - "aes67"
+                                 - "aes67-r16-2016"
+                                 - "smpte2059-2"
+
+                        """
+
+            class FlowTracking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
+                enabled: bool | None
+                name: str | None
+                """Flow tracker name as defined in flow_tracking_settings."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        FlowTracking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            name: Flow tracker name as defined in flow_tracking_settings.
+
+                        """
+
+            class LinkTracking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
+                enabled: bool | None
+                name: str | None
+                """
+                Tracking group name.
+                The default group name is taken from fabric variable of the switch,
+                `link_tracking.groups[0].name` with default value being "LT_GROUP1".
+                Optional if default
+                link_tracking settings are configured on the node.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        LinkTracking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            name:
+                               Tracking group name.
+                               The default group name is taken from fabric variable of the switch,
+                               `link_tracking.groups[0].name` with default value being "LT_GROUP1".
+                               Optional if default
+                               link_tracking settings are configured on the node.
+
+                        """
+
+            class StormControl(AvdModel):
+                """Subclass of AvdModel."""
+
+                class All(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Unit: TypeAlias = Literal["percent", "pps"]
+                    _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                    level: str | None
+                    """Configure maximum storm-control level."""
+                    unit: Unit
+                    """
+                    Optional variable and is hardware dependent.
+
+                    Default value: `"percent"`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                            """
+                            All.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                level: Configure maximum storm-control level.
+                                unit: Optional variable and is hardware dependent.
+
+                            """
+
+                class Broadcast(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Unit: TypeAlias = Literal["percent", "pps"]
+                    _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                    level: str | None
+                    """Configure maximum storm-control level."""
+                    unit: Unit
+                    """
+                    Optional variable and is hardware dependent.
+
+                    Default value: `"percent"`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                            """
+                            Broadcast.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                level: Configure maximum storm-control level.
+                                unit: Optional variable and is hardware dependent.
+
+                            """
+
+                class Multicast(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Unit: TypeAlias = Literal["percent", "pps"]
+                    _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                    level: str | None
+                    """Configure maximum storm-control level."""
+                    unit: Unit
+                    """
+                    Optional variable and is hardware dependent.
+
+                    Default value: `"percent"`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                            """
+                            Multicast.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                level: Configure maximum storm-control level.
+                                unit: Optional variable and is hardware dependent.
+
+                            """
+
+                class UnknownUnicast(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Unit: TypeAlias = Literal["percent", "pps"]
+                    _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                    level: str | None
+                    """Configure maximum storm-control level."""
+                    unit: Unit
+                    """
+                    Optional variable and is hardware dependent.
+
+                    Default value: `"percent"`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                            """
+                            UnknownUnicast.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                level: Configure maximum storm-control level.
+                                unit: Optional variable and is hardware dependent.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "all": {"type": All},
+                    "broadcast": {"type": Broadcast},
+                    "multicast": {"type": Multicast},
+                    "unknown_unicast": {"type": UnknownUnicast},
+                }
+                all: All
+                """Subclass of AvdModel."""
+                broadcast: Broadcast
+                """Subclass of AvdModel."""
+                multicast: Multicast
+                """Subclass of AvdModel."""
+                unknown_unicast: UnknownUnicast
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        all: All | UndefinedType = Undefined,
+                        broadcast: Broadcast | UndefinedType = Undefined,
+                        multicast: Multicast | UndefinedType = Undefined,
+                        unknown_unicast: UnknownUnicast | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        StormControl.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            all: Subclass of AvdModel.
+                            broadcast: Subclass of AvdModel.
+                            multicast: Subclass of AvdModel.
+                            unknown_unicast: Subclass of AvdModel.
+
+                        """
+
+            class MonitorSessionsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                Role: TypeAlias = Literal["source", "destination"]
+
+                class SourceSettings(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Direction: TypeAlias = Literal["rx", "tx", "both"]
+
+                    class AccessGroup(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                        _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
+                        type: Type | None
+                        name: str | None
+                        """ACL name."""
+                        priority: int | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                type: Type | None | UndefinedType = Undefined,
+                                name: str | None | UndefinedType = Undefined,
+                                priority: int | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                AccessGroup.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    type: type
+                                    name: ACL name.
+                                    priority: priority
+
+                                """
+
+                    _fields: ClassVar[dict] = {"direction": {"type": str}, "access_group": {"type": AccessGroup}}
+                    direction: Direction | None
+                    access_group: AccessGroup
+                    """
+                    This can only be set when `session_settings.access_group` is not set.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, direction: Direction | None | UndefinedType = Undefined, access_group: AccessGroup | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            SourceSettings.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                direction: direction
+                                access_group:
+                                   This can only be set when `session_settings.access_group` is not set.
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                class SessionSettings(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class AccessGroup(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                        _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
+                        type: Type | None
+                        name: str | None
+                        """ACL name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, type: Type | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                AccessGroup.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    type: type
+                                    name: ACL name.
+
+                                """
+
+                    class Truncate(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "size": {"type": int}}
+                        enabled: bool | None
+                        size: int | None
+                        """Size in bytes."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined) -> None:
+                                """
+                                Truncate.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    size: Size in bytes.
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "encapsulation_gre_metadata_tx": {"type": bool},
+                        "header_remove_size": {"type": int},
+                        "access_group": {"type": AccessGroup},
+                        "rate_limit_per_ingress_chip": {"type": str},
+                        "rate_limit_per_egress_chip": {"type": str},
+                        "sample": {"type": int},
+                        "truncate": {"type": Truncate},
+                    }
+                    encapsulation_gre_metadata_tx: bool | None
+                    header_remove_size: int | None
+                    """Number of bytes to remove from header."""
+                    access_group: AccessGroup
+                    """Subclass of AvdModel."""
+                    rate_limit_per_ingress_chip: str | None
+                    """
+                    Ratelimit and unit as string.
+                    Examples:
+                      "100000 bps"
+                      "100 kbps"
+                      "10 mbps"
+                    """
+                    rate_limit_per_egress_chip: str | None
+                    """
+                    Ratelimit and unit as string.
+                    Examples:
+                      "100000 bps"
+                      "100 kbps"
+                      "10 mbps"
+                    """
+                    sample: int | None
+                    truncate: Truncate
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            encapsulation_gre_metadata_tx: bool | None | UndefinedType = Undefined,
+                            header_remove_size: int | None | UndefinedType = Undefined,
+                            access_group: AccessGroup | UndefinedType = Undefined,
+                            rate_limit_per_ingress_chip: str | None | UndefinedType = Undefined,
+                            rate_limit_per_egress_chip: str | None | UndefinedType = Undefined,
+                            sample: int | None | UndefinedType = Undefined,
+                            truncate: Truncate | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            SessionSettings.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                encapsulation_gre_metadata_tx: encapsulation_gre_metadata_tx
+                                header_remove_size: Number of bytes to remove from header.
+                                access_group: Subclass of AvdModel.
+                                rate_limit_per_ingress_chip:
+                                   Ratelimit and unit as string.
+                                   Examples:  # fmt: skip
+                                     "100000 bps"
+                                     "100 kbps"
+                                     "10 mbps"
+                                rate_limit_per_egress_chip:
+                                   Ratelimit and unit as string.
+                                   Examples:  # fmt: skip
+                                     "100000 bps"
+                                     "100 kbps"
+                                     "10 mbps"
+                                sample: sample
+                                truncate: Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "role": {"type": str},
+                    "source_settings": {"type": SourceSettings},
+                    "session_settings": {"type": SessionSettings},
+                }
+                name: str
+                """Session name."""
+                role: Role | None
+                source_settings: SourceSettings
+                """Subclass of AvdModel."""
+                session_settings: SessionSettings
+                """
+                Session settings are defined per session name.
+                Different session_settings for the same session name
+                will be combined/merged.
+
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        role: Role | None | UndefinedType = Undefined,
+                        source_settings: SourceSettings | UndefinedType = Undefined,
+                        session_settings: SessionSettings | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        MonitorSessionsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Session name.
+                            role: role
+                            source_settings: Subclass of AvdModel.
+                            session_settings:
+                               Session settings are defined per session name.
+                               Different session_settings for the same session name
+                               will be combined/merged.
+
+
+                               Subclass of AvdModel.
+
+                        """
+
+            class MonitorSessions(AvdList[MonitorSessionsItem]):
+                """Subclass of AvdList with `MonitorSessionsItem` items."""
+
+            MonitorSessions._item_type = MonitorSessionsItem
+
+            class EthernetSegment(AvdModel):
+                """Subclass of AvdModel."""
+
+                Redundancy: TypeAlias = Literal["all-active", "single-active"]
+                DesignatedForwarderAlgorithm: TypeAlias = Literal["auto", "modulus", "preference"]
+
+                class DesignatedForwarderPreferences(AvdList[int]):
+                    """Subclass of AvdList with `int` items."""
+
+                DesignatedForwarderPreferences._item_type = int
+
+                _fields: ClassVar[dict] = {
+                    "short_esi": {"type": str},
+                    "redundancy": {"type": str},
+                    "designated_forwarder_algorithm": {"type": str},
+                    "designated_forwarder_preferences": {"type": DesignatedForwarderPreferences},
+                    "dont_preempt": {"type": bool},
+                }
+                short_esi: str
+                """
+                In format xxxx:xxxx:xxxx or "auto".
+                Define a manual short-esi (be careful using this on profiles) or
+                set the value to "auto" to automatically generate the value.
+                Please see the notes under "EVPN A/A
+                ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
+                """
+                redundancy: Redundancy | None
+                """
+                If omitted, Port-Channels use the EOS default of all-active.
+                If omitted, Ethernet interfaces are
+                configured as single-active.
+                """
+                designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None
+                """
+                Configure DF algorithm and preferences.
+                - auto: Use preference-based algorithm and assign preference
+                based on position of device in the 'switches' list,
+                  e.g., assuming a list of three switches, this
+                would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.
+                -
+                preference: Set preference for each switch manually using designated_forwarder_preferences key.
+                -
+                modulus: Use the default modulus-based algorithm.
+                If omitted, Port-Channels use the EOS default of
+                modulus.
+                If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
+                """
+                designated_forwarder_preferences: DesignatedForwarderPreferences
+                """
+                Manual preference as described above, required only for preference algorithm.
+
+                Subclass of AvdList
+                with `int` items.
+                """
+                dont_preempt: bool | None
+                """Disable preemption for single-active forwarding when auto/manual DF preference is configured."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        short_esi: str | UndefinedType = Undefined,
+                        redundancy: Redundancy | None | UndefinedType = Undefined,
+                        designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None | UndefinedType = Undefined,
+                        designated_forwarder_preferences: DesignatedForwarderPreferences | UndefinedType = Undefined,
+                        dont_preempt: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        EthernetSegment.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            short_esi:
+                               In format xxxx:xxxx:xxxx or "auto".
+                               Define a manual short-esi (be careful using this on profiles) or
+                               set the value to "auto" to automatically generate the value.
+                               Please see the notes under "EVPN A/A
+                               ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
+                            redundancy:
+                               If omitted, Port-Channels use the EOS default of all-active.
+                               If omitted, Ethernet interfaces are
+                               configured as single-active.
+                            designated_forwarder_algorithm:
+                               Configure DF algorithm and preferences.
+                               - auto: Use preference-based algorithm and assign preference
+                               based on position of device in the 'switches' list,
+                                 e.g., assuming a list of three switches, this
+                               would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.
+                               -
+                               preference: Set preference for each switch manually using designated_forwarder_preferences key.
+                               -
+                               modulus: Use the default modulus-based algorithm.
+                               If omitted, Port-Channels use the EOS default of
+                               modulus.
+                               If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
+                            designated_forwarder_preferences:
+                               Manual preference as described above, required only for preference algorithm.
+
+                               Subclass of AvdList
+                               with `int` items.
+                            dont_preempt: Disable preemption for single-active forwarding when auto/manual DF preference is configured.
+
+                        """
+
+            class PortChannel(AvdModel):
+                """Subclass of AvdModel."""
+
+                Mode: TypeAlias = Literal["active", "passive", "on"]
+
+                class LacpFallback(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Mode: TypeAlias = Literal["static", "individual"]
+
+                    class Individual(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
+                        _fields: ClassVar[dict] = {"profile": {"type": str}, "vlans": {"type": str}, "native_vlan": {"type": int}, "mode": {"type": str}}
+                        profile: str | None
+                        """Port-profile name to inherit configuration."""
+                        vlans: str | None
+                        """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
+                        native_vlan: int | None
+                        """Native VLAN on the port-channel member interfaces when in fallback individual."""
+                        mode: Mode | None
+                        """Interface mode on the port-channel member interfaces when in fallback individual."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                profile: str | None | UndefinedType = Undefined,
+                                vlans: str | None | UndefinedType = Undefined,
+                                native_vlan: int | None | UndefinedType = Undefined,
+                                mode: Mode | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Individual.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    profile: Port-profile name to inherit configuration.
+                                    vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                                    native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
+                                    mode: Interface mode on the port-channel member interfaces when in fallback individual.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
+                    mode: Mode | None
+                    """
+                    Either static or individual mode is supported.
+                    If the mode is set to "individual" either 'profile'
+                    or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
+                    """
+                    individual: Individual
+                    """
+                    Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
+                    "individual".
+
+                    Subclass of AvdModel.
+                    """
+                    timeout: int
+                    """
+                    Timeout in seconds.
+
+                    Default value: `90`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            mode: Mode | None | UndefinedType = Undefined,
+                            individual: Individual | UndefinedType = Undefined,
+                            timeout: int | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            LacpFallback.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                mode:
+                                   Either static or individual mode is supported.
+                                   If the mode is set to "individual" either 'profile'
+                                   or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
+                                individual:
+                                   Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
+                                   "individual".
+
+                                   Subclass of AvdModel.
+                                timeout: Timeout in seconds.
+
+                            """
+
+                class LacpTimer(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Mode: TypeAlias = Literal["normal", "fast"]
+                    _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
+                    mode: Mode | None
+                    """LACP mode for interface members."""
+                    multiplier: int | None
+                    """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            LacpTimer.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                mode: LACP mode for interface members.
+                                multiplier: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
+
+                            """
+
+                class SubinterfacesItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class EncapsulationVlan(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
+                        client_dot1q: int | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
+                                """
+                                EncapsulationVlan.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    client_dot1q: client_dot1q
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "number": {"type": int},
+                        "short_esi": {"type": str},
+                        "vlan_id": {"type": int},
+                        "encapsulation_vlan": {"type": EncapsulationVlan},
+                        "raw_eos_cli": {"type": str},
+                        "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                    }
+                    number: int | None
+                    """Subinterface number."""
+                    short_esi: str | None
+                    """
+                    In format xxxx:xxxx:xxxx or "auto".
+                    Required for multihomed port-channels with subinterfaces.
+                    """
+                    vlan_id: int | None
+                    """
+                    VLAN ID to bridge.
+                    Default is subinterface number.
+                    """
+                    encapsulation_vlan: EncapsulationVlan
+                    """
+                    Client VLAN ID encapsulation.
+                    Default is subinterface number.
+
+
+                    Subclass of AvdModel.
+                    """
+                    raw_eos_cli: str | None
+                    """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
+                    structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                    eos_cli_config_gen.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            number: int | None | UndefinedType = Undefined,
+                            short_esi: str | None | UndefinedType = Undefined,
+                            vlan_id: int | None | UndefinedType = Undefined,
+                            encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                            raw_eos_cli: str | None | UndefinedType = Undefined,
+                            structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            SubinterfacesItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                number: Subinterface number.
+                                short_esi:
+                                   In format xxxx:xxxx:xxxx or "auto".
+                                   Required for multihomed port-channels with subinterfaces.
+                                vlan_id:
+                                   VLAN ID to bridge.
+                                   Default is subinterface number.
+                                encapsulation_vlan:
+                                   Client VLAN ID encapsulation.
+                                   Default is subinterface number.
+
+
+                                   Subclass of AvdModel.
+                                raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
+                                structured_config:
+                                   Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                                   eos_cli_config_gen.
+
+                            """
+
+                class Subinterfaces(AvdList[SubinterfacesItem]):
+                    """Subclass of AvdList with `SubinterfacesItem` items."""
+
+                Subinterfaces._item_type = SubinterfacesItem
+
+                _fields: ClassVar[dict] = {
+                    "mode": {"type": str},
+                    "channel_id": {"type": int},
+                    "description": {"type": str},
+                    "endpoint_port_channel": {"type": str},
+                    "enabled": {"type": bool, "default": True},
+                    "ptp_mpass": {"type": bool, "default": False},
+                    "lacp_fallback": {"type": LacpFallback},
+                    "lacp_timer": {"type": LacpTimer},
+                    "subinterfaces": {"type": Subinterfaces},
+                    "raw_eos_cli": {"type": str},
+                    "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                }
+                mode: Mode | None
+                """Port-Channel Mode."""
+                channel_id: int | None
+                """
+                Port-Channel ID.
+                If no channel_id is specified, an id is generated from the first switch port in the
+                port channel.
+                """
+                description: str | None
+                """
+                Description or description template to be used on the port-channel interface.
+                This can be a template
+                using the AVD string formatter syntax:
+                https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                descriptions-names.html#avd-string-formatter-syntax.
+                The available template fields are:
+                  -
+                `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                `connected_endpoints_keys.type` like `server`, `router` etc.
+                  - `endpoint` - The name of the
+                connected endpoint
+                  - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
+                  -
+                `port_channel_id` - The port-channel number for the switch.
+                  - `adapter_description` - The
+                adapter's description if set.
+                  - `adapter_description_or_endpoint` - Helper alias of the
+                adapter_description or endpoint.
+
+                The default description is set by
+                `default_connected_endpoints_port_channel_description`.
+                By default the description is templated from
+                the type, name and port_channel interface of the endpoint if set.
+                """
+                endpoint_port_channel: str | None
+                """
+                Name of the port-channel interface on the endpoint.
+                Used for the port-channel description template
+                with the field name `peer_interface`
+                """
+                enabled: bool
+                """
+                Port-Channel administrative state.
+                Setting to false will set port to 'shutdown' in intended
+                configuration.
+
+                Default value: `True`
+                """
+                ptp_mpass: bool
+                """
+                When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
+                logical device.
+                Arista PTP enabled devices always place PTP messages on the same physical link
+                within the port-channel.
+                Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                devices.
+
+                Default value: `False`
+                """
+                lacp_fallback: LacpFallback
+                """
+                LACP fallback configuration.
+
+                Subclass of AvdModel.
+                """
+                lacp_timer: LacpTimer
+                """
+                LACP timer configuration. Applies only when Port-channel mode is not "on".
+
+                Subclass of AvdModel.
+                """
+                subinterfaces: Subinterfaces
+                """
+                Port-Channel L2 Subinterfaces
+                Subinterfaces are only supported on routed port-channels, which means
+                they cannot be configured on MLAG port-channels.
+                Setting short_esi: auto generates the short_esi
+                automatically using a hash of configuration elements.
+                Please see the notes under "EVPN A/A ESI dual-
+                attached endpoint scenario" before setting short_esi: auto.
+
+
+                Subclass of AvdList with
+                `SubinterfacesItem` items.
+                """
+                raw_eos_cli: str | None
+                """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
+                structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                """
+                Custom structured config added under port_channel_interfaces.[name=<interface>] for
+                eos_cli_config_gen.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        mode: Mode | None | UndefinedType = Undefined,
+                        channel_id: int | None | UndefinedType = Undefined,
+                        description: str | None | UndefinedType = Undefined,
+                        endpoint_port_channel: str | None | UndefinedType = Undefined,
+                        enabled: bool | UndefinedType = Undefined,
+                        ptp_mpass: bool | UndefinedType = Undefined,
+                        lacp_fallback: LacpFallback | UndefinedType = Undefined,
+                        lacp_timer: LacpTimer | UndefinedType = Undefined,
+                        subinterfaces: Subinterfaces | UndefinedType = Undefined,
+                        raw_eos_cli: str | None | UndefinedType = Undefined,
+                        structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PortChannel.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: Port-Channel Mode.
+                            channel_id:
+                               Port-Channel ID.
+                               If no channel_id is specified, an id is generated from the first switch port in the
+                               port channel.
+                            description:
+                               Description or description template to be used on the port-channel interface.
+                               This can be a template
+                               using the AVD string formatter syntax:
+                               https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                               descriptions-names.html#avd-string-formatter-syntax.
+                               The available template fields are:
+                                 -
+                               `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                               `connected_endpoints_keys.type` like `server`, `router` etc.
+                                 - `endpoint` - The name of the
+                               connected endpoint
+                                 - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
+                                 -
+                               `port_channel_id` - The port-channel number for the switch.
+                                 - `adapter_description` - The
+                               adapter's description if set.
+                                 - `adapter_description_or_endpoint` - Helper alias of the
+                               adapter_description or endpoint.
+
+                               The default description is set by
+                               `default_connected_endpoints_port_channel_description`.
+                               By default the description is templated from
+                               the type, name and port_channel interface of the endpoint if set.
+                            endpoint_port_channel:
+                               Name of the port-channel interface on the endpoint.
+                               Used for the port-channel description template
+                               with the field name `peer_interface`
+                            enabled:
+                               Port-Channel administrative state.
+                               Setting to false will set port to 'shutdown' in intended
+                               configuration.
+                            ptp_mpass:
+                               When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
+                               logical device.
+                               Arista PTP enabled devices always place PTP messages on the same physical link
+                               within the port-channel.
+                               Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                               devices.
+                            lacp_fallback:
+                               LACP fallback configuration.
+
+                               Subclass of AvdModel.
+                            lacp_timer:
+                               LACP timer configuration. Applies only when Port-channel mode is not "on".
+
+                               Subclass of AvdModel.
+                            subinterfaces:
+                               Port-Channel L2 Subinterfaces
+                               Subinterfaces are only supported on routed port-channels, which means
+                               they cannot be configured on MLAG port-channels.
+                               Setting short_esi: auto generates the short_esi
+                               automatically using a hash of configuration elements.
+                               Please see the notes under "EVPN A/A ESI dual-
+                               attached endpoint scenario" before setting short_esi: auto.
+
+
+                               Subclass of AvdList with
+                               `SubinterfacesItem` items.
+                            raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
+                            structured_config:
+                               Custom structured config added under port_channel_interfaces.[name=<interface>] for
+                               eos_cli_config_gen.
+
+                        """
+
+            class CampusLinkType(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            CampusLinkType._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "switch_ports": {"type": SwitchPorts},
+                "switches": {"type": Switches},
+                "endpoint_ports": {"type": EndpointPorts},
+                "descriptions": {"type": Descriptions},
+                "speed": {"type": str},
+                "description": {"type": str},
+                "profile": {"type": str},
+                "enabled": {"type": bool, "default": True},
+                "mode": {"type": str},
+                "mtu": {"type": int},
+                "l2_mtu": {"type": int},
+                "l2_mru": {"type": int},
+                "native_vlan": {"type": int},
+                "native_vlan_tag": {"type": bool},
+                "phone_vlan": {"type": int},
+                "phone_trunk_mode": {"type": str},
+                "trunk_groups": {"type": TrunkGroups},
+                "vlans": {"type": str},
+                "spanning_tree_portfast": {"type": str},
+                "spanning_tree_bpdufilter": {"type": str},
+                "spanning_tree_bpduguard": {"type": str},
+                "flowcontrol": {"type": EosCliConfigGen.EthernetInterfacesItem.Flowcontrol},
+                "qos_profile": {"type": str},
+                "ptp": {"type": Ptp},
+                "sflow": {"type": bool},
+                "flow_tracking": {"type": FlowTracking},
+                "link_tracking": {"type": LinkTracking},
+                "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
+                "storm_control": {"type": StormControl},
+                "monitor_sessions": {"type": MonitorSessions},
+                "ethernet_segment": {"type": EthernetSegment},
+                "port_channel": {"type": PortChannel},
+                "validate_state": {"type": bool},
+                "validate_lldp": {"type": bool},
+                "campus_link_type": {"type": CampusLinkType},
+                "raw_eos_cli": {"type": str},
+                "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            }
+            switch_ports: SwitchPorts
+            """
+            List of switch interfaces.
+            The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
+            same length.
+
+
+            Subclass of AvdList with `str` items.
+            """
+            switches: Switches
+            """
+            List of switches.
+            The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
+            length.
+
+
+            Subclass of AvdList with `str` items.
+            """
+            endpoint_ports: EndpointPorts
+            """
+            Endpoint ports is used for description, required unless `description` or `descriptions` is set.
+            The
+            lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+            Each list item is one switchport.
+
+
+            Subclass of AvdList with `str` items.
+            """
+            descriptions: Descriptions
+            """
+            Unique description per port. When set, takes priority over description.
+            This can be a template using
+            the AVD string formatter syntax:
+            https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+            descriptions-names.html#avd-string-formatter-syntax.
+            The available template fields are:
+              -
+            `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+            `connected_endpoints_keys.type` like `server`, `router` etc.
+              - `endpoint` - The name of the
+            connected endpoint
+              - `endpoint_port` - The value from `endpoint_ports` for this switch port if
+            set.
+              - `port_channel_id`: The port-channel number for the switch.
+
+            Subclass of AvdList with `str`
+            items.
+            """
+            speed: Speed | None
+            """
+            Set adapter speed.
+            If not specified speed will be auto.
+            """
+            description: str | None
+            """
+            Description or description template to be used on all ports.
+            This can be a template using the AVD
+            string formatter syntax:
+            https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+            descriptions-names.html#avd-string-formatter-syntax.
+            The available template fields are:
+              -
+            `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+            `connected_endpoints_keys.type` like `server`, `router` etc.
+              - `endpoint` - The name of the
+            connected endpoint
+              - `endpoint_port` - The value from `endpoint_ports` for this switch port if
+            set.
+
+            The default description is set by `default_connected_endpoints_description`.
+            By default the
+            description is templated from the type, name and port of the endpoint if set.
+            """
+            profile: str | None
+            """Port-profile name to inherit configuration."""
+            enabled: bool
+            """
+            Administrative state, setting to false will set the port to 'shutdown' in the intended
+            configuration.
+
+            Default value: `True`
+            """
+            mode: Mode | None
+            """Interface mode."""
+            mtu: int | None
+            l2_mtu: int | None
+            """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
+            l2_mru: int | None
+            """"l2_mru" should only be defined for platforms supporting the "l2 mru" CLI."""
+            native_vlan: int | None
+            """
+            Native VLAN for a trunk port.
+            If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag`
+            takes precedence.
+            """
+            native_vlan_tag: bool | None
+            """If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag` takes precedence."""
+            phone_vlan: int | None
+            """
+            Phone VLAN for a mode `trunk phone` port.
+            Requires `mode: trunk phone` to be set.
+            """
+            phone_trunk_mode: PhoneTrunkMode | None
+            """
+            Specify if the phone traffic is tagged or untagged.
+            If both data and phone traffic are untagged,
+            MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.
+            """
+            trunk_groups: TrunkGroups
+            """
+            Required with `enable_trunk_groups: true`.
+            Trunk Groups are used for limiting VLANs on trunk ports
+            to VLANs with the same Trunk Group.
+
+
+            Subclass of AvdList with `str` items.
+            """
+            vlans: str | None
+            """
+            Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
+            VLAN 1 will be used for access ports.
+            """
+            spanning_tree_portfast: SpanningTreePortfast | None
+            spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
+            spanning_tree_bpduguard: SpanningTreeBpduguard | None
+            flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol
+            qos_profile: str | None
+            """QOS profile name."""
+            ptp: Ptp
+            """
+            The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually
+            enabled.
+            `ptp role master` is set to ensure control over the PTP topology.
+
+
+            Subclass of AvdModel.
+            """
+            sflow: bool | None
+            """Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting."""
+            flow_tracking: FlowTracking
+            """
+            Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.
+            Subclass of AvdModel.
+            """
+            link_tracking: LinkTracking
+            """
+            Configure the downstream interfaces of a respective Link Tracking Group.
+            If `port_channel` is
+            defined in an adapter, then the port-channel interface is configured to be the downstream.
+            Else all
+            the ethernet interfaces will be configured as downstream -> to configure single-active EVPN
+            multihomed networks.
+
+
+            Subclass of AvdModel.
+            """
+            dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
+            """802.1x"""
+            poe: EosCliConfigGen.EthernetInterfacesItem.Poe
+            """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
+            storm_control: StormControl
+            """
+            Storm control settings applied on port toward the endpoint.
+
+            Subclass of AvdModel.
+            """
+            monitor_sessions: MonitorSessions
+            """
+            Used to define interfaces as source or destination for monitoring sessions.
+
+            Subclass of AvdList
+            with `MonitorSessionsItem` items.
+            """
+            ethernet_segment: EthernetSegment
+            """
+            Settings for all or single-active EVPN multihoming.
+
+            Subclass of AvdModel.
+            """
+            port_channel: PortChannel
+            """
+            Used for port-channel adapter.
+
+            Subclass of AvdModel.
+            """
+            validate_state: bool | None
+            """
+            Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+            role.
+            """
+            validate_lldp: bool | None
+            """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+            campus_link_type: CampusLinkType
+            """
+            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+            change at any time.
+            Values for the CloudVision `Link-Type` user tags to be associated with an
+            interface.
+            Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+            in the same tags being associated with the parent Ethernet interface instead.
+            Attempting to
+            associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+            associated with the member Ethernet interfaces instead.
+
+            Subclass of AvdList with `str` items.
+            """
+            raw_eos_cli: str | None
+            """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
+            structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    switch_ports: SwitchPorts | UndefinedType = Undefined,
+                    switches: Switches | UndefinedType = Undefined,
+                    endpoint_ports: EndpointPorts | UndefinedType = Undefined,
+                    descriptions: Descriptions | UndefinedType = Undefined,
+                    speed: Speed | None | UndefinedType = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    profile: str | None | UndefinedType = Undefined,
+                    enabled: bool | UndefinedType = Undefined,
+                    mode: Mode | None | UndefinedType = Undefined,
+                    mtu: int | None | UndefinedType = Undefined,
+                    l2_mtu: int | None | UndefinedType = Undefined,
+                    l2_mru: int | None | UndefinedType = Undefined,
+                    native_vlan: int | None | UndefinedType = Undefined,
+                    native_vlan_tag: bool | None | UndefinedType = Undefined,
+                    phone_vlan: int | None | UndefinedType = Undefined,
+                    phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
+                    trunk_groups: TrunkGroups | UndefinedType = Undefined,
+                    vlans: str | None | UndefinedType = Undefined,
+                    spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                    spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
+                    spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
+                    flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol | UndefinedType = Undefined,
+                    qos_profile: str | None | UndefinedType = Undefined,
+                    ptp: Ptp | UndefinedType = Undefined,
+                    sflow: bool | None | UndefinedType = Undefined,
+                    flow_tracking: FlowTracking | UndefinedType = Undefined,
+                    link_tracking: LinkTracking | UndefinedType = Undefined,
+                    dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                    poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
+                    storm_control: StormControl | UndefinedType = Undefined,
+                    monitor_sessions: MonitorSessions | UndefinedType = Undefined,
+                    ethernet_segment: EthernetSegment | UndefinedType = Undefined,
+                    port_channel: PortChannel | UndefinedType = Undefined,
+                    validate_state: bool | None | UndefinedType = Undefined,
+                    validate_lldp: bool | None | UndefinedType = Undefined,
+                    campus_link_type: CampusLinkType | UndefinedType = Undefined,
+                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                    structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    AdaptersItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        switch_ports:
+                           List of switch interfaces.
+                           The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
+                           same length.
+
+
+                           Subclass of AvdList with `str` items.
+                        switches:
+                           List of switches.
+                           The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
+                           length.
+
+
+                           Subclass of AvdList with `str` items.
+                        endpoint_ports:
+                           Endpoint ports is used for description, required unless `description` or `descriptions` is set.
+                           The
+                           lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+                           Each list item is one switchport.
+
+
+                           Subclass of AvdList with `str` items.
+                        descriptions:
+                           Unique description per port. When set, takes priority over description.
+                           This can be a template using
+                           the AVD string formatter syntax:
+                           https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                           descriptions-names.html#avd-string-formatter-syntax.
+                           The available template fields are:
+                             -
+                           `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                           `connected_endpoints_keys.type` like `server`, `router` etc.
+                             - `endpoint` - The name of the
+                           connected endpoint
+                             - `endpoint_port` - The value from `endpoint_ports` for this switch port if
+                           set.
+                             - `port_channel_id`: The port-channel number for the switch.
+
+                           Subclass of AvdList with `str`
+                           items.
+                        speed:
+                           Set adapter speed.
+                           If not specified speed will be auto.
+                        description:
+                           Description or description template to be used on all ports.
+                           This can be a template using the AVD
+                           string formatter syntax:
+                           https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                           descriptions-names.html#avd-string-formatter-syntax.
+                           The available template fields are:
+                             -
+                           `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                           `connected_endpoints_keys.type` like `server`, `router` etc.
+                             - `endpoint` - The name of the
+                           connected endpoint
+                             - `endpoint_port` - The value from `endpoint_ports` for this switch port if
+                           set.
+
+                           The default description is set by `default_connected_endpoints_description`.
+                           By default the
+                           description is templated from the type, name and port of the endpoint if set.
+                        profile: Port-profile name to inherit configuration.
+                        enabled:
+                           Administrative state, setting to false will set the port to 'shutdown' in the intended
+                           configuration.
+                        mode: Interface mode.
+                        mtu: mtu
+                        l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
+                        l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
+                        native_vlan:
+                           Native VLAN for a trunk port.
+                           If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag`
+                           takes precedence.
+                        native_vlan_tag: If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag` takes precedence.
+                        phone_vlan:
+                           Phone VLAN for a mode `trunk phone` port.
+                           Requires `mode: trunk phone` to be set.
+                        phone_trunk_mode:
+                           Specify if the phone traffic is tagged or untagged.
+                           If both data and phone traffic are untagged,
+                           MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.
+                        trunk_groups:
+                           Required with `enable_trunk_groups: true`.
+                           Trunk Groups are used for limiting VLANs on trunk ports
+                           to VLANs with the same Trunk Group.
+
+
+                           Subclass of AvdList with `str` items.
+                        vlans:
+                           Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
+                           VLAN 1 will be used for access ports.
+                        spanning_tree_portfast: spanning_tree_portfast
+                        spanning_tree_bpdufilter: spanning_tree_bpdufilter
+                        spanning_tree_bpduguard: spanning_tree_bpduguard
+                        flowcontrol: flowcontrol
+                        qos_profile: QOS profile name.
+                        ptp:
+                           The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually
+                           enabled.
+                           `ptp role master` is set to ensure control over the PTP topology.
+
+
+                           Subclass of AvdModel.
+                        sflow: Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.
+                        flow_tracking:
+                           Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.
+                           Subclass of AvdModel.
+                        link_tracking:
+                           Configure the downstream interfaces of a respective Link Tracking Group.
+                           If `port_channel` is
+                           defined in an adapter, then the port-channel interface is configured to be the downstream.
+                           Else all
+                           the ethernet interfaces will be configured as downstream -> to configure single-active EVPN
+                           multihomed networks.
+
+
+                           Subclass of AvdModel.
+                        dot1x: 802.1x
+                        poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
+                        storm_control:
+                           Storm control settings applied on port toward the endpoint.
+
+                           Subclass of AvdModel.
+                        monitor_sessions:
+                           Used to define interfaces as source or destination for monitoring sessions.
+
+                           Subclass of AvdList
+                           with `MonitorSessionsItem` items.
+                        ethernet_segment:
+                           Settings for all or single-active EVPN multihoming.
+
+                           Subclass of AvdModel.
+                        port_channel:
+                           Used for port-channel adapter.
+
+                           Subclass of AvdModel.
+                        validate_state:
+                           Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                           role.
+                        validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                        campus_link_type:
+                           PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                           change at any time.
+                           Values for the CloudVision `Link-Type` user tags to be associated with an
+                           interface.
+                           Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                           in the same tags being associated with the parent Ethernet interface instead.
+                           Attempting to
+                           associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                           associated with the member Ethernet interfaces instead.
+
+                           Subclass of AvdList with `str` items.
+                        raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
+                        structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+
+                    """
+
+        class Adapters(AvdList[AdaptersItem]):
+            """Subclass of AvdList with `AdaptersItem` items."""
+
+        Adapters._item_type = AdaptersItem
+
+        _fields: ClassVar[dict] = {"name": {"type": str}, "type": {"type": str}, "rack": {"type": str}, "adapters": {"type": Adapters}}
+        name: str
+        """Endpoint name will be used in the switchport description."""
+        type: str | None
+        """
+        Type of endpoint.
+        This is used in descriptions and in documentation.
+        """
+        rack: str | None
+        """Rack is used for documentation purposes only."""
+        adapters: Adapters
+        """
+        A list of adapters, group by adapters leveraging the same port-profile.
+
+        Subclass of AvdList with
+        `AdaptersItem` items.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                name: str | UndefinedType = Undefined,
+                type: str | None | UndefinedType = Undefined,
+                rack: str | None | UndefinedType = Undefined,
+                adapters: Adapters | UndefinedType = Undefined,
+            ) -> None:
+                """
+                ConnectedEndpointsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    name: Endpoint name will be used in the switchport description.
+                    type:
+                       Type of endpoint.
+                       This is used in descriptions and in documentation.
+                    rack: Rack is used for documentation purposes only.
+                    adapters:
+                       A list of adapters, group by adapters leveraging the same port-profile.
+
+                       Subclass of AvdList with
+                       `AdaptersItem` items.
+
+                """
+
+    class ConnectedEndpoints(AvdIndexedList[str, ConnectedEndpointsItem]):
+        """Subclass of AvdIndexedList with `ConnectedEndpointsItem` items. Primary key is `name` (`str`)."""
+
+        _primary_key: ClassVar[str] = "name"
+
+    ConnectedEndpoints._item_type = ConnectedEndpointsItem
 
     class CustomConnectedEndpointsKeysItem(AvdModel):
         """Subclass of AvdModel."""
@@ -4194,6 +5908,46 @@ class EosDesigns(EosDesignsRootModel):
 
     CvTopology._item_type = CvTopologyItem
 
+    class CvTopologyLevelsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"type": {"type": str}, "level": {"type": int}}
+        type: str
+        """Node type like l3leaf, l2spine etc."""
+        level: int
+        """
+        Level value used to determine the relationship between two devices for a connection.
+        The lower value
+        is the "parent switch" (like Spine).
+        The higher value is the "child switch" (like Leaf).
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, type: str | UndefinedType = Undefined, level: int | UndefinedType = Undefined) -> None:
+                """
+                CvTopologyLevelsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    type: Node type like l3leaf, l2spine etc.
+                    level:
+                       Level value used to determine the relationship between two devices for a connection.
+                       The lower value
+                       is the "parent switch" (like Spine).
+                       The higher value is the "child switch" (like Leaf).
+
+                """
+
+    class CvTopologyLevels(AvdIndexedList[str, CvTopologyLevelsItem]):
+        """Subclass of AvdIndexedList with `CvTopologyLevelsItem` items. Primary key is `type` (`str`)."""
+
+        _primary_key: ClassVar[str] = "type"
+
+    CvTopologyLevels._item_type = CvTopologyLevelsItem
+
     class DefaultInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -4535,6 +6289,9862 @@ class EosDesigns(EosDesignsRootModel):
         _primary_key: ClassVar[str] = "node_type"
 
     DefaultNodeTypes._item_type = DefaultNodeTypesItem
+
+    class DeviceProfilesItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class LinkTracking(AvdModel):
+            """Subclass of AvdModel."""
+
+            class GroupsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
+                name: str
+                """Tracking group name."""
+                recovery_delay: int | None
+                """default -> platform_settings_mlag_reload_delay -> 300."""
+                links_minimum: int | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        recovery_delay: int | None | UndefinedType = Undefined,
+                        links_minimum: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        GroupsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Tracking group name.
+                            recovery_delay: default -> platform_settings_mlag_reload_delay -> 300.
+                            links_minimum: links_minimum
+
+                        """
+
+            class Groups(AvdIndexedList[str, GroupsItem]):
+                """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Groups._item_type = GroupsItem
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool, "default": False},
+                "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
+            }
+            enabled: bool
+            """Default value: `False`"""
+            groups: Groups
+            """
+            Link Tracking Groups.
+            By default a single group named "LT_GROUP1" is defined with default values.
+            Any groups defined under "groups" will replace the default.
+
+
+            Subclass of AvdIndexedList with
+            `GroupsItem` items. Primary key is `name` (`str`).
+
+            Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                    """
+                    LinkTracking.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        groups:
+                           Link Tracking Groups.
+                           By default a single group named "LT_GROUP1" is defined with default values.
+                           Any groups defined under "groups" will replace the default.
+
+
+                           Subclass of AvdIndexedList with
+                           `GroupsItem` items. Primary key is `name` (`str`).
+
+                    """
+
+        class LacpPortIdRange(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool, "default": False},
+                "size": {"type": int, "default": 128},
+                "offset": {"type": int, "default": 0},
+            }
+            enabled: bool
+            """Default value: `False`"""
+            size: int
+            """
+            Recommended size > = number of ports in the switch.
+
+            Default value: `128`
+            """
+            offset: int
+            """
+            Offset is used to avoid overlapping port-id ranges of different switches.
+            Useful when a "connected-
+            endpoint" is connected to switches in different "node_groups".
+
+            Default value: `0`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, enabled: bool | UndefinedType = Undefined, size: int | UndefinedType = Undefined, offset: int | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    LacpPortIdRange.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        size: Recommended size > = number of ports in the switch.
+                        offset:
+                           Offset is used to avoid overlapping port-id ranges of different switches.
+                           Useful when a "connected-
+                           endpoint" is connected to switches in different "node_groups".
+
+                    """
+
+        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+
+        class UplinkInterfaces(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        UplinkInterfaces._item_type = str
+
+        class UplinkSwitchInterfaces(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        UplinkSwitchInterfaces._item_type = str
+
+        class UplinkSwitches(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        UplinkSwitches._item_type = str
+
+        UplinkInterfaceSpeed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
+        UplinkSwitchInterfaceSpeed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
+
+        class UplinkPtp(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enable": {"type": bool, "default": False}}
+            enable: bool
+            """Default value: `False`"""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enable: bool | UndefinedType = Undefined) -> None:
+                    """
+                    UplinkPtp.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enable: enable
+
+                    """
+
+        class UplinkMacsec(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"profile": {"type": str}}
+            profile: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, profile: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    UplinkMacsec.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        profile: profile
+
+                    """
+
+        IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+        class BgpDefaults(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        BgpDefaults._item_type = str
+
+        EvpnRole: TypeAlias = Literal["client", "server", "none"]
+
+        class EvpnRouteServers(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        EvpnRouteServers._item_type = str
+
+        class Filter(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Tenants(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tenants._item_type = str
+
+            class Tags(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tags._item_type = str
+
+            class AllowVrfs(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            AllowVrfs._item_type = str
+
+            class DenyVrfs(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            DenyVrfs._item_type = str
+
+            class AlwaysIncludeVrfsInTenants(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            AlwaysIncludeVrfsInTenants._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "tenants": {"type": Tenants, "default": lambda cls: coerce_type(["all"], target_type=cls)},
+                "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
+                "allow_vrfs": {"type": AllowVrfs, "default": lambda cls: coerce_type(["all"], target_type=cls)},
+                "deny_vrfs": {"type": DenyVrfs, "default": lambda cls: coerce_type(["all"], target_type=cls)},
+                "always_include_vrfs_in_tenants": {"type": AlwaysIncludeVrfsInTenants},
+                "only_vlans_in_use": {"type": bool, "default": False},
+            }
+            tenants: Tenants
+            """
+            Limit configured Network Services to those defined under these Tenants. Set to ['all'] for all
+            Tenants (default).
+            This list also limits Tenants included by `always_include_vrfs_in_tenants`.
+            Subclass of AvdList with `str` items.
+
+            Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
+            """
+            tags: Tags
+            """
+            Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default).
+            Subclass of AvdList with `str` items.
+
+            Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
+            """
+            allow_vrfs: AllowVrfs
+            """
+            Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs
+            (default).
+            This list also limits VRFs included by `always_include_vrfs_in_tenants`.
+
+            Subclass of
+            AvdList with `str` items.
+
+            Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
+            """
+            deny_vrfs: DenyVrfs
+            """
+            Prevent configuration of Network Services defined under these VRFs.
+            This list prevents the given
+            VRFs to be included by any other filtering mechanism.
+
+            Subclass of AvdList with `str` items.
+
+            Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
+            """
+            always_include_vrfs_in_tenants: AlwaysIncludeVrfsInTenants
+            """
+            List of tenants where VRFs will be configured even if VLANs are not included in tags.
+            Useful for L3
+            "border" leaf.
+
+
+            Subclass of AvdList with `str` items.
+            """
+            only_vlans_in_use: bool
+            """
+            Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.
+            Note! This
+            feature only considers configuration managed by eos_designs.
+            This excludes structured_config,
+            custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    tenants: Tenants | UndefinedType = Undefined,
+                    tags: Tags | UndefinedType = Undefined,
+                    allow_vrfs: AllowVrfs | UndefinedType = Undefined,
+                    deny_vrfs: DenyVrfs | UndefinedType = Undefined,
+                    always_include_vrfs_in_tenants: AlwaysIncludeVrfsInTenants | UndefinedType = Undefined,
+                    only_vlans_in_use: bool | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Filter.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        tenants:
+                           Limit configured Network Services to those defined under these Tenants. Set to ['all'] for all
+                           Tenants (default).
+                           This list also limits Tenants included by `always_include_vrfs_in_tenants`.
+                           Subclass of AvdList with `str` items.
+                        tags:
+                           Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default).
+                           Subclass of AvdList with `str` items.
+                        allow_vrfs:
+                           Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs
+                           (default).
+                           This list also limits VRFs included by `always_include_vrfs_in_tenants`.
+
+                           Subclass of
+                           AvdList with `str` items.
+                        deny_vrfs:
+                           Prevent configuration of Network Services defined under these VRFs.
+                           This list prevents the given
+                           VRFs to be included by any other filtering mechanism.
+
+                           Subclass of AvdList with `str` items.
+                        always_include_vrfs_in_tenants:
+                           List of tenants where VRFs will be configured even if VLANs are not included in tags.
+                           Useful for L3
+                           "border" leaf.
+
+
+                           Subclass of AvdList with `str` items.
+                        only_vlans_in_use:
+                           Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.
+                           Note! This
+                           feature only considers configuration managed by eos_designs.
+                           This excludes structured_config,
+                           custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.
+
+                    """
+
+        class EvpnGateway(AvdModel):
+            """Subclass of AvdModel."""
+
+            class RemotePeersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"hostname": {"type": str}, "ip_address": {"type": str}, "bgp_as": {"type": str}}
+                hostname: str
+                """Hostname of remote EVPN GW server."""
+                ip_address: str | None
+                """Peering IP of remote Route Server."""
+                bgp_as: str | None
+                """
+                Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being
+                interpreted as a float number.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        hostname: str | UndefinedType = Undefined,
+                        ip_address: str | None | UndefinedType = Undefined,
+                        bgp_as: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        RemotePeersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            hostname: Hostname of remote EVPN GW server.
+                            ip_address: Peering IP of remote Route Server.
+                            bgp_as:
+                               Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                               For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being
+                               interpreted as a float number.
+
+                        """
+
+            class RemotePeers(AvdIndexedList[str, RemotePeersItem]):
+                """Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`)."""
+
+                _primary_key: ClassVar[str] = "hostname"
+
+            RemotePeers._item_type = RemotePeersItem
+
+            class EvpnL2(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                enabled: bool
+                """Default value: `False`"""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                        """
+                        EvpnL2.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+
+                        """
+
+            class EvpnL3(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                enabled: bool
+                """Default value: `False`"""
+                inter_domain: bool
+                """Default value: `True`"""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                        """
+                        EvpnL3.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            inter_domain: inter_domain
+
+                        """
+
+            class AllActiveMultihoming(AvdModel):
+                """Subclass of AvdModel."""
+
+                class EvpnEthernetSegment(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"identifier": {"type": str}, "rt_import": {"type": str}}
+                    identifier: str
+                    """EVPN Ethernet Segment Identifier (Type 1 format)"""
+                    rt_import: str
+                    """Low-order 6 bytes of ES-Import Route Target."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, identifier: str | UndefinedType = Undefined, rt_import: str | UndefinedType = Undefined) -> None:
+                            """
+                            EvpnEthernetSegment.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                identifier: EVPN Ethernet Segment Identifier (Type 1 format)
+                                rt_import: Low-order 6 bytes of ES-Import Route Target.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool},
+                    "enable_d_path": {"type": bool, "default": True},
+                    "evpn_domain_id_local": {"type": str},
+                    "evpn_domain_id_remote": {"type": str},
+                    "evpn_ethernet_segment": {"type": EvpnEthernetSegment},
+                }
+                enabled: bool
+                """Enable Active Active Multihoming resiliency model."""
+                enable_d_path: bool
+                """
+                Enable D-path for use with BGP bestpath selection algorithm.
+
+                Default value: `True`
+                """
+                evpn_domain_id_local: str
+                """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                evpn_domain_id_remote: str
+                """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                evpn_ethernet_segment: EvpnEthernetSegment
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        enable_d_path: bool | UndefinedType = Undefined,
+                        evpn_domain_id_local: str | UndefinedType = Undefined,
+                        evpn_domain_id_remote: str | UndefinedType = Undefined,
+                        evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        AllActiveMultihoming.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable Active Active Multihoming resiliency model.
+                            enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
+                            evpn_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                            evpn_domain_id_remote: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                            evpn_ethernet_segment: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "remote_peers": {"type": RemotePeers},
+                "evpn_l2": {"type": EvpnL2},
+                "evpn_l3": {"type": EvpnL3},
+                "all_active_multihoming": {"type": AllActiveMultihoming},
+            }
+            remote_peers: RemotePeers
+            """
+            Define remote peers of the EVPN VXLAN Gateway.
+            If the hostname can be found in the inventory,
+            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
+            If the
+            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+
+
+            Subclass
+            of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+            """
+            evpn_l2: EvpnL2
+            """
+            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
+
+            Subclass of AvdModel.
+            """
+            evpn_l3: EvpnL3
+            """
+            Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+
+            Subclass of AvdModel.
+            """
+            all_active_multihoming: AllActiveMultihoming
+            """
+            Enable Active Active Multihoming architecture for EVPN Gateways.
+            Not supported with MLAG or IPVPN
+            Gateway. Requires EVPN L3 inter-domain to be enabled.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    remote_peers: RemotePeers | UndefinedType = Undefined,
+                    evpn_l2: EvpnL2 | UndefinedType = Undefined,
+                    evpn_l3: EvpnL3 | UndefinedType = Undefined,
+                    all_active_multihoming: AllActiveMultihoming | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    EvpnGateway.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        remote_peers:
+                           Define remote peers of the EVPN VXLAN Gateway.
+                           If the hostname can be found in the inventory,
+                           ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
+                           If the
+                           peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+
+
+                           Subclass
+                           of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        evpn_l2:
+                           Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
+
+                           Subclass of AvdModel.
+                        evpn_l3:
+                           Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+
+                           Subclass of AvdModel.
+                        all_active_multihoming:
+                           Enable Active Active Multihoming architecture for EVPN Gateways.
+                           Not supported with MLAG or IPVPN
+                           Gateway. Requires EVPN L3 inter-domain to be enabled.
+
+                           Subclass of AvdModel.
+
+                    """
+
+        class IpvpnGateway(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AddressFamilies(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            AddressFamilies._item_type = str
+
+            class RemotePeersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"hostname": {"type": str}, "ip_address": {"type": str}, "bgp_as": {"type": str}}
+                hostname: str
+                """Hostname of remote IPVPN Peer."""
+                ip_address: str
+                """Peering IP of remote IPVPN Peer."""
+                bgp_as: str
+                """
+                Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For
+                asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted
+                as a float number.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, hostname: str | UndefinedType = Undefined, ip_address: str | UndefinedType = Undefined, bgp_as: str | UndefinedType = Undefined
+                    ) -> None:
+                        """
+                        RemotePeersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            hostname: Hostname of remote IPVPN Peer.
+                            ip_address: Peering IP of remote IPVPN Peer.
+                            bgp_as:
+                               Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                               For
+                               asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted
+                               as a float number.
+
+                        """
+
+            class RemotePeers(AvdIndexedList[str, RemotePeersItem]):
+                """Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`)."""
+
+                _primary_key: ClassVar[str] = "hostname"
+
+            RemotePeers._item_type = RemotePeersItem
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool},
+                "evpn_domain_id": {"type": str, "default": "65535:1"},
+                "ipvpn_domain_id": {"type": str, "default": "65535:2"},
+                "enable_d_path": {"type": bool, "default": True},
+                "maximum_routes": {"type": int, "default": 0},
+                "local_as": {"type": str},
+                "address_families": {"type": AddressFamilies, "default": lambda cls: coerce_type(["vpn-ipv4"], target_type=cls)},
+                "remote_peers": {"type": RemotePeers},
+            }
+            enabled: bool
+            evpn_domain_id: str
+            """
+            Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+
+            Default value: `"65535:1"`
+            """
+            ipvpn_domain_id: str
+            """
+            Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+
+            Default value: `"65535:2"`
+            """
+            enable_d_path: bool
+            """
+            Enable D-path for use with BGP bestpath selection algorithm.
+
+            Default value: `True`
+            """
+            maximum_routes: int
+            """
+            Maximum routes to accept from IPVPN remote peers.
+
+            Default value: `0`
+            """
+            local_as: str | None
+            """
+            Local BGP AS applied to peering with IPVPN remote peers.
+            BGP AS <1-4294967295> or AS number in asdot
+            notation "<1-65535>.<0-65535>".
+            For asdot notation in YAML inputs, the value must be put in quotes,
+            to prevent it from being interpreted as a float number.
+            """
+            address_families: AddressFamilies
+            """
+            IPVPN address families to enable for remote peers.
+
+            Subclass of AvdList with `str` items.
+
+            Default value: `lambda cls: coerce_type(["vpn-ipv4"], target_type=cls)`
+            """
+            remote_peers: RemotePeers
+            """Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType = Undefined,
+                    evpn_domain_id: str | UndefinedType = Undefined,
+                    ipvpn_domain_id: str | UndefinedType = Undefined,
+                    enable_d_path: bool | UndefinedType = Undefined,
+                    maximum_routes: int | UndefinedType = Undefined,
+                    local_as: str | None | UndefinedType = Undefined,
+                    address_families: AddressFamilies | UndefinedType = Undefined,
+                    remote_peers: RemotePeers | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    IpvpnGateway.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
+                        maximum_routes: Maximum routes to accept from IPVPN remote peers.
+                        local_as:
+                           Local BGP AS applied to peering with IPVPN remote peers.
+                           BGP AS <1-4294967295> or AS number in asdot
+                           notation "<1-65535>.<0-65535>".
+                           For asdot notation in YAML inputs, the value must be put in quotes,
+                           to prevent it from being interpreted as a float number.
+                        address_families:
+                           IPVPN address families to enable for remote peers.
+
+                           Subclass of AvdList with `str` items.
+                        remote_peers: Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+
+                    """
+
+        class MlagInterfaces(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        MlagInterfaces._item_type = str
+
+        MlagInterfacesSpeed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
+        MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
+        SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
+        MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
+
+        class OverlayAddressFamilies(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        OverlayAddressFamilies._item_type = str
+
+        class MplsRouteReflectors(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        MplsRouteReflectors._item_type = str
+
+        class Ptp(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Uplinks(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Uplinks._item_type = str
+
+            Mode: TypeAlias = Literal["boundary"]
+
+            class Dscp(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"general_messages": {"type": int}, "event_messages": {"type": int}}
+                general_messages: int | None
+                event_messages: int | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, general_messages: int | None | UndefinedType = Undefined, event_messages: int | None | UndefinedType = Undefined
+                    ) -> None:
+                        """
+                        Dscp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            general_messages: general_messages
+                            event_messages: event_messages
+
+                        """
+
+            class Monitor(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Threshold(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Drop(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"offset_from_master": {"type": int}, "mean_path_delay": {"type": int}}
+                        offset_from_master: int | None
+                        mean_path_delay: int | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, offset_from_master: int | None | UndefinedType = Undefined, mean_path_delay: int | None | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                Drop.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    offset_from_master: offset_from_master
+                                    mean_path_delay: mean_path_delay
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "offset_from_master": {"type": int, "default": 250},
+                        "mean_path_delay": {"type": int, "default": 1500},
+                        "drop": {"type": Drop},
+                    }
+                    offset_from_master: int
+                    """Default value: `250`"""
+                    mean_path_delay: int
+                    """Default value: `1500`"""
+                    drop: Drop
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            offset_from_master: int | UndefinedType = Undefined,
+                            mean_path_delay: int | UndefinedType = Undefined,
+                            drop: Drop | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Threshold.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                offset_from_master: offset_from_master
+                                mean_path_delay: mean_path_delay
+                                drop: Subclass of AvdModel.
+
+                            """
+
+                class MissingMessage(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Intervals(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"announce": {"type": int}, "follow_up": {"type": int}, "sync": {"type": int}}
+                        announce: int | None
+                        follow_up: int | None
+                        sync: int | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                announce: int | None | UndefinedType = Undefined,
+                                follow_up: int | None | UndefinedType = Undefined,
+                                sync: int | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Intervals.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    announce: announce
+                                    follow_up: follow_up
+                                    sync: sync
+
+                                """
+
+                    class SequenceIds(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool, "default": True},
+                            "announce": {"type": int, "default": 3},
+                            "delay_resp": {"type": int, "default": 3},
+                            "follow_up": {"type": int, "default": 3},
+                            "sync": {"type": int, "default": 3},
+                        }
+                        enabled: bool
+                        """Default value: `True`"""
+                        announce: int
+                        """Default value: `3`"""
+                        delay_resp: int
+                        """Default value: `3`"""
+                        follow_up: int
+                        """Default value: `3`"""
+                        sync: int
+                        """Default value: `3`"""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                announce: int | UndefinedType = Undefined,
+                                delay_resp: int | UndefinedType = Undefined,
+                                follow_up: int | UndefinedType = Undefined,
+                                sync: int | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                SequenceIds.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    announce: announce
+                                    delay_resp: delay_resp
+                                    follow_up: follow_up
+                                    sync: sync
+
+                                """
+
+                    _fields: ClassVar[dict] = {"intervals": {"type": Intervals}, "sequence_ids": {"type": SequenceIds}}
+                    intervals: Intervals
+                    """Subclass of AvdModel."""
+                    sequence_ids: SequenceIds
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, intervals: Intervals | UndefinedType = Undefined, sequence_ids: SequenceIds | UndefinedType = Undefined) -> None:
+                            """
+                            MissingMessage.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                intervals: Subclass of AvdModel.
+                                sequence_ids: Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": True},
+                    "threshold": {"type": Threshold},
+                    "missing_message": {"type": MissingMessage},
+                }
+                enabled: bool
+                """Default value: `True`"""
+                threshold: Threshold
+                """Subclass of AvdModel."""
+                missing_message: MissingMessage
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        threshold: Threshold | UndefinedType = Undefined,
+                        missing_message: MissingMessage | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Monitor.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            threshold: Subclass of AvdModel.
+                            missing_message: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool},
+                "profile": {"type": str},
+                "uplinks": {"type": Uplinks},
+                "mlag": {"type": bool, "default": False},
+                "domain": {"type": int},
+                "priority1": {"type": int},
+                "priority2": {"type": int},
+                "auto_clock_identity": {"type": bool},
+                "clock_identity_prefix": {"type": str, "default": "00:1C:73"},
+                "clock_identity": {"type": str},
+                "source_ip": {"type": str},
+                "mode": {"type": str, "default": "boundary"},
+                "mode_one_step": {"type": bool, "default": False},
+                "ttl": {"type": int},
+                "forward_unicast": {"type": bool, "default": False},
+                "forward_v1": {"type": bool},
+                "dscp": {"type": Dscp},
+                "monitor": {"type": Monitor},
+            }
+            enabled: bool | None
+            profile: str | None
+            """
+            Default available profiles are:
+              - "aes67"
+              - "aes67-r16-2016"
+              - "smpte2059-2"
+            """
+            uplinks: Uplinks
+            """Subclass of AvdList with `str` items."""
+            mlag: bool
+            """
+            Configure PTP on the MLAG peer-link port-channel when PTP is enabled. By default PTP will not be
+            configured on the MLAG peer-link port-channel.
+
+            Default value: `False`
+            """
+            domain: int | None
+            priority1: int | None
+            """default -> automatically set based on node_type."""
+            priority2: int | None
+            """default -> (node_id modulus 256)."""
+            auto_clock_identity: bool | None
+            """
+            If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the
+            default EOS behaviour, simply disable the automatic PTP clock identity.
+            default ->
+            (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as
+            HEX).
+            """
+            clock_identity_prefix: str
+            """
+            PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".
+            By default the 3-byte prefix is "00:1C:73".
+            This
+            can be overridden if auto_clock_identity is set to true (which is the default).
+
+            Default value: `"00:1C:73"`
+            """
+            clock_identity: str | None
+            """Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06"."""
+            source_ip: str | None
+            """
+            By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
+            relevant SVI, which is the recommended behaviour.
+            This can be set manually if required, for example,
+            to a value of "10.1.2.3".
+            """
+            mode: Mode
+            """Default value: `"boundary"`"""
+            mode_one_step: bool
+            """Default value: `False`"""
+            ttl: int | None
+            forward_unicast: bool
+            """
+            Enable PTP unicast forwarding.
+
+            Default value: `False`
+            """
+            forward_v1: bool | None
+            """Forward dataplane PTP V1 packets."""
+            dscp: Dscp
+            """Subclass of AvdModel."""
+            monitor: Monitor
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    profile: str | None | UndefinedType = Undefined,
+                    uplinks: Uplinks | UndefinedType = Undefined,
+                    mlag: bool | UndefinedType = Undefined,
+                    domain: int | None | UndefinedType = Undefined,
+                    priority1: int | None | UndefinedType = Undefined,
+                    priority2: int | None | UndefinedType = Undefined,
+                    auto_clock_identity: bool | None | UndefinedType = Undefined,
+                    clock_identity_prefix: str | UndefinedType = Undefined,
+                    clock_identity: str | None | UndefinedType = Undefined,
+                    source_ip: str | None | UndefinedType = Undefined,
+                    mode: Mode | UndefinedType = Undefined,
+                    mode_one_step: bool | UndefinedType = Undefined,
+                    ttl: int | None | UndefinedType = Undefined,
+                    forward_unicast: bool | UndefinedType = Undefined,
+                    forward_v1: bool | None | UndefinedType = Undefined,
+                    dscp: Dscp | UndefinedType = Undefined,
+                    monitor: Monitor | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ptp.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        profile:
+                           Default available profiles are:
+                             - "aes67"
+                             - "aes67-r16-2016"
+                             - "smpte2059-2"
+                        uplinks: Subclass of AvdList with `str` items.
+                        mlag:
+                           Configure PTP on the MLAG peer-link port-channel when PTP is enabled. By default PTP will not be
+                           configured on the MLAG peer-link port-channel.
+                        domain: domain
+                        priority1: default -> automatically set based on node_type.
+                        priority2: default -> (node_id modulus 256).
+                        auto_clock_identity:
+                           If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the
+                           default EOS behaviour, simply disable the automatic PTP clock identity.
+                           default ->
+                           (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as
+                           HEX).
+                        clock_identity_prefix:
+                           PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".
+                           By default the 3-byte prefix is "00:1C:73".
+                           This
+                           can be overridden if auto_clock_identity is set to true (which is the default).
+                        clock_identity: Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06".
+                        source_ip:
+                           By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
+                           relevant SVI, which is the recommended behaviour.
+                           This can be set manually if required, for example,
+                           to a value of "10.1.2.3".
+                        mode: mode
+                        mode_one_step: mode_one_step
+                        ttl: ttl
+                        forward_unicast: Enable PTP unicast forwarding.
+                        forward_v1: Forward dataplane PTP V1 packets.
+                        dscp: Subclass of AvdModel.
+                        monitor: Subclass of AvdModel.
+
+                    """
+
+        WanRole: TypeAlias = Literal["client", "server"]
+        CvPathfinderTransitMode: TypeAlias = Literal["region", "zone"]
+
+        class WanHa(AvdModel):
+            """Subclass of AvdModel."""
+
+            class HaInterfaces(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            HaInterfaces._item_type = str
+
+            class FlowTracking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
+                enabled: bool | None
+                name: str | None
+                """Flow tracker name as defined in flow_tracking_settings."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        FlowTracking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            name: Flow tracker name as defined in flow_tracking_settings.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool},
+                "ipsec": {"type": bool, "default": True},
+                "mtu": {"type": int, "default": 9194},
+                "ha_interfaces": {"type": HaInterfaces},
+                "ha_ipv4_pool": {"type": str},
+                "port_channel_id": {"type": int},
+                "use_port_channel_for_direct_ha": {"type": bool, "default": True},
+                "flow_tracking": {"type": FlowTracking},
+            }
+            enabled: bool | None
+            """Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group."""
+            ipsec: bool
+            """
+            Enable / Disable IPsec over HA path-group when HA is enabled.
+
+            Default value: `True`
+            """
+            mtu: int
+            """
+            Set MTU on WAN HA interfaces.
+
+            Default value: `9194`
+            """
+            ha_interfaces: HaInterfaces
+            """
+            Local WAN HA interfaces
+            Overwrite the default behavior which is to pick all the `uplink_interfaces`.
+            Can be used to filter uplink interfaces when there are multiple uplinks.
+            Limitations:
+              Either all
+            interfaces must be uplinks or all interfaces must not be uplinks.
+              Only one interface is supported
+            for non uplinks.
+
+            Subclass of AvdList with `str` items.
+            """
+            ha_ipv4_pool: str | None
+            """
+            Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+            The IPv4
+            subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
+            first WAN router.
+            Not used for uplink interfaces.
+            """
+            port_channel_id: int | None
+            """Port-channel ID to use for direct HA."""
+            use_port_channel_for_direct_ha: bool
+            """
+            Enable or disable using a port-channel interface for direct HA when there is only one interface.
+            This feature was introduced in EOS 4.33.0F.
+
+            Default value: `True`
+            """
+            flow_tracking: FlowTracking
+            """
+            Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links`
+            setting.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    ipsec: bool | UndefinedType = Undefined,
+                    mtu: int | UndefinedType = Undefined,
+                    ha_interfaces: HaInterfaces | UndefinedType = Undefined,
+                    ha_ipv4_pool: str | None | UndefinedType = Undefined,
+                    port_channel_id: int | None | UndefinedType = Undefined,
+                    use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
+                    flow_tracking: FlowTracking | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    WanHa.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group.
+                        ipsec: Enable / Disable IPsec over HA path-group when HA is enabled.
+                        mtu: Set MTU on WAN HA interfaces.
+                        ha_interfaces:
+                           Local WAN HA interfaces
+                           Overwrite the default behavior which is to pick all the `uplink_interfaces`.
+                           Can be used to filter uplink interfaces when there are multiple uplinks.
+                           Limitations:
+                             Either all
+                           interfaces must be uplinks or all interfaces must not be uplinks.
+                             Only one interface is supported
+                           for non uplinks.
+
+                           Subclass of AvdList with `str` items.
+                        ha_ipv4_pool:
+                           Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+                           The IPv4
+                           subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
+                           first WAN router.
+                           Not used for uplink interfaces.
+                        port_channel_id: Port-channel ID to use for direct HA.
+                        use_port_channel_for_direct_ha:
+                           Enable or disable using a port-channel interface for direct HA when there is only one interface.
+                           This feature was introduced in EOS 4.33.0F.
+                        flow_tracking:
+                           Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links`
+                           setting.
+
+                           Subclass of AvdModel.
+
+                    """
+
+        class L3InterfacesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Speed: TypeAlias = Literal[
+                "100full",
+                "100g",
+                "100g-1",
+                "100g-2",
+                "100g-4",
+                "100half",
+                "10full",
+                "10g",
+                "10half",
+                "1g",
+                "200g",
+                "200g-2",
+                "200g-4",
+                "25g",
+                "400g",
+                "400g-4",
+                "400g-8",
+                "40g",
+                "50g",
+                "50g-1",
+                "50g-2",
+                "800g-8",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
+                "auto",
+                "auto 10000full",
+                "auto 1000full",
+                "auto 100full",
+                "auto 100g-1",
+                "auto 100g-2",
+                "auto 100g-4",
+                "auto 100gfull",
+                "auto 100half",
+                "auto 10full",
+                "auto 10gfull",
+                "auto 10half",
+                "auto 1gfull",
+                "auto 2.5gfull",
+                "auto 200g-2",
+                "auto 200g-4",
+                "auto 25gfull",
+                "auto 400g-4",
+                "auto 400g-8",
+                "auto 40gfull",
+                "auto 50g-1",
+                "auto 50g-2",
+                "auto 50gfull",
+                "auto 5gfull",
+                "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
+                "forced 10000full",
+                "forced 1000full",
+                "forced 1000half",
+                "forced 100full",
+                "forced 100gfull",
+                "forced 100half",
+                "forced 10full",
+                "forced 10half",
+                "forced 25gfull",
+                "forced 40gfull",
+                "forced 50gfull",
+            ]
+
+            class Bgp(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                peer_as: str
+                """
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in
+                YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                number.
+                """
+                ipv4_prefix_list_in: str | None
+                """
+                Prefix List Name. Accept routes for only these prefixes from the peer.
+                Required for wan interfaces.
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                """
+                ipv4_prefix_list_out: str | None
+                """
+                Prefix List Name. Advertise routes for only these prefixes.
+                If not specified, nothing would be
+                advertised.
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        peer_as: str | UndefinedType = Undefined,
+                        ipv4_prefix_list_in: str | None | UndefinedType = Undefined,
+                        ipv4_prefix_list_out: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Bgp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            peer_as:
+                               BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                               For asdot notation in
+                               YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                               number.
+                            ipv4_prefix_list_in:
+                               Prefix List Name. Accept routes for only these prefixes from the peer.
+                               Required for wan interfaces.
+                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                            ipv4_prefix_list_out:
+                               Prefix List Name. Advertise routes for only these prefixes.
+                               If not specified, nothing would be
+                               advertised.
+                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+
+                        """
+
+            class StaticRoutesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"prefix": {"type": str}}
+                prefix: str
+                """IPv4_network/Mask."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, prefix: str | UndefinedType = Undefined) -> None:
+                        """
+                        StaticRoutesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            prefix: IPv4_network/Mask.
+
+                        """
+
+            class StaticRoutes(AvdList[StaticRoutesItem]):
+                """Subclass of AvdList with `StaticRoutesItem` items."""
+
+            StaticRoutes._item_type = StaticRoutesItem
+
+            class CvPathfinderInternetExit(AvdModel):
+                """Subclass of AvdModel."""
+
+                class PoliciesItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
+                    name: str
+                    """Internet-exit policy name."""
+                    tunnel_interface_numbers: str | None
+                    """
+                    Number range to use for Tunnel interfaces to an internet-exit service provider using this local
+                    interface.
+                    Examples: '1-3' or '100,200,300'
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, name: str | UndefinedType = Undefined, tunnel_interface_numbers: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            PoliciesItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                name: Internet-exit policy name.
+                                tunnel_interface_numbers:
+                                   Number range to use for Tunnel interfaces to an internet-exit service provider using this local
+                                   interface.
+                                   Examples: '1-3' or '100,200,300'
+
+                            """
+
+                class Policies(AvdIndexedList[str, PoliciesItem]):
+                    """Subclass of AvdIndexedList with `PoliciesItem` items. Primary key is `name` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "name"
+
+                Policies._item_type = PoliciesItem
+
+                _fields: ClassVar[dict] = {"policies": {"type": Policies}}
+                policies: Policies
+                """
+                List of Internet-exit policies using this interface as exit.
+
+                Subclass of AvdIndexedList with
+                `PoliciesItem` items. Primary key is `name` (`str`).
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, policies: Policies | UndefinedType = Undefined) -> None:
+                        """
+                        CvPathfinderInternetExit.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            policies:
+                               List of Internet-exit policies using this interface as exit.
+
+                               Subclass of AvdIndexedList with
+                               `PoliciesItem` items. Primary key is `name` (`str`).
+
+                        """
+
+            class RxQueue(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Workers(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Workers._item_type = str
+
+                Mode: TypeAlias = Literal["shared", "exclusive"]
+                _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                count: int | None
+                """
+                Number of receive queues.
+                The maximum value is determined by
+                `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                `platform` set on this device.
+                """
+                workers: Workers
+                """Subclass of AvdList with `str` items."""
+                mode: Mode | None
+                """Mode applicable to the workers."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        count: int | None | UndefinedType = Undefined,
+                        workers: Workers | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        RxQueue.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            count:
+                               Number of receive queues.
+                               The maximum value is determined by
+                               `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                               `platform` set on this device.
+                            workers: Subclass of AvdList with `str` items.
+                            mode: Mode applicable to the workers.
+
+                        """
+
+            class FlowTracking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
+                enabled: bool | None
+                name: str | None
+                """Flow tracker name as defined in flow_tracking_settings."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        FlowTracking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            name: Flow tracker name as defined in flow_tracking_settings.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "profile": {"type": str},
+                "name": {"type": str},
+                "description": {"type": str},
+                "ip_address": {"type": str},
+                "dhcp_ip": {"type": str},
+                "public_ip": {"type": str},
+                "encapsulation_dot1q_vlan": {"type": int},
+                "dhcp_accept_default_route": {"type": bool, "default": True},
+                "enabled": {"type": bool, "default": True},
+                "speed": {"type": str},
+                "receive_bandwidth": {"type": int},
+                "transmit_bandwidth": {"type": int},
+                "peer": {"type": str},
+                "peer_interface": {"type": str},
+                "peer_ip": {"type": str},
+                "bgp": {"type": Bgp},
+                "ipv4_acl_in": {"type": str},
+                "ipv4_acl_out": {"type": str},
+                "static_routes": {"type": StaticRoutes},
+                "qos_profile": {"type": str},
+                "wan_carrier": {"type": str},
+                "wan_circuit_id": {"type": str},
+                "connected_to_pathfinder": {"type": bool, "default": True},
+                "cv_pathfinder_internet_exit": {"type": CvPathfinderInternetExit},
+                "rx_queue": {"type": RxQueue},
+                "raw_eos_cli": {"type": str},
+                "flow_tracking": {"type": FlowTracking},
+                "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            }
+            profile: str | None
+            """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
+            name: str
+            """
+            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
+            For a
+            subinterface, the parent physical interface is automatically created.
+            """
+            description: str | None
+            """
+            Interface description.
+            If not set a default description will be configured with '[<peer>[
+            <peer_interface>]]'.
+            """
+            ip_address: str | None
+            """Node IPv4 address/Mask or 'dhcp'."""
+            dhcp_ip: str | None
+            """
+            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
+            IPv4 address
+            (without mask) to be allocated on the interface if known.
+            This is not rendered in the configuration
+            but can be used for substitution of 'interface_ip' in the Access-list
+            set under `ipv4_acl_in` and
+            `ipv4_acl_out`.
+            """
+            public_ip: str | None
+            """
+            Node IPv4 address (no mask).
+
+            This is used to get the public IP (if known) when the device is behind
+            NAT.
+            This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP
+            with the following preference:
+              `wan_route_servers.path_groups.interfaces.ip_address`
+                  ->
+            `l3_interfaces.public_ip`
+                      -> `l3_interfaces.ip_address`
+
+            The determined Public IP is used
+            by WAN routers when peering with this interface.
+            """
+            encapsulation_dot1q_vlan: int | None
+            """
+            For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
+            specified.
+            """
+            dhcp_accept_default_route: bool
+            """
+            Accept a default route from DHCP if `ip_address` is set to `dhcp`.
+
+            Default value: `True`
+            """
+            enabled: bool
+            """
+            Enable or Shutdown the interface.
+
+            Default value: `True`
+            """
+            speed: Speed | None
+            """Interface Speed."""
+            receive_bandwidth: int | None
+            """
+            Maximum allowed receive bandwidth (download) in Mbps for this interface.
+            This is currently used on
+            CVaaS to provide more information in the visualization.
+            """
+            transmit_bandwidth: int | None
+            """
+            Maximum allowed transmit bandwidth (upload) in Mbps for this interface.
+            This is currently used on
+            CVaaS to provide more information in the visualization.
+            """
+            peer: str | None
+            """The peer device name. Used for description and documentation."""
+            peer_interface: str | None
+            """The peer device interface. Used for description and documentation."""
+            peer_ip: str | None
+            """
+            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
+            and `ip` is an IP address.
+            """
+            bgp: Bgp
+            """
+            Enforce IPv4 BGP peering for the peer
+
+            Subclass of AvdModel.
+            """
+            ipv4_acl_in: str | None
+            """
+            Name of the IPv4 access-list to be assigned in the ingress direction.
+            The access-list must be
+            defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            Required
+            for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
+            `wan_carriers`.
+            """
+            ipv4_acl_out: str | None
+            """
+            Name of the IPv4 Access-list to be assigned in the egress direction.
+            The access-list must be defined
+            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
+            static_routes: StaticRoutes
+            """
+            Configure IPv4 static routes pointing to `peer_ip`.
+
+            Subclass of AvdList with `StaticRoutesItem`
+            items.
+            """
+            qos_profile: str | None
+            """QOS service profile."""
+            wan_carrier: str | None
+            """
+            The WAN carrier this interface is connected to.
+            This is used to infer the path-groups in which this
+            interface should be configured.
+            Unless the carrier is marked as 'trusted' under `wan_carriers`,
+            `ipv4_acl_in` is also required on all WAN interfaces.
+            """
+            wan_circuit_id: str | None
+            """
+            The WAN circuit ID for this interface.
+            This is not rendered in the configuration but used for WAN
+            designs.
+            """
+            connected_to_pathfinder: bool
+            """
+            For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.
+
+            Default value: `True`
+            """
+            cv_pathfinder_internet_exit: CvPathfinderInternetExit
+            """
+            PREVIEW: This key is in preview mode
+
+            Subclass of AvdModel.
+            """
+            rx_queue: RxQueue
+            """
+            Receive queue parameters for platform SFE interface profile.
+            This setting is ignored unless the
+            `platform_sfe_interface_profile.supported` is set as `true` under
+            `platform_settings.feature_support` for the `platform` set on this device.
+
+            Subclass of AvdModel.
+            """
+            raw_eos_cli: str | None
+            """EOS CLI rendered directly on the interface in the final EOS configuration."""
+            flow_tracking: FlowTracking
+            """
+            Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+            Subclass of AvdModel.
+            """
+            structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config for the Ethernet interface."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    profile: str | None | UndefinedType = Undefined,
+                    name: str | UndefinedType = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    ip_address: str | None | UndefinedType = Undefined,
+                    dhcp_ip: str | None | UndefinedType = Undefined,
+                    public_ip: str | None | UndefinedType = Undefined,
+                    encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
+                    dhcp_accept_default_route: bool | UndefinedType = Undefined,
+                    enabled: bool | UndefinedType = Undefined,
+                    speed: Speed | None | UndefinedType = Undefined,
+                    receive_bandwidth: int | None | UndefinedType = Undefined,
+                    transmit_bandwidth: int | None | UndefinedType = Undefined,
+                    peer: str | None | UndefinedType = Undefined,
+                    peer_interface: str | None | UndefinedType = Undefined,
+                    peer_ip: str | None | UndefinedType = Undefined,
+                    bgp: Bgp | UndefinedType = Undefined,
+                    ipv4_acl_in: str | None | UndefinedType = Undefined,
+                    ipv4_acl_out: str | None | UndefinedType = Undefined,
+                    static_routes: StaticRoutes | UndefinedType = Undefined,
+                    qos_profile: str | None | UndefinedType = Undefined,
+                    wan_carrier: str | None | UndefinedType = Undefined,
+                    wan_circuit_id: str | None | UndefinedType = Undefined,
+                    connected_to_pathfinder: bool | UndefinedType = Undefined,
+                    cv_pathfinder_internet_exit: CvPathfinderInternetExit | UndefinedType = Undefined,
+                    rx_queue: RxQueue | UndefinedType = Undefined,
+                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                    flow_tracking: FlowTracking | UndefinedType = Undefined,
+                    structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    L3InterfacesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
+                        name:
+                           Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
+                           For a
+                           subinterface, the parent physical interface is automatically created.
+                        description:
+                           Interface description.
+                           If not set a default description will be configured with '[<peer>[
+                           <peer_interface>]]'.
+                        ip_address: Node IPv4 address/Mask or 'dhcp'.
+                        dhcp_ip:
+                           When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
+                           IPv4 address
+                           (without mask) to be allocated on the interface if known.
+                           This is not rendered in the configuration
+                           but can be used for substitution of 'interface_ip' in the Access-list
+                           set under `ipv4_acl_in` and
+                           `ipv4_acl_out`.
+                        public_ip:
+                           Node IPv4 address (no mask).
+
+                           This is used to get the public IP (if known) when the device is behind
+                           NAT.
+                           This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP
+                           with the following preference:
+                             `wan_route_servers.path_groups.interfaces.ip_address`
+                                 ->
+                           `l3_interfaces.public_ip`
+                                     -> `l3_interfaces.ip_address`
+
+                           The determined Public IP is used
+                           by WAN routers when peering with this interface.
+                        encapsulation_dot1q_vlan:
+                           For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
+                           specified.
+                        dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
+                        enabled: Enable or Shutdown the interface.
+                        speed: Interface Speed.
+                        receive_bandwidth:
+                           Maximum allowed receive bandwidth (download) in Mbps for this interface.
+                           This is currently used on
+                           CVaaS to provide more information in the visualization.
+                        transmit_bandwidth:
+                           Maximum allowed transmit bandwidth (upload) in Mbps for this interface.
+                           This is currently used on
+                           CVaaS to provide more information in the visualization.
+                        peer: The peer device name. Used for description and documentation.
+                        peer_interface: The peer device interface. Used for description and documentation.
+                        peer_ip:
+                           The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
+                           and `ip` is an IP address.
+                        bgp:
+                           Enforce IPv4 BGP peering for the peer
+
+                           Subclass of AvdModel.
+                        ipv4_acl_in:
+                           Name of the IPv4 access-list to be assigned in the ingress direction.
+                           The access-list must be
+                           defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           Required
+                           for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
+                           `wan_carriers`.
+                        ipv4_acl_out:
+                           Name of the IPv4 Access-list to be assigned in the egress direction.
+                           The access-list must be defined
+                           under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        static_routes:
+                           Configure IPv4 static routes pointing to `peer_ip`.
+
+                           Subclass of AvdList with `StaticRoutesItem`
+                           items.
+                        qos_profile: QOS service profile.
+                        wan_carrier:
+                           The WAN carrier this interface is connected to.
+                           This is used to infer the path-groups in which this
+                           interface should be configured.
+                           Unless the carrier is marked as 'trusted' under `wan_carriers`,
+                           `ipv4_acl_in` is also required on all WAN interfaces.
+                        wan_circuit_id:
+                           The WAN circuit ID for this interface.
+                           This is not rendered in the configuration but used for WAN
+                           designs.
+                        connected_to_pathfinder: For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.
+                        cv_pathfinder_internet_exit:
+                           PREVIEW: This key is in preview mode
+
+                           Subclass of AvdModel.
+                        rx_queue:
+                           Receive queue parameters for platform SFE interface profile.
+                           This setting is ignored unless the
+                           `platform_sfe_interface_profile.supported` is set as `true` under
+                           `platform_settings.feature_support` for the `platform` set on this device.
+
+                           Subclass of AvdModel.
+                        raw_eos_cli: EOS CLI rendered directly on the interface in the final EOS configuration.
+                        flow_tracking:
+                           Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+                           Subclass of AvdModel.
+                        structured_config: Custom structured config for the Ethernet interface.
+
+                    """
+
+        class L3Interfaces(AvdIndexedList[str, L3InterfacesItem]):
+            """Subclass of AvdIndexedList with `L3InterfacesItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        L3Interfaces._item_type = L3InterfacesItem
+
+        class L3PortChannelsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Mode: TypeAlias = Literal["active", "passive", "on"]
+
+            class MemberInterfacesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                Speed: TypeAlias = Literal[
+                    "100full",
+                    "100g",
+                    "100g-1",
+                    "100g-2",
+                    "100g-4",
+                    "100half",
+                    "10full",
+                    "10g",
+                    "10half",
+                    "1g",
+                    "200g",
+                    "200g-2",
+                    "200g-4",
+                    "25g",
+                    "400g",
+                    "400g-4",
+                    "400g-8",
+                    "40g",
+                    "50g",
+                    "50g-1",
+                    "50g-2",
+                    "800g-8",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
+                    "auto",
+                    "auto 10000full",
+                    "auto 1000full",
+                    "auto 100full",
+                    "auto 100g-1",
+                    "auto 100g-2",
+                    "auto 100g-4",
+                    "auto 100gfull",
+                    "auto 100half",
+                    "auto 10full",
+                    "auto 10gfull",
+                    "auto 10half",
+                    "auto 1gfull",
+                    "auto 2.5gfull",
+                    "auto 200g-2",
+                    "auto 200g-4",
+                    "auto 25gfull",
+                    "auto 400g-4",
+                    "auto 400g-8",
+                    "auto 40gfull",
+                    "auto 50g-1",
+                    "auto 50g-2",
+                    "auto 50gfull",
+                    "auto 5gfull",
+                    "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
+                    "forced 10000full",
+                    "forced 1000full",
+                    "forced 1000half",
+                    "forced 100full",
+                    "forced 100gfull",
+                    "forced 100half",
+                    "forced 10full",
+                    "forced 10half",
+                    "forced 25gfull",
+                    "forced 40gfull",
+                    "forced 50gfull",
+                ]
+
+                class RxQueue(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Workers(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    Workers._item_type = str
+
+                    Mode: TypeAlias = Literal["shared", "exclusive"]
+                    _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                    count: int | None
+                    """
+                    Number of receive queues.
+                    The maximum value is determined by
+                    `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                    `platform` set on this device.
+                    """
+                    workers: Workers
+                    """Subclass of AvdList with `str` items."""
+                    mode: Mode | None
+                    """Mode applicable to the workers."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            count: int | None | UndefinedType = Undefined,
+                            workers: Workers | UndefinedType = Undefined,
+                            mode: Mode | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            RxQueue.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                count:
+                                   Number of receive queues.
+                                   The maximum value is determined by
+                                   `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                   `platform` set on this device.
+                                workers: Subclass of AvdList with `str` items.
+                                mode: Mode applicable to the workers.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "description": {"type": str},
+                    "peer": {"type": str},
+                    "peer_interface": {"type": str},
+                    "speed": {"type": str},
+                    "rx_queue": {"type": RxQueue},
+                    "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                }
+                name: str
+                """
+                Ethernet interface name like 'Ethernet2'.
+                Member interface cannot be subinterface.
+                """
+                description: str | None
+                """
+                Interface description for this member.
+                If not set, a default description will be configured with
+                '[<peer>[ <peer_interface>]]'.
+                """
+                peer: str | None
+                """
+                The peer device name. Used for description and documentation.
+                If not set, this inherits the peer
+                setting on the port-channel interface.
+                """
+                peer_interface: str | None
+                """The peer device interface. Used for description and documentation."""
+                speed: Speed | None
+                """Interface Speed."""
+                rx_queue: RxQueue
+                """
+                Receive queue parameters for platform SFE interface profile.
+                This setting is ignored unless the
+                `platform_sfe_interface_profile.supported` is set as `true` under
+                `platform_settings.feature_support` for the `platform` set on this device.
+
+                Subclass of AvdModel.
+                """
+                structured_config: EosCliConfigGen.EthernetInterfacesItem
+                """Custom structured config for the member ethernet interface."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        description: str | None | UndefinedType = Undefined,
+                        peer: str | None | UndefinedType = Undefined,
+                        peer_interface: str | None | UndefinedType = Undefined,
+                        speed: Speed | None | UndefinedType = Undefined,
+                        rx_queue: RxQueue | UndefinedType = Undefined,
+                        structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        MemberInterfacesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name:
+                               Ethernet interface name like 'Ethernet2'.
+                               Member interface cannot be subinterface.
+                            description:
+                               Interface description for this member.
+                               If not set, a default description will be configured with
+                               '[<peer>[ <peer_interface>]]'.
+                            peer:
+                               The peer device name. Used for description and documentation.
+                               If not set, this inherits the peer
+                               setting on the port-channel interface.
+                            peer_interface: The peer device interface. Used for description and documentation.
+                            speed: Interface Speed.
+                            rx_queue:
+                               Receive queue parameters for platform SFE interface profile.
+                               This setting is ignored unless the
+                               `platform_sfe_interface_profile.supported` is set as `true` under
+                               `platform_settings.feature_support` for the `platform` set on this device.
+
+                               Subclass of AvdModel.
+                            structured_config: Custom structured config for the member ethernet interface.
+
+                        """
+
+            class MemberInterfaces(AvdIndexedList[str, MemberInterfacesItem]):
+                """Subclass of AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            MemberInterfaces._item_type = MemberInterfacesItem
+
+            class Bgp(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                peer_as: str
+                """
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in
+                YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                number.
+                """
+                ipv4_prefix_list_in: str | None
+                """
+                Prefix List Name. Accept routes for only these prefixes from the peer.
+                Required for wan interfaces.
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                """
+                ipv4_prefix_list_out: str | None
+                """
+                Prefix List Name. Advertise routes for only these prefixes.
+                If not specified, nothing would be
+                advertised.
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        peer_as: str | UndefinedType = Undefined,
+                        ipv4_prefix_list_in: str | None | UndefinedType = Undefined,
+                        ipv4_prefix_list_out: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Bgp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            peer_as:
+                               BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                               For asdot notation in
+                               YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                               number.
+                            ipv4_prefix_list_in:
+                               Prefix List Name. Accept routes for only these prefixes from the peer.
+                               Required for wan interfaces.
+                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                            ipv4_prefix_list_out:
+                               Prefix List Name. Advertise routes for only these prefixes.
+                               If not specified, nothing would be
+                               advertised.
+                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+
+                        """
+
+            class StaticRoutesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"prefix": {"type": str}}
+                prefix: str
+                """IPv4_network/Mask."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, prefix: str | UndefinedType = Undefined) -> None:
+                        """
+                        StaticRoutesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            prefix: IPv4_network/Mask.
+
+                        """
+
+            class StaticRoutes(AvdIndexedList[str, StaticRoutesItem]):
+                """Subclass of AvdIndexedList with `StaticRoutesItem` items. Primary key is `prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "prefix"
+
+            StaticRoutes._item_type = StaticRoutesItem
+
+            class FlowTracking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
+                enabled: bool | None
+                name: str | None
+                """Flow tracker name as defined in flow_tracking_settings."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        FlowTracking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            name: Flow tracker name as defined in flow_tracking_settings.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "description": {"type": str},
+                "mode": {"type": str, "default": "active"},
+                "member_interfaces": {"type": MemberInterfaces},
+                "ip_address": {"type": str},
+                "dhcp_ip": {"type": str},
+                "public_ip": {"type": str},
+                "encapsulation_dot1q_vlan": {"type": int},
+                "dhcp_accept_default_route": {"type": bool, "default": True},
+                "enabled": {"type": bool, "default": True},
+                "peer": {"type": str},
+                "peer_port_channel": {"type": str},
+                "peer_ip": {"type": str},
+                "bgp": {"type": Bgp},
+                "ipv4_acl_in": {"type": str},
+                "ipv4_acl_out": {"type": str},
+                "static_routes": {"type": StaticRoutes},
+                "qos_profile": {"type": str},
+                "wan_carrier": {"type": str},
+                "wan_circuit_id": {"type": str},
+                "connected_to_pathfinder": {"type": bool, "default": True},
+                "raw_eos_cli": {"type": str},
+                "flow_tracking": {"type": FlowTracking},
+                "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+            }
+            name: str
+            """
+            Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
+            For a
+            Port-Channel subinterface, the parent Port-Channel interface must be defined as well.
+            """
+            description: str | None
+            """
+            Interface description.
+            If not set, a default description will be configured with '[<peer>[
+            <peer_port_channel>]]'.
+            """
+            mode: Mode
+            """
+            Port-Channel mode.
+            Should not be set on Port-Channel subinterfaces.
+
+            Default value: `"active"`
+            """
+            member_interfaces: MemberInterfaces
+            """
+            Port-Channel member interfaces.
+            Should not be set on Port-Channel subinterfaces.
+
+            Subclass of
+            AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
+            """
+            ip_address: str | None
+            """Node IPv4 address/Mask or 'dhcp'."""
+            dhcp_ip: str | None
+            """
+            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
+            IPv4 address
+            (without mask) to be allocated on the interface if known.
+            This is not rendered in the configuration
+            but can be used for substitution of 'interface_ip' in the Access-list
+            set under `ipv4_acl_in` and
+            `ipv4_acl_out`.
+            """
+            public_ip: str | None
+            """
+            Node IPv4 address (no mask).
+
+            This is used to get the public IP (if known) when the device is behind
+            NAT.
+            This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP
+            with the following preference:
+              `wan_route_servers.path_groups.interfaces.ip_address`
+                  ->
+            `l3_port_channels.public_ip`
+                      -> `l3_port_channels.ip_address`
+
+            The determined Public IP is
+            used by WAN routers when peering with this interface.
+            """
+            encapsulation_dot1q_vlan: int | None
+            """
+            For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
+            specified.
+            """
+            dhcp_accept_default_route: bool
+            """
+            Accept a default route from DHCP if `ip_address` is set to `dhcp`.
+
+            Default value: `True`
+            """
+            enabled: bool
+            """
+            Enable or Shutdown the interface.
+
+            Default value: `True`
+            """
+            peer: str | None
+            """The peer device name. Used for description and documentation."""
+            peer_port_channel: str | None
+            """The peer device port-channel interface. Used for description and documentation."""
+            peer_ip: str | None
+            """
+            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
+            and `ip` is an IP address.
+            """
+            bgp: Bgp
+            """
+            Enforce IPv4 BGP peering for the peer
+
+            Subclass of AvdModel.
+            """
+            ipv4_acl_in: str | None
+            """
+            Name of the IPv4 access-list to be assigned in the ingress direction.
+            The access-list must be
+            defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            Required
+            for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
+            `wan_carriers`.
+            """
+            ipv4_acl_out: str | None
+            """
+            Name of the IPv4 Access-list to be assigned in the egress direction.
+            The access-list must be defined
+            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
+            static_routes: StaticRoutes
+            """
+            Configure IPv4 static routes pointing to `peer_ip`.
+
+            Subclass of AvdIndexedList with
+            `StaticRoutesItem` items. Primary key is `prefix` (`str`).
+            """
+            qos_profile: str | None
+            """QOS service profile."""
+            wan_carrier: str | None
+            """
+            The WAN carrier this interface is connected to.
+            This is used to infer the path-groups in which this
+            interface should be configured.
+            Unless the carrier is marked as 'trusted' under `wan_carriers`,
+            `ipv4_acl_in` is also required on all WAN interfaces.
+            """
+            wan_circuit_id: str | None
+            """
+            The WAN circuit ID for this interface.
+            This is not rendered in the configuration but used for WAN
+            designs.
+            """
+            connected_to_pathfinder: bool
+            """
+            For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.
+
+            Default value: `True`
+            """
+            raw_eos_cli: str | None
+            """EOS CLI rendered directly on the Port-Channel interface in the final EOS configuration."""
+            flow_tracking: FlowTracking
+            """
+            Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_port_channels`
+            setting.
+
+            Subclass of AvdModel.
+            """
+            structured_config: EosCliConfigGen.PortChannelInterfacesItem
+            """Custom structured config for the Port-Channel interface."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    mode: Mode | UndefinedType = Undefined,
+                    member_interfaces: MemberInterfaces | UndefinedType = Undefined,
+                    ip_address: str | None | UndefinedType = Undefined,
+                    dhcp_ip: str | None | UndefinedType = Undefined,
+                    public_ip: str | None | UndefinedType = Undefined,
+                    encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
+                    dhcp_accept_default_route: bool | UndefinedType = Undefined,
+                    enabled: bool | UndefinedType = Undefined,
+                    peer: str | None | UndefinedType = Undefined,
+                    peer_port_channel: str | None | UndefinedType = Undefined,
+                    peer_ip: str | None | UndefinedType = Undefined,
+                    bgp: Bgp | UndefinedType = Undefined,
+                    ipv4_acl_in: str | None | UndefinedType = Undefined,
+                    ipv4_acl_out: str | None | UndefinedType = Undefined,
+                    static_routes: StaticRoutes | UndefinedType = Undefined,
+                    qos_profile: str | None | UndefinedType = Undefined,
+                    wan_carrier: str | None | UndefinedType = Undefined,
+                    wan_circuit_id: str | None | UndefinedType = Undefined,
+                    connected_to_pathfinder: bool | UndefinedType = Undefined,
+                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                    flow_tracking: FlowTracking | UndefinedType = Undefined,
+                    structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    L3PortChannelsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name:
+                           Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
+                           For a
+                           Port-Channel subinterface, the parent Port-Channel interface must be defined as well.
+                        description:
+                           Interface description.
+                           If not set, a default description will be configured with '[<peer>[
+                           <peer_port_channel>]]'.
+                        mode:
+                           Port-Channel mode.
+                           Should not be set on Port-Channel subinterfaces.
+                        member_interfaces:
+                           Port-Channel member interfaces.
+                           Should not be set on Port-Channel subinterfaces.
+
+                           Subclass of
+                           AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
+                        ip_address: Node IPv4 address/Mask or 'dhcp'.
+                        dhcp_ip:
+                           When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
+                           IPv4 address
+                           (without mask) to be allocated on the interface if known.
+                           This is not rendered in the configuration
+                           but can be used for substitution of 'interface_ip' in the Access-list
+                           set under `ipv4_acl_in` and
+                           `ipv4_acl_out`.
+                        public_ip:
+                           Node IPv4 address (no mask).
+
+                           This is used to get the public IP (if known) when the device is behind
+                           NAT.
+                           This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP
+                           with the following preference:
+                             `wan_route_servers.path_groups.interfaces.ip_address`
+                                 ->
+                           `l3_port_channels.public_ip`
+                                     -> `l3_port_channels.ip_address`
+
+                           The determined Public IP is
+                           used by WAN routers when peering with this interface.
+                        encapsulation_dot1q_vlan:
+                           For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
+                           specified.
+                        dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
+                        enabled: Enable or Shutdown the interface.
+                        peer: The peer device name. Used for description and documentation.
+                        peer_port_channel: The peer device port-channel interface. Used for description and documentation.
+                        peer_ip:
+                           The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
+                           and `ip` is an IP address.
+                        bgp:
+                           Enforce IPv4 BGP peering for the peer
+
+                           Subclass of AvdModel.
+                        ipv4_acl_in:
+                           Name of the IPv4 access-list to be assigned in the ingress direction.
+                           The access-list must be
+                           defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           Required
+                           for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
+                           `wan_carriers`.
+                        ipv4_acl_out:
+                           Name of the IPv4 Access-list to be assigned in the egress direction.
+                           The access-list must be defined
+                           under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        static_routes:
+                           Configure IPv4 static routes pointing to `peer_ip`.
+
+                           Subclass of AvdIndexedList with
+                           `StaticRoutesItem` items. Primary key is `prefix` (`str`).
+                        qos_profile: QOS service profile.
+                        wan_carrier:
+                           The WAN carrier this interface is connected to.
+                           This is used to infer the path-groups in which this
+                           interface should be configured.
+                           Unless the carrier is marked as 'trusted' under `wan_carriers`,
+                           `ipv4_acl_in` is also required on all WAN interfaces.
+                        wan_circuit_id:
+                           The WAN circuit ID for this interface.
+                           This is not rendered in the configuration but used for WAN
+                           designs.
+                        connected_to_pathfinder: For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.
+                        raw_eos_cli: EOS CLI rendered directly on the Port-Channel interface in the final EOS configuration.
+                        flow_tracking:
+                           Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_port_channels`
+                           setting.
+
+                           Subclass of AvdModel.
+                        structured_config: Custom structured config for the Port-Channel interface.
+
+                    """
+
+        class L3PortChannels(AvdIndexedList[str, L3PortChannelsItem]):
+            """Subclass of AvdIndexedList with `L3PortChannelsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        L3PortChannels._item_type = L3PortChannelsItem
+
+        FlowTrackerType: TypeAlias = Literal["sampled", "hardware"]
+
+        class UnderlayMulticast(AvdModel):
+            """Subclass of AvdModel."""
+
+            class PimSm(AvdModel):
+                """Subclass of AvdModel."""
+
+                class UplinkInterfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                UplinkInterfaces._item_type = str
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool},
+                    "uplinks": {"type": bool, "default": True},
+                    "uplink_interfaces": {"type": UplinkInterfaces},
+                    "mlag": {"type": bool, "default": True},
+                }
+                enabled: bool | None
+                """
+                When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                on all:
+                  - P2P uplink interfaces if enabled on uplink peer
+                  - MLAG L3 peer interface if also
+                enabled on MLAG peer
+                  - l3_edge and core interfaces
+                Overrides the global
+                `underlay_multicast_pim_sm`.
+                """
+                uplinks: bool
+                """
+                Enable/Disable PIM sparse-mode on uplinks.
+                Requires node setting `underlay_multicast.pim_sm.enabled:
+                true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                Default value: `True`
+                """
+                uplink_interfaces: UplinkInterfaces
+                """
+                Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                Effective only when
+                node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                Subclass of AvdList with `str` items.
+                """
+                mlag: bool
+                """
+                Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                Default value: `True`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        uplinks: bool | UndefinedType = Undefined,
+                        uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                        mlag: bool | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PimSm.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled:
+                               When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                               on all:
+                                 - P2P uplink interfaces if enabled on uplink peer
+                                 - MLAG L3 peer interface if also
+                               enabled on MLAG peer
+                                 - l3_edge and core interfaces
+                               Overrides the global
+                               `underlay_multicast_pim_sm`.
+                            uplinks:
+                               Enable/Disable PIM sparse-mode on uplinks.
+                               Requires node setting `underlay_multicast.pim_sm.enabled:
+                               true` or, if unset, global `underlay_multicast_pim_sm: true`
+                            uplink_interfaces:
+                               Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                               Effective only when
+                               node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                               Subclass of AvdList with `str` items.
+                            mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                        """
+
+            class Static(AvdModel):
+                """Subclass of AvdModel."""
+
+                class UplinkInterfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                UplinkInterfaces._item_type = str
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool},
+                    "uplinks": {"type": bool, "default": True},
+                    "uplink_interfaces": {"type": UplinkInterfaces},
+                    "mlag": {"type": bool, "default": True},
+                }
+                enabled: bool | None
+                """
+                When enabled, configures multicast routing and by default configures static multicast in the
+                underlay on all:
+                  - P2P uplink interfaces if enabled on uplink peer
+                  - MLAG L3 peer interface if
+                also enabled on MLAG peer
+                  - l3_edge and core interfaces
+                Overrides the global
+                `underlay_multicast_static`.
+                """
+                uplinks: bool
+                """
+                Enable/Disable static multicast on uplinks.
+                Requires node setting
+                `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                Default value: `True`
+                """
+                uplink_interfaces: UplinkInterfaces
+                """
+                Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                Effective
+                only when node settings `underlay_multicast.static.uplinks: true`.
+
+                Subclass of AvdList with `str`
+                items.
+                """
+                mlag: bool
+                """
+                Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                Default value: `True`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        uplinks: bool | UndefinedType = Undefined,
+                        uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                        mlag: bool | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Static.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled:
+                               When enabled, configures multicast routing and by default configures static multicast in the
+                               underlay on all:
+                                 - P2P uplink interfaces if enabled on uplink peer
+                                 - MLAG L3 peer interface if
+                               also enabled on MLAG peer
+                                 - l3_edge and core interfaces
+                               Overrides the global
+                               `underlay_multicast_static`.
+                            uplinks:
+                               Enable/Disable static multicast on uplinks.
+                               Requires node setting
+                               `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                            uplink_interfaces:
+                               Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                               Effective
+                               only when node settings `underlay_multicast.static.uplinks: true`.
+
+                               Subclass of AvdList with `str`
+                               items.
+                            mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                        """
+
+            _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+            pim_sm: PimSm
+            """Subclass of AvdModel."""
+            static: Static
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                    """
+                    UnderlayMulticast.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        pim_sm: Subclass of AvdModel.
+                        static: Subclass of AvdModel.
+
+                    """
+
+        class DigitalTwin(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
+            act_os_version: str | None
+            """
+            Desired ACT Digital Twin OS version.
+            Overrides global `digital_twin.fabric.act_os_version` flag.
+            """
+            mgmt_ip: str | None
+            """Desired management interface IPv4 address."""
+            act_internet_access: bool | None
+            """
+            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+            This option
+            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+            types.
+            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+            Overrides
+            global `digital_twin.fabric.act_internet_access` flag.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    act_os_version: str | None | UndefinedType = Undefined,
+                    mgmt_ip: str | None | UndefinedType = Undefined,
+                    act_internet_access: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    DigitalTwin.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        act_os_version:
+                           Desired ACT Digital Twin OS version.
+                           Overrides global `digital_twin.fabric.act_os_version` flag.
+                        mgmt_ip: Desired management interface IPv4 address.
+                        act_internet_access:
+                           Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                           This option
+                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                           types.
+                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                           Overrides
+                           global `digital_twin.fabric.act_internet_access` flag.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "name": {"type": str},
+            "parent_profile": {"type": str},
+            "type": {"type": str},
+            "mlag_group": {"type": str},
+            "id": {"type": int},
+            "platform": {"type": str},
+            "mac_address": {"type": str},
+            "system_mac_address": {"type": str},
+            "serial_number": {"type": str},
+            "rack": {"type": str},
+            "mgmt_ip": {"type": str},
+            "mgmt_gateway": {"type": str},
+            "ipv6_mgmt_ip": {"type": str},
+            "ipv6_mgmt_gateway": {"type": str},
+            "mgmt_interface": {"type": str},
+            "link_tracking": {"type": LinkTracking},
+            "lacp_port_id_range": {"type": LacpPortIdRange},
+            "always_configure_ip_routing": {"type": bool, "default": False},
+            "raw_eos_cli": {"type": str},
+            "structured_config": {"type": EosCliConfigGen},
+            "uplink_type": {"type": str},
+            "uplink_ipv4_pool": {"type": str},
+            "uplink_ipv6_pool": {"type": str},
+            "uplink_interfaces": {"type": UplinkInterfaces},
+            "uplink_switch_interfaces": {"type": UplinkSwitchInterfaces},
+            "uplink_switches": {"type": UplinkSwitches},
+            "uplink_interface_speed": {"type": str},
+            "uplink_switch_interface_speed": {"type": str},
+            "uplink_mtu": {"type": int},
+            "max_uplink_switches": {"type": int},
+            "max_parallel_uplinks": {"type": int, "default": 1},
+            "uplink_bfd": {"type": bool, "default": False},
+            "uplink_native_vlan": {"type": int},
+            "uplink_ptp": {"type": UplinkPtp},
+            "uplink_macsec": {"type": UplinkMacsec},
+            "uplink_port_channel_id": {"type": int},
+            "uplink_switch_port_channel_id": {"type": int},
+            "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+            "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+            "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+            "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
+            "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
+            "short_esi": {"type": str},
+            "isis_system_id_prefix": {"type": str},
+            "isis_maximum_paths": {"type": int},
+            "is_type": {"type": str},
+            "node_sid_base": {"type": int, "default": 0},
+            "loopback_ipv4_pool": {"type": str},
+            "loopback_ipv4_address": {"type": str},
+            "vtep_loopback_ipv4_pool": {"type": str},
+            "vtep_loopback_ipv6_pool": {"type": str},
+            "vtep_loopback_ipv4_address": {"type": str},
+            "vtep_loopback_ipv6_address": {"type": str},
+            "loopback_ipv4_offset": {"type": int, "default": 0},
+            "router_id_pool": {"type": str},
+            "loopback_ipv6_pool": {"type": str},
+            "loopback_ipv6_offset": {"type": int, "default": 0},
+            "vtep": {"type": bool},
+            "vtep_loopback": {"type": str},
+            "bgp_as": {"type": str},
+            "bgp_defaults": {"type": BgpDefaults},
+            "evpn_role": {"type": str},
+            "evpn_route_servers": {"type": EvpnRouteServers},
+            "evpn_services_l2_only": {"type": bool, "default": False},
+            "filter": {"type": Filter},
+            "igmp_snooping_enabled": {"type": bool},
+            "evpn_gateway": {"type": EvpnGateway},
+            "ipvpn_gateway": {"type": IpvpnGateway},
+            "mlag": {"type": bool, "default": True},
+            "mlag_dual_primary_detection": {"type": bool, "default": False},
+            "mlag_ibgp_origin_incomplete": {"type": bool, "default": True},
+            "mlag_interfaces": {"type": MlagInterfaces},
+            "mlag_interfaces_speed": {"type": str},
+            "mlag_peer_l3_vlan": {"type": int, "default": 4093},
+            "mlag_peer_l3_ipv4_pool": {"type": str},
+            "mlag_peer_l3_ipv6_pool": {"type": str},
+            "mlag_peer_vlan": {"type": int, "default": 4094},
+            "mlag_peer_link_allowed_vlans": {"type": str},
+            "mlag_peer_address_family": {"type": str, "default": "ipv4"},
+            "mlag_peer_ipv4_pool": {"type": str},
+            "mlag_peer_ipv6_pool": {"type": str},
+            "mlag_port_channel_id": {"type": int},
+            "mlag_domain_id": {"type": str},
+            "spanning_tree_mode": {"type": str},
+            "spanning_tree_priority": {"type": int, "default": 32768},
+            "spanning_tree_root_super": {"type": bool, "default": False},
+            "spanning_tree_mst_pvst_boundary": {"type": bool},
+            "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
+            "virtual_router_mac_address": {"type": str},
+            "inband_mgmt_interface": {"type": str},
+            "inband_mgmt_vlan": {"type": int, "default": 4092},
+            "inband_mgmt_subnet": {"type": str},
+            "inband_mgmt_subnet_offset": {"type": int, "default": 0},
+            "inband_mgmt_ip": {"type": str},
+            "inband_mgmt_gateway": {"type": str},
+            "inband_mgmt_ipv6_address": {"type": str},
+            "inband_mgmt_ipv6_subnet": {"type": str},
+            "inband_mgmt_ipv6_gateway": {"type": str},
+            "inband_mgmt_description": {"type": str, "default": "Inband Management"},
+            "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
+            "inband_mgmt_vrf": {"type": str, "default": "default"},
+            "inband_mgmt_mtu": {"type": int, "default": 1500},
+            "inband_ztp": {"type": bool, "default": False},
+            "inband_ztp_lacp_fallback_delay": {"type": int, "default": 30},
+            "mpls_overlay_role": {"type": str},
+            "overlay_address_families": {"type": OverlayAddressFamilies},
+            "mpls_route_reflectors": {"type": MplsRouteReflectors},
+            "bgp_cluster_id": {"type": str},
+            "ptp": {"type": Ptp},
+            "wan_role": {"type": str},
+            "cv_pathfinder_transit_mode": {"type": str},
+            "cv_pathfinder_region": {"type": str},
+            "cv_pathfinder_site": {"type": str},
+            "wan_ha": {"type": WanHa},
+            "dps_mss_ipv4": {"type": str, "default": "auto"},
+            "l3_interfaces": {"type": L3Interfaces},
+            "l3_port_channels": {"type": L3PortChannels},
+            "data_plane_cpu_allocation_max": {"type": int},
+            "flow_tracker_type": {"type": str},
+            "underlay_multicast": {"type": UnderlayMulticast},
+            "campus": {"type": str},
+            "campus_pod": {"type": str},
+            "campus_access_pod": {"type": str},
+            "cv_tags_topology_type": {"type": str},
+            "digital_twin": {"type": DigitalTwin},
+        }
+        name: str
+        """Profile Name"""
+        parent_profile: str | None
+        """
+        Inherit settings from a parent profile defined under `device_profiles`.
+        Max two levels of profile
+        inheritance: device -> profile -> parent_profile
+        """
+        type: str | None
+        """
+        Set the type of the device as defined under `node_type_keys`.
+        This takes precedence over the global
+        `type` key.
+        """
+        mlag_group: str | None
+        """
+        Name of MLAG group. Exactly two devices must share the same mlag_group.
+        The group is used for
+        creating MLAG Pairs, for port-channel descriptions on peers and for MLAG domain-id (unless
+        mlag_domain_id is set).
+        """
+        id: int | None
+        """Unique identifier used for IP addressing and other algorithms."""
+        platform: str | None
+        """Arista platform family."""
+        mac_address: str | None
+        """Leverage to document management interface mac address."""
+        system_mac_address: str | None
+        """
+        System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".
+        Set to the same MAC address as
+        available in "show version" on the device.
+        "system_mac_address" can also be set directly as a
+        hostvar.
+        If both are set, the setting under node type settings takes precedence.
+        """
+        serial_number: str | None
+        """
+        Set to the Serial Number of the device.
+        Only used for documentation purpose in the fabric
+        documentation and part of the structured_config.
+        "serial_number" can also be set directly as a
+        hostvar.
+        If both are set, the setting under node type settings takes precedence.
+        """
+        rack: str | None
+        """Rack that the switch is located in (only used in snmp_settings location)."""
+        mgmt_ip: str | None
+        """Node management interface IPv4 address."""
+        mgmt_gateway: str | None
+        """
+        This key sets the management gateway for the device. It takes precedence over the global
+        `mgmt_gateway`.
+        """
+        ipv6_mgmt_ip: str | None
+        """Node management interface IPv6 address."""
+        ipv6_mgmt_gateway: str | None
+        """
+        This key sets the ipv6 management gateway for the device. It takes precedence over the global
+        `ipv6_mgmt_gateway`.
+        """
+        mgmt_interface: str | None
+        """
+        Management Interface Name.
+        Default -> platform_management_interface -> mgmt_interface ->
+        "Management1".
+        """
+        link_tracking: LinkTracking
+        """
+        This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as
+        the upstream interfaces.
+        Useful in EVPN multhoming designs.
+
+
+        Subclass of AvdModel.
+        """
+        lacp_port_id_range: LacpPortIdRange
+        """
+        This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the
+        number of nodes in the "node_group".
+        Unique LACP port-id ranges are recommended for EVPN Multihoming
+        designs.
+
+
+        Subclass of AvdModel.
+        """
+        always_configure_ip_routing: bool
+        """
+        Force configuration of "ip routing" even on L2 devices.
+        Use this to retain behavior of AVD versions
+        below 4.0.0.
+
+        Default value: `False`
+        """
+        raw_eos_cli: str | None
+        """EOS CLI rendered directly on the root level of the final EOS configuration."""
+        structured_config: EosCliConfigGen
+        """Custom structured config for eos_cli_config_gen."""
+        uplink_type: UplinkType | None
+        """
+        Override the default `uplink_type` set at the `node_type_key` level.
+        `uplink_type` must be "p2p" if
+        `vtep` or `underlay_router` is true for the `node_type_key` definition.
+        """
+        uplink_ipv4_pool: str | None
+        """
+        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+        IPv4
+        subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+        uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+        """
+        uplink_ipv6_pool: str | None
+        """
+        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+        IPv6
+        subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+        uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+        """
+        uplink_interfaces: UplinkInterfaces
+        """
+        Local uplink interfaces.
+        Each list item supports range syntax that can be expanded into a list of
+        interfaces.
+        If uplink_interfaces is not defined, platform-specific defaults (defined under
+        default_interfaces) will be used instead.
+        Please note that default_interfaces are not defined by
+        default, you should define these yourself.
+
+
+        Subclass of AvdList with `str` items.
+        """
+        uplink_switch_interfaces: UplinkSwitchInterfaces
+        """
+        Interfaces located on uplink switches.
+
+        Subclass of AvdList with `str` items.
+        """
+        uplink_switches: UplinkSwitches
+        """Subclass of AvdList with `str` items."""
+        uplink_interface_speed: UplinkInterfaceSpeed | None
+        """
+        Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
+        (Uplink switch
+        interface speed can be overridden with `uplink_switch_interface_speed`).
+        Speed should be set in the
+        format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+        """
+        uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None
+        """Set point-to-Point interface speed for the uplink switch interface only."""
+        uplink_mtu: int | None
+        """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
+        max_uplink_switches: int | None
+        """
+        Maximum number of uplink switches.
+        Changing this value may change IP Addressing on uplinks.
+        Can be
+        used to reserve IP space for future expansions.
+        """
+        max_parallel_uplinks: int
+        """
+        Number of parallel links towards uplink switches.
+        Changing this value may change interface naming on
+        uplinks (and corresponding downlinks).
+        Can be used to reserve interfaces for future parallel
+        uplinks.
+
+        Default value: `1`
+        """
+        uplink_bfd: bool
+        """
+        Enable bfd on uplink interfaces.
+
+        Default value: `False`
+        """
+        uplink_native_vlan: int | None
+        """
+        Only applicable to switches with layer-2 port-channel uplinks.
+        A suspended (disabled) vlan will be
+        created in both ends of the link unless the vlan is defined under network services.
+        By default the
+        uplink will not have a native_vlan configured, so EOS defaults to vlan 1.
+        """
+        uplink_ptp: UplinkPtp
+        """
+        Enable PTP on all infrastructure links.
+
+        Subclass of AvdModel.
+        """
+        uplink_macsec: UplinkMacsec
+        """
+        Enable MacSec on all uplinks.
+
+        Subclass of AvdModel.
+        """
+        uplink_port_channel_id: int | None
+        """
+        Only applicable for L2 switches with `uplink_type: port-channel`.
+        By default the uplink Port-channel
+        ID will be set to the number of the lowest member interface defined under `uplink_interfaces`.
+        For
+        example:
+          member ports [ Eth22, Eth23 ] -> ID 22
+          member ports [ Eth11/1, Eth22/1 ] -> ID 111
+        For
+        MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.
+        This
+        option overrides the default behavior and statically sets the local Port-channel ID.
+        Note! Make sure
+        the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.
+        Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same
+        value.
+        """
+        uplink_switch_port_channel_id: int | None
+        """
+        Only applicable for L2 switches with `uplink_type: port-channel`.
+        By default the uplink switch Port-
+        channel ID will be set to the number of the first interface defined under
+        `uplink_switch_interfaces`.
+        For example:
+          member ports [ Eth22, Eth23 ] -> ID 22
+          member ports [
+        Eth11/1, Eth22/1 ] -> ID 111
+        For MLAG port-channels ID will be based on the lowest member interface
+        on the first MLAG switch.
+        This option overrides the default behavior and statically sets the Port-
+        channel ID on the uplink switch.
+        Note! Make sure the ID is unique and does not overlap with
+        autogenerated Port-channel IDs in the Network Services.
+        Note! For MLAG pairs the ID must be between
+        1 and 2000 and both MLAG switches must have the same value.
+        """
+        uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+        """Custom structured config applied to `uplink_interfaces`."""
+        uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+        uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+        """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+        uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        """
+        Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+        channel uplinks.
+        """
+        mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        """
+        Custom structured config applied to MLAG peer link port-channel id.
+        Added under
+        port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+        Overrides the settings on the
+        port-channel interface level.
+        "mlag_port_channel_structured_config" is applied after
+        "structured_config", so it can override "structured_config" defined on node-level.
+        """
+        mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem
+        """
+        Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
+        Added under
+        vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+        Overrides the settings on the vlan
+        interface level.
+        "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
+        override "structured_config" defined on node-level.
+        """
+        mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem
+        """
+        Custom structured config applied to MLAG underlay L3 peering SVI interface id.
+        Added under
+        vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+        Overrides the settings on the vlan
+        interface level.
+        "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
+        can override "structured_config" defined on node-level.
+        """
+        short_esi: str | None
+        """
+        short_esi only valid for l2leaf devices using port-channel uplink.
+        Setting short_esi to "auto"
+        generates the short_esi automatically using a hash of configuration elements.
+        < 0000:0000:0000 |
+        auto >.
+        """
+        isis_system_id_prefix: str | None
+        """(4.4 hexadecimal)."""
+        isis_maximum_paths: int | None
+        """Number of path to configure in ECMP for ISIS."""
+        is_type: IsType | None
+        """Overrides `isis_default_is_type`."""
+        node_sid_base: int
+        """
+        Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+
+        Default value: `0`
+        """
+        loopback_ipv4_pool: str | None
+        """
+        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+        The IPv4
+        address used for Loopback0 will be derived from this pool based on the node id and
+        'loopback_ipv4_offset'.
+        """
+        loopback_ipv4_address: str | None
+        """
+        IPv4 address without mask for Loopback0.
+        When set, it takes precedence over `loopback_ipv4_pool`.
+        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        """
+        vtep_loopback_ipv4_pool: str | None
+        """
+        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
+        address used for VTEP-Loopback will be derived from this pool based on the node id and
+        'loopback_ipv4_offset'.
+        """
+        vtep_loopback_ipv6_pool: str | None
+        """
+        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
+        address used for VTEP-Loopback will be derived from this pool based on the node id and
+        'loopback_ipv6_offset'.
+        """
+        vtep_loopback_ipv4_address: str | None
+        """
+        IPv4 address without mask for VTEP-Loopback.
+        When set, it takes precedence over
+        `vtep_loopback_ipv4_pool`.
+        Note: AVD does not check for validity of the IPv4 address and does not
+        catch duplicates.
+        """
+        vtep_loopback_ipv6_address: str | None
+        """
+        IPv6 address without mask for VTEP-Loopback.
+        When set, it takes precedence over
+        `vtep_loopback_ipv6_pool`.
+        Note: AVD does not check for validity of the IPv6 address and does not
+        catch duplicates.
+        """
+        loopback_ipv4_offset: int
+        """
+        Offset all assigned loopback IP addresses.
+        Required when the 'loopback_ipv4_pool' is the same for 2
+        different node_types (like spine and l3leaf) to avoid overlapping IPs.
+        For example, set the minimum
+        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
+
+        Default value: `0`
+        """
+        router_id_pool: str | None
+        """
+        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
+        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
+        will not exist on the device.
+        """
+        loopback_ipv6_pool: str | None
+        """
+        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
+        address used for Loopback0 will be derived from this pool based on the node id and
+        'loopback_ipv6_offset'.
+        """
+        loopback_ipv6_offset: int
+        """
+        Offset all assigned loopback IPv6 addresses.
+        Required when the 'loopback_ipv6_pool' is same for 2
+        different node_types (like spine and l3leaf) to avoid overlapping IPs.
+        For example, set the minimum
+        offset l3leaf.defaults.loopback_ipv6_offset: < total # spine switches > or vice versa.
+
+        Default value: `0`
+        """
+        vtep: bool | None
+        """
+        Node is configured as a VTEP when applicable based on 'overlay_routing_protocol'.
+        Overrides VTEP
+        setting inherited from node_type_keys.
+        """
+        vtep_loopback: str | None
+        """Set VXLAN source interface."""
+        bgp_as: str | None
+        """
+        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+        For asdot notation in
+        YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+        number.
+        Required with eBGP.
+        """
+        bgp_defaults: BgpDefaults
+        """
+        List of EOS commands to apply to BGP daemon.
+
+        Subclass of AvdList with `str` items.
+        """
+        evpn_role: EvpnRole | None
+        """
+        Acting role in EVPN control plane.
+        Default is set in node_type definition from node_type_keys.
+        """
+        evpn_route_servers: EvpnRouteServers
+        """
+        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+
+        Subclass of AvdList with `str`
+        items.
+        """
+        evpn_services_l2_only: bool
+        """
+        Possibility to prevent configuration of Tenant VRFs and SVIs.
+        Override node definition
+        "network_services_l3" from node_type_keys.
+        This allows support for centralized routing.
+
+        Default value: `False`
+        """
+        filter: Filter
+        """
+        Filter L3 and L2 network services based on tenant and tags (and operation filter).
+        If filter is not
+        defined it will default to all.
+
+
+        Subclass of AvdModel.
+        """
+        igmp_snooping_enabled: bool | None
+        """Activate or deactivate IGMP snooping on device level."""
+        evpn_gateway: EvpnGateway
+        """
+        Node is acting as EVPN Multi-Domain Gateway.
+        New BGP peer-group is generated between EVPN GWs in
+        different domains or between GWs and Route Servers.
+        Name can be changed under
+        "bgp_peer_groups.evpn_overlay_core" variable.
+        L3 rechability for different EVPN GWs must be already
+        in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the
+        same Ansible inventory.
+
+
+        Subclass of AvdModel.
+        """
+        ipvpn_gateway: IpvpnGateway
+        """
+        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+        this is "bgp_peer_groups.ipvpn_gateway_peers".
+        L3 Reachability is required for this to work, the
+        preferred method to establish underlay connectivity is to use core_interfaces.
+
+
+        Subclass of
+        AvdModel.
+        """
+        mlag: bool
+        """
+        Enable / Disable auto MLAG, when two nodes are defined in node group.
+
+        Default value: `True`
+        """
+        mlag_dual_primary_detection: bool
+        """
+        Enable / Disable MLAG dual primary detection.
+
+        Default value: `False`
+        """
+        mlag_ibgp_origin_incomplete: bool
+        """
+        Set origin of routes received from MLAG iBGP peer to incomplete.
+        The purpose is to optimize routing
+        for leaf loopbacks from spine perspective and
+        avoid suboptimal routing via peerlink for control
+        plane traffic.
+
+        Default value: `True`
+        """
+        mlag_interfaces: MlagInterfaces
+        """
+        Each list item supports range syntax that can be expanded into a list of interfaces.
+        Required when
+        MLAG leafs are present in the topology.
+
+
+        Subclass of AvdList with `str` items.
+        """
+        mlag_interfaces_speed: MlagInterfacesSpeed | None
+        """Set MLAG interface speed."""
+        mlag_peer_l3_vlan: int
+        """
+        Underlay L3 peering SVI interface id.
+        If set to 0 or the same vlan as mlag_peer_vlan, the
+        mlag_peer_vlan will be used for L3 peering.
+
+        Default value: `4093`
+        """
+        mlag_peer_l3_ipv4_pool: str | None
+        """
+        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+        The IPv4
+        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+        MLAG switch.
+        Required when MLAG leafs present in topology and they are using a separate L3 peering
+        VLAN.
+        """
+        mlag_peer_l3_ipv6_pool: str | None
+        """
+        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+        The IPv6
+        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+        MLAG switch.
+        Required when MLAG leafs present in topology and they are using a separate L3 peering
+        VLAN.
+        """
+        mlag_peer_vlan: int
+        """
+        MLAG Peer Link (control link) SVI interface id.
+
+        Default value: `4094`
+        """
+        mlag_peer_link_allowed_vlans: str | None
+        mlag_peer_address_family: MlagPeerAddressFamily
+        """
+        IP address family used to establish MLAG Peer Link (control link).
+        `ipv6` requires EOS version
+        4.31.1F or higher.
+        Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
+        (ex. `mlag_peer_l3_vlan` set to 4094).
+
+        Default value: `"ipv4"`
+        """
+        mlag_peer_ipv4_pool: str | None
+        """
+        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+        The IPv4
+        address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
+        first MLAG switch.
+        Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
+        """
+        mlag_peer_ipv6_pool: str | None
+        """
+        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+        The IPv6
+        address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
+        first MLAG switch.
+        Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+        """
+        mlag_port_channel_id: int | None
+        """
+        If not set, the mlag port-channel id is generated based on the digits of the first interface present
+        in 'mlag_interfaces'.
+        Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 -
+        999999 > for EOS >= 4.25.0F.
+        """
+        mlag_domain_id: str | None
+        """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
+        spanning_tree_mode: SpanningTreeMode | None
+        spanning_tree_priority: int
+        """
+        Spanning-tree priority configured for the selected mode.
+        For `rapid-pvst` the priority can also be
+        set per VLAN under network services.
+
+        Default value: `32768`
+        """
+        spanning_tree_root_super: bool
+        """Default value: `False`"""
+        spanning_tree_mst_pvst_boundary: bool | None
+        """Enable MST PVST border ports."""
+        spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+        """Specify range of port-ids to reserve for port-channels."""
+        virtual_router_mac_address: str | None
+        """Virtual router mac address for anycast gateway."""
+        inband_mgmt_interface: str | None
+        """
+        Pointer to interface used for inband management.
+        All configuration must be done using other data
+        models like network services or structured_config.
+        'inband_mgmt_interface' is only used to refer to
+        this interface as source in various management protocol settings (future feature).
+
+        On L2 switches,
+        this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
+        """
+        inband_mgmt_vlan: int
+        """
+        VLAN number used for inband management on L2 switches (switches using port-channel trunks as
+        uplinks).
+        When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
+        switch as well as all 'uplink_switches'.
+        When using 'inband_mgmt_ip' the VLAN and SVI will only be
+        created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
+        created using network services data models.
+
+        Default value: `4092`
+        """
+        inband_mgmt_subnet: str | None
+        """
+        Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
+        as uplinks).
+        Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
+        ARP.
+        This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
+        SVI IP address will be assigned as follows:
+        virtual-router: <subnet> + 1
+        l3leaf A      : <subnet> +
+        2 (same IP on all l3leaf A)
+        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+        l2leafs       :
+        <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
+        GW on l2leafs : <subnet> + 1
+        Assign range
+        larger than total l2leafs + 5
+
+        Setting is ignored if 'inband_mgmt_ip' is set.
+
+        This setting is
+        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        """
+        inband_mgmt_subnet_offset: int
+        """
+        Offset value to adjust the calculated inband management IP address within the subnet.
+        The assigned
+        IP will be computed by adding this offset to the device ID.
+
+        Default value: `0`
+        """
+        inband_mgmt_ip: str | None
+        """
+        IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+        This overrides
+        'inband_mgmt_subnet', hence all behavior of 'inband_mgmt_subnet' is removed.
+
+        If this is set the
+        VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+        The VLAN and SVI on
+        the parent switches must be created using network services data models.
+
+        This setting is applicable
+        to L2 switches (switches using port-channel trunks as uplinks).
+        """
+        inband_mgmt_gateway: str | None
+        """
+        Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
+        is derived from 'inband_mgmt_subnet' if set.
+
+        This setting is applicable to L2 switches (switches
+        using port-channel trunks as uplinks).
+        """
+        inband_mgmt_ipv6_address: str | None
+        """
+        IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+        This overrides
+        'inband_mgmt_ipv6_subnet', hence the configuration of 'inband_mgmt_ipv6_subnet' is ignored.
+
+        If this
+        is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+        The VLAN
+        and SVI on the parent switches must be created using network services data models.
+
+        This setting is
+        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        """
+        inband_mgmt_ipv6_subnet: str | None
+        """
+        Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels
+        as uplinks).
+        Parent l3leafs will have SVI with "ipv6 virtual-router" and host-route injection based
+        on ARP.
+        This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN
+        extension.
+        SVI IP address will be assigned as follows:
+        virtual-router: <subnet> + 1
+        l3leaf A      :
+        <subnet> + 2 (same IP on all l3leaf A)
+        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+        l2leafs       : <subnet> + 3 + <l2leaf id>
+        GW on l2leafs : <subnet> + 1
+        Assign range larger than
+        total l2leafs + 5
+
+        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+
+        This setting is
+        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        """
+        inband_mgmt_ipv6_gateway: str | None
+        """
+        Default gateway configured in the 'inband_mgmt_vrf'.
+        Used when `inband_mgmt_ipv6_address` is set.
+        Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
+
+        This setting is
+        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        """
+        inband_mgmt_description: str
+        """
+        Description configured on the Inband Management SVI.
+
+        This setting is only applied on the devices
+        where it is set, it does not automatically affect any parent/child devices configuration, so it must
+        be set on each applicable node/node-group/node-type as needed.
+
+        Default value: `"Inband Management"`
+        """
+        inband_mgmt_vlan_name: str
+        """
+        Name configured on the Inband Management VLAN.
+        This setting is only applied on the devices where it
+        is set, it does not automatically affect any parent/child devices configuration, so it must be set
+        on each applicable node/node-group/node-type as needed.
+
+        Default value: `"INBAND_MGMT"`
+        """
+        inband_mgmt_vrf: str
+        """
+        VRF configured on the Inband Management Interface.
+        The VRF is created if not already created by
+        other means.
+        This setting is only applied on the devices where it is set, it does not automatically
+        affect any parent/child devices configuration, so it must be set on each applicable node/node-
+        group/node-type as needed.
+
+        Default value: `"default"`
+        """
+        inband_mgmt_mtu: int
+        """
+        MTU configured on the Inband Management Interface.
+        This setting is only applied on the devices where
+        it is set, it does not automatically affect any parent/child devices configuration, so it must be
+        set on each applicable node/node-group/node-type as needed.
+
+        Default value: `1500`
+        """
+        inband_ztp: bool
+        """
+        Enable to configure upstream device with proper configuration to allow downstream devices to be
+        Zero-Touch-Provisioned over the uplink interfaces.
+        For L2 devices this setting also requires that
+        the `inband_mgmt_vlan` is set for the node.
+
+        PREVIEW: Support for L3 devices is marked as "preview",
+        meaning the data models or generated configuration can change at any time.
+
+        Default value: `False`
+        """
+        inband_ztp_lacp_fallback_delay: int
+        """
+        Set the LACP fallback timeout of the upstream device's port-channel towards the downstream inband
+        ZTP node.
+        This setting also requires that `inband_ztp` is set for the node.
+
+        Default value: `30`
+        """
+        mpls_overlay_role: MplsOverlayRole | None
+        """
+        Set the default mpls overlay role.
+        Acting role in overlay control plane.
+        """
+        overlay_address_families: OverlayAddressFamilies
+        """
+        Set the default overlay address families.
+
+
+        Subclass of AvdList with `str` items.
+        """
+        mpls_route_reflectors: MplsRouteReflectors
+        """
+        List of inventory hostname acting as MPLS route-reflectors.
+
+        Subclass of AvdList with `str` items.
+        """
+        bgp_cluster_id: str | None
+        """Set BGP cluster id."""
+        ptp: Ptp
+        """Subclass of AvdModel."""
+        wan_role: WanRole | None
+        """
+        Override the default WAN role.
+
+        This is used both for AutoVPN and Pathfinder designs.
+        That means if
+        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+        `server` indicates that the router is a
+        route-reflector.
+        """
+        cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
+        """
+        Configure the transit mode for a WAN client for CV Pathfinder designs
+        only when the `wan_mode` root
+        key is set to `cv_pathfinder`.
+
+        'zone' is currently not supported.
+        """
+        cv_pathfinder_region: str | None
+        """
+        The CV Pathfinder region name.
+        This key is required for WAN routers but optional for pathfinders.
+        The region name must be defined under 'cv_pathfinder_regions'.
+        """
+        cv_pathfinder_site: str | None
+        """
+        The CV Pathfinder site name.
+        This key is required for WAN routers but optional for pathfinders.
+        For
+        WAN routers and pathfinders with `cv_pathfinder_region`, the site name must be defined for the
+        relevant region under 'cv_pathfinder_regions'.
+        For pathfinders without `cv_pathfinder_region` set,
+        the site must be defined under `cv_pathfinder_global_sites`.
+        """
+        wan_ha: WanHa
+        """
+        The key is supported only if `wan_mode` == `cv-pathfinder`.
+        AutoVPN support is still to be
+        determined.
+
+        Maximum 2 devices supported by group for HA.
+
+        Subclass of AvdModel.
+        """
+        dps_mss_ipv4: str
+        """
+        IPv4 MSS value configured under "router path-selection" on WAN Devices.
+
+        Default value: `"auto"`
+        """
+        l3_interfaces: L3Interfaces
+        """
+        L3 Interfaces to configure on the node.
+
+        Subclass of AvdIndexedList with `L3InterfacesItem` items.
+        Primary key is `name` (`str`).
+        """
+        l3_port_channels: L3PortChannels
+        """
+        L3 Port-Channel interfaces to configure on the node.
+
+        Subclass of AvdIndexedList with
+        `L3PortChannelsItem` items. Primary key is `name` (`str`).
+        """
+        data_plane_cpu_allocation_max: int | None
+        """
+        Set the maximum number of CPU used for the data plane.
+        This setting is useful on virtual Route
+        Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
+        """
+        flow_tracker_type: FlowTrackerType | None
+        """
+        Set the flow tracker type.
+        Override the `default_flow_tracker_type`` set at the `node_type_key`
+        level.
+        `default_flow_tracker_type` default value is `sampled`.
+        """
+        underlay_multicast: UnderlayMulticast
+        """Subclass of AvdModel."""
+        campus: str | None
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Name of the campus. Used to generate CloudVision device tags with the
+        `generate_cv_tags.campus_fabric` feature.
+        """
+        campus_pod: str | None
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Name of the campus pod. Used to generate CloudVision device tags with the
+        `generate_cv_tags.campus_fabric` feature.
+        """
+        campus_access_pod: str | None
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Name of the campus access pod. Used to generate CloudVision device tags with the
+        `generate_cv_tags.campus_fabric` feature.
+        """
+        cv_tags_topology_type: str | None
+        """
+        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+        "edge" or "member-leaf".
+        """
+        digital_twin: DigitalTwin
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Set the OS version and management IP address for the digital twin of the
+        associated node(s).
+
+        Subclass of AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                name: str | UndefinedType = Undefined,
+                parent_profile: str | None | UndefinedType = Undefined,
+                type: str | None | UndefinedType = Undefined,
+                mlag_group: str | None | UndefinedType = Undefined,
+                id: int | None | UndefinedType = Undefined,
+                platform: str | None | UndefinedType = Undefined,
+                mac_address: str | None | UndefinedType = Undefined,
+                system_mac_address: str | None | UndefinedType = Undefined,
+                serial_number: str | None | UndefinedType = Undefined,
+                rack: str | None | UndefinedType = Undefined,
+                mgmt_ip: str | None | UndefinedType = Undefined,
+                mgmt_gateway: str | None | UndefinedType = Undefined,
+                ipv6_mgmt_ip: str | None | UndefinedType = Undefined,
+                ipv6_mgmt_gateway: str | None | UndefinedType = Undefined,
+                mgmt_interface: str | None | UndefinedType = Undefined,
+                link_tracking: LinkTracking | UndefinedType = Undefined,
+                lacp_port_id_range: LacpPortIdRange | UndefinedType = Undefined,
+                always_configure_ip_routing: bool | UndefinedType = Undefined,
+                raw_eos_cli: str | None | UndefinedType = Undefined,
+                structured_config: EosCliConfigGen | UndefinedType = Undefined,
+                uplink_type: UplinkType | None | UndefinedType = Undefined,
+                uplink_ipv4_pool: str | None | UndefinedType = Undefined,
+                uplink_ipv6_pool: str | None | UndefinedType = Undefined,
+                uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
+                uplink_switches: UplinkSwitches | UndefinedType = Undefined,
+                uplink_interface_speed: UplinkInterfaceSpeed | None | UndefinedType = Undefined,
+                uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None | UndefinedType = Undefined,
+                uplink_mtu: int | None | UndefinedType = Undefined,
+                max_uplink_switches: int | None | UndefinedType = Undefined,
+                max_parallel_uplinks: int | UndefinedType = Undefined,
+                uplink_bfd: bool | UndefinedType = Undefined,
+                uplink_native_vlan: int | None | UndefinedType = Undefined,
+                uplink_ptp: UplinkPtp | UndefinedType = Undefined,
+                uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
+                uplink_port_channel_id: int | None | UndefinedType = Undefined,
+                uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
+                uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
+                mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
+                short_esi: str | None | UndefinedType = Undefined,
+                isis_system_id_prefix: str | None | UndefinedType = Undefined,
+                isis_maximum_paths: int | None | UndefinedType = Undefined,
+                is_type: IsType | None | UndefinedType = Undefined,
+                node_sid_base: int | UndefinedType = Undefined,
+                loopback_ipv4_pool: str | None | UndefinedType = Undefined,
+                loopback_ipv4_address: str | None | UndefinedType = Undefined,
+                vtep_loopback_ipv4_pool: str | None | UndefinedType = Undefined,
+                vtep_loopback_ipv6_pool: str | None | UndefinedType = Undefined,
+                vtep_loopback_ipv4_address: str | None | UndefinedType = Undefined,
+                vtep_loopback_ipv6_address: str | None | UndefinedType = Undefined,
+                loopback_ipv4_offset: int | UndefinedType = Undefined,
+                router_id_pool: str | None | UndefinedType = Undefined,
+                loopback_ipv6_pool: str | None | UndefinedType = Undefined,
+                loopback_ipv6_offset: int | UndefinedType = Undefined,
+                vtep: bool | None | UndefinedType = Undefined,
+                vtep_loopback: str | None | UndefinedType = Undefined,
+                bgp_as: str | None | UndefinedType = Undefined,
+                bgp_defaults: BgpDefaults | UndefinedType = Undefined,
+                evpn_role: EvpnRole | None | UndefinedType = Undefined,
+                evpn_route_servers: EvpnRouteServers | UndefinedType = Undefined,
+                evpn_services_l2_only: bool | UndefinedType = Undefined,
+                filter: Filter | UndefinedType = Undefined,
+                igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
+                evpn_gateway: EvpnGateway | UndefinedType = Undefined,
+                ipvpn_gateway: IpvpnGateway | UndefinedType = Undefined,
+                mlag: bool | UndefinedType = Undefined,
+                mlag_dual_primary_detection: bool | UndefinedType = Undefined,
+                mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
+                mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
+                mlag_interfaces_speed: MlagInterfacesSpeed | None | UndefinedType = Undefined,
+                mlag_peer_l3_vlan: int | UndefinedType = Undefined,
+                mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
+                mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
+                mlag_peer_vlan: int | UndefinedType = Undefined,
+                mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
+                mlag_peer_address_family: MlagPeerAddressFamily | UndefinedType = Undefined,
+                mlag_peer_ipv4_pool: str | None | UndefinedType = Undefined,
+                mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
+                mlag_port_channel_id: int | None | UndefinedType = Undefined,
+                mlag_domain_id: str | None | UndefinedType = Undefined,
+                spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
+                spanning_tree_priority: int | UndefinedType = Undefined,
+                spanning_tree_root_super: bool | UndefinedType = Undefined,
+                spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange | UndefinedType = Undefined,
+                virtual_router_mac_address: str | None | UndefinedType = Undefined,
+                inband_mgmt_interface: str | None | UndefinedType = Undefined,
+                inband_mgmt_vlan: int | UndefinedType = Undefined,
+                inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
+                inband_mgmt_ip: str | None | UndefinedType = Undefined,
+                inband_mgmt_gateway: str | None | UndefinedType = Undefined,
+                inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
+                inband_mgmt_ipv6_subnet: str | None | UndefinedType = Undefined,
+                inband_mgmt_ipv6_gateway: str | None | UndefinedType = Undefined,
+                inband_mgmt_description: str | UndefinedType = Undefined,
+                inband_mgmt_vlan_name: str | UndefinedType = Undefined,
+                inband_mgmt_vrf: str | UndefinedType = Undefined,
+                inband_mgmt_mtu: int | UndefinedType = Undefined,
+                inband_ztp: bool | UndefinedType = Undefined,
+                inband_ztp_lacp_fallback_delay: int | UndefinedType = Undefined,
+                mpls_overlay_role: MplsOverlayRole | None | UndefinedType = Undefined,
+                overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
+                mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
+                bgp_cluster_id: str | None | UndefinedType = Undefined,
+                ptp: Ptp | UndefinedType = Undefined,
+                wan_role: WanRole | None | UndefinedType = Undefined,
+                cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
+                cv_pathfinder_region: str | None | UndefinedType = Undefined,
+                cv_pathfinder_site: str | None | UndefinedType = Undefined,
+                wan_ha: WanHa | UndefinedType = Undefined,
+                dps_mss_ipv4: str | UndefinedType = Undefined,
+                l3_interfaces: L3Interfaces | UndefinedType = Undefined,
+                l3_port_channels: L3PortChannels | UndefinedType = Undefined,
+                data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
+                flow_tracker_type: FlowTrackerType | None | UndefinedType = Undefined,
+                underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
+                campus: str | None | UndefinedType = Undefined,
+                campus_pod: str | None | UndefinedType = Undefined,
+                campus_access_pod: str | None | UndefinedType = Undefined,
+                cv_tags_topology_type: str | None | UndefinedType = Undefined,
+                digital_twin: DigitalTwin | UndefinedType = Undefined,
+            ) -> None:
+                """
+                DeviceProfilesItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    name: Profile Name
+                    parent_profile:
+                       Inherit settings from a parent profile defined under `device_profiles`.
+                       Max two levels of profile
+                       inheritance: device -> profile -> parent_profile
+                    type:
+                       Set the type of the device as defined under `node_type_keys`.
+                       This takes precedence over the global
+                       `type` key.
+                    mlag_group:
+                       Name of MLAG group. Exactly two devices must share the same mlag_group.
+                       The group is used for
+                       creating MLAG Pairs, for port-channel descriptions on peers and for MLAG domain-id (unless
+                       mlag_domain_id is set).
+                    id: Unique identifier used for IP addressing and other algorithms.
+                    platform: Arista platform family.
+                    mac_address: Leverage to document management interface mac address.
+                    system_mac_address:
+                       System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".
+                       Set to the same MAC address as
+                       available in "show version" on the device.
+                       "system_mac_address" can also be set directly as a
+                       hostvar.
+                       If both are set, the setting under node type settings takes precedence.
+                    serial_number:
+                       Set to the Serial Number of the device.
+                       Only used for documentation purpose in the fabric
+                       documentation and part of the structured_config.
+                       "serial_number" can also be set directly as a
+                       hostvar.
+                       If both are set, the setting under node type settings takes precedence.
+                    rack: Rack that the switch is located in (only used in snmp_settings location).
+                    mgmt_ip: Node management interface IPv4 address.
+                    mgmt_gateway:
+                       This key sets the management gateway for the device. It takes precedence over the global
+                       `mgmt_gateway`.
+                    ipv6_mgmt_ip: Node management interface IPv6 address.
+                    ipv6_mgmt_gateway:
+                       This key sets the ipv6 management gateway for the device. It takes precedence over the global
+                       `ipv6_mgmt_gateway`.
+                    mgmt_interface:
+                       Management Interface Name.
+                       Default -> platform_management_interface -> mgmt_interface ->
+                       "Management1".
+                    link_tracking:
+                       This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as
+                       the upstream interfaces.
+                       Useful in EVPN multhoming designs.
+
+
+                       Subclass of AvdModel.
+                    lacp_port_id_range:
+                       This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the
+                       number of nodes in the "node_group".
+                       Unique LACP port-id ranges are recommended for EVPN Multihoming
+                       designs.
+
+
+                       Subclass of AvdModel.
+                    always_configure_ip_routing:
+                       Force configuration of "ip routing" even on L2 devices.
+                       Use this to retain behavior of AVD versions
+                       below 4.0.0.
+                    raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
+                    structured_config: Custom structured config for eos_cli_config_gen.
+                    uplink_type:
+                       Override the default `uplink_type` set at the `node_type_key` level.
+                       `uplink_type` must be "p2p" if
+                       `vtep` or `underlay_router` is true for the `node_type_key` definition.
+                    uplink_ipv4_pool:
+                       Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+                       IPv4
+                       subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+                       uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+                    uplink_ipv6_pool:
+                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                       IPv6
+                       subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+                       uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+                    uplink_interfaces:
+                       Local uplink interfaces.
+                       Each list item supports range syntax that can be expanded into a list of
+                       interfaces.
+                       If uplink_interfaces is not defined, platform-specific defaults (defined under
+                       default_interfaces) will be used instead.
+                       Please note that default_interfaces are not defined by
+                       default, you should define these yourself.
+
+
+                       Subclass of AvdList with `str` items.
+                    uplink_switch_interfaces:
+                       Interfaces located on uplink switches.
+
+                       Subclass of AvdList with `str` items.
+                    uplink_switches: Subclass of AvdList with `str` items.
+                    uplink_interface_speed:
+                       Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
+                       (Uplink switch
+                       interface speed can be overridden with `uplink_switch_interface_speed`).
+                       Speed should be set in the
+                       format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                    uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
+                    uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
+                    max_uplink_switches:
+                       Maximum number of uplink switches.
+                       Changing this value may change IP Addressing on uplinks.
+                       Can be
+                       used to reserve IP space for future expansions.
+                    max_parallel_uplinks:
+                       Number of parallel links towards uplink switches.
+                       Changing this value may change interface naming on
+                       uplinks (and corresponding downlinks).
+                       Can be used to reserve interfaces for future parallel
+                       uplinks.
+                    uplink_bfd: Enable bfd on uplink interfaces.
+                    uplink_native_vlan:
+                       Only applicable to switches with layer-2 port-channel uplinks.
+                       A suspended (disabled) vlan will be
+                       created in both ends of the link unless the vlan is defined under network services.
+                       By default the
+                       uplink will not have a native_vlan configured, so EOS defaults to vlan 1.
+                    uplink_ptp:
+                       Enable PTP on all infrastructure links.
+
+                       Subclass of AvdModel.
+                    uplink_macsec:
+                       Enable MacSec on all uplinks.
+
+                       Subclass of AvdModel.
+                    uplink_port_channel_id:
+                       Only applicable for L2 switches with `uplink_type: port-channel`.
+                       By default the uplink Port-channel
+                       ID will be set to the number of the lowest member interface defined under `uplink_interfaces`.
+                       For
+                       example:
+                         member ports [ Eth22, Eth23 ] -> ID 22
+                         member ports [ Eth11/1, Eth22/1 ] -> ID 111
+                       For
+                       MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.
+                       This
+                       option overrides the default behavior and statically sets the local Port-channel ID.
+                       Note! Make sure
+                       the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.
+                       Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same
+                       value.
+                    uplink_switch_port_channel_id:
+                       Only applicable for L2 switches with `uplink_type: port-channel`.
+                       By default the uplink switch Port-
+                       channel ID will be set to the number of the first interface defined under
+                       `uplink_switch_interfaces`.
+                       For example:
+                         member ports [ Eth22, Eth23 ] -> ID 22
+                         member ports [
+                       Eth11/1, Eth22/1 ] -> ID 111
+                       For MLAG port-channels ID will be based on the lowest member interface
+                       on the first MLAG switch.
+                       This option overrides the default behavior and statically sets the Port-
+                       channel ID on the uplink switch.
+                       Note! Make sure the ID is unique and does not overlap with
+                       autogenerated Port-channel IDs in the Network Services.
+                       Note! For MLAG pairs the ID must be between
+                       1 and 2000 and both MLAG switches must have the same value.
+                    uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                    uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                    uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                    uplink_switch_port_channel_structured_config:
+                       Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                       channel uplinks.
+                    mlag_port_channel_structured_config:
+                       Custom structured config applied to MLAG peer link port-channel id.
+                       Added under
+                       port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                       Overrides the settings on the
+                       port-channel interface level.
+                       "mlag_port_channel_structured_config" is applied after
+                       "structured_config", so it can override "structured_config" defined on node-level.
+                    mlag_peer_vlan_structured_config:
+                       Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
+                       Added under
+                       vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                       Overrides the settings on the vlan
+                       interface level.
+                       "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
+                       override "structured_config" defined on node-level.
+                    mlag_peer_l3_vlan_structured_config:
+                       Custom structured config applied to MLAG underlay L3 peering SVI interface id.
+                       Added under
+                       vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                       Overrides the settings on the vlan
+                       interface level.
+                       "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
+                       can override "structured_config" defined on node-level.
+                    short_esi:
+                       short_esi only valid for l2leaf devices using port-channel uplink.
+                       Setting short_esi to "auto"
+                       generates the short_esi automatically using a hash of configuration elements.
+                       < 0000:0000:0000 |
+                       auto >.
+                    isis_system_id_prefix: (4.4 hexadecimal).
+                    isis_maximum_paths: Number of path to configure in ECMP for ISIS.
+                    is_type: Overrides `isis_default_is_type`.
+                    node_sid_base: Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                    loopback_ipv4_pool:
+                       Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+                       The IPv4
+                       address used for Loopback0 will be derived from this pool based on the node id and
+                       'loopback_ipv4_offset'.
+                    loopback_ipv4_address:
+                       IPv4 address without mask for Loopback0.
+                       When set, it takes precedence over `loopback_ipv4_pool`.
+                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    vtep_loopback_ipv4_pool:
+                       Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
+                       address used for VTEP-Loopback will be derived from this pool based on the node id and
+                       'loopback_ipv4_offset'.
+                    vtep_loopback_ipv6_pool:
+                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
+                       address used for VTEP-Loopback will be derived from this pool based on the node id and
+                       'loopback_ipv6_offset'.
+                    vtep_loopback_ipv4_address:
+                       IPv4 address without mask for VTEP-Loopback.
+                       When set, it takes precedence over
+                       `vtep_loopback_ipv4_pool`.
+                       Note: AVD does not check for validity of the IPv4 address and does not
+                       catch duplicates.
+                    vtep_loopback_ipv6_address:
+                       IPv6 address without mask for VTEP-Loopback.
+                       When set, it takes precedence over
+                       `vtep_loopback_ipv6_pool`.
+                       Note: AVD does not check for validity of the IPv6 address and does not
+                       catch duplicates.
+                    loopback_ipv4_offset:
+                       Offset all assigned loopback IP addresses.
+                       Required when the 'loopback_ipv4_pool' is the same for 2
+                       different node_types (like spine and l3leaf) to avoid overlapping IPs.
+                       For example, set the minimum
+                       offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
+                    router_id_pool:
+                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
+                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
+                       will not exist on the device.
+                    loopback_ipv6_pool:
+                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
+                       address used for Loopback0 will be derived from this pool based on the node id and
+                       'loopback_ipv6_offset'.
+                    loopback_ipv6_offset:
+                       Offset all assigned loopback IPv6 addresses.
+                       Required when the 'loopback_ipv6_pool' is same for 2
+                       different node_types (like spine and l3leaf) to avoid overlapping IPs.
+                       For example, set the minimum
+                       offset l3leaf.defaults.loopback_ipv6_offset: < total # spine switches > or vice versa.
+                    vtep:
+                       Node is configured as a VTEP when applicable based on 'overlay_routing_protocol'.
+                       Overrides VTEP
+                       setting inherited from node_type_keys.
+                    vtep_loopback: Set VXLAN source interface.
+                    bgp_as:
+                       BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                       For asdot notation in
+                       YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                       number.
+                       Required with eBGP.
+                    bgp_defaults:
+                       List of EOS commands to apply to BGP daemon.
+
+                       Subclass of AvdList with `str` items.
+                    evpn_role:
+                       Acting role in EVPN control plane.
+                       Default is set in node_type definition from node_type_keys.
+                    evpn_route_servers:
+                       List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+
+                       Subclass of AvdList with `str`
+                       items.
+                    evpn_services_l2_only:
+                       Possibility to prevent configuration of Tenant VRFs and SVIs.
+                       Override node definition
+                       "network_services_l3" from node_type_keys.
+                       This allows support for centralized routing.
+                    filter:
+                       Filter L3 and L2 network services based on tenant and tags (and operation filter).
+                       If filter is not
+                       defined it will default to all.
+
+
+                       Subclass of AvdModel.
+                    igmp_snooping_enabled: Activate or deactivate IGMP snooping on device level.
+                    evpn_gateway:
+                       Node is acting as EVPN Multi-Domain Gateway.
+                       New BGP peer-group is generated between EVPN GWs in
+                       different domains or between GWs and Route Servers.
+                       Name can be changed under
+                       "bgp_peer_groups.evpn_overlay_core" variable.
+                       L3 rechability for different EVPN GWs must be already
+                       in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the
+                       same Ansible inventory.
+
+
+                       Subclass of AvdModel.
+                    ipvpn_gateway:
+                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                       this is "bgp_peer_groups.ipvpn_gateway_peers".
+                       L3 Reachability is required for this to work, the
+                       preferred method to establish underlay connectivity is to use core_interfaces.
+
+
+                       Subclass of
+                       AvdModel.
+                    mlag: Enable / Disable auto MLAG, when two nodes are defined in node group.
+                    mlag_dual_primary_detection: Enable / Disable MLAG dual primary detection.
+                    mlag_ibgp_origin_incomplete:
+                       Set origin of routes received from MLAG iBGP peer to incomplete.
+                       The purpose is to optimize routing
+                       for leaf loopbacks from spine perspective and
+                       avoid suboptimal routing via peerlink for control
+                       plane traffic.
+                    mlag_interfaces:
+                       Each list item supports range syntax that can be expanded into a list of interfaces.
+                       Required when
+                       MLAG leafs are present in the topology.
+
+
+                       Subclass of AvdList with `str` items.
+                    mlag_interfaces_speed: Set MLAG interface speed.
+                    mlag_peer_l3_vlan:
+                       Underlay L3 peering SVI interface id.
+                       If set to 0 or the same vlan as mlag_peer_vlan, the
+                       mlag_peer_vlan will be used for L3 peering.
+                    mlag_peer_l3_ipv4_pool:
+                       Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+                       The IPv4
+                       subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                       MLAG switch.
+                       Required when MLAG leafs present in topology and they are using a separate L3 peering
+                       VLAN.
+                    mlag_peer_l3_ipv6_pool:
+                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                       The IPv6
+                       subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                       MLAG switch.
+                       Required when MLAG leafs present in topology and they are using a separate L3 peering
+                       VLAN.
+                    mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
+                    mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
+                    mlag_peer_address_family:
+                       IP address family used to establish MLAG Peer Link (control link).
+                       `ipv6` requires EOS version
+                       4.31.1F or higher.
+                       Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
+                       (ex. `mlag_peer_l3_vlan` set to 4094).
+                    mlag_peer_ipv4_pool:
+                       Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+                       The IPv4
+                       address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
+                       first MLAG switch.
+                       Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
+                    mlag_peer_ipv6_pool:
+                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                       The IPv6
+                       address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
+                       first MLAG switch.
+                       Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                    mlag_port_channel_id:
+                       If not set, the mlag port-channel id is generated based on the digits of the first interface present
+                       in 'mlag_interfaces'.
+                       Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 -
+                       999999 > for EOS >= 4.25.0F.
+                    mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
+                    spanning_tree_mode: spanning_tree_mode
+                    spanning_tree_priority:
+                       Spanning-tree priority configured for the selected mode.
+                       For `rapid-pvst` the priority can also be
+                       set per VLAN under network services.
+                    spanning_tree_root_super: spanning_tree_root_super
+                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                    spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
+                    virtual_router_mac_address: Virtual router mac address for anycast gateway.
+                    inband_mgmt_interface:
+                       Pointer to interface used for inband management.
+                       All configuration must be done using other data
+                       models like network services or structured_config.
+                       'inband_mgmt_interface' is only used to refer to
+                       this interface as source in various management protocol settings (future feature).
+
+                       On L2 switches,
+                       this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
+                    inband_mgmt_vlan:
+                       VLAN number used for inband management on L2 switches (switches using port-channel trunks as
+                       uplinks).
+                       When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
+                       switch as well as all 'uplink_switches'.
+                       When using 'inband_mgmt_ip' the VLAN and SVI will only be
+                       created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
+                       created using network services data models.
+                    inband_mgmt_subnet:
+                       Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
+                       as uplinks).
+                       Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
+                       ARP.
+                       This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
+                       SVI IP address will be assigned as follows:
+                       virtual-router: <subnet> + 1
+                       l3leaf A      : <subnet> +
+                       2 (same IP on all l3leaf A)
+                       l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+                       l2leafs       :
+                       <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
+                       GW on l2leafs : <subnet> + 1
+                       Assign range
+                       larger than total l2leafs + 5
+
+                       Setting is ignored if 'inband_mgmt_ip' is set.
+
+                       This setting is
+                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    inband_mgmt_subnet_offset:
+                       Offset value to adjust the calculated inband management IP address within the subnet.
+                       The assigned
+                       IP will be computed by adding this offset to the device ID.
+                    inband_mgmt_ip:
+                       IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+                       This overrides
+                       'inband_mgmt_subnet', hence all behavior of 'inband_mgmt_subnet' is removed.
+
+                       If this is set the
+                       VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+                       The VLAN and SVI on
+                       the parent switches must be created using network services data models.
+
+                       This setting is applicable
+                       to L2 switches (switches using port-channel trunks as uplinks).
+                    inband_mgmt_gateway:
+                       Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
+                       is derived from 'inband_mgmt_subnet' if set.
+
+                       This setting is applicable to L2 switches (switches
+                       using port-channel trunks as uplinks).
+                    inband_mgmt_ipv6_address:
+                       IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+                       This overrides
+                       'inband_mgmt_ipv6_subnet', hence the configuration of 'inband_mgmt_ipv6_subnet' is ignored.
+
+                       If this
+                       is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+                       The VLAN
+                       and SVI on the parent switches must be created using network services data models.
+
+                       This setting is
+                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    inband_mgmt_ipv6_subnet:
+                       Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels
+                       as uplinks).
+                       Parent l3leafs will have SVI with "ipv6 virtual-router" and host-route injection based
+                       on ARP.
+                       This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN
+                       extension.
+                       SVI IP address will be assigned as follows:
+                       virtual-router: <subnet> + 1
+                       l3leaf A      :
+                       <subnet> + 2 (same IP on all l3leaf A)
+                       l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+                       l2leafs       : <subnet> + 3 + <l2leaf id>
+                       GW on l2leafs : <subnet> + 1
+                       Assign range larger than
+                       total l2leafs + 5
+
+                       Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+
+                       This setting is
+                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    inband_mgmt_ipv6_gateway:
+                       Default gateway configured in the 'inband_mgmt_vrf'.
+                       Used when `inband_mgmt_ipv6_address` is set.
+                       Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
+
+                       This setting is
+                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    inband_mgmt_description:
+                       Description configured on the Inband Management SVI.
+
+                       This setting is only applied on the devices
+                       where it is set, it does not automatically affect any parent/child devices configuration, so it must
+                       be set on each applicable node/node-group/node-type as needed.
+                    inband_mgmt_vlan_name:
+                       Name configured on the Inband Management VLAN.
+                       This setting is only applied on the devices where it
+                       is set, it does not automatically affect any parent/child devices configuration, so it must be set
+                       on each applicable node/node-group/node-type as needed.
+                    inband_mgmt_vrf:
+                       VRF configured on the Inband Management Interface.
+                       The VRF is created if not already created by
+                       other means.
+                       This setting is only applied on the devices where it is set, it does not automatically
+                       affect any parent/child devices configuration, so it must be set on each applicable node/node-
+                       group/node-type as needed.
+                    inband_mgmt_mtu:
+                       MTU configured on the Inband Management Interface.
+                       This setting is only applied on the devices where
+                       it is set, it does not automatically affect any parent/child devices configuration, so it must be
+                       set on each applicable node/node-group/node-type as needed.
+                    inband_ztp:
+                       Enable to configure upstream device with proper configuration to allow downstream devices to be
+                       Zero-Touch-Provisioned over the uplink interfaces.
+                       For L2 devices this setting also requires that
+                       the `inband_mgmt_vlan` is set for the node.
+
+                       PREVIEW: Support for L3 devices is marked as "preview",
+                       meaning the data models or generated configuration can change at any time.
+                    inband_ztp_lacp_fallback_delay:
+                       Set the LACP fallback timeout of the upstream device's port-channel towards the downstream inband
+                       ZTP node.
+                       This setting also requires that `inband_ztp` is set for the node.
+                    mpls_overlay_role:
+                       Set the default mpls overlay role.
+                       Acting role in overlay control plane.
+                    overlay_address_families:
+                       Set the default overlay address families.
+
+
+                       Subclass of AvdList with `str` items.
+                    mpls_route_reflectors:
+                       List of inventory hostname acting as MPLS route-reflectors.
+
+                       Subclass of AvdList with `str` items.
+                    bgp_cluster_id: Set BGP cluster id.
+                    ptp: Subclass of AvdModel.
+                    wan_role:
+                       Override the default WAN role.
+
+                       This is used both for AutoVPN and Pathfinder designs.
+                       That means if
+                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+                       `server` indicates that the router is a
+                       route-reflector.
+                    cv_pathfinder_transit_mode:
+                       Configure the transit mode for a WAN client for CV Pathfinder designs
+                       only when the `wan_mode` root
+                       key is set to `cv_pathfinder`.
+
+                       'zone' is currently not supported.
+                    cv_pathfinder_region:
+                       The CV Pathfinder region name.
+                       This key is required for WAN routers but optional for pathfinders.
+                       The region name must be defined under 'cv_pathfinder_regions'.
+                    cv_pathfinder_site:
+                       The CV Pathfinder site name.
+                       This key is required for WAN routers but optional for pathfinders.
+                       For
+                       WAN routers and pathfinders with `cv_pathfinder_region`, the site name must be defined for the
+                       relevant region under 'cv_pathfinder_regions'.
+                       For pathfinders without `cv_pathfinder_region` set,
+                       the site must be defined under `cv_pathfinder_global_sites`.
+                    wan_ha:
+                       The key is supported only if `wan_mode` == `cv-pathfinder`.
+                       AutoVPN support is still to be
+                       determined.
+
+                       Maximum 2 devices supported by group for HA.
+
+                       Subclass of AvdModel.
+                    dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
+                    l3_interfaces:
+                       L3 Interfaces to configure on the node.
+
+                       Subclass of AvdIndexedList with `L3InterfacesItem` items.
+                       Primary key is `name` (`str`).
+                    l3_port_channels:
+                       L3 Port-Channel interfaces to configure on the node.
+
+                       Subclass of AvdIndexedList with
+                       `L3PortChannelsItem` items. Primary key is `name` (`str`).
+                    data_plane_cpu_allocation_max:
+                       Set the maximum number of CPU used for the data plane.
+                       This setting is useful on virtual Route
+                       Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
+                    flow_tracker_type:
+                       Set the flow tracker type.
+                       Override the `default_flow_tracker_type`` set at the `node_type_key`
+                       level.
+                       `default_flow_tracker_type` default value is `sampled`.
+                    underlay_multicast: Subclass of AvdModel.
+                    campus:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Name of the campus. Used to generate CloudVision device tags with the
+                       `generate_cv_tags.campus_fabric` feature.
+                    campus_pod:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Name of the campus pod. Used to generate CloudVision device tags with the
+                       `generate_cv_tags.campus_fabric` feature.
+                    campus_access_pod:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Name of the campus access pod. Used to generate CloudVision device tags with the
+                       `generate_cv_tags.campus_fabric` feature.
+                    cv_tags_topology_type:
+                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                       "edge" or "member-leaf".
+                    digital_twin:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Set the OS version and management IP address for the digital twin of the
+                       associated node(s).
+
+                       Subclass of AvdModel.
+
+                """
+
+    class DeviceProfiles(AvdIndexedList[str, DeviceProfilesItem]):
+        """Subclass of AvdIndexedList with `DeviceProfilesItem` items. Primary key is `name` (`str`)."""
+
+        _primary_key: ClassVar[str] = "name"
+
+    DeviceProfiles._item_type = DeviceProfilesItem
+
+    class DevicesItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class DownlinkPoolsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class DownlinkInterfaces(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            DownlinkInterfaces._item_type = str
+
+            _fields: ClassVar[dict] = {"ipv4_pool": {"type": str}, "ipv6_pool": {"type": str}, "downlink_interfaces": {"type": DownlinkInterfaces}}
+            ipv4_pool: str | None
+            """
+            Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+            IPv4
+            subnets used for links to downlink switches will be derived from this pool based on index the peer's
+            uplink interface's index in 'downlink_interfaces'.
+            """
+            ipv6_pool: str | None
+            """
+            Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+            IPv6
+            subnets used for links to downlink switches will be derived from this pool based on index the peer's
+            uplink interface's index in 'downlink_interfaces'.
+            """
+            downlink_interfaces: DownlinkInterfaces
+            """
+            List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in
+            this list will determine which subnet will be taken from the pool.
+
+            Subclass of AvdList with `str`
+            items.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ipv4_pool: str | None | UndefinedType = Undefined,
+                    ipv6_pool: str | None | UndefinedType = Undefined,
+                    downlink_interfaces: DownlinkInterfaces | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    DownlinkPoolsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4_pool:
+                           Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+                           IPv4
+                           subnets used for links to downlink switches will be derived from this pool based on index the peer's
+                           uplink interface's index in 'downlink_interfaces'.
+                        ipv6_pool:
+                           Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                           IPv6
+                           subnets used for links to downlink switches will be derived from this pool based on index the peer's
+                           uplink interface's index in 'downlink_interfaces'.
+                        downlink_interfaces:
+                           List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in
+                           this list will determine which subnet will be taken from the pool.
+
+                           Subclass of AvdList with `str`
+                           items.
+
+                    """
+
+        class DownlinkPools(AvdList[DownlinkPoolsItem]):
+            """Subclass of AvdList with `DownlinkPoolsItem` items."""
+
+        DownlinkPools._item_type = DownlinkPoolsItem
+
+        class LinkTracking(AvdModel):
+            """Subclass of AvdModel."""
+
+            class GroupsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
+                name: str
+                """Tracking group name."""
+                recovery_delay: int | None
+                """default -> platform_settings_mlag_reload_delay -> 300."""
+                links_minimum: int | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        recovery_delay: int | None | UndefinedType = Undefined,
+                        links_minimum: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        GroupsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Tracking group name.
+                            recovery_delay: default -> platform_settings_mlag_reload_delay -> 300.
+                            links_minimum: links_minimum
+
+                        """
+
+            class Groups(AvdIndexedList[str, GroupsItem]):
+                """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Groups._item_type = GroupsItem
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool, "default": False},
+                "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
+            }
+            enabled: bool
+            """Default value: `False`"""
+            groups: Groups
+            """
+            Link Tracking Groups.
+            By default a single group named "LT_GROUP1" is defined with default values.
+            Any groups defined under "groups" will replace the default.
+
+
+            Subclass of AvdIndexedList with
+            `GroupsItem` items. Primary key is `name` (`str`).
+
+            Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                    """
+                    LinkTracking.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        groups:
+                           Link Tracking Groups.
+                           By default a single group named "LT_GROUP1" is defined with default values.
+                           Any groups defined under "groups" will replace the default.
+
+
+                           Subclass of AvdIndexedList with
+                           `GroupsItem` items. Primary key is `name` (`str`).
+
+                    """
+
+        class LacpPortIdRange(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool, "default": False},
+                "size": {"type": int, "default": 128},
+                "offset": {"type": int, "default": 0},
+            }
+            enabled: bool
+            """Default value: `False`"""
+            size: int
+            """
+            Recommended size > = number of ports in the switch.
+
+            Default value: `128`
+            """
+            offset: int
+            """
+            Offset is used to avoid overlapping port-id ranges of different switches.
+            Useful when a "connected-
+            endpoint" is connected to switches in different "node_groups".
+
+            Default value: `0`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, enabled: bool | UndefinedType = Undefined, size: int | UndefinedType = Undefined, offset: int | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    LacpPortIdRange.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        size: Recommended size > = number of ports in the switch.
+                        offset:
+                           Offset is used to avoid overlapping port-id ranges of different switches.
+                           Useful when a "connected-
+                           endpoint" is connected to switches in different "node_groups".
+
+                    """
+
+        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+
+        class UplinkInterfaces(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        UplinkInterfaces._item_type = str
+
+        class UplinkSwitchInterfaces(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        UplinkSwitchInterfaces._item_type = str
+
+        class UplinkSwitches(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        UplinkSwitches._item_type = str
+
+        UplinkInterfaceSpeed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
+        UplinkSwitchInterfaceSpeed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
+
+        class UplinkPtp(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enable": {"type": bool, "default": False}}
+            enable: bool
+            """Default value: `False`"""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enable: bool | UndefinedType = Undefined) -> None:
+                    """
+                    UplinkPtp.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enable: enable
+
+                    """
+
+        class UplinkMacsec(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"profile": {"type": str}}
+            profile: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, profile: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    UplinkMacsec.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        profile: profile
+
+                    """
+
+        IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+        class BgpDefaults(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        BgpDefaults._item_type = str
+
+        EvpnRole: TypeAlias = Literal["client", "server", "none"]
+
+        class EvpnRouteServers(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        EvpnRouteServers._item_type = str
+
+        class Filter(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Tenants(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tenants._item_type = str
+
+            class Tags(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tags._item_type = str
+
+            class AllowVrfs(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            AllowVrfs._item_type = str
+
+            class DenyVrfs(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            DenyVrfs._item_type = str
+
+            class AlwaysIncludeVrfsInTenants(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            AlwaysIncludeVrfsInTenants._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "tenants": {"type": Tenants, "default": lambda cls: coerce_type(["all"], target_type=cls)},
+                "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
+                "allow_vrfs": {"type": AllowVrfs, "default": lambda cls: coerce_type(["all"], target_type=cls)},
+                "deny_vrfs": {"type": DenyVrfs, "default": lambda cls: coerce_type(["all"], target_type=cls)},
+                "always_include_vrfs_in_tenants": {"type": AlwaysIncludeVrfsInTenants},
+                "only_vlans_in_use": {"type": bool, "default": False},
+            }
+            tenants: Tenants
+            """
+            Limit configured Network Services to those defined under these Tenants. Set to ['all'] for all
+            Tenants (default).
+            This list also limits Tenants included by `always_include_vrfs_in_tenants`.
+            Subclass of AvdList with `str` items.
+
+            Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
+            """
+            tags: Tags
+            """
+            Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default).
+            Subclass of AvdList with `str` items.
+
+            Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
+            """
+            allow_vrfs: AllowVrfs
+            """
+            Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs
+            (default).
+            This list also limits VRFs included by `always_include_vrfs_in_tenants`.
+
+            Subclass of
+            AvdList with `str` items.
+
+            Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
+            """
+            deny_vrfs: DenyVrfs
+            """
+            Prevent configuration of Network Services defined under these VRFs.
+            This list prevents the given
+            VRFs to be included by any other filtering mechanism.
+
+            Subclass of AvdList with `str` items.
+
+            Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
+            """
+            always_include_vrfs_in_tenants: AlwaysIncludeVrfsInTenants
+            """
+            List of tenants where VRFs will be configured even if VLANs are not included in tags.
+            Useful for L3
+            "border" leaf.
+
+
+            Subclass of AvdList with `str` items.
+            """
+            only_vlans_in_use: bool
+            """
+            Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.
+            Note! This
+            feature only considers configuration managed by eos_designs.
+            This excludes structured_config,
+            custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    tenants: Tenants | UndefinedType = Undefined,
+                    tags: Tags | UndefinedType = Undefined,
+                    allow_vrfs: AllowVrfs | UndefinedType = Undefined,
+                    deny_vrfs: DenyVrfs | UndefinedType = Undefined,
+                    always_include_vrfs_in_tenants: AlwaysIncludeVrfsInTenants | UndefinedType = Undefined,
+                    only_vlans_in_use: bool | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Filter.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        tenants:
+                           Limit configured Network Services to those defined under these Tenants. Set to ['all'] for all
+                           Tenants (default).
+                           This list also limits Tenants included by `always_include_vrfs_in_tenants`.
+                           Subclass of AvdList with `str` items.
+                        tags:
+                           Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default).
+                           Subclass of AvdList with `str` items.
+                        allow_vrfs:
+                           Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs
+                           (default).
+                           This list also limits VRFs included by `always_include_vrfs_in_tenants`.
+
+                           Subclass of
+                           AvdList with `str` items.
+                        deny_vrfs:
+                           Prevent configuration of Network Services defined under these VRFs.
+                           This list prevents the given
+                           VRFs to be included by any other filtering mechanism.
+
+                           Subclass of AvdList with `str` items.
+                        always_include_vrfs_in_tenants:
+                           List of tenants where VRFs will be configured even if VLANs are not included in tags.
+                           Useful for L3
+                           "border" leaf.
+
+
+                           Subclass of AvdList with `str` items.
+                        only_vlans_in_use:
+                           Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.
+                           Note! This
+                           feature only considers configuration managed by eos_designs.
+                           This excludes structured_config,
+                           custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.
+
+                    """
+
+        class EvpnGateway(AvdModel):
+            """Subclass of AvdModel."""
+
+            class RemotePeersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"hostname": {"type": str}, "ip_address": {"type": str}, "bgp_as": {"type": str}}
+                hostname: str
+                """Hostname of remote EVPN GW server."""
+                ip_address: str | None
+                """Peering IP of remote Route Server."""
+                bgp_as: str | None
+                """
+                Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being
+                interpreted as a float number.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        hostname: str | UndefinedType = Undefined,
+                        ip_address: str | None | UndefinedType = Undefined,
+                        bgp_as: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        RemotePeersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            hostname: Hostname of remote EVPN GW server.
+                            ip_address: Peering IP of remote Route Server.
+                            bgp_as:
+                               Remote Route Server's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                               For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being
+                               interpreted as a float number.
+
+                        """
+
+            class RemotePeers(AvdIndexedList[str, RemotePeersItem]):
+                """Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`)."""
+
+                _primary_key: ClassVar[str] = "hostname"
+
+            RemotePeers._item_type = RemotePeersItem
+
+            class EvpnL2(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                enabled: bool
+                """Default value: `False`"""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                        """
+                        EvpnL2.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+
+                        """
+
+            class EvpnL3(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                enabled: bool
+                """Default value: `False`"""
+                inter_domain: bool
+                """Default value: `True`"""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                        """
+                        EvpnL3.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            inter_domain: inter_domain
+
+                        """
+
+            class AllActiveMultihoming(AvdModel):
+                """Subclass of AvdModel."""
+
+                class EvpnEthernetSegment(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"identifier": {"type": str}, "rt_import": {"type": str}}
+                    identifier: str
+                    """EVPN Ethernet Segment Identifier (Type 1 format)"""
+                    rt_import: str
+                    """Low-order 6 bytes of ES-Import Route Target."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, identifier: str | UndefinedType = Undefined, rt_import: str | UndefinedType = Undefined) -> None:
+                            """
+                            EvpnEthernetSegment.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                identifier: EVPN Ethernet Segment Identifier (Type 1 format)
+                                rt_import: Low-order 6 bytes of ES-Import Route Target.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool},
+                    "enable_d_path": {"type": bool, "default": True},
+                    "evpn_domain_id_local": {"type": str},
+                    "evpn_domain_id_remote": {"type": str},
+                    "evpn_ethernet_segment": {"type": EvpnEthernetSegment},
+                }
+                enabled: bool
+                """Enable Active Active Multihoming resiliency model."""
+                enable_d_path: bool
+                """
+                Enable D-path for use with BGP bestpath selection algorithm.
+
+                Default value: `True`
+                """
+                evpn_domain_id_local: str
+                """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                evpn_domain_id_remote: str
+                """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                evpn_ethernet_segment: EvpnEthernetSegment
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        enable_d_path: bool | UndefinedType = Undefined,
+                        evpn_domain_id_local: str | UndefinedType = Undefined,
+                        evpn_domain_id_remote: str | UndefinedType = Undefined,
+                        evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        AllActiveMultihoming.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable Active Active Multihoming resiliency model.
+                            enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
+                            evpn_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                            evpn_domain_id_remote: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                            evpn_ethernet_segment: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "remote_peers": {"type": RemotePeers},
+                "evpn_l2": {"type": EvpnL2},
+                "evpn_l3": {"type": EvpnL3},
+                "all_active_multihoming": {"type": AllActiveMultihoming},
+            }
+            remote_peers: RemotePeers
+            """
+            Define remote peers of the EVPN VXLAN Gateway.
+            If the hostname can be found in the inventory,
+            ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
+            If the
+            peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+
+
+            Subclass
+            of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+            """
+            evpn_l2: EvpnL2
+            """
+            Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
+
+            Subclass of AvdModel.
+            """
+            evpn_l3: EvpnL3
+            """
+            Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+
+            Subclass of AvdModel.
+            """
+            all_active_multihoming: AllActiveMultihoming
+            """
+            Enable Active Active Multihoming architecture for EVPN Gateways.
+            Not supported with MLAG or IPVPN
+            Gateway. Requires EVPN L3 inter-domain to be enabled.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    remote_peers: RemotePeers | UndefinedType = Undefined,
+                    evpn_l2: EvpnL2 | UndefinedType = Undefined,
+                    evpn_l3: EvpnL3 | UndefinedType = Undefined,
+                    all_active_multihoming: AllActiveMultihoming | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    EvpnGateway.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        remote_peers:
+                           Define remote peers of the EVPN VXLAN Gateway.
+                           If the hostname can be found in the inventory,
+                           ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
+                           If the
+                           peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
+
+
+                           Subclass
+                           of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+                        evpn_l2:
+                           Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
+
+                           Subclass of AvdModel.
+                        evpn_l3:
+                           Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+
+                           Subclass of AvdModel.
+                        all_active_multihoming:
+                           Enable Active Active Multihoming architecture for EVPN Gateways.
+                           Not supported with MLAG or IPVPN
+                           Gateway. Requires EVPN L3 inter-domain to be enabled.
+
+                           Subclass of AvdModel.
+
+                    """
+
+        class IpvpnGateway(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AddressFamilies(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            AddressFamilies._item_type = str
+
+            class RemotePeersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"hostname": {"type": str}, "ip_address": {"type": str}, "bgp_as": {"type": str}}
+                hostname: str
+                """Hostname of remote IPVPN Peer."""
+                ip_address: str
+                """Peering IP of remote IPVPN Peer."""
+                bgp_as: str
+                """
+                Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For
+                asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted
+                as a float number.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, hostname: str | UndefinedType = Undefined, ip_address: str | UndefinedType = Undefined, bgp_as: str | UndefinedType = Undefined
+                    ) -> None:
+                        """
+                        RemotePeersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            hostname: Hostname of remote IPVPN Peer.
+                            ip_address: Peering IP of remote IPVPN Peer.
+                            bgp_as:
+                               Remote IPVPN Peer's BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                               For
+                               asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted
+                               as a float number.
+
+                        """
+
+            class RemotePeers(AvdIndexedList[str, RemotePeersItem]):
+                """Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`)."""
+
+                _primary_key: ClassVar[str] = "hostname"
+
+            RemotePeers._item_type = RemotePeersItem
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool},
+                "evpn_domain_id": {"type": str, "default": "65535:1"},
+                "ipvpn_domain_id": {"type": str, "default": "65535:2"},
+                "enable_d_path": {"type": bool, "default": True},
+                "maximum_routes": {"type": int, "default": 0},
+                "local_as": {"type": str},
+                "address_families": {"type": AddressFamilies, "default": lambda cls: coerce_type(["vpn-ipv4"], target_type=cls)},
+                "remote_peers": {"type": RemotePeers},
+            }
+            enabled: bool
+            evpn_domain_id: str
+            """
+            Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+
+            Default value: `"65535:1"`
+            """
+            ipvpn_domain_id: str
+            """
+            Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+
+            Default value: `"65535:2"`
+            """
+            enable_d_path: bool
+            """
+            Enable D-path for use with BGP bestpath selection algorithm.
+
+            Default value: `True`
+            """
+            maximum_routes: int
+            """
+            Maximum routes to accept from IPVPN remote peers.
+
+            Default value: `0`
+            """
+            local_as: str | None
+            """
+            Local BGP AS applied to peering with IPVPN remote peers.
+            BGP AS <1-4294967295> or AS number in asdot
+            notation "<1-65535>.<0-65535>".
+            For asdot notation in YAML inputs, the value must be put in quotes,
+            to prevent it from being interpreted as a float number.
+            """
+            address_families: AddressFamilies
+            """
+            IPVPN address families to enable for remote peers.
+
+            Subclass of AvdList with `str` items.
+
+            Default value: `lambda cls: coerce_type(["vpn-ipv4"], target_type=cls)`
+            """
+            remote_peers: RemotePeers
+            """Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType = Undefined,
+                    evpn_domain_id: str | UndefinedType = Undefined,
+                    ipvpn_domain_id: str | UndefinedType = Undefined,
+                    enable_d_path: bool | UndefinedType = Undefined,
+                    maximum_routes: int | UndefinedType = Undefined,
+                    local_as: str | None | UndefinedType = Undefined,
+                    address_families: AddressFamilies | UndefinedType = Undefined,
+                    remote_peers: RemotePeers | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    IpvpnGateway.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
+                        maximum_routes: Maximum routes to accept from IPVPN remote peers.
+                        local_as:
+                           Local BGP AS applied to peering with IPVPN remote peers.
+                           BGP AS <1-4294967295> or AS number in asdot
+                           notation "<1-65535>.<0-65535>".
+                           For asdot notation in YAML inputs, the value must be put in quotes,
+                           to prevent it from being interpreted as a float number.
+                        address_families:
+                           IPVPN address families to enable for remote peers.
+
+                           Subclass of AvdList with `str` items.
+                        remote_peers: Subclass of AvdIndexedList with `RemotePeersItem` items. Primary key is `hostname` (`str`).
+
+                    """
+
+        class MlagInterfaces(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        MlagInterfaces._item_type = str
+
+        MlagInterfacesSpeed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
+        MlagPeerAddressFamily: TypeAlias = Literal["ipv4", "ipv6"]
+        SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
+        MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
+
+        class OverlayAddressFamilies(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        OverlayAddressFamilies._item_type = str
+
+        class MplsRouteReflectors(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        MplsRouteReflectors._item_type = str
+
+        class Ptp(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Uplinks(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Uplinks._item_type = str
+
+            Mode: TypeAlias = Literal["boundary"]
+
+            class Dscp(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"general_messages": {"type": int}, "event_messages": {"type": int}}
+                general_messages: int | None
+                event_messages: int | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, general_messages: int | None | UndefinedType = Undefined, event_messages: int | None | UndefinedType = Undefined
+                    ) -> None:
+                        """
+                        Dscp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            general_messages: general_messages
+                            event_messages: event_messages
+
+                        """
+
+            class Monitor(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Threshold(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Drop(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"offset_from_master": {"type": int}, "mean_path_delay": {"type": int}}
+                        offset_from_master: int | None
+                        mean_path_delay: int | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, offset_from_master: int | None | UndefinedType = Undefined, mean_path_delay: int | None | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                Drop.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    offset_from_master: offset_from_master
+                                    mean_path_delay: mean_path_delay
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "offset_from_master": {"type": int, "default": 250},
+                        "mean_path_delay": {"type": int, "default": 1500},
+                        "drop": {"type": Drop},
+                    }
+                    offset_from_master: int
+                    """Default value: `250`"""
+                    mean_path_delay: int
+                    """Default value: `1500`"""
+                    drop: Drop
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            offset_from_master: int | UndefinedType = Undefined,
+                            mean_path_delay: int | UndefinedType = Undefined,
+                            drop: Drop | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Threshold.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                offset_from_master: offset_from_master
+                                mean_path_delay: mean_path_delay
+                                drop: Subclass of AvdModel.
+
+                            """
+
+                class MissingMessage(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Intervals(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"announce": {"type": int}, "follow_up": {"type": int}, "sync": {"type": int}}
+                        announce: int | None
+                        follow_up: int | None
+                        sync: int | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                announce: int | None | UndefinedType = Undefined,
+                                follow_up: int | None | UndefinedType = Undefined,
+                                sync: int | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Intervals.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    announce: announce
+                                    follow_up: follow_up
+                                    sync: sync
+
+                                """
+
+                    class SequenceIds(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool, "default": True},
+                            "announce": {"type": int, "default": 3},
+                            "delay_resp": {"type": int, "default": 3},
+                            "follow_up": {"type": int, "default": 3},
+                            "sync": {"type": int, "default": 3},
+                        }
+                        enabled: bool
+                        """Default value: `True`"""
+                        announce: int
+                        """Default value: `3`"""
+                        delay_resp: int
+                        """Default value: `3`"""
+                        follow_up: int
+                        """Default value: `3`"""
+                        sync: int
+                        """Default value: `3`"""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                announce: int | UndefinedType = Undefined,
+                                delay_resp: int | UndefinedType = Undefined,
+                                follow_up: int | UndefinedType = Undefined,
+                                sync: int | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                SequenceIds.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    announce: announce
+                                    delay_resp: delay_resp
+                                    follow_up: follow_up
+                                    sync: sync
+
+                                """
+
+                    _fields: ClassVar[dict] = {"intervals": {"type": Intervals}, "sequence_ids": {"type": SequenceIds}}
+                    intervals: Intervals
+                    """Subclass of AvdModel."""
+                    sequence_ids: SequenceIds
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, intervals: Intervals | UndefinedType = Undefined, sequence_ids: SequenceIds | UndefinedType = Undefined) -> None:
+                            """
+                            MissingMessage.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                intervals: Subclass of AvdModel.
+                                sequence_ids: Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": True},
+                    "threshold": {"type": Threshold},
+                    "missing_message": {"type": MissingMessage},
+                }
+                enabled: bool
+                """Default value: `True`"""
+                threshold: Threshold
+                """Subclass of AvdModel."""
+                missing_message: MissingMessage
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        threshold: Threshold | UndefinedType = Undefined,
+                        missing_message: MissingMessage | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Monitor.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            threshold: Subclass of AvdModel.
+                            missing_message: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool},
+                "profile": {"type": str},
+                "uplinks": {"type": Uplinks},
+                "mlag": {"type": bool, "default": False},
+                "domain": {"type": int},
+                "priority1": {"type": int},
+                "priority2": {"type": int},
+                "auto_clock_identity": {"type": bool},
+                "clock_identity_prefix": {"type": str, "default": "00:1C:73"},
+                "clock_identity": {"type": str},
+                "source_ip": {"type": str},
+                "mode": {"type": str, "default": "boundary"},
+                "mode_one_step": {"type": bool, "default": False},
+                "ttl": {"type": int},
+                "forward_unicast": {"type": bool, "default": False},
+                "forward_v1": {"type": bool},
+                "dscp": {"type": Dscp},
+                "monitor": {"type": Monitor},
+            }
+            enabled: bool | None
+            profile: str | None
+            """
+            Default available profiles are:
+              - "aes67"
+              - "aes67-r16-2016"
+              - "smpte2059-2"
+            """
+            uplinks: Uplinks
+            """Subclass of AvdList with `str` items."""
+            mlag: bool
+            """
+            Configure PTP on the MLAG peer-link port-channel when PTP is enabled. By default PTP will not be
+            configured on the MLAG peer-link port-channel.
+
+            Default value: `False`
+            """
+            domain: int | None
+            priority1: int | None
+            """default -> automatically set based on node_type."""
+            priority2: int | None
+            """default -> (node_id modulus 256)."""
+            auto_clock_identity: bool | None
+            """
+            If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the
+            default EOS behaviour, simply disable the automatic PTP clock identity.
+            default ->
+            (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as
+            HEX).
+            """
+            clock_identity_prefix: str
+            """
+            PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".
+            By default the 3-byte prefix is "00:1C:73".
+            This
+            can be overridden if auto_clock_identity is set to true (which is the default).
+
+            Default value: `"00:1C:73"`
+            """
+            clock_identity: str | None
+            """Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06"."""
+            source_ip: str | None
+            """
+            By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
+            relevant SVI, which is the recommended behaviour.
+            This can be set manually if required, for example,
+            to a value of "10.1.2.3".
+            """
+            mode: Mode
+            """Default value: `"boundary"`"""
+            mode_one_step: bool
+            """Default value: `False`"""
+            ttl: int | None
+            forward_unicast: bool
+            """
+            Enable PTP unicast forwarding.
+
+            Default value: `False`
+            """
+            forward_v1: bool | None
+            """Forward dataplane PTP V1 packets."""
+            dscp: Dscp
+            """Subclass of AvdModel."""
+            monitor: Monitor
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    profile: str | None | UndefinedType = Undefined,
+                    uplinks: Uplinks | UndefinedType = Undefined,
+                    mlag: bool | UndefinedType = Undefined,
+                    domain: int | None | UndefinedType = Undefined,
+                    priority1: int | None | UndefinedType = Undefined,
+                    priority2: int | None | UndefinedType = Undefined,
+                    auto_clock_identity: bool | None | UndefinedType = Undefined,
+                    clock_identity_prefix: str | UndefinedType = Undefined,
+                    clock_identity: str | None | UndefinedType = Undefined,
+                    source_ip: str | None | UndefinedType = Undefined,
+                    mode: Mode | UndefinedType = Undefined,
+                    mode_one_step: bool | UndefinedType = Undefined,
+                    ttl: int | None | UndefinedType = Undefined,
+                    forward_unicast: bool | UndefinedType = Undefined,
+                    forward_v1: bool | None | UndefinedType = Undefined,
+                    dscp: Dscp | UndefinedType = Undefined,
+                    monitor: Monitor | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ptp.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        profile:
+                           Default available profiles are:
+                             - "aes67"
+                             - "aes67-r16-2016"
+                             - "smpte2059-2"
+                        uplinks: Subclass of AvdList with `str` items.
+                        mlag:
+                           Configure PTP on the MLAG peer-link port-channel when PTP is enabled. By default PTP will not be
+                           configured on the MLAG peer-link port-channel.
+                        domain: domain
+                        priority1: default -> automatically set based on node_type.
+                        priority2: default -> (node_id modulus 256).
+                        auto_clock_identity:
+                           If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the
+                           default EOS behaviour, simply disable the automatic PTP clock identity.
+                           default ->
+                           (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as
+                           HEX).
+                        clock_identity_prefix:
+                           PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".
+                           By default the 3-byte prefix is "00:1C:73".
+                           This
+                           can be overridden if auto_clock_identity is set to true (which is the default).
+                        clock_identity: Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06".
+                        source_ip:
+                           By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
+                           relevant SVI, which is the recommended behaviour.
+                           This can be set manually if required, for example,
+                           to a value of "10.1.2.3".
+                        mode: mode
+                        mode_one_step: mode_one_step
+                        ttl: ttl
+                        forward_unicast: Enable PTP unicast forwarding.
+                        forward_v1: Forward dataplane PTP V1 packets.
+                        dscp: Subclass of AvdModel.
+                        monitor: Subclass of AvdModel.
+
+                    """
+
+        WanRole: TypeAlias = Literal["client", "server"]
+        CvPathfinderTransitMode: TypeAlias = Literal["region", "zone"]
+
+        class WanHa(AvdModel):
+            """Subclass of AvdModel."""
+
+            class HaInterfaces(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            HaInterfaces._item_type = str
+
+            class FlowTracking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
+                enabled: bool | None
+                name: str | None
+                """Flow tracker name as defined in flow_tracking_settings."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        FlowTracking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            name: Flow tracker name as defined in flow_tracking_settings.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool},
+                "ipsec": {"type": bool, "default": True},
+                "mtu": {"type": int, "default": 9194},
+                "ha_interfaces": {"type": HaInterfaces},
+                "ha_ipv4_pool": {"type": str},
+                "port_channel_id": {"type": int},
+                "use_port_channel_for_direct_ha": {"type": bool, "default": True},
+                "flow_tracking": {"type": FlowTracking},
+            }
+            enabled: bool | None
+            """Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group."""
+            ipsec: bool
+            """
+            Enable / Disable IPsec over HA path-group when HA is enabled.
+
+            Default value: `True`
+            """
+            mtu: int
+            """
+            Set MTU on WAN HA interfaces.
+
+            Default value: `9194`
+            """
+            ha_interfaces: HaInterfaces
+            """
+            Local WAN HA interfaces
+            Overwrite the default behavior which is to pick all the `uplink_interfaces`.
+            Can be used to filter uplink interfaces when there are multiple uplinks.
+            Limitations:
+              Either all
+            interfaces must be uplinks or all interfaces must not be uplinks.
+              Only one interface is supported
+            for non uplinks.
+
+            Subclass of AvdList with `str` items.
+            """
+            ha_ipv4_pool: str | None
+            """
+            Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+            The IPv4
+            subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
+            first WAN router.
+            Not used for uplink interfaces.
+            """
+            port_channel_id: int | None
+            """Port-channel ID to use for direct HA."""
+            use_port_channel_for_direct_ha: bool
+            """
+            Enable or disable using a port-channel interface for direct HA when there is only one interface.
+            This feature was introduced in EOS 4.33.0F.
+
+            Default value: `True`
+            """
+            flow_tracking: FlowTracking
+            """
+            Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links`
+            setting.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    ipsec: bool | UndefinedType = Undefined,
+                    mtu: int | UndefinedType = Undefined,
+                    ha_interfaces: HaInterfaces | UndefinedType = Undefined,
+                    ha_ipv4_pool: str | None | UndefinedType = Undefined,
+                    port_channel_id: int | None | UndefinedType = Undefined,
+                    use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
+                    flow_tracking: FlowTracking | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    WanHa.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group.
+                        ipsec: Enable / Disable IPsec over HA path-group when HA is enabled.
+                        mtu: Set MTU on WAN HA interfaces.
+                        ha_interfaces:
+                           Local WAN HA interfaces
+                           Overwrite the default behavior which is to pick all the `uplink_interfaces`.
+                           Can be used to filter uplink interfaces when there are multiple uplinks.
+                           Limitations:
+                             Either all
+                           interfaces must be uplinks or all interfaces must not be uplinks.
+                             Only one interface is supported
+                           for non uplinks.
+
+                           Subclass of AvdList with `str` items.
+                        ha_ipv4_pool:
+                           Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+                           The IPv4
+                           subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
+                           first WAN router.
+                           Not used for uplink interfaces.
+                        port_channel_id: Port-channel ID to use for direct HA.
+                        use_port_channel_for_direct_ha:
+                           Enable or disable using a port-channel interface for direct HA when there is only one interface.
+                           This feature was introduced in EOS 4.33.0F.
+                        flow_tracking:
+                           Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links`
+                           setting.
+
+                           Subclass of AvdModel.
+
+                    """
+
+        class L3InterfacesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Speed: TypeAlias = Literal[
+                "100full",
+                "100g",
+                "100g-1",
+                "100g-2",
+                "100g-4",
+                "100half",
+                "10full",
+                "10g",
+                "10half",
+                "1g",
+                "200g",
+                "200g-2",
+                "200g-4",
+                "25g",
+                "400g",
+                "400g-4",
+                "400g-8",
+                "40g",
+                "50g",
+                "50g-1",
+                "50g-2",
+                "800g-8",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
+                "auto",
+                "auto 10000full",
+                "auto 1000full",
+                "auto 100full",
+                "auto 100g-1",
+                "auto 100g-2",
+                "auto 100g-4",
+                "auto 100gfull",
+                "auto 100half",
+                "auto 10full",
+                "auto 10gfull",
+                "auto 10half",
+                "auto 1gfull",
+                "auto 2.5gfull",
+                "auto 200g-2",
+                "auto 200g-4",
+                "auto 25gfull",
+                "auto 400g-4",
+                "auto 400g-8",
+                "auto 40gfull",
+                "auto 50g-1",
+                "auto 50g-2",
+                "auto 50gfull",
+                "auto 5gfull",
+                "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
+                "forced 10000full",
+                "forced 1000full",
+                "forced 1000half",
+                "forced 100full",
+                "forced 100gfull",
+                "forced 100half",
+                "forced 10full",
+                "forced 10half",
+                "forced 25gfull",
+                "forced 40gfull",
+                "forced 50gfull",
+            ]
+
+            class Bgp(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                peer_as: str
+                """
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in
+                YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                number.
+                """
+                ipv4_prefix_list_in: str | None
+                """
+                Prefix List Name. Accept routes for only these prefixes from the peer.
+                Required for wan interfaces.
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                """
+                ipv4_prefix_list_out: str | None
+                """
+                Prefix List Name. Advertise routes for only these prefixes.
+                If not specified, nothing would be
+                advertised.
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        peer_as: str | UndefinedType = Undefined,
+                        ipv4_prefix_list_in: str | None | UndefinedType = Undefined,
+                        ipv4_prefix_list_out: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Bgp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            peer_as:
+                               BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                               For asdot notation in
+                               YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                               number.
+                            ipv4_prefix_list_in:
+                               Prefix List Name. Accept routes for only these prefixes from the peer.
+                               Required for wan interfaces.
+                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                            ipv4_prefix_list_out:
+                               Prefix List Name. Advertise routes for only these prefixes.
+                               If not specified, nothing would be
+                               advertised.
+                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+
+                        """
+
+            class StaticRoutesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"prefix": {"type": str}}
+                prefix: str
+                """IPv4_network/Mask."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, prefix: str | UndefinedType = Undefined) -> None:
+                        """
+                        StaticRoutesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            prefix: IPv4_network/Mask.
+
+                        """
+
+            class StaticRoutes(AvdList[StaticRoutesItem]):
+                """Subclass of AvdList with `StaticRoutesItem` items."""
+
+            StaticRoutes._item_type = StaticRoutesItem
+
+            class CvPathfinderInternetExit(AvdModel):
+                """Subclass of AvdModel."""
+
+                class PoliciesItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
+                    name: str
+                    """Internet-exit policy name."""
+                    tunnel_interface_numbers: str | None
+                    """
+                    Number range to use for Tunnel interfaces to an internet-exit service provider using this local
+                    interface.
+                    Examples: '1-3' or '100,200,300'
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, name: str | UndefinedType = Undefined, tunnel_interface_numbers: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            PoliciesItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                name: Internet-exit policy name.
+                                tunnel_interface_numbers:
+                                   Number range to use for Tunnel interfaces to an internet-exit service provider using this local
+                                   interface.
+                                   Examples: '1-3' or '100,200,300'
+
+                            """
+
+                class Policies(AvdIndexedList[str, PoliciesItem]):
+                    """Subclass of AvdIndexedList with `PoliciesItem` items. Primary key is `name` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "name"
+
+                Policies._item_type = PoliciesItem
+
+                _fields: ClassVar[dict] = {"policies": {"type": Policies}}
+                policies: Policies
+                """
+                List of Internet-exit policies using this interface as exit.
+
+                Subclass of AvdIndexedList with
+                `PoliciesItem` items. Primary key is `name` (`str`).
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, policies: Policies | UndefinedType = Undefined) -> None:
+                        """
+                        CvPathfinderInternetExit.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            policies:
+                               List of Internet-exit policies using this interface as exit.
+
+                               Subclass of AvdIndexedList with
+                               `PoliciesItem` items. Primary key is `name` (`str`).
+
+                        """
+
+            class RxQueue(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Workers(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Workers._item_type = str
+
+                Mode: TypeAlias = Literal["shared", "exclusive"]
+                _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                count: int | None
+                """
+                Number of receive queues.
+                The maximum value is determined by
+                `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                `platform` set on this device.
+                """
+                workers: Workers
+                """Subclass of AvdList with `str` items."""
+                mode: Mode | None
+                """Mode applicable to the workers."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        count: int | None | UndefinedType = Undefined,
+                        workers: Workers | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        RxQueue.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            count:
+                               Number of receive queues.
+                               The maximum value is determined by
+                               `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                               `platform` set on this device.
+                            workers: Subclass of AvdList with `str` items.
+                            mode: Mode applicable to the workers.
+
+                        """
+
+            class FlowTracking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
+                enabled: bool | None
+                name: str | None
+                """Flow tracker name as defined in flow_tracking_settings."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        FlowTracking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            name: Flow tracker name as defined in flow_tracking_settings.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "profile": {"type": str},
+                "name": {"type": str},
+                "description": {"type": str},
+                "ip_address": {"type": str},
+                "dhcp_ip": {"type": str},
+                "public_ip": {"type": str},
+                "encapsulation_dot1q_vlan": {"type": int},
+                "dhcp_accept_default_route": {"type": bool, "default": True},
+                "enabled": {"type": bool, "default": True},
+                "speed": {"type": str},
+                "receive_bandwidth": {"type": int},
+                "transmit_bandwidth": {"type": int},
+                "peer": {"type": str},
+                "peer_interface": {"type": str},
+                "peer_ip": {"type": str},
+                "bgp": {"type": Bgp},
+                "ipv4_acl_in": {"type": str},
+                "ipv4_acl_out": {"type": str},
+                "static_routes": {"type": StaticRoutes},
+                "qos_profile": {"type": str},
+                "wan_carrier": {"type": str},
+                "wan_circuit_id": {"type": str},
+                "connected_to_pathfinder": {"type": bool, "default": True},
+                "cv_pathfinder_internet_exit": {"type": CvPathfinderInternetExit},
+                "rx_queue": {"type": RxQueue},
+                "raw_eos_cli": {"type": str},
+                "flow_tracking": {"type": FlowTracking},
+                "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            }
+            profile: str | None
+            """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
+            name: str
+            """
+            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
+            For a
+            subinterface, the parent physical interface is automatically created.
+            """
+            description: str | None
+            """
+            Interface description.
+            If not set a default description will be configured with '[<peer>[
+            <peer_interface>]]'.
+            """
+            ip_address: str | None
+            """Node IPv4 address/Mask or 'dhcp'."""
+            dhcp_ip: str | None
+            """
+            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
+            IPv4 address
+            (without mask) to be allocated on the interface if known.
+            This is not rendered in the configuration
+            but can be used for substitution of 'interface_ip' in the Access-list
+            set under `ipv4_acl_in` and
+            `ipv4_acl_out`.
+            """
+            public_ip: str | None
+            """
+            Node IPv4 address (no mask).
+
+            This is used to get the public IP (if known) when the device is behind
+            NAT.
+            This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP
+            with the following preference:
+              `wan_route_servers.path_groups.interfaces.ip_address`
+                  ->
+            `l3_interfaces.public_ip`
+                      -> `l3_interfaces.ip_address`
+
+            The determined Public IP is used
+            by WAN routers when peering with this interface.
+            """
+            encapsulation_dot1q_vlan: int | None
+            """
+            For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
+            specified.
+            """
+            dhcp_accept_default_route: bool
+            """
+            Accept a default route from DHCP if `ip_address` is set to `dhcp`.
+
+            Default value: `True`
+            """
+            enabled: bool
+            """
+            Enable or Shutdown the interface.
+
+            Default value: `True`
+            """
+            speed: Speed | None
+            """Interface Speed."""
+            receive_bandwidth: int | None
+            """
+            Maximum allowed receive bandwidth (download) in Mbps for this interface.
+            This is currently used on
+            CVaaS to provide more information in the visualization.
+            """
+            transmit_bandwidth: int | None
+            """
+            Maximum allowed transmit bandwidth (upload) in Mbps for this interface.
+            This is currently used on
+            CVaaS to provide more information in the visualization.
+            """
+            peer: str | None
+            """The peer device name. Used for description and documentation."""
+            peer_interface: str | None
+            """The peer device interface. Used for description and documentation."""
+            peer_ip: str | None
+            """
+            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
+            and `ip` is an IP address.
+            """
+            bgp: Bgp
+            """
+            Enforce IPv4 BGP peering for the peer
+
+            Subclass of AvdModel.
+            """
+            ipv4_acl_in: str | None
+            """
+            Name of the IPv4 access-list to be assigned in the ingress direction.
+            The access-list must be
+            defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            Required
+            for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
+            `wan_carriers`.
+            """
+            ipv4_acl_out: str | None
+            """
+            Name of the IPv4 Access-list to be assigned in the egress direction.
+            The access-list must be defined
+            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
+            static_routes: StaticRoutes
+            """
+            Configure IPv4 static routes pointing to `peer_ip`.
+
+            Subclass of AvdList with `StaticRoutesItem`
+            items.
+            """
+            qos_profile: str | None
+            """QOS service profile."""
+            wan_carrier: str | None
+            """
+            The WAN carrier this interface is connected to.
+            This is used to infer the path-groups in which this
+            interface should be configured.
+            Unless the carrier is marked as 'trusted' under `wan_carriers`,
+            `ipv4_acl_in` is also required on all WAN interfaces.
+            """
+            wan_circuit_id: str | None
+            """
+            The WAN circuit ID for this interface.
+            This is not rendered in the configuration but used for WAN
+            designs.
+            """
+            connected_to_pathfinder: bool
+            """
+            For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.
+
+            Default value: `True`
+            """
+            cv_pathfinder_internet_exit: CvPathfinderInternetExit
+            """
+            PREVIEW: This key is in preview mode
+
+            Subclass of AvdModel.
+            """
+            rx_queue: RxQueue
+            """
+            Receive queue parameters for platform SFE interface profile.
+            This setting is ignored unless the
+            `platform_sfe_interface_profile.supported` is set as `true` under
+            `platform_settings.feature_support` for the `platform` set on this device.
+
+            Subclass of AvdModel.
+            """
+            raw_eos_cli: str | None
+            """EOS CLI rendered directly on the interface in the final EOS configuration."""
+            flow_tracking: FlowTracking
+            """
+            Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+            Subclass of AvdModel.
+            """
+            structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config for the Ethernet interface."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    profile: str | None | UndefinedType = Undefined,
+                    name: str | UndefinedType = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    ip_address: str | None | UndefinedType = Undefined,
+                    dhcp_ip: str | None | UndefinedType = Undefined,
+                    public_ip: str | None | UndefinedType = Undefined,
+                    encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
+                    dhcp_accept_default_route: bool | UndefinedType = Undefined,
+                    enabled: bool | UndefinedType = Undefined,
+                    speed: Speed | None | UndefinedType = Undefined,
+                    receive_bandwidth: int | None | UndefinedType = Undefined,
+                    transmit_bandwidth: int | None | UndefinedType = Undefined,
+                    peer: str | None | UndefinedType = Undefined,
+                    peer_interface: str | None | UndefinedType = Undefined,
+                    peer_ip: str | None | UndefinedType = Undefined,
+                    bgp: Bgp | UndefinedType = Undefined,
+                    ipv4_acl_in: str | None | UndefinedType = Undefined,
+                    ipv4_acl_out: str | None | UndefinedType = Undefined,
+                    static_routes: StaticRoutes | UndefinedType = Undefined,
+                    qos_profile: str | None | UndefinedType = Undefined,
+                    wan_carrier: str | None | UndefinedType = Undefined,
+                    wan_circuit_id: str | None | UndefinedType = Undefined,
+                    connected_to_pathfinder: bool | UndefinedType = Undefined,
+                    cv_pathfinder_internet_exit: CvPathfinderInternetExit | UndefinedType = Undefined,
+                    rx_queue: RxQueue | UndefinedType = Undefined,
+                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                    flow_tracking: FlowTracking | UndefinedType = Undefined,
+                    structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    L3InterfacesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
+                        name:
+                           Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
+                           For a
+                           subinterface, the parent physical interface is automatically created.
+                        description:
+                           Interface description.
+                           If not set a default description will be configured with '[<peer>[
+                           <peer_interface>]]'.
+                        ip_address: Node IPv4 address/Mask or 'dhcp'.
+                        dhcp_ip:
+                           When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
+                           IPv4 address
+                           (without mask) to be allocated on the interface if known.
+                           This is not rendered in the configuration
+                           but can be used for substitution of 'interface_ip' in the Access-list
+                           set under `ipv4_acl_in` and
+                           `ipv4_acl_out`.
+                        public_ip:
+                           Node IPv4 address (no mask).
+
+                           This is used to get the public IP (if known) when the device is behind
+                           NAT.
+                           This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP
+                           with the following preference:
+                             `wan_route_servers.path_groups.interfaces.ip_address`
+                                 ->
+                           `l3_interfaces.public_ip`
+                                     -> `l3_interfaces.ip_address`
+
+                           The determined Public IP is used
+                           by WAN routers when peering with this interface.
+                        encapsulation_dot1q_vlan:
+                           For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
+                           specified.
+                        dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
+                        enabled: Enable or Shutdown the interface.
+                        speed: Interface Speed.
+                        receive_bandwidth:
+                           Maximum allowed receive bandwidth (download) in Mbps for this interface.
+                           This is currently used on
+                           CVaaS to provide more information in the visualization.
+                        transmit_bandwidth:
+                           Maximum allowed transmit bandwidth (upload) in Mbps for this interface.
+                           This is currently used on
+                           CVaaS to provide more information in the visualization.
+                        peer: The peer device name. Used for description and documentation.
+                        peer_interface: The peer device interface. Used for description and documentation.
+                        peer_ip:
+                           The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
+                           and `ip` is an IP address.
+                        bgp:
+                           Enforce IPv4 BGP peering for the peer
+
+                           Subclass of AvdModel.
+                        ipv4_acl_in:
+                           Name of the IPv4 access-list to be assigned in the ingress direction.
+                           The access-list must be
+                           defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           Required
+                           for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
+                           `wan_carriers`.
+                        ipv4_acl_out:
+                           Name of the IPv4 Access-list to be assigned in the egress direction.
+                           The access-list must be defined
+                           under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        static_routes:
+                           Configure IPv4 static routes pointing to `peer_ip`.
+
+                           Subclass of AvdList with `StaticRoutesItem`
+                           items.
+                        qos_profile: QOS service profile.
+                        wan_carrier:
+                           The WAN carrier this interface is connected to.
+                           This is used to infer the path-groups in which this
+                           interface should be configured.
+                           Unless the carrier is marked as 'trusted' under `wan_carriers`,
+                           `ipv4_acl_in` is also required on all WAN interfaces.
+                        wan_circuit_id:
+                           The WAN circuit ID for this interface.
+                           This is not rendered in the configuration but used for WAN
+                           designs.
+                        connected_to_pathfinder: For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.
+                        cv_pathfinder_internet_exit:
+                           PREVIEW: This key is in preview mode
+
+                           Subclass of AvdModel.
+                        rx_queue:
+                           Receive queue parameters for platform SFE interface profile.
+                           This setting is ignored unless the
+                           `platform_sfe_interface_profile.supported` is set as `true` under
+                           `platform_settings.feature_support` for the `platform` set on this device.
+
+                           Subclass of AvdModel.
+                        raw_eos_cli: EOS CLI rendered directly on the interface in the final EOS configuration.
+                        flow_tracking:
+                           Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+                           Subclass of AvdModel.
+                        structured_config: Custom structured config for the Ethernet interface.
+
+                    """
+
+        class L3Interfaces(AvdIndexedList[str, L3InterfacesItem]):
+            """Subclass of AvdIndexedList with `L3InterfacesItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        L3Interfaces._item_type = L3InterfacesItem
+
+        class L3PortChannelsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Mode: TypeAlias = Literal["active", "passive", "on"]
+
+            class MemberInterfacesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                Speed: TypeAlias = Literal[
+                    "100full",
+                    "100g",
+                    "100g-1",
+                    "100g-2",
+                    "100g-4",
+                    "100half",
+                    "10full",
+                    "10g",
+                    "10half",
+                    "1g",
+                    "200g",
+                    "200g-2",
+                    "200g-4",
+                    "25g",
+                    "400g",
+                    "400g-4",
+                    "400g-8",
+                    "40g",
+                    "50g",
+                    "50g-1",
+                    "50g-2",
+                    "800g-8",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
+                    "auto",
+                    "auto 10000full",
+                    "auto 1000full",
+                    "auto 100full",
+                    "auto 100g-1",
+                    "auto 100g-2",
+                    "auto 100g-4",
+                    "auto 100gfull",
+                    "auto 100half",
+                    "auto 10full",
+                    "auto 10gfull",
+                    "auto 10half",
+                    "auto 1gfull",
+                    "auto 2.5gfull",
+                    "auto 200g-2",
+                    "auto 200g-4",
+                    "auto 25gfull",
+                    "auto 400g-4",
+                    "auto 400g-8",
+                    "auto 40gfull",
+                    "auto 50g-1",
+                    "auto 50g-2",
+                    "auto 50gfull",
+                    "auto 5gfull",
+                    "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
+                    "forced 10000full",
+                    "forced 1000full",
+                    "forced 1000half",
+                    "forced 100full",
+                    "forced 100gfull",
+                    "forced 100half",
+                    "forced 10full",
+                    "forced 10half",
+                    "forced 25gfull",
+                    "forced 40gfull",
+                    "forced 50gfull",
+                ]
+
+                class RxQueue(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Workers(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    Workers._item_type = str
+
+                    Mode: TypeAlias = Literal["shared", "exclusive"]
+                    _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                    count: int | None
+                    """
+                    Number of receive queues.
+                    The maximum value is determined by
+                    `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                    `platform` set on this device.
+                    """
+                    workers: Workers
+                    """Subclass of AvdList with `str` items."""
+                    mode: Mode | None
+                    """Mode applicable to the workers."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            count: int | None | UndefinedType = Undefined,
+                            workers: Workers | UndefinedType = Undefined,
+                            mode: Mode | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            RxQueue.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                count:
+                                   Number of receive queues.
+                                   The maximum value is determined by
+                                   `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                   `platform` set on this device.
+                                workers: Subclass of AvdList with `str` items.
+                                mode: Mode applicable to the workers.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "description": {"type": str},
+                    "peer": {"type": str},
+                    "peer_interface": {"type": str},
+                    "speed": {"type": str},
+                    "rx_queue": {"type": RxQueue},
+                    "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                }
+                name: str
+                """
+                Ethernet interface name like 'Ethernet2'.
+                Member interface cannot be subinterface.
+                """
+                description: str | None
+                """
+                Interface description for this member.
+                If not set, a default description will be configured with
+                '[<peer>[ <peer_interface>]]'.
+                """
+                peer: str | None
+                """
+                The peer device name. Used for description and documentation.
+                If not set, this inherits the peer
+                setting on the port-channel interface.
+                """
+                peer_interface: str | None
+                """The peer device interface. Used for description and documentation."""
+                speed: Speed | None
+                """Interface Speed."""
+                rx_queue: RxQueue
+                """
+                Receive queue parameters for platform SFE interface profile.
+                This setting is ignored unless the
+                `platform_sfe_interface_profile.supported` is set as `true` under
+                `platform_settings.feature_support` for the `platform` set on this device.
+
+                Subclass of AvdModel.
+                """
+                structured_config: EosCliConfigGen.EthernetInterfacesItem
+                """Custom structured config for the member ethernet interface."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        description: str | None | UndefinedType = Undefined,
+                        peer: str | None | UndefinedType = Undefined,
+                        peer_interface: str | None | UndefinedType = Undefined,
+                        speed: Speed | None | UndefinedType = Undefined,
+                        rx_queue: RxQueue | UndefinedType = Undefined,
+                        structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        MemberInterfacesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name:
+                               Ethernet interface name like 'Ethernet2'.
+                               Member interface cannot be subinterface.
+                            description:
+                               Interface description for this member.
+                               If not set, a default description will be configured with
+                               '[<peer>[ <peer_interface>]]'.
+                            peer:
+                               The peer device name. Used for description and documentation.
+                               If not set, this inherits the peer
+                               setting on the port-channel interface.
+                            peer_interface: The peer device interface. Used for description and documentation.
+                            speed: Interface Speed.
+                            rx_queue:
+                               Receive queue parameters for platform SFE interface profile.
+                               This setting is ignored unless the
+                               `platform_sfe_interface_profile.supported` is set as `true` under
+                               `platform_settings.feature_support` for the `platform` set on this device.
+
+                               Subclass of AvdModel.
+                            structured_config: Custom structured config for the member ethernet interface.
+
+                        """
+
+            class MemberInterfaces(AvdIndexedList[str, MemberInterfacesItem]):
+                """Subclass of AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            MemberInterfaces._item_type = MemberInterfacesItem
+
+            class Bgp(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"peer_as": {"type": str}, "ipv4_prefix_list_in": {"type": str}, "ipv4_prefix_list_out": {"type": str}}
+                peer_as: str
+                """
+                BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                For asdot notation in
+                YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                number.
+                """
+                ipv4_prefix_list_in: str | None
+                """
+                Prefix List Name. Accept routes for only these prefixes from the peer.
+                Required for wan interfaces.
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                """
+                ipv4_prefix_list_out: str | None
+                """
+                Prefix List Name. Advertise routes for only these prefixes.
+                If not specified, nothing would be
+                advertised.
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        peer_as: str | UndefinedType = Undefined,
+                        ipv4_prefix_list_in: str | None | UndefinedType = Undefined,
+                        ipv4_prefix_list_out: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Bgp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            peer_as:
+                               BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                               For asdot notation in
+                               YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                               number.
+                            ipv4_prefix_list_in:
+                               Prefix List Name. Accept routes for only these prefixes from the peer.
+                               Required for wan interfaces.
+                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+                            ipv4_prefix_list_out:
+                               Prefix List Name. Advertise routes for only these prefixes.
+                               If not specified, nothing would be
+                               advertised.
+                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
+
+                        """
+
+            class StaticRoutesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"prefix": {"type": str}}
+                prefix: str
+                """IPv4_network/Mask."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, prefix: str | UndefinedType = Undefined) -> None:
+                        """
+                        StaticRoutesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            prefix: IPv4_network/Mask.
+
+                        """
+
+            class StaticRoutes(AvdIndexedList[str, StaticRoutesItem]):
+                """Subclass of AvdIndexedList with `StaticRoutesItem` items. Primary key is `prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "prefix"
+
+            StaticRoutes._item_type = StaticRoutesItem
+
+            class FlowTracking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
+                enabled: bool | None
+                name: str | None
+                """Flow tracker name as defined in flow_tracking_settings."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        FlowTracking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            name: Flow tracker name as defined in flow_tracking_settings.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "description": {"type": str},
+                "mode": {"type": str, "default": "active"},
+                "member_interfaces": {"type": MemberInterfaces},
+                "ip_address": {"type": str},
+                "dhcp_ip": {"type": str},
+                "public_ip": {"type": str},
+                "encapsulation_dot1q_vlan": {"type": int},
+                "dhcp_accept_default_route": {"type": bool, "default": True},
+                "enabled": {"type": bool, "default": True},
+                "peer": {"type": str},
+                "peer_port_channel": {"type": str},
+                "peer_ip": {"type": str},
+                "bgp": {"type": Bgp},
+                "ipv4_acl_in": {"type": str},
+                "ipv4_acl_out": {"type": str},
+                "static_routes": {"type": StaticRoutes},
+                "qos_profile": {"type": str},
+                "wan_carrier": {"type": str},
+                "wan_circuit_id": {"type": str},
+                "connected_to_pathfinder": {"type": bool, "default": True},
+                "raw_eos_cli": {"type": str},
+                "flow_tracking": {"type": FlowTracking},
+                "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+            }
+            name: str
+            """
+            Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
+            For a
+            Port-Channel subinterface, the parent Port-Channel interface must be defined as well.
+            """
+            description: str | None
+            """
+            Interface description.
+            If not set, a default description will be configured with '[<peer>[
+            <peer_port_channel>]]'.
+            """
+            mode: Mode
+            """
+            Port-Channel mode.
+            Should not be set on Port-Channel subinterfaces.
+
+            Default value: `"active"`
+            """
+            member_interfaces: MemberInterfaces
+            """
+            Port-Channel member interfaces.
+            Should not be set on Port-Channel subinterfaces.
+
+            Subclass of
+            AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
+            """
+            ip_address: str | None
+            """Node IPv4 address/Mask or 'dhcp'."""
+            dhcp_ip: str | None
+            """
+            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
+            IPv4 address
+            (without mask) to be allocated on the interface if known.
+            This is not rendered in the configuration
+            but can be used for substitution of 'interface_ip' in the Access-list
+            set under `ipv4_acl_in` and
+            `ipv4_acl_out`.
+            """
+            public_ip: str | None
+            """
+            Node IPv4 address (no mask).
+
+            This is used to get the public IP (if known) when the device is behind
+            NAT.
+            This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP
+            with the following preference:
+              `wan_route_servers.path_groups.interfaces.ip_address`
+                  ->
+            `l3_port_channels.public_ip`
+                      -> `l3_port_channels.ip_address`
+
+            The determined Public IP is
+            used by WAN routers when peering with this interface.
+            """
+            encapsulation_dot1q_vlan: int | None
+            """
+            For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
+            specified.
+            """
+            dhcp_accept_default_route: bool
+            """
+            Accept a default route from DHCP if `ip_address` is set to `dhcp`.
+
+            Default value: `True`
+            """
+            enabled: bool
+            """
+            Enable or Shutdown the interface.
+
+            Default value: `True`
+            """
+            peer: str | None
+            """The peer device name. Used for description and documentation."""
+            peer_port_channel: str | None
+            """The peer device port-channel interface. Used for description and documentation."""
+            peer_ip: str | None
+            """
+            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
+            and `ip` is an IP address.
+            """
+            bgp: Bgp
+            """
+            Enforce IPv4 BGP peering for the peer
+
+            Subclass of AvdModel.
+            """
+            ipv4_acl_in: str | None
+            """
+            Name of the IPv4 access-list to be assigned in the ingress direction.
+            The access-list must be
+            defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            Required
+            for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
+            `wan_carriers`.
+            """
+            ipv4_acl_out: str | None
+            """
+            Name of the IPv4 Access-list to be assigned in the egress direction.
+            The access-list must be defined
+            under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+            """
+            static_routes: StaticRoutes
+            """
+            Configure IPv4 static routes pointing to `peer_ip`.
+
+            Subclass of AvdIndexedList with
+            `StaticRoutesItem` items. Primary key is `prefix` (`str`).
+            """
+            qos_profile: str | None
+            """QOS service profile."""
+            wan_carrier: str | None
+            """
+            The WAN carrier this interface is connected to.
+            This is used to infer the path-groups in which this
+            interface should be configured.
+            Unless the carrier is marked as 'trusted' under `wan_carriers`,
+            `ipv4_acl_in` is also required on all WAN interfaces.
+            """
+            wan_circuit_id: str | None
+            """
+            The WAN circuit ID for this interface.
+            This is not rendered in the configuration but used for WAN
+            designs.
+            """
+            connected_to_pathfinder: bool
+            """
+            For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.
+
+            Default value: `True`
+            """
+            raw_eos_cli: str | None
+            """EOS CLI rendered directly on the Port-Channel interface in the final EOS configuration."""
+            flow_tracking: FlowTracking
+            """
+            Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_port_channels`
+            setting.
+
+            Subclass of AvdModel.
+            """
+            structured_config: EosCliConfigGen.PortChannelInterfacesItem
+            """Custom structured config for the Port-Channel interface."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    mode: Mode | UndefinedType = Undefined,
+                    member_interfaces: MemberInterfaces | UndefinedType = Undefined,
+                    ip_address: str | None | UndefinedType = Undefined,
+                    dhcp_ip: str | None | UndefinedType = Undefined,
+                    public_ip: str | None | UndefinedType = Undefined,
+                    encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
+                    dhcp_accept_default_route: bool | UndefinedType = Undefined,
+                    enabled: bool | UndefinedType = Undefined,
+                    peer: str | None | UndefinedType = Undefined,
+                    peer_port_channel: str | None | UndefinedType = Undefined,
+                    peer_ip: str | None | UndefinedType = Undefined,
+                    bgp: Bgp | UndefinedType = Undefined,
+                    ipv4_acl_in: str | None | UndefinedType = Undefined,
+                    ipv4_acl_out: str | None | UndefinedType = Undefined,
+                    static_routes: StaticRoutes | UndefinedType = Undefined,
+                    qos_profile: str | None | UndefinedType = Undefined,
+                    wan_carrier: str | None | UndefinedType = Undefined,
+                    wan_circuit_id: str | None | UndefinedType = Undefined,
+                    connected_to_pathfinder: bool | UndefinedType = Undefined,
+                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                    flow_tracking: FlowTracking | UndefinedType = Undefined,
+                    structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    L3PortChannelsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name:
+                           Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
+                           For a
+                           Port-Channel subinterface, the parent Port-Channel interface must be defined as well.
+                        description:
+                           Interface description.
+                           If not set, a default description will be configured with '[<peer>[
+                           <peer_port_channel>]]'.
+                        mode:
+                           Port-Channel mode.
+                           Should not be set on Port-Channel subinterfaces.
+                        member_interfaces:
+                           Port-Channel member interfaces.
+                           Should not be set on Port-Channel subinterfaces.
+
+                           Subclass of
+                           AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
+                        ip_address: Node IPv4 address/Mask or 'dhcp'.
+                        dhcp_ip:
+                           When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
+                           IPv4 address
+                           (without mask) to be allocated on the interface if known.
+                           This is not rendered in the configuration
+                           but can be used for substitution of 'interface_ip' in the Access-list
+                           set under `ipv4_acl_in` and
+                           `ipv4_acl_out`.
+                        public_ip:
+                           Node IPv4 address (no mask).
+
+                           This is used to get the public IP (if known) when the device is behind
+                           NAT.
+                           This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP
+                           with the following preference:
+                             `wan_route_servers.path_groups.interfaces.ip_address`
+                                 ->
+                           `l3_port_channels.public_ip`
+                                     -> `l3_port_channels.ip_address`
+
+                           The determined Public IP is
+                           used by WAN routers when peering with this interface.
+                        encapsulation_dot1q_vlan:
+                           For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
+                           specified.
+                        dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
+                        enabled: Enable or Shutdown the interface.
+                        peer: The peer device name. Used for description and documentation.
+                        peer_port_channel: The peer device port-channel interface. Used for description and documentation.
+                        peer_ip:
+                           The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true
+                           and `ip` is an IP address.
+                        bgp:
+                           Enforce IPv4 BGP peering for the peer
+
+                           Subclass of AvdModel.
+                        ipv4_acl_in:
+                           Name of the IPv4 access-list to be assigned in the ingress direction.
+                           The access-list must be
+                           defined under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                           Required
+                           for all WAN interfaces (`wan_carrier` is set) unless the carrier is marked as 'trusted' under
+                           `wan_carriers`.
+                        ipv4_acl_out:
+                           Name of the IPv4 Access-list to be assigned in the egress direction.
+                           The access-list must be defined
+                           under `ipv4_acls` and supports field substitution for "interface_ip" and "peer_ip".
+                        static_routes:
+                           Configure IPv4 static routes pointing to `peer_ip`.
+
+                           Subclass of AvdIndexedList with
+                           `StaticRoutesItem` items. Primary key is `prefix` (`str`).
+                        qos_profile: QOS service profile.
+                        wan_carrier:
+                           The WAN carrier this interface is connected to.
+                           This is used to infer the path-groups in which this
+                           interface should be configured.
+                           Unless the carrier is marked as 'trusted' under `wan_carriers`,
+                           `ipv4_acl_in` is also required on all WAN interfaces.
+                        wan_circuit_id:
+                           The WAN circuit ID for this interface.
+                           This is not rendered in the configuration but used for WAN
+                           designs.
+                        connected_to_pathfinder: For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.
+                        raw_eos_cli: EOS CLI rendered directly on the Port-Channel interface in the final EOS configuration.
+                        flow_tracking:
+                           Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_port_channels`
+                           setting.
+
+                           Subclass of AvdModel.
+                        structured_config: Custom structured config for the Port-Channel interface.
+
+                    """
+
+        class L3PortChannels(AvdIndexedList[str, L3PortChannelsItem]):
+            """Subclass of AvdIndexedList with `L3PortChannelsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        L3PortChannels._item_type = L3PortChannelsItem
+
+        FlowTrackerType: TypeAlias = Literal["sampled", "hardware"]
+
+        class UnderlayMulticast(AvdModel):
+            """Subclass of AvdModel."""
+
+            class PimSm(AvdModel):
+                """Subclass of AvdModel."""
+
+                class UplinkInterfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                UplinkInterfaces._item_type = str
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool},
+                    "uplinks": {"type": bool, "default": True},
+                    "uplink_interfaces": {"type": UplinkInterfaces},
+                    "mlag": {"type": bool, "default": True},
+                }
+                enabled: bool | None
+                """
+                When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                on all:
+                  - P2P uplink interfaces if enabled on uplink peer
+                  - MLAG L3 peer interface if also
+                enabled on MLAG peer
+                  - l3_edge and core interfaces
+                Overrides the global
+                `underlay_multicast_pim_sm`.
+                """
+                uplinks: bool
+                """
+                Enable/Disable PIM sparse-mode on uplinks.
+                Requires node setting `underlay_multicast.pim_sm.enabled:
+                true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                Default value: `True`
+                """
+                uplink_interfaces: UplinkInterfaces
+                """
+                Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                Effective only when
+                node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                Subclass of AvdList with `str` items.
+                """
+                mlag: bool
+                """
+                Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                Default value: `True`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        uplinks: bool | UndefinedType = Undefined,
+                        uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                        mlag: bool | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PimSm.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled:
+                               When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                               on all:
+                                 - P2P uplink interfaces if enabled on uplink peer
+                                 - MLAG L3 peer interface if also
+                               enabled on MLAG peer
+                                 - l3_edge and core interfaces
+                               Overrides the global
+                               `underlay_multicast_pim_sm`.
+                            uplinks:
+                               Enable/Disable PIM sparse-mode on uplinks.
+                               Requires node setting `underlay_multicast.pim_sm.enabled:
+                               true` or, if unset, global `underlay_multicast_pim_sm: true`
+                            uplink_interfaces:
+                               Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                               Effective only when
+                               node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                               Subclass of AvdList with `str` items.
+                            mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                        """
+
+            class Static(AvdModel):
+                """Subclass of AvdModel."""
+
+                class UplinkInterfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                UplinkInterfaces._item_type = str
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool},
+                    "uplinks": {"type": bool, "default": True},
+                    "uplink_interfaces": {"type": UplinkInterfaces},
+                    "mlag": {"type": bool, "default": True},
+                }
+                enabled: bool | None
+                """
+                When enabled, configures multicast routing and by default configures static multicast in the
+                underlay on all:
+                  - P2P uplink interfaces if enabled on uplink peer
+                  - MLAG L3 peer interface if
+                also enabled on MLAG peer
+                  - l3_edge and core interfaces
+                Overrides the global
+                `underlay_multicast_static`.
+                """
+                uplinks: bool
+                """
+                Enable/Disable static multicast on uplinks.
+                Requires node setting
+                `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                Default value: `True`
+                """
+                uplink_interfaces: UplinkInterfaces
+                """
+                Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                Effective
+                only when node settings `underlay_multicast.static.uplinks: true`.
+
+                Subclass of AvdList with `str`
+                items.
+                """
+                mlag: bool
+                """
+                Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                Default value: `True`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        uplinks: bool | UndefinedType = Undefined,
+                        uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                        mlag: bool | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Static.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled:
+                               When enabled, configures multicast routing and by default configures static multicast in the
+                               underlay on all:
+                                 - P2P uplink interfaces if enabled on uplink peer
+                                 - MLAG L3 peer interface if
+                               also enabled on MLAG peer
+                                 - l3_edge and core interfaces
+                               Overrides the global
+                               `underlay_multicast_static`.
+                            uplinks:
+                               Enable/Disable static multicast on uplinks.
+                               Requires node setting
+                               `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                            uplink_interfaces:
+                               Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                               Effective
+                               only when node settings `underlay_multicast.static.uplinks: true`.
+
+                               Subclass of AvdList with `str`
+                               items.
+                            mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                        """
+
+            _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+            pim_sm: PimSm
+            """Subclass of AvdModel."""
+            static: Static
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                    """
+                    UnderlayMulticast.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        pim_sm: Subclass of AvdModel.
+                        static: Subclass of AvdModel.
+
+                    """
+
+        class DigitalTwin(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
+            act_os_version: str | None
+            """
+            Desired ACT Digital Twin OS version.
+            Overrides global `digital_twin.fabric.act_os_version` flag.
+            """
+            mgmt_ip: str | None
+            """Desired management interface IPv4 address."""
+            act_internet_access: bool | None
+            """
+            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+            This option
+            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+            types.
+            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+            Overrides
+            global `digital_twin.fabric.act_internet_access` flag.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    act_os_version: str | None | UndefinedType = Undefined,
+                    mgmt_ip: str | None | UndefinedType = Undefined,
+                    act_internet_access: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    DigitalTwin.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        act_os_version:
+                           Desired ACT Digital Twin OS version.
+                           Overrides global `digital_twin.fabric.act_os_version` flag.
+                        mgmt_ip: Desired management interface IPv4 address.
+                        act_internet_access:
+                           Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                           This option
+                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                           types.
+                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                           Overrides
+                           global `digital_twin.fabric.act_internet_access` flag.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "profile": {"type": str},
+            "type": {"type": str},
+            "mlag_group": {"type": str},
+            "name": {"type": str},
+            "downlink_pools": {"type": DownlinkPools},
+            "id": {"type": int},
+            "platform": {"type": str},
+            "mac_address": {"type": str},
+            "system_mac_address": {"type": str},
+            "serial_number": {"type": str},
+            "rack": {"type": str},
+            "mgmt_ip": {"type": str},
+            "mgmt_gateway": {"type": str},
+            "ipv6_mgmt_ip": {"type": str},
+            "ipv6_mgmt_gateway": {"type": str},
+            "mgmt_interface": {"type": str},
+            "link_tracking": {"type": LinkTracking},
+            "lacp_port_id_range": {"type": LacpPortIdRange},
+            "always_configure_ip_routing": {"type": bool, "default": False},
+            "raw_eos_cli": {"type": str},
+            "structured_config": {"type": EosCliConfigGen},
+            "uplink_type": {"type": str},
+            "uplink_ipv4_pool": {"type": str},
+            "uplink_ipv6_pool": {"type": str},
+            "uplink_interfaces": {"type": UplinkInterfaces},
+            "uplink_switch_interfaces": {"type": UplinkSwitchInterfaces},
+            "uplink_switches": {"type": UplinkSwitches},
+            "uplink_interface_speed": {"type": str},
+            "uplink_switch_interface_speed": {"type": str},
+            "uplink_mtu": {"type": int},
+            "max_uplink_switches": {"type": int},
+            "max_parallel_uplinks": {"type": int, "default": 1},
+            "uplink_bfd": {"type": bool, "default": False},
+            "uplink_native_vlan": {"type": int},
+            "uplink_ptp": {"type": UplinkPtp},
+            "uplink_macsec": {"type": UplinkMacsec},
+            "uplink_port_channel_id": {"type": int},
+            "uplink_switch_port_channel_id": {"type": int},
+            "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+            "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+            "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+            "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
+            "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
+            "short_esi": {"type": str},
+            "isis_system_id_prefix": {"type": str},
+            "isis_maximum_paths": {"type": int},
+            "is_type": {"type": str},
+            "node_sid_base": {"type": int, "default": 0},
+            "loopback_ipv4_pool": {"type": str},
+            "loopback_ipv4_address": {"type": str},
+            "vtep_loopback_ipv4_pool": {"type": str},
+            "vtep_loopback_ipv6_pool": {"type": str},
+            "vtep_loopback_ipv4_address": {"type": str},
+            "vtep_loopback_ipv6_address": {"type": str},
+            "loopback_ipv4_offset": {"type": int, "default": 0},
+            "router_id_pool": {"type": str},
+            "loopback_ipv6_pool": {"type": str},
+            "loopback_ipv6_offset": {"type": int, "default": 0},
+            "vtep": {"type": bool},
+            "vtep_loopback": {"type": str},
+            "bgp_as": {"type": str},
+            "bgp_defaults": {"type": BgpDefaults},
+            "evpn_role": {"type": str},
+            "evpn_route_servers": {"type": EvpnRouteServers},
+            "evpn_services_l2_only": {"type": bool, "default": False},
+            "filter": {"type": Filter},
+            "igmp_snooping_enabled": {"type": bool},
+            "evpn_gateway": {"type": EvpnGateway},
+            "ipvpn_gateway": {"type": IpvpnGateway},
+            "mlag": {"type": bool, "default": True},
+            "mlag_dual_primary_detection": {"type": bool, "default": False},
+            "mlag_ibgp_origin_incomplete": {"type": bool, "default": True},
+            "mlag_interfaces": {"type": MlagInterfaces},
+            "mlag_interfaces_speed": {"type": str},
+            "mlag_peer_l3_vlan": {"type": int, "default": 4093},
+            "mlag_peer_l3_ipv4_pool": {"type": str},
+            "mlag_peer_l3_ipv6_pool": {"type": str},
+            "mlag_peer_vlan": {"type": int, "default": 4094},
+            "mlag_peer_link_allowed_vlans": {"type": str},
+            "mlag_peer_address_family": {"type": str, "default": "ipv4"},
+            "mlag_peer_ipv4_pool": {"type": str},
+            "mlag_peer_ipv6_pool": {"type": str},
+            "mlag_port_channel_id": {"type": int},
+            "mlag_domain_id": {"type": str},
+            "spanning_tree_mode": {"type": str},
+            "spanning_tree_priority": {"type": int, "default": 32768},
+            "spanning_tree_root_super": {"type": bool, "default": False},
+            "spanning_tree_mst_pvst_boundary": {"type": bool},
+            "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
+            "virtual_router_mac_address": {"type": str},
+            "inband_mgmt_interface": {"type": str},
+            "inband_mgmt_vlan": {"type": int, "default": 4092},
+            "inband_mgmt_subnet": {"type": str},
+            "inband_mgmt_subnet_offset": {"type": int, "default": 0},
+            "inband_mgmt_ip": {"type": str},
+            "inband_mgmt_gateway": {"type": str},
+            "inband_mgmt_ipv6_address": {"type": str},
+            "inband_mgmt_ipv6_subnet": {"type": str},
+            "inband_mgmt_ipv6_gateway": {"type": str},
+            "inband_mgmt_description": {"type": str, "default": "Inband Management"},
+            "inband_mgmt_vlan_name": {"type": str, "default": "INBAND_MGMT"},
+            "inband_mgmt_vrf": {"type": str, "default": "default"},
+            "inband_mgmt_mtu": {"type": int, "default": 1500},
+            "inband_ztp": {"type": bool, "default": False},
+            "inband_ztp_lacp_fallback_delay": {"type": int, "default": 30},
+            "mpls_overlay_role": {"type": str},
+            "overlay_address_families": {"type": OverlayAddressFamilies},
+            "mpls_route_reflectors": {"type": MplsRouteReflectors},
+            "bgp_cluster_id": {"type": str},
+            "ptp": {"type": Ptp},
+            "wan_role": {"type": str},
+            "cv_pathfinder_transit_mode": {"type": str},
+            "cv_pathfinder_region": {"type": str},
+            "cv_pathfinder_site": {"type": str},
+            "wan_ha": {"type": WanHa},
+            "dps_mss_ipv4": {"type": str, "default": "auto"},
+            "l3_interfaces": {"type": L3Interfaces},
+            "l3_port_channels": {"type": L3PortChannels},
+            "data_plane_cpu_allocation_max": {"type": int},
+            "flow_tracker_type": {"type": str},
+            "underlay_multicast": {"type": UnderlayMulticast},
+            "campus": {"type": str},
+            "campus_pod": {"type": str},
+            "campus_access_pod": {"type": str},
+            "cv_tags_topology_type": {"type": str},
+            "digital_twin": {"type": DigitalTwin},
+        }
+        profile: str | None
+        """
+        Inherit settings from a profile defined under `device_profiles`.
+        Max two levels of profile
+        inheritance: device -> profile -> parent_profile
+        This takes precedence over the global
+        `device_profile` key.
+        """
+        type: str | None
+        """
+        Set the type of the device as defined under `node_type_keys`.
+        This takes precedence over the global
+        `type` key.
+        """
+        mlag_group: str | None
+        """
+        Name of MLAG group. Exactly two devices must share the same mlag_group.
+        The group is used for
+        creating MLAG Pairs, for port-channel descriptions on peers and for MLAG domain-id (unless
+        mlag_domain_id is set).
+        """
+        name: str
+        """The Node Name is used as "hostname"."""
+        downlink_pools: DownlinkPools
+        """
+        IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined
+        with `uplink_ipv4_pool` set on the downlink switch.
+
+        Subclass of AvdList with `DownlinkPoolsItem`
+        items.
+        """
+        id: int | None
+        """Unique identifier used for IP addressing and other algorithms."""
+        platform: str | None
+        """Arista platform family."""
+        mac_address: str | None
+        """Leverage to document management interface mac address."""
+        system_mac_address: str | None
+        """
+        System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".
+        Set to the same MAC address as
+        available in "show version" on the device.
+        "system_mac_address" can also be set directly as a
+        hostvar.
+        If both are set, the setting under node type settings takes precedence.
+        """
+        serial_number: str | None
+        """
+        Set to the Serial Number of the device.
+        Only used for documentation purpose in the fabric
+        documentation and part of the structured_config.
+        "serial_number" can also be set directly as a
+        hostvar.
+        If both are set, the setting under node type settings takes precedence.
+        """
+        rack: str | None
+        """Rack that the switch is located in (only used in snmp_settings location)."""
+        mgmt_ip: str | None
+        """Node management interface IPv4 address."""
+        mgmt_gateway: str | None
+        """
+        This key sets the management gateway for the device. It takes precedence over the global
+        `mgmt_gateway`.
+        """
+        ipv6_mgmt_ip: str | None
+        """Node management interface IPv6 address."""
+        ipv6_mgmt_gateway: str | None
+        """
+        This key sets the ipv6 management gateway for the device. It takes precedence over the global
+        `ipv6_mgmt_gateway`.
+        """
+        mgmt_interface: str | None
+        """
+        Management Interface Name.
+        Default -> platform_management_interface -> mgmt_interface ->
+        "Management1".
+        """
+        link_tracking: LinkTracking
+        """
+        This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as
+        the upstream interfaces.
+        Useful in EVPN multhoming designs.
+
+
+        Subclass of AvdModel.
+        """
+        lacp_port_id_range: LacpPortIdRange
+        """
+        This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the
+        number of nodes in the "node_group".
+        Unique LACP port-id ranges are recommended for EVPN Multihoming
+        designs.
+
+
+        Subclass of AvdModel.
+        """
+        always_configure_ip_routing: bool
+        """
+        Force configuration of "ip routing" even on L2 devices.
+        Use this to retain behavior of AVD versions
+        below 4.0.0.
+
+        Default value: `False`
+        """
+        raw_eos_cli: str | None
+        """EOS CLI rendered directly on the root level of the final EOS configuration."""
+        structured_config: EosCliConfigGen
+        """Custom structured config for eos_cli_config_gen."""
+        uplink_type: UplinkType | None
+        """
+        Override the default `uplink_type` set at the `node_type_key` level.
+        `uplink_type` must be "p2p" if
+        `vtep` or `underlay_router` is true for the `node_type_key` definition.
+        """
+        uplink_ipv4_pool: str | None
+        """
+        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+        IPv4
+        subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+        uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+        """
+        uplink_ipv6_pool: str | None
+        """
+        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+        IPv6
+        subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+        uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+        """
+        uplink_interfaces: UplinkInterfaces
+        """
+        Local uplink interfaces.
+        Each list item supports range syntax that can be expanded into a list of
+        interfaces.
+        If uplink_interfaces is not defined, platform-specific defaults (defined under
+        default_interfaces) will be used instead.
+        Please note that default_interfaces are not defined by
+        default, you should define these yourself.
+
+
+        Subclass of AvdList with `str` items.
+        """
+        uplink_switch_interfaces: UplinkSwitchInterfaces
+        """
+        Interfaces located on uplink switches.
+
+        Subclass of AvdList with `str` items.
+        """
+        uplink_switches: UplinkSwitches
+        """Subclass of AvdList with `str` items."""
+        uplink_interface_speed: UplinkInterfaceSpeed | None
+        """
+        Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
+        (Uplink switch
+        interface speed can be overridden with `uplink_switch_interface_speed`).
+        Speed should be set in the
+        format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+        """
+        uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None
+        """Set point-to-Point interface speed for the uplink switch interface only."""
+        uplink_mtu: int | None
+        """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
+        max_uplink_switches: int | None
+        """
+        Maximum number of uplink switches.
+        Changing this value may change IP Addressing on uplinks.
+        Can be
+        used to reserve IP space for future expansions.
+        """
+        max_parallel_uplinks: int
+        """
+        Number of parallel links towards uplink switches.
+        Changing this value may change interface naming on
+        uplinks (and corresponding downlinks).
+        Can be used to reserve interfaces for future parallel
+        uplinks.
+
+        Default value: `1`
+        """
+        uplink_bfd: bool
+        """
+        Enable bfd on uplink interfaces.
+
+        Default value: `False`
+        """
+        uplink_native_vlan: int | None
+        """
+        Only applicable to switches with layer-2 port-channel uplinks.
+        A suspended (disabled) vlan will be
+        created in both ends of the link unless the vlan is defined under network services.
+        By default the
+        uplink will not have a native_vlan configured, so EOS defaults to vlan 1.
+        """
+        uplink_ptp: UplinkPtp
+        """
+        Enable PTP on all infrastructure links.
+
+        Subclass of AvdModel.
+        """
+        uplink_macsec: UplinkMacsec
+        """
+        Enable MacSec on all uplinks.
+
+        Subclass of AvdModel.
+        """
+        uplink_port_channel_id: int | None
+        """
+        Only applicable for L2 switches with `uplink_type: port-channel`.
+        By default the uplink Port-channel
+        ID will be set to the number of the lowest member interface defined under `uplink_interfaces`.
+        For
+        example:
+          member ports [ Eth22, Eth23 ] -> ID 22
+          member ports [ Eth11/1, Eth22/1 ] -> ID 111
+        For
+        MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.
+        This
+        option overrides the default behavior and statically sets the local Port-channel ID.
+        Note! Make sure
+        the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.
+        Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same
+        value.
+        """
+        uplink_switch_port_channel_id: int | None
+        """
+        Only applicable for L2 switches with `uplink_type: port-channel`.
+        By default the uplink switch Port-
+        channel ID will be set to the number of the first interface defined under
+        `uplink_switch_interfaces`.
+        For example:
+          member ports [ Eth22, Eth23 ] -> ID 22
+          member ports [
+        Eth11/1, Eth22/1 ] -> ID 111
+        For MLAG port-channels ID will be based on the lowest member interface
+        on the first MLAG switch.
+        This option overrides the default behavior and statically sets the Port-
+        channel ID on the uplink switch.
+        Note! Make sure the ID is unique and does not overlap with
+        autogenerated Port-channel IDs in the Network Services.
+        Note! For MLAG pairs the ID must be between
+        1 and 2000 and both MLAG switches must have the same value.
+        """
+        uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+        """Custom structured config applied to `uplink_interfaces`."""
+        uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+        uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+        """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+        uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        """
+        Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+        channel uplinks.
+        """
+        mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        """
+        Custom structured config applied to MLAG peer link port-channel id.
+        Added under
+        port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+        Overrides the settings on the
+        port-channel interface level.
+        "mlag_port_channel_structured_config" is applied after
+        "structured_config", so it can override "structured_config" defined on node-level.
+        """
+        mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem
+        """
+        Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
+        Added under
+        vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+        Overrides the settings on the vlan
+        interface level.
+        "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
+        override "structured_config" defined on node-level.
+        """
+        mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem
+        """
+        Custom structured config applied to MLAG underlay L3 peering SVI interface id.
+        Added under
+        vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+        Overrides the settings on the vlan
+        interface level.
+        "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
+        can override "structured_config" defined on node-level.
+        """
+        short_esi: str | None
+        """
+        short_esi only valid for l2leaf devices using port-channel uplink.
+        Setting short_esi to "auto"
+        generates the short_esi automatically using a hash of configuration elements.
+        < 0000:0000:0000 |
+        auto >.
+        """
+        isis_system_id_prefix: str | None
+        """(4.4 hexadecimal)."""
+        isis_maximum_paths: int | None
+        """Number of path to configure in ECMP for ISIS."""
+        is_type: IsType | None
+        """Overrides `isis_default_is_type`."""
+        node_sid_base: int
+        """
+        Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+
+        Default value: `0`
+        """
+        loopback_ipv4_pool: str | None
+        """
+        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+        The IPv4
+        address used for Loopback0 will be derived from this pool based on the node id and
+        'loopback_ipv4_offset'.
+        """
+        loopback_ipv4_address: str | None
+        """
+        IPv4 address without mask for Loopback0.
+        When set, it takes precedence over `loopback_ipv4_pool`.
+        Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+        """
+        vtep_loopback_ipv4_pool: str | None
+        """
+        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
+        address used for VTEP-Loopback will be derived from this pool based on the node id and
+        'loopback_ipv4_offset'.
+        """
+        vtep_loopback_ipv6_pool: str | None
+        """
+        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
+        address used for VTEP-Loopback will be derived from this pool based on the node id and
+        'loopback_ipv6_offset'.
+        """
+        vtep_loopback_ipv4_address: str | None
+        """
+        IPv4 address without mask for VTEP-Loopback.
+        When set, it takes precedence over
+        `vtep_loopback_ipv4_pool`.
+        Note: AVD does not check for validity of the IPv4 address and does not
+        catch duplicates.
+        """
+        vtep_loopback_ipv6_address: str | None
+        """
+        IPv6 address without mask for VTEP-Loopback.
+        When set, it takes precedence over
+        `vtep_loopback_ipv6_pool`.
+        Note: AVD does not check for validity of the IPv6 address and does not
+        catch duplicates.
+        """
+        loopback_ipv4_offset: int
+        """
+        Offset all assigned loopback IP addresses.
+        Required when the 'loopback_ipv4_pool' is the same for 2
+        different node_types (like spine and l3leaf) to avoid overlapping IPs.
+        For example, set the minimum
+        offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
+
+        Default value: `0`
+        """
+        router_id_pool: str | None
+        """
+        Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
+        router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
+        will not exist on the device.
+        """
+        loopback_ipv6_pool: str | None
+        """
+        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
+        address used for Loopback0 will be derived from this pool based on the node id and
+        'loopback_ipv6_offset'.
+        """
+        loopback_ipv6_offset: int
+        """
+        Offset all assigned loopback IPv6 addresses.
+        Required when the 'loopback_ipv6_pool' is same for 2
+        different node_types (like spine and l3leaf) to avoid overlapping IPs.
+        For example, set the minimum
+        offset l3leaf.defaults.loopback_ipv6_offset: < total # spine switches > or vice versa.
+
+        Default value: `0`
+        """
+        vtep: bool | None
+        """
+        Node is configured as a VTEP when applicable based on 'overlay_routing_protocol'.
+        Overrides VTEP
+        setting inherited from node_type_keys.
+        """
+        vtep_loopback: str | None
+        """Set VXLAN source interface."""
+        bgp_as: str | None
+        """
+        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+        For asdot notation in
+        YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+        number.
+        Required with eBGP.
+        """
+        bgp_defaults: BgpDefaults
+        """
+        List of EOS commands to apply to BGP daemon.
+
+        Subclass of AvdList with `str` items.
+        """
+        evpn_role: EvpnRole | None
+        """
+        Acting role in EVPN control plane.
+        Default is set in node_type definition from node_type_keys.
+        """
+        evpn_route_servers: EvpnRouteServers
+        """
+        List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+
+        Subclass of AvdList with `str`
+        items.
+        """
+        evpn_services_l2_only: bool
+        """
+        Possibility to prevent configuration of Tenant VRFs and SVIs.
+        Override node definition
+        "network_services_l3" from node_type_keys.
+        This allows support for centralized routing.
+
+        Default value: `False`
+        """
+        filter: Filter
+        """
+        Filter L3 and L2 network services based on tenant and tags (and operation filter).
+        If filter is not
+        defined it will default to all.
+
+
+        Subclass of AvdModel.
+        """
+        igmp_snooping_enabled: bool | None
+        """Activate or deactivate IGMP snooping on device level."""
+        evpn_gateway: EvpnGateway
+        """
+        Node is acting as EVPN Multi-Domain Gateway.
+        New BGP peer-group is generated between EVPN GWs in
+        different domains or between GWs and Route Servers.
+        Name can be changed under
+        "bgp_peer_groups.evpn_overlay_core" variable.
+        L3 rechability for different EVPN GWs must be already
+        in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the
+        same Ansible inventory.
+
+
+        Subclass of AvdModel.
+        """
+        ipvpn_gateway: IpvpnGateway
+        """
+        Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+        this is "bgp_peer_groups.ipvpn_gateway_peers".
+        L3 Reachability is required for this to work, the
+        preferred method to establish underlay connectivity is to use core_interfaces.
+
+
+        Subclass of
+        AvdModel.
+        """
+        mlag: bool
+        """
+        Enable / Disable auto MLAG, when two nodes are defined in node group.
+
+        Default value: `True`
+        """
+        mlag_dual_primary_detection: bool
+        """
+        Enable / Disable MLAG dual primary detection.
+
+        Default value: `False`
+        """
+        mlag_ibgp_origin_incomplete: bool
+        """
+        Set origin of routes received from MLAG iBGP peer to incomplete.
+        The purpose is to optimize routing
+        for leaf loopbacks from spine perspective and
+        avoid suboptimal routing via peerlink for control
+        plane traffic.
+
+        Default value: `True`
+        """
+        mlag_interfaces: MlagInterfaces
+        """
+        Each list item supports range syntax that can be expanded into a list of interfaces.
+        Required when
+        MLAG leafs are present in the topology.
+
+
+        Subclass of AvdList with `str` items.
+        """
+        mlag_interfaces_speed: MlagInterfacesSpeed | None
+        """Set MLAG interface speed."""
+        mlag_peer_l3_vlan: int
+        """
+        Underlay L3 peering SVI interface id.
+        If set to 0 or the same vlan as mlag_peer_vlan, the
+        mlag_peer_vlan will be used for L3 peering.
+
+        Default value: `4093`
+        """
+        mlag_peer_l3_ipv4_pool: str | None
+        """
+        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+        The IPv4
+        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+        MLAG switch.
+        Required when MLAG leafs present in topology and they are using a separate L3 peering
+        VLAN.
+        """
+        mlag_peer_l3_ipv6_pool: str | None
+        """
+        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+        The IPv6
+        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+        MLAG switch.
+        Required when MLAG leafs present in topology and they are using a separate L3 peering
+        VLAN.
+        """
+        mlag_peer_vlan: int
+        """
+        MLAG Peer Link (control link) SVI interface id.
+
+        Default value: `4094`
+        """
+        mlag_peer_link_allowed_vlans: str | None
+        mlag_peer_address_family: MlagPeerAddressFamily
+        """
+        IP address family used to establish MLAG Peer Link (control link).
+        `ipv6` requires EOS version
+        4.31.1F or higher.
+        Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
+        (ex. `mlag_peer_l3_vlan` set to 4094).
+
+        Default value: `"ipv4"`
+        """
+        mlag_peer_ipv4_pool: str | None
+        """
+        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+        The IPv4
+        address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
+        first MLAG switch.
+        Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
+        """
+        mlag_peer_ipv6_pool: str | None
+        """
+        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+        The IPv6
+        address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
+        first MLAG switch.
+        Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+        """
+        mlag_port_channel_id: int | None
+        """
+        If not set, the mlag port-channel id is generated based on the digits of the first interface present
+        in 'mlag_interfaces'.
+        Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 -
+        999999 > for EOS >= 4.25.0F.
+        """
+        mlag_domain_id: str | None
+        """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
+        spanning_tree_mode: SpanningTreeMode | None
+        spanning_tree_priority: int
+        """
+        Spanning-tree priority configured for the selected mode.
+        For `rapid-pvst` the priority can also be
+        set per VLAN under network services.
+
+        Default value: `32768`
+        """
+        spanning_tree_root_super: bool
+        """Default value: `False`"""
+        spanning_tree_mst_pvst_boundary: bool | None
+        """Enable MST PVST border ports."""
+        spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+        """Specify range of port-ids to reserve for port-channels."""
+        virtual_router_mac_address: str | None
+        """Virtual router mac address for anycast gateway."""
+        inband_mgmt_interface: str | None
+        """
+        Pointer to interface used for inband management.
+        All configuration must be done using other data
+        models like network services or structured_config.
+        'inband_mgmt_interface' is only used to refer to
+        this interface as source in various management protocol settings (future feature).
+
+        On L2 switches,
+        this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
+        """
+        inband_mgmt_vlan: int
+        """
+        VLAN number used for inband management on L2 switches (switches using port-channel trunks as
+        uplinks).
+        When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
+        switch as well as all 'uplink_switches'.
+        When using 'inband_mgmt_ip' the VLAN and SVI will only be
+        created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
+        created using network services data models.
+
+        Default value: `4092`
+        """
+        inband_mgmt_subnet: str | None
+        """
+        Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
+        as uplinks).
+        Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
+        ARP.
+        This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
+        SVI IP address will be assigned as follows:
+        virtual-router: <subnet> + 1
+        l3leaf A      : <subnet> +
+        2 (same IP on all l3leaf A)
+        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+        l2leafs       :
+        <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
+        GW on l2leafs : <subnet> + 1
+        Assign range
+        larger than total l2leafs + 5
+
+        Setting is ignored if 'inband_mgmt_ip' is set.
+
+        This setting is
+        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        """
+        inband_mgmt_subnet_offset: int
+        """
+        Offset value to adjust the calculated inband management IP address within the subnet.
+        The assigned
+        IP will be computed by adding this offset to the device ID.
+
+        Default value: `0`
+        """
+        inband_mgmt_ip: str | None
+        """
+        IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+        This overrides
+        'inband_mgmt_subnet', hence all behavior of 'inband_mgmt_subnet' is removed.
+
+        If this is set the
+        VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+        The VLAN and SVI on
+        the parent switches must be created using network services data models.
+
+        This setting is applicable
+        to L2 switches (switches using port-channel trunks as uplinks).
+        """
+        inband_mgmt_gateway: str | None
+        """
+        Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
+        is derived from 'inband_mgmt_subnet' if set.
+
+        This setting is applicable to L2 switches (switches
+        using port-channel trunks as uplinks).
+        """
+        inband_mgmt_ipv6_address: str | None
+        """
+        IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+        This overrides
+        'inband_mgmt_ipv6_subnet', hence the configuration of 'inband_mgmt_ipv6_subnet' is ignored.
+
+        If this
+        is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+        The VLAN
+        and SVI on the parent switches must be created using network services data models.
+
+        This setting is
+        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        """
+        inband_mgmt_ipv6_subnet: str | None
+        """
+        Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels
+        as uplinks).
+        Parent l3leafs will have SVI with "ipv6 virtual-router" and host-route injection based
+        on ARP.
+        This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN
+        extension.
+        SVI IP address will be assigned as follows:
+        virtual-router: <subnet> + 1
+        l3leaf A      :
+        <subnet> + 2 (same IP on all l3leaf A)
+        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+        l2leafs       : <subnet> + 3 + <l2leaf id>
+        GW on l2leafs : <subnet> + 1
+        Assign range larger than
+        total l2leafs + 5
+
+        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+
+        This setting is
+        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        """
+        inband_mgmt_ipv6_gateway: str | None
+        """
+        Default gateway configured in the 'inband_mgmt_vrf'.
+        Used when `inband_mgmt_ipv6_address` is set.
+        Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
+
+        This setting is
+        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        """
+        inband_mgmt_description: str
+        """
+        Description configured on the Inband Management SVI.
+
+        This setting is only applied on the devices
+        where it is set, it does not automatically affect any parent/child devices configuration, so it must
+        be set on each applicable node/node-group/node-type as needed.
+
+        Default value: `"Inband Management"`
+        """
+        inband_mgmt_vlan_name: str
+        """
+        Name configured on the Inband Management VLAN.
+        This setting is only applied on the devices where it
+        is set, it does not automatically affect any parent/child devices configuration, so it must be set
+        on each applicable node/node-group/node-type as needed.
+
+        Default value: `"INBAND_MGMT"`
+        """
+        inband_mgmt_vrf: str
+        """
+        VRF configured on the Inband Management Interface.
+        The VRF is created if not already created by
+        other means.
+        This setting is only applied on the devices where it is set, it does not automatically
+        affect any parent/child devices configuration, so it must be set on each applicable node/node-
+        group/node-type as needed.
+
+        Default value: `"default"`
+        """
+        inband_mgmt_mtu: int
+        """
+        MTU configured on the Inband Management Interface.
+        This setting is only applied on the devices where
+        it is set, it does not automatically affect any parent/child devices configuration, so it must be
+        set on each applicable node/node-group/node-type as needed.
+
+        Default value: `1500`
+        """
+        inband_ztp: bool
+        """
+        Enable to configure upstream device with proper configuration to allow downstream devices to be
+        Zero-Touch-Provisioned over the uplink interfaces.
+        For L2 devices this setting also requires that
+        the `inband_mgmt_vlan` is set for the node.
+
+        PREVIEW: Support for L3 devices is marked as "preview",
+        meaning the data models or generated configuration can change at any time.
+
+        Default value: `False`
+        """
+        inband_ztp_lacp_fallback_delay: int
+        """
+        Set the LACP fallback timeout of the upstream device's port-channel towards the downstream inband
+        ZTP node.
+        This setting also requires that `inband_ztp` is set for the node.
+
+        Default value: `30`
+        """
+        mpls_overlay_role: MplsOverlayRole | None
+        """
+        Set the default mpls overlay role.
+        Acting role in overlay control plane.
+        """
+        overlay_address_families: OverlayAddressFamilies
+        """
+        Set the default overlay address families.
+
+
+        Subclass of AvdList with `str` items.
+        """
+        mpls_route_reflectors: MplsRouteReflectors
+        """
+        List of inventory hostname acting as MPLS route-reflectors.
+
+        Subclass of AvdList with `str` items.
+        """
+        bgp_cluster_id: str | None
+        """Set BGP cluster id."""
+        ptp: Ptp
+        """Subclass of AvdModel."""
+        wan_role: WanRole | None
+        """
+        Override the default WAN role.
+
+        This is used both for AutoVPN and Pathfinder designs.
+        That means if
+        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+        `server` indicates that the router is a
+        route-reflector.
+        """
+        cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
+        """
+        Configure the transit mode for a WAN client for CV Pathfinder designs
+        only when the `wan_mode` root
+        key is set to `cv_pathfinder`.
+
+        'zone' is currently not supported.
+        """
+        cv_pathfinder_region: str | None
+        """
+        The CV Pathfinder region name.
+        This key is required for WAN routers but optional for pathfinders.
+        The region name must be defined under 'cv_pathfinder_regions'.
+        """
+        cv_pathfinder_site: str | None
+        """
+        The CV Pathfinder site name.
+        This key is required for WAN routers but optional for pathfinders.
+        For
+        WAN routers and pathfinders with `cv_pathfinder_region`, the site name must be defined for the
+        relevant region under 'cv_pathfinder_regions'.
+        For pathfinders without `cv_pathfinder_region` set,
+        the site must be defined under `cv_pathfinder_global_sites`.
+        """
+        wan_ha: WanHa
+        """
+        The key is supported only if `wan_mode` == `cv-pathfinder`.
+        AutoVPN support is still to be
+        determined.
+
+        Maximum 2 devices supported by group for HA.
+
+        Subclass of AvdModel.
+        """
+        dps_mss_ipv4: str
+        """
+        IPv4 MSS value configured under "router path-selection" on WAN Devices.
+
+        Default value: `"auto"`
+        """
+        l3_interfaces: L3Interfaces
+        """
+        L3 Interfaces to configure on the node.
+
+        Subclass of AvdIndexedList with `L3InterfacesItem` items.
+        Primary key is `name` (`str`).
+        """
+        l3_port_channels: L3PortChannels
+        """
+        L3 Port-Channel interfaces to configure on the node.
+
+        Subclass of AvdIndexedList with
+        `L3PortChannelsItem` items. Primary key is `name` (`str`).
+        """
+        data_plane_cpu_allocation_max: int | None
+        """
+        Set the maximum number of CPU used for the data plane.
+        This setting is useful on virtual Route
+        Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
+        """
+        flow_tracker_type: FlowTrackerType | None
+        """
+        Set the flow tracker type.
+        Override the `default_flow_tracker_type`` set at the `node_type_key`
+        level.
+        `default_flow_tracker_type` default value is `sampled`.
+        """
+        underlay_multicast: UnderlayMulticast
+        """Subclass of AvdModel."""
+        campus: str | None
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Name of the campus. Used to generate CloudVision device tags with the
+        `generate_cv_tags.campus_fabric` feature.
+        """
+        campus_pod: str | None
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Name of the campus pod. Used to generate CloudVision device tags with the
+        `generate_cv_tags.campus_fabric` feature.
+        """
+        campus_access_pod: str | None
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Name of the campus access pod. Used to generate CloudVision device tags with the
+        `generate_cv_tags.campus_fabric` feature.
+        """
+        cv_tags_topology_type: str | None
+        """
+        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+        "edge" or "member-leaf".
+        """
+        digital_twin: DigitalTwin
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Set the OS version and management IP address for the digital twin of the
+        associated node(s).
+
+        Subclass of AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                profile: str | None | UndefinedType = Undefined,
+                type: str | None | UndefinedType = Undefined,
+                mlag_group: str | None | UndefinedType = Undefined,
+                name: str | UndefinedType = Undefined,
+                downlink_pools: DownlinkPools | UndefinedType = Undefined,
+                id: int | None | UndefinedType = Undefined,
+                platform: str | None | UndefinedType = Undefined,
+                mac_address: str | None | UndefinedType = Undefined,
+                system_mac_address: str | None | UndefinedType = Undefined,
+                serial_number: str | None | UndefinedType = Undefined,
+                rack: str | None | UndefinedType = Undefined,
+                mgmt_ip: str | None | UndefinedType = Undefined,
+                mgmt_gateway: str | None | UndefinedType = Undefined,
+                ipv6_mgmt_ip: str | None | UndefinedType = Undefined,
+                ipv6_mgmt_gateway: str | None | UndefinedType = Undefined,
+                mgmt_interface: str | None | UndefinedType = Undefined,
+                link_tracking: LinkTracking | UndefinedType = Undefined,
+                lacp_port_id_range: LacpPortIdRange | UndefinedType = Undefined,
+                always_configure_ip_routing: bool | UndefinedType = Undefined,
+                raw_eos_cli: str | None | UndefinedType = Undefined,
+                structured_config: EosCliConfigGen | UndefinedType = Undefined,
+                uplink_type: UplinkType | None | UndefinedType = Undefined,
+                uplink_ipv4_pool: str | None | UndefinedType = Undefined,
+                uplink_ipv6_pool: str | None | UndefinedType = Undefined,
+                uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
+                uplink_switches: UplinkSwitches | UndefinedType = Undefined,
+                uplink_interface_speed: UplinkInterfaceSpeed | None | UndefinedType = Undefined,
+                uplink_switch_interface_speed: UplinkSwitchInterfaceSpeed | None | UndefinedType = Undefined,
+                uplink_mtu: int | None | UndefinedType = Undefined,
+                max_uplink_switches: int | None | UndefinedType = Undefined,
+                max_parallel_uplinks: int | UndefinedType = Undefined,
+                uplink_bfd: bool | UndefinedType = Undefined,
+                uplink_native_vlan: int | None | UndefinedType = Undefined,
+                uplink_ptp: UplinkPtp | UndefinedType = Undefined,
+                uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
+                uplink_port_channel_id: int | None | UndefinedType = Undefined,
+                uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
+                uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
+                mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
+                short_esi: str | None | UndefinedType = Undefined,
+                isis_system_id_prefix: str | None | UndefinedType = Undefined,
+                isis_maximum_paths: int | None | UndefinedType = Undefined,
+                is_type: IsType | None | UndefinedType = Undefined,
+                node_sid_base: int | UndefinedType = Undefined,
+                loopback_ipv4_pool: str | None | UndefinedType = Undefined,
+                loopback_ipv4_address: str | None | UndefinedType = Undefined,
+                vtep_loopback_ipv4_pool: str | None | UndefinedType = Undefined,
+                vtep_loopback_ipv6_pool: str | None | UndefinedType = Undefined,
+                vtep_loopback_ipv4_address: str | None | UndefinedType = Undefined,
+                vtep_loopback_ipv6_address: str | None | UndefinedType = Undefined,
+                loopback_ipv4_offset: int | UndefinedType = Undefined,
+                router_id_pool: str | None | UndefinedType = Undefined,
+                loopback_ipv6_pool: str | None | UndefinedType = Undefined,
+                loopback_ipv6_offset: int | UndefinedType = Undefined,
+                vtep: bool | None | UndefinedType = Undefined,
+                vtep_loopback: str | None | UndefinedType = Undefined,
+                bgp_as: str | None | UndefinedType = Undefined,
+                bgp_defaults: BgpDefaults | UndefinedType = Undefined,
+                evpn_role: EvpnRole | None | UndefinedType = Undefined,
+                evpn_route_servers: EvpnRouteServers | UndefinedType = Undefined,
+                evpn_services_l2_only: bool | UndefinedType = Undefined,
+                filter: Filter | UndefinedType = Undefined,
+                igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
+                evpn_gateway: EvpnGateway | UndefinedType = Undefined,
+                ipvpn_gateway: IpvpnGateway | UndefinedType = Undefined,
+                mlag: bool | UndefinedType = Undefined,
+                mlag_dual_primary_detection: bool | UndefinedType = Undefined,
+                mlag_ibgp_origin_incomplete: bool | UndefinedType = Undefined,
+                mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
+                mlag_interfaces_speed: MlagInterfacesSpeed | None | UndefinedType = Undefined,
+                mlag_peer_l3_vlan: int | UndefinedType = Undefined,
+                mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
+                mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
+                mlag_peer_vlan: int | UndefinedType = Undefined,
+                mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
+                mlag_peer_address_family: MlagPeerAddressFamily | UndefinedType = Undefined,
+                mlag_peer_ipv4_pool: str | None | UndefinedType = Undefined,
+                mlag_peer_ipv6_pool: str | None | UndefinedType = Undefined,
+                mlag_port_channel_id: int | None | UndefinedType = Undefined,
+                mlag_domain_id: str | None | UndefinedType = Undefined,
+                spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
+                spanning_tree_priority: int | UndefinedType = Undefined,
+                spanning_tree_root_super: bool | UndefinedType = Undefined,
+                spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange | UndefinedType = Undefined,
+                virtual_router_mac_address: str | None | UndefinedType = Undefined,
+                inband_mgmt_interface: str | None | UndefinedType = Undefined,
+                inband_mgmt_vlan: int | UndefinedType = Undefined,
+                inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
+                inband_mgmt_ip: str | None | UndefinedType = Undefined,
+                inband_mgmt_gateway: str | None | UndefinedType = Undefined,
+                inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
+                inband_mgmt_ipv6_subnet: str | None | UndefinedType = Undefined,
+                inband_mgmt_ipv6_gateway: str | None | UndefinedType = Undefined,
+                inband_mgmt_description: str | UndefinedType = Undefined,
+                inband_mgmt_vlan_name: str | UndefinedType = Undefined,
+                inband_mgmt_vrf: str | UndefinedType = Undefined,
+                inband_mgmt_mtu: int | UndefinedType = Undefined,
+                inband_ztp: bool | UndefinedType = Undefined,
+                inband_ztp_lacp_fallback_delay: int | UndefinedType = Undefined,
+                mpls_overlay_role: MplsOverlayRole | None | UndefinedType = Undefined,
+                overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
+                mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
+                bgp_cluster_id: str | None | UndefinedType = Undefined,
+                ptp: Ptp | UndefinedType = Undefined,
+                wan_role: WanRole | None | UndefinedType = Undefined,
+                cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
+                cv_pathfinder_region: str | None | UndefinedType = Undefined,
+                cv_pathfinder_site: str | None | UndefinedType = Undefined,
+                wan_ha: WanHa | UndefinedType = Undefined,
+                dps_mss_ipv4: str | UndefinedType = Undefined,
+                l3_interfaces: L3Interfaces | UndefinedType = Undefined,
+                l3_port_channels: L3PortChannels | UndefinedType = Undefined,
+                data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
+                flow_tracker_type: FlowTrackerType | None | UndefinedType = Undefined,
+                underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
+                campus: str | None | UndefinedType = Undefined,
+                campus_pod: str | None | UndefinedType = Undefined,
+                campus_access_pod: str | None | UndefinedType = Undefined,
+                cv_tags_topology_type: str | None | UndefinedType = Undefined,
+                digital_twin: DigitalTwin | UndefinedType = Undefined,
+            ) -> None:
+                """
+                DevicesItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    profile:
+                       Inherit settings from a profile defined under `device_profiles`.
+                       Max two levels of profile
+                       inheritance: device -> profile -> parent_profile
+                       This takes precedence over the global
+                       `device_profile` key.
+                    type:
+                       Set the type of the device as defined under `node_type_keys`.
+                       This takes precedence over the global
+                       `type` key.
+                    mlag_group:
+                       Name of MLAG group. Exactly two devices must share the same mlag_group.
+                       The group is used for
+                       creating MLAG Pairs, for port-channel descriptions on peers and for MLAG domain-id (unless
+                       mlag_domain_id is set).
+                    name: The Node Name is used as "hostname".
+                    downlink_pools:
+                       IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined
+                       with `uplink_ipv4_pool` set on the downlink switch.
+
+                       Subclass of AvdList with `DownlinkPoolsItem`
+                       items.
+                    id: Unique identifier used for IP addressing and other algorithms.
+                    platform: Arista platform family.
+                    mac_address: Leverage to document management interface mac address.
+                    system_mac_address:
+                       System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".
+                       Set to the same MAC address as
+                       available in "show version" on the device.
+                       "system_mac_address" can also be set directly as a
+                       hostvar.
+                       If both are set, the setting under node type settings takes precedence.
+                    serial_number:
+                       Set to the Serial Number of the device.
+                       Only used for documentation purpose in the fabric
+                       documentation and part of the structured_config.
+                       "serial_number" can also be set directly as a
+                       hostvar.
+                       If both are set, the setting under node type settings takes precedence.
+                    rack: Rack that the switch is located in (only used in snmp_settings location).
+                    mgmt_ip: Node management interface IPv4 address.
+                    mgmt_gateway:
+                       This key sets the management gateway for the device. It takes precedence over the global
+                       `mgmt_gateway`.
+                    ipv6_mgmt_ip: Node management interface IPv6 address.
+                    ipv6_mgmt_gateway:
+                       This key sets the ipv6 management gateway for the device. It takes precedence over the global
+                       `ipv6_mgmt_gateway`.
+                    mgmt_interface:
+                       Management Interface Name.
+                       Default -> platform_management_interface -> mgmt_interface ->
+                       "Management1".
+                    link_tracking:
+                       This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as
+                       the upstream interfaces.
+                       Useful in EVPN multhoming designs.
+
+
+                       Subclass of AvdModel.
+                    lacp_port_id_range:
+                       This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the
+                       number of nodes in the "node_group".
+                       Unique LACP port-id ranges are recommended for EVPN Multihoming
+                       designs.
+
+
+                       Subclass of AvdModel.
+                    always_configure_ip_routing:
+                       Force configuration of "ip routing" even on L2 devices.
+                       Use this to retain behavior of AVD versions
+                       below 4.0.0.
+                    raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
+                    structured_config: Custom structured config for eos_cli_config_gen.
+                    uplink_type:
+                       Override the default `uplink_type` set at the `node_type_key` level.
+                       `uplink_type` must be "p2p" if
+                       `vtep` or `underlay_router` is true for the `node_type_key` definition.
+                    uplink_ipv4_pool:
+                       Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+                       IPv4
+                       subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+                       uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+                    uplink_ipv6_pool:
+                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                       IPv6
+                       subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+                       uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+                    uplink_interfaces:
+                       Local uplink interfaces.
+                       Each list item supports range syntax that can be expanded into a list of
+                       interfaces.
+                       If uplink_interfaces is not defined, platform-specific defaults (defined under
+                       default_interfaces) will be used instead.
+                       Please note that default_interfaces are not defined by
+                       default, you should define these yourself.
+
+
+                       Subclass of AvdList with `str` items.
+                    uplink_switch_interfaces:
+                       Interfaces located on uplink switches.
+
+                       Subclass of AvdList with `str` items.
+                    uplink_switches: Subclass of AvdList with `str` items.
+                    uplink_interface_speed:
+                       Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
+                       (Uplink switch
+                       interface speed can be overridden with `uplink_switch_interface_speed`).
+                       Speed should be set in the
+                       format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                    uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
+                    uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
+                    max_uplink_switches:
+                       Maximum number of uplink switches.
+                       Changing this value may change IP Addressing on uplinks.
+                       Can be
+                       used to reserve IP space for future expansions.
+                    max_parallel_uplinks:
+                       Number of parallel links towards uplink switches.
+                       Changing this value may change interface naming on
+                       uplinks (and corresponding downlinks).
+                       Can be used to reserve interfaces for future parallel
+                       uplinks.
+                    uplink_bfd: Enable bfd on uplink interfaces.
+                    uplink_native_vlan:
+                       Only applicable to switches with layer-2 port-channel uplinks.
+                       A suspended (disabled) vlan will be
+                       created in both ends of the link unless the vlan is defined under network services.
+                       By default the
+                       uplink will not have a native_vlan configured, so EOS defaults to vlan 1.
+                    uplink_ptp:
+                       Enable PTP on all infrastructure links.
+
+                       Subclass of AvdModel.
+                    uplink_macsec:
+                       Enable MacSec on all uplinks.
+
+                       Subclass of AvdModel.
+                    uplink_port_channel_id:
+                       Only applicable for L2 switches with `uplink_type: port-channel`.
+                       By default the uplink Port-channel
+                       ID will be set to the number of the lowest member interface defined under `uplink_interfaces`.
+                       For
+                       example:
+                         member ports [ Eth22, Eth23 ] -> ID 22
+                         member ports [ Eth11/1, Eth22/1 ] -> ID 111
+                       For
+                       MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.
+                       This
+                       option overrides the default behavior and statically sets the local Port-channel ID.
+                       Note! Make sure
+                       the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.
+                       Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same
+                       value.
+                    uplink_switch_port_channel_id:
+                       Only applicable for L2 switches with `uplink_type: port-channel`.
+                       By default the uplink switch Port-
+                       channel ID will be set to the number of the first interface defined under
+                       `uplink_switch_interfaces`.
+                       For example:
+                         member ports [ Eth22, Eth23 ] -> ID 22
+                         member ports [
+                       Eth11/1, Eth22/1 ] -> ID 111
+                       For MLAG port-channels ID will be based on the lowest member interface
+                       on the first MLAG switch.
+                       This option overrides the default behavior and statically sets the Port-
+                       channel ID on the uplink switch.
+                       Note! Make sure the ID is unique and does not overlap with
+                       autogenerated Port-channel IDs in the Network Services.
+                       Note! For MLAG pairs the ID must be between
+                       1 and 2000 and both MLAG switches must have the same value.
+                    uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                    uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                    uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                    uplink_switch_port_channel_structured_config:
+                       Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                       channel uplinks.
+                    mlag_port_channel_structured_config:
+                       Custom structured config applied to MLAG peer link port-channel id.
+                       Added under
+                       port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                       Overrides the settings on the
+                       port-channel interface level.
+                       "mlag_port_channel_structured_config" is applied after
+                       "structured_config", so it can override "structured_config" defined on node-level.
+                    mlag_peer_vlan_structured_config:
+                       Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
+                       Added under
+                       vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                       Overrides the settings on the vlan
+                       interface level.
+                       "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
+                       override "structured_config" defined on node-level.
+                    mlag_peer_l3_vlan_structured_config:
+                       Custom structured config applied to MLAG underlay L3 peering SVI interface id.
+                       Added under
+                       vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                       Overrides the settings on the vlan
+                       interface level.
+                       "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
+                       can override "structured_config" defined on node-level.
+                    short_esi:
+                       short_esi only valid for l2leaf devices using port-channel uplink.
+                       Setting short_esi to "auto"
+                       generates the short_esi automatically using a hash of configuration elements.
+                       < 0000:0000:0000 |
+                       auto >.
+                    isis_system_id_prefix: (4.4 hexadecimal).
+                    isis_maximum_paths: Number of path to configure in ECMP for ISIS.
+                    is_type: Overrides `isis_default_is_type`.
+                    node_sid_base: Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                    loopback_ipv4_pool:
+                       Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+                       The IPv4
+                       address used for Loopback0 will be derived from this pool based on the node id and
+                       'loopback_ipv4_offset'.
+                    loopback_ipv4_address:
+                       IPv4 address without mask for Loopback0.
+                       When set, it takes precedence over `loopback_ipv4_pool`.
+                       Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
+                    vtep_loopback_ipv4_pool:
+                       Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). The IPv4
+                       address used for VTEP-Loopback will be derived from this pool based on the node id and
+                       'loopback_ipv4_offset'.
+                    vtep_loopback_ipv6_pool:
+                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
+                       address used for VTEP-Loopback will be derived from this pool based on the node id and
+                       'loopback_ipv6_offset'.
+                    vtep_loopback_ipv4_address:
+                       IPv4 address without mask for VTEP-Loopback.
+                       When set, it takes precedence over
+                       `vtep_loopback_ipv4_pool`.
+                       Note: AVD does not check for validity of the IPv4 address and does not
+                       catch duplicates.
+                    vtep_loopback_ipv6_address:
+                       IPv6 address without mask for VTEP-Loopback.
+                       When set, it takes precedence over
+                       `vtep_loopback_ipv6_pool`.
+                       Note: AVD does not check for validity of the IPv6 address and does not
+                       catch duplicates.
+                    loopback_ipv4_offset:
+                       Offset all assigned loopback IP addresses.
+                       Required when the 'loopback_ipv4_pool' is the same for 2
+                       different node_types (like spine and l3leaf) to avoid overlapping IPs.
+                       For example, set the minimum
+                       offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
+                    router_id_pool:
+                       Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
+                       router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address
+                       will not exist on the device.
+                    loopback_ipv6_pool:
+                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). The IPv6
+                       address used for Loopback0 will be derived from this pool based on the node id and
+                       'loopback_ipv6_offset'.
+                    loopback_ipv6_offset:
+                       Offset all assigned loopback IPv6 addresses.
+                       Required when the 'loopback_ipv6_pool' is same for 2
+                       different node_types (like spine and l3leaf) to avoid overlapping IPs.
+                       For example, set the minimum
+                       offset l3leaf.defaults.loopback_ipv6_offset: < total # spine switches > or vice versa.
+                    vtep:
+                       Node is configured as a VTEP when applicable based on 'overlay_routing_protocol'.
+                       Overrides VTEP
+                       setting inherited from node_type_keys.
+                    vtep_loopback: Set VXLAN source interface.
+                    bgp_as:
+                       BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                       For asdot notation in
+                       YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                       number.
+                       Required with eBGP.
+                    bgp_defaults:
+                       List of EOS commands to apply to BGP daemon.
+
+                       Subclass of AvdList with `str` items.
+                    evpn_role:
+                       Acting role in EVPN control plane.
+                       Default is set in node_type definition from node_type_keys.
+                    evpn_route_servers:
+                       List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+
+                       Subclass of AvdList with `str`
+                       items.
+                    evpn_services_l2_only:
+                       Possibility to prevent configuration of Tenant VRFs and SVIs.
+                       Override node definition
+                       "network_services_l3" from node_type_keys.
+                       This allows support for centralized routing.
+                    filter:
+                       Filter L3 and L2 network services based on tenant and tags (and operation filter).
+                       If filter is not
+                       defined it will default to all.
+
+
+                       Subclass of AvdModel.
+                    igmp_snooping_enabled: Activate or deactivate IGMP snooping on device level.
+                    evpn_gateway:
+                       Node is acting as EVPN Multi-Domain Gateway.
+                       New BGP peer-group is generated between EVPN GWs in
+                       different domains or between GWs and Route Servers.
+                       Name can be changed under
+                       "bgp_peer_groups.evpn_overlay_core" variable.
+                       L3 rechability for different EVPN GWs must be already
+                       in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the
+                       same Ansible inventory.
+
+
+                       Subclass of AvdModel.
+                    ipvpn_gateway:
+                       Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for
+                       this is "bgp_peer_groups.ipvpn_gateway_peers".
+                       L3 Reachability is required for this to work, the
+                       preferred method to establish underlay connectivity is to use core_interfaces.
+
+
+                       Subclass of
+                       AvdModel.
+                    mlag: Enable / Disable auto MLAG, when two nodes are defined in node group.
+                    mlag_dual_primary_detection: Enable / Disable MLAG dual primary detection.
+                    mlag_ibgp_origin_incomplete:
+                       Set origin of routes received from MLAG iBGP peer to incomplete.
+                       The purpose is to optimize routing
+                       for leaf loopbacks from spine perspective and
+                       avoid suboptimal routing via peerlink for control
+                       plane traffic.
+                    mlag_interfaces:
+                       Each list item supports range syntax that can be expanded into a list of interfaces.
+                       Required when
+                       MLAG leafs are present in the topology.
+
+
+                       Subclass of AvdList with `str` items.
+                    mlag_interfaces_speed: Set MLAG interface speed.
+                    mlag_peer_l3_vlan:
+                       Underlay L3 peering SVI interface id.
+                       If set to 0 or the same vlan as mlag_peer_vlan, the
+                       mlag_peer_vlan will be used for L3 peering.
+                    mlag_peer_l3_ipv4_pool:
+                       Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+                       The IPv4
+                       subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                       MLAG switch.
+                       Required when MLAG leafs present in topology and they are using a separate L3 peering
+                       VLAN.
+                    mlag_peer_l3_ipv6_pool:
+                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                       The IPv6
+                       subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                       MLAG switch.
+                       Required when MLAG leafs present in topology and they are using a separate L3 peering
+                       VLAN.
+                    mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
+                    mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
+                    mlag_peer_address_family:
+                       IP address family used to establish MLAG Peer Link (control link).
+                       `ipv6` requires EOS version
+                       4.31.1F or higher.
+                       Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN
+                       (ex. `mlag_peer_l3_vlan` set to 4094).
+                    mlag_peer_ipv4_pool:
+                       Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+                       The IPv4
+                       address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
+                       first MLAG switch.
+                       Required for MLAG leafs when `mlag_peer_address_family` is `ipv4` (default).
+                    mlag_peer_ipv6_pool:
+                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                       The IPv6
+                       address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
+                       first MLAG switch.
+                       Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                    mlag_port_channel_id:
+                       If not set, the mlag port-channel id is generated based on the digits of the first interface present
+                       in 'mlag_interfaces'.
+                       Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 -
+                       999999 > for EOS >= 4.25.0F.
+                    mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
+                    spanning_tree_mode: spanning_tree_mode
+                    spanning_tree_priority:
+                       Spanning-tree priority configured for the selected mode.
+                       For `rapid-pvst` the priority can also be
+                       set per VLAN under network services.
+                    spanning_tree_root_super: spanning_tree_root_super
+                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                    spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
+                    virtual_router_mac_address: Virtual router mac address for anycast gateway.
+                    inband_mgmt_interface:
+                       Pointer to interface used for inband management.
+                       All configuration must be done using other data
+                       models like network services or structured_config.
+                       'inband_mgmt_interface' is only used to refer to
+                       this interface as source in various management protocol settings (future feature).
+
+                       On L2 switches,
+                       this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
+                    inband_mgmt_vlan:
+                       VLAN number used for inband management on L2 switches (switches using port-channel trunks as
+                       uplinks).
+                       When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
+                       switch as well as all 'uplink_switches'.
+                       When using 'inband_mgmt_ip' the VLAN and SVI will only be
+                       created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
+                       created using network services data models.
+                    inband_mgmt_subnet:
+                       Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
+                       as uplinks).
+                       Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
+                       ARP.
+                       This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
+                       SVI IP address will be assigned as follows:
+                       virtual-router: <subnet> + 1
+                       l3leaf A      : <subnet> +
+                       2 (same IP on all l3leaf A)
+                       l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+                       l2leafs       :
+                       <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
+                       GW on l2leafs : <subnet> + 1
+                       Assign range
+                       larger than total l2leafs + 5
+
+                       Setting is ignored if 'inband_mgmt_ip' is set.
+
+                       This setting is
+                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    inband_mgmt_subnet_offset:
+                       Offset value to adjust the calculated inband management IP address within the subnet.
+                       The assigned
+                       IP will be computed by adding this offset to the device ID.
+                    inband_mgmt_ip:
+                       IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+                       This overrides
+                       'inband_mgmt_subnet', hence all behavior of 'inband_mgmt_subnet' is removed.
+
+                       If this is set the
+                       VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+                       The VLAN and SVI on
+                       the parent switches must be created using network services data models.
+
+                       This setting is applicable
+                       to L2 switches (switches using port-channel trunks as uplinks).
+                    inband_mgmt_gateway:
+                       Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
+                       is derived from 'inband_mgmt_subnet' if set.
+
+                       This setting is applicable to L2 switches (switches
+                       using port-channel trunks as uplinks).
+                    inband_mgmt_ipv6_address:
+                       IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+                       This overrides
+                       'inband_mgmt_ipv6_subnet', hence the configuration of 'inband_mgmt_ipv6_subnet' is ignored.
+
+                       If this
+                       is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+                       The VLAN
+                       and SVI on the parent switches must be created using network services data models.
+
+                       This setting is
+                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    inband_mgmt_ipv6_subnet:
+                       Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels
+                       as uplinks).
+                       Parent l3leafs will have SVI with "ipv6 virtual-router" and host-route injection based
+                       on ARP.
+                       This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN
+                       extension.
+                       SVI IP address will be assigned as follows:
+                       virtual-router: <subnet> + 1
+                       l3leaf A      :
+                       <subnet> + 2 (same IP on all l3leaf A)
+                       l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+                       l2leafs       : <subnet> + 3 + <l2leaf id>
+                       GW on l2leafs : <subnet> + 1
+                       Assign range larger than
+                       total l2leafs + 5
+
+                       Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+
+                       This setting is
+                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    inband_mgmt_ipv6_gateway:
+                       Default gateway configured in the 'inband_mgmt_vrf'.
+                       Used when `inband_mgmt_ipv6_address` is set.
+                       Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
+
+                       This setting is
+                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    inband_mgmt_description:
+                       Description configured on the Inband Management SVI.
+
+                       This setting is only applied on the devices
+                       where it is set, it does not automatically affect any parent/child devices configuration, so it must
+                       be set on each applicable node/node-group/node-type as needed.
+                    inband_mgmt_vlan_name:
+                       Name configured on the Inband Management VLAN.
+                       This setting is only applied on the devices where it
+                       is set, it does not automatically affect any parent/child devices configuration, so it must be set
+                       on each applicable node/node-group/node-type as needed.
+                    inband_mgmt_vrf:
+                       VRF configured on the Inband Management Interface.
+                       The VRF is created if not already created by
+                       other means.
+                       This setting is only applied on the devices where it is set, it does not automatically
+                       affect any parent/child devices configuration, so it must be set on each applicable node/node-
+                       group/node-type as needed.
+                    inband_mgmt_mtu:
+                       MTU configured on the Inband Management Interface.
+                       This setting is only applied on the devices where
+                       it is set, it does not automatically affect any parent/child devices configuration, so it must be
+                       set on each applicable node/node-group/node-type as needed.
+                    inband_ztp:
+                       Enable to configure upstream device with proper configuration to allow downstream devices to be
+                       Zero-Touch-Provisioned over the uplink interfaces.
+                       For L2 devices this setting also requires that
+                       the `inband_mgmt_vlan` is set for the node.
+
+                       PREVIEW: Support for L3 devices is marked as "preview",
+                       meaning the data models or generated configuration can change at any time.
+                    inband_ztp_lacp_fallback_delay:
+                       Set the LACP fallback timeout of the upstream device's port-channel towards the downstream inband
+                       ZTP node.
+                       This setting also requires that `inband_ztp` is set for the node.
+                    mpls_overlay_role:
+                       Set the default mpls overlay role.
+                       Acting role in overlay control plane.
+                    overlay_address_families:
+                       Set the default overlay address families.
+
+
+                       Subclass of AvdList with `str` items.
+                    mpls_route_reflectors:
+                       List of inventory hostname acting as MPLS route-reflectors.
+
+                       Subclass of AvdList with `str` items.
+                    bgp_cluster_id: Set BGP cluster id.
+                    ptp: Subclass of AvdModel.
+                    wan_role:
+                       Override the default WAN role.
+
+                       This is used both for AutoVPN and Pathfinder designs.
+                       That means if
+                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+                       `server` indicates that the router is a
+                       route-reflector.
+                    cv_pathfinder_transit_mode:
+                       Configure the transit mode for a WAN client for CV Pathfinder designs
+                       only when the `wan_mode` root
+                       key is set to `cv_pathfinder`.
+
+                       'zone' is currently not supported.
+                    cv_pathfinder_region:
+                       The CV Pathfinder region name.
+                       This key is required for WAN routers but optional for pathfinders.
+                       The region name must be defined under 'cv_pathfinder_regions'.
+                    cv_pathfinder_site:
+                       The CV Pathfinder site name.
+                       This key is required for WAN routers but optional for pathfinders.
+                       For
+                       WAN routers and pathfinders with `cv_pathfinder_region`, the site name must be defined for the
+                       relevant region under 'cv_pathfinder_regions'.
+                       For pathfinders without `cv_pathfinder_region` set,
+                       the site must be defined under `cv_pathfinder_global_sites`.
+                    wan_ha:
+                       The key is supported only if `wan_mode` == `cv-pathfinder`.
+                       AutoVPN support is still to be
+                       determined.
+
+                       Maximum 2 devices supported by group for HA.
+
+                       Subclass of AvdModel.
+                    dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
+                    l3_interfaces:
+                       L3 Interfaces to configure on the node.
+
+                       Subclass of AvdIndexedList with `L3InterfacesItem` items.
+                       Primary key is `name` (`str`).
+                    l3_port_channels:
+                       L3 Port-Channel interfaces to configure on the node.
+
+                       Subclass of AvdIndexedList with
+                       `L3PortChannelsItem` items. Primary key is `name` (`str`).
+                    data_plane_cpu_allocation_max:
+                       Set the maximum number of CPU used for the data plane.
+                       This setting is useful on virtual Route
+                       Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
+                    flow_tracker_type:
+                       Set the flow tracker type.
+                       Override the `default_flow_tracker_type`` set at the `node_type_key`
+                       level.
+                       `default_flow_tracker_type` default value is `sampled`.
+                    underlay_multicast: Subclass of AvdModel.
+                    campus:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Name of the campus. Used to generate CloudVision device tags with the
+                       `generate_cv_tags.campus_fabric` feature.
+                    campus_pod:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Name of the campus pod. Used to generate CloudVision device tags with the
+                       `generate_cv_tags.campus_fabric` feature.
+                    campus_access_pod:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Name of the campus access pod. Used to generate CloudVision device tags with the
+                       `generate_cv_tags.campus_fabric` feature.
+                    cv_tags_topology_type:
+                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                       "edge" or "member-leaf".
+                    digital_twin:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Set the OS version and management IP address for the digital twin of the
+                       associated node(s).
+
+                       Subclass of AvdModel.
+
+                """
+
+    class Devices(AvdIndexedList[str, DevicesItem]):
+        """Subclass of AvdIndexedList with `DevicesItem` items. Primary key is `name` (`str`)."""
+
+        _primary_key: ClassVar[str] = "name"
+
+    Devices._item_type = DevicesItem
 
     class DigitalTwin(AvdModel):
         """Subclass of AvdModel."""
@@ -5033,6 +16643,8 @@ class EosDesigns(EosDesignsRootModel):
                     expiry_timeout: Time (in seconds) to purge a MAC duplication issue.
 
                 """
+
+    EvpnPreventReadvertiseToServerMode: TypeAlias = Literal["source_peer_asn", "as_path_acl"]
 
     class EvpnVlanBundlesItem(AvdModel):
         """Subclass of AvdModel."""
@@ -9903,6 +21515,7 @@ class EosDesigns(EosDesignsRootModel):
             "policy": {"type": EosCliConfigGen.Logging.Policy},
             "event": {"type": EosCliConfigGen.Logging.Event},
             "level": {"type": EosCliConfigGen.Logging.Level},
+            "validate_no_errors_period": {"type": int},
         }
         hosts: Hosts
         """Subclass of AvdList with `HostsItem` items."""
@@ -9924,6 +21537,11 @@ class EosDesigns(EosDesignsRootModel):
         event: EosCliConfigGen.Logging.Event
         level: EosCliConfigGen.Logging.Level
         """Configure logging severity."""
+        validate_no_errors_period: int | None
+        """
+        Threshold (in minutes) defining the recent time window during which no error-level logs should have
+        been generated for the validation to pass.
+        """
 
         if TYPE_CHECKING:
 
@@ -9943,6 +21561,7 @@ class EosDesigns(EosDesignsRootModel):
                 policy: EosCliConfigGen.Logging.Policy | UndefinedType = Undefined,
                 event: EosCliConfigGen.Logging.Event | UndefinedType = Undefined,
                 level: EosCliConfigGen.Logging.Level | UndefinedType = Undefined,
+                validate_no_errors_period: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 LoggingSettings.
@@ -9964,6 +21583,9 @@ class EosDesigns(EosDesignsRootModel):
                     policy: policy
                     event: event
                     level: Configure logging severity.
+                    validate_no_errors_period:
+                       Threshold (in minutes) defining the recent time window during which no error-level logs should have
+                       been generated for the validation to pass.
 
                 """
 
@@ -11124,16 +22746,17 @@ class EosDesigns(EosDesignsRootModel):
             descriptions-names.html#avd-string-formatter-syntax.
             The available template fields are:
               -
-            `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
+            `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+            `connected_endpoints_keys.type` like `server`, `router` etc.
+              - `endpoint` - The name of the
+            connected endpoint
+              - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
               -
-            `endpoint` - The name of the connected endpoint
-              - `endpoint_port_channel` - The value from
-            `endpoint_port_channel` if set.
-              - `port_channel_id` - The port-channel number for the switch.
-              -
-            `adapter_description` - The adapter's description if set.
-              - `adapter_description_or_endpoint` -
-            Helper alias of the adapter_description or endpoint.
+            `port_channel_id` - The port-channel number for the switch.
+              - `adapter_description` - The
+            adapter's description if set.
+              - `adapter_description_or_endpoint` - Helper alias of the
+            adapter_description or endpoint.
 
             The default description is set by
             `default_connected_endpoints_port_channel_description`.
@@ -11236,16 +22859,17 @@ class EosDesigns(EosDesignsRootModel):
                            descriptions-names.html#avd-string-formatter-syntax.
                            The available template fields are:
                              -
-                           `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
+                           `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                           `connected_endpoints_keys.type` like `server`, `router` etc.
+                             - `endpoint` - The name of the
+                           connected endpoint
+                             - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
                              -
-                           `endpoint` - The name of the connected endpoint
-                             - `endpoint_port_channel` - The value from
-                           `endpoint_port_channel` if set.
-                             - `port_channel_id` - The port-channel number for the switch.
-                             -
-                           `adapter_description` - The adapter's description if set.
-                             - `adapter_description_or_endpoint` -
-                           Helper alias of the adapter_description or endpoint.
+                           `port_channel_id` - The port-channel number for the switch.
+                             - `adapter_description` - The
+                           adapter's description if set.
+                             - `adapter_description_or_endpoint` - Helper alias of the
+                           adapter_description or endpoint.
 
                            The default description is set by
                            `default_connected_endpoints_port_channel_description`.
@@ -12988,14 +24612,14 @@ class EosDesigns(EosDesignsRootModel):
         AuthenticationKeys._item_type = AuthenticationKeysItem
 
         _fields: ClassVar[dict] = {
-            "server_vrf": {"type": str},
+            "server_vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
             "servers": {"type": Servers},
             "authenticate": {"type": bool},
             "authenticate_servers_only": {"type": bool},
             "authentication_keys": {"type": AuthenticationKeys},
             "trusted_keys": {"type": str},
         }
-        server_vrf: str | None
+        server_vrf: str
         """
         EOS only supports NTP servers in one VRF, so this VRF is used for all NTP servers and one local-
         interface.
@@ -13008,10 +24632,13 @@ class EosDesigns(EosDesignsRootModel):
         `inband_mgmt_interface` as NTP local-interface.
           An error will be raised if inband management is
         not configured for the device.
-        - Any other string will be used directly as the VRF name but local
-        interface must be set with `custom_structured_configuration_ntp` if needed.
-        If not set, the VRF is
-        automatically picked up from the global setting `default_mgmt_method`.
+        - `use_default_mgmt_method_vrf` will configure the VRF for NTP
+        server(s) and local-interface for NTP depending on the value of `default_mgmt_method`.
+        - Any other
+        string will be used directly as the VRF name but local interface must be set with
+        `custom_structured_configuration_ntp` if needed.
+
+        Default value: `"use_default_mgmt_method_vrf"`
         """
         servers: Servers
         """
@@ -13031,7 +24658,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
-                server_vrf: str | None | UndefinedType = Undefined,
+                server_vrf: str | UndefinedType = Undefined,
                 servers: Servers | UndefinedType = Undefined,
                 authenticate: bool | None | UndefinedType = Undefined,
                 authenticate_servers_only: bool | None | UndefinedType = Undefined,
@@ -13057,10 +24684,11 @@ class EosDesigns(EosDesignsRootModel):
                        `inband_mgmt_interface` as NTP local-interface.
                          An error will be raised if inband management is
                        not configured for the device.
-                       - Any other string will be used directly as the VRF name but local
-                       interface must be set with `custom_structured_configuration_ntp` if needed.
-                       If not set, the VRF is
-                       automatically picked up from the global setting `default_mgmt_method`.
+                       - `use_default_mgmt_method_vrf` will configure the VRF for NTP
+                       server(s) and local-interface for NTP depending on the value of `default_mgmt_method`.
+                       - Any other
+                       string will be used directly as the VRF name but local interface must be set with
+                       `custom_structured_configuration_ntp` if needed.
                     servers:
                        The first server is always set as "preferred".
 
@@ -13996,6 +25624,7 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
+            "kernel_ecmp_cli": {"type": bool, "default": True},
             "feature_support": {"type": FeatureSupport},
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
@@ -14022,6 +25651,18 @@ class EosDesigns(EosDesignsRootModel):
         Set MTU on point to point uplink interfaces.
         Takes precedence over the root key "p2p_uplinks_mtu".
         <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+        """
+        kernel_ecmp_cli: bool
+        """
+        Use EOS CLI to configure kernel forwarding ECMP programming.
+        For EOS kernel forwarding, ECMP
+        programming can be enabled in two different ways, depending on the EOS version.
+        - For newer EOS
+        versions (starting 4.33.2) use the proper CLI.
+        - For older EOS versions use an agent environment
+        variable. Changing this requires restarting the KernelFib agent.
+
+        Default value: `True`
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
@@ -14058,6 +25699,7 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 default_interface_mtu: int | None | UndefinedType = Undefined,
                 p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
+                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
@@ -14085,6 +25727,14 @@ class EosDesigns(EosDesignsRootModel):
                        Set MTU on point to point uplink interfaces.
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+                    kernel_ecmp_cli:
+                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                       For EOS kernel forwarding, ECMP
+                       programming can be enabled in two different ways, depending on the EOS version.
+                       - For newer EOS
+                       versions (starting 4.33.2) use the proper CLI.
+                       - For older EOS versions use an agent environment
+                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:
@@ -14737,6 +26387,7 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
+            "kernel_ecmp_cli": {"type": bool, "default": True},
             "feature_support": {"type": FeatureSupport},
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
@@ -14763,6 +26414,18 @@ class EosDesigns(EosDesignsRootModel):
         Set MTU on point to point uplink interfaces.
         Takes precedence over the root key "p2p_uplinks_mtu".
         <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+        """
+        kernel_ecmp_cli: bool
+        """
+        Use EOS CLI to configure kernel forwarding ECMP programming.
+        For EOS kernel forwarding, ECMP
+        programming can be enabled in two different ways, depending on the EOS version.
+        - For newer EOS
+        versions (starting 4.33.2) use the proper CLI.
+        - For older EOS versions use an agent environment
+        variable. Changing this requires restarting the KernelFib agent.
+
+        Default value: `True`
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
@@ -14799,6 +26462,7 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 default_interface_mtu: int | None | UndefinedType = Undefined,
                 p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
+                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
@@ -14826,6 +26490,14 @@ class EosDesigns(EosDesignsRootModel):
                        Set MTU on point to point uplink interfaces.
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+                    kernel_ecmp_cli:
+                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                       For EOS kernel forwarding, ECMP
+                       programming can be enabled in two different ways, depending on the EOS version.
+                       - For newer EOS
+                       versions (starting 4.33.2) use the proper CLI.
+                       - For older EOS versions use an agent environment
+                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:
@@ -15907,16 +27579,17 @@ class EosDesigns(EosDesignsRootModel):
             descriptions-names.html#avd-string-formatter-syntax.
             The available template fields are:
               -
-            `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
+            `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+            `connected_endpoints_keys.type` like `server`, `router` etc.
+              - `endpoint` - The name of the
+            connected endpoint
+              - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
               -
-            `endpoint` - The name of the connected endpoint
-              - `endpoint_port_channel` - The value from
-            `endpoint_port_channel` if set.
-              - `port_channel_id` - The port-channel number for the switch.
-              -
-            `adapter_description` - The adapter's description if set.
-              - `adapter_description_or_endpoint` -
-            Helper alias of the adapter_description or endpoint.
+            `port_channel_id` - The port-channel number for the switch.
+              - `adapter_description` - The
+            adapter's description if set.
+              - `adapter_description_or_endpoint` - Helper alias of the
+            adapter_description or endpoint.
 
             The default description is set by
             `default_connected_endpoints_port_channel_description`.
@@ -16019,16 +27692,17 @@ class EosDesigns(EosDesignsRootModel):
                            descriptions-names.html#avd-string-formatter-syntax.
                            The available template fields are:
                              -
-                           `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
+                           `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                           `connected_endpoints_keys.type` like `server`, `router` etc.
+                             - `endpoint` - The name of the
+                           connected endpoint
+                             - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
                              -
-                           `endpoint` - The name of the connected endpoint
-                             - `endpoint_port_channel` - The value from
-                           `endpoint_port_channel` if set.
-                             - `port_channel_id` - The port-channel number for the switch.
-                             -
-                           `adapter_description` - The adapter's description if set.
-                             - `adapter_description_or_endpoint` -
-                           Helper alias of the adapter_description or endpoint.
+                           `port_channel_id` - The port-channel number for the switch.
+                             - `adapter_description` - The
+                           adapter's description if set.
+                             - `adapter_description_or_endpoint` - Helper alias of the
+                           adapter_description or endpoint.
 
                            The default description is set by
                            `default_connected_endpoints_port_channel_description`.
@@ -16140,16 +27814,16 @@ class EosDesigns(EosDesignsRootModel):
         descriptions-names.html#avd-string-formatter-syntax.
         The available template fields are:
           -
-        `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
-          -
-        `endpoint` - The name of the connected endpoint
-          - `endpoint_port` - The value from
-        `endpoint_ports` for this switch port if set.
+        `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+        `connected_endpoints_keys.type` like `server`, `router` etc.
+          - `endpoint` - The name of the
+        connected endpoint
+          - `endpoint_port` - The value from `endpoint_ports` for this switch port if
+        set.
 
-        The default description is set by
-        `default_connected_endpoints_description`.
-        By default the description is templated from the type,
-        name and port of the endpoint if set.
+        The default description is set by `default_connected_endpoints_description`.
+        By default the
+        description is templated from the type, name and port of the endpoint if set.
         """
         enabled: bool
         """
@@ -16351,16 +28025,16 @@ class EosDesigns(EosDesignsRootModel):
                        descriptions-names.html#avd-string-formatter-syntax.
                        The available template fields are:
                          -
-                       `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
-                         -
-                       `endpoint` - The name of the connected endpoint
-                         - `endpoint_port` - The value from
-                       `endpoint_ports` for this switch port if set.
+                       `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                       `connected_endpoints_keys.type` like `server`, `router` etc.
+                         - `endpoint` - The name of the
+                       connected endpoint
+                         - `endpoint_port` - The value from `endpoint_ports` for this switch port if
+                       set.
 
-                       The default description is set by
-                       `default_connected_endpoints_description`.
-                       By default the description is templated from the type,
-                       name and port of the endpoint if set.
+                       The default description is set by `default_connected_endpoints_description`.
+                       By default the
+                       description is templated from the type, name and port of the endpoint if set.
                     enabled:
                        Administrative state, setting to false will set the port to 'shutdown' in the intended
                        configuration.
@@ -17842,7 +29516,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Vrfs._item_type = VrfsItem
 
-        _fields: ClassVar[dict] = {"vrfs": {"type": Vrfs}, "idle_timeout": {"type": int}}
+        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrfs": {"type": Vrfs}, "idle_timeout": {"type": int}}
+        enabled: bool | None
+        """
+        Explicitly enable or disable management ssh for all VRFs. By default EOS enables management ssh for
+        all VRFs.
+        """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         idle_timeout: int | None
@@ -17850,7 +29529,13 @@ class EosDesigns(EosDesignsRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, vrfs: Vrfs | UndefinedType = Undefined, idle_timeout: int | None | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                enabled: bool | None | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
+                idle_timeout: int | None | UndefinedType = Undefined,
+            ) -> None:
                 """
                 SshSettings.
 
@@ -17858,6 +29543,9 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    enabled:
+                       Explicitly enable or disable management ssh for all VRFs. By default EOS enables management ssh for
+                       all VRFs.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     idle_timeout: Idle timeout in minutes.
 
@@ -17868,6 +29556,11 @@ class EosDesigns(EosDesignsRootModel):
 
         class NodesItem(AvdModel):
             """Subclass of AvdModel."""
+
+            class IpAddressSecondaries(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            IpAddressSecondaries._item_type = str
 
             class Ipv6AddressVirtuals(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
@@ -18415,6 +30108,7 @@ class EosDesigns(EosDesignsRootModel):
                 "description": {"type": str},
                 "arp_gratuitous_accept": {"type": bool},
                 "ip_address": {"type": str},
+                "ip_address_secondaries": {"type": IpAddressSecondaries},
                 "ipv6_address": {"type": str},
                 "ipv6_enable": {"type": bool},
                 "ip_address_virtual": {"type": str},
@@ -18458,6 +30152,8 @@ class EosDesigns(EosDesignsRootModel):
             """Accept gratuitous ARP."""
             ip_address: str | None
             """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
+            ip_address_secondaries: IpAddressSecondaries
+            """Subclass of AvdList with `str` items."""
             ipv6_address: str | None
             """IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node."""
             ipv6_enable: bool | None
@@ -18655,6 +30351,7 @@ class EosDesigns(EosDesignsRootModel):
                     description: str | None | UndefinedType = Undefined,
                     arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                     ip_address: str | None | UndefinedType = Undefined,
+                    ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                     ipv6_address: str | None | UndefinedType = Undefined,
                     ipv6_enable: bool | None | UndefinedType = Undefined,
                     ip_address_virtual: str | None | UndefinedType = Undefined,
@@ -18699,6 +30396,7 @@ class EosDesigns(EosDesignsRootModel):
                         description: SVI description. By default set to VLAN name.
                         arp_gratuitous_accept: Accept gratuitous ARP.
                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+                        ip_address_secondaries: Subclass of AvdList with `str` items.
                         ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                         ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
                         ip_address_virtual:
@@ -18841,6 +30539,11 @@ class EosDesigns(EosDesignsRootModel):
             _primary_key: ClassVar[str] = "node"
 
         Nodes._item_type = NodesItem
+
+        class IpAddressSecondaries(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        IpAddressSecondaries._item_type = str
 
         class Ipv6AddressVirtuals(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -19386,6 +31089,7 @@ class EosDesigns(EosDesignsRootModel):
             "description": {"type": str},
             "arp_gratuitous_accept": {"type": bool},
             "ip_address": {"type": str},
+            "ip_address_secondaries": {"type": IpAddressSecondaries},
             "ipv6_address": {"type": str},
             "ipv6_enable": {"type": bool},
             "ip_address_virtual": {"type": str},
@@ -19445,6 +31149,8 @@ class EosDesigns(EosDesignsRootModel):
         """Accept gratuitous ARP."""
         ip_address: str | None
         """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
+        ip_address_secondaries: IpAddressSecondaries
+        """Subclass of AvdList with `str` items."""
         ipv6_address: str | None
         """IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node."""
         ipv6_enable: bool | None
@@ -19644,6 +31350,7 @@ class EosDesigns(EosDesignsRootModel):
                 description: str | None | UndefinedType = Undefined,
                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
+                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ip_address_virtual: str | None | UndefinedType = Undefined,
@@ -19700,6 +31407,7 @@ class EosDesigns(EosDesignsRootModel):
                     description: SVI description. By default set to VLAN name.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+                    ip_address_secondaries: Subclass of AvdList with `str` items.
                     ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                     ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
                     ip_address_virtual:
@@ -22017,3476 +33725,6 @@ class EosDesigns(EosDesignsRootModel):
 
     class _DynamicKeys(AvdModel):
         """Data models for dynamic keys."""
-
-        class DynamicConnectedEndpointsItem(AvdModel):
-            class ConnectedEndpointsItem(AvdModel):
-                """Subclass of AvdModel."""
-
-                class AdaptersItem(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    class SwitchPorts(AvdList[str]):
-                        """Subclass of AvdList with `str` items."""
-
-                    SwitchPorts._item_type = str
-
-                    class Switches(AvdList[str]):
-                        """Subclass of AvdList with `str` items."""
-
-                    Switches._item_type = str
-
-                    class EndpointPorts(AvdList[str]):
-                        """Subclass of AvdList with `str` items."""
-
-                    EndpointPorts._item_type = str
-
-                    class Descriptions(AvdList[str]):
-                        """Subclass of AvdList with `str` items."""
-
-                    Descriptions._item_type = str
-
-                    Speed: TypeAlias = Literal[
-                        "100full",
-                        "100g",
-                        "100g-1",
-                        "100g-2",
-                        "100g-4",
-                        "100half",
-                        "10full",
-                        "10g",
-                        "10half",
-                        "1g",
-                        "200g",
-                        "200g-2",
-                        "200g-4",
-                        "25g",
-                        "400g",
-                        "400g-4",
-                        "400g-8",
-                        "40g",
-                        "50g",
-                        "50g-1",
-                        "50g-2",
-                        "800g-8",
-                        "sfp-1000baset auto 100full",
-                        "1.6t-8",
-                        "100mfull",
-                        "100mhalf",
-                        "10mfull",
-                        "10mhalf",
-                        "200g-1",
-                        "400g-2",
-                        "40g-4",
-                        "800g-4",
-                        "auto",
-                        "auto 10000full",
-                        "auto 1000full",
-                        "auto 100full",
-                        "auto 100g-1",
-                        "auto 100g-2",
-                        "auto 100g-4",
-                        "auto 100gfull",
-                        "auto 100half",
-                        "auto 10full",
-                        "auto 10gfull",
-                        "auto 10half",
-                        "auto 1gfull",
-                        "auto 2.5gfull",
-                        "auto 200g-2",
-                        "auto 200g-4",
-                        "auto 25gfull",
-                        "auto 400g-4",
-                        "auto 400g-8",
-                        "auto 40gfull",
-                        "auto 50g-1",
-                        "auto 50g-2",
-                        "auto 50gfull",
-                        "auto 5gfull",
-                        "auto 800g-8",
-                        "auto 1.6t-8",
-                        "auto 100mfull",
-                        "auto 100mhalf",
-                        "auto 10g",
-                        "auto 10mfull",
-                        "auto 10mhalf",
-                        "auto 1g",
-                        "auto 2.5g",
-                        "auto 200g-1",
-                        "auto 25g",
-                        "auto 400g-2",
-                        "auto 40g-4",
-                        "auto 5g",
-                        "auto 800g-4",
-                        "forced 10000full",
-                        "forced 1000full",
-                        "forced 1000half",
-                        "forced 100full",
-                        "forced 100gfull",
-                        "forced 100half",
-                        "forced 10full",
-                        "forced 10half",
-                        "forced 25gfull",
-                        "forced 40gfull",
-                        "forced 50gfull",
-                    ]
-                    Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
-                    PhoneTrunkMode: TypeAlias = Literal["tagged", "untagged", "tagged phone", "untagged phone"]
-
-                    class TrunkGroups(AvdList[str]):
-                        """Subclass of AvdList with `str` items."""
-
-                    TrunkGroups._item_type = str
-
-                    SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
-                    SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
-                    SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
-
-                    class Ptp(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        EndpointRole: TypeAlias = Literal["follower", "dynamic", "bmca", "default"]
-                        _fields: ClassVar[dict] = {
-                            "enabled": {"type": bool, "default": False},
-                            "endpoint_role": {"type": str, "default": "follower"},
-                            "profile": {"type": str, "default": "aes67-r16-2016"},
-                        }
-                        enabled: bool
-                        """Default value: `False`"""
-                        endpoint_role: EndpointRole
-                        """
-                        PTP role of the endpoint.
-                        `follower` will configure the switch port as `ptp role master`.
-                        `dynamic`
-                        will use BMCA.
-                        `default` is deprecated in favor of `follower`.
-                        `bmca` is deprecated in favor of
-                        `dynamic`.
-
-                        Default value: `"follower"`
-                        """
-                        profile: str
-                        """
-                        Default available profiles are:
-                          - "aes67"
-                          - "aes67-r16-2016"
-                          - "smpte2059-2"
-
-                        Default value: `"aes67-r16-2016"`
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                enabled: bool | UndefinedType = Undefined,
-                                endpoint_role: EndpointRole | UndefinedType = Undefined,
-                                profile: str | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                Ptp.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    enabled: enabled
-                                    endpoint_role:
-                                       PTP role of the endpoint.
-                                       `follower` will configure the switch port as `ptp role master`.
-                                       `dynamic`
-                                       will use BMCA.
-                                       `default` is deprecated in favor of `follower`.
-                                       `bmca` is deprecated in favor of
-                                       `dynamic`.
-                                    profile:
-                                       Default available profiles are:
-                                         - "aes67"
-                                         - "aes67-r16-2016"
-                                         - "smpte2059-2"
-
-                                """
-
-                    class FlowTracking(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
-                        enabled: bool | None
-                        name: str | None
-                        """Flow tracker name as defined in flow_tracking_settings."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
-                                """
-                                FlowTracking.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    enabled: enabled
-                                    name: Flow tracker name as defined in flow_tracking_settings.
-
-                                """
-
-                    class LinkTracking(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
-                        enabled: bool | None
-                        name: str | None
-                        """
-                        Tracking group name.
-                        The default group name is taken from fabric variable of the switch,
-                        `link_tracking.groups[0].name` with default value being "LT_GROUP1".
-                        Optional if default
-                        link_tracking settings are configured on the node.
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
-                                """
-                                LinkTracking.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    enabled: enabled
-                                    name:
-                                       Tracking group name.
-                                       The default group name is taken from fabric variable of the switch,
-                                       `link_tracking.groups[0].name` with default value being "LT_GROUP1".
-                                       Optional if default
-                                       link_tracking settings are configured on the node.
-
-                                """
-
-                    class StormControl(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        class All(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Unit: TypeAlias = Literal["percent", "pps"]
-                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
-                            level: str | None
-                            """Configure maximum storm-control level."""
-                            unit: Unit
-                            """
-                            Optional variable and is hardware dependent.
-
-                            Default value: `"percent"`
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
-                                    """
-                                    All.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        level: Configure maximum storm-control level.
-                                        unit: Optional variable and is hardware dependent.
-
-                                    """
-
-                        class Broadcast(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Unit: TypeAlias = Literal["percent", "pps"]
-                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
-                            level: str | None
-                            """Configure maximum storm-control level."""
-                            unit: Unit
-                            """
-                            Optional variable and is hardware dependent.
-
-                            Default value: `"percent"`
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
-                                    """
-                                    Broadcast.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        level: Configure maximum storm-control level.
-                                        unit: Optional variable and is hardware dependent.
-
-                                    """
-
-                        class Multicast(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Unit: TypeAlias = Literal["percent", "pps"]
-                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
-                            level: str | None
-                            """Configure maximum storm-control level."""
-                            unit: Unit
-                            """
-                            Optional variable and is hardware dependent.
-
-                            Default value: `"percent"`
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
-                                    """
-                                    Multicast.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        level: Configure maximum storm-control level.
-                                        unit: Optional variable and is hardware dependent.
-
-                                    """
-
-                        class UnknownUnicast(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Unit: TypeAlias = Literal["percent", "pps"]
-                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
-                            level: str | None
-                            """Configure maximum storm-control level."""
-                            unit: Unit
-                            """
-                            Optional variable and is hardware dependent.
-
-                            Default value: `"percent"`
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
-                                    """
-                                    UnknownUnicast.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        level: Configure maximum storm-control level.
-                                        unit: Optional variable and is hardware dependent.
-
-                                    """
-
-                        _fields: ClassVar[dict] = {
-                            "all": {"type": All},
-                            "broadcast": {"type": Broadcast},
-                            "multicast": {"type": Multicast},
-                            "unknown_unicast": {"type": UnknownUnicast},
-                        }
-                        all: All
-                        """Subclass of AvdModel."""
-                        broadcast: Broadcast
-                        """Subclass of AvdModel."""
-                        multicast: Multicast
-                        """Subclass of AvdModel."""
-                        unknown_unicast: UnknownUnicast
-                        """Subclass of AvdModel."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                all: All | UndefinedType = Undefined,
-                                broadcast: Broadcast | UndefinedType = Undefined,
-                                multicast: Multicast | UndefinedType = Undefined,
-                                unknown_unicast: UnknownUnicast | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                StormControl.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    all: Subclass of AvdModel.
-                                    broadcast: Subclass of AvdModel.
-                                    multicast: Subclass of AvdModel.
-                                    unknown_unicast: Subclass of AvdModel.
-
-                                """
-
-                    class MonitorSessionsItem(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Role: TypeAlias = Literal["source", "destination"]
-
-                        class SourceSettings(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Direction: TypeAlias = Literal["rx", "tx", "both"]
-
-                            class AccessGroup(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
-                                _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                                type: Type | None
-                                name: str | None
-                                """ACL name."""
-                                priority: int | None
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(
-                                        self,
-                                        *,
-                                        type: Type | None | UndefinedType = Undefined,
-                                        name: str | None | UndefinedType = Undefined,
-                                        priority: int | None | UndefinedType = Undefined,
-                                    ) -> None:
-                                        """
-                                        AccessGroup.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            type: type
-                                            name: ACL name.
-                                            priority: priority
-
-                                        """
-
-                            _fields: ClassVar[dict] = {"direction": {"type": str}, "access_group": {"type": AccessGroup}}
-                            direction: Direction | None
-                            access_group: AccessGroup
-                            """
-                            This can only be set when `session_settings.access_group` is not set.
-
-                            Subclass of AvdModel.
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self, *, direction: Direction | None | UndefinedType = Undefined, access_group: AccessGroup | UndefinedType = Undefined
-                                ) -> None:
-                                    """
-                                    SourceSettings.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        direction: direction
-                                        access_group:
-                                           This can only be set when `session_settings.access_group` is not set.
-
-                                           Subclass of AvdModel.
-
-                                    """
-
-                        class SessionSettings(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            class AccessGroup(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
-                                _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                                type: Type | None
-                                name: str | None
-                                """ACL name."""
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(self, *, type: Type | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
-                                        """
-                                        AccessGroup.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            type: type
-                                            name: ACL name.
-
-                                        """
-
-                            class Truncate(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "size": {"type": int}}
-                                enabled: bool | None
-                                size: int | None
-                                """Size in bytes."""
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(
-                                        self, *, enabled: bool | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined
-                                    ) -> None:
-                                        """
-                                        Truncate.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            enabled: enabled
-                                            size: Size in bytes.
-
-                                        """
-
-                            _fields: ClassVar[dict] = {
-                                "encapsulation_gre_metadata_tx": {"type": bool},
-                                "header_remove_size": {"type": int},
-                                "access_group": {"type": AccessGroup},
-                                "rate_limit_per_ingress_chip": {"type": str},
-                                "rate_limit_per_egress_chip": {"type": str},
-                                "sample": {"type": int},
-                                "truncate": {"type": Truncate},
-                            }
-                            encapsulation_gre_metadata_tx: bool | None
-                            header_remove_size: int | None
-                            """Number of bytes to remove from header."""
-                            access_group: AccessGroup
-                            """Subclass of AvdModel."""
-                            rate_limit_per_ingress_chip: str | None
-                            """
-                            Ratelimit and unit as string.
-                            Examples:
-                              "100000 bps"
-                              "100 kbps"
-                              "10 mbps"
-                            """
-                            rate_limit_per_egress_chip: str | None
-                            """
-                            Ratelimit and unit as string.
-                            Examples:
-                              "100000 bps"
-                              "100 kbps"
-                              "10 mbps"
-                            """
-                            sample: int | None
-                            truncate: Truncate
-                            """Subclass of AvdModel."""
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    encapsulation_gre_metadata_tx: bool | None | UndefinedType = Undefined,
-                                    header_remove_size: int | None | UndefinedType = Undefined,
-                                    access_group: AccessGroup | UndefinedType = Undefined,
-                                    rate_limit_per_ingress_chip: str | None | UndefinedType = Undefined,
-                                    rate_limit_per_egress_chip: str | None | UndefinedType = Undefined,
-                                    sample: int | None | UndefinedType = Undefined,
-                                    truncate: Truncate | UndefinedType = Undefined,
-                                ) -> None:
-                                    """
-                                    SessionSettings.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        encapsulation_gre_metadata_tx: encapsulation_gre_metadata_tx
-                                        header_remove_size: Number of bytes to remove from header.
-                                        access_group: Subclass of AvdModel.
-                                        rate_limit_per_ingress_chip:
-                                           Ratelimit and unit as string.
-                                           Examples:  # fmt: skip
-                                             "100000 bps"
-                                             "100 kbps"
-                                             "10 mbps"
-                                        rate_limit_per_egress_chip:
-                                           Ratelimit and unit as string.
-                                           Examples:  # fmt: skip
-                                             "100000 bps"
-                                             "100 kbps"
-                                             "10 mbps"
-                                        sample: sample
-                                        truncate: Subclass of AvdModel.
-
-                                    """
-
-                        _fields: ClassVar[dict] = {
-                            "name": {"type": str},
-                            "role": {"type": str},
-                            "source_settings": {"type": SourceSettings},
-                            "session_settings": {"type": SessionSettings},
-                        }
-                        name: str
-                        """Session name."""
-                        role: Role | None
-                        source_settings: SourceSettings
-                        """Subclass of AvdModel."""
-                        session_settings: SessionSettings
-                        """
-                        Session settings are defined per session name.
-                        Different session_settings for the same session name
-                        will be combined/merged.
-
-
-                        Subclass of AvdModel.
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                name: str | UndefinedType = Undefined,
-                                role: Role | None | UndefinedType = Undefined,
-                                source_settings: SourceSettings | UndefinedType = Undefined,
-                                session_settings: SessionSettings | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                MonitorSessionsItem.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    name: Session name.
-                                    role: role
-                                    source_settings: Subclass of AvdModel.
-                                    session_settings:
-                                       Session settings are defined per session name.
-                                       Different session_settings for the same session name
-                                       will be combined/merged.
-
-
-                                       Subclass of AvdModel.
-
-                                """
-
-                    class MonitorSessions(AvdList[MonitorSessionsItem]):
-                        """Subclass of AvdList with `MonitorSessionsItem` items."""
-
-                    MonitorSessions._item_type = MonitorSessionsItem
-
-                    class EthernetSegment(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Redundancy: TypeAlias = Literal["all-active", "single-active"]
-                        DesignatedForwarderAlgorithm: TypeAlias = Literal["auto", "modulus", "preference"]
-
-                        class DesignatedForwarderPreferences(AvdList[int]):
-                            """Subclass of AvdList with `int` items."""
-
-                        DesignatedForwarderPreferences._item_type = int
-
-                        _fields: ClassVar[dict] = {
-                            "short_esi": {"type": str},
-                            "redundancy": {"type": str},
-                            "designated_forwarder_algorithm": {"type": str},
-                            "designated_forwarder_preferences": {"type": DesignatedForwarderPreferences},
-                            "dont_preempt": {"type": bool},
-                        }
-                        short_esi: str
-                        """
-                        In format xxxx:xxxx:xxxx or "auto".
-                        Define a manual short-esi (be careful using this on profiles) or
-                        set the value to "auto" to automatically generate the value.
-                        Please see the notes under "EVPN A/A
-                        ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
-                        """
-                        redundancy: Redundancy | None
-                        """
-                        If omitted, Port-Channels use the EOS default of all-active.
-                        If omitted, Ethernet interfaces are
-                        configured as single-active.
-                        """
-                        designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None
-                        """
-                        Configure DF algorithm and preferences.
-                        - auto: Use preference-based algorithm and assign preference
-                        based on position of device in the 'switches' list,
-                          e.g., assuming a list of three switches, this
-                        would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.
-                        -
-                        preference: Set preference for each switch manually using designated_forwarder_preferences key.
-                        -
-                        modulus: Use the default modulus-based algorithm.
-                        If omitted, Port-Channels use the EOS default of
-                        modulus.
-                        If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
-                        """
-                        designated_forwarder_preferences: DesignatedForwarderPreferences
-                        """
-                        Manual preference as described above, required only for preference algorithm.
-
-                        Subclass of AvdList
-                        with `int` items.
-                        """
-                        dont_preempt: bool | None
-                        """Disable preemption for single-active forwarding when auto/manual DF preference is configured."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                short_esi: str | UndefinedType = Undefined,
-                                redundancy: Redundancy | None | UndefinedType = Undefined,
-                                designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None | UndefinedType = Undefined,
-                                designated_forwarder_preferences: DesignatedForwarderPreferences | UndefinedType = Undefined,
-                                dont_preempt: bool | None | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                EthernetSegment.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    short_esi:
-                                       In format xxxx:xxxx:xxxx or "auto".
-                                       Define a manual short-esi (be careful using this on profiles) or
-                                       set the value to "auto" to automatically generate the value.
-                                       Please see the notes under "EVPN A/A
-                                       ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
-                                    redundancy:
-                                       If omitted, Port-Channels use the EOS default of all-active.
-                                       If omitted, Ethernet interfaces are
-                                       configured as single-active.
-                                    designated_forwarder_algorithm:
-                                       Configure DF algorithm and preferences.
-                                       - auto: Use preference-based algorithm and assign preference
-                                       based on position of device in the 'switches' list,
-                                         e.g., assuming a list of three switches, this
-                                       would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.
-                                       -
-                                       preference: Set preference for each switch manually using designated_forwarder_preferences key.
-                                       -
-                                       modulus: Use the default modulus-based algorithm.
-                                       If omitted, Port-Channels use the EOS default of
-                                       modulus.
-                                       If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
-                                    designated_forwarder_preferences:
-                                       Manual preference as described above, required only for preference algorithm.
-
-                                       Subclass of AvdList
-                                       with `int` items.
-                                    dont_preempt: Disable preemption for single-active forwarding when auto/manual DF preference is configured.
-
-                                """
-
-                    class PortChannel(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Mode: TypeAlias = Literal["active", "passive", "on"]
-
-                        class LacpFallback(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Mode: TypeAlias = Literal["static", "individual"]
-
-                            class Individual(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
-                                _fields: ClassVar[dict] = {
-                                    "profile": {"type": str},
-                                    "vlans": {"type": str},
-                                    "native_vlan": {"type": int},
-                                    "mode": {"type": str},
-                                }
-                                profile: str | None
-                                """Port-profile name to inherit configuration."""
-                                vlans: str | None
-                                """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
-                                native_vlan: int | None
-                                """Native VLAN on the port-channel member interfaces when in fallback individual."""
-                                mode: Mode | None
-                                """Interface mode on the port-channel member interfaces when in fallback individual."""
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(
-                                        self,
-                                        *,
-                                        profile: str | None | UndefinedType = Undefined,
-                                        vlans: str | None | UndefinedType = Undefined,
-                                        native_vlan: int | None | UndefinedType = Undefined,
-                                        mode: Mode | None | UndefinedType = Undefined,
-                                    ) -> None:
-                                        """
-                                        Individual.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            profile: Port-profile name to inherit configuration.
-                                            vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
-                                            native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
-                                            mode: Interface mode on the port-channel member interfaces when in fallback individual.
-
-                                        """
-
-                            _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
-                            mode: Mode | None
-                            """
-                            Either static or individual mode is supported.
-                            If the mode is set to "individual" either 'profile'
-                            or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
-                            """
-                            individual: Individual
-                            """
-                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
-                            "individual".
-
-                            Subclass of AvdModel.
-                            """
-                            timeout: int
-                            """
-                            Timeout in seconds.
-
-                            Default value: `90`
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    mode: Mode | None | UndefinedType = Undefined,
-                                    individual: Individual | UndefinedType = Undefined,
-                                    timeout: int | UndefinedType = Undefined,
-                                ) -> None:
-                                    """
-                                    LacpFallback.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        mode:
-                                           Either static or individual mode is supported.
-                                           If the mode is set to "individual" either 'profile'
-                                           or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
-                                        individual:
-                                           Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
-                                           "individual".
-
-                                           Subclass of AvdModel.
-                                        timeout: Timeout in seconds.
-
-                                    """
-
-                        class LacpTimer(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Mode: TypeAlias = Literal["normal", "fast"]
-                            _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
-                            mode: Mode | None
-                            """LACP mode for interface members."""
-                            multiplier: int | None
-                            """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined
-                                ) -> None:
-                                    """
-                                    LacpTimer.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        mode: LACP mode for interface members.
-                                        multiplier: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
-
-                                    """
-
-                        class SubinterfacesItem(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            class EncapsulationVlan(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
-                                client_dot1q: int | None
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
-                                        """
-                                        EncapsulationVlan.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            client_dot1q: client_dot1q
-
-                                        """
-
-                            _fields: ClassVar[dict] = {
-                                "number": {"type": int},
-                                "short_esi": {"type": str},
-                                "vlan_id": {"type": int},
-                                "encapsulation_vlan": {"type": EncapsulationVlan},
-                                "raw_eos_cli": {"type": str},
-                                "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-                            }
-                            number: int | None
-                            """Subinterface number."""
-                            short_esi: str | None
-                            """
-                            In format xxxx:xxxx:xxxx or "auto".
-                            Required for multihomed port-channels with subinterfaces.
-                            """
-                            vlan_id: int | None
-                            """
-                            VLAN ID to bridge.
-                            Default is subinterface number.
-                            """
-                            encapsulation_vlan: EncapsulationVlan
-                            """
-                            Client VLAN ID encapsulation.
-                            Default is subinterface number.
-
-
-                            Subclass of AvdModel.
-                            """
-                            raw_eos_cli: str | None
-                            """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
-                            structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                            """
-                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
-                            eos_cli_config_gen.
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    number: int | None | UndefinedType = Undefined,
-                                    short_esi: str | None | UndefinedType = Undefined,
-                                    vlan_id: int | None | UndefinedType = Undefined,
-                                    encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
-                                    raw_eos_cli: str | None | UndefinedType = Undefined,
-                                    structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                                ) -> None:
-                                    """
-                                    SubinterfacesItem.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        number: Subinterface number.
-                                        short_esi:
-                                           In format xxxx:xxxx:xxxx or "auto".
-                                           Required for multihomed port-channels with subinterfaces.
-                                        vlan_id:
-                                           VLAN ID to bridge.
-                                           Default is subinterface number.
-                                        encapsulation_vlan:
-                                           Client VLAN ID encapsulation.
-                                           Default is subinterface number.
-
-
-                                           Subclass of AvdModel.
-                                        raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
-                                        structured_config:
-                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
-                                           eos_cli_config_gen.
-
-                                    """
-
-                        class Subinterfaces(AvdList[SubinterfacesItem]):
-                            """Subclass of AvdList with `SubinterfacesItem` items."""
-
-                        Subinterfaces._item_type = SubinterfacesItem
-
-                        _fields: ClassVar[dict] = {
-                            "mode": {"type": str},
-                            "channel_id": {"type": int},
-                            "description": {"type": str},
-                            "endpoint_port_channel": {"type": str},
-                            "enabled": {"type": bool, "default": True},
-                            "ptp_mpass": {"type": bool, "default": False},
-                            "lacp_fallback": {"type": LacpFallback},
-                            "lacp_timer": {"type": LacpTimer},
-                            "subinterfaces": {"type": Subinterfaces},
-                            "raw_eos_cli": {"type": str},
-                            "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-                        }
-                        mode: Mode | None
-                        """Port-Channel Mode."""
-                        channel_id: int | None
-                        """
-                        Port-Channel ID.
-                        If no channel_id is specified, an id is generated from the first switch port in the
-                        port channel.
-                        """
-                        description: str | None
-                        """
-                        Description or description template to be used on the port-channel interface.
-                        This can be a template
-                        using the AVD string formatter syntax:
-                        https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                        descriptions-names.html#avd-string-formatter-syntax.
-                        The available template fields are:
-                          -
-                        `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
-                          -
-                        `endpoint` - The name of the connected endpoint
-                          - `endpoint_port_channel` - The value from
-                        `endpoint_port_channel` if set.
-                          - `port_channel_id` - The port-channel number for the switch.
-                          -
-                        `adapter_description` - The adapter's description if set.
-                          - `adapter_description_or_endpoint` -
-                        Helper alias of the adapter_description or endpoint.
-
-                        The default description is set by
-                        `default_connected_endpoints_port_channel_description`.
-                        By default the description is templated from
-                        the type, name and port_channel interface of the endpoint if set.
-                        """
-                        endpoint_port_channel: str | None
-                        """
-                        Name of the port-channel interface on the endpoint.
-                        Used for the port-channel description template
-                        with the field name `peer_interface`
-                        """
-                        enabled: bool
-                        """
-                        Port-Channel administrative state.
-                        Setting to false will set port to 'shutdown' in intended
-                        configuration.
-
-                        Default value: `True`
-                        """
-                        ptp_mpass: bool
-                        """
-                        When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
-                        logical device.
-                        Arista PTP enabled devices always place PTP messages on the same physical link
-                        within the port-channel.
-                        Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
-                        devices.
-
-                        Default value: `False`
-                        """
-                        lacp_fallback: LacpFallback
-                        """
-                        LACP fallback configuration.
-
-                        Subclass of AvdModel.
-                        """
-                        lacp_timer: LacpTimer
-                        """
-                        LACP timer configuration. Applies only when Port-channel mode is not "on".
-
-                        Subclass of AvdModel.
-                        """
-                        subinterfaces: Subinterfaces
-                        """
-                        Port-Channel L2 Subinterfaces
-                        Subinterfaces are only supported on routed port-channels, which means
-                        they cannot be configured on MLAG port-channels.
-                        Setting short_esi: auto generates the short_esi
-                        automatically using a hash of configuration elements.
-                        Please see the notes under "EVPN A/A ESI dual-
-                        attached endpoint scenario" before setting short_esi: auto.
-
-
-                        Subclass of AvdList with
-                        `SubinterfacesItem` items.
-                        """
-                        raw_eos_cli: str | None
-                        """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
-                        structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                        """
-                        Custom structured config added under port_channel_interfaces.[name=<interface>] for
-                        eos_cli_config_gen.
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                mode: Mode | None | UndefinedType = Undefined,
-                                channel_id: int | None | UndefinedType = Undefined,
-                                description: str | None | UndefinedType = Undefined,
-                                endpoint_port_channel: str | None | UndefinedType = Undefined,
-                                enabled: bool | UndefinedType = Undefined,
-                                ptp_mpass: bool | UndefinedType = Undefined,
-                                lacp_fallback: LacpFallback | UndefinedType = Undefined,
-                                lacp_timer: LacpTimer | UndefinedType = Undefined,
-                                subinterfaces: Subinterfaces | UndefinedType = Undefined,
-                                raw_eos_cli: str | None | UndefinedType = Undefined,
-                                structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                PortChannel.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    mode: Port-Channel Mode.
-                                    channel_id:
-                                       Port-Channel ID.
-                                       If no channel_id is specified, an id is generated from the first switch port in the
-                                       port channel.
-                                    description:
-                                       Description or description template to be used on the port-channel interface.
-                                       This can be a template
-                                       using the AVD string formatter syntax:
-                                       https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                                       descriptions-names.html#avd-string-formatter-syntax.
-                                       The available template fields are:
-                                         -
-                                       `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
-                                         -
-                                       `endpoint` - The name of the connected endpoint
-                                         - `endpoint_port_channel` - The value from
-                                       `endpoint_port_channel` if set.
-                                         - `port_channel_id` - The port-channel number for the switch.
-                                         -
-                                       `adapter_description` - The adapter's description if set.
-                                         - `adapter_description_or_endpoint` -
-                                       Helper alias of the adapter_description or endpoint.
-
-                                       The default description is set by
-                                       `default_connected_endpoints_port_channel_description`.
-                                       By default the description is templated from
-                                       the type, name and port_channel interface of the endpoint if set.
-                                    endpoint_port_channel:
-                                       Name of the port-channel interface on the endpoint.
-                                       Used for the port-channel description template
-                                       with the field name `peer_interface`
-                                    enabled:
-                                       Port-Channel administrative state.
-                                       Setting to false will set port to 'shutdown' in intended
-                                       configuration.
-                                    ptp_mpass:
-                                       When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
-                                       logical device.
-                                       Arista PTP enabled devices always place PTP messages on the same physical link
-                                       within the port-channel.
-                                       Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
-                                       devices.
-                                    lacp_fallback:
-                                       LACP fallback configuration.
-
-                                       Subclass of AvdModel.
-                                    lacp_timer:
-                                       LACP timer configuration. Applies only when Port-channel mode is not "on".
-
-                                       Subclass of AvdModel.
-                                    subinterfaces:
-                                       Port-Channel L2 Subinterfaces
-                                       Subinterfaces are only supported on routed port-channels, which means
-                                       they cannot be configured on MLAG port-channels.
-                                       Setting short_esi: auto generates the short_esi
-                                       automatically using a hash of configuration elements.
-                                       Please see the notes under "EVPN A/A ESI dual-
-                                       attached endpoint scenario" before setting short_esi: auto.
-
-
-                                       Subclass of AvdList with
-                                       `SubinterfacesItem` items.
-                                    raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
-                                    structured_config:
-                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                       eos_cli_config_gen.
-
-                                """
-
-                    class CampusLinkType(AvdList[str]):
-                        """Subclass of AvdList with `str` items."""
-
-                    CampusLinkType._item_type = str
-
-                    _fields: ClassVar[dict] = {
-                        "switch_ports": {"type": SwitchPorts},
-                        "switches": {"type": Switches},
-                        "endpoint_ports": {"type": EndpointPorts},
-                        "descriptions": {"type": Descriptions},
-                        "speed": {"type": str},
-                        "description": {"type": str},
-                        "profile": {"type": str},
-                        "enabled": {"type": bool, "default": True},
-                        "mode": {"type": str},
-                        "mtu": {"type": int},
-                        "l2_mtu": {"type": int},
-                        "l2_mru": {"type": int},
-                        "native_vlan": {"type": int},
-                        "native_vlan_tag": {"type": bool},
-                        "phone_vlan": {"type": int},
-                        "phone_trunk_mode": {"type": str},
-                        "trunk_groups": {"type": TrunkGroups},
-                        "vlans": {"type": str},
-                        "spanning_tree_portfast": {"type": str},
-                        "spanning_tree_bpdufilter": {"type": str},
-                        "spanning_tree_bpduguard": {"type": str},
-                        "flowcontrol": {"type": EosCliConfigGen.EthernetInterfacesItem.Flowcontrol},
-                        "qos_profile": {"type": str},
-                        "ptp": {"type": Ptp},
-                        "sflow": {"type": bool},
-                        "flow_tracking": {"type": FlowTracking},
-                        "link_tracking": {"type": LinkTracking},
-                        "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
-                        "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
-                        "storm_control": {"type": StormControl},
-                        "monitor_sessions": {"type": MonitorSessions},
-                        "ethernet_segment": {"type": EthernetSegment},
-                        "port_channel": {"type": PortChannel},
-                        "validate_state": {"type": bool},
-                        "validate_lldp": {"type": bool},
-                        "campus_link_type": {"type": CampusLinkType},
-                        "raw_eos_cli": {"type": str},
-                        "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
-                    }
-                    switch_ports: SwitchPorts
-                    """
-                    List of switch interfaces.
-                    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
-                    same length.
-
-
-                    Subclass of AvdList with `str` items.
-                    """
-                    switches: Switches
-                    """
-                    List of switches.
-                    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
-                    length.
-
-
-                    Subclass of AvdList with `str` items.
-                    """
-                    endpoint_ports: EndpointPorts
-                    """
-                    Endpoint ports is used for description, required unless `description` or `descriptions` is set.
-                    The
-                    lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
-                    Each list item is one switchport.
-
-
-                    Subclass of AvdList with `str` items.
-                    """
-                    descriptions: Descriptions
-                    """
-                    Unique description per port. When set, takes priority over description.
-                    This can be a template using
-                    the AVD string formatter syntax:
-                    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                    descriptions-names.html#avd-string-formatter-syntax.
-                    The available template fields are:
-                      -
-                    `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
-                      -
-                    `endpoint` - The name of the connected endpoint
-                      - `endpoint_port` - The value from
-                    `endpoint_ports` for this switch port if set.
-                      - `port_channel_id`: The port-channel number for the
-                    switch.
-
-                    Subclass of AvdList with `str` items.
-                    """
-                    speed: Speed | None
-                    """
-                    Set adapter speed.
-                    If not specified speed will be auto.
-                    """
-                    description: str | None
-                    """
-                    Description or description template to be used on all ports.
-                    This can be a template using the AVD
-                    string formatter syntax:
-                    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                    descriptions-names.html#avd-string-formatter-syntax.
-                    The available template fields are:
-                      -
-                    `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
-                      -
-                    `endpoint` - The name of the connected endpoint
-                      - `endpoint_port` - The value from
-                    `endpoint_ports` for this switch port if set.
-
-                    The default description is set by
-                    `default_connected_endpoints_description`.
-                    By default the description is templated from the type,
-                    name and port of the endpoint if set.
-                    """
-                    profile: str | None
-                    """Port-profile name to inherit configuration."""
-                    enabled: bool
-                    """
-                    Administrative state, setting to false will set the port to 'shutdown' in the intended
-                    configuration.
-
-                    Default value: `True`
-                    """
-                    mode: Mode | None
-                    """Interface mode."""
-                    mtu: int | None
-                    l2_mtu: int | None
-                    """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
-                    l2_mru: int | None
-                    """"l2_mru" should only be defined for platforms supporting the "l2 mru" CLI."""
-                    native_vlan: int | None
-                    """
-                    Native VLAN for a trunk port.
-                    If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag`
-                    takes precedence.
-                    """
-                    native_vlan_tag: bool | None
-                    """If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag` takes precedence."""
-                    phone_vlan: int | None
-                    """
-                    Phone VLAN for a mode `trunk phone` port.
-                    Requires `mode: trunk phone` to be set.
-                    """
-                    phone_trunk_mode: PhoneTrunkMode | None
-                    """
-                    Specify if the phone traffic is tagged or untagged.
-                    If both data and phone traffic are untagged,
-                    MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.
-                    """
-                    trunk_groups: TrunkGroups
-                    """
-                    Required with `enable_trunk_groups: true`.
-                    Trunk Groups are used for limiting VLANs on trunk ports
-                    to VLANs with the same Trunk Group.
-
-
-                    Subclass of AvdList with `str` items.
-                    """
-                    vlans: str | None
-                    """
-                    Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                    VLAN 1 will be used for access ports.
-                    """
-                    spanning_tree_portfast: SpanningTreePortfast | None
-                    spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
-                    spanning_tree_bpduguard: SpanningTreeBpduguard | None
-                    flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol
-                    qos_profile: str | None
-                    """QOS profile name."""
-                    ptp: Ptp
-                    """
-                    The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually
-                    enabled.
-                    `ptp role master` is set to ensure control over the PTP topology.
-
-
-                    Subclass of AvdModel.
-                    """
-                    sflow: bool | None
-                    """Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting."""
-                    flow_tracking: FlowTracking
-                    """
-                    Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.
-                    Subclass of AvdModel.
-                    """
-                    link_tracking: LinkTracking
-                    """
-                    Configure the downstream interfaces of a respective Link Tracking Group.
-                    If `port_channel` is
-                    defined in an adapter, then the port-channel interface is configured to be the downstream.
-                    Else all
-                    the ethernet interfaces will be configured as downstream -> to configure single-active EVPN
-                    multihomed networks.
-
-
-                    Subclass of AvdModel.
-                    """
-                    dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-                    """802.1x"""
-                    poe: EosCliConfigGen.EthernetInterfacesItem.Poe
-                    """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
-                    storm_control: StormControl
-                    """
-                    Storm control settings applied on port toward the endpoint.
-
-                    Subclass of AvdModel.
-                    """
-                    monitor_sessions: MonitorSessions
-                    """
-                    Used to define interfaces as source or destination for monitoring sessions.
-
-                    Subclass of AvdList
-                    with `MonitorSessionsItem` items.
-                    """
-                    ethernet_segment: EthernetSegment
-                    """
-                    Settings for all or single-active EVPN multihoming.
-
-                    Subclass of AvdModel.
-                    """
-                    port_channel: PortChannel
-                    """
-                    Used for port-channel adapter.
-
-                    Subclass of AvdModel.
-                    """
-                    validate_state: bool | None
-                    """
-                    Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
-                    role.
-                    """
-                    validate_lldp: bool | None
-                    """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
-                    campus_link_type: CampusLinkType
-                    """
-                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                    change at any time.
-                    Values for the CloudVision `Link-Type` user tags to be associated with an
-                    interface.
-                    Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
-                    in the same tags being associated with the parent Ethernet interface instead.
-                    Attempting to
-                    associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
-                    associated with the member Ethernet interfaces instead.
-
-                    Subclass of AvdList with `str` items.
-                    """
-                    raw_eos_cli: str | None
-                    """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
-                    structured_config: EosCliConfigGen.EthernetInterfacesItem
-                    """Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            switch_ports: SwitchPorts | UndefinedType = Undefined,
-                            switches: Switches | UndefinedType = Undefined,
-                            endpoint_ports: EndpointPorts | UndefinedType = Undefined,
-                            descriptions: Descriptions | UndefinedType = Undefined,
-                            speed: Speed | None | UndefinedType = Undefined,
-                            description: str | None | UndefinedType = Undefined,
-                            profile: str | None | UndefinedType = Undefined,
-                            enabled: bool | UndefinedType = Undefined,
-                            mode: Mode | None | UndefinedType = Undefined,
-                            mtu: int | None | UndefinedType = Undefined,
-                            l2_mtu: int | None | UndefinedType = Undefined,
-                            l2_mru: int | None | UndefinedType = Undefined,
-                            native_vlan: int | None | UndefinedType = Undefined,
-                            native_vlan_tag: bool | None | UndefinedType = Undefined,
-                            phone_vlan: int | None | UndefinedType = Undefined,
-                            phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
-                            trunk_groups: TrunkGroups | UndefinedType = Undefined,
-                            vlans: str | None | UndefinedType = Undefined,
-                            spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
-                            spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
-                            spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
-                            flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol | UndefinedType = Undefined,
-                            qos_profile: str | None | UndefinedType = Undefined,
-                            ptp: Ptp | UndefinedType = Undefined,
-                            sflow: bool | None | UndefinedType = Undefined,
-                            flow_tracking: FlowTracking | UndefinedType = Undefined,
-                            link_tracking: LinkTracking | UndefinedType = Undefined,
-                            dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
-                            poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
-                            storm_control: StormControl | UndefinedType = Undefined,
-                            monitor_sessions: MonitorSessions | UndefinedType = Undefined,
-                            ethernet_segment: EthernetSegment | UndefinedType = Undefined,
-                            port_channel: PortChannel | UndefinedType = Undefined,
-                            validate_state: bool | None | UndefinedType = Undefined,
-                            validate_lldp: bool | None | UndefinedType = Undefined,
-                            campus_link_type: CampusLinkType | UndefinedType = Undefined,
-                            raw_eos_cli: str | None | UndefinedType = Undefined,
-                            structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            AdaptersItem.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                switch_ports:
-                                   List of switch interfaces.
-                                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
-                                   same length.
-
-
-                                   Subclass of AvdList with `str` items.
-                                switches:
-                                   List of switches.
-                                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
-                                   length.
-
-
-                                   Subclass of AvdList with `str` items.
-                                endpoint_ports:
-                                   Endpoint ports is used for description, required unless `description` or `descriptions` is set.
-                                   The
-                                   lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
-                                   Each list item is one switchport.
-
-
-                                   Subclass of AvdList with `str` items.
-                                descriptions:
-                                   Unique description per port. When set, takes priority over description.
-                                   This can be a template using
-                                   the AVD string formatter syntax:
-                                   https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                                   descriptions-names.html#avd-string-formatter-syntax.
-                                   The available template fields are:
-                                     -
-                                   `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
-                                     -
-                                   `endpoint` - The name of the connected endpoint
-                                     - `endpoint_port` - The value from
-                                   `endpoint_ports` for this switch port if set.
-                                     - `port_channel_id`: The port-channel number for the
-                                   switch.
-
-                                   Subclass of AvdList with `str` items.
-                                speed:
-                                   Set adapter speed.
-                                   If not specified speed will be auto.
-                                description:
-                                   Description or description template to be used on all ports.
-                                   This can be a template using the AVD
-                                   string formatter syntax:
-                                   https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                                   descriptions-names.html#avd-string-formatter-syntax.
-                                   The available template fields are:
-                                     -
-                                   `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
-                                     -
-                                   `endpoint` - The name of the connected endpoint
-                                     - `endpoint_port` - The value from
-                                   `endpoint_ports` for this switch port if set.
-
-                                   The default description is set by
-                                   `default_connected_endpoints_description`.
-                                   By default the description is templated from the type,
-                                   name and port of the endpoint if set.
-                                profile: Port-profile name to inherit configuration.
-                                enabled:
-                                   Administrative state, setting to false will set the port to 'shutdown' in the intended
-                                   configuration.
-                                mode: Interface mode.
-                                mtu: mtu
-                                l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
-                                l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
-                                native_vlan:
-                                   Native VLAN for a trunk port.
-                                   If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag`
-                                   takes precedence.
-                                native_vlan_tag: If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag` takes precedence.
-                                phone_vlan:
-                                   Phone VLAN for a mode `trunk phone` port.
-                                   Requires `mode: trunk phone` to be set.
-                                phone_trunk_mode:
-                                   Specify if the phone traffic is tagged or untagged.
-                                   If both data and phone traffic are untagged,
-                                   MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.
-                                trunk_groups:
-                                   Required with `enable_trunk_groups: true`.
-                                   Trunk Groups are used for limiting VLANs on trunk ports
-                                   to VLANs with the same Trunk Group.
-
-
-                                   Subclass of AvdList with `str` items.
-                                vlans:
-                                   Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                                   VLAN 1 will be used for access ports.
-                                spanning_tree_portfast: spanning_tree_portfast
-                                spanning_tree_bpdufilter: spanning_tree_bpdufilter
-                                spanning_tree_bpduguard: spanning_tree_bpduguard
-                                flowcontrol: flowcontrol
-                                qos_profile: QOS profile name.
-                                ptp:
-                                   The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually
-                                   enabled.
-                                   `ptp role master` is set to ensure control over the PTP topology.
-
-
-                                   Subclass of AvdModel.
-                                sflow: Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.
-                                flow_tracking:
-                                   Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.
-                                   Subclass of AvdModel.
-                                link_tracking:
-                                   Configure the downstream interfaces of a respective Link Tracking Group.
-                                   If `port_channel` is
-                                   defined in an adapter, then the port-channel interface is configured to be the downstream.
-                                   Else all
-                                   the ethernet interfaces will be configured as downstream -> to configure single-active EVPN
-                                   multihomed networks.
-
-
-                                   Subclass of AvdModel.
-                                dot1x: 802.1x
-                                poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
-                                storm_control:
-                                   Storm control settings applied on port toward the endpoint.
-
-                                   Subclass of AvdModel.
-                                monitor_sessions:
-                                   Used to define interfaces as source or destination for monitoring sessions.
-
-                                   Subclass of AvdList
-                                   with `MonitorSessionsItem` items.
-                                ethernet_segment:
-                                   Settings for all or single-active EVPN multihoming.
-
-                                   Subclass of AvdModel.
-                                port_channel:
-                                   Used for port-channel adapter.
-
-                                   Subclass of AvdModel.
-                                validate_state:
-                                   Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
-                                   role.
-                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
-                                campus_link_type:
-                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                                   change at any time.
-                                   Values for the CloudVision `Link-Type` user tags to be associated with an
-                                   interface.
-                                   Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
-                                   in the same tags being associated with the parent Ethernet interface instead.
-                                   Attempting to
-                                   associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
-                                   associated with the member Ethernet interfaces instead.
-
-                                   Subclass of AvdList with `str` items.
-                                raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
-                                structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
-
-                            """
-
-                class Adapters(AvdList[AdaptersItem]):
-                    """Subclass of AvdList with `AdaptersItem` items."""
-
-                Adapters._item_type = AdaptersItem
-
-                _fields: ClassVar[dict] = {"name": {"type": str}, "rack": {"type": str}, "adapters": {"type": Adapters}}
-                name: str
-                """Endpoint name will be used in the switchport description."""
-                rack: str | None
-                """Rack is used for documentation purposes only."""
-                adapters: Adapters
-                """
-                A list of adapters, group by adapters leveraging the same port-profile.
-
-                Subclass of AvdList with
-                `AdaptersItem` items.
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(
-                        self,
-                        *,
-                        name: str | UndefinedType = Undefined,
-                        rack: str | None | UndefinedType = Undefined,
-                        adapters: Adapters | UndefinedType = Undefined,
-                    ) -> None:
-                        """
-                        ConnectedEndpointsItem.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            name: Endpoint name will be used in the switchport description.
-                            rack: Rack is used for documentation purposes only.
-                            adapters:
-                               A list of adapters, group by adapters leveraging the same port-profile.
-
-                               Subclass of AvdList with
-                               `AdaptersItem` items.
-
-                        """
-
-            class ConnectedEndpoints(AvdIndexedList[str, ConnectedEndpointsItem]):
-                """Subclass of AvdIndexedList with `ConnectedEndpointsItem` items. Primary key is `name` (`str`)."""
-
-                _primary_key: ClassVar[str] = "name"
-
-            ConnectedEndpoints._item_type = ConnectedEndpointsItem
-
-            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": ConnectedEndpoints}}
-            _field_to_key_map: ClassVar[dict] = {"value": "connected_endpoints_keys_key"}
-            _key_to_field_map: ClassVar[dict] = {"connected_endpoints_keys_key": "value"}
-            key: str
-            """Key used as dynamic key"""
-            value: ConnectedEndpoints
-            """Value of dynamic key"""
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, key: str | UndefinedType = Undefined, value: ConnectedEndpoints | UndefinedType = Undefined) -> None:
-                    """
-                    DynamicConnectedEndpointsItem.
-
-
-                    Args:
-                        key: Key used as dynamic key
-                        value: Value of dynamic key
-
-                    """
-
-        class DynamicConnectedEndpoints(AvdIndexedList[str, DynamicConnectedEndpointsItem]):
-            _primary_key: ClassVar[str] = "key"
-
-        DynamicConnectedEndpoints._item_type = DynamicConnectedEndpointsItem
-
-        class DynamicCustomConnectedEndpointsItem(AvdModel):
-            class CustomConnectedEndpointsItem(AvdModel):
-                """Subclass of AvdModel."""
-
-                class AdaptersItem(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    class SwitchPorts(AvdList[str]):
-                        """Subclass of AvdList with `str` items."""
-
-                    SwitchPorts._item_type = str
-
-                    class Switches(AvdList[str]):
-                        """Subclass of AvdList with `str` items."""
-
-                    Switches._item_type = str
-
-                    class EndpointPorts(AvdList[str]):
-                        """Subclass of AvdList with `str` items."""
-
-                    EndpointPorts._item_type = str
-
-                    class Descriptions(AvdList[str]):
-                        """Subclass of AvdList with `str` items."""
-
-                    Descriptions._item_type = str
-
-                    Speed: TypeAlias = Literal[
-                        "100full",
-                        "100g",
-                        "100g-1",
-                        "100g-2",
-                        "100g-4",
-                        "100half",
-                        "10full",
-                        "10g",
-                        "10half",
-                        "1g",
-                        "200g",
-                        "200g-2",
-                        "200g-4",
-                        "25g",
-                        "400g",
-                        "400g-4",
-                        "400g-8",
-                        "40g",
-                        "50g",
-                        "50g-1",
-                        "50g-2",
-                        "800g-8",
-                        "sfp-1000baset auto 100full",
-                        "1.6t-8",
-                        "100mfull",
-                        "100mhalf",
-                        "10mfull",
-                        "10mhalf",
-                        "200g-1",
-                        "400g-2",
-                        "40g-4",
-                        "800g-4",
-                        "auto",
-                        "auto 10000full",
-                        "auto 1000full",
-                        "auto 100full",
-                        "auto 100g-1",
-                        "auto 100g-2",
-                        "auto 100g-4",
-                        "auto 100gfull",
-                        "auto 100half",
-                        "auto 10full",
-                        "auto 10gfull",
-                        "auto 10half",
-                        "auto 1gfull",
-                        "auto 2.5gfull",
-                        "auto 200g-2",
-                        "auto 200g-4",
-                        "auto 25gfull",
-                        "auto 400g-4",
-                        "auto 400g-8",
-                        "auto 40gfull",
-                        "auto 50g-1",
-                        "auto 50g-2",
-                        "auto 50gfull",
-                        "auto 5gfull",
-                        "auto 800g-8",
-                        "auto 1.6t-8",
-                        "auto 100mfull",
-                        "auto 100mhalf",
-                        "auto 10g",
-                        "auto 10mfull",
-                        "auto 10mhalf",
-                        "auto 1g",
-                        "auto 2.5g",
-                        "auto 200g-1",
-                        "auto 25g",
-                        "auto 400g-2",
-                        "auto 40g-4",
-                        "auto 5g",
-                        "auto 800g-4",
-                        "forced 10000full",
-                        "forced 1000full",
-                        "forced 1000half",
-                        "forced 100full",
-                        "forced 100gfull",
-                        "forced 100half",
-                        "forced 10full",
-                        "forced 10half",
-                        "forced 25gfull",
-                        "forced 40gfull",
-                        "forced 50gfull",
-                    ]
-                    Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
-                    PhoneTrunkMode: TypeAlias = Literal["tagged", "untagged", "tagged phone", "untagged phone"]
-
-                    class TrunkGroups(AvdList[str]):
-                        """Subclass of AvdList with `str` items."""
-
-                    TrunkGroups._item_type = str
-
-                    SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
-                    SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
-                    SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
-
-                    class Ptp(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        EndpointRole: TypeAlias = Literal["follower", "dynamic", "bmca", "default"]
-                        _fields: ClassVar[dict] = {
-                            "enabled": {"type": bool, "default": False},
-                            "endpoint_role": {"type": str, "default": "follower"},
-                            "profile": {"type": str, "default": "aes67-r16-2016"},
-                        }
-                        enabled: bool
-                        """Default value: `False`"""
-                        endpoint_role: EndpointRole
-                        """
-                        PTP role of the endpoint.
-                        `follower` will configure the switch port as `ptp role master`.
-                        `dynamic`
-                        will use BMCA.
-                        `default` is deprecated in favor of `follower`.
-                        `bmca` is deprecated in favor of
-                        `dynamic`.
-
-                        Default value: `"follower"`
-                        """
-                        profile: str
-                        """
-                        Default available profiles are:
-                          - "aes67"
-                          - "aes67-r16-2016"
-                          - "smpte2059-2"
-
-                        Default value: `"aes67-r16-2016"`
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                enabled: bool | UndefinedType = Undefined,
-                                endpoint_role: EndpointRole | UndefinedType = Undefined,
-                                profile: str | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                Ptp.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    enabled: enabled
-                                    endpoint_role:
-                                       PTP role of the endpoint.
-                                       `follower` will configure the switch port as `ptp role master`.
-                                       `dynamic`
-                                       will use BMCA.
-                                       `default` is deprecated in favor of `follower`.
-                                       `bmca` is deprecated in favor of
-                                       `dynamic`.
-                                    profile:
-                                       Default available profiles are:
-                                         - "aes67"
-                                         - "aes67-r16-2016"
-                                         - "smpte2059-2"
-
-                                """
-
-                    class FlowTracking(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
-                        enabled: bool | None
-                        name: str | None
-                        """Flow tracker name as defined in flow_tracking_settings."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
-                                """
-                                FlowTracking.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    enabled: enabled
-                                    name: Flow tracker name as defined in flow_tracking_settings.
-
-                                """
-
-                    class LinkTracking(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
-                        enabled: bool | None
-                        name: str | None
-                        """
-                        Tracking group name.
-                        The default group name is taken from fabric variable of the switch,
-                        `link_tracking.groups[0].name` with default value being "LT_GROUP1".
-                        Optional if default
-                        link_tracking settings are configured on the node.
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
-                                """
-                                LinkTracking.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    enabled: enabled
-                                    name:
-                                       Tracking group name.
-                                       The default group name is taken from fabric variable of the switch,
-                                       `link_tracking.groups[0].name` with default value being "LT_GROUP1".
-                                       Optional if default
-                                       link_tracking settings are configured on the node.
-
-                                """
-
-                    class StormControl(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        class All(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Unit: TypeAlias = Literal["percent", "pps"]
-                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
-                            level: str | None
-                            """Configure maximum storm-control level."""
-                            unit: Unit
-                            """
-                            Optional variable and is hardware dependent.
-
-                            Default value: `"percent"`
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
-                                    """
-                                    All.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        level: Configure maximum storm-control level.
-                                        unit: Optional variable and is hardware dependent.
-
-                                    """
-
-                        class Broadcast(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Unit: TypeAlias = Literal["percent", "pps"]
-                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
-                            level: str | None
-                            """Configure maximum storm-control level."""
-                            unit: Unit
-                            """
-                            Optional variable and is hardware dependent.
-
-                            Default value: `"percent"`
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
-                                    """
-                                    Broadcast.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        level: Configure maximum storm-control level.
-                                        unit: Optional variable and is hardware dependent.
-
-                                    """
-
-                        class Multicast(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Unit: TypeAlias = Literal["percent", "pps"]
-                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
-                            level: str | None
-                            """Configure maximum storm-control level."""
-                            unit: Unit
-                            """
-                            Optional variable and is hardware dependent.
-
-                            Default value: `"percent"`
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
-                                    """
-                                    Multicast.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        level: Configure maximum storm-control level.
-                                        unit: Optional variable and is hardware dependent.
-
-                                    """
-
-                        class UnknownUnicast(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Unit: TypeAlias = Literal["percent", "pps"]
-                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
-                            level: str | None
-                            """Configure maximum storm-control level."""
-                            unit: Unit
-                            """
-                            Optional variable and is hardware dependent.
-
-                            Default value: `"percent"`
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
-                                    """
-                                    UnknownUnicast.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        level: Configure maximum storm-control level.
-                                        unit: Optional variable and is hardware dependent.
-
-                                    """
-
-                        _fields: ClassVar[dict] = {
-                            "all": {"type": All},
-                            "broadcast": {"type": Broadcast},
-                            "multicast": {"type": Multicast},
-                            "unknown_unicast": {"type": UnknownUnicast},
-                        }
-                        all: All
-                        """Subclass of AvdModel."""
-                        broadcast: Broadcast
-                        """Subclass of AvdModel."""
-                        multicast: Multicast
-                        """Subclass of AvdModel."""
-                        unknown_unicast: UnknownUnicast
-                        """Subclass of AvdModel."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                all: All | UndefinedType = Undefined,
-                                broadcast: Broadcast | UndefinedType = Undefined,
-                                multicast: Multicast | UndefinedType = Undefined,
-                                unknown_unicast: UnknownUnicast | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                StormControl.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    all: Subclass of AvdModel.
-                                    broadcast: Subclass of AvdModel.
-                                    multicast: Subclass of AvdModel.
-                                    unknown_unicast: Subclass of AvdModel.
-
-                                """
-
-                    class MonitorSessionsItem(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Role: TypeAlias = Literal["source", "destination"]
-
-                        class SourceSettings(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Direction: TypeAlias = Literal["rx", "tx", "both"]
-
-                            class AccessGroup(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
-                                _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
-                                type: Type | None
-                                name: str | None
-                                """ACL name."""
-                                priority: int | None
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(
-                                        self,
-                                        *,
-                                        type: Type | None | UndefinedType = Undefined,
-                                        name: str | None | UndefinedType = Undefined,
-                                        priority: int | None | UndefinedType = Undefined,
-                                    ) -> None:
-                                        """
-                                        AccessGroup.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            type: type
-                                            name: ACL name.
-                                            priority: priority
-
-                                        """
-
-                            _fields: ClassVar[dict] = {"direction": {"type": str}, "access_group": {"type": AccessGroup}}
-                            direction: Direction | None
-                            access_group: AccessGroup
-                            """
-                            This can only be set when `session_settings.access_group` is not set.
-
-                            Subclass of AvdModel.
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self, *, direction: Direction | None | UndefinedType = Undefined, access_group: AccessGroup | UndefinedType = Undefined
-                                ) -> None:
-                                    """
-                                    SourceSettings.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        direction: direction
-                                        access_group:
-                                           This can only be set when `session_settings.access_group` is not set.
-
-                                           Subclass of AvdModel.
-
-                                    """
-
-                        class SessionSettings(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            class AccessGroup(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
-                                _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
-                                type: Type | None
-                                name: str | None
-                                """ACL name."""
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(self, *, type: Type | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
-                                        """
-                                        AccessGroup.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            type: type
-                                            name: ACL name.
-
-                                        """
-
-                            class Truncate(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "size": {"type": int}}
-                                enabled: bool | None
-                                size: int | None
-                                """Size in bytes."""
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(
-                                        self, *, enabled: bool | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined
-                                    ) -> None:
-                                        """
-                                        Truncate.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            enabled: enabled
-                                            size: Size in bytes.
-
-                                        """
-
-                            _fields: ClassVar[dict] = {
-                                "encapsulation_gre_metadata_tx": {"type": bool},
-                                "header_remove_size": {"type": int},
-                                "access_group": {"type": AccessGroup},
-                                "rate_limit_per_ingress_chip": {"type": str},
-                                "rate_limit_per_egress_chip": {"type": str},
-                                "sample": {"type": int},
-                                "truncate": {"type": Truncate},
-                            }
-                            encapsulation_gre_metadata_tx: bool | None
-                            header_remove_size: int | None
-                            """Number of bytes to remove from header."""
-                            access_group: AccessGroup
-                            """Subclass of AvdModel."""
-                            rate_limit_per_ingress_chip: str | None
-                            """
-                            Ratelimit and unit as string.
-                            Examples:
-                              "100000 bps"
-                              "100 kbps"
-                              "10 mbps"
-                            """
-                            rate_limit_per_egress_chip: str | None
-                            """
-                            Ratelimit and unit as string.
-                            Examples:
-                              "100000 bps"
-                              "100 kbps"
-                              "10 mbps"
-                            """
-                            sample: int | None
-                            truncate: Truncate
-                            """Subclass of AvdModel."""
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    encapsulation_gre_metadata_tx: bool | None | UndefinedType = Undefined,
-                                    header_remove_size: int | None | UndefinedType = Undefined,
-                                    access_group: AccessGroup | UndefinedType = Undefined,
-                                    rate_limit_per_ingress_chip: str | None | UndefinedType = Undefined,
-                                    rate_limit_per_egress_chip: str | None | UndefinedType = Undefined,
-                                    sample: int | None | UndefinedType = Undefined,
-                                    truncate: Truncate | UndefinedType = Undefined,
-                                ) -> None:
-                                    """
-                                    SessionSettings.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        encapsulation_gre_metadata_tx: encapsulation_gre_metadata_tx
-                                        header_remove_size: Number of bytes to remove from header.
-                                        access_group: Subclass of AvdModel.
-                                        rate_limit_per_ingress_chip:
-                                           Ratelimit and unit as string.
-                                           Examples:  # fmt: skip
-                                             "100000 bps"
-                                             "100 kbps"
-                                             "10 mbps"
-                                        rate_limit_per_egress_chip:
-                                           Ratelimit and unit as string.
-                                           Examples:  # fmt: skip
-                                             "100000 bps"
-                                             "100 kbps"
-                                             "10 mbps"
-                                        sample: sample
-                                        truncate: Subclass of AvdModel.
-
-                                    """
-
-                        _fields: ClassVar[dict] = {
-                            "name": {"type": str},
-                            "role": {"type": str},
-                            "source_settings": {"type": SourceSettings},
-                            "session_settings": {"type": SessionSettings},
-                        }
-                        name: str
-                        """Session name."""
-                        role: Role | None
-                        source_settings: SourceSettings
-                        """Subclass of AvdModel."""
-                        session_settings: SessionSettings
-                        """
-                        Session settings are defined per session name.
-                        Different session_settings for the same session name
-                        will be combined/merged.
-
-
-                        Subclass of AvdModel.
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                name: str | UndefinedType = Undefined,
-                                role: Role | None | UndefinedType = Undefined,
-                                source_settings: SourceSettings | UndefinedType = Undefined,
-                                session_settings: SessionSettings | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                MonitorSessionsItem.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    name: Session name.
-                                    role: role
-                                    source_settings: Subclass of AvdModel.
-                                    session_settings:
-                                       Session settings are defined per session name.
-                                       Different session_settings for the same session name
-                                       will be combined/merged.
-
-
-                                       Subclass of AvdModel.
-
-                                """
-
-                    class MonitorSessions(AvdList[MonitorSessionsItem]):
-                        """Subclass of AvdList with `MonitorSessionsItem` items."""
-
-                    MonitorSessions._item_type = MonitorSessionsItem
-
-                    class EthernetSegment(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Redundancy: TypeAlias = Literal["all-active", "single-active"]
-                        DesignatedForwarderAlgorithm: TypeAlias = Literal["auto", "modulus", "preference"]
-
-                        class DesignatedForwarderPreferences(AvdList[int]):
-                            """Subclass of AvdList with `int` items."""
-
-                        DesignatedForwarderPreferences._item_type = int
-
-                        _fields: ClassVar[dict] = {
-                            "short_esi": {"type": str},
-                            "redundancy": {"type": str},
-                            "designated_forwarder_algorithm": {"type": str},
-                            "designated_forwarder_preferences": {"type": DesignatedForwarderPreferences},
-                            "dont_preempt": {"type": bool},
-                        }
-                        short_esi: str
-                        """
-                        In format xxxx:xxxx:xxxx or "auto".
-                        Define a manual short-esi (be careful using this on profiles) or
-                        set the value to "auto" to automatically generate the value.
-                        Please see the notes under "EVPN A/A
-                        ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
-                        """
-                        redundancy: Redundancy | None
-                        """
-                        If omitted, Port-Channels use the EOS default of all-active.
-                        If omitted, Ethernet interfaces are
-                        configured as single-active.
-                        """
-                        designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None
-                        """
-                        Configure DF algorithm and preferences.
-                        - auto: Use preference-based algorithm and assign preference
-                        based on position of device in the 'switches' list,
-                          e.g., assuming a list of three switches, this
-                        would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.
-                        -
-                        preference: Set preference for each switch manually using designated_forwarder_preferences key.
-                        -
-                        modulus: Use the default modulus-based algorithm.
-                        If omitted, Port-Channels use the EOS default of
-                        modulus.
-                        If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
-                        """
-                        designated_forwarder_preferences: DesignatedForwarderPreferences
-                        """
-                        Manual preference as described above, required only for preference algorithm.
-
-                        Subclass of AvdList
-                        with `int` items.
-                        """
-                        dont_preempt: bool | None
-                        """Disable preemption for single-active forwarding when auto/manual DF preference is configured."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                short_esi: str | UndefinedType = Undefined,
-                                redundancy: Redundancy | None | UndefinedType = Undefined,
-                                designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None | UndefinedType = Undefined,
-                                designated_forwarder_preferences: DesignatedForwarderPreferences | UndefinedType = Undefined,
-                                dont_preempt: bool | None | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                EthernetSegment.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    short_esi:
-                                       In format xxxx:xxxx:xxxx or "auto".
-                                       Define a manual short-esi (be careful using this on profiles) or
-                                       set the value to "auto" to automatically generate the value.
-                                       Please see the notes under "EVPN A/A
-                                       ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
-                                    redundancy:
-                                       If omitted, Port-Channels use the EOS default of all-active.
-                                       If omitted, Ethernet interfaces are
-                                       configured as single-active.
-                                    designated_forwarder_algorithm:
-                                       Configure DF algorithm and preferences.
-                                       - auto: Use preference-based algorithm and assign preference
-                                       based on position of device in the 'switches' list,
-                                         e.g., assuming a list of three switches, this
-                                       would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.
-                                       -
-                                       preference: Set preference for each switch manually using designated_forwarder_preferences key.
-                                       -
-                                       modulus: Use the default modulus-based algorithm.
-                                       If omitted, Port-Channels use the EOS default of
-                                       modulus.
-                                       If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
-                                    designated_forwarder_preferences:
-                                       Manual preference as described above, required only for preference algorithm.
-
-                                       Subclass of AvdList
-                                       with `int` items.
-                                    dont_preempt: Disable preemption for single-active forwarding when auto/manual DF preference is configured.
-
-                                """
-
-                    class PortChannel(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Mode: TypeAlias = Literal["active", "passive", "on"]
-
-                        class LacpFallback(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Mode: TypeAlias = Literal["static", "individual"]
-
-                            class Individual(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
-                                _fields: ClassVar[dict] = {
-                                    "profile": {"type": str},
-                                    "vlans": {"type": str},
-                                    "native_vlan": {"type": int},
-                                    "mode": {"type": str},
-                                }
-                                profile: str | None
-                                """Port-profile name to inherit configuration."""
-                                vlans: str | None
-                                """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
-                                native_vlan: int | None
-                                """Native VLAN on the port-channel member interfaces when in fallback individual."""
-                                mode: Mode | None
-                                """Interface mode on the port-channel member interfaces when in fallback individual."""
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(
-                                        self,
-                                        *,
-                                        profile: str | None | UndefinedType = Undefined,
-                                        vlans: str | None | UndefinedType = Undefined,
-                                        native_vlan: int | None | UndefinedType = Undefined,
-                                        mode: Mode | None | UndefinedType = Undefined,
-                                    ) -> None:
-                                        """
-                                        Individual.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            profile: Port-profile name to inherit configuration.
-                                            vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
-                                            native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
-                                            mode: Interface mode on the port-channel member interfaces when in fallback individual.
-
-                                        """
-
-                            _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
-                            mode: Mode | None
-                            """
-                            Either static or individual mode is supported.
-                            If the mode is set to "individual" either 'profile'
-                            or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
-                            """
-                            individual: Individual
-                            """
-                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
-                            "individual".
-
-                            Subclass of AvdModel.
-                            """
-                            timeout: int
-                            """
-                            Timeout in seconds.
-
-                            Default value: `90`
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    mode: Mode | None | UndefinedType = Undefined,
-                                    individual: Individual | UndefinedType = Undefined,
-                                    timeout: int | UndefinedType = Undefined,
-                                ) -> None:
-                                    """
-                                    LacpFallback.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        mode:
-                                           Either static or individual mode is supported.
-                                           If the mode is set to "individual" either 'profile'
-                                           or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
-                                        individual:
-                                           Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
-                                           "individual".
-
-                                           Subclass of AvdModel.
-                                        timeout: Timeout in seconds.
-
-                                    """
-
-                        class LacpTimer(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Mode: TypeAlias = Literal["normal", "fast"]
-                            _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
-                            mode: Mode | None
-                            """LACP mode for interface members."""
-                            multiplier: int | None
-                            """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined
-                                ) -> None:
-                                    """
-                                    LacpTimer.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        mode: LACP mode for interface members.
-                                        multiplier: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
-
-                                    """
-
-                        class SubinterfacesItem(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            class EncapsulationVlan(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
-                                client_dot1q: int | None
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
-                                        """
-                                        EncapsulationVlan.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            client_dot1q: client_dot1q
-
-                                        """
-
-                            _fields: ClassVar[dict] = {
-                                "number": {"type": int},
-                                "short_esi": {"type": str},
-                                "vlan_id": {"type": int},
-                                "encapsulation_vlan": {"type": EncapsulationVlan},
-                                "raw_eos_cli": {"type": str},
-                                "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-                            }
-                            number: int | None
-                            """Subinterface number."""
-                            short_esi: str | None
-                            """
-                            In format xxxx:xxxx:xxxx or "auto".
-                            Required for multihomed port-channels with subinterfaces.
-                            """
-                            vlan_id: int | None
-                            """
-                            VLAN ID to bridge.
-                            Default is subinterface number.
-                            """
-                            encapsulation_vlan: EncapsulationVlan
-                            """
-                            Client VLAN ID encapsulation.
-                            Default is subinterface number.
-
-
-                            Subclass of AvdModel.
-                            """
-                            raw_eos_cli: str | None
-                            """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
-                            structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                            """
-                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
-                            eos_cli_config_gen.
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    number: int | None | UndefinedType = Undefined,
-                                    short_esi: str | None | UndefinedType = Undefined,
-                                    vlan_id: int | None | UndefinedType = Undefined,
-                                    encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
-                                    raw_eos_cli: str | None | UndefinedType = Undefined,
-                                    structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                                ) -> None:
-                                    """
-                                    SubinterfacesItem.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        number: Subinterface number.
-                                        short_esi:
-                                           In format xxxx:xxxx:xxxx or "auto".
-                                           Required for multihomed port-channels with subinterfaces.
-                                        vlan_id:
-                                           VLAN ID to bridge.
-                                           Default is subinterface number.
-                                        encapsulation_vlan:
-                                           Client VLAN ID encapsulation.
-                                           Default is subinterface number.
-
-
-                                           Subclass of AvdModel.
-                                        raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
-                                        structured_config:
-                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
-                                           eos_cli_config_gen.
-
-                                    """
-
-                        class Subinterfaces(AvdList[SubinterfacesItem]):
-                            """Subclass of AvdList with `SubinterfacesItem` items."""
-
-                        Subinterfaces._item_type = SubinterfacesItem
-
-                        _fields: ClassVar[dict] = {
-                            "mode": {"type": str},
-                            "channel_id": {"type": int},
-                            "description": {"type": str},
-                            "endpoint_port_channel": {"type": str},
-                            "enabled": {"type": bool, "default": True},
-                            "ptp_mpass": {"type": bool, "default": False},
-                            "lacp_fallback": {"type": LacpFallback},
-                            "lacp_timer": {"type": LacpTimer},
-                            "subinterfaces": {"type": Subinterfaces},
-                            "raw_eos_cli": {"type": str},
-                            "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-                        }
-                        mode: Mode | None
-                        """Port-Channel Mode."""
-                        channel_id: int | None
-                        """
-                        Port-Channel ID.
-                        If no channel_id is specified, an id is generated from the first switch port in the
-                        port channel.
-                        """
-                        description: str | None
-                        """
-                        Description or description template to be used on the port-channel interface.
-                        This can be a template
-                        using the AVD string formatter syntax:
-                        https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                        descriptions-names.html#avd-string-formatter-syntax.
-                        The available template fields are:
-                          -
-                        `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
-                          -
-                        `endpoint` - The name of the connected endpoint
-                          - `endpoint_port_channel` - The value from
-                        `endpoint_port_channel` if set.
-                          - `port_channel_id` - The port-channel number for the switch.
-                          -
-                        `adapter_description` - The adapter's description if set.
-                          - `adapter_description_or_endpoint` -
-                        Helper alias of the adapter_description or endpoint.
-
-                        The default description is set by
-                        `default_connected_endpoints_port_channel_description`.
-                        By default the description is templated from
-                        the type, name and port_channel interface of the endpoint if set.
-                        """
-                        endpoint_port_channel: str | None
-                        """
-                        Name of the port-channel interface on the endpoint.
-                        Used for the port-channel description template
-                        with the field name `peer_interface`
-                        """
-                        enabled: bool
-                        """
-                        Port-Channel administrative state.
-                        Setting to false will set port to 'shutdown' in intended
-                        configuration.
-
-                        Default value: `True`
-                        """
-                        ptp_mpass: bool
-                        """
-                        When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
-                        logical device.
-                        Arista PTP enabled devices always place PTP messages on the same physical link
-                        within the port-channel.
-                        Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
-                        devices.
-
-                        Default value: `False`
-                        """
-                        lacp_fallback: LacpFallback
-                        """
-                        LACP fallback configuration.
-
-                        Subclass of AvdModel.
-                        """
-                        lacp_timer: LacpTimer
-                        """
-                        LACP timer configuration. Applies only when Port-channel mode is not "on".
-
-                        Subclass of AvdModel.
-                        """
-                        subinterfaces: Subinterfaces
-                        """
-                        Port-Channel L2 Subinterfaces
-                        Subinterfaces are only supported on routed port-channels, which means
-                        they cannot be configured on MLAG port-channels.
-                        Setting short_esi: auto generates the short_esi
-                        automatically using a hash of configuration elements.
-                        Please see the notes under "EVPN A/A ESI dual-
-                        attached endpoint scenario" before setting short_esi: auto.
-
-
-                        Subclass of AvdList with
-                        `SubinterfacesItem` items.
-                        """
-                        raw_eos_cli: str | None
-                        """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
-                        structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                        """
-                        Custom structured config added under port_channel_interfaces.[name=<interface>] for
-                        eos_cli_config_gen.
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                mode: Mode | None | UndefinedType = Undefined,
-                                channel_id: int | None | UndefinedType = Undefined,
-                                description: str | None | UndefinedType = Undefined,
-                                endpoint_port_channel: str | None | UndefinedType = Undefined,
-                                enabled: bool | UndefinedType = Undefined,
-                                ptp_mpass: bool | UndefinedType = Undefined,
-                                lacp_fallback: LacpFallback | UndefinedType = Undefined,
-                                lacp_timer: LacpTimer | UndefinedType = Undefined,
-                                subinterfaces: Subinterfaces | UndefinedType = Undefined,
-                                raw_eos_cli: str | None | UndefinedType = Undefined,
-                                structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                PortChannel.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    mode: Port-Channel Mode.
-                                    channel_id:
-                                       Port-Channel ID.
-                                       If no channel_id is specified, an id is generated from the first switch port in the
-                                       port channel.
-                                    description:
-                                       Description or description template to be used on the port-channel interface.
-                                       This can be a template
-                                       using the AVD string formatter syntax:
-                                       https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                                       descriptions-names.html#avd-string-formatter-syntax.
-                                       The available template fields are:
-                                         -
-                                       `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
-                                         -
-                                       `endpoint` - The name of the connected endpoint
-                                         - `endpoint_port_channel` - The value from
-                                       `endpoint_port_channel` if set.
-                                         - `port_channel_id` - The port-channel number for the switch.
-                                         -
-                                       `adapter_description` - The adapter's description if set.
-                                         - `adapter_description_or_endpoint` -
-                                       Helper alias of the adapter_description or endpoint.
-
-                                       The default description is set by
-                                       `default_connected_endpoints_port_channel_description`.
-                                       By default the description is templated from
-                                       the type, name and port_channel interface of the endpoint if set.
-                                    endpoint_port_channel:
-                                       Name of the port-channel interface on the endpoint.
-                                       Used for the port-channel description template
-                                       with the field name `peer_interface`
-                                    enabled:
-                                       Port-Channel administrative state.
-                                       Setting to false will set port to 'shutdown' in intended
-                                       configuration.
-                                    ptp_mpass:
-                                       When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
-                                       logical device.
-                                       Arista PTP enabled devices always place PTP messages on the same physical link
-                                       within the port-channel.
-                                       Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
-                                       devices.
-                                    lacp_fallback:
-                                       LACP fallback configuration.
-
-                                       Subclass of AvdModel.
-                                    lacp_timer:
-                                       LACP timer configuration. Applies only when Port-channel mode is not "on".
-
-                                       Subclass of AvdModel.
-                                    subinterfaces:
-                                       Port-Channel L2 Subinterfaces
-                                       Subinterfaces are only supported on routed port-channels, which means
-                                       they cannot be configured on MLAG port-channels.
-                                       Setting short_esi: auto generates the short_esi
-                                       automatically using a hash of configuration elements.
-                                       Please see the notes under "EVPN A/A ESI dual-
-                                       attached endpoint scenario" before setting short_esi: auto.
-
-
-                                       Subclass of AvdList with
-                                       `SubinterfacesItem` items.
-                                    raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
-                                    structured_config:
-                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                       eos_cli_config_gen.
-
-                                """
-
-                    class CampusLinkType(AvdList[str]):
-                        """Subclass of AvdList with `str` items."""
-
-                    CampusLinkType._item_type = str
-
-                    _fields: ClassVar[dict] = {
-                        "switch_ports": {"type": SwitchPorts},
-                        "switches": {"type": Switches},
-                        "endpoint_ports": {"type": EndpointPorts},
-                        "descriptions": {"type": Descriptions},
-                        "speed": {"type": str},
-                        "description": {"type": str},
-                        "profile": {"type": str},
-                        "enabled": {"type": bool, "default": True},
-                        "mode": {"type": str},
-                        "mtu": {"type": int},
-                        "l2_mtu": {"type": int},
-                        "l2_mru": {"type": int},
-                        "native_vlan": {"type": int},
-                        "native_vlan_tag": {"type": bool},
-                        "phone_vlan": {"type": int},
-                        "phone_trunk_mode": {"type": str},
-                        "trunk_groups": {"type": TrunkGroups},
-                        "vlans": {"type": str},
-                        "spanning_tree_portfast": {"type": str},
-                        "spanning_tree_bpdufilter": {"type": str},
-                        "spanning_tree_bpduguard": {"type": str},
-                        "flowcontrol": {"type": EosCliConfigGen.EthernetInterfacesItem.Flowcontrol},
-                        "qos_profile": {"type": str},
-                        "ptp": {"type": Ptp},
-                        "sflow": {"type": bool},
-                        "flow_tracking": {"type": FlowTracking},
-                        "link_tracking": {"type": LinkTracking},
-                        "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
-                        "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
-                        "storm_control": {"type": StormControl},
-                        "monitor_sessions": {"type": MonitorSessions},
-                        "ethernet_segment": {"type": EthernetSegment},
-                        "port_channel": {"type": PortChannel},
-                        "validate_state": {"type": bool},
-                        "validate_lldp": {"type": bool},
-                        "campus_link_type": {"type": CampusLinkType},
-                        "raw_eos_cli": {"type": str},
-                        "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
-                    }
-                    switch_ports: SwitchPorts
-                    """
-                    List of switch interfaces.
-                    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
-                    same length.
-
-
-                    Subclass of AvdList with `str` items.
-                    """
-                    switches: Switches
-                    """
-                    List of switches.
-                    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
-                    length.
-
-
-                    Subclass of AvdList with `str` items.
-                    """
-                    endpoint_ports: EndpointPorts
-                    """
-                    Endpoint ports is used for description, required unless `description` or `descriptions` is set.
-                    The
-                    lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
-                    Each list item is one switchport.
-
-
-                    Subclass of AvdList with `str` items.
-                    """
-                    descriptions: Descriptions
-                    """
-                    Unique description per port. When set, takes priority over description.
-                    This can be a template using
-                    the AVD string formatter syntax:
-                    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                    descriptions-names.html#avd-string-formatter-syntax.
-                    The available template fields are:
-                      -
-                    `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
-                      -
-                    `endpoint` - The name of the connected endpoint
-                      - `endpoint_port` - The value from
-                    `endpoint_ports` for this switch port if set.
-                      - `port_channel_id`: The port-channel number for the
-                    switch.
-
-                    Subclass of AvdList with `str` items.
-                    """
-                    speed: Speed | None
-                    """
-                    Set adapter speed.
-                    If not specified speed will be auto.
-                    """
-                    description: str | None
-                    """
-                    Description or description template to be used on all ports.
-                    This can be a template using the AVD
-                    string formatter syntax:
-                    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                    descriptions-names.html#avd-string-formatter-syntax.
-                    The available template fields are:
-                      -
-                    `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
-                      -
-                    `endpoint` - The name of the connected endpoint
-                      - `endpoint_port` - The value from
-                    `endpoint_ports` for this switch port if set.
-
-                    The default description is set by
-                    `default_connected_endpoints_description`.
-                    By default the description is templated from the type,
-                    name and port of the endpoint if set.
-                    """
-                    profile: str | None
-                    """Port-profile name to inherit configuration."""
-                    enabled: bool
-                    """
-                    Administrative state, setting to false will set the port to 'shutdown' in the intended
-                    configuration.
-
-                    Default value: `True`
-                    """
-                    mode: Mode | None
-                    """Interface mode."""
-                    mtu: int | None
-                    l2_mtu: int | None
-                    """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
-                    l2_mru: int | None
-                    """"l2_mru" should only be defined for platforms supporting the "l2 mru" CLI."""
-                    native_vlan: int | None
-                    """
-                    Native VLAN for a trunk port.
-                    If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag`
-                    takes precedence.
-                    """
-                    native_vlan_tag: bool | None
-                    """If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag` takes precedence."""
-                    phone_vlan: int | None
-                    """
-                    Phone VLAN for a mode `trunk phone` port.
-                    Requires `mode: trunk phone` to be set.
-                    """
-                    phone_trunk_mode: PhoneTrunkMode | None
-                    """
-                    Specify if the phone traffic is tagged or untagged.
-                    If both data and phone traffic are untagged,
-                    MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.
-                    """
-                    trunk_groups: TrunkGroups
-                    """
-                    Required with `enable_trunk_groups: true`.
-                    Trunk Groups are used for limiting VLANs on trunk ports
-                    to VLANs with the same Trunk Group.
-
-
-                    Subclass of AvdList with `str` items.
-                    """
-                    vlans: str | None
-                    """
-                    Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                    VLAN 1 will be used for access ports.
-                    """
-                    spanning_tree_portfast: SpanningTreePortfast | None
-                    spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
-                    spanning_tree_bpduguard: SpanningTreeBpduguard | None
-                    flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol
-                    qos_profile: str | None
-                    """QOS profile name."""
-                    ptp: Ptp
-                    """
-                    The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually
-                    enabled.
-                    `ptp role master` is set to ensure control over the PTP topology.
-
-
-                    Subclass of AvdModel.
-                    """
-                    sflow: bool | None
-                    """Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting."""
-                    flow_tracking: FlowTracking
-                    """
-                    Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.
-                    Subclass of AvdModel.
-                    """
-                    link_tracking: LinkTracking
-                    """
-                    Configure the downstream interfaces of a respective Link Tracking Group.
-                    If `port_channel` is
-                    defined in an adapter, then the port-channel interface is configured to be the downstream.
-                    Else all
-                    the ethernet interfaces will be configured as downstream -> to configure single-active EVPN
-                    multihomed networks.
-
-
-                    Subclass of AvdModel.
-                    """
-                    dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-                    """802.1x"""
-                    poe: EosCliConfigGen.EthernetInterfacesItem.Poe
-                    """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
-                    storm_control: StormControl
-                    """
-                    Storm control settings applied on port toward the endpoint.
-
-                    Subclass of AvdModel.
-                    """
-                    monitor_sessions: MonitorSessions
-                    """
-                    Used to define interfaces as source or destination for monitoring sessions.
-
-                    Subclass of AvdList
-                    with `MonitorSessionsItem` items.
-                    """
-                    ethernet_segment: EthernetSegment
-                    """
-                    Settings for all or single-active EVPN multihoming.
-
-                    Subclass of AvdModel.
-                    """
-                    port_channel: PortChannel
-                    """
-                    Used for port-channel adapter.
-
-                    Subclass of AvdModel.
-                    """
-                    validate_state: bool | None
-                    """
-                    Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
-                    role.
-                    """
-                    validate_lldp: bool | None
-                    """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
-                    campus_link_type: CampusLinkType
-                    """
-                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                    change at any time.
-                    Values for the CloudVision `Link-Type` user tags to be associated with an
-                    interface.
-                    Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
-                    in the same tags being associated with the parent Ethernet interface instead.
-                    Attempting to
-                    associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
-                    associated with the member Ethernet interfaces instead.
-
-                    Subclass of AvdList with `str` items.
-                    """
-                    raw_eos_cli: str | None
-                    """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
-                    structured_config: EosCliConfigGen.EthernetInterfacesItem
-                    """Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            switch_ports: SwitchPorts | UndefinedType = Undefined,
-                            switches: Switches | UndefinedType = Undefined,
-                            endpoint_ports: EndpointPorts | UndefinedType = Undefined,
-                            descriptions: Descriptions | UndefinedType = Undefined,
-                            speed: Speed | None | UndefinedType = Undefined,
-                            description: str | None | UndefinedType = Undefined,
-                            profile: str | None | UndefinedType = Undefined,
-                            enabled: bool | UndefinedType = Undefined,
-                            mode: Mode | None | UndefinedType = Undefined,
-                            mtu: int | None | UndefinedType = Undefined,
-                            l2_mtu: int | None | UndefinedType = Undefined,
-                            l2_mru: int | None | UndefinedType = Undefined,
-                            native_vlan: int | None | UndefinedType = Undefined,
-                            native_vlan_tag: bool | None | UndefinedType = Undefined,
-                            phone_vlan: int | None | UndefinedType = Undefined,
-                            phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
-                            trunk_groups: TrunkGroups | UndefinedType = Undefined,
-                            vlans: str | None | UndefinedType = Undefined,
-                            spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
-                            spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
-                            spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
-                            flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol | UndefinedType = Undefined,
-                            qos_profile: str | None | UndefinedType = Undefined,
-                            ptp: Ptp | UndefinedType = Undefined,
-                            sflow: bool | None | UndefinedType = Undefined,
-                            flow_tracking: FlowTracking | UndefinedType = Undefined,
-                            link_tracking: LinkTracking | UndefinedType = Undefined,
-                            dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
-                            poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
-                            storm_control: StormControl | UndefinedType = Undefined,
-                            monitor_sessions: MonitorSessions | UndefinedType = Undefined,
-                            ethernet_segment: EthernetSegment | UndefinedType = Undefined,
-                            port_channel: PortChannel | UndefinedType = Undefined,
-                            validate_state: bool | None | UndefinedType = Undefined,
-                            validate_lldp: bool | None | UndefinedType = Undefined,
-                            campus_link_type: CampusLinkType | UndefinedType = Undefined,
-                            raw_eos_cli: str | None | UndefinedType = Undefined,
-                            structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            AdaptersItem.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                switch_ports:
-                                   List of switch interfaces.
-                                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
-                                   same length.
-
-
-                                   Subclass of AvdList with `str` items.
-                                switches:
-                                   List of switches.
-                                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
-                                   length.
-
-
-                                   Subclass of AvdList with `str` items.
-                                endpoint_ports:
-                                   Endpoint ports is used for description, required unless `description` or `descriptions` is set.
-                                   The
-                                   lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
-                                   Each list item is one switchport.
-
-
-                                   Subclass of AvdList with `str` items.
-                                descriptions:
-                                   Unique description per port. When set, takes priority over description.
-                                   This can be a template using
-                                   the AVD string formatter syntax:
-                                   https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                                   descriptions-names.html#avd-string-formatter-syntax.
-                                   The available template fields are:
-                                     -
-                                   `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
-                                     -
-                                   `endpoint` - The name of the connected endpoint
-                                     - `endpoint_port` - The value from
-                                   `endpoint_ports` for this switch port if set.
-                                     - `port_channel_id`: The port-channel number for the
-                                   switch.
-
-                                   Subclass of AvdList with `str` items.
-                                speed:
-                                   Set adapter speed.
-                                   If not specified speed will be auto.
-                                description:
-                                   Description or description template to be used on all ports.
-                                   This can be a template using the AVD
-                                   string formatter syntax:
-                                   https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                                   descriptions-names.html#avd-string-formatter-syntax.
-                                   The available template fields are:
-                                     -
-                                   `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
-                                     -
-                                   `endpoint` - The name of the connected endpoint
-                                     - `endpoint_port` - The value from
-                                   `endpoint_ports` for this switch port if set.
-
-                                   The default description is set by
-                                   `default_connected_endpoints_description`.
-                                   By default the description is templated from the type,
-                                   name and port of the endpoint if set.
-                                profile: Port-profile name to inherit configuration.
-                                enabled:
-                                   Administrative state, setting to false will set the port to 'shutdown' in the intended
-                                   configuration.
-                                mode: Interface mode.
-                                mtu: mtu
-                                l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
-                                l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
-                                native_vlan:
-                                   Native VLAN for a trunk port.
-                                   If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag`
-                                   takes precedence.
-                                native_vlan_tag: If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag` takes precedence.
-                                phone_vlan:
-                                   Phone VLAN for a mode `trunk phone` port.
-                                   Requires `mode: trunk phone` to be set.
-                                phone_trunk_mode:
-                                   Specify if the phone traffic is tagged or untagged.
-                                   If both data and phone traffic are untagged,
-                                   MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.
-                                trunk_groups:
-                                   Required with `enable_trunk_groups: true`.
-                                   Trunk Groups are used for limiting VLANs on trunk ports
-                                   to VLANs with the same Trunk Group.
-
-
-                                   Subclass of AvdList with `str` items.
-                                vlans:
-                                   Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                                   VLAN 1 will be used for access ports.
-                                spanning_tree_portfast: spanning_tree_portfast
-                                spanning_tree_bpdufilter: spanning_tree_bpdufilter
-                                spanning_tree_bpduguard: spanning_tree_bpduguard
-                                flowcontrol: flowcontrol
-                                qos_profile: QOS profile name.
-                                ptp:
-                                   The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually
-                                   enabled.
-                                   `ptp role master` is set to ensure control over the PTP topology.
-
-
-                                   Subclass of AvdModel.
-                                sflow: Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.
-                                flow_tracking:
-                                   Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.
-                                   Subclass of AvdModel.
-                                link_tracking:
-                                   Configure the downstream interfaces of a respective Link Tracking Group.
-                                   If `port_channel` is
-                                   defined in an adapter, then the port-channel interface is configured to be the downstream.
-                                   Else all
-                                   the ethernet interfaces will be configured as downstream -> to configure single-active EVPN
-                                   multihomed networks.
-
-
-                                   Subclass of AvdModel.
-                                dot1x: 802.1x
-                                poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
-                                storm_control:
-                                   Storm control settings applied on port toward the endpoint.
-
-                                   Subclass of AvdModel.
-                                monitor_sessions:
-                                   Used to define interfaces as source or destination for monitoring sessions.
-
-                                   Subclass of AvdList
-                                   with `MonitorSessionsItem` items.
-                                ethernet_segment:
-                                   Settings for all or single-active EVPN multihoming.
-
-                                   Subclass of AvdModel.
-                                port_channel:
-                                   Used for port-channel adapter.
-
-                                   Subclass of AvdModel.
-                                validate_state:
-                                   Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
-                                   role.
-                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
-                                campus_link_type:
-                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                                   change at any time.
-                                   Values for the CloudVision `Link-Type` user tags to be associated with an
-                                   interface.
-                                   Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
-                                   in the same tags being associated with the parent Ethernet interface instead.
-                                   Attempting to
-                                   associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
-                                   associated with the member Ethernet interfaces instead.
-
-                                   Subclass of AvdList with `str` items.
-                                raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
-                                structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
-
-                            """
-
-                class Adapters(AvdList[AdaptersItem]):
-                    """Subclass of AvdList with `AdaptersItem` items."""
-
-                Adapters._item_type = AdaptersItem
-
-                _fields: ClassVar[dict] = {"name": {"type": str}, "rack": {"type": str}, "adapters": {"type": Adapters}}
-                name: str
-                """Endpoint name will be used in the switchport description."""
-                rack: str | None
-                """Rack is used for documentation purposes only."""
-                adapters: Adapters
-                """
-                A list of adapters, group by adapters leveraging the same port-profile.
-
-                Subclass of AvdList with
-                `AdaptersItem` items.
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(
-                        self,
-                        *,
-                        name: str | UndefinedType = Undefined,
-                        rack: str | None | UndefinedType = Undefined,
-                        adapters: Adapters | UndefinedType = Undefined,
-                    ) -> None:
-                        """
-                        CustomConnectedEndpointsItem.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            name: Endpoint name will be used in the switchport description.
-                            rack: Rack is used for documentation purposes only.
-                            adapters:
-                               A list of adapters, group by adapters leveraging the same port-profile.
-
-                               Subclass of AvdList with
-                               `AdaptersItem` items.
-
-                        """
-
-            class CustomConnectedEndpoints(AvdIndexedList[str, CustomConnectedEndpointsItem]):
-                """Subclass of AvdIndexedList with `CustomConnectedEndpointsItem` items. Primary key is `name` (`str`)."""
-
-                _primary_key: ClassVar[str] = "name"
-
-            CustomConnectedEndpoints._item_type = CustomConnectedEndpointsItem
-
-            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": CustomConnectedEndpoints}}
-            _field_to_key_map: ClassVar[dict] = {"value": "custom_connected_endpoints_keys_key"}
-            _key_to_field_map: ClassVar[dict] = {"custom_connected_endpoints_keys_key": "value"}
-            key: str
-            """Key used as dynamic key"""
-            value: CustomConnectedEndpoints
-            """Value of dynamic key"""
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, key: str | UndefinedType = Undefined, value: CustomConnectedEndpoints | UndefinedType = Undefined) -> None:
-                    """
-                    DynamicCustomConnectedEndpointsItem.
-
-
-                    Args:
-                        key: Key used as dynamic key
-                        value: Value of dynamic key
-
-                    """
-
-        class DynamicCustomConnectedEndpoints(AvdIndexedList[str, DynamicCustomConnectedEndpointsItem]):
-            _primary_key: ClassVar[str] = "key"
-
-        DynamicCustomConnectedEndpoints._item_type = DynamicCustomConnectedEndpointsItem
 
         class DynamicCustomNodeTypesItem(AvdModel):
             class CustomNodeTypes(AvdModel):
@@ -45219,6 +53457,3510 @@ class EosDesigns(EosDesignsRootModel):
 
         DynamicCustomNodeTypes._item_type = DynamicCustomNodeTypesItem
 
+        class DynamicConnectedEndpointsItem(AvdModel):
+            class ConnectedEndpointsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AdaptersItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class SwitchPorts(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    SwitchPorts._item_type = str
+
+                    class Switches(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    Switches._item_type = str
+
+                    class EndpointPorts(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    EndpointPorts._item_type = str
+
+                    class Descriptions(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    Descriptions._item_type = str
+
+                    Speed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
+                    PhoneTrunkMode: TypeAlias = Literal["tagged", "untagged", "tagged phone", "untagged phone"]
+
+                    class TrunkGroups(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    TrunkGroups._item_type = str
+
+                    SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+                    SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+                    SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+
+                    class Ptp(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        EndpointRole: TypeAlias = Literal["follower", "dynamic", "bmca", "default"]
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool, "default": False},
+                            "endpoint_role": {"type": str, "default": "follower"},
+                            "profile": {"type": str, "default": "aes67-r16-2016"},
+                        }
+                        enabled: bool
+                        """Default value: `False`"""
+                        endpoint_role: EndpointRole
+                        """
+                        PTP role of the endpoint.
+                        `follower` will configure the switch port as `ptp role master`.
+                        `dynamic`
+                        will use BMCA.
+                        `default` is deprecated in favor of `follower`.
+                        `bmca` is deprecated in favor of
+                        `dynamic`.
+
+                        Default value: `"follower"`
+                        """
+                        profile: str
+                        """
+                        Default available profiles are:
+                          - "aes67"
+                          - "aes67-r16-2016"
+                          - "smpte2059-2"
+
+                        Default value: `"aes67-r16-2016"`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                endpoint_role: EndpointRole | UndefinedType = Undefined,
+                                profile: str | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Ptp.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    endpoint_role:
+                                       PTP role of the endpoint.
+                                       `follower` will configure the switch port as `ptp role master`.
+                                       `dynamic`
+                                       will use BMCA.
+                                       `default` is deprecated in favor of `follower`.
+                                       `bmca` is deprecated in favor of
+                                       `dynamic`.
+                                    profile:
+                                       Default available profiles are:
+                                         - "aes67"
+                                         - "aes67-r16-2016"
+                                         - "smpte2059-2"
+
+                                """
+
+                    class FlowTracking(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
+                        enabled: bool | None
+                        name: str | None
+                        """Flow tracker name as defined in flow_tracking_settings."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                FlowTracking.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    name: Flow tracker name as defined in flow_tracking_settings.
+
+                                """
+
+                    class LinkTracking(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
+                        enabled: bool | None
+                        name: str | None
+                        """
+                        Tracking group name.
+                        The default group name is taken from fabric variable of the switch,
+                        `link_tracking.groups[0].name` with default value being "LT_GROUP1".
+                        Optional if default
+                        link_tracking settings are configured on the node.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                LinkTracking.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    name:
+                                       Tracking group name.
+                                       The default group name is taken from fabric variable of the switch,
+                                       `link_tracking.groups[0].name` with default value being "LT_GROUP1".
+                                       Optional if default
+                                       link_tracking settings are configured on the node.
+
+                                """
+
+                    class StormControl(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class All(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Unit: TypeAlias = Literal["percent", "pps"]
+                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                            level: str | None
+                            """Configure maximum storm-control level."""
+                            unit: Unit
+                            """
+                            Optional variable and is hardware dependent.
+
+                            Default value: `"percent"`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                                    """
+                                    All.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        level: Configure maximum storm-control level.
+                                        unit: Optional variable and is hardware dependent.
+
+                                    """
+
+                        class Broadcast(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Unit: TypeAlias = Literal["percent", "pps"]
+                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                            level: str | None
+                            """Configure maximum storm-control level."""
+                            unit: Unit
+                            """
+                            Optional variable and is hardware dependent.
+
+                            Default value: `"percent"`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                                    """
+                                    Broadcast.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        level: Configure maximum storm-control level.
+                                        unit: Optional variable and is hardware dependent.
+
+                                    """
+
+                        class Multicast(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Unit: TypeAlias = Literal["percent", "pps"]
+                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                            level: str | None
+                            """Configure maximum storm-control level."""
+                            unit: Unit
+                            """
+                            Optional variable and is hardware dependent.
+
+                            Default value: `"percent"`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                                    """
+                                    Multicast.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        level: Configure maximum storm-control level.
+                                        unit: Optional variable and is hardware dependent.
+
+                                    """
+
+                        class UnknownUnicast(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Unit: TypeAlias = Literal["percent", "pps"]
+                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                            level: str | None
+                            """Configure maximum storm-control level."""
+                            unit: Unit
+                            """
+                            Optional variable and is hardware dependent.
+
+                            Default value: `"percent"`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                                    """
+                                    UnknownUnicast.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        level: Configure maximum storm-control level.
+                                        unit: Optional variable and is hardware dependent.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "all": {"type": All},
+                            "broadcast": {"type": Broadcast},
+                            "multicast": {"type": Multicast},
+                            "unknown_unicast": {"type": UnknownUnicast},
+                        }
+                        all: All
+                        """Subclass of AvdModel."""
+                        broadcast: Broadcast
+                        """Subclass of AvdModel."""
+                        multicast: Multicast
+                        """Subclass of AvdModel."""
+                        unknown_unicast: UnknownUnicast
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                all: All | UndefinedType = Undefined,
+                                broadcast: Broadcast | UndefinedType = Undefined,
+                                multicast: Multicast | UndefinedType = Undefined,
+                                unknown_unicast: UnknownUnicast | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                StormControl.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    all: Subclass of AvdModel.
+                                    broadcast: Subclass of AvdModel.
+                                    multicast: Subclass of AvdModel.
+                                    unknown_unicast: Subclass of AvdModel.
+
+                                """
+
+                    class MonitorSessionsItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Role: TypeAlias = Literal["source", "destination"]
+
+                        class SourceSettings(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Direction: TypeAlias = Literal["rx", "tx", "both"]
+
+                            class AccessGroup(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
+                                type: Type | None
+                                name: str | None
+                                """ACL name."""
+                                priority: int | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        type: Type | None | UndefinedType = Undefined,
+                                        name: str | None | UndefinedType = Undefined,
+                                        priority: int | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        AccessGroup.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            type: type
+                                            name: ACL name.
+                                            priority: priority
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"direction": {"type": str}, "access_group": {"type": AccessGroup}}
+                            direction: Direction | None
+                            access_group: AccessGroup
+                            """
+                            This can only be set when `session_settings.access_group` is not set.
+
+                            Subclass of AvdModel.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, direction: Direction | None | UndefinedType = Undefined, access_group: AccessGroup | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    SourceSettings.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        direction: direction
+                                        access_group:
+                                           This can only be set when `session_settings.access_group` is not set.
+
+                                           Subclass of AvdModel.
+
+                                    """
+
+                        class SessionSettings(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class AccessGroup(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
+                                type: Type | None
+                                name: str | None
+                                """ACL name."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, type: Type | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        AccessGroup.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            type: type
+                                            name: ACL name.
+
+                                        """
+
+                            class Truncate(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "size": {"type": int}}
+                                enabled: bool | None
+                                size: int | None
+                                """Size in bytes."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self, *, enabled: bool | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined
+                                    ) -> None:
+                                        """
+                                        Truncate.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            size: Size in bytes.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "encapsulation_gre_metadata_tx": {"type": bool},
+                                "header_remove_size": {"type": int},
+                                "access_group": {"type": AccessGroup},
+                                "rate_limit_per_ingress_chip": {"type": str},
+                                "rate_limit_per_egress_chip": {"type": str},
+                                "sample": {"type": int},
+                                "truncate": {"type": Truncate},
+                            }
+                            encapsulation_gre_metadata_tx: bool | None
+                            header_remove_size: int | None
+                            """Number of bytes to remove from header."""
+                            access_group: AccessGroup
+                            """Subclass of AvdModel."""
+                            rate_limit_per_ingress_chip: str | None
+                            """
+                            Ratelimit and unit as string.
+                            Examples:
+                              "100000 bps"
+                              "100 kbps"
+                              "10 mbps"
+                            """
+                            rate_limit_per_egress_chip: str | None
+                            """
+                            Ratelimit and unit as string.
+                            Examples:
+                              "100000 bps"
+                              "100 kbps"
+                              "10 mbps"
+                            """
+                            sample: int | None
+                            truncate: Truncate
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    encapsulation_gre_metadata_tx: bool | None | UndefinedType = Undefined,
+                                    header_remove_size: int | None | UndefinedType = Undefined,
+                                    access_group: AccessGroup | UndefinedType = Undefined,
+                                    rate_limit_per_ingress_chip: str | None | UndefinedType = Undefined,
+                                    rate_limit_per_egress_chip: str | None | UndefinedType = Undefined,
+                                    sample: int | None | UndefinedType = Undefined,
+                                    truncate: Truncate | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    SessionSettings.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        encapsulation_gre_metadata_tx: encapsulation_gre_metadata_tx
+                                        header_remove_size: Number of bytes to remove from header.
+                                        access_group: Subclass of AvdModel.
+                                        rate_limit_per_ingress_chip:
+                                           Ratelimit and unit as string.
+                                           Examples:  # fmt: skip
+                                             "100000 bps"
+                                             "100 kbps"
+                                             "10 mbps"
+                                        rate_limit_per_egress_chip:
+                                           Ratelimit and unit as string.
+                                           Examples:  # fmt: skip
+                                             "100000 bps"
+                                             "100 kbps"
+                                             "10 mbps"
+                                        sample: sample
+                                        truncate: Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "name": {"type": str},
+                            "role": {"type": str},
+                            "source_settings": {"type": SourceSettings},
+                            "session_settings": {"type": SessionSettings},
+                        }
+                        name: str
+                        """Session name."""
+                        role: Role | None
+                        source_settings: SourceSettings
+                        """Subclass of AvdModel."""
+                        session_settings: SessionSettings
+                        """
+                        Session settings are defined per session name.
+                        Different session_settings for the same session name
+                        will be combined/merged.
+
+
+                        Subclass of AvdModel.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                name: str | UndefinedType = Undefined,
+                                role: Role | None | UndefinedType = Undefined,
+                                source_settings: SourceSettings | UndefinedType = Undefined,
+                                session_settings: SessionSettings | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                MonitorSessionsItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    name: Session name.
+                                    role: role
+                                    source_settings: Subclass of AvdModel.
+                                    session_settings:
+                                       Session settings are defined per session name.
+                                       Different session_settings for the same session name
+                                       will be combined/merged.
+
+
+                                       Subclass of AvdModel.
+
+                                """
+
+                    class MonitorSessions(AvdList[MonitorSessionsItem]):
+                        """Subclass of AvdList with `MonitorSessionsItem` items."""
+
+                    MonitorSessions._item_type = MonitorSessionsItem
+
+                    class EthernetSegment(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Redundancy: TypeAlias = Literal["all-active", "single-active"]
+                        DesignatedForwarderAlgorithm: TypeAlias = Literal["auto", "modulus", "preference"]
+
+                        class DesignatedForwarderPreferences(AvdList[int]):
+                            """Subclass of AvdList with `int` items."""
+
+                        DesignatedForwarderPreferences._item_type = int
+
+                        _fields: ClassVar[dict] = {
+                            "short_esi": {"type": str},
+                            "redundancy": {"type": str},
+                            "designated_forwarder_algorithm": {"type": str},
+                            "designated_forwarder_preferences": {"type": DesignatedForwarderPreferences},
+                            "dont_preempt": {"type": bool},
+                        }
+                        short_esi: str
+                        """
+                        In format xxxx:xxxx:xxxx or "auto".
+                        Define a manual short-esi (be careful using this on profiles) or
+                        set the value to "auto" to automatically generate the value.
+                        Please see the notes under "EVPN A/A
+                        ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
+                        """
+                        redundancy: Redundancy | None
+                        """
+                        If omitted, Port-Channels use the EOS default of all-active.
+                        If omitted, Ethernet interfaces are
+                        configured as single-active.
+                        """
+                        designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None
+                        """
+                        Configure DF algorithm and preferences.
+                        - auto: Use preference-based algorithm and assign preference
+                        based on position of device in the 'switches' list,
+                          e.g., assuming a list of three switches, this
+                        would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.
+                        -
+                        preference: Set preference for each switch manually using designated_forwarder_preferences key.
+                        -
+                        modulus: Use the default modulus-based algorithm.
+                        If omitted, Port-Channels use the EOS default of
+                        modulus.
+                        If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
+                        """
+                        designated_forwarder_preferences: DesignatedForwarderPreferences
+                        """
+                        Manual preference as described above, required only for preference algorithm.
+
+                        Subclass of AvdList
+                        with `int` items.
+                        """
+                        dont_preempt: bool | None
+                        """Disable preemption for single-active forwarding when auto/manual DF preference is configured."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                short_esi: str | UndefinedType = Undefined,
+                                redundancy: Redundancy | None | UndefinedType = Undefined,
+                                designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None | UndefinedType = Undefined,
+                                designated_forwarder_preferences: DesignatedForwarderPreferences | UndefinedType = Undefined,
+                                dont_preempt: bool | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                EthernetSegment.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    short_esi:
+                                       In format xxxx:xxxx:xxxx or "auto".
+                                       Define a manual short-esi (be careful using this on profiles) or
+                                       set the value to "auto" to automatically generate the value.
+                                       Please see the notes under "EVPN A/A
+                                       ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
+                                    redundancy:
+                                       If omitted, Port-Channels use the EOS default of all-active.
+                                       If omitted, Ethernet interfaces are
+                                       configured as single-active.
+                                    designated_forwarder_algorithm:
+                                       Configure DF algorithm and preferences.
+                                       - auto: Use preference-based algorithm and assign preference
+                                       based on position of device in the 'switches' list,
+                                         e.g., assuming a list of three switches, this
+                                       would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.
+                                       -
+                                       preference: Set preference for each switch manually using designated_forwarder_preferences key.
+                                       -
+                                       modulus: Use the default modulus-based algorithm.
+                                       If omitted, Port-Channels use the EOS default of
+                                       modulus.
+                                       If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
+                                    designated_forwarder_preferences:
+                                       Manual preference as described above, required only for preference algorithm.
+
+                                       Subclass of AvdList
+                                       with `int` items.
+                                    dont_preempt: Disable preemption for single-active forwarding when auto/manual DF preference is configured.
+
+                                """
+
+                    class PortChannel(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Mode: TypeAlias = Literal["active", "passive", "on"]
+
+                        class LacpFallback(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["static", "individual"]
+
+                            class Individual(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
+                                _fields: ClassVar[dict] = {
+                                    "profile": {"type": str},
+                                    "vlans": {"type": str},
+                                    "native_vlan": {"type": int},
+                                    "mode": {"type": str},
+                                }
+                                profile: str | None
+                                """Port-profile name to inherit configuration."""
+                                vlans: str | None
+                                """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
+                                native_vlan: int | None
+                                """Native VLAN on the port-channel member interfaces when in fallback individual."""
+                                mode: Mode | None
+                                """Interface mode on the port-channel member interfaces when in fallback individual."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        profile: str | None | UndefinedType = Undefined,
+                                        vlans: str | None | UndefinedType = Undefined,
+                                        native_vlan: int | None | UndefinedType = Undefined,
+                                        mode: Mode | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Individual.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            profile: Port-profile name to inherit configuration.
+                                            vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                                            native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
+                                            mode: Interface mode on the port-channel member interfaces when in fallback individual.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
+                            mode: Mode | None
+                            """
+                            Either static or individual mode is supported.
+                            If the mode is set to "individual" either 'profile'
+                            or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
+                            """
+                            individual: Individual
+                            """
+                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
+                            "individual".
+
+                            Subclass of AvdModel.
+                            """
+                            timeout: int
+                            """
+                            Timeout in seconds.
+
+                            Default value: `90`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    mode: Mode | None | UndefinedType = Undefined,
+                                    individual: Individual | UndefinedType = Undefined,
+                                    timeout: int | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    LacpFallback.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode:
+                                           Either static or individual mode is supported.
+                                           If the mode is set to "individual" either 'profile'
+                                           or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
+                                        individual:
+                                           Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
+                                           "individual".
+
+                                           Subclass of AvdModel.
+                                        timeout: Timeout in seconds.
+
+                                    """
+
+                        class LacpTimer(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["normal", "fast"]
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
+                            mode: Mode | None
+                            """LACP mode for interface members."""
+                            multiplier: int | None
+                            """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    LacpTimer.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode: LACP mode for interface members.
+                                        multiplier: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
+
+                                    """
+
+                        class SubinterfacesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class EncapsulationVlan(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
+                                client_dot1q: int | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        EncapsulationVlan.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            client_dot1q: client_dot1q
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "number": {"type": int},
+                                "short_esi": {"type": str},
+                                "vlan_id": {"type": int},
+                                "encapsulation_vlan": {"type": EncapsulationVlan},
+                                "raw_eos_cli": {"type": str},
+                                "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                            }
+                            number: int | None
+                            """Subinterface number."""
+                            short_esi: str | None
+                            """
+                            In format xxxx:xxxx:xxxx or "auto".
+                            Required for multihomed port-channels with subinterfaces.
+                            """
+                            vlan_id: int | None
+                            """
+                            VLAN ID to bridge.
+                            Default is subinterface number.
+                            """
+                            encapsulation_vlan: EncapsulationVlan
+                            """
+                            Client VLAN ID encapsulation.
+                            Default is subinterface number.
+
+
+                            Subclass of AvdModel.
+                            """
+                            raw_eos_cli: str | None
+                            """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
+                            structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                            """
+                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                            eos_cli_config_gen.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    number: int | None | UndefinedType = Undefined,
+                                    short_esi: str | None | UndefinedType = Undefined,
+                                    vlan_id: int | None | UndefinedType = Undefined,
+                                    encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                                    structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    SubinterfacesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        number: Subinterface number.
+                                        short_esi:
+                                           In format xxxx:xxxx:xxxx or "auto".
+                                           Required for multihomed port-channels with subinterfaces.
+                                        vlan_id:
+                                           VLAN ID to bridge.
+                                           Default is subinterface number.
+                                        encapsulation_vlan:
+                                           Client VLAN ID encapsulation.
+                                           Default is subinterface number.
+
+
+                                           Subclass of AvdModel.
+                                        raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
+                                        structured_config:
+                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                                           eos_cli_config_gen.
+
+                                    """
+
+                        class Subinterfaces(AvdList[SubinterfacesItem]):
+                            """Subclass of AvdList with `SubinterfacesItem` items."""
+
+                        Subinterfaces._item_type = SubinterfacesItem
+
+                        _fields: ClassVar[dict] = {
+                            "mode": {"type": str},
+                            "channel_id": {"type": int},
+                            "description": {"type": str},
+                            "endpoint_port_channel": {"type": str},
+                            "enabled": {"type": bool, "default": True},
+                            "ptp_mpass": {"type": bool, "default": False},
+                            "lacp_fallback": {"type": LacpFallback},
+                            "lacp_timer": {"type": LacpTimer},
+                            "subinterfaces": {"type": Subinterfaces},
+                            "raw_eos_cli": {"type": str},
+                            "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        }
+                        mode: Mode | None
+                        """Port-Channel Mode."""
+                        channel_id: int | None
+                        """
+                        Port-Channel ID.
+                        If no channel_id is specified, an id is generated from the first switch port in the
+                        port channel.
+                        """
+                        description: str | None
+                        """
+                        Description or description template to be used on the port-channel interface.
+                        This can be a template
+                        using the AVD string formatter syntax:
+                        https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                        descriptions-names.html#avd-string-formatter-syntax.
+                        The available template fields are:
+                          -
+                        `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                        `connected_endpoints_keys.type` like `server`, `router` etc.
+                          - `endpoint` - The name of the
+                        connected endpoint
+                          - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
+                          -
+                        `port_channel_id` - The port-channel number for the switch.
+                          - `adapter_description` - The
+                        adapter's description if set.
+                          - `adapter_description_or_endpoint` - Helper alias of the
+                        adapter_description or endpoint.
+
+                        The default description is set by
+                        `default_connected_endpoints_port_channel_description`.
+                        By default the description is templated from
+                        the type, name and port_channel interface of the endpoint if set.
+                        """
+                        endpoint_port_channel: str | None
+                        """
+                        Name of the port-channel interface on the endpoint.
+                        Used for the port-channel description template
+                        with the field name `peer_interface`
+                        """
+                        enabled: bool
+                        """
+                        Port-Channel administrative state.
+                        Setting to false will set port to 'shutdown' in intended
+                        configuration.
+
+                        Default value: `True`
+                        """
+                        ptp_mpass: bool
+                        """
+                        When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
+                        logical device.
+                        Arista PTP enabled devices always place PTP messages on the same physical link
+                        within the port-channel.
+                        Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                        devices.
+
+                        Default value: `False`
+                        """
+                        lacp_fallback: LacpFallback
+                        """
+                        LACP fallback configuration.
+
+                        Subclass of AvdModel.
+                        """
+                        lacp_timer: LacpTimer
+                        """
+                        LACP timer configuration. Applies only when Port-channel mode is not "on".
+
+                        Subclass of AvdModel.
+                        """
+                        subinterfaces: Subinterfaces
+                        """
+                        Port-Channel L2 Subinterfaces
+                        Subinterfaces are only supported on routed port-channels, which means
+                        they cannot be configured on MLAG port-channels.
+                        Setting short_esi: auto generates the short_esi
+                        automatically using a hash of configuration elements.
+                        Please see the notes under "EVPN A/A ESI dual-
+                        attached endpoint scenario" before setting short_esi: auto.
+
+
+                        Subclass of AvdList with
+                        `SubinterfacesItem` items.
+                        """
+                        raw_eos_cli: str | None
+                        """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
+                        structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """
+                        Custom structured config added under port_channel_interfaces.[name=<interface>] for
+                        eos_cli_config_gen.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                mode: Mode | None | UndefinedType = Undefined,
+                                channel_id: int | None | UndefinedType = Undefined,
+                                description: str | None | UndefinedType = Undefined,
+                                endpoint_port_channel: str | None | UndefinedType = Undefined,
+                                enabled: bool | UndefinedType = Undefined,
+                                ptp_mpass: bool | UndefinedType = Undefined,
+                                lacp_fallback: LacpFallback | UndefinedType = Undefined,
+                                lacp_timer: LacpTimer | UndefinedType = Undefined,
+                                subinterfaces: Subinterfaces | UndefinedType = Undefined,
+                                raw_eos_cli: str | None | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                PortChannel.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    mode: Port-Channel Mode.
+                                    channel_id:
+                                       Port-Channel ID.
+                                       If no channel_id is specified, an id is generated from the first switch port in the
+                                       port channel.
+                                    description:
+                                       Description or description template to be used on the port-channel interface.
+                                       This can be a template
+                                       using the AVD string formatter syntax:
+                                       https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                       descriptions-names.html#avd-string-formatter-syntax.
+                                       The available template fields are:
+                                         -
+                                       `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                                       `connected_endpoints_keys.type` like `server`, `router` etc.
+                                         - `endpoint` - The name of the
+                                       connected endpoint
+                                         - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
+                                         -
+                                       `port_channel_id` - The port-channel number for the switch.
+                                         - `adapter_description` - The
+                                       adapter's description if set.
+                                         - `adapter_description_or_endpoint` - Helper alias of the
+                                       adapter_description or endpoint.
+
+                                       The default description is set by
+                                       `default_connected_endpoints_port_channel_description`.
+                                       By default the description is templated from
+                                       the type, name and port_channel interface of the endpoint if set.
+                                    endpoint_port_channel:
+                                       Name of the port-channel interface on the endpoint.
+                                       Used for the port-channel description template
+                                       with the field name `peer_interface`
+                                    enabled:
+                                       Port-Channel administrative state.
+                                       Setting to false will set port to 'shutdown' in intended
+                                       configuration.
+                                    ptp_mpass:
+                                       When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
+                                       logical device.
+                                       Arista PTP enabled devices always place PTP messages on the same physical link
+                                       within the port-channel.
+                                       Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                                       devices.
+                                    lacp_fallback:
+                                       LACP fallback configuration.
+
+                                       Subclass of AvdModel.
+                                    lacp_timer:
+                                       LACP timer configuration. Applies only when Port-channel mode is not "on".
+
+                                       Subclass of AvdModel.
+                                    subinterfaces:
+                                       Port-Channel L2 Subinterfaces
+                                       Subinterfaces are only supported on routed port-channels, which means
+                                       they cannot be configured on MLAG port-channels.
+                                       Setting short_esi: auto generates the short_esi
+                                       automatically using a hash of configuration elements.
+                                       Please see the notes under "EVPN A/A ESI dual-
+                                       attached endpoint scenario" before setting short_esi: auto.
+
+
+                                       Subclass of AvdList with
+                                       `SubinterfacesItem` items.
+                                    raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
+                                    structured_config:
+                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for
+                                       eos_cli_config_gen.
+
+                                """
+
+                    class CampusLinkType(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    CampusLinkType._item_type = str
+
+                    _fields: ClassVar[dict] = {
+                        "switch_ports": {"type": SwitchPorts},
+                        "switches": {"type": Switches},
+                        "endpoint_ports": {"type": EndpointPorts},
+                        "descriptions": {"type": Descriptions},
+                        "speed": {"type": str},
+                        "description": {"type": str},
+                        "profile": {"type": str},
+                        "enabled": {"type": bool, "default": True},
+                        "mode": {"type": str},
+                        "mtu": {"type": int},
+                        "l2_mtu": {"type": int},
+                        "l2_mru": {"type": int},
+                        "native_vlan": {"type": int},
+                        "native_vlan_tag": {"type": bool},
+                        "phone_vlan": {"type": int},
+                        "phone_trunk_mode": {"type": str},
+                        "trunk_groups": {"type": TrunkGroups},
+                        "vlans": {"type": str},
+                        "spanning_tree_portfast": {"type": str},
+                        "spanning_tree_bpdufilter": {"type": str},
+                        "spanning_tree_bpduguard": {"type": str},
+                        "flowcontrol": {"type": EosCliConfigGen.EthernetInterfacesItem.Flowcontrol},
+                        "qos_profile": {"type": str},
+                        "ptp": {"type": Ptp},
+                        "sflow": {"type": bool},
+                        "flow_tracking": {"type": FlowTracking},
+                        "link_tracking": {"type": LinkTracking},
+                        "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                        "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
+                        "storm_control": {"type": StormControl},
+                        "monitor_sessions": {"type": MonitorSessions},
+                        "ethernet_segment": {"type": EthernetSegment},
+                        "port_channel": {"type": PortChannel},
+                        "validate_state": {"type": bool},
+                        "validate_lldp": {"type": bool},
+                        "campus_link_type": {"type": CampusLinkType},
+                        "raw_eos_cli": {"type": str},
+                        "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                    }
+                    switch_ports: SwitchPorts
+                    """
+                    List of switch interfaces.
+                    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
+                    same length.
+
+
+                    Subclass of AvdList with `str` items.
+                    """
+                    switches: Switches
+                    """
+                    List of switches.
+                    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
+                    length.
+
+
+                    Subclass of AvdList with `str` items.
+                    """
+                    endpoint_ports: EndpointPorts
+                    """
+                    Endpoint ports is used for description, required unless `description` or `descriptions` is set.
+                    The
+                    lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+                    Each list item is one switchport.
+
+
+                    Subclass of AvdList with `str` items.
+                    """
+                    descriptions: Descriptions
+                    """
+                    Unique description per port. When set, takes priority over description.
+                    This can be a template using
+                    the AVD string formatter syntax:
+                    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                    descriptions-names.html#avd-string-formatter-syntax.
+                    The available template fields are:
+                      -
+                    `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                    `connected_endpoints_keys.type` like `server`, `router` etc.
+                      - `endpoint` - The name of the
+                    connected endpoint
+                      - `endpoint_port` - The value from `endpoint_ports` for this switch port if
+                    set.
+                      - `port_channel_id`: The port-channel number for the switch.
+
+                    Subclass of AvdList with `str`
+                    items.
+                    """
+                    speed: Speed | None
+                    """
+                    Set adapter speed.
+                    If not specified speed will be auto.
+                    """
+                    description: str | None
+                    """
+                    Description or description template to be used on all ports.
+                    This can be a template using the AVD
+                    string formatter syntax:
+                    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                    descriptions-names.html#avd-string-formatter-syntax.
+                    The available template fields are:
+                      -
+                    `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                    `connected_endpoints_keys.type` like `server`, `router` etc.
+                      - `endpoint` - The name of the
+                    connected endpoint
+                      - `endpoint_port` - The value from `endpoint_ports` for this switch port if
+                    set.
+
+                    The default description is set by `default_connected_endpoints_description`.
+                    By default the
+                    description is templated from the type, name and port of the endpoint if set.
+                    """
+                    profile: str | None
+                    """Port-profile name to inherit configuration."""
+                    enabled: bool
+                    """
+                    Administrative state, setting to false will set the port to 'shutdown' in the intended
+                    configuration.
+
+                    Default value: `True`
+                    """
+                    mode: Mode | None
+                    """Interface mode."""
+                    mtu: int | None
+                    l2_mtu: int | None
+                    """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
+                    l2_mru: int | None
+                    """"l2_mru" should only be defined for platforms supporting the "l2 mru" CLI."""
+                    native_vlan: int | None
+                    """
+                    Native VLAN for a trunk port.
+                    If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag`
+                    takes precedence.
+                    """
+                    native_vlan_tag: bool | None
+                    """If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag` takes precedence."""
+                    phone_vlan: int | None
+                    """
+                    Phone VLAN for a mode `trunk phone` port.
+                    Requires `mode: trunk phone` to be set.
+                    """
+                    phone_trunk_mode: PhoneTrunkMode | None
+                    """
+                    Specify if the phone traffic is tagged or untagged.
+                    If both data and phone traffic are untagged,
+                    MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.
+                    """
+                    trunk_groups: TrunkGroups
+                    """
+                    Required with `enable_trunk_groups: true`.
+                    Trunk Groups are used for limiting VLANs on trunk ports
+                    to VLANs with the same Trunk Group.
+
+
+                    Subclass of AvdList with `str` items.
+                    """
+                    vlans: str | None
+                    """
+                    Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
+                    VLAN 1 will be used for access ports.
+                    """
+                    spanning_tree_portfast: SpanningTreePortfast | None
+                    spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
+                    spanning_tree_bpduguard: SpanningTreeBpduguard | None
+                    flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol
+                    qos_profile: str | None
+                    """QOS profile name."""
+                    ptp: Ptp
+                    """
+                    The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually
+                    enabled.
+                    `ptp role master` is set to ensure control over the PTP topology.
+
+
+                    Subclass of AvdModel.
+                    """
+                    sflow: bool | None
+                    """Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting."""
+                    flow_tracking: FlowTracking
+                    """
+                    Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.
+                    Subclass of AvdModel.
+                    """
+                    link_tracking: LinkTracking
+                    """
+                    Configure the downstream interfaces of a respective Link Tracking Group.
+                    If `port_channel` is
+                    defined in an adapter, then the port-channel interface is configured to be the downstream.
+                    Else all
+                    the ethernet interfaces will be configured as downstream -> to configure single-active EVPN
+                    multihomed networks.
+
+
+                    Subclass of AvdModel.
+                    """
+                    dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
+                    """802.1x"""
+                    poe: EosCliConfigGen.EthernetInterfacesItem.Poe
+                    """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
+                    storm_control: StormControl
+                    """
+                    Storm control settings applied on port toward the endpoint.
+
+                    Subclass of AvdModel.
+                    """
+                    monitor_sessions: MonitorSessions
+                    """
+                    Used to define interfaces as source or destination for monitoring sessions.
+
+                    Subclass of AvdList
+                    with `MonitorSessionsItem` items.
+                    """
+                    ethernet_segment: EthernetSegment
+                    """
+                    Settings for all or single-active EVPN multihoming.
+
+                    Subclass of AvdModel.
+                    """
+                    port_channel: PortChannel
+                    """
+                    Used for port-channel adapter.
+
+                    Subclass of AvdModel.
+                    """
+                    validate_state: bool | None
+                    """
+                    Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                    role.
+                    """
+                    validate_lldp: bool | None
+                    """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+                    campus_link_type: CampusLinkType
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Values for the CloudVision `Link-Type` user tags to be associated with an
+                    interface.
+                    Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                    in the same tags being associated with the parent Ethernet interface instead.
+                    Attempting to
+                    associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                    associated with the member Ethernet interfaces instead.
+
+                    Subclass of AvdList with `str` items.
+                    """
+                    raw_eos_cli: str | None
+                    """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
+                    structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            switch_ports: SwitchPorts | UndefinedType = Undefined,
+                            switches: Switches | UndefinedType = Undefined,
+                            endpoint_ports: EndpointPorts | UndefinedType = Undefined,
+                            descriptions: Descriptions | UndefinedType = Undefined,
+                            speed: Speed | None | UndefinedType = Undefined,
+                            description: str | None | UndefinedType = Undefined,
+                            profile: str | None | UndefinedType = Undefined,
+                            enabled: bool | UndefinedType = Undefined,
+                            mode: Mode | None | UndefinedType = Undefined,
+                            mtu: int | None | UndefinedType = Undefined,
+                            l2_mtu: int | None | UndefinedType = Undefined,
+                            l2_mru: int | None | UndefinedType = Undefined,
+                            native_vlan: int | None | UndefinedType = Undefined,
+                            native_vlan_tag: bool | None | UndefinedType = Undefined,
+                            phone_vlan: int | None | UndefinedType = Undefined,
+                            phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
+                            trunk_groups: TrunkGroups | UndefinedType = Undefined,
+                            vlans: str | None | UndefinedType = Undefined,
+                            spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                            spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
+                            spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
+                            flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol | UndefinedType = Undefined,
+                            qos_profile: str | None | UndefinedType = Undefined,
+                            ptp: Ptp | UndefinedType = Undefined,
+                            sflow: bool | None | UndefinedType = Undefined,
+                            flow_tracking: FlowTracking | UndefinedType = Undefined,
+                            link_tracking: LinkTracking | UndefinedType = Undefined,
+                            dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                            poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
+                            storm_control: StormControl | UndefinedType = Undefined,
+                            monitor_sessions: MonitorSessions | UndefinedType = Undefined,
+                            ethernet_segment: EthernetSegment | UndefinedType = Undefined,
+                            port_channel: PortChannel | UndefinedType = Undefined,
+                            validate_state: bool | None | UndefinedType = Undefined,
+                            validate_lldp: bool | None | UndefinedType = Undefined,
+                            campus_link_type: CampusLinkType | UndefinedType = Undefined,
+                            raw_eos_cli: str | None | UndefinedType = Undefined,
+                            structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            AdaptersItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                switch_ports:
+                                   List of switch interfaces.
+                                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
+                                   same length.
+
+
+                                   Subclass of AvdList with `str` items.
+                                switches:
+                                   List of switches.
+                                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
+                                   length.
+
+
+                                   Subclass of AvdList with `str` items.
+                                endpoint_ports:
+                                   Endpoint ports is used for description, required unless `description` or `descriptions` is set.
+                                   The
+                                   lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+                                   Each list item is one switchport.
+
+
+                                   Subclass of AvdList with `str` items.
+                                descriptions:
+                                   Unique description per port. When set, takes priority over description.
+                                   This can be a template using
+                                   the AVD string formatter syntax:
+                                   https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                   descriptions-names.html#avd-string-formatter-syntax.
+                                   The available template fields are:
+                                     -
+                                   `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                                   `connected_endpoints_keys.type` like `server`, `router` etc.
+                                     - `endpoint` - The name of the
+                                   connected endpoint
+                                     - `endpoint_port` - The value from `endpoint_ports` for this switch port if
+                                   set.
+                                     - `port_channel_id`: The port-channel number for the switch.
+
+                                   Subclass of AvdList with `str`
+                                   items.
+                                speed:
+                                   Set adapter speed.
+                                   If not specified speed will be auto.
+                                description:
+                                   Description or description template to be used on all ports.
+                                   This can be a template using the AVD
+                                   string formatter syntax:
+                                   https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                   descriptions-names.html#avd-string-formatter-syntax.
+                                   The available template fields are:
+                                     -
+                                   `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                                   `connected_endpoints_keys.type` like `server`, `router` etc.
+                                     - `endpoint` - The name of the
+                                   connected endpoint
+                                     - `endpoint_port` - The value from `endpoint_ports` for this switch port if
+                                   set.
+
+                                   The default description is set by `default_connected_endpoints_description`.
+                                   By default the
+                                   description is templated from the type, name and port of the endpoint if set.
+                                profile: Port-profile name to inherit configuration.
+                                enabled:
+                                   Administrative state, setting to false will set the port to 'shutdown' in the intended
+                                   configuration.
+                                mode: Interface mode.
+                                mtu: mtu
+                                l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
+                                l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
+                                native_vlan:
+                                   Native VLAN for a trunk port.
+                                   If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag`
+                                   takes precedence.
+                                native_vlan_tag: If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag` takes precedence.
+                                phone_vlan:
+                                   Phone VLAN for a mode `trunk phone` port.
+                                   Requires `mode: trunk phone` to be set.
+                                phone_trunk_mode:
+                                   Specify if the phone traffic is tagged or untagged.
+                                   If both data and phone traffic are untagged,
+                                   MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.
+                                trunk_groups:
+                                   Required with `enable_trunk_groups: true`.
+                                   Trunk Groups are used for limiting VLANs on trunk ports
+                                   to VLANs with the same Trunk Group.
+
+
+                                   Subclass of AvdList with `str` items.
+                                vlans:
+                                   Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
+                                   VLAN 1 will be used for access ports.
+                                spanning_tree_portfast: spanning_tree_portfast
+                                spanning_tree_bpdufilter: spanning_tree_bpdufilter
+                                spanning_tree_bpduguard: spanning_tree_bpduguard
+                                flowcontrol: flowcontrol
+                                qos_profile: QOS profile name.
+                                ptp:
+                                   The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually
+                                   enabled.
+                                   `ptp role master` is set to ensure control over the PTP topology.
+
+
+                                   Subclass of AvdModel.
+                                sflow: Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.
+                                flow_tracking:
+                                   Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.
+                                   Subclass of AvdModel.
+                                link_tracking:
+                                   Configure the downstream interfaces of a respective Link Tracking Group.
+                                   If `port_channel` is
+                                   defined in an adapter, then the port-channel interface is configured to be the downstream.
+                                   Else all
+                                   the ethernet interfaces will be configured as downstream -> to configure single-active EVPN
+                                   multihomed networks.
+
+
+                                   Subclass of AvdModel.
+                                dot1x: 802.1x
+                                poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
+                                storm_control:
+                                   Storm control settings applied on port toward the endpoint.
+
+                                   Subclass of AvdModel.
+                                monitor_sessions:
+                                   Used to define interfaces as source or destination for monitoring sessions.
+
+                                   Subclass of AvdList
+                                   with `MonitorSessionsItem` items.
+                                ethernet_segment:
+                                   Settings for all or single-active EVPN multihoming.
+
+                                   Subclass of AvdModel.
+                                port_channel:
+                                   Used for port-channel adapter.
+
+                                   Subclass of AvdModel.
+                                validate_state:
+                                   Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                                   role.
+                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                                campus_link_type:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Values for the CloudVision `Link-Type` user tags to be associated with an
+                                   interface.
+                                   Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                                   in the same tags being associated with the parent Ethernet interface instead.
+                                   Attempting to
+                                   associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                                   associated with the member Ethernet interfaces instead.
+
+                                   Subclass of AvdList with `str` items.
+                                raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
+                                structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+
+                            """
+
+                class Adapters(AvdList[AdaptersItem]):
+                    """Subclass of AvdList with `AdaptersItem` items."""
+
+                Adapters._item_type = AdaptersItem
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "type": {"type": str}, "rack": {"type": str}, "adapters": {"type": Adapters}}
+                name: str
+                """Endpoint name will be used in the switchport description."""
+                type: str | None
+                """
+                Type of endpoint.
+                This is used in descriptions and in documentation.
+                The default value is taken from
+                `connected_endpoints_keys[].type`.
+                """
+                rack: str | None
+                """Rack is used for documentation purposes only."""
+                adapters: Adapters
+                """
+                A list of adapters, group by adapters leveraging the same port-profile.
+
+                Subclass of AvdList with
+                `AdaptersItem` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        type: str | None | UndefinedType = Undefined,
+                        rack: str | None | UndefinedType = Undefined,
+                        adapters: Adapters | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ConnectedEndpointsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Endpoint name will be used in the switchport description.
+                            type:
+                               Type of endpoint.
+                               This is used in descriptions and in documentation.
+                               The default value is taken from
+                               `connected_endpoints_keys[].type`.
+                            rack: Rack is used for documentation purposes only.
+                            adapters:
+                               A list of adapters, group by adapters leveraging the same port-profile.
+
+                               Subclass of AvdList with
+                               `AdaptersItem` items.
+
+                        """
+
+            class ConnectedEndpoints(AvdIndexedList[str, ConnectedEndpointsItem]):
+                """Subclass of AvdIndexedList with `ConnectedEndpointsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            ConnectedEndpoints._item_type = ConnectedEndpointsItem
+
+            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": ConnectedEndpoints}}
+            _field_to_key_map: ClassVar[dict] = {"value": "connected_endpoints_keys_key"}
+            _key_to_field_map: ClassVar[dict] = {"connected_endpoints_keys_key": "value"}
+            key: str
+            """Key used as dynamic key"""
+            value: ConnectedEndpoints
+            """Value of dynamic key"""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, key: str | UndefinedType = Undefined, value: ConnectedEndpoints | UndefinedType = Undefined) -> None:
+                    """
+                    DynamicConnectedEndpointsItem.
+
+
+                    Args:
+                        key: Key used as dynamic key
+                        value: Value of dynamic key
+
+                    """
+
+        class DynamicConnectedEndpoints(AvdIndexedList[str, DynamicConnectedEndpointsItem]):
+            _primary_key: ClassVar[str] = "key"
+
+        DynamicConnectedEndpoints._item_type = DynamicConnectedEndpointsItem
+
+        class DynamicCustomConnectedEndpointsItem(AvdModel):
+            class CustomConnectedEndpointsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AdaptersItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class SwitchPorts(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    SwitchPorts._item_type = str
+
+                    class Switches(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    Switches._item_type = str
+
+                    class EndpointPorts(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    EndpointPorts._item_type = str
+
+                    class Descriptions(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    Descriptions._item_type = str
+
+                    Speed: TypeAlias = Literal[
+                        "100full",
+                        "100g",
+                        "100g-1",
+                        "100g-2",
+                        "100g-4",
+                        "100half",
+                        "10full",
+                        "10g",
+                        "10half",
+                        "1g",
+                        "200g",
+                        "200g-2",
+                        "200g-4",
+                        "25g",
+                        "400g",
+                        "400g-4",
+                        "400g-8",
+                        "40g",
+                        "50g",
+                        "50g-1",
+                        "50g-2",
+                        "800g-8",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
+                        "auto",
+                        "auto 10000full",
+                        "auto 1000full",
+                        "auto 100full",
+                        "auto 100g-1",
+                        "auto 100g-2",
+                        "auto 100g-4",
+                        "auto 100gfull",
+                        "auto 100half",
+                        "auto 10full",
+                        "auto 10gfull",
+                        "auto 10half",
+                        "auto 1gfull",
+                        "auto 2.5gfull",
+                        "auto 200g-2",
+                        "auto 200g-4",
+                        "auto 25gfull",
+                        "auto 400g-4",
+                        "auto 400g-8",
+                        "auto 40gfull",
+                        "auto 50g-1",
+                        "auto 50g-2",
+                        "auto 50gfull",
+                        "auto 5gfull",
+                        "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
+                        "forced 10000full",
+                        "forced 1000full",
+                        "forced 1000half",
+                        "forced 100full",
+                        "forced 100gfull",
+                        "forced 100half",
+                        "forced 10full",
+                        "forced 10half",
+                        "forced 25gfull",
+                        "forced 40gfull",
+                        "forced 50gfull",
+                    ]
+                    Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
+                    PhoneTrunkMode: TypeAlias = Literal["tagged", "untagged", "tagged phone", "untagged phone"]
+
+                    class TrunkGroups(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    TrunkGroups._item_type = str
+
+                    SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+                    SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+                    SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+
+                    class Ptp(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        EndpointRole: TypeAlias = Literal["follower", "dynamic", "bmca", "default"]
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool, "default": False},
+                            "endpoint_role": {"type": str, "default": "follower"},
+                            "profile": {"type": str, "default": "aes67-r16-2016"},
+                        }
+                        enabled: bool
+                        """Default value: `False`"""
+                        endpoint_role: EndpointRole
+                        """
+                        PTP role of the endpoint.
+                        `follower` will configure the switch port as `ptp role master`.
+                        `dynamic`
+                        will use BMCA.
+                        `default` is deprecated in favor of `follower`.
+                        `bmca` is deprecated in favor of
+                        `dynamic`.
+
+                        Default value: `"follower"`
+                        """
+                        profile: str
+                        """
+                        Default available profiles are:
+                          - "aes67"
+                          - "aes67-r16-2016"
+                          - "smpte2059-2"
+
+                        Default value: `"aes67-r16-2016"`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                endpoint_role: EndpointRole | UndefinedType = Undefined,
+                                profile: str | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Ptp.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    endpoint_role:
+                                       PTP role of the endpoint.
+                                       `follower` will configure the switch port as `ptp role master`.
+                                       `dynamic`
+                                       will use BMCA.
+                                       `default` is deprecated in favor of `follower`.
+                                       `bmca` is deprecated in favor of
+                                       `dynamic`.
+                                    profile:
+                                       Default available profiles are:
+                                         - "aes67"
+                                         - "aes67-r16-2016"
+                                         - "smpte2059-2"
+
+                                """
+
+                    class FlowTracking(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
+                        enabled: bool | None
+                        name: str | None
+                        """Flow tracker name as defined in flow_tracking_settings."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                FlowTracking.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    name: Flow tracker name as defined in flow_tracking_settings.
+
+                                """
+
+                    class LinkTracking(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
+                        enabled: bool | None
+                        name: str | None
+                        """
+                        Tracking group name.
+                        The default group name is taken from fabric variable of the switch,
+                        `link_tracking.groups[0].name` with default value being "LT_GROUP1".
+                        Optional if default
+                        link_tracking settings are configured on the node.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                LinkTracking.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    name:
+                                       Tracking group name.
+                                       The default group name is taken from fabric variable of the switch,
+                                       `link_tracking.groups[0].name` with default value being "LT_GROUP1".
+                                       Optional if default
+                                       link_tracking settings are configured on the node.
+
+                                """
+
+                    class StormControl(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class All(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Unit: TypeAlias = Literal["percent", "pps"]
+                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                            level: str | None
+                            """Configure maximum storm-control level."""
+                            unit: Unit
+                            """
+                            Optional variable and is hardware dependent.
+
+                            Default value: `"percent"`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                                    """
+                                    All.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        level: Configure maximum storm-control level.
+                                        unit: Optional variable and is hardware dependent.
+
+                                    """
+
+                        class Broadcast(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Unit: TypeAlias = Literal["percent", "pps"]
+                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                            level: str | None
+                            """Configure maximum storm-control level."""
+                            unit: Unit
+                            """
+                            Optional variable and is hardware dependent.
+
+                            Default value: `"percent"`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                                    """
+                                    Broadcast.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        level: Configure maximum storm-control level.
+                                        unit: Optional variable and is hardware dependent.
+
+                                    """
+
+                        class Multicast(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Unit: TypeAlias = Literal["percent", "pps"]
+                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                            level: str | None
+                            """Configure maximum storm-control level."""
+                            unit: Unit
+                            """
+                            Optional variable and is hardware dependent.
+
+                            Default value: `"percent"`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                                    """
+                                    Multicast.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        level: Configure maximum storm-control level.
+                                        unit: Optional variable and is hardware dependent.
+
+                                    """
+
+                        class UnknownUnicast(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Unit: TypeAlias = Literal["percent", "pps"]
+                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                            level: str | None
+                            """Configure maximum storm-control level."""
+                            unit: Unit
+                            """
+                            Optional variable and is hardware dependent.
+
+                            Default value: `"percent"`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, level: str | None | UndefinedType = Undefined, unit: Unit | UndefinedType = Undefined) -> None:
+                                    """
+                                    UnknownUnicast.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        level: Configure maximum storm-control level.
+                                        unit: Optional variable and is hardware dependent.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "all": {"type": All},
+                            "broadcast": {"type": Broadcast},
+                            "multicast": {"type": Multicast},
+                            "unknown_unicast": {"type": UnknownUnicast},
+                        }
+                        all: All
+                        """Subclass of AvdModel."""
+                        broadcast: Broadcast
+                        """Subclass of AvdModel."""
+                        multicast: Multicast
+                        """Subclass of AvdModel."""
+                        unknown_unicast: UnknownUnicast
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                all: All | UndefinedType = Undefined,
+                                broadcast: Broadcast | UndefinedType = Undefined,
+                                multicast: Multicast | UndefinedType = Undefined,
+                                unknown_unicast: UnknownUnicast | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                StormControl.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    all: Subclass of AvdModel.
+                                    broadcast: Subclass of AvdModel.
+                                    multicast: Subclass of AvdModel.
+                                    unknown_unicast: Subclass of AvdModel.
+
+                                """
+
+                    class MonitorSessionsItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Role: TypeAlias = Literal["source", "destination"]
+
+                        class SourceSettings(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Direction: TypeAlias = Literal["rx", "tx", "both"]
+
+                            class AccessGroup(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
+                                type: Type | None
+                                name: str | None
+                                """ACL name."""
+                                priority: int | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        type: Type | None | UndefinedType = Undefined,
+                                        name: str | None | UndefinedType = Undefined,
+                                        priority: int | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        AccessGroup.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            type: type
+                                            name: ACL name.
+                                            priority: priority
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"direction": {"type": str}, "access_group": {"type": AccessGroup}}
+                            direction: Direction | None
+                            access_group: AccessGroup
+                            """
+                            This can only be set when `session_settings.access_group` is not set.
+
+                            Subclass of AvdModel.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, direction: Direction | None | UndefinedType = Undefined, access_group: AccessGroup | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    SourceSettings.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        direction: direction
+                                        access_group:
+                                           This can only be set when `session_settings.access_group` is not set.
+
+                                           Subclass of AvdModel.
+
+                                    """
+
+                        class SessionSettings(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class AccessGroup(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                Type: TypeAlias = Literal["ip", "ipv6", "mac"]
+                                _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
+                                type: Type | None
+                                name: str | None
+                                """ACL name."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, type: Type | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        AccessGroup.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            type: type
+                                            name: ACL name.
+
+                                        """
+
+                            class Truncate(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "size": {"type": int}}
+                                enabled: bool | None
+                                size: int | None
+                                """Size in bytes."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self, *, enabled: bool | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined
+                                    ) -> None:
+                                        """
+                                        Truncate.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            size: Size in bytes.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "encapsulation_gre_metadata_tx": {"type": bool},
+                                "header_remove_size": {"type": int},
+                                "access_group": {"type": AccessGroup},
+                                "rate_limit_per_ingress_chip": {"type": str},
+                                "rate_limit_per_egress_chip": {"type": str},
+                                "sample": {"type": int},
+                                "truncate": {"type": Truncate},
+                            }
+                            encapsulation_gre_metadata_tx: bool | None
+                            header_remove_size: int | None
+                            """Number of bytes to remove from header."""
+                            access_group: AccessGroup
+                            """Subclass of AvdModel."""
+                            rate_limit_per_ingress_chip: str | None
+                            """
+                            Ratelimit and unit as string.
+                            Examples:
+                              "100000 bps"
+                              "100 kbps"
+                              "10 mbps"
+                            """
+                            rate_limit_per_egress_chip: str | None
+                            """
+                            Ratelimit and unit as string.
+                            Examples:
+                              "100000 bps"
+                              "100 kbps"
+                              "10 mbps"
+                            """
+                            sample: int | None
+                            truncate: Truncate
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    encapsulation_gre_metadata_tx: bool | None | UndefinedType = Undefined,
+                                    header_remove_size: int | None | UndefinedType = Undefined,
+                                    access_group: AccessGroup | UndefinedType = Undefined,
+                                    rate_limit_per_ingress_chip: str | None | UndefinedType = Undefined,
+                                    rate_limit_per_egress_chip: str | None | UndefinedType = Undefined,
+                                    sample: int | None | UndefinedType = Undefined,
+                                    truncate: Truncate | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    SessionSettings.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        encapsulation_gre_metadata_tx: encapsulation_gre_metadata_tx
+                                        header_remove_size: Number of bytes to remove from header.
+                                        access_group: Subclass of AvdModel.
+                                        rate_limit_per_ingress_chip:
+                                           Ratelimit and unit as string.
+                                           Examples:  # fmt: skip
+                                             "100000 bps"
+                                             "100 kbps"
+                                             "10 mbps"
+                                        rate_limit_per_egress_chip:
+                                           Ratelimit and unit as string.
+                                           Examples:  # fmt: skip
+                                             "100000 bps"
+                                             "100 kbps"
+                                             "10 mbps"
+                                        sample: sample
+                                        truncate: Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "name": {"type": str},
+                            "role": {"type": str},
+                            "source_settings": {"type": SourceSettings},
+                            "session_settings": {"type": SessionSettings},
+                        }
+                        name: str
+                        """Session name."""
+                        role: Role | None
+                        source_settings: SourceSettings
+                        """Subclass of AvdModel."""
+                        session_settings: SessionSettings
+                        """
+                        Session settings are defined per session name.
+                        Different session_settings for the same session name
+                        will be combined/merged.
+
+
+                        Subclass of AvdModel.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                name: str | UndefinedType = Undefined,
+                                role: Role | None | UndefinedType = Undefined,
+                                source_settings: SourceSettings | UndefinedType = Undefined,
+                                session_settings: SessionSettings | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                MonitorSessionsItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    name: Session name.
+                                    role: role
+                                    source_settings: Subclass of AvdModel.
+                                    session_settings:
+                                       Session settings are defined per session name.
+                                       Different session_settings for the same session name
+                                       will be combined/merged.
+
+
+                                       Subclass of AvdModel.
+
+                                """
+
+                    class MonitorSessions(AvdList[MonitorSessionsItem]):
+                        """Subclass of AvdList with `MonitorSessionsItem` items."""
+
+                    MonitorSessions._item_type = MonitorSessionsItem
+
+                    class EthernetSegment(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Redundancy: TypeAlias = Literal["all-active", "single-active"]
+                        DesignatedForwarderAlgorithm: TypeAlias = Literal["auto", "modulus", "preference"]
+
+                        class DesignatedForwarderPreferences(AvdList[int]):
+                            """Subclass of AvdList with `int` items."""
+
+                        DesignatedForwarderPreferences._item_type = int
+
+                        _fields: ClassVar[dict] = {
+                            "short_esi": {"type": str},
+                            "redundancy": {"type": str},
+                            "designated_forwarder_algorithm": {"type": str},
+                            "designated_forwarder_preferences": {"type": DesignatedForwarderPreferences},
+                            "dont_preempt": {"type": bool},
+                        }
+                        short_esi: str
+                        """
+                        In format xxxx:xxxx:xxxx or "auto".
+                        Define a manual short-esi (be careful using this on profiles) or
+                        set the value to "auto" to automatically generate the value.
+                        Please see the notes under "EVPN A/A
+                        ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
+                        """
+                        redundancy: Redundancy | None
+                        """
+                        If omitted, Port-Channels use the EOS default of all-active.
+                        If omitted, Ethernet interfaces are
+                        configured as single-active.
+                        """
+                        designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None
+                        """
+                        Configure DF algorithm and preferences.
+                        - auto: Use preference-based algorithm and assign preference
+                        based on position of device in the 'switches' list,
+                          e.g., assuming a list of three switches, this
+                        would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.
+                        -
+                        preference: Set preference for each switch manually using designated_forwarder_preferences key.
+                        -
+                        modulus: Use the default modulus-based algorithm.
+                        If omitted, Port-Channels use the EOS default of
+                        modulus.
+                        If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
+                        """
+                        designated_forwarder_preferences: DesignatedForwarderPreferences
+                        """
+                        Manual preference as described above, required only for preference algorithm.
+
+                        Subclass of AvdList
+                        with `int` items.
+                        """
+                        dont_preempt: bool | None
+                        """Disable preemption for single-active forwarding when auto/manual DF preference is configured."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                short_esi: str | UndefinedType = Undefined,
+                                redundancy: Redundancy | None | UndefinedType = Undefined,
+                                designated_forwarder_algorithm: DesignatedForwarderAlgorithm | None | UndefinedType = Undefined,
+                                designated_forwarder_preferences: DesignatedForwarderPreferences | UndefinedType = Undefined,
+                                dont_preempt: bool | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                EthernetSegment.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    short_esi:
+                                       In format xxxx:xxxx:xxxx or "auto".
+                                       Define a manual short-esi (be careful using this on profiles) or
+                                       set the value to "auto" to automatically generate the value.
+                                       Please see the notes under "EVPN A/A
+                                       ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
+                                    redundancy:
+                                       If omitted, Port-Channels use the EOS default of all-active.
+                                       If omitted, Ethernet interfaces are
+                                       configured as single-active.
+                                    designated_forwarder_algorithm:
+                                       Configure DF algorithm and preferences.
+                                       - auto: Use preference-based algorithm and assign preference
+                                       based on position of device in the 'switches' list,
+                                         e.g., assuming a list of three switches, this
+                                       would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.
+                                       -
+                                       preference: Set preference for each switch manually using designated_forwarder_preferences key.
+                                       -
+                                       modulus: Use the default modulus-based algorithm.
+                                       If omitted, Port-Channels use the EOS default of
+                                       modulus.
+                                       If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
+                                    designated_forwarder_preferences:
+                                       Manual preference as described above, required only for preference algorithm.
+
+                                       Subclass of AvdList
+                                       with `int` items.
+                                    dont_preempt: Disable preemption for single-active forwarding when auto/manual DF preference is configured.
+
+                                """
+
+                    class PortChannel(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Mode: TypeAlias = Literal["active", "passive", "on"]
+
+                        class LacpFallback(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["static", "individual"]
+
+                            class Individual(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
+                                _fields: ClassVar[dict] = {
+                                    "profile": {"type": str},
+                                    "vlans": {"type": str},
+                                    "native_vlan": {"type": int},
+                                    "mode": {"type": str},
+                                }
+                                profile: str | None
+                                """Port-profile name to inherit configuration."""
+                                vlans: str | None
+                                """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
+                                native_vlan: int | None
+                                """Native VLAN on the port-channel member interfaces when in fallback individual."""
+                                mode: Mode | None
+                                """Interface mode on the port-channel member interfaces when in fallback individual."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        profile: str | None | UndefinedType = Undefined,
+                                        vlans: str | None | UndefinedType = Undefined,
+                                        native_vlan: int | None | UndefinedType = Undefined,
+                                        mode: Mode | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Individual.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            profile: Port-profile name to inherit configuration.
+                                            vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                                            native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
+                                            mode: Interface mode on the port-channel member interfaces when in fallback individual.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
+                            mode: Mode | None
+                            """
+                            Either static or individual mode is supported.
+                            If the mode is set to "individual" either 'profile'
+                            or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
+                            """
+                            individual: Individual
+                            """
+                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
+                            "individual".
+
+                            Subclass of AvdModel.
+                            """
+                            timeout: int
+                            """
+                            Timeout in seconds.
+
+                            Default value: `90`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    mode: Mode | None | UndefinedType = Undefined,
+                                    individual: Individual | UndefinedType = Undefined,
+                                    timeout: int | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    LacpFallback.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode:
+                                           Either static or individual mode is supported.
+                                           If the mode is set to "individual" either 'profile'
+                                           or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
+                                        individual:
+                                           Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
+                                           "individual".
+
+                                           Subclass of AvdModel.
+                                        timeout: Timeout in seconds.
+
+                                    """
+
+                        class LacpTimer(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["normal", "fast"]
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
+                            mode: Mode | None
+                            """LACP mode for interface members."""
+                            multiplier: int | None
+                            """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    LacpTimer.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode: LACP mode for interface members.
+                                        multiplier: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
+
+                                    """
+
+                        class SubinterfacesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class EncapsulationVlan(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
+                                client_dot1q: int | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        EncapsulationVlan.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            client_dot1q: client_dot1q
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "number": {"type": int},
+                                "short_esi": {"type": str},
+                                "vlan_id": {"type": int},
+                                "encapsulation_vlan": {"type": EncapsulationVlan},
+                                "raw_eos_cli": {"type": str},
+                                "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                            }
+                            number: int | None
+                            """Subinterface number."""
+                            short_esi: str | None
+                            """
+                            In format xxxx:xxxx:xxxx or "auto".
+                            Required for multihomed port-channels with subinterfaces.
+                            """
+                            vlan_id: int | None
+                            """
+                            VLAN ID to bridge.
+                            Default is subinterface number.
+                            """
+                            encapsulation_vlan: EncapsulationVlan
+                            """
+                            Client VLAN ID encapsulation.
+                            Default is subinterface number.
+
+
+                            Subclass of AvdModel.
+                            """
+                            raw_eos_cli: str | None
+                            """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
+                            structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                            """
+                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                            eos_cli_config_gen.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    number: int | None | UndefinedType = Undefined,
+                                    short_esi: str | None | UndefinedType = Undefined,
+                                    vlan_id: int | None | UndefinedType = Undefined,
+                                    encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                                    structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    SubinterfacesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        number: Subinterface number.
+                                        short_esi:
+                                           In format xxxx:xxxx:xxxx or "auto".
+                                           Required for multihomed port-channels with subinterfaces.
+                                        vlan_id:
+                                           VLAN ID to bridge.
+                                           Default is subinterface number.
+                                        encapsulation_vlan:
+                                           Client VLAN ID encapsulation.
+                                           Default is subinterface number.
+
+
+                                           Subclass of AvdModel.
+                                        raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
+                                        structured_config:
+                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                                           eos_cli_config_gen.
+
+                                    """
+
+                        class Subinterfaces(AvdList[SubinterfacesItem]):
+                            """Subclass of AvdList with `SubinterfacesItem` items."""
+
+                        Subinterfaces._item_type = SubinterfacesItem
+
+                        _fields: ClassVar[dict] = {
+                            "mode": {"type": str},
+                            "channel_id": {"type": int},
+                            "description": {"type": str},
+                            "endpoint_port_channel": {"type": str},
+                            "enabled": {"type": bool, "default": True},
+                            "ptp_mpass": {"type": bool, "default": False},
+                            "lacp_fallback": {"type": LacpFallback},
+                            "lacp_timer": {"type": LacpTimer},
+                            "subinterfaces": {"type": Subinterfaces},
+                            "raw_eos_cli": {"type": str},
+                            "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        }
+                        mode: Mode | None
+                        """Port-Channel Mode."""
+                        channel_id: int | None
+                        """
+                        Port-Channel ID.
+                        If no channel_id is specified, an id is generated from the first switch port in the
+                        port channel.
+                        """
+                        description: str | None
+                        """
+                        Description or description template to be used on the port-channel interface.
+                        This can be a template
+                        using the AVD string formatter syntax:
+                        https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                        descriptions-names.html#avd-string-formatter-syntax.
+                        The available template fields are:
+                          -
+                        `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                        `connected_endpoints_keys.type` like `server`, `router` etc.
+                          - `endpoint` - The name of the
+                        connected endpoint
+                          - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
+                          -
+                        `port_channel_id` - The port-channel number for the switch.
+                          - `adapter_description` - The
+                        adapter's description if set.
+                          - `adapter_description_or_endpoint` - Helper alias of the
+                        adapter_description or endpoint.
+
+                        The default description is set by
+                        `default_connected_endpoints_port_channel_description`.
+                        By default the description is templated from
+                        the type, name and port_channel interface of the endpoint if set.
+                        """
+                        endpoint_port_channel: str | None
+                        """
+                        Name of the port-channel interface on the endpoint.
+                        Used for the port-channel description template
+                        with the field name `peer_interface`
+                        """
+                        enabled: bool
+                        """
+                        Port-Channel administrative state.
+                        Setting to false will set port to 'shutdown' in intended
+                        configuration.
+
+                        Default value: `True`
+                        """
+                        ptp_mpass: bool
+                        """
+                        When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
+                        logical device.
+                        Arista PTP enabled devices always place PTP messages on the same physical link
+                        within the port-channel.
+                        Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                        devices.
+
+                        Default value: `False`
+                        """
+                        lacp_fallback: LacpFallback
+                        """
+                        LACP fallback configuration.
+
+                        Subclass of AvdModel.
+                        """
+                        lacp_timer: LacpTimer
+                        """
+                        LACP timer configuration. Applies only when Port-channel mode is not "on".
+
+                        Subclass of AvdModel.
+                        """
+                        subinterfaces: Subinterfaces
+                        """
+                        Port-Channel L2 Subinterfaces
+                        Subinterfaces are only supported on routed port-channels, which means
+                        they cannot be configured on MLAG port-channels.
+                        Setting short_esi: auto generates the short_esi
+                        automatically using a hash of configuration elements.
+                        Please see the notes under "EVPN A/A ESI dual-
+                        attached endpoint scenario" before setting short_esi: auto.
+
+
+                        Subclass of AvdList with
+                        `SubinterfacesItem` items.
+                        """
+                        raw_eos_cli: str | None
+                        """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
+                        structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """
+                        Custom structured config added under port_channel_interfaces.[name=<interface>] for
+                        eos_cli_config_gen.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                mode: Mode | None | UndefinedType = Undefined,
+                                channel_id: int | None | UndefinedType = Undefined,
+                                description: str | None | UndefinedType = Undefined,
+                                endpoint_port_channel: str | None | UndefinedType = Undefined,
+                                enabled: bool | UndefinedType = Undefined,
+                                ptp_mpass: bool | UndefinedType = Undefined,
+                                lacp_fallback: LacpFallback | UndefinedType = Undefined,
+                                lacp_timer: LacpTimer | UndefinedType = Undefined,
+                                subinterfaces: Subinterfaces | UndefinedType = Undefined,
+                                raw_eos_cli: str | None | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                PortChannel.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    mode: Port-Channel Mode.
+                                    channel_id:
+                                       Port-Channel ID.
+                                       If no channel_id is specified, an id is generated from the first switch port in the
+                                       port channel.
+                                    description:
+                                       Description or description template to be used on the port-channel interface.
+                                       This can be a template
+                                       using the AVD string formatter syntax:
+                                       https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                       descriptions-names.html#avd-string-formatter-syntax.
+                                       The available template fields are:
+                                         -
+                                       `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                                       `connected_endpoints_keys.type` like `server`, `router` etc.
+                                         - `endpoint` - The name of the
+                                       connected endpoint
+                                         - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
+                                         -
+                                       `port_channel_id` - The port-channel number for the switch.
+                                         - `adapter_description` - The
+                                       adapter's description if set.
+                                         - `adapter_description_or_endpoint` - Helper alias of the
+                                       adapter_description or endpoint.
+
+                                       The default description is set by
+                                       `default_connected_endpoints_port_channel_description`.
+                                       By default the description is templated from
+                                       the type, name and port_channel interface of the endpoint if set.
+                                    endpoint_port_channel:
+                                       Name of the port-channel interface on the endpoint.
+                                       Used for the port-channel description template
+                                       with the field name `peer_interface`
+                                    enabled:
+                                       Port-Channel administrative state.
+                                       Setting to false will set port to 'shutdown' in intended
+                                       configuration.
+                                    ptp_mpass:
+                                       When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
+                                       logical device.
+                                       Arista PTP enabled devices always place PTP messages on the same physical link
+                                       within the port-channel.
+                                       Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                                       devices.
+                                    lacp_fallback:
+                                       LACP fallback configuration.
+
+                                       Subclass of AvdModel.
+                                    lacp_timer:
+                                       LACP timer configuration. Applies only when Port-channel mode is not "on".
+
+                                       Subclass of AvdModel.
+                                    subinterfaces:
+                                       Port-Channel L2 Subinterfaces
+                                       Subinterfaces are only supported on routed port-channels, which means
+                                       they cannot be configured on MLAG port-channels.
+                                       Setting short_esi: auto generates the short_esi
+                                       automatically using a hash of configuration elements.
+                                       Please see the notes under "EVPN A/A ESI dual-
+                                       attached endpoint scenario" before setting short_esi: auto.
+
+
+                                       Subclass of AvdList with
+                                       `SubinterfacesItem` items.
+                                    raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
+                                    structured_config:
+                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for
+                                       eos_cli_config_gen.
+
+                                """
+
+                    class CampusLinkType(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    CampusLinkType._item_type = str
+
+                    _fields: ClassVar[dict] = {
+                        "switch_ports": {"type": SwitchPorts},
+                        "switches": {"type": Switches},
+                        "endpoint_ports": {"type": EndpointPorts},
+                        "descriptions": {"type": Descriptions},
+                        "speed": {"type": str},
+                        "description": {"type": str},
+                        "profile": {"type": str},
+                        "enabled": {"type": bool, "default": True},
+                        "mode": {"type": str},
+                        "mtu": {"type": int},
+                        "l2_mtu": {"type": int},
+                        "l2_mru": {"type": int},
+                        "native_vlan": {"type": int},
+                        "native_vlan_tag": {"type": bool},
+                        "phone_vlan": {"type": int},
+                        "phone_trunk_mode": {"type": str},
+                        "trunk_groups": {"type": TrunkGroups},
+                        "vlans": {"type": str},
+                        "spanning_tree_portfast": {"type": str},
+                        "spanning_tree_bpdufilter": {"type": str},
+                        "spanning_tree_bpduguard": {"type": str},
+                        "flowcontrol": {"type": EosCliConfigGen.EthernetInterfacesItem.Flowcontrol},
+                        "qos_profile": {"type": str},
+                        "ptp": {"type": Ptp},
+                        "sflow": {"type": bool},
+                        "flow_tracking": {"type": FlowTracking},
+                        "link_tracking": {"type": LinkTracking},
+                        "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                        "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
+                        "storm_control": {"type": StormControl},
+                        "monitor_sessions": {"type": MonitorSessions},
+                        "ethernet_segment": {"type": EthernetSegment},
+                        "port_channel": {"type": PortChannel},
+                        "validate_state": {"type": bool},
+                        "validate_lldp": {"type": bool},
+                        "campus_link_type": {"type": CampusLinkType},
+                        "raw_eos_cli": {"type": str},
+                        "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                    }
+                    switch_ports: SwitchPorts
+                    """
+                    List of switch interfaces.
+                    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
+                    same length.
+
+
+                    Subclass of AvdList with `str` items.
+                    """
+                    switches: Switches
+                    """
+                    List of switches.
+                    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
+                    length.
+
+
+                    Subclass of AvdList with `str` items.
+                    """
+                    endpoint_ports: EndpointPorts
+                    """
+                    Endpoint ports is used for description, required unless `description` or `descriptions` is set.
+                    The
+                    lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+                    Each list item is one switchport.
+
+
+                    Subclass of AvdList with `str` items.
+                    """
+                    descriptions: Descriptions
+                    """
+                    Unique description per port. When set, takes priority over description.
+                    This can be a template using
+                    the AVD string formatter syntax:
+                    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                    descriptions-names.html#avd-string-formatter-syntax.
+                    The available template fields are:
+                      -
+                    `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                    `connected_endpoints_keys.type` like `server`, `router` etc.
+                      - `endpoint` - The name of the
+                    connected endpoint
+                      - `endpoint_port` - The value from `endpoint_ports` for this switch port if
+                    set.
+                      - `port_channel_id`: The port-channel number for the switch.
+
+                    Subclass of AvdList with `str`
+                    items.
+                    """
+                    speed: Speed | None
+                    """
+                    Set adapter speed.
+                    If not specified speed will be auto.
+                    """
+                    description: str | None
+                    """
+                    Description or description template to be used on all ports.
+                    This can be a template using the AVD
+                    string formatter syntax:
+                    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                    descriptions-names.html#avd-string-formatter-syntax.
+                    The available template fields are:
+                      -
+                    `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                    `connected_endpoints_keys.type` like `server`, `router` etc.
+                      - `endpoint` - The name of the
+                    connected endpoint
+                      - `endpoint_port` - The value from `endpoint_ports` for this switch port if
+                    set.
+
+                    The default description is set by `default_connected_endpoints_description`.
+                    By default the
+                    description is templated from the type, name and port of the endpoint if set.
+                    """
+                    profile: str | None
+                    """Port-profile name to inherit configuration."""
+                    enabled: bool
+                    """
+                    Administrative state, setting to false will set the port to 'shutdown' in the intended
+                    configuration.
+
+                    Default value: `True`
+                    """
+                    mode: Mode | None
+                    """Interface mode."""
+                    mtu: int | None
+                    l2_mtu: int | None
+                    """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
+                    l2_mru: int | None
+                    """"l2_mru" should only be defined for platforms supporting the "l2 mru" CLI."""
+                    native_vlan: int | None
+                    """
+                    Native VLAN for a trunk port.
+                    If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag`
+                    takes precedence.
+                    """
+                    native_vlan_tag: bool | None
+                    """If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag` takes precedence."""
+                    phone_vlan: int | None
+                    """
+                    Phone VLAN for a mode `trunk phone` port.
+                    Requires `mode: trunk phone` to be set.
+                    """
+                    phone_trunk_mode: PhoneTrunkMode | None
+                    """
+                    Specify if the phone traffic is tagged or untagged.
+                    If both data and phone traffic are untagged,
+                    MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.
+                    """
+                    trunk_groups: TrunkGroups
+                    """
+                    Required with `enable_trunk_groups: true`.
+                    Trunk Groups are used for limiting VLANs on trunk ports
+                    to VLANs with the same Trunk Group.
+
+
+                    Subclass of AvdList with `str` items.
+                    """
+                    vlans: str | None
+                    """
+                    Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
+                    VLAN 1 will be used for access ports.
+                    """
+                    spanning_tree_portfast: SpanningTreePortfast | None
+                    spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
+                    spanning_tree_bpduguard: SpanningTreeBpduguard | None
+                    flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol
+                    qos_profile: str | None
+                    """QOS profile name."""
+                    ptp: Ptp
+                    """
+                    The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually
+                    enabled.
+                    `ptp role master` is set to ensure control over the PTP topology.
+
+
+                    Subclass of AvdModel.
+                    """
+                    sflow: bool | None
+                    """Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting."""
+                    flow_tracking: FlowTracking
+                    """
+                    Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.
+                    Subclass of AvdModel.
+                    """
+                    link_tracking: LinkTracking
+                    """
+                    Configure the downstream interfaces of a respective Link Tracking Group.
+                    If `port_channel` is
+                    defined in an adapter, then the port-channel interface is configured to be the downstream.
+                    Else all
+                    the ethernet interfaces will be configured as downstream -> to configure single-active EVPN
+                    multihomed networks.
+
+
+                    Subclass of AvdModel.
+                    """
+                    dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
+                    """802.1x"""
+                    poe: EosCliConfigGen.EthernetInterfacesItem.Poe
+                    """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
+                    storm_control: StormControl
+                    """
+                    Storm control settings applied on port toward the endpoint.
+
+                    Subclass of AvdModel.
+                    """
+                    monitor_sessions: MonitorSessions
+                    """
+                    Used to define interfaces as source or destination for monitoring sessions.
+
+                    Subclass of AvdList
+                    with `MonitorSessionsItem` items.
+                    """
+                    ethernet_segment: EthernetSegment
+                    """
+                    Settings for all or single-active EVPN multihoming.
+
+                    Subclass of AvdModel.
+                    """
+                    port_channel: PortChannel
+                    """
+                    Used for port-channel adapter.
+
+                    Subclass of AvdModel.
+                    """
+                    validate_state: bool | None
+                    """
+                    Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                    role.
+                    """
+                    validate_lldp: bool | None
+                    """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+                    campus_link_type: CampusLinkType
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Values for the CloudVision `Link-Type` user tags to be associated with an
+                    interface.
+                    Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                    in the same tags being associated with the parent Ethernet interface instead.
+                    Attempting to
+                    associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                    associated with the member Ethernet interfaces instead.
+
+                    Subclass of AvdList with `str` items.
+                    """
+                    raw_eos_cli: str | None
+                    """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
+                    structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            switch_ports: SwitchPorts | UndefinedType = Undefined,
+                            switches: Switches | UndefinedType = Undefined,
+                            endpoint_ports: EndpointPorts | UndefinedType = Undefined,
+                            descriptions: Descriptions | UndefinedType = Undefined,
+                            speed: Speed | None | UndefinedType = Undefined,
+                            description: str | None | UndefinedType = Undefined,
+                            profile: str | None | UndefinedType = Undefined,
+                            enabled: bool | UndefinedType = Undefined,
+                            mode: Mode | None | UndefinedType = Undefined,
+                            mtu: int | None | UndefinedType = Undefined,
+                            l2_mtu: int | None | UndefinedType = Undefined,
+                            l2_mru: int | None | UndefinedType = Undefined,
+                            native_vlan: int | None | UndefinedType = Undefined,
+                            native_vlan_tag: bool | None | UndefinedType = Undefined,
+                            phone_vlan: int | None | UndefinedType = Undefined,
+                            phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
+                            trunk_groups: TrunkGroups | UndefinedType = Undefined,
+                            vlans: str | None | UndefinedType = Undefined,
+                            spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                            spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
+                            spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
+                            flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol | UndefinedType = Undefined,
+                            qos_profile: str | None | UndefinedType = Undefined,
+                            ptp: Ptp | UndefinedType = Undefined,
+                            sflow: bool | None | UndefinedType = Undefined,
+                            flow_tracking: FlowTracking | UndefinedType = Undefined,
+                            link_tracking: LinkTracking | UndefinedType = Undefined,
+                            dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                            poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
+                            storm_control: StormControl | UndefinedType = Undefined,
+                            monitor_sessions: MonitorSessions | UndefinedType = Undefined,
+                            ethernet_segment: EthernetSegment | UndefinedType = Undefined,
+                            port_channel: PortChannel | UndefinedType = Undefined,
+                            validate_state: bool | None | UndefinedType = Undefined,
+                            validate_lldp: bool | None | UndefinedType = Undefined,
+                            campus_link_type: CampusLinkType | UndefinedType = Undefined,
+                            raw_eos_cli: str | None | UndefinedType = Undefined,
+                            structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            AdaptersItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                switch_ports:
+                                   List of switch interfaces.
+                                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
+                                   same length.
+
+
+                                   Subclass of AvdList with `str` items.
+                                switches:
+                                   List of switches.
+                                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
+                                   length.
+
+
+                                   Subclass of AvdList with `str` items.
+                                endpoint_ports:
+                                   Endpoint ports is used for description, required unless `description` or `descriptions` is set.
+                                   The
+                                   lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+                                   Each list item is one switchport.
+
+
+                                   Subclass of AvdList with `str` items.
+                                descriptions:
+                                   Unique description per port. When set, takes priority over description.
+                                   This can be a template using
+                                   the AVD string formatter syntax:
+                                   https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                   descriptions-names.html#avd-string-formatter-syntax.
+                                   The available template fields are:
+                                     -
+                                   `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                                   `connected_endpoints_keys.type` like `server`, `router` etc.
+                                     - `endpoint` - The name of the
+                                   connected endpoint
+                                     - `endpoint_port` - The value from `endpoint_ports` for this switch port if
+                                   set.
+                                     - `port_channel_id`: The port-channel number for the switch.
+
+                                   Subclass of AvdList with `str`
+                                   items.
+                                speed:
+                                   Set adapter speed.
+                                   If not specified speed will be auto.
+                                description:
+                                   Description or description template to be used on all ports.
+                                   This can be a template using the AVD
+                                   string formatter syntax:
+                                   https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                   descriptions-names.html#avd-string-formatter-syntax.
+                                   The available template fields are:
+                                     -
+                                   `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                                   `connected_endpoints_keys.type` like `server`, `router` etc.
+                                     - `endpoint` - The name of the
+                                   connected endpoint
+                                     - `endpoint_port` - The value from `endpoint_ports` for this switch port if
+                                   set.
+
+                                   The default description is set by `default_connected_endpoints_description`.
+                                   By default the
+                                   description is templated from the type, name and port of the endpoint if set.
+                                profile: Port-profile name to inherit configuration.
+                                enabled:
+                                   Administrative state, setting to false will set the port to 'shutdown' in the intended
+                                   configuration.
+                                mode: Interface mode.
+                                mtu: mtu
+                                l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
+                                l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
+                                native_vlan:
+                                   Native VLAN for a trunk port.
+                                   If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag`
+                                   takes precedence.
+                                native_vlan_tag: If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag` takes precedence.
+                                phone_vlan:
+                                   Phone VLAN for a mode `trunk phone` port.
+                                   Requires `mode: trunk phone` to be set.
+                                phone_trunk_mode:
+                                   Specify if the phone traffic is tagged or untagged.
+                                   If both data and phone traffic are untagged,
+                                   MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.
+                                trunk_groups:
+                                   Required with `enable_trunk_groups: true`.
+                                   Trunk Groups are used for limiting VLANs on trunk ports
+                                   to VLANs with the same Trunk Group.
+
+
+                                   Subclass of AvdList with `str` items.
+                                vlans:
+                                   Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
+                                   VLAN 1 will be used for access ports.
+                                spanning_tree_portfast: spanning_tree_portfast
+                                spanning_tree_bpdufilter: spanning_tree_bpdufilter
+                                spanning_tree_bpduguard: spanning_tree_bpduguard
+                                flowcontrol: flowcontrol
+                                qos_profile: QOS profile name.
+                                ptp:
+                                   The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually
+                                   enabled.
+                                   `ptp role master` is set to ensure control over the PTP topology.
+
+
+                                   Subclass of AvdModel.
+                                sflow: Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.
+                                flow_tracking:
+                                   Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.
+                                   Subclass of AvdModel.
+                                link_tracking:
+                                   Configure the downstream interfaces of a respective Link Tracking Group.
+                                   If `port_channel` is
+                                   defined in an adapter, then the port-channel interface is configured to be the downstream.
+                                   Else all
+                                   the ethernet interfaces will be configured as downstream -> to configure single-active EVPN
+                                   multihomed networks.
+
+
+                                   Subclass of AvdModel.
+                                dot1x: 802.1x
+                                poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
+                                storm_control:
+                                   Storm control settings applied on port toward the endpoint.
+
+                                   Subclass of AvdModel.
+                                monitor_sessions:
+                                   Used to define interfaces as source or destination for monitoring sessions.
+
+                                   Subclass of AvdList
+                                   with `MonitorSessionsItem` items.
+                                ethernet_segment:
+                                   Settings for all or single-active EVPN multihoming.
+
+                                   Subclass of AvdModel.
+                                port_channel:
+                                   Used for port-channel adapter.
+
+                                   Subclass of AvdModel.
+                                validate_state:
+                                   Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                                   role.
+                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                                campus_link_type:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Values for the CloudVision `Link-Type` user tags to be associated with an
+                                   interface.
+                                   Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                                   in the same tags being associated with the parent Ethernet interface instead.
+                                   Attempting to
+                                   associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                                   associated with the member Ethernet interfaces instead.
+
+                                   Subclass of AvdList with `str` items.
+                                raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
+                                structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+
+                            """
+
+                class Adapters(AvdList[AdaptersItem]):
+                    """Subclass of AvdList with `AdaptersItem` items."""
+
+                Adapters._item_type = AdaptersItem
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "type": {"type": str}, "rack": {"type": str}, "adapters": {"type": Adapters}}
+                name: str
+                """Endpoint name will be used in the switchport description."""
+                type: str | None
+                """
+                Type of endpoint.
+                This is used in descriptions and in documentation.
+                The default value is taken from
+                `connected_endpoints_keys[].type`.
+                """
+                rack: str | None
+                """Rack is used for documentation purposes only."""
+                adapters: Adapters
+                """
+                A list of adapters, group by adapters leveraging the same port-profile.
+
+                Subclass of AvdList with
+                `AdaptersItem` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        type: str | None | UndefinedType = Undefined,
+                        rack: str | None | UndefinedType = Undefined,
+                        adapters: Adapters | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        CustomConnectedEndpointsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Endpoint name will be used in the switchport description.
+                            type:
+                               Type of endpoint.
+                               This is used in descriptions and in documentation.
+                               The default value is taken from
+                               `connected_endpoints_keys[].type`.
+                            rack: Rack is used for documentation purposes only.
+                            adapters:
+                               A list of adapters, group by adapters leveraging the same port-profile.
+
+                               Subclass of AvdList with
+                               `AdaptersItem` items.
+
+                        """
+
+            class CustomConnectedEndpoints(AvdIndexedList[str, CustomConnectedEndpointsItem]):
+                """Subclass of AvdIndexedList with `CustomConnectedEndpointsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            CustomConnectedEndpoints._item_type = CustomConnectedEndpointsItem
+
+            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": CustomConnectedEndpoints}}
+            _field_to_key_map: ClassVar[dict] = {"value": "custom_connected_endpoints_keys_key"}
+            _key_to_field_map: ClassVar[dict] = {"custom_connected_endpoints_keys_key": "value"}
+            key: str
+            """Key used as dynamic key"""
+            value: CustomConnectedEndpoints
+            """Value of dynamic key"""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, key: str | UndefinedType = Undefined, value: CustomConnectedEndpoints | UndefinedType = Undefined) -> None:
+                    """
+                    DynamicCustomConnectedEndpointsItem.
+
+
+                    Args:
+                        key: Key used as dynamic key
+                        value: Value of dynamic key
+
+                    """
+
+        class DynamicCustomConnectedEndpoints(AvdIndexedList[str, DynamicCustomConnectedEndpointsItem]):
+            _primary_key: ClassVar[str] = "key"
+
+        DynamicCustomConnectedEndpoints._item_type = DynamicCustomConnectedEndpointsItem
+
         class DynamicNetworkServicesItem(AvdModel):
             class NetworkServicesItem(AvdModel):
                 """Subclass of AvdModel."""
@@ -45368,6 +57110,27 @@ class EosDesigns(EosDesignsRootModel):
                                        Example: MyFunction(myarg).
                                     prefix_list_in: Inbound prefix-list name.
                                     prefix_list_out: Outbound prefix-list name.
+
+                                """
+
+                    class Metadata(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"type": {"type": str}}
+                        type: str | None
+                        """Key only used for documentation or validation purposes."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, type: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                Metadata.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    type: Key only used for documentation or validation purposes.
 
                                 """
 
@@ -45743,7 +57506,7 @@ class EosDesigns(EosDesignsRootModel):
                         "nodes": {"type": Nodes},
                         "address_family_ipv4": {"type": AddressFamilyIpv4},
                         "address_family_ipv6": {"type": AddressFamilyIpv6},
-                        "type": {"type": str},
+                        "metadata": {"type": Metadata},
                         "remote_as": {"type": str},
                         "local_as": {"type": str},
                         "description": {"type": str},
@@ -45807,8 +57570,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Subclass of AvdModel."""
                     address_family_ipv6: AddressFamilyIpv6
                     """Subclass of AvdModel."""
-                    type: str | None
-                    """Key only used for documentation or validation purposes."""
+                    metadata: Metadata
+                    """Subclass of AvdModel."""
                     remote_as: str | None
                     """
                     BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -45909,7 +57672,7 @@ class EosDesigns(EosDesignsRootModel):
                             nodes: Nodes | UndefinedType = Undefined,
                             address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                             address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
-                            type: str | None | UndefinedType = Undefined,
+                            metadata: Metadata | UndefinedType = Undefined,
                             remote_as: str | None | UndefinedType = Undefined,
                             local_as: str | None | UndefinedType = Undefined,
                             description: str | None | UndefinedType = Undefined,
@@ -45971,7 +57734,7 @@ class EosDesigns(EosDesignsRootModel):
                                    of AvdList with `str` items.
                                 address_family_ipv4: Subclass of AvdModel.
                                 address_family_ipv6: Subclass of AvdModel.
-                                type: Key only used for documentation or validation purposes.
+                                metadata: Subclass of AvdModel.
                                 remote_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -47016,6 +58779,11 @@ class EosDesigns(EosDesignsRootModel):
 
                             Tags._item_type = str
 
+                            class IpAddressSecondaries(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            IpAddressSecondaries._item_type = str
+
                             class Ipv6AddressVirtuals(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
 
@@ -47574,6 +59342,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "description": {"type": str},
                                 "arp_gratuitous_accept": {"type": bool},
                                 "ip_address": {"type": str},
+                                "ip_address_secondaries": {"type": IpAddressSecondaries},
                                 "ipv6_address": {"type": str},
                                 "ipv6_enable": {"type": bool},
                                 "ip_address_virtual": {"type": str},
@@ -47627,6 +59396,8 @@ class EosDesigns(EosDesignsRootModel):
                             """Accept gratuitous ARP."""
                             ip_address: str | None
                             """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
+                            ip_address_secondaries: IpAddressSecondaries
+                            """Subclass of AvdList with `str` items."""
                             ipv6_address: str | None
                             """IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node."""
                             ipv6_enable: bool | None
@@ -47825,6 +59596,7 @@ class EosDesigns(EosDesignsRootModel):
                                     description: str | None | UndefinedType = Undefined,
                                     arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
+                                    ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                     ipv6_address: str | None | UndefinedType = Undefined,
                                     ipv6_enable: bool | None | UndefinedType = Undefined,
                                     ip_address_virtual: str | None | UndefinedType = Undefined,
@@ -47875,6 +59647,7 @@ class EosDesigns(EosDesignsRootModel):
                                         description: SVI description. By default set to VLAN name.
                                         arp_gratuitous_accept: Accept gratuitous ARP.
                                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+                                        ip_address_secondaries: Subclass of AvdList with `str` items.
                                         ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                                         ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
                                         ip_address_virtual:
@@ -48017,6 +59790,11 @@ class EosDesigns(EosDesignsRootModel):
                             _primary_key: ClassVar[str] = "node"
 
                         Nodes._item_type = NodesItem
+
+                        class IpAddressSecondaries(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        IpAddressSecondaries._item_type = str
 
                         class Ipv6AddressVirtuals(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -48574,6 +60352,7 @@ class EosDesigns(EosDesignsRootModel):
                             "description": {"type": str},
                             "arp_gratuitous_accept": {"type": bool},
                             "ip_address": {"type": str},
+                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "ipv6_address": {"type": str},
                             "ipv6_enable": {"type": bool},
                             "ip_address_virtual": {"type": str},
@@ -48657,6 +60436,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Accept gratuitous ARP."""
                         ip_address: str | None
                         """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
+                        ip_address_secondaries: IpAddressSecondaries
+                        """Subclass of AvdList with `str` items."""
                         ipv6_address: str | None
                         """IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node."""
                         ipv6_enable: bool | None
@@ -48859,6 +60640,7 @@ class EosDesigns(EosDesignsRootModel):
                                 description: str | None | UndefinedType = Undefined,
                                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 ipv6_address: str | None | UndefinedType = Undefined,
                                 ipv6_enable: bool | None | UndefinedType = Undefined,
                                 ip_address_virtual: str | None | UndefinedType = Undefined,
@@ -48931,6 +60713,7 @@ class EosDesigns(EosDesignsRootModel):
                                     description: SVI description. By default set to VLAN name.
                                     arp_gratuitous_accept: Accept gratuitous ARP.
                                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                                     ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
                                     ip_address_virtual:
@@ -50066,6 +61849,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         MemberInterfaces._item_type = MemberInterfacesItem
 
+                        class IpAddressSecondaries(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        IpAddressSecondaries._item_type = str
+
                         class StaticRoutesItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -50374,6 +62162,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
+                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "encapsulation_dot1q_vlan": {"type": int},
                             "enabled": {"type": bool, "default": True},
                             "peer": {"type": str},
@@ -50421,6 +62210,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """IPv4 address/Mask."""
+                        ip_address_secondaries: IpAddressSecondaries
+                        """Subclass of AvdList with `str` items."""
                         encapsulation_dot1q_vlan: int | None
                         """
                         For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
@@ -50485,6 +62276,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Mode | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
+                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
                                 peer: str | None | UndefinedType = Undefined,
@@ -50526,6 +62318,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: IPv4 address/Mask.
+                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     encapsulation_dot1q_vlan:
                                        For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
                                        specified.
@@ -51289,6 +63082,27 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class Metadata(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"type": {"type": str}}
+                            type: str | None
+                            """Key only used for documentation or validation purposes."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, type: str | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    Metadata.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        type: Key only used for documentation or validation purposes.
+
+                                    """
+
                         class AsPath(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -51665,7 +63479,7 @@ class EosDesigns(EosDesignsRootModel):
                             "cleartext_password": {"type": str},
                             "address_family_ipv4": {"type": AddressFamilyIpv4},
                             "address_family_ipv6": {"type": AddressFamilyIpv6},
-                            "type": {"type": str},
+                            "metadata": {"type": Metadata},
                             "remote_as": {"type": str},
                             "local_as": {"type": str},
                             "description": {"type": str},
@@ -51729,8 +63543,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         address_family_ipv6: AddressFamilyIpv6
                         """Subclass of AvdModel."""
-                        type: str | None
-                        """Key only used for documentation or validation purposes."""
+                        metadata: Metadata
+                        """Subclass of AvdModel."""
                         remote_as: str | None
                         """
                         BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -51831,7 +63645,7 @@ class EosDesigns(EosDesignsRootModel):
                                 cleartext_password: str | None | UndefinedType = Undefined,
                                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
-                                type: str | None | UndefinedType = Undefined,
+                                metadata: Metadata | UndefinedType = Undefined,
                                 remote_as: str | None | UndefinedType = Undefined,
                                 local_as: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
@@ -51893,7 +63707,7 @@ class EosDesigns(EosDesignsRootModel):
                                        make use of a vault or similar.
                                     address_family_ipv4: Subclass of AvdModel.
                                     address_family_ipv6: Subclass of AvdModel.
-                                    type: Key only used for documentation or validation purposes.
+                                    metadata: Subclass of AvdModel.
                                     remote_as:
                                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                        For asdot notation in
@@ -73489,25 +85303,25 @@ class EosDesigns(EosDesignsRootModel):
         DynamicNodeTypes._item_type = DynamicNodeTypesItem
 
         _dynamic_key_maps: ClassVar[tuple[dict, ...]] = (
+            {"dynamic_keys_path": "custom_node_type_keys.key", "model_key": "custom_node_types"},
             {"dynamic_keys_path": "connected_endpoints_keys.key", "model_key": "connected_endpoints"},
             {"dynamic_keys_path": "custom_connected_endpoints_keys.key", "model_key": "custom_connected_endpoints"},
-            {"dynamic_keys_path": "custom_node_type_keys.key", "model_key": "custom_node_types"},
             {"dynamic_keys_path": "network_services_keys.name", "model_key": "network_services"},
             {"dynamic_keys_path": "node_type_keys.key", "model_key": "node_types"},
         )
         _fields: ClassVar[dict] = {
+            "custom_node_types": {"type": DynamicCustomNodeTypes},
             "connected_endpoints": {"type": DynamicConnectedEndpoints},
             "custom_connected_endpoints": {"type": DynamicCustomConnectedEndpoints},
-            "custom_node_types": {"type": DynamicCustomNodeTypes},
             "network_services": {"type": DynamicNetworkServices},
             "node_types": {"type": DynamicNodeTypes},
         }
+        custom_node_types: DynamicCustomNodeTypes
+        """Collection of dynamic 'custom_node_types'."""
         connected_endpoints: DynamicConnectedEndpoints
         """Collection of dynamic 'connected_endpoints'."""
         custom_connected_endpoints: DynamicCustomConnectedEndpoints
         """Collection of dynamic 'custom_connected_endpoints'."""
-        custom_node_types: DynamicCustomNodeTypes
-        """Collection of dynamic 'custom_node_types'."""
         network_services: DynamicNetworkServices
         """Collection of dynamic 'network_services'."""
         node_types: DynamicNodeTypes
@@ -73518,9 +85332,9 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
+                custom_node_types: DynamicCustomNodeTypes | UndefinedType = Undefined,
                 connected_endpoints: DynamicConnectedEndpoints | UndefinedType = Undefined,
                 custom_connected_endpoints: DynamicCustomConnectedEndpoints | UndefinedType = Undefined,
-                custom_node_types: DynamicCustomNodeTypes | UndefinedType = Undefined,
                 network_services: DynamicNetworkServices | UndefinedType = Undefined,
                 node_types: DynamicNodeTypes | UndefinedType = Undefined,
             ) -> None:
@@ -73531,9 +85345,9 @@ class EosDesigns(EosDesignsRootModel):
                 Data models for dynamic keys.
 
                 Args:
+                    custom_node_types: Collection of dynamic 'custom_node_types'.
                     connected_endpoints: Collection of dynamic 'connected_endpoints'.
                     custom_connected_endpoints: Collection of dynamic 'custom_connected_endpoints'.
-                    custom_node_types: Collection of dynamic 'custom_node_types'.
                     network_services: Collection of dynamic 'network_services'.
                     node_types: Collection of dynamic 'node_types'.
 
@@ -73546,11 +85360,11 @@ class EosDesigns(EosDesignsRootModel):
         "avd_data_validation_mode": {"type": str, "default": "error"},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_debug": {"type": bool, "default": False},
-        "avd_eos_designs_enforce_duplication_checks_across_all_models": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_eos_designs_unset_facts": {"type": bool, "default": True},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
+        "bgp_as_notation": {"type": str, "default": "auto"},
         "bgp_default_ipv4_unicast": {"type": bool, "default": False},
         "bgp_distance": {"type": EosCliConfigGen.RouterBgp.Distance},
         "bgp_ecmp": {"type": int},
@@ -73563,6 +85377,7 @@ class EosDesigns(EosDesignsRootModel):
         "campus": {"type": str},
         "campus_access_pod": {"type": str},
         "campus_pod": {"type": str},
+        "connected_endpoints": {"type": ConnectedEndpoints},
         "custom_connected_endpoints_keys": {"type": CustomConnectedEndpointsKeys},
         "connected_endpoints_keys": {
             "type": ConnectedEndpointsKeys,
@@ -73598,9 +85413,10 @@ class EosDesigns(EosDesignsRootModel):
         "cv_tags_topology_type": {"type": str},
         "cv_token": {"type": str},
         "cv_topology": {"type": CvTopology},
+        "cv_topology_levels": {"type": CvTopologyLevels},
         "dc_name": {"type": str},
-        "default_connected_endpoints_description": {"type": str, "default": "{endpoint_type!u}_{endpoint}{endpoint_port?<_}"},
-        "default_connected_endpoints_port_channel_description": {"type": str, "default": "{endpoint_type!u}_{endpoint}{endpoint_port_channel?<_}"},
+        "default_connected_endpoints_description": {"type": str, "default": "{endpoint_type?>_!u}{endpoint}{endpoint_port?<_}"},
+        "default_connected_endpoints_port_channel_description": {"type": str, "default": "{endpoint_type?>_!u}{endpoint}{endpoint_port_channel?<_}"},
         "default_igmp_snooping_enabled": {"type": bool, "default": True},
         "default_interface_mtu": {"type": int},
         "default_interfaces": {"type": DefaultInterfaces},
@@ -73611,6 +85427,9 @@ class EosDesigns(EosDesignsRootModel):
         "default_underlay_p2p_ethernet_description": {"type": str, "default": "P2P_{peer}_{peer_interface}{vrf?<_VRF_}"},
         "default_underlay_p2p_port_channel_description": {"type": str, "default": "P2P_{peer}_{peer_interface}"},
         "default_vrf_diag_loopback_description": {"type": str, "default": "DIAG_VRF_{vrf}"},
+        "device_profile": {"type": str},
+        "device_profiles": {"type": DeviceProfiles},
+        "devices": {"type": Devices},
         "digital_twin": {"type": DigitalTwin},
         "dns_settings": {"type": DnsSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
@@ -73625,6 +85444,7 @@ class EosDesigns(EosDesignsRootModel):
         "evpn_multicast": {"type": bool, "default": False},
         "evpn_overlay_bgp_rtc": {"type": bool, "default": False},
         "evpn_prevent_readvertise_to_server": {"type": bool, "default": False},
+        "evpn_prevent_readvertise_to_server_mode": {"type": str, "default": "source_peer_asn"},
         "evpn_short_esi_prefix": {"type": str, "default": "0000:0000:"},
         "evpn_vlan_aware_bundles": {"type": bool, "default": False},
         "evpn_vlan_bundles": {"type": EvpnVlanBundles},
@@ -73758,7 +85578,7 @@ class EosDesigns(EosDesignsRootModel):
                         "type": "leaf",
                         "connected_endpoints": True,
                         "mlag_support": True,
-                        "network_services": {"l2": "true,"},
+                        "network_services": {"l2": True},
                         "underlay_router": False,
                         "uplink_type": "port-channel",
                         "cv_tags_topology_type": "leaf",
@@ -73795,7 +85615,7 @@ class EosDesigns(EosDesignsRootModel):
                         "default_overlay_routing_protocol": "none",
                         "default_flow_tracker_type": "hardware",
                         "vtep": True,
-                        "network_services": {"l3": "true,"},
+                        "network_services": {"l3": True},
                     },
                 ],
                 target_type=cls,
@@ -74071,8 +85891,6 @@ class EosDesigns(EosDesignsRootModel):
         "wan_route_servers": {"type": WanRouteServers},
         "wan_stun_dtls_disable": {"type": bool, "default": False},
         "wan_stun_dtls_profile_name": {"type": str, "default": "STUN-DTLS"},
-        "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp": {"type": bool, "default": True},
-        "wan_use_evpn_node_settings_for_lan": {"type": bool, "default": False},
         "wan_virtual_topologies": {"type": WanVirtualTopologies},
         "zscaler_endpoints": {"type": ZscalerEndpoints},
         "_custom_structured_configurations": {"type": _CustomStructuredConfigurations},
@@ -74119,24 +85937,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
-    avd_eos_designs_enforce_duplication_checks_across_all_models: bool
-    """
-    PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described
-    behavior.
-    When this is enabled, the generation of Structured Config in `eos_designs` will prevent
-    duplicate objects generated
-    by different input models. This will also improve performance since
-    `eos_designs` will not maintain separate copied of the Structured Configuration.
-    As an example, if
-    you define an Ethernet interface under `l3_edge` and use the same interface for connectivity under
-    `servers`:
-    - With this option disabled (default), AVD will merge these configurations together for
-    the interface and not raise an error.
-    - With this option enabled, AVD will raise an error about
-    duplicate interface definitions.
-
-    Default value: `False`
-    """
     avd_eos_designs_structured_config: bool
     """
     Generate structured configuration per device.
@@ -74165,6 +85965,18 @@ class EosDesigns(EosDesignsRootModel):
     For asdot notation in YAML inputs, the value must
     be put in quotes, to prevent it from being interpreted as a float number.
     """
+    bgp_as_notation: BgpAsNotation
+    """
+    AS number representation.
+    asdot - AS number representation in asdot format (Ex. 123.12).
+    asplain -
+    AS number representation in asplain format (Ex. 12312).
+    auto - Will look at the configured ASN and
+    if there is a dot in it,
+           it will use asdot otherwise asplain.
+
+    Default value: `"auto"`
+    """
     bgp_default_ipv4_unicast: bool
     """
     Default activation of IPv4 unicast address-family on all IPv4 neighbors.
@@ -74175,11 +85987,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     bgp_distance: EosCliConfigGen.RouterBgp.Distance
     bgp_ecmp: int | None
-    """
-    Maximum ECMP for BGP multi-path.
-    The default value is 4 except for WAN Routers where the default
-    value is unset (falls back to EOS default).
-    """
+    """Maximum ECMP for BGP multi-path."""
     bgp_graceful_restart: BgpGracefulRestart
     """
     BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to
@@ -74253,6 +86061,15 @@ class EosDesigns(EosDesignsRootModel):
     Name of the Campus pod.
     Used to generate CloudVision device tags with the
     `generate_cv_tags.campus_fabric` feature.
+    """
+    connected_endpoints: ConnectedEndpoints
+    """
+    List of endpoint connected to the fabric.
+    This should be applied to group_vars or host_vars where
+    endpoints are connecting.
+
+    Subclass of AvdIndexedList with `ConnectedEndpointsItem` items. Primary
+    key is `name` (`str`).
     """
     custom_connected_endpoints_keys: CustomConnectedEndpointsKeys
     """
@@ -74425,13 +86242,32 @@ class EosDesigns(EosDesignsRootModel):
     Generate AVD configurations directly from the given CloudVision topology.
     Activate this feature by
     setting `use_cv_topology` to `true`.
-    Requires `default_interfaces` to be set for the relevant
-    platforms and node types to detect the proper interface roles automatically.
-    Neighbor hostnames must
-    match the inventory hostnames of the AVD inventory to be taken into consideration.
+    Interfaces are assigned according to the following rules:
+      -
+    All interfaces connected to the MLAG peer (only other device in the same node group) will be
+    `mlag_interfaces`.
+      - For connections between devices with different
+    `cv_topology_levels[type=<type>].level`, the lowest level will be considered the "parent switch"
+    and the highest level will be considered the "child switch".
+      - Connections between devices with
+    the same `cv_topology_levels[type=<type>].level` will be ignored and must be created manually.
+      -
+    The first Management interface is assigned as `mgmt_interface` unless it is set for the node or
+    under platform_settings.
+    Neighbor hostnames must match the inventory hostnames of the AVD inventory
+    to be taken into consideration.
 
-    Subclass of
-    AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname` (`str`).
+    Subclass of AvdIndexedList with `CvTopologyItem` items. Primary key
+    is `hostname` (`str`).
+    """
+    cv_topology_levels: CvTopologyLevels
+    """
+    Type to level assignment used for generation of the AVD topology from the CloudVision topology.
+    See
+    `cv_topology` for details.
+
+    Subclass of AvdIndexedList with `CvTopologyLevelsItem` items. Primary
+    key is `type` (`str`).
     """
     dc_name: str | None
     """
@@ -74451,17 +86287,17 @@ class EosDesigns(EosDesignsRootModel):
     descriptions-names.html#avd-string-formatter-syntax.
     The available template fields are:
       -
-    `endpoint_type`: The `type` from `connected_endpoints_keys` like `server`, `router` etc.
-      -
-    `endpoint`: The name of the connected endpoint
-      - `endpoint_port`: The value from `endpoint_ports`
-    for this switch port if set.
-      - `port_channel_id`: The port-channel number for the switch.
+    `endpoint_type`: The `type` of the connected endpoint either set on the endpoint or taken from
+    `connected_endpoints_keys[].type` like `server`, `router` etc.
+      - `endpoint`: The name of the
+    connected endpoint
+      - `endpoint_port`: The value from `endpoint_ports` for this switch port if set.
+    - `port_channel_id`: The port-channel number for the switch.
 
-    By
-    default the description is templated from the type, name and port of the endpoint if set.
+    By default the description is
+    templated from the type, name and port of the endpoint if set.
 
-    Default value: `"{endpoint_type!u}_{endpoint}{endpoint_port?<_}"`
+    Default value: `"{endpoint_type?>_!u}{endpoint}{endpoint_port?<_}"`
     """
     default_connected_endpoints_port_channel_description: str
     """
@@ -74471,21 +86307,22 @@ class EosDesigns(EosDesignsRootModel):
     descriptions-names.html#avd-string-formatter-syntax.
     The available template fields are:
       -
-    `endpoint_type`: The `type` from `connected_endpoints_keys` like `server`, `router` etc.
+    `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+    `connected_endpoints_keys.type` like `server`, `router` etc.
+      - `endpoint`: The name of the
+    connected endpoint
+      - `endpoint_port_channel`: The value of `endpoint_port_channel` if set.
       -
-    `endpoint`: The name of the connected endpoint
-      - `endpoint_port_channel`: The value of
-    `endpoint_port_channel` if set.
-      - `port_channel_id`: The port-channel number for the switch.
-      -
-    `adapter_description`: The adapter's description if set.
-      - `adapter_description_or_endpoint`:
-    Helper alias of the adapter_description or endpoint.
+    `port_channel_id`: The port-channel number for the switch.
+      - `adapter_description`: The adapter's
+    description if set.
+      - `adapter_description_or_endpoint`: Helper alias of the adapter_description
+    or endpoint.
 
-    By default the description is templated from
-    the type, name and port-channel name of the endpoint if set.
+    By default the description is templated from the type, name and port-channel name of
+    the endpoint if set.
 
-    Default value: `"{endpoint_type!u}_{endpoint}{endpoint_port_channel?<_}"`
+    Default value: `"{endpoint_type?>_!u}{endpoint}{endpoint_port_channel?<_}"`
     """
     default_igmp_snooping_enabled: bool
     """
@@ -74640,6 +86477,25 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"DIAG_VRF_{vrf}"`
     """
+    device_profile: str | None
+    """
+    PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    Inherit settings from a device profile defined under `device_profiles`.
+    If the device is defined
+    under `devices` it is recommended to set the `profile` there instead.
+    Max two levels of profile
+    inheritance: device -> profile -> parent_profile
+    """
+    device_profiles: DeviceProfiles
+    """
+    PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    Subclass of AvdIndexedList with `DeviceProfilesItem` items. Primary key is `name` (`str`).
+    """
+    devices: Devices
+    """
+    PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    Subclass of AvdIndexedList with `DevicesItem` items. Primary key is `name` (`str`).
+    """
     digital_twin: DigitalTwin
     """
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -74748,14 +86604,30 @@ class EosDesigns(EosDesignsRootModel):
     """
     evpn_prevent_readvertise_to_server: bool
     """
-    Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in
-    the AS Path are filtered away.
-    This is very useful in large-scale networks, where convergence will
-    be quicker by not returning all updates received
-    from Route-server-1 to Router-server-2 just for
-    Route-server-2 to throw them away because of AS Path loop detection.
+    Prevent sending EVPN BGP updates to the route-server if they came from or passed through the route-
+    server already.
+    Refer to `evpn_prevent_readvertise_to_server_mode` to control which configuration
+    style to use.
+    This is very useful in large-scale networks, where convergence will be quicker by not
+    returning all updates received
+    from Route-server-1 to Router-server-2 just for Route-server-2 to
+    throw them away because of AS Path loop detection.
 
     Default value: `False`
+    """
+    evpn_prevent_readvertise_to_server_mode: EvpnPreventReadvertiseToServerMode
+    """
+    `evpn_prevent_readvertise_to_server_mode` controls the method of identifying EVPN routes that should
+    not be advertised to the EVPN route-servers.
+    Only used when `evpn_prevent_readvertise_to_server` is
+    set to `true`.
+    `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers
+    which filter out BGP updates learned directly from the ASN of the route-server. This mode will still
+    allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.
+    `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
+    updates with the route-server ASN anywhere in the AS-path.
+
+    Default value: `"source_peer_asn"`
     """
     evpn_short_esi_prefix: str
     """
@@ -75292,7 +87164,7 @@ class EosDesigns(EosDesignsRootModel):
     Subclass of AvdIndexedList with `NodeTypeKeysItem` items. Primary key is `key`
     (`str`).
 
-    Default value: `lambda cls: coerce_type([{"key": "spine", "type": "spine", "default_evpn_role": "server", "default_ptp_priority1": 20, "cv_tags_topology_type": "spine"}, {"key": "l3leaf", "type": "l3leaf", "connected_endpoints": True, "default_evpn_role": "client", "mlag_support": True, "network_services": {"l2": True, "l3": True}, "vtep": True, "default_ptp_priority1": 30, "cv_tags_topology_type": "leaf"}, {"key": "l2leaf", "type": "l2leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "p", "type": "p", "mpls_lsr": True, "default_mpls_overlay_role": "none", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr"}, {"key": "pe", "type": "pe", "mpls_lsr": True, "connected_endpoints": True, "default_mpls_overlay_role": "client", "default_evpn_role": "client", "network_services": {"l1": True, "l2": True, "l3": True}, "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "rr", "type": "rr", "mpls_lsr": True, "default_mpls_overlay_role": "server", "default_evpn_role": "server", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "l3spine", "type": "l3spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True, "l3": True}, "default_overlay_routing_protocol": "none", "default_underlay_routing_protocol": "none", "cv_tags_topology_type": "spine"}, {"key": "leaf", "type": "leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": "true,"}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "l2spine", "type": "l2spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "spine"}, {"key": "super_spine", "type": "super-spine", "cv_tags_topology_type": "core"}, {"key": "overlay_controller", "type": "overlay-controller", "default_evpn_role": "server", "cv_tags_topology_type": "spine"}, {"key": "wan_router", "type": "wan_router", "default_evpn_role": "none", "default_wan_role": "client", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "none", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": True}}, {"key": "wan_rr", "type": "wan_rr", "default_evpn_role": "none", "default_wan_role": "server", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "none", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": "true,"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"key": "spine", "type": "spine", "default_evpn_role": "server", "default_ptp_priority1": 20, "cv_tags_topology_type": "spine"}, {"key": "l3leaf", "type": "l3leaf", "connected_endpoints": True, "default_evpn_role": "client", "mlag_support": True, "network_services": {"l2": True, "l3": True}, "vtep": True, "default_ptp_priority1": 30, "cv_tags_topology_type": "leaf"}, {"key": "l2leaf", "type": "l2leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "p", "type": "p", "mpls_lsr": True, "default_mpls_overlay_role": "none", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr"}, {"key": "pe", "type": "pe", "mpls_lsr": True, "connected_endpoints": True, "default_mpls_overlay_role": "client", "default_evpn_role": "client", "network_services": {"l1": True, "l2": True, "l3": True}, "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "rr", "type": "rr", "mpls_lsr": True, "default_mpls_overlay_role": "server", "default_evpn_role": "server", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "l3spine", "type": "l3spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True, "l3": True}, "default_overlay_routing_protocol": "none", "default_underlay_routing_protocol": "none", "cv_tags_topology_type": "spine"}, {"key": "leaf", "type": "leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "l2spine", "type": "l2spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "spine"}, {"key": "super_spine", "type": "super-spine", "cv_tags_topology_type": "core"}, {"key": "overlay_controller", "type": "overlay-controller", "default_evpn_role": "server", "cv_tags_topology_type": "spine"}, {"key": "wan_router", "type": "wan_router", "default_evpn_role": "none", "default_wan_role": "client", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "none", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": True}}, {"key": "wan_rr", "type": "wan_rr", "default_evpn_role": "none", "default_wan_role": "server", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "none", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": True}}], target_type=cls)`
     """
     ntp_settings: NtpSettings
     """
@@ -75867,6 +87739,7 @@ class EosDesigns(EosDesignsRootModel):
     Generate AVD configurations directly from a given CloudVision topology.
     See `cv_topology` for
     details.
+    Requires both `cv_topology` and `cv_topology_levels` to be set.
     """
     use_router_general_for_router_id: bool
     """
@@ -75957,30 +87830,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"STUN-DTLS"`
     """
-    wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: bool
-    """
-    For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
-    EOS version.
-
-    - `true`: For older EOS versions use an agent environment variable. Changing this
-    requires a restart of the KernelFib agent.
-    - `false`: For newer EOS versions (starting 4.33.2) use
-    the proper CLI.
-
-    Default value: `True`
-    """
-    wan_use_evpn_node_settings_for_lan: bool
-    """
-    PREVIEW: This key is currently not supported and may produce invalid configuration.
-    When true,
-    `eos_designs` will use `overlay_routing_protocol`, `evpn_role` and `vtep`
-    node settings for LAN side
-    on WAN devices. Otherwise these will be ignored for WAN.
-    This will be the default in AVD version
-    6.0.0 and this option will be removed.
-
-    Default value: `False`
-    """
     wan_virtual_topologies: WanVirtualTopologies
     """
     Configure Virtual Topologies for CV Pathfinder and AutoVPN.
@@ -76018,11 +87867,11 @@ class EosDesigns(EosDesignsRootModel):
             avd_data_validation_mode: AvdDataValidationMode | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_debug: bool | UndefinedType = Undefined,
-            avd_eos_designs_enforce_duplication_checks_across_all_models: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_eos_designs_unset_facts: bool | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
+            bgp_as_notation: BgpAsNotation | UndefinedType = Undefined,
             bgp_default_ipv4_unicast: bool | UndefinedType = Undefined,
             bgp_distance: EosCliConfigGen.RouterBgp.Distance | UndefinedType = Undefined,
             bgp_ecmp: int | None | UndefinedType = Undefined,
@@ -76035,6 +87884,7 @@ class EosDesigns(EosDesignsRootModel):
             campus: str | None | UndefinedType = Undefined,
             campus_access_pod: str | None | UndefinedType = Undefined,
             campus_pod: str | None | UndefinedType = Undefined,
+            connected_endpoints: ConnectedEndpoints | UndefinedType = Undefined,
             custom_connected_endpoints_keys: CustomConnectedEndpointsKeys | UndefinedType = Undefined,
             connected_endpoints_keys: ConnectedEndpointsKeys | UndefinedType = Undefined,
             core_interfaces: CoreInterfaces | UndefinedType = Undefined,
@@ -76048,6 +87898,7 @@ class EosDesigns(EosDesignsRootModel):
             cv_tags_topology_type: str | None | UndefinedType = Undefined,
             cv_token: str | None | UndefinedType = Undefined,
             cv_topology: CvTopology | UndefinedType = Undefined,
+            cv_topology_levels: CvTopologyLevels | UndefinedType = Undefined,
             dc_name: str | None | UndefinedType = Undefined,
             default_connected_endpoints_description: str | UndefinedType = Undefined,
             default_connected_endpoints_port_channel_description: str | UndefinedType = Undefined,
@@ -76061,6 +87912,9 @@ class EosDesigns(EosDesignsRootModel):
             default_underlay_p2p_ethernet_description: str | UndefinedType = Undefined,
             default_underlay_p2p_port_channel_description: str | UndefinedType = Undefined,
             default_vrf_diag_loopback_description: str | UndefinedType = Undefined,
+            device_profile: str | None | UndefinedType = Undefined,
+            device_profiles: DeviceProfiles | UndefinedType = Undefined,
+            devices: Devices | UndefinedType = Undefined,
             digital_twin: DigitalTwin | UndefinedType = Undefined,
             dns_settings: DnsSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
@@ -76075,6 +87929,7 @@ class EosDesigns(EosDesignsRootModel):
             evpn_multicast: bool | UndefinedType = Undefined,
             evpn_overlay_bgp_rtc: bool | UndefinedType = Undefined,
             evpn_prevent_readvertise_to_server: bool | UndefinedType = Undefined,
+            evpn_prevent_readvertise_to_server_mode: EvpnPreventReadvertiseToServerMode | UndefinedType = Undefined,
             evpn_short_esi_prefix: str | UndefinedType = Undefined,
             evpn_vlan_aware_bundles: bool | UndefinedType = Undefined,
             evpn_vlan_bundles: EvpnVlanBundles | UndefinedType = Undefined,
@@ -76208,8 +88063,6 @@ class EosDesigns(EosDesignsRootModel):
             wan_route_servers: WanRouteServers | UndefinedType = Undefined,
             wan_stun_dtls_disable: bool | UndefinedType = Undefined,
             wan_stun_dtls_profile_name: str | UndefinedType = Undefined,
-            wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: bool | UndefinedType = Undefined,
-            wan_use_evpn_node_settings_for_lan: bool | UndefinedType = Undefined,
             wan_virtual_topologies: WanVirtualTopologies | UndefinedType = Undefined,
             zscaler_endpoints: ZscalerEndpoints | UndefinedType = Undefined,
             _custom_structured_configurations: _CustomStructuredConfigurations | UndefinedType = Undefined,
@@ -76246,20 +88099,6 @@ class EosDesigns(EosDesignsRootModel):
                    `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a
                    dedicated output location.
                 avd_eos_designs_debug: Dump all vars and facts per device after generating `avd_switch_facts`.
-                avd_eos_designs_enforce_duplication_checks_across_all_models:
-                   PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described
-                   behavior.
-                   When this is enabled, the generation of Structured Config in `eos_designs` will prevent
-                   duplicate objects generated
-                   by different input models. This will also improve performance since
-                   `eos_designs` will not maintain separate copied of the Structured Configuration.
-                   As an example, if
-                   you define an Ethernet interface under `l3_edge` and use the same interface for connectivity under
-                   `servers`:
-                   - With this option disabled (default), AVD will merge these configurations together for
-                   the interface and not raise an error.
-                   - With this option enabled, AVD will raise an error about
-                   duplicate interface definitions.
                 avd_eos_designs_structured_config: Generate structured configuration per device.
                 avd_eos_designs_unset_facts:
                    Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer
@@ -76273,15 +88112,20 @@ class EosDesigns(EosDesignsRootModel):
                    overlay when "overlay_routing_protocol" == ibgp.
                    For asdot notation in YAML inputs, the value must
                    be put in quotes, to prevent it from being interpreted as a float number.
+                bgp_as_notation:
+                   AS number representation.
+                   asdot - AS number representation in asdot format (Ex. 123.12).
+                   asplain -
+                   AS number representation in asplain format (Ex. 12312).
+                   auto - Will look at the configured ASN and
+                   if there is a dot in it,
+                          it will use asdot otherwise asplain.
                 bgp_default_ipv4_unicast:
                    Default activation of IPv4 unicast address-family on all IPv4 neighbors.
                    It is best practice to
                    disable activation.
                 bgp_distance: bgp_distance
-                bgp_ecmp:
-                   Maximum ECMP for BGP multi-path.
-                   The default value is 4 except for WAN Routers where the default
-                   value is unset (falls back to EOS default).
+                bgp_ecmp: Maximum ECMP for BGP multi-path.
                 bgp_graceful_restart:
                    BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to
                    continue forwarding traffic during a BGP restart.
@@ -76332,6 +88176,13 @@ class EosDesigns(EosDesignsRootModel):
                    Name of the Campus pod.
                    Used to generate CloudVision device tags with the
                    `generate_cv_tags.campus_fabric` feature.
+                connected_endpoints:
+                   List of endpoint connected to the fabric.
+                   This should be applied to group_vars or host_vars where
+                   endpoints are connecting.
+
+                   Subclass of AvdIndexedList with `ConnectedEndpointsItem` items. Primary
+                   key is `name` (`str`).
                 custom_connected_endpoints_keys:
                    `custom_connected_endpoints_keys` offers a flexible way to extend endpoint definitions without
                    altering the `connected_endpoints_keys`.
@@ -76473,13 +88324,30 @@ class EosDesigns(EosDesignsRootModel):
                    Generate AVD configurations directly from the given CloudVision topology.
                    Activate this feature by
                    setting `use_cv_topology` to `true`.
-                   Requires `default_interfaces` to be set for the relevant
-                   platforms and node types to detect the proper interface roles automatically.
-                   Neighbor hostnames must
-                   match the inventory hostnames of the AVD inventory to be taken into consideration.
+                   Interfaces are assigned according to the following rules:
+                     -
+                   All interfaces connected to the MLAG peer (only other device in the same node group) will be
+                   `mlag_interfaces`.
+                     - For connections between devices with different
+                   `cv_topology_levels[type=<type>].level`, the lowest level will be considered the "parent switch"
+                   and the highest level will be considered the "child switch".
+                     - Connections between devices with
+                   the same `cv_topology_levels[type=<type>].level` will be ignored and must be created manually.
+                     -
+                   The first Management interface is assigned as `mgmt_interface` unless it is set for the node or
+                   under platform_settings.
+                   Neighbor hostnames must match the inventory hostnames of the AVD inventory
+                   to be taken into consideration.
 
-                   Subclass of
-                   AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname` (`str`).
+                   Subclass of AvdIndexedList with `CvTopologyItem` items. Primary key
+                   is `hostname` (`str`).
+                cv_topology_levels:
+                   Type to level assignment used for generation of the AVD topology from the CloudVision topology.
+                   See
+                   `cv_topology` for details.
+
+                   Subclass of AvdIndexedList with `CvTopologyLevelsItem` items. Primary
+                   key is `type` (`str`).
                 dc_name:
                    DC Name is used in:
                    - Fabric Documentation (Optional, falls back to fabric_name)
@@ -76495,15 +88363,15 @@ class EosDesigns(EosDesignsRootModel):
                    descriptions-names.html#avd-string-formatter-syntax.
                    The available template fields are:
                      -
-                   `endpoint_type`: The `type` from `connected_endpoints_keys` like `server`, `router` etc.
-                     -
-                   `endpoint`: The name of the connected endpoint
-                     - `endpoint_port`: The value from `endpoint_ports`
-                   for this switch port if set.
-                     - `port_channel_id`: The port-channel number for the switch.
+                   `endpoint_type`: The `type` of the connected endpoint either set on the endpoint or taken from
+                   `connected_endpoints_keys[].type` like `server`, `router` etc.
+                     - `endpoint`: The name of the
+                   connected endpoint
+                     - `endpoint_port`: The value from `endpoint_ports` for this switch port if set.
+                   - `port_channel_id`: The port-channel number for the switch.
 
-                   By
-                   default the description is templated from the type, name and port of the endpoint if set.
+                   By default the description is
+                   templated from the type, name and port of the endpoint if set.
                 default_connected_endpoints_port_channel_description:
                    Default description or description template to be used on all port-channels to connected endpoints.
                    This can be a template using the AVD string formatter syntax:
@@ -76511,19 +88379,20 @@ class EosDesigns(EosDesignsRootModel):
                    descriptions-names.html#avd-string-formatter-syntax.
                    The available template fields are:
                      -
-                   `endpoint_type`: The `type` from `connected_endpoints_keys` like `server`, `router` etc.
+                   `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                   `connected_endpoints_keys.type` like `server`, `router` etc.
+                     - `endpoint`: The name of the
+                   connected endpoint
+                     - `endpoint_port_channel`: The value of `endpoint_port_channel` if set.
                      -
-                   `endpoint`: The name of the connected endpoint
-                     - `endpoint_port_channel`: The value of
-                   `endpoint_port_channel` if set.
-                     - `port_channel_id`: The port-channel number for the switch.
-                     -
-                   `adapter_description`: The adapter's description if set.
-                     - `adapter_description_or_endpoint`:
-                   Helper alias of the adapter_description or endpoint.
+                   `port_channel_id`: The port-channel number for the switch.
+                     - `adapter_description`: The adapter's
+                   description if set.
+                     - `adapter_description_or_endpoint`: Helper alias of the adapter_description
+                   or endpoint.
 
-                   By default the description is templated from
-                   the type, name and port-channel name of the endpoint if set.
+                   By default the description is templated from the type, name and port-channel name of
+                   the endpoint if set.
                 default_igmp_snooping_enabled: When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.
                 default_interface_mtu:
                    Default interface MTU configured on EOS under "interface defaults".
@@ -76642,6 +88511,19 @@ class EosDesigns(EosDesignsRootModel):
                      - `vrf`: The VRF name.
                      - `tenant`: The tenant name.
                    By default the description is templated from the VRF name.
+                device_profile:
+                   PREVIEW - This datamodel is still under development and may change or get removed at any time.
+                   Inherit settings from a device profile defined under `device_profiles`.
+                   If the device is defined
+                   under `devices` it is recommended to set the `profile` there instead.
+                   Max two levels of profile
+                   inheritance: device -> profile -> parent_profile
+                device_profiles:
+                   PREVIEW - This datamodel is still under development and may change or get removed at any time.
+                   Subclass of AvdIndexedList with `DeviceProfilesItem` items. Primary key is `name` (`str`).
+                devices:
+                   PREVIEW - This datamodel is still under development and may change or get removed at any time.
+                   Subclass of AvdIndexedList with `DevicesItem` items. Primary key is `name` (`str`).
                 digital_twin:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
@@ -76715,12 +88597,24 @@ class EosDesigns(EosDesignsRootModel):
                    4.25.1F).
                    Requires use eBGP as overlay protocol.
                 evpn_prevent_readvertise_to_server:
-                   Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in
-                   the AS Path are filtered away.
-                   This is very useful in large-scale networks, where convergence will
-                   be quicker by not returning all updates received
-                   from Route-server-1 to Router-server-2 just for
-                   Route-server-2 to throw them away because of AS Path loop detection.
+                   Prevent sending EVPN BGP updates to the route-server if they came from or passed through the route-
+                   server already.
+                   Refer to `evpn_prevent_readvertise_to_server_mode` to control which configuration
+                   style to use.
+                   This is very useful in large-scale networks, where convergence will be quicker by not
+                   returning all updates received
+                   from Route-server-1 to Router-server-2 just for Route-server-2 to
+                   throw them away because of AS Path loop detection.
+                evpn_prevent_readvertise_to_server_mode:
+                   `evpn_prevent_readvertise_to_server_mode` controls the method of identifying EVPN routes that should
+                   not be advertised to the EVPN route-servers.
+                   Only used when `evpn_prevent_readvertise_to_server` is
+                   set to `true`.
+                   `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers
+                   which filter out BGP updates learned directly from the ASN of the route-server. This mode will still
+                   allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.
+                   `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
+                   updates with the route-server ASN anywhere in the AS-path.
                 evpn_short_esi_prefix: Configure prefix for "short_esi" values.
                 evpn_vlan_aware_bundles:
                    Enable VLAN aware bundles for every EVPN MAC-VRF.
@@ -77508,6 +89402,7 @@ class EosDesigns(EosDesignsRootModel):
                    Generate AVD configurations directly from a given CloudVision topology.
                    See `cv_topology` for
                    details.
+                   Requires both `cv_topology` and `cv_topology_levels` to be set.
                 use_router_general_for_router_id: Use `router general` to set router ID for all routing protocols and VRFs.
                 vtep_loopback_description: Customize the description on the VTEP interface, typically Loopback1.
                 vtep_vvtep_ip:
@@ -77558,22 +89453,6 @@ class EosDesigns(EosDesignsRootModel):
                    Name of the SSL profile used for DTLS on WAN STUN connections.
                    When using automatic ceritficate
                    deployment via CloudVision this name must be the same on all WAN routers.
-                wan_use_agent_env_var_for_kernel_software_forwarding_ecmp:
-                   For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
-                   EOS version.
-
-                   - `true`: For older EOS versions use an agent environment variable. Changing this
-                   requires a restart of the KernelFib agent.
-                   - `false`: For newer EOS versions (starting 4.33.2) use
-                   the proper CLI.
-                wan_use_evpn_node_settings_for_lan:
-                   PREVIEW: This key is currently not supported and may produce invalid configuration.
-                   When true,
-                   `eos_designs` will use `overlay_routing_protocol`, `evpn_role` and `vtep`
-                   node settings for LAN side
-                   on WAN devices. Otherwise these will be ignored for WAN.
-                   This will be the default in AVD version
-                   6.0.0 and this option will be removed.
                 wan_virtual_topologies:
                    Configure Virtual Topologies for CV Pathfinder and AutoVPN.
                    Auto create a control plane

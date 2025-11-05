@@ -3,11 +3,6 @@ aaa_authorization:
     default: local
 aaa_root:
   disabled: true
-agents:
-- name: KernelFib
-  environment_variables:
-  - name: KERNELFIB_PROGRAM_ALL_ECMP
-    value: '1'
 application_traffic_recognition:
   field_sets:
     l4_ports:
@@ -89,9 +84,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 666
   ip_address: 10.66.3.1/24
-  peer: site3-leaf1
-  peer_interface: Ethernet1 VLAN 666
-  peer_type: l2leaf
+  metadata:
+    peer: site3-leaf1
+    peer_interface: Ethernet1 VLAN 666
+    peer_type: l2leaf
 - name: Ethernet1.42
   description: RED-TEST
   shutdown: false
@@ -101,16 +97,18 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 42
   ip_address: 10.42.3.1/24
-  peer: site3-leaf1
-  peer_interface: Ethernet1 VLAN 42
-  peer_type: l2leaf
+  metadata:
+    peer: site3-leaf1
+    peer_interface: Ethernet1 VLAN 42
+    peer_type: l2leaf
 - name: Ethernet1
   description: L2_site3-leaf1_Ethernet1
   shutdown: false
   mtu: 9194
-  peer: site3-leaf1
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: site3-leaf1
+    peer_interface: Ethernet1
+    peer_type: l2leaf
   switchport:
     enabled: false
 - name: Ethernet4
@@ -119,18 +117,20 @@ ethernet_interfaces:
   channel_group:
     id: 4
     mode: active
-  peer: inet-cloud
-  peer_interface: Ethernet8
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: inet-cloud
+    peer_interface: Ethernet8
+    peer_type: l3_port_channel_member
 - name: Ethernet5
   description: inet-cloud_Ethernet9
   shutdown: false
   channel_group:
     id: 4
     mode: active
-  peer: inet-cloud
-  peer_interface: Ethernet9
-  peer_type: l3_port_channel_member
+  metadata:
+    peer: inet-cloud
+    peer_interface: Ethernet9
+    peer_type: l3_port_channel_member
 flow_tracking:
   hardware:
     trackers:
@@ -216,6 +216,8 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+kernel:
+  software_forwarding_ecmp: true
 local_users:
 - name: admin
   privilege: 15
@@ -326,9 +328,10 @@ port_channel_interfaces:
   access_group_in: ACL-INTERNET-IN_Port-Channel4
   flow_tracker:
     hardware: FLOW-TRACKER
-  peer: inet-cloud
-  peer_interface: Port-Channel8
-  peer_type: l3_port_channel
+  metadata:
+    peer: inet-cloud
+    peer_interface: Port-Channel8
+    peer_type: l3_port_channel
   switchport:
     enabled: false
 prefix_lists:
@@ -452,7 +455,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     bfd: true
@@ -467,11 +471,13 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.42.1
     peer_group: WAN-OVERLAY-PEERS
-    peer: pf1
+    metadata:
+      peer: pf1
     description: pf1_Dps1
   - ip_address: 192.168.42.2
     peer_group: WAN-OVERLAY-PEERS
-    peer: pf2
+    metadata:
+      peer: pf2
     description: pf2_Dps1
   redistribute:
     connected:
