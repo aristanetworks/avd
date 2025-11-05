@@ -5,19 +5,15 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet3
-  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-L3LEAF2_Ethernet1
+  description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-PYTHON_MODULES-L3LEAF1B_Ethernet3
   shutdown: false
-  mtu: 9214
-  ip_address: 172.31.255.24/31
   channel_group:
     id: 3
     mode: active
   metadata:
-    peer: CUSTOM-PYTHON_MODULES-L3LEAF2
-    peer_interface: Ethernet1
-    peer_type: l3leaf
-  switchport:
-    enabled: false
+    peer: CUSTOM-PYTHON_MODULES-L3LEAF1B
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
 - name: Ethernet4
   description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-PYTHON_MODULES-L3LEAF1B_Ethernet4
   shutdown: false
@@ -39,7 +35,18 @@ ethernet_interfaces:
     peer_type: custom_spine
   switchport:
     enabled: false
-- name: Ethernet3.1
+- name: Ethernet5
+  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-L3LEAF2_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 172.31.255.24/31
+  metadata:
+    peer: CUSTOM-PYTHON_MODULES-L3LEAF2
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet5.1
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-L3LEAF2_Ethernet1.1 VRF TEST_VRF
   shutdown: false
   mtu: 9214

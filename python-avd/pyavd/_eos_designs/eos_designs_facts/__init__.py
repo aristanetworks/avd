@@ -43,6 +43,9 @@ class EosDesignsFactsGeneratorProtocol(
     _evpn_route_server_clients: EosDesignsFactsProtocol.EvpnRouteServerClients
     _mpls_route_reflector_clients: EosDesignsFactsProtocol.MplsRouteReflectorClients
 
+    # Dict of mlag_groups shared between all devices.
+    _mlag_groups: dict[str, set[str]]
+
     @remove_cached_property_type
     @cached_property
     def id(self) -> int | None:
@@ -386,7 +389,14 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
     which is a dict of `EosDesignsfactsGenerator` instances covering all devices.
     """
 
-    def __init__(self, hostvars: Mapping, inputs: EosDesigns, peer_generators: dict[str, EosDesignsFactsGenerator], shared_utils: SharedUtilsProtocol) -> None:
+    def __init__(
+        self,
+        hostvars: Mapping,
+        inputs: EosDesigns,
+        peer_generators: dict[str, EosDesignsFactsGenerator],
+        shared_utils: SharedUtilsProtocol,
+        mlag_groups: dict[str, set[str]],
+    ) -> None:
         super().__init__(hostvars, inputs, shared_utils)
         self.peer_generators = peer_generators
 
@@ -394,6 +404,12 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
         self._downlink_switches = EosDesignsFactsProtocol.DownlinkSwitches()
         self._evpn_route_server_clients = EosDesignsFactsProtocol.EvpnRouteServerClients()
         self._mpls_route_reflector_clients = EosDesignsFactsProtocol.MplsRouteReflectorClients()
+        self._mlag_groups = mlag_groups
+
+    def update_mlag_groups(self) -> None:
+        """Update the shared dict of MLAG groups. Used to deduct the MLAG pairs from the mlag_group set on each device."""
+        if self.shared_utils.mlag and self.shared_utils.device_config and (mlag_group := self.shared_utils.device_config.mlag_group):
+            self._mlag_groups.setdefault(mlag_group, set()).add(self.shared_utils.hostname)
 
     def cross_pollinate(self) -> None:
         """
