@@ -37,11 +37,8 @@ TEST_SCHEMA = {
     },
 }
 
+# f-string-based pattern is suggested to have a simple way of extending test coverage to new keys (like mlag_interfaces which is not patterned right now)
 NODE_CONFIG_SCHEMA_SECTION = "{{'fabric_name': 'pytest_fabric', 'l3leaf': {{'defaults': {{'{schema_key_name}': ['{schema_key_value}']}}}}}}"
-
-DEFAULT_INTERFACES_SCHEMA_SECTION = (
-    "{{'fabric_name': 'pytest_fabric', 'default_interfaces': [{{'types': ['l3leaf'], 'platforms': ['default'], '{schema_key_name}': ['{schema_key_value}']}}]}}"
-)
 
 
 @pytest.fixture(scope="module")
@@ -225,26 +222,23 @@ def generate_ethernet_range_patterns(max_depth: int = 5) -> list[str]:
     return pytest_params
 
 
+# Allows a simple coverage adjustment for other schema paths that should use the same patterns in the future (like default_interfaces[].uplink_interfaces)
 @pytest.mark.parametrize(
     ("raw_schema_section"),
     [
         pytest.param(NODE_CONFIG_SCHEMA_SECTION, id="NODE_CONFIG_INTERFACES"),
-        pytest.param(DEFAULT_INTERFACES_SCHEMA_SECTION, id="DEFAULT_INTERFACES"),
     ],
 )
+# Allows a simple coverage adjustment for other schema paths that should use the same patterns in the future (like l3leafs.defaults.mlag_interfaces)
 @pytest.mark.parametrize(
     ("schema_key_name"),
     [
-        pytest.param("mlag_interfaces", id="MLAG_INTERFACES"),
         pytest.param("uplink_interfaces", id="UPLINK_INTERFACES"),
-        pytest.param("uplink_switch_interfaces", id="UPLINK_SWITCH_INTERFACES"),
     ],
 )
 @pytest.mark.parametrize(("schema_key_value"), generate_ethernet_range_patterns())
-def test_node_config_valid_ethernet_ranges(raw_schema_section: str, schema_key_name: str, schema_key_value: str, request: pytest.FixtureRequest) -> None:
+def test_node_config_valid_ethernet_ranges(raw_schema_section: str, schema_key_name: str, schema_key_value: str) -> None:
     """Test matching of the valid Ethernet interface ranges by the patterns of the target schema paths."""
-    if "DEFAULT_INTERFACES" in request.node.callspec.id and schema_key_name == "uplink_switch_interfaces":
-        pytest.skip("`default_interfaces` has no `uplink_switch_interfaces`.")
     raw_inputs_under_test = raw_schema_section.format(schema_key_name=schema_key_name, schema_key_value=schema_key_value).replace("'", '"')
     inputs_under_test = json.loads(raw_inputs_under_test)
 
@@ -258,15 +252,12 @@ def test_node_config_valid_ethernet_ranges(raw_schema_section: str, schema_key_n
     ("raw_schema_section"),
     [
         pytest.param(NODE_CONFIG_SCHEMA_SECTION, id="NODE_CONFIG_INTERFACES"),
-        pytest.param(DEFAULT_INTERFACES_SCHEMA_SECTION, id="DEFAULT_INTERFACES"),
     ],
 )
 @pytest.mark.parametrize(
     ("schema_key_name"),
     [
-        pytest.param("mlag_interfaces", id="MLAG_INTERFACES"),
         pytest.param("uplink_interfaces", id="UPLINK_INTERFACES"),
-        pytest.param("uplink_switch_interfaces", id="UPLINK_SWITCH_INTERFACES"),
     ],
 )
 @pytest.mark.parametrize(
@@ -278,10 +269,8 @@ def test_node_config_valid_ethernet_ranges(raw_schema_section: str, schema_key_n
         pytest.param("Ethernet1,", id="TRAILING_COMMA"),
     ],
 )
-def test_node_config_invalid_ethernet_ranges(raw_schema_section: str, schema_key_name: str, schema_key_value: str, request: pytest.FixtureRequest) -> None:
+def test_node_config_invalid_ethernet_ranges(raw_schema_section: str, schema_key_name: str, schema_key_value: str) -> None:
     """Test matching of the invalid Ethernet interface ranges by the patterns of the target schema paths."""
-    if "DEFAULT_INTERFACES" in request.node.callspec.id and schema_key_name == "uplink_switch_interfaces":
-        pytest.skip("`default_interfaces` has no `uplink_switch_interfaces`.")
     raw_inputs_under_test = raw_schema_section.format(schema_key_name=schema_key_name, schema_key_value=schema_key_value).replace("'", '"')
     inputs_under_test = json.loads(raw_inputs_under_test)
 

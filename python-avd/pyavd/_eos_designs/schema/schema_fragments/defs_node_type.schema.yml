@@ -220,7 +220,7 @@ $defs:
             type: list
             items:
               type: str
-              pattern: "Ethernet\\d+(-\\d+)?(,\\d+(-\\d+)?)*(/\\d+(-\\d+)?(,\\d+(-\\d+)?)*)*"
+              pattern: "Ethernet[\\d/]+"
           uplink_switches:
             documentation_options:
               table: node-type-uplink-configuration
@@ -564,7 +564,7 @@ $defs:
               table: node-type-loopback-vtep-configuration
             description: Set VXLAN source interface.
             type: str
-            pattern: "Loopback\\d+"
+            pattern: "Loopback[\\d/]+"
           bgp_as:
             documentation_options:
               table: node-type-bgp-configuration
@@ -854,7 +854,6 @@ $defs:
             type: list
             items:
               type: str
-              pattern: "Ethernet\\d+(-\\d+)?(,\\d+(-\\d+)?)*(/\\d+(-\\d+)?(,\\d+(-\\d+)?)*)*"
           mlag_interfaces_speed:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -1474,7 +1473,7 @@ $defs:
                 type: list
                 items:
                   type: str
-                  pattern: "Ethernet(\\d+/)*\\d+(\\.\\d+)?"
+                  pattern: "Ethernet[\\d/]+"
               ha_ipv4_pool:
                 description: |-
                   Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
