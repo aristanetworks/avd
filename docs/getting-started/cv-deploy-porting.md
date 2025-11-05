@@ -280,7 +280,7 @@ Use this approach to replace a playbook whose **only** job was to upload configl
 
 When migrating AVD from `cvp_configlet_upload` to `cv_deploy` role, the EOS devices should be removed from CloudVision `Network Provisioning` to avoid multiple config sources and configuration overlap.
 
-Omiting to clean up Network Provisioning configlets mapping will result in configuration not being removed from device configuration when removing it from the static configlet studios because it would still be defined in the Network Provisioning configlet.
+Omitting to clean up Network Provisioning configlets mapping will result in configuration not being removed from device configuration when removing it from the static configlet studios because it would still be defined in the Network Provisioning configlet.
 
 Devices can be removed manually in the CloudVision Portal user interface or pragramatically with an ansible playbook.
 
