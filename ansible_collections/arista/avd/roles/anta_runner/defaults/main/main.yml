@@ -23,3 +23,7 @@ anta_runner_dry_run: false
 
 # Structured configuration file format. Supported formats: yml, yaml, json.
 avd_structured_config_file_format: "yml"
+
+# ANTA runner reporting sorting.
+anta_report_status_priority: ["error", "failure", "skipped", "success", "unset"]
+anta_report_sort_by: ["device", "categories", "test", "description", "custom_field"]

@@ -85,6 +85,5 @@
         anta_runner_dry_run: true
         avd_catalogs_dir: "{{ root_dir }}/anta/avd_catalogs/default_run_filtered_report"
         anta_reports_dir: "{{ root_dir }}/anta/reports/default_run_filtered_report"
-        anta_report_hide_statuses: ["unset"]
-        anta_report_sort_test_results: ["result"]
+        anta_report_exclude_statuses: ["unset"]
       run_once: true

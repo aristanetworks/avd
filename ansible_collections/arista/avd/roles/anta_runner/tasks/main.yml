@@ -50,8 +50,10 @@
       md_output: "{{ anta_report_md_path }}"
       json_output: "{{ anta_report_json_path }}"
       filters:
-        hide_statuses: "{{ anta_report_hide_statuses | arista.avd.default([]) }}"
-        sort_test_results: "{{ anta_report_sort_test_results | arista.avd.default([]) }}"
+        exclude_statuses: "{{ anta_report_exclude_statuses | arista.avd.default([]) }}"
+      sorting:
+        sort_by: "{{ anta_report_sort_by | arista.avd.default([]) }}"
+        status_priority: "{{ anta_report_status_priority | arista.avd.default([]) }}"
   register: anta
   delegate_to: localhost
   run_once: true

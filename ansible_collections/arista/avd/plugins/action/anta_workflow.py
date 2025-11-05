@@ -27,7 +27,7 @@ if TYPE_CHECKING:
 PLUGIN_NAME = "arista.avd.anta_workflow"
 
 try:
-    from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, anta_runner
+    from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, TestResult, anta_runner
     from pyavd._utils import default, get, strip_empties_from_dict
     from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData, InputFactorySettings
     from pyavd.get_device_test_catalog import get_device_test_catalog
@@ -108,16 +108,22 @@ ARGUMENT_SPEC = {
             "json_output": {"type": "str"},
             "filters": {
                 "type": "dict",
+                "options": {"exclude_statuses": {"type": "list", "elements": "str", "choices": ["success", "failure", "error", "skipped", "unset"]}},
+            },
+            "sorting": {
+                "type": "dict",
                 "options": {
-                    "hide_statuses": {
+                    "status_priority": {
                         "type": "list",
                         "elements": "str",
                         "choices": ["success", "failure", "error", "skipped", "unset"],
+                        "default": ["error", "failure", "skipped", "success", "unset"],
                     },
-                    "sort_test_results": {
+                    "sort_by": {
                         "type": "list",
                         "elements": "str",
-                        "choices": ["name", "categories", "test", "description", "result"],
+                        "choices": ["device", "categories", "test", "description", "custom_field"],
+                        "default": ["device", "categories", "test", "description", "custom_field"],
                     },
                 },
             },
@@ -251,8 +257,9 @@ def run_anta(devices: list[str]) -> ResultManager:
 
 def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[str, Any]) -> dict[str, Any]:
     """Build the ANTA reports from the batch results and return a summary dictionary containing ANTA test statistics."""
-    hide_statuses = get(report_settings, "filters.hide_statuses")
-    sort_test_results = get(report_settings, "filters.sort_test_results")
+    exclude_statuses = get(report_settings, "filters.exclude_statuses")
+    sort_test_results = get(report_settings, "sorting.sort_by")
+    sort_by_status_priority = get(report_settings, "sorting.status_priority")
     csv_output_path = get(report_settings, "csv_output")
     md_output_path = get(report_settings, "md_output")
     json_output_path = get(report_settings, "json_output")
@@ -263,20 +270,17 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
         for result in manager.results:
             result_manager.add(result)
 
-    # Filter the results based on the hide_statuses if provided
-    if hide_statuses:
-        filtered_result_manager = result_manager.filter(hide=set(hide_statuses))
+    # Filter the results based on the exclude_statuses if provided
+    if exclude_statuses:
+        filtered_result_manager = result_manager.filter(hide=set(exclude_statuses))
         if not filtered_result_manager.results:
-            msg = f"The report is empty because all results were hidden by the provided status filters: {', '.join(hide_statuses)}"
+            msg = f"The report is empty because all results were hidden by the provided status filters: {', '.join(exclude_statuses)}"
             LOGGER.warning(msg)
     else:
         filtered_result_manager = result_manager
 
     # Sort the result manager
-    if sort_test_results:
-        filtered_result_manager.sort(sort_by=sort_test_results)
-    else:
-        filtered_result_manager.sort(sort_by=["name", "categories", "test", "description", "result", "custom_field"])
+    filtered_result_manager = sort_results(filtered_result_manager, sort_by_status_priority, sort_test_results)
 
     # TODO: Consider using multiprocessing to generate reports in parallel
     if csv_output_path:
@@ -315,6 +319,35 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
             tests_summary["devices_with_test_errors"].append(device)
 
     return tests_summary
+
+
+def sort_results(rm: ResultManager, status_order: list[str], sort_by: list[str]) -> ResultManager:
+    """
+    Sort a result manager based on a custom status order and additional sort_by fields.
+
+    Args:
+        rm: The ANTA result manager.
+        status_order: Primary sort by 'result' using a custom status order.
+        sort_by: Secondary sort by additional fields defined.
+
+    Returns:
+        Sorted result manager.
+    """
+    if not rm.results:
+        return rm
+
+    status_index = {s: i for i, s in enumerate(status_order)}
+    sort_by = ["name" if x == "device" else x for x in sort_by]
+
+    def sort_key(item: list[TestResult]) -> tuple[str]:
+        # Start with the status_order
+        key = [status_index[item.result]]
+        # Added secondary from sort_by
+        key.extend(value if (value := getattr(item, field)) else "" for field in sort_by)
+        return tuple(key)
+
+    rm.results = sorted(rm.results, key=sort_key)
+    return rm
 
 
 def update_ansible_result(result: dict[str, Any], anta_tests_summary: dict[str, Any], has_errors_ref: list[bool]) -> dict[str, Any]:
