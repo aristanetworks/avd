@@ -149,7 +149,7 @@ class UnderlayMixin(Protocol):
         af_type = "ipv4" if not self.underlay_ipv6_numbered else "ipv6"
         return EosCliConfigGen.RouterBgp.PeerGroupsItem(
             name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-            type=af_type,
+            metadata=EosCliConfigGen.RouterBgp.PeerGroupsItem.Metadata(type=af_type),
             password=self.get_bgp_password(self.inputs.bgp_peer_groups.ipv4_underlay_peers),
             bfd=self.inputs.bgp_peer_groups.ipv4_underlay_peers.bfd or None,
             maximum_routes=12000,

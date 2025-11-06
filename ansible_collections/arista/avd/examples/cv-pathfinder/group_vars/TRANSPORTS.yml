@@ -79,7 +79,8 @@ spine:
           # Adding peer group.
           peer_groups:
             - name: IPv4-UNDERLAY-PEERS
-              type: ipv4
+              metadata:
+                type: ipv4
               send_community: all
               maximum_routes: 12000
           address_family_ipv4:
