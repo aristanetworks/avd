@@ -12,7 +12,7 @@ from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmi
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
 
-    from .models import WorkflowDevice, CVWorkspace
+    from .models import CVWorkspace, WorkflowDevice
 
 LOGGER = getLogger(__name__)
 
