@@ -5,4 +5,4 @@
 __author__ = "Arista Networks"
 __copyright__ = "Copyright 2025 Arista Networks"
 __license__ = "Apache 2.0"
-__version__ = "6.0.0.dev2"
+__version__ = "6.0.0.dev3"
