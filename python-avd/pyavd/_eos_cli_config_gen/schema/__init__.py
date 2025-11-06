@@ -24522,6 +24522,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
             "validate_no_errors_period": {"type": int},
+            "exclude_as_extra_fabric_validation_target": {"type": bool},
         }
         is_deployed: bool | None
         """Key only used for documentation or validation purposes."""
@@ -24556,6 +24557,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Threshold (in minutes) defining the recent time window during which no error-level logs should have
         been generated for the validation to pass.
         """
+        exclude_as_extra_fabric_validation_target: bool | None
+        """
+        When true, excludes this node's loopback interfaces from being selected
+        as destination targets in
+        extra fabric-level reachability or routing validation
+        tests executed by `anta_runner`. This helps
+        prevent non-essential or special-purpose
+        nodes from being used as validation endpoints during
+        fabric-wide checks.
+        """
 
         if TYPE_CHECKING:
 
@@ -24574,6 +24585,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validate_no_errors_period: int | None | UndefinedType = Undefined,
+                exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -24605,6 +24617,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     validate_no_errors_period:
                        Threshold (in minutes) defining the recent time window during which no error-level logs should have
                        been generated for the validation to pass.
+                    exclude_as_extra_fabric_validation_target:
+                       When true, excludes this node's loopback interfaces from being selected
+                       as destination targets in
+                       extra fabric-level reachability or routing validation
+                       tests executed by `anta_runner`. This helps
+                       prevent non-essential or special-purpose
+                       nodes from being used as validation endpoints during
+                       fabric-wide checks.
 
                 """
 

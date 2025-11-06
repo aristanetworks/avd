@@ -31,6 +31,7 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
             fabric_name=self.shared_utils.fabric_name,
             serial_number=self.shared_utils.serial_number,
             validate_no_errors_period=self.inputs.logging_settings.validate_no_errors_period,
+            exclude_as_extra_fabric_validation_target=self.shared_utils.node_config.exclude_as_extra_fabric_validation_target,
         )
         self._set_cv_tags()
         self._set_cv_pathfinder()

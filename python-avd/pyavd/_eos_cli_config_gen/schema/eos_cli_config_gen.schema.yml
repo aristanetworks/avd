@@ -9640,6 +9640,18 @@ keys:
         description: Threshold (in minutes) defining the recent time window during
           which no error-level logs should have been generated for the validation
           to pass.
+      exclude_as_extra_fabric_validation_target:
+        type: bool
+        description: 'When true, excludes this node''s loopback interfaces from being
+          selected
+
+          as destination targets in extra fabric-level reachability or routing validation
+
+          tests executed by `anta_runner`. This helps prevent non-essential or special-purpose
+
+          nodes from being used as validation endpoints during fabric-wide checks.
+
+          '
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
