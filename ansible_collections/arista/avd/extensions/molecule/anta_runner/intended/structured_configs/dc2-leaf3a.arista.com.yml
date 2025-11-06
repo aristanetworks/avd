@@ -169,6 +169,10 @@ loopback_interfaces:
   shutdown: false
   vrf: VRF11
   ip_address: 10.255.11.17/32
+- name: Loopback66
+  description: MLAG_VTEP_IP
+  shutdown: false
+  ip_address: 10.66.66.66/32
 management_api_http:
   enable_https: true
   https_ssl_profile: eAPI_SSL_Profile
@@ -562,7 +566,8 @@ vxlan_interface:
   vxlan1:
     description: dc2-leaf3a.arista.com_VTEP
     vxlan:
-      source_interface: Loopback1
+      source_interface: Loopback0
+      mlag_source_interface: Loopback66
       udp_port: 4789
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
