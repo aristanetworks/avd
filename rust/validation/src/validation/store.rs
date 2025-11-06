@@ -144,23 +144,7 @@ impl StoreValidate<&str> for Store {
             self.validate_value(value, schema_type, configuration)
         })
     }
-    fn validate_value(
-        &self,
-        value: &mut Value,
-        schema_name: &str,
-        configuration: Option<&Configuration>,
-    ) -> ValidationResult {
-        if let Ok(schema_type) = Schema::try_from(schema_name) {
-            self.validate_value(value, schema_type, configuration)
-        } else {
-            let mut ctx = Context::new(self, None);
-            ctx.add_violation(Violation::InvalidSchema {
-                schema: schema_name.into(),
-            });
 
-            ctx.into()
-        }
-    }
     fn coerce_value(&self, value: &mut Value, schema_name: &str) -> ValidationResult {
         self.with_resolved_schema(schema_name, |schema_type| {
             self.coerce_value(value, schema_type)
