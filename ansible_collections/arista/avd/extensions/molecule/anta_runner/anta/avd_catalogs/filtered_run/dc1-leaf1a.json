@@ -394,7 +394,7 @@
           },
           {
             "name": "Vxlan1",
-            "status": "up"
+            "status": "adminDown"
           }
         ]
       }

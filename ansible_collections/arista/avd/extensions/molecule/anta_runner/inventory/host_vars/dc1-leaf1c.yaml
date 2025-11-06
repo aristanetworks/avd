@@ -1,0 +1,19 @@
+# Custom vxlan structured_config to validate that the VXLAN interface becomes operationally down after its source interface fails
+custom_structured_configuration_vxlan_interface:
+  vxlan1:
+    description: dc1-leaf1c_VTEP
+    vxlan:
+      source_interface: Loopback0
+      udp_port: 4789
+      vlans:
+      - id: 11
+        vni: 10011
+      vrfs:
+      - name: VRF10
+        vni: 10
+
+custom_structured_configuration_loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: true
+  ip_address: 10.255.0.3/32
