@@ -11,20 +11,6 @@ pub enum Sha512CryptError {
     InvalidSalt(InvalidSaltError),
 }
 
-// Mapping our crates error to Python errors.
-impl From<Sha512CryptError> for pyo3::PyErr {
-    fn from(value: Sha512CryptError) -> Self {
-        match value {
-            Sha512CryptError::InvalidSalt(_) => {
-                pyo3::exceptions::PyValueError::new_err(format!("{value}"))
-            }
-            Sha512CryptError::ShaCrypt(_) => {
-                pyo3::exceptions::PyRuntimeError::new_err(format!("{value}"))
-            }
-        }
-    }
-}
-
 #[derive(Debug, derive_more::Display)]
 pub enum InvalidSaltError {
     #[display("Salt cannot be empty.")]

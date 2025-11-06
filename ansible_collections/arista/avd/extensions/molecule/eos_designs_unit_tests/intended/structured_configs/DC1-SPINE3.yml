@@ -284,12 +284,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
@@ -301,145 +303,173 @@ router_bgp:
   - ip_address: 172.31.254.5
     peer_group: UNDERLAY-PEERS
     remote_as: '65101'
-    peer: DC1-LEAF1A
+    metadata:
+      peer: DC1-LEAF1A
     description: DC1-LEAF1A_Ethernet29
   - ip_address: 172.31.254.41
     peer_group: UNDERLAY-PEERS
     remote_as: '65102'
-    peer: DC1-LEAF2A
+    metadata:
+      peer: DC1-LEAF2A
     description: DC1-LEAF2A_Ethernet53/1
   - ip_address: 172.31.254.47
     peer_group: UNDERLAY-PEERS
     remote_as: '65102'
-    peer: DC1-LEAF2A
+    metadata:
+      peer: DC1-LEAF2A
     description: DC1-LEAF2A_Ethernet56/1
   - ip_address: 172.31.254.73
     peer_group: UNDERLAY-PEERS
     remote_as: '65102'
-    peer: DC1-LEAF2B
+    metadata:
+      peer: DC1-LEAF2B
     description: DC1-LEAF2B_Ethernet53/1
   - ip_address: 172.31.254.79
     peer_group: UNDERLAY-PEERS
     remote_as: '65102'
-    peer: DC1-LEAF2B
+    metadata:
+      peer: DC1-LEAF2B
     description: DC1-LEAF2B_Ethernet56/1
   - ip_address: 172.31.254.101
     peer_group: UNDERLAY-PEERS
     remote_as: '65103'
-    peer: DC1-SVC3A
+    metadata:
+      peer: DC1-SVC3A
     description: DC1-SVC3A_Ethernet51/1
   - ip_address: 172.31.254.133
     peer_group: UNDERLAY-PEERS
     remote_as: '65103'
-    peer: DC1-SVC3B
+    metadata:
+      peer: DC1-SVC3B
     description: DC1-SVC3B_Ethernet51/1
   - ip_address: 172.31.254.165
     peer_group: UNDERLAY-PEERS
     remote_as: '65104'
-    peer: DC1-BL1A
+    metadata:
+      peer: DC1-BL1A
     description: DC1-BL1A_Ethernet3
   - ip_address: 172.31.254.197
     peer_group: UNDERLAY-PEERS
     remote_as: '65105'
-    peer: DC1-BL1B
+    metadata:
+      peer: DC1-BL1B
     description: DC1-BL1B_Ethernet3
   - ip_address: 172.31.254.229
     peer_group: UNDERLAY-PEERS
     remote_as: '65106'
-    peer: DC1-BL2A
+    metadata:
+      peer: DC1-BL2A
     description: DC1-BL2A_Ethernet3
   - ip_address: 172.31.255.5
     peer_group: UNDERLAY-PEERS
     remote_as: '65107'
-    peer: DC1-BL2B
+    metadata:
+      peer: DC1-BL2B
     description: DC1-BL2B_Ethernet3
   - ip_address: 172.31.255.37
     peer_group: UNDERLAY-PEERS
     remote_as: '65108'
-    peer: DC1-CL1A
+    metadata:
+      peer: DC1-CL1A
     description: DC1-CL1A_Ethernet3
   - ip_address: 172.31.255.69
     peer_group: UNDERLAY-PEERS
     remote_as: '65109'
-    peer: DC1-CL1B
+    metadata:
+      peer: DC1-CL1B
     description: DC1-CL1B_Ethernet3
   - ip_address: 172.31.255.133
     peer_group: UNDERLAY-PEERS
     remote_as: '65110'
-    peer: DC1_UNDEPLOYED_LEAF1A
+    metadata:
+      peer: DC1_UNDEPLOYED_LEAF1A
     description: DC1_UNDEPLOYED_LEAF1A_Ethernet51/1
     shutdown: true
   - ip_address: 172.31.255.165
     peer_group: UNDERLAY-PEERS
     remote_as: '65111'
-    peer: DC1_UNDEPLOYED_LEAF1B
+    metadata:
+      peer: DC1_UNDEPLOYED_LEAF1B
     description: DC1_UNDEPLOYED_LEAF1B_Ethernet51/1
     shutdown: true
   - ip_address: 192.168.255.14
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65104'
-    peer: DC1-BL1A
+    metadata:
+      peer: DC1-BL1A
     description: DC1-BL1A
   - ip_address: 192.168.255.15
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65105'
-    peer: DC1-BL1B
+    metadata:
+      peer: DC1-BL1B
     description: DC1-BL1B
   - ip_address: 192.168.255.16
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65106'
-    peer: DC1-BL2A
+    metadata:
+      peer: DC1-BL2A
     description: DC1-BL2A
   - ip_address: 192.168.255.17
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65107'
-    peer: DC1-BL2B
+    metadata:
+      peer: DC1-BL2B
     description: DC1-BL2B
   - ip_address: 192.168.255.18
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65108'
-    peer: DC1-CL1A
+    metadata:
+      peer: DC1-CL1A
     description: DC1-CL1A
   - ip_address: 192.168.255.19
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65109'
-    peer: DC1-CL1B
+    metadata:
+      peer: DC1-CL1B
     description: DC1-CL1B
   - ip_address: 192.168.42.42
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
-    peer: DC1-LEAF1A
+    metadata:
+      peer: DC1-LEAF1A
     description: DC1-LEAF1A
   - ip_address: 192.168.255.10
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65102'
-    peer: DC1-LEAF2A
+    metadata:
+      peer: DC1-LEAF2A
     description: DC1-LEAF2A
   - ip_address: 192.168.255.11
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65102'
-    peer: DC1-LEAF2B
+    metadata:
+      peer: DC1-LEAF2B
     description: DC1-LEAF2B
   - ip_address: 192.168.255.12
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65103'
-    peer: DC1-SVC3A
+    metadata:
+      peer: DC1-SVC3A
     description: DC1-SVC3A
   - ip_address: 192.168.255.13
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65103'
-    peer: DC1-SVC3B
+    metadata:
+      peer: DC1-SVC3B
     description: DC1-SVC3B
   - ip_address: 192.168.255.21
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65110'
-    peer: DC1_UNDEPLOYED_LEAF1A
+    metadata:
+      peer: DC1_UNDEPLOYED_LEAF1A
     description: DC1_UNDEPLOYED_LEAF1A
     shutdown: true
   - ip_address: 192.168.255.22
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65111'
-    peer: DC1_UNDEPLOYED_LEAF1B
+    metadata:
+      peer: DC1_UNDEPLOYED_LEAF1B
     description: DC1_UNDEPLOYED_LEAF1B
     shutdown: true
   redistribute:

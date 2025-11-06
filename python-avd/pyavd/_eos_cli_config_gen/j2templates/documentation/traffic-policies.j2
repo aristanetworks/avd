@@ -199,6 +199,11 @@ Counters: {{ policy.counters | join(", ") }}
 {%             do traffic_policy_interfaces.append(port_channel_interface) %}
 {%         endif %}
 {%     endfor %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
+{%         if vlan_interface.traffic_policy.input is arista.avd.defined or vlan_interface.traffic_policy.output is arista.avd.defined %}
+{%             do traffic_policy_interfaces.append(vlan_interface) %}
+{%         endif %}
+{%     endfor %}
 {%     if traffic_policy_interfaces | length > 0 %}
 
 ##### Traffic-Policy Interfaces

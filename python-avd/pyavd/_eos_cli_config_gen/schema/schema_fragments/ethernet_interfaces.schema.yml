@@ -526,7 +526,16 @@ keys:
           valid_values: ["none", "simple", "message-digest"]
         ospf_authentication_key:
           type: str
-          description: Encrypted password - only type 7 supported.
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+            - int
+          description: Authentication key type.
+          default: "7"
+          valid_values:
+            - "7"
+            - "8a"
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -542,7 +551,16 @@ keys:
                 valid_values: ["md5", "sha1", "sha256", "sha384", "sha512"]
               key:
                 type: str
-                description: Encrypted password - only type 7 supported.
+                description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                  - int
+                description: Authentication key type.
+                default: "7"
+                valid_values:
+                  - "7"
+                  - "8a"
         pim:
           type: dict
           keys:

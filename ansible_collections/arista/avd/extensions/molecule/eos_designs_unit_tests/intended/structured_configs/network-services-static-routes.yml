@@ -124,6 +124,9 @@ port_channel_interfaces:
 - name: Port-Channel1
   description: Po1
   shutdown: false
+  ip_address: 10.10.10.1/24
+  ip_address_secondaries:
+  - 10.10.10.2/24
   metadata:
     peer_interface: Po1
     peer_type: l3_port_channel
@@ -214,12 +217,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -233,7 +238,8 @@ router_bgp:
       enabled: true
   vlans:
   - id: 2
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 192.168.255.109:10002
     route_targets:
       both:
@@ -241,7 +247,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 3
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 192.168.255.109:10003
     route_targets:
       both:
@@ -342,13 +349,15 @@ vlan_interfaces:
   description: Tenant1_SVI
   shutdown: false
   ip_address_virtual: 10.1.40.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan3
   description: Tenant1_VRF_SVI
   shutdown: false
   vrf: TESTING
   ip_address_virtual: 10.1.40.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vlan_internal_order:
   allocation: ascending
   range:

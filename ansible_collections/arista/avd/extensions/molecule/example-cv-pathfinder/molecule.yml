@@ -1,4 +1,19 @@
 ---
+ansible:
+  executor:
+    backend: ansible-playbook
+    args:
+      ansible_playbook:
+        - --inventory=${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/cv-pathfinder/inventory.yml
+  env:
+    ANSIBLE_FORCE_COLOR: true
+  cfg:
+    defaults:
+      jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
+      gathering: explicit
+      vault_password_file: "${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/cv-pathfinder/.vault"
+  playbooks:
+    converge: '../../../examples/cv-pathfinder/build.yml'
 scenario:
   converge_sequence:
     - converge
@@ -10,24 +25,5 @@ scenario:
 dependency:
   name: galaxy
   enabled: false
-driver:
-  name: default
-  options:
-    managed: false
-platforms:
-  - name: dummy
-provisioner:
-  name: ansible
-  config_options:
-    defaults:
-      jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
-      duplicate_dict_key: error
-  playbooks:
-    converge: '../../../examples/cv-pathfinder/build.yml'
-  ansible_args:
-    - --inventory
-    - ${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/cv-pathfinder/inventory.yml
-    - --vault-password-file
-    - ${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/cv-pathfinder/.vault
 verifier:
   name: ansible

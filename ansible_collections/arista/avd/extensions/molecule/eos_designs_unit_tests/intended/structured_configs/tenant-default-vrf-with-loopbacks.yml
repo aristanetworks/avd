@@ -13,6 +13,10 @@ loopback_interfaces:
   shutdown: false
   ip_address: 10.10.0.3/32
 - name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 10.11.0.3/32
+- name: Loopback42
   shutdown: false
   ip_address: 192.168.1.1/32
 metadata:
@@ -49,11 +53,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -65,7 +71,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 1008
-    tenant: SIT
+    metadata:
+      tenant: SIT
     rd: 10.10.0.3:21008
     route_targets:
       both:
@@ -73,7 +80,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 10
-    tenant: SIT
+    metadata:
+      tenant: SIT
     rd: 10.10.0.3:20010
     route_targets:
       both:
@@ -108,9 +116,10 @@ vlan_interfaces:
 - name: Vlan1008
   description: SVI_1
   shutdown: false
-  tenant: SIT
-  tags:
-  - sit
+  metadata:
+    tenant: SIT
+    tags:
+    - sit
 vlan_internal_order:
   allocation: ascending
   range:

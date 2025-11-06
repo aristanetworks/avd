@@ -7287,16 +7287,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
+        OspfAuthenticationKeyType: TypeAlias = Literal["7", "8a"]
 
         class OspfMessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
             HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
-            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}}
+            KeyType: TypeAlias = Literal["7", "8a"]
+            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}, "key_type": {"type": str, "default": "7"}}
             id: int
             hash_algorithm: HashAlgorithm | None
             key: str | None
-            """Encrypted password - only type 7 supported."""
+            """Encrypted password."""
+            key_type: KeyType
+            """
+            Authentication key type.
+
+            Default value: `"7"`
+            """
 
             if TYPE_CHECKING:
 
@@ -7306,6 +7314,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     id: int | UndefinedType = Undefined,
                     hash_algorithm: HashAlgorithm | None | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
+                    key_type: KeyType | UndefinedType = Undefined,
                 ) -> None:
                     """
                     OspfMessageDigestKeysItem.
@@ -7316,7 +7325,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         id: id
                         hash_algorithm: hash_algorithm
-                        key: Encrypted password - only type 7 supported.
+                        key: Encrypted password.
+                        key_type: Authentication key type.
 
                     """
 
@@ -12255,6 +12265,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ospf_cost": {"type": int},
             "ospf_authentication": {"type": str},
             "ospf_authentication_key": {"type": str},
+            "ospf_authentication_key_type": {"type": str, "default": "7"},
             "ospf_message_digest_keys": {"type": OspfMessageDigestKeys},
             "pim": {"type": Pim},
             "mac_security": {"type": MacSecurity},
@@ -12412,7 +12423,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ospf_cost: int | None
         ospf_authentication: OspfAuthentication | None
         ospf_authentication_key: str | None
-        """Encrypted password - only type 7 supported."""
+        """Encrypted password."""
+        ospf_authentication_key_type: OspfAuthenticationKeyType
+        """
+        Authentication key type.
+
+        Default value: `"7"`
+        """
         ospf_message_digest_keys: OspfMessageDigestKeys
         """Subclass of AvdIndexedList with `OspfMessageDigestKeysItem` items. Primary key is `id` (`int`)."""
         pim: Pim
@@ -12585,6 +12602,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ospf_cost: int | None | UndefinedType = Undefined,
                 ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
                 ospf_authentication_key: str | None | UndefinedType = Undefined,
+                ospf_authentication_key_type: OspfAuthenticationKeyType | UndefinedType = Undefined,
                 ospf_message_digest_keys: OspfMessageDigestKeys | UndefinedType = Undefined,
                 pim: Pim | UndefinedType = Undefined,
                 mac_security: MacSecurity | UndefinedType = Undefined,
@@ -12708,7 +12726,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ospf_area: ospf_area
                     ospf_cost: ospf_cost
                     ospf_authentication: ospf_authentication
-                    ospf_authentication_key: Encrypted password - only type 7 supported.
+                    ospf_authentication_key: Encrypted password.
+                    ospf_authentication_key_type: Authentication key type.
                     ospf_message_digest_keys: Subclass of AvdIndexedList with `OspfMessageDigestKeysItem` items. Primary key is `id` (`int`).
                     pim: Subclass of AvdModel.
                     mac_security: Subclass of AvdModel.
@@ -15553,6 +15572,68 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class IpNameServerGroupsItem(AvdModel):
         """Subclass of AvdModel."""
 
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class NameServersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ip_address": {"type": str}, "priority": {"type": int}}
+                ip_address: str
+                """IPv4 or IPv6 address for DNS server."""
+                priority: int | None
+                """Priority value (lower is first)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ip_address: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        NameServersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ip_address: IPv4 or IPv6 address for DNS server.
+                            priority: Priority value (lower is first).
+
+                        """
+
+            class NameServers(AvdIndexedList[str, NameServersItem]):
+                """Subclass of AvdIndexedList with `NameServersItem` items. Primary key is `ip_address` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ip_address"
+
+            NameServers._item_type = NameServersItem
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "name_servers": {"type": NameServers}}
+            name: str
+            """VRF name. Use "default" for the default VRF."""
+            name_servers: NameServers
+            """Subclass of AvdIndexedList with `NameServersItem` items. Primary key is `ip_address` (`str`)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, name_servers: NameServers | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: VRF name. Use "default" for the default VRF.
+                        name_servers: Subclass of AvdIndexedList with `NameServersItem` items. Primary key is `ip_address` (`str`).
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
         class NameServersItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -15594,11 +15675,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "name": {"type": str},
+            "vrfs": {"type": Vrfs},
             "name_servers": {"type": NameServers},
             "dns_domain": {"type": str},
             "ip_domain_lists": {"type": IpDomainLists},
         }
         name: str
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         name_servers: NameServers
         """Subclass of AvdList with `NameServersItem` items."""
         dns_domain: str | None
@@ -15615,6 +15699,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
                 name_servers: NameServers | UndefinedType = Undefined,
                 dns_domain: str | None | UndefinedType = Undefined,
                 ip_domain_lists: IpDomainLists | UndefinedType = Undefined,
@@ -15627,6 +15712,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     name: name
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     name_servers: Subclass of AvdList with `NameServersItem` items.
                     dns_domain: dns_domain
                     ip_domain_lists:
@@ -24427,6 +24513,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "cv_tags": {"type": CvTags},
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
+            "validate_no_errors_period": {"type": int},
         }
         is_deployed: bool | None
         """Key only used for documentation or validation purposes."""
@@ -24456,6 +24543,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdModel.
         """
+        validate_no_errors_period: int | None
+        """
+        Threshold (in minutes) defining the recent time window during which no error-level logs should have
+        been generated for the validation to pass.
+        """
 
         if TYPE_CHECKING:
 
@@ -24473,6 +24565,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 cv_tags: CvTags | UndefinedType = Undefined,
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
+                validate_no_errors_period: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -24501,6 +24594,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Metadata used to generate Digital Twin topology.
 
                        Subclass of AvdModel.
+                    validate_no_errors_period:
+                       Threshold (in minutes) defining the recent time window during which no error-level logs should have
+                       been generated for the validation to pass.
 
                 """
 
@@ -30827,6 +30923,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class IpAddressSecondaries(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        IpAddressSecondaries._item_type = str
+
         IpVerifyUnicastSourceReachableVia: TypeAlias = Literal["any", "rx"]
 
         class IpNat(AvdModel):
@@ -31325,16 +31426,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
+        OspfAuthenticationKeyType: TypeAlias = Literal["7", "8a"]
 
         class OspfMessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
             HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
-            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}}
+            KeyType: TypeAlias = Literal["7", "8a"]
+            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}, "key_type": {"type": str, "default": "7"}}
             id: int
             hash_algorithm: HashAlgorithm | None
             key: str | None
             """Encrypted password."""
+            key_type: KeyType
+            """
+            Authentication key type.
+
+            Default value: `"7"`
+            """
 
             if TYPE_CHECKING:
 
@@ -31344,6 +31453,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     id: int | UndefinedType = Undefined,
                     hash_algorithm: HashAlgorithm | None | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
+                    key_type: KeyType | UndefinedType = Undefined,
                 ) -> None:
                     """
                     OspfMessageDigestKeysItem.
@@ -31355,6 +31465,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         id: id
                         hash_algorithm: hash_algorithm
                         key: Encrypted password.
+                        key_type: Authentication key type.
 
                     """
 
@@ -33601,6 +33712,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "vmtracer": {"type": bool},
             "ptp": {"type": Ptp},
             "ip_address": {"type": str},
+            "ip_address_secondaries": {"type": IpAddressSecondaries},
             "dhcp_client_accept_default_route": {"type": bool},
             "dhcp_server_ipv4": {"type": bool},
             "dhcp_server_ipv6": {"type": bool},
@@ -33625,6 +33737,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ospf_cost": {"type": int},
             "ospf_authentication": {"type": str},
             "ospf_authentication_key": {"type": str},
+            "ospf_authentication_key_type": {"type": str, "default": "7"},
             "ospf_message_digest_keys": {"type": OspfMessageDigestKeys},
             "flow_tracker": {"type": FlowTracker},
             "bgp": {"type": Bgp},
@@ -33725,6 +33838,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         ip_address: str | None
         """IPv4 address/mask or "dhcp"."""
+        ip_address_secondaries: IpAddressSecondaries
+        """Subclass of AvdList with `str` items."""
         dhcp_client_accept_default_route: bool | None
         """Install default-route obtained via DHCP."""
         dhcp_server_ipv4: bool | None
@@ -33765,6 +33880,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ospf_authentication: OspfAuthentication | None
         ospf_authentication_key: str | None
         """Encrypted password."""
+        ospf_authentication_key_type: OspfAuthenticationKeyType
+        """
+        Authentication key type.
+
+        Default value: `"7"`
+        """
         ospf_message_digest_keys: OspfMessageDigestKeys
         """Subclass of AvdIndexedList with `OspfMessageDigestKeysItem` items. Primary key is `id` (`int`)."""
         flow_tracker: FlowTracker
@@ -33850,6 +33971,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 vmtracer: bool | None | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
+                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                 dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
                 dhcp_server_ipv4: bool | None | UndefinedType = Undefined,
                 dhcp_server_ipv6: bool | None | UndefinedType = Undefined,
@@ -33874,6 +33996,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ospf_cost: int | None | UndefinedType = Undefined,
                 ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
                 ospf_authentication_key: str | None | UndefinedType = Undefined,
+                ospf_authentication_key_type: OspfAuthenticationKeyType | UndefinedType = Undefined,
                 ospf_message_digest_keys: OspfMessageDigestKeys | UndefinedType = Undefined,
                 flow_tracker: FlowTracker | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
@@ -33948,6 +34071,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     vmtracer: vmtracer
                     ptp: Subclass of AvdModel.
                     ip_address: IPv4 address/mask or "dhcp".
+                    ip_address_secondaries: Subclass of AvdList with `str` items.
                     dhcp_client_accept_default_route: Install default-route obtained via DHCP.
                     dhcp_server_ipv4: Enable IPv4 DHCP server.
                     dhcp_server_ipv6: Enable IPv6 DHCP server.
@@ -33972,6 +34096,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ospf_cost: ospf_cost
                     ospf_authentication: ospf_authentication
                     ospf_authentication_key: Encrypted password.
+                    ospf_authentication_key_type: Authentication key type.
                     ospf_message_digest_keys: Subclass of AvdIndexedList with `OspfMessageDigestKeysItem` items. Primary key is `id` (`int`).
                     flow_tracker: Subclass of AvdModel.
                     bgp: Subclass of AvdModel.
@@ -38023,6 +38148,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class PeerGroupsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class Metadata(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"type": {"type": str}}
+                type: str | None
+                """Key only used for documentation or validation purposes."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, type: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Metadata.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            type: Key only used for documentation or validation purposes.
+
+                        """
+
             class AsPath(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -38381,7 +38527,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
-                "type": {"type": str},
+                "metadata": {"type": Metadata},
                 "remote_as": {"type": str},
                 "local_as": {"type": str},
                 "description": {"type": str},
@@ -38420,8 +38566,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             }
             name: str
             """Peer-group name."""
-            type: str | None
-            """Key only used for documentation or validation purposes."""
+            metadata: Metadata
+            """Subclass of AvdModel."""
             remote_as: str | None
             """
             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -38518,7 +38664,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    type: str | None | UndefinedType = Undefined,
+                    metadata: Metadata | UndefinedType = Undefined,
                     remote_as: str | None | UndefinedType = Undefined,
                     local_as: str | None | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
@@ -38563,7 +38709,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: Peer-group name.
-                        type: Key only used for documentation or validation purposes.
+                        metadata: Subclass of AvdModel.
                         remote_as:
                            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                            For asdot notation in
@@ -38658,6 +38804,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             remote_as_replace_out: Replace AS number with local AS number.
                             prepend_own_disabled: Disable prepending own AS number to AS path.
+
+                        """
+
+            class Metadata(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"peer": {"type": str}}
+                peer: str | None
+                """Key only used for documentation or validation purposes."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, peer: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Metadata.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            peer: Key only used for documentation or validation purposes.
 
                         """
 
@@ -38996,7 +39163,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "remote_as": {"type": str},
                 "local_as": {"type": str},
                 "as_path": {"type": AsPath},
-                "peer": {"type": str},
+                "metadata": {"type": Metadata},
                 "description": {"type": str},
                 "route_reflector_client": {"type": bool},
                 "password": {"type": str},
@@ -39051,8 +39218,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
-            peer: str | None
-            """Key only used for documentation or validation purposes."""
+            metadata: Metadata
+            """Subclass of AvdModel."""
             description: str | None
             route_reflector_client: bool | None
             password: str | None
@@ -39132,7 +39299,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     remote_as: str | None | UndefinedType = Undefined,
                     local_as: str | None | UndefinedType = Undefined,
                     as_path: AsPath | UndefinedType = Undefined,
-                    peer: str | None | UndefinedType = Undefined,
+                    metadata: Metadata | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     route_reflector_client: bool | None | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
@@ -39188,7 +39355,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            BGP AS-PATH options.
 
                            Subclass of AvdModel.
-                        peer: Key only used for documentation or validation purposes.
+                        metadata: Subclass of AvdModel.
                         description: description
                         route_reflector_client: route_reflector_client
                         password: password
@@ -39245,10 +39412,31 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class NeighborInterfacesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class Metadata(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"peer": {"type": str}}
+                peer: str | None
+                """Key only used for documentation or validation purposes."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, peer: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Metadata.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            peer: Key only used for documentation or validation purposes.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "remote_as": {"type": str},
-                "peer": {"type": str},
+                "metadata": {"type": Metadata},
                 "peer_group": {"type": str, "default": "Peer-group name"},
                 "description": {"type": str},
                 "peer_filter": {"type": str},
@@ -39262,8 +39450,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
             number.
             """
-            peer: str | None
-            """Key only used for documentation or validation purposes."""
+            metadata: Metadata
+            """Subclass of AvdModel."""
             peer_group: str
             """Default value: `"Peer-group name"`"""
             description: str | None
@@ -39277,7 +39465,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     remote_as: str | None | UndefinedType = Undefined,
-                    peer: str | None | UndefinedType = Undefined,
+                    metadata: Metadata | UndefinedType = Undefined,
                     peer_group: str | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     peer_filter: str | None | UndefinedType = Undefined,
@@ -39295,7 +39483,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            For asdot notation in
                            YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                            number.
-                        peer: Key only used for documentation or validation purposes.
+                        metadata: Subclass of AvdModel.
                         peer_group: peer_group
                         description: description
                         peer_filter: Peer-filter name.
@@ -40071,6 +40259,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class VlanAwareBundlesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class Metadata(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"tenant": {"type": str}, "description": {"type": str}}
+                tenant: str | None
+                """Key only used for documentation or validation purposes."""
+                description: str | None
+                """Key only used for documentation or validation purposes."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, tenant: str | None | UndefinedType = Undefined, description: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Metadata.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            tenant: Key only used for documentation or validation purposes.
+                            description: Key only used for documentation or validation purposes.
+
+                        """
+
             class RdEvpnDomain(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -40260,8 +40472,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
-                "tenant": {"type": str},
-                "description": {"type": str},
+                "metadata": {"type": Metadata},
                 "rd": {"type": str},
                 "rd_evpn_domain": {"type": RdEvpnDomain},
                 "route_targets": {"type": RouteTargets},
@@ -40272,10 +40483,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             }
             name: str
             """VLAN aware bundle name."""
-            tenant: str | None
-            """Key only used for documentation or validation purposes."""
-            description: str | None
-            """Key only used for documentation or validation purposes."""
+            metadata: Metadata
+            """Subclass of AvdModel."""
             rd: str | None
             """Route distinguisher."""
             rd_evpn_domain: RdEvpnDomain
@@ -40300,8 +40509,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    tenant: str | None | UndefinedType = Undefined,
-                    description: str | None | UndefinedType = Undefined,
+                    metadata: Metadata | UndefinedType = Undefined,
                     rd: str | None | UndefinedType = Undefined,
                     rd_evpn_domain: RdEvpnDomain | UndefinedType = Undefined,
                     route_targets: RouteTargets | UndefinedType = Undefined,
@@ -40318,8 +40526,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: VLAN aware bundle name.
-                        tenant: Key only used for documentation or validation purposes.
-                        description: Key only used for documentation or validation purposes.
+                        metadata: Subclass of AvdModel.
                         rd: Route distinguisher.
                         rd_evpn_domain: Subclass of AvdModel.
                         route_targets: Subclass of AvdModel.
@@ -40341,6 +40548,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         class VlansItem(AvdModel):
             """Subclass of AvdModel."""
+
+            class Metadata(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"tenant": {"type": str}}
+                tenant: str | None
+                """Key only used for documentation or validation purposes."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, tenant: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Metadata.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            tenant: Key only used for documentation or validation purposes.
+
+                        """
 
             class RdEvpnDomain(AvdModel):
                 """Subclass of AvdModel."""
@@ -40531,7 +40759,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "id": {"type": int},
-                "tenant": {"type": str},
+                "metadata": {"type": Metadata},
                 "rd": {"type": str},
                 "rd_evpn_domain": {"type": RdEvpnDomain},
                 "route_targets": {"type": RouteTargets},
@@ -40540,8 +40768,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "eos_cli": {"type": str},
             }
             id: int
-            tenant: str | None
-            """Key only used for documentation or validation purposes."""
+            metadata: Metadata
+            """Subclass of AvdModel."""
             rd: str | None
             """Route distinguisher."""
             rd_evpn_domain: RdEvpnDomain
@@ -40564,7 +40792,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     id: int | UndefinedType = Undefined,
-                    tenant: str | None | UndefinedType = Undefined,
+                    metadata: Metadata | UndefinedType = Undefined,
                     rd: str | None | UndefinedType = Undefined,
                     rd_evpn_domain: RdEvpnDomain | UndefinedType = Undefined,
                     route_targets: RouteTargets | UndefinedType = Undefined,
@@ -40580,7 +40808,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         id: id
-                        tenant: Key only used for documentation or validation purposes.
+                        metadata: Subclass of AvdModel.
                         rd: Route distinguisher.
                         rd_evpn_domain: Subclass of AvdModel.
                         route_targets: Subclass of AvdModel.
@@ -59014,6 +59242,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "bfd": {"type": bool},
                 "make_before_break": {"type": bool},
                 "ssm_range": {"type": str},
+                "register_local_interface": {"type": str},
                 "rp_addresses": {"type": RpAddresses},
                 "anycast_rps": {"type": AnycastRps},
             }
@@ -59023,6 +59252,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Enable/Disable Make-Before-Break."""
             ssm_range: str | None
             """IPv4 Prefix associated with SSM."""
+            register_local_interface: str | None
+            """Local interface to use for PIM register messages."""
             rp_addresses: RpAddresses
             """Subclass of AvdList with `RpAddressesItem` items."""
             anycast_rps: AnycastRps
@@ -59036,6 +59267,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     make_before_break: bool | None | UndefinedType = Undefined,
                     ssm_range: str | None | UndefinedType = Undefined,
+                    register_local_interface: str | None | UndefinedType = Undefined,
                     rp_addresses: RpAddresses | UndefinedType = Undefined,
                     anycast_rps: AnycastRps | UndefinedType = Undefined,
                 ) -> None:
@@ -59049,6 +59281,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bfd: Enable/Disable BFD.
                         make_before_break: Enable/Disable Make-Before-Break.
                         ssm_range: IPv4 Prefix associated with SSM.
+                        register_local_interface: Local interface to use for PIM register messages.
                         rp_addresses: Subclass of AvdList with `RpAddressesItem` items.
                         anycast_rps: Subclass of AvdIndexedList with `AnycastRpsItem` items. Primary key is `address` (`str`).
 
@@ -59127,6 +59360,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {
                     "bfd": {"type": bool},
                     "make_before_break": {"type": bool},
+                    "register_local_interface": {"type": str},
                     "rp_addresses": {"type": RpAddresses},
                     "ssm_range": {"type": str},
                 }
@@ -59134,6 +59368,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Enable/Disable BFD."""
                 make_before_break: bool | None
                 """Enable/Disable Make-Before-Break."""
+                register_local_interface: str | None
+                """Local interface to use for PIM register messages."""
                 rp_addresses: RpAddresses
                 """Subclass of AvdList with `RpAddressesItem` items."""
                 ssm_range: str | None
@@ -59150,6 +59386,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         bfd: bool | None | UndefinedType = Undefined,
                         make_before_break: bool | None | UndefinedType = Undefined,
+                        register_local_interface: str | None | UndefinedType = Undefined,
                         rp_addresses: RpAddresses | UndefinedType = Undefined,
                         ssm_range: str | None | UndefinedType = Undefined,
                     ) -> None:
@@ -59162,6 +59399,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             bfd: Enable/Disable BFD.
                             make_before_break: Enable/Disable Make-Before-Break.
+                            register_local_interface: Local interface to use for PIM register messages.
                             rp_addresses: Subclass of AvdList with `RpAddressesItem` items.
                             ssm_range:
                                Standard access list name or use the specific keyword 'standard' as a shortcut to apply
@@ -60967,6 +61205,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             Hostname or ip of remote engine.
             The remote_address and udp_port are used for remote users.
+            A
+            `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
+            and
+            `localized` is not set.
             """
             udp_port: int | None
             """udp_port will not be used if no remote_address is configured."""
@@ -61010,6 +61252,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         remote_address:
                            Hostname or ip of remote engine.
                            The remote_address and udp_port are used for remote users.
+                           A
+                           `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
+                           and
+                           `localized` is not set.
                         udp_port: udp_port will not be used if no remote_address is configured.
                         version: version
                         localized: Engine ID in hexadecimal for localizing auth and/or priv.
@@ -64891,16 +65137,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
+        OspfAuthenticationKeyType: TypeAlias = Literal["7", "8a"]
 
         class OspfMessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
             HashAlgorithm: TypeAlias = Literal["md5", "sha1", "sha256", "sha384", "sha512"]
-            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}}
+            KeyType: TypeAlias = Literal["7", "8a"]
+            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str}, "key": {"type": str}, "key_type": {"type": str, "default": "7"}}
             id: int
             hash_algorithm: HashAlgorithm | None
             key: str | None
             """Encrypted password."""
+            key_type: KeyType
+            """
+            Authentication key type.
+
+            Default value: `"7"`
+            """
 
             if TYPE_CHECKING:
 
@@ -64910,6 +65164,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     id: int | UndefinedType = Undefined,
                     hash_algorithm: HashAlgorithm | None | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
+                    key_type: KeyType | UndefinedType = Undefined,
                 ) -> None:
                     """
                     OspfMessageDigestKeysItem.
@@ -64921,6 +65176,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         id: id
                         hash_algorithm: hash_algorithm
                         key: Encrypted password.
+                        key_type: Authentication key type.
 
                     """
 
@@ -66068,10 +66324,74 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class Tags(AvdList[str]):
-            """Subclass of AvdList with `str` items."""
+        class TrafficPolicy(AvdModel):
+            """Subclass of AvdModel."""
 
-        Tags._item_type = str
+            _fields: ClassVar[dict] = {"input": {"type": str}, "output": {"type": str}}
+            input: str | None
+            """Ingress traffic policy."""
+            output: str | None
+            """Egress traffic policy."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, input: str | None | UndefinedType = Undefined, output: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    TrafficPolicy.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        input: Ingress traffic policy.
+                        output: Egress traffic policy.
+
+                    """
+
+        class Metadata(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Tags(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tags._item_type = str
+
+            _fields: ClassVar[dict] = {"tenant": {"type": str}, "tags": {"type": Tags}, "type": {"type": str}}
+            tenant: str | None
+            """Key only used for documentation or validation purposes."""
+            tags: Tags
+            """
+            Key only used for documentation or validation purposes.
+
+            Subclass of AvdList with `str` items.
+            """
+            type: str | None
+            """Key only used for documentation or validation purposes."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    tenant: str | None | UndefinedType = Undefined,
+                    tags: Tags | UndefinedType = Undefined,
+                    type: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Metadata.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        tenant: Key only used for documentation or validation purposes.
+                        tags:
+                           Key only used for documentation or validation purposes.
+
+                           Subclass of AvdList with `str` items.
+                        type: Key only used for documentation or validation purposes.
+
+                    """
 
         _fields: ClassVar[dict] = {
             "name": {"type": str},
@@ -66124,6 +66444,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ospf_cost": {"type": int},
             "ospf_authentication": {"type": str},
             "ospf_authentication_key": {"type": str},
+            "ospf_authentication_key_type": {"type": str, "default": "7"},
             "ospf_message_digest_keys": {"type": OspfMessageDigestKeys},
             "pim": {"type": Pim},
             "isis_enable": {"type": str},
@@ -66139,11 +66460,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ipv6_attached_host_route_export": {"type": Ipv6AttachedHostRouteExport},
             "bfd": {"type": Bfd},
             "service_policy": {"type": ServicePolicy},
+            "traffic_policy": {"type": TrafficPolicy},
             "ntp_serve": {"type": bool},
             "pvlan_mapping": {"type": str},
-            "tenant": {"type": str},
-            "tags": {"type": Tags},
-            "type": {"type": str},
+            "metadata": {"type": Metadata},
             "eos_cli": {"type": str},
         }
         name: str
@@ -66247,7 +66567,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ospf_cost: int | None
         ospf_authentication: OspfAuthentication | None
         ospf_authentication_key: str | None
-        """Encrypted password used for simple authentication."""
+        """Encrypted password."""
+        ospf_authentication_key_type: OspfAuthenticationKeyType
+        """
+        Authentication key type.
+
+        Default value: `"7"`
+        """
         ospf_message_digest_keys: OspfMessageDigestKeys
         """
         Keys used for message-digest authentication.
@@ -66283,20 +66609,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         service_policy: ServicePolicy
         """Subclass of AvdModel."""
+        traffic_policy: TrafficPolicy
+        """Subclass of AvdModel."""
         ntp_serve: bool | None
         """Enable/disable serving NTP to clients."""
         pvlan_mapping: str | None
         """List of VLANs as string."""
-        tenant: str | None
-        """Key only used for documentation or validation purposes."""
-        tags: Tags
-        """
-        Key only used for documentation or validation purposes.
-
-        Subclass of AvdList with `str` items.
-        """
-        type: str | None
-        """Key only used for documentation or validation purposes."""
+        metadata: Metadata
+        """Subclass of AvdModel."""
         eos_cli: str | None
         """Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration."""
 
@@ -66355,6 +66675,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ospf_cost: int | None | UndefinedType = Undefined,
                 ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
                 ospf_authentication_key: str | None | UndefinedType = Undefined,
+                ospf_authentication_key_type: OspfAuthenticationKeyType | UndefinedType = Undefined,
                 ospf_message_digest_keys: OspfMessageDigestKeys | UndefinedType = Undefined,
                 pim: Pim | UndefinedType = Undefined,
                 isis_enable: str | None | UndefinedType = Undefined,
@@ -66370,11 +66691,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_attached_host_route_export: Ipv6AttachedHostRouteExport | UndefinedType = Undefined,
                 bfd: Bfd | UndefinedType = Undefined,
                 service_policy: ServicePolicy | UndefinedType = Undefined,
+                traffic_policy: TrafficPolicy | UndefinedType = Undefined,
                 ntp_serve: bool | None | UndefinedType = Undefined,
                 pvlan_mapping: str | None | UndefinedType = Undefined,
-                tenant: str | None | UndefinedType = Undefined,
-                tags: Tags | UndefinedType = Undefined,
-                type: str | None | UndefinedType = Undefined,
+                metadata: Metadata | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -66450,7 +66770,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv6_ospf_area: ipv6_ospf_area
                     ospf_cost: ospf_cost
                     ospf_authentication: ospf_authentication
-                    ospf_authentication_key: Encrypted password used for simple authentication.
+                    ospf_authentication_key: Encrypted password.
+                    ospf_authentication_key_type: Authentication key type.
                     ospf_message_digest_keys:
                        Keys used for message-digest authentication.
 
@@ -66474,14 +66795,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv6_attached_host_route_export: Subclass of AvdModel.
                     bfd: Subclass of AvdModel.
                     service_policy: Subclass of AvdModel.
+                    traffic_policy: Subclass of AvdModel.
                     ntp_serve: Enable/disable serving NTP to clients.
                     pvlan_mapping: List of VLANs as string.
-                    tenant: Key only used for documentation or validation purposes.
-                    tags:
-                       Key only used for documentation or validation purposes.
-
-                       Subclass of AvdList with `str` items.
-                    type: Key only used for documentation or validation purposes.
+                    metadata: Subclass of AvdModel.
                     eos_cli: Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
 
                 """

@@ -24,14 +24,12 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPlug
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from pyavd.api._anta import MinimalStructuredConfig
-
 PLUGIN_NAME = "arista.avd.anta_workflow"
 
 try:
     from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, anta_runner
     from pyavd._utils import default, get, strip_empties_from_dict
-    from pyavd.api._anta import AvdCatalogGenerationSettings, InputFactorySettings, get_minimal_structured_configs
+    from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData, InputFactorySettings
     from pyavd.get_device_test_catalog import get_device_test_catalog
 
     HAS_PYAVD = True
@@ -125,7 +123,7 @@ ARGUMENT_SPEC = {
 # Global variables to share data between processes. Since the plugin is forked, these variables are inherited by child processes.
 # TODO: Consider aggregating some of them into a SHARED_VARS dict or use multiprocessing.Manager()
 STRUCTURED_CONFIGS: dict[str, dict[str, Any]] | None = None
-MINIMAL_STRUCTURED_CONFIGS: dict[str, MinimalStructuredConfig] | None = None
+FABRIC_DATA: AvdFabricData | None = None
 PLUGIN_ARGS: dict[str, Any] | None = None
 ANSIBLE_VARS: dict[str, dict[str, Any]] | None = None
 USER_CATALOG: AntaCatalog | None = None
@@ -134,7 +132,7 @@ LOG_QUEUE: Queue = Queue()
 
 class ActionModule(ActionBase):
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
-        global STRUCTURED_CONFIGS, MINIMAL_STRUCTURED_CONFIGS, PLUGIN_ARGS, ANSIBLE_VARS, USER_CATALOG  # noqa: PLW0603
+        global STRUCTURED_CONFIGS, FABRIC_DATA, PLUGIN_ARGS, ANSIBLE_VARS, USER_CATALOG  # noqa: PLW0603
 
         self._supports_check_mode = False
 
@@ -200,7 +198,7 @@ class ActionModule(ActionBase):
             # Load the structured configs and build the minimal structured configs if needed
             if generate_avd_catalogs:
                 STRUCTURED_CONFIGS = load_structured_configs(deployed_devices, structured_config_dir, get(PLUGIN_ARGS, "avd_catalogs.structured_config_suffix"))
-                MINIMAL_STRUCTURED_CONFIGS = get_minimal_structured_configs(STRUCTURED_CONFIGS)
+                FABRIC_DATA = AvdFabricData.from_structured_configs(STRUCTURED_CONFIGS)
 
             with ProcessPoolExecutor(max_workers=max((ansible_forks - 1), 1), mp_context=get_context("fork")) as executor:
                 batch_size = get(PLUGIN_ARGS, "runner.batch_size")
@@ -400,7 +398,7 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
         anta_device = build_anta_device(device)
         inventory.add_device(anta_device)
         # We generate the device's AVD catalog only if structured configs are loaded
-        if STRUCTURED_CONFIGS is not None and MINIMAL_STRUCTURED_CONFIGS is not None:
+        if STRUCTURED_CONFIGS is not None and FABRIC_DATA is not None:
             settings = AvdCatalogGenerationSettings(
                 input_factory_settings=input_factory_settings,
                 output_dir=output_dir,
@@ -409,7 +407,7 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
             catalog = get_device_test_catalog(
                 hostname=device,
                 structured_config=STRUCTURED_CONFIGS[device],
-                minimal_structured_configs=MINIMAL_STRUCTURED_CONFIGS,
+                fabric_data=FABRIC_DATA,
                 settings=settings,
             )
             catalogs.append(catalog)

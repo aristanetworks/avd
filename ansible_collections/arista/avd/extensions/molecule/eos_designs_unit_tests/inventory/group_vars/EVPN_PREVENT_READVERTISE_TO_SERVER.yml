@@ -26,6 +26,16 @@ l3leaf:
       evpn_role: server
       # Test for evpn_role none
     - name: evpn-prevent-readvertise-to-server-4
-      id: 105
-      bgp_as: 65003
+      id: 106
+      bgp_as: 65004
       evpn_role: none
+    # 2nd Route Server in AS 65003 to test possible duplication of the route filtering elements
+    - name: evpn-prevent-readvertise-to-server-5
+      id: 107
+      bgp_as: 65003
+      evpn_role: server
+    # Test filtering out EVPN routes using route-map and as-path access-lists to match route-server's ASN inside AS PATH
+    - name: evpn-prevent-readvertise-to-server-6
+      id: 108
+      bgp_as: 65005
+      evpn_route_servers: [evpn-prevent-readvertise-to-server-2, evpn-prevent-readvertise-to-server-3, evpn-prevent-readvertise-to-server-5]

@@ -352,7 +352,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     bfd: true
@@ -367,7 +368,8 @@ router_bgp:
   neighbors:
   - ip_address: 10.10.10.10
     peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder
+    metadata:
+      peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder_Dps1
   redistribute:
     connected:

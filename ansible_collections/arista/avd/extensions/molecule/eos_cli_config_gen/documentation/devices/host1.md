@@ -521,11 +521,11 @@ ip name-server vrf TEST 2001:db8::2 priority 3
 
 ###### Name Server
 
-| IP Address | VRF | Priority |
-| ---------- | --- | -------- |
-| 1.1.1.1 | default | 0 |
-| 2.2.2.2 | default | 1 |
-| 8.8.8.8 | default | - |
+| VRF | IP Address | Priority |
+| --- | ---------- | -------- |
+| default | 1.1.1.1 | 0 |
+| default | 2.2.2.2 | 1 |
+| default | 8.8.8.8 | - |
 
 ##### mynameserver1
 
@@ -539,15 +539,15 @@ DNS Domain: arista.avd.com
 
 ###### Name Server
 
-| IP Address | VRF | Priority |
-| ---------- | --- | -------- |
-| 1.1.1.1 | default | - |
-| 2.2.2.1 | vrf1 | - |
-| 2.2.2.2 | vrf1 | 1 |
-| 2.2.2.4 | vrf1 | 4 |
-| 2.2.2.6 | b_vrf | 3 |
-| 2.2.2.7 | a_vrf | 3 |
-| 8.8.8.8 | vrf1 | - |
+| VRF | IP Address | Priority |
+| --- | ---------- | -------- |
+| a_vrf | 2.2.2.7 | 3 |
+| b_vrf | 2.2.2.6 | 3 |
+| default | 1.1.1.1 | - |
+| vrf1 | 2.2.2.1 | - |
+| vrf1 | 2.2.2.2 | 1 |
+| vrf1 | 2.2.2.4 | 4 |
+| vrf1 | 8.8.8.8 | - |
 
 ##### mynameserver2
 
@@ -2309,6 +2309,8 @@ mcs client
 | local | 424242424242424242 | - | - |
 | remote | 6172697374615F6970 | 1.1.1.1 | - |
 | remote | DEADBEEFCAFE123456 | 2.2.2.2 | 1337 |
+| remote | 424242424242DEAD | 42.42.42.42 | - |
+| remote | 424242424242DEAD6666 | 42.42.42.42 | 666 |
 
 #### SNMP ACLs
 
@@ -2403,9 +2405,6 @@ snmp-server community <removed> view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
 snmp-server community <removed> ro
 snmp-server group GRP-READ-ONLY v3 priv read v3read
 snmp-server group GRP-READ-WRITE v3 auth read v3read write v3write
-snmp-server user REMOTE-USER-IP-LOCALIZED GRP-REMOTE remote 42.42.42.42 v3 localized DEADBEEFCAFE123456 auth sha <removed>
-snmp-server user REMOTE-USER-IP-ONLY GRP-REMOTE remote 42.42.42.42 v3
-snmp-server user REMOTE-USER-IP-PORT GRP-REMOTE remote 42.42.42.42 udp-port 666 v3
 snmp-server user USER-READ-AUTH-NO-PRIV GRP-READ-ONLY v3 auth sha <removed>
 snmp-server user USER-READ-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3 localized 424242424242424242 auth sha <removed>
 snmp-server user USER-READ-AUTH-PRIV GRP-READ-ONLY v3 auth sha <removed> priv aes <removed>
@@ -2415,12 +2414,17 @@ snmp-server user USER-READ-NO-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3
 snmp-server user USER-WRITE GRP-READ-WRITE v3 auth sha <removed> priv aes <removed>
 snmp-server engineID remote 1.1.1.1 6172697374615F6970
 snmp-server engineID remote 2.2.2.2 udp-port 1337 DEADBEEFCAFE123456
-snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-READ-AUTH-NO-PRIV
-snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-WRITE
+snmp-server engineID remote 42.42.42.42 424242424242DEAD
+snmp-server engineID remote 42.42.42.42 udp-port 666 424242424242DEAD6666
+snmp-server user REMOTE-USER-IP-LOCALIZED GRP-REMOTE remote 42.42.42.42 v3 localized DEADBEEFCAFE123456 auth sha <removed>
+snmp-server user REMOTE-USER-IP-ONLY GRP-REMOTE remote 42.42.42.42 v3
+snmp-server user REMOTE-USER-IP-PORT GRP-REMOTE remote 42.42.42.42 udp-port 666 v3
 snmp-server host 10.6.75.100 vrf MGMT version 3 priv USER-READ-AUTH-PRIV
 snmp-server host 10.6.75.121 vrf MGMT version 1 <removed>
 snmp-server host 10.6.75.121 vrf MGMT version 2c <removed>
 snmp-server host 10.6.75.122 vrf MGMT version 2c <removed>
+snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-READ-AUTH-NO-PRIV
+snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-WRITE
 snmp-server enable traps
 snmp-server enable traps bgp
 no snmp-server enable traps bgp arista-backward-transition
@@ -4829,6 +4833,7 @@ interface Ethernet5
    ip ospf authentication-key 7 <removed>
    ip ospf area 100
    ip ospf message-digest-key 1 sha512 7 <removed>
+   ip ospf message-digest-key 2 sha512 8a <removed>
    pim ipv4 sparse-mode
    pim ipv4 bidirectional
    pim ipv4 border-router
@@ -4860,6 +4865,7 @@ interface Ethernet6
       address-family ipv4 disabled
       locked-address ipv4 enforcement disabled
    no lldp transmit
+   ip ospf authentication-key 8a <removed>
    ptp enable
    ptp announce interval 3
    ptp announce timeout 9
@@ -5972,6 +5978,7 @@ interface Port-Channel5
    l2 mru 8000
    mlag 5
    ntp serve
+   ip ospf authentication-key 8a <removed>
    ptp enable
    ptp mpass
    ptp delay-mechanism e2e
@@ -6123,6 +6130,7 @@ interface Port-Channel18
    ip ospf authentication message-digest
    ip ospf area 0.0.0.12
    ip ospf message-digest-key 55 md5 7 <removed>
+   ip ospf message-digest-key 56 sha512 8a <removed>
 !
 interface Port-Channel20
    description Po_in_mode_access_accepting_tagged_LACP_frames
@@ -6231,6 +6239,7 @@ interface Port-Channel100.102
    encapsulation dot1q vlan 102 inner 110
    vrf C2
    ip address 10.1.2.3/31
+   ip address 10.1.2.5/31 secondary
    logging event storm-control discards
 !
 interface Port-Channel101
@@ -6955,6 +6964,7 @@ interface Vlan25
    description SVI Description
    no shutdown
    ipv6 address 1b11:3a00:22b0:16::16/64
+   ip ospf authentication-key 8a <removed>
    ipv6 virtual-router address 1b11:3a00:22b0:16::14
    ipv6 virtual-router address 1b11:3a00:22b0:16::15
 !
@@ -6965,6 +6975,7 @@ interface Vlan26
    ip ospf authentication message-digest
    ip ospf area 0.0.0.24
    ip ospf message-digest-key 55 md5 7 <removed>
+   ip ospf message-digest-key 56 sha512 8a <removed>
    ipv6 ospf network point-to-point
    ipv6 ospf area 0.0.0.29
 !
@@ -7282,6 +7293,8 @@ interface Vlan1002
    ip address virtual 10.1.2.1/24
 !
 interface Vlan2001
+   traffic-policy input Policy-01
+   traffic-policy output Policy-02
    description SVI Description
    logging event link-status
    vrf Tenant_B
@@ -10672,6 +10685,7 @@ router multicast
 BFD enabled: True
 
 Make-before-break: False
+Register Local Interface: Ethernet1
 
 ##### IP Rendezvous Information
 
@@ -10688,11 +10702,11 @@ Make-before-break: False
 
 ##### IP Sparse Mode VRFs
 
-| VRF Name | SSM Range ACL | BFD Enabled | Make-before-break |
-| -------- | ------------- | ----------- | ----------------- |
-| MCAST_VRF1 | SSM-MCAST | True | False |
-| MCAST_VRF2_ALL_GROUPS | - | False | - |
-| Test_RP_ACL | - | False | True |
+| VRF Name | SSM Range ACL | BFD Enabled | Make-before-break | Register Local Interface |
+| -------- | ------------- | ----------- | ----------------- | ------------------------ |
+| MCAST_VRF1 | SSM-MCAST | True | False | Loopback0 |
+| MCAST_VRF2_ALL_GROUPS | - | False | - | - |
+| Test_RP_ACL | - | False | True | - |
 
 | VRF Name | Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
 | -------- | ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
@@ -10721,6 +10735,7 @@ router pim sparse-mode
       rp address 10.238.1.161 239.12.12.17/32
       rp address 10.238.1.161 access-list RP_ACL3
       anycast-rp 10.38.1.161 10.50.64.16 register-count 15
+      register local-interface Ethernet1
    !
    vrf MCAST_VRF1
       ipv4
@@ -10730,6 +10745,7 @@ router pim sparse-mode
          rp address 10.238.2.161 239.12.22.12/32
          rp address 10.238.2.161 239.12.22.13/32
          rp address 10.238.2.161 239.12.22.14/32
+         register local-interface Loopback0
    !
    vrf MCAST_VRF2_ALL_GROUPS
       ipv4
@@ -11158,9 +11174,9 @@ AS Path Regex Mode is **asn**.
 
 | List Name | Type | Match | Origin |
 | --------- | ---- | ----- | ------ |
-| mylist1 | permit | ^(64512\|645115) | egp |
-| mylist1 | deny | (64513\|64515)$ | any |
-| mylist2 | deny | _64517$ | igp |
+| mylist1 | permit | `^(64512\|645115)` | egp |
+| mylist1 | deny | `(64513\|64515)$` | any |
+| mylist2 | deny | `_64517$` | igp |
 
 #### AS Path Lists Device Configuration
 
@@ -13080,6 +13096,7 @@ Counters: test
 | --------- | -------------------- | --------------------- |
 | Ethernet1 | BLUE-C1-POLICY | BLUE-C2-POLICY |
 | Port-Channel15 | BLUE-C1-POLICY | BLUE-C2-POLICY |
+| Vlan2001 | Policy-01 | Policy-02 |
 
 #### Traffic Policies Device Configuration
 
