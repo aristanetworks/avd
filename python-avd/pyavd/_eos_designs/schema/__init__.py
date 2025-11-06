@@ -6296,6 +6296,37 @@ class EosDesigns(EosDesignsRootModel):
         class LinkTracking(AvdModel):
             """Subclass of AvdModel."""
 
+            class Downlinks(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
+                enabled: bool
+                """Default value: `False`"""
+                group: str | None
+                """
+                Link Tracking Group Name.
+                Group name should be any one of the groups defined under
+                "link_tracking.groups".
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Downlinks.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            group:
+                               Link Tracking Group Name.
+                               Group name should be any one of the groups defined under
+                               "link_tracking.groups".
+
+                        """
+
             class GroupsItem(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -6337,10 +6368,23 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "enabled": {"type": bool, "default": False},
+                "downlinks": {"type": Downlinks},
                 "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
             }
             enabled: bool
             """Default value: `False`"""
+            downlinks: Downlinks
+            """
+            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+            Tracking Group.
+            If enabled and no `group` is specified for downlinks, the downlinks will be linked
+            to the first available tracking group
+            i.e. either the default `LT_GROUP1` or the first from the
+            configured list.
+
+
+            Subclass of AvdModel.
+            """
             groups: Groups
             """
             Link Tracking Groups.
@@ -6356,7 +6400,13 @@ class EosDesigns(EosDesignsRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType = Undefined,
+                    downlinks: Downlinks | UndefinedType = Undefined,
+                    groups: Groups | UndefinedType = Undefined,
+                ) -> None:
                     """
                     LinkTracking.
 
@@ -6365,6 +6415,16 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: enabled
+                        downlinks:
+                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                           Tracking Group.
+                           If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                           to the first available tracking group
+                           i.e. either the default `LT_GROUP1` or the first from the
+                           configured list.
+
+
+                           Subclass of AvdModel.
                         groups:
                            Link Tracking Groups.
                            By default a single group named "LT_GROUP1" is defined with default values.
@@ -11250,6 +11310,37 @@ class EosDesigns(EosDesignsRootModel):
         class LinkTracking(AvdModel):
             """Subclass of AvdModel."""
 
+            class Downlinks(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
+                enabled: bool
+                """Default value: `False`"""
+                group: str | None
+                """
+                Link Tracking Group Name.
+                Group name should be any one of the groups defined under
+                "link_tracking.groups".
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Downlinks.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            group:
+                               Link Tracking Group Name.
+                               Group name should be any one of the groups defined under
+                               "link_tracking.groups".
+
+                        """
+
             class GroupsItem(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -11291,10 +11382,23 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "enabled": {"type": bool, "default": False},
+                "downlinks": {"type": Downlinks},
                 "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
             }
             enabled: bool
             """Default value: `False`"""
+            downlinks: Downlinks
+            """
+            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+            Tracking Group.
+            If enabled and no `group` is specified for downlinks, the downlinks will be linked
+            to the first available tracking group
+            i.e. either the default `LT_GROUP1` or the first from the
+            configured list.
+
+
+            Subclass of AvdModel.
+            """
             groups: Groups
             """
             Link Tracking Groups.
@@ -11310,7 +11414,13 @@ class EosDesigns(EosDesignsRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType = Undefined,
+                    downlinks: Downlinks | UndefinedType = Undefined,
+                    groups: Groups | UndefinedType = Undefined,
+                ) -> None:
                     """
                     LinkTracking.
 
@@ -11319,6 +11429,16 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: enabled
+                        downlinks:
+                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                           Tracking Group.
+                           If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                           to the first available tracking group
+                           i.e. either the default `LT_GROUP1` or the first from the
+                           configured list.
+
+
+                           Subclass of AvdModel.
                         groups:
                            Link Tracking Groups.
                            By default a single group named "LT_GROUP1" is defined with default values.

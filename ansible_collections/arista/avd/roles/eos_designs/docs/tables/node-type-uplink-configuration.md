@@ -177,6 +177,9 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "device_profiles.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "device_profiles.[].link_tracking.downlinks") | Dictionary |  |  |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].link_tracking.downlinks.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "device_profiles.[].link_tracking.downlinks.group") | String |  |  |  | Link Tracking Group Name.<br>Group name should be any one of the groups defined under "link_tracking.groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "device_profiles.[].link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "device_profiles.[].link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
@@ -218,6 +221,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].downlink_pools.[].downlink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "devices.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "devices.[].link_tracking.downlinks") | Dictionary |  |  |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].link_tracking.downlinks.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "devices.[].link_tracking.downlinks.group") | String |  |  |  | Link Tracking Group Name.<br>Group name should be any one of the groups defined under "link_tracking.groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "devices.[].link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "devices.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "devices.[].link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
@@ -855,6 +861,16 @@
         link_tracking:
           enabled: <bool; default=False>
 
+          # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
+          # If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
+          # i.e. either the default `LT_GROUP1` or the first from the configured list.
+          downlinks:
+            enabled: <bool; default=False>
+
+            # Link Tracking Group Name.
+            # Group name should be any one of the groups defined under "link_tracking.groups".
+            group: <str>
+
           # Link Tracking Groups.
           # By default a single group named "LT_GROUP1" is defined with default values.
           # Any groups defined under "groups" will replace the default.
@@ -999,6 +1015,16 @@
         # Useful in EVPN multhoming designs.
         link_tracking:
           enabled: <bool; default=False>
+
+          # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
+          # If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
+          # i.e. either the default `LT_GROUP1` or the first from the configured list.
+          downlinks:
+            enabled: <bool; default=False>
+
+            # Link Tracking Group Name.
+            # Group name should be any one of the groups defined under "link_tracking.groups".
+            group: <str>
 
           # Link Tracking Groups.
           # By default a single group named "LT_GROUP1" is defined with default values.
