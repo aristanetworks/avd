@@ -7949,7 +7949,6 @@ keys:
           type: bool
         entries:
           type: list
-          required: true
           items:
             type: dict
             keys:
