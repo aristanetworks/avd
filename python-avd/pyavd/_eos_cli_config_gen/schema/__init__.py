@@ -23347,7 +23347,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "min_fabric_cards": {"type": int},
                 "transceiver_manufacturers": {
                     "type": TransceiverManufacturers,
-                    "default": lambda cls: coerce_type(["Arastra, Inc.", "Arista Networks"], target_type=cls),
+                    "default": lambda cls: coerce_type(["Arista Networks", "Arastra, Inc."], target_type=cls),
                 },
             }
             min_power_supplies: int | None
@@ -23366,7 +23366,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdList with `str` items.
 
-            Default value: `lambda cls: coerce_type(["Arastra, Inc.", "Arista Networks"], target_type=cls)`
+            Default value: `lambda cls: coerce_type(["Arista Networks", "Arastra, Inc."], target_type=cls)`
             """
 
             if TYPE_CHECKING:
@@ -24611,8 +24611,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         hardware_requirements: HardwareRequirements
         """
         Defines the minimum hardware specifications required for the device.
-        Used for documentation and
-        validation by the `anta_runner` role.
+        Used for validation by the
+        `anta_runner` role.
 
         Subclass of AvdModel.
         """
@@ -24675,8 +24675,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        'cv_deploy' role.
                     hardware_requirements:
                        Defines the minimum hardware specifications required for the device.
-                       Used for documentation and
-                       validation by the `anta_runner` role.
+                       Used for validation by the
+                       `anta_runner` role.
 
                        Subclass of AvdModel.
                     cv_tags: Subclass of AvdModel.

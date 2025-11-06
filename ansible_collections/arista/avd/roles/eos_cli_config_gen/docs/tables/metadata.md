@@ -16,7 +16,7 @@
     | [<samp>&nbsp;&nbsp;dc_name</samp>](## "metadata.dc_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;fabric_name</samp>](## "metadata.fabric_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;serial_number</samp>](## "metadata.serial_number") | String |  |  |  | Serial Number of the device.<br>Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role. |
-    | [<samp>&nbsp;&nbsp;hardware_requirements</samp>](## "metadata.hardware_requirements") | Dictionary |  |  |  | Defines the minimum hardware specifications required for the device.<br>Used for documentation and validation by the `anta_runner` role. |
+    | [<samp>&nbsp;&nbsp;hardware_requirements</samp>](## "metadata.hardware_requirements") | Dictionary |  |  |  | Defines the minimum hardware specifications required for the device.<br>Used for validation by the `anta_runner` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "metadata.hardware_requirements.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_fans</samp>](## "metadata.hardware_requirements.min_fans") | Integer |  |  |  | Minimum number of fans required for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "metadata.hardware_requirements.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. |
@@ -163,7 +163,7 @@
       serial_number: <str>
 
       # Defines the minimum hardware specifications required for the device.
-      # Used for documentation and validation by the `anta_runner` role.
+      # Used for validation by the `anta_runner` role.
       hardware_requirements:
 
         # Minimum number of power supplies required for the device.
@@ -330,6 +330,6 @@
 
         ```yaml
         transceiver_manufacturers:
-        - Arastra, Inc.
         - Arista Networks
+        - Arastra, Inc.
         ```

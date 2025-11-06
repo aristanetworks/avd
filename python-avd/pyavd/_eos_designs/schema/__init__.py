@@ -25686,8 +25686,8 @@ class EosDesigns(EosDesignsRootModel):
         validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
         """
         Defines the minimum hardware specifications required for the device.
-        Used for documentation and
-        validation by the `anta_runner` role.
+        Used for validation by the
+        `anta_runner` role.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -25757,8 +25757,8 @@ class EosDesigns(EosDesignsRootModel):
                        of AvdModel.
                     validate_hardware_inventory:
                        Defines the minimum hardware specifications required for the device.
-                       Used for documentation and
-                       validation by the `anta_runner` role.
+                       Used for validation by the
+                       `anta_runner` role.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -26461,8 +26461,8 @@ class EosDesigns(EosDesignsRootModel):
         validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
         """
         Defines the minimum hardware specifications required for the device.
-        Used for documentation and
-        validation by the `anta_runner` role.
+        Used for validation by the
+        `anta_runner` role.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -26532,8 +26532,8 @@ class EosDesigns(EosDesignsRootModel):
                        of AvdModel.
                     validate_hardware_inventory:
                        Defines the minimum hardware specifications required for the device.
-                       Used for documentation and
-                       validation by the `anta_runner` role.
+                       Used for validation by the
+                       `anta_runner` role.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
