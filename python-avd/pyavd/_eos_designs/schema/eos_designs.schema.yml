@@ -269,24 +269,10 @@ keys:
     documentation_options:
       table: role-settings
     type: bool
-    default: false
-    description: 'PREVIEW: This option is marked as "preview", while we refactor the
-      code to conform to the described behavior.
-
-      When this is enabled, the generation of Structured Config in `eos_designs` will
-      prevent duplicate objects generated
-
-      by different input models. This will also improve performance since `eos_designs`
-      will not maintain separate copied of the Structured Configuration.
-
-      As an example, if you define an Ethernet interface under `l3_edge` and use the
-      same interface for connectivity under `servers`:
-
-      - With this option disabled (default), AVD will merge these configurations together
-      for the interface and not raise an error.
-
-      - With this option enabled, AVD will raise an error about duplicate interface
-      definitions.'
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
   avd_eos_designs_structured_config:
     documentation_options:
       table: role-settings
@@ -1794,6 +1780,79 @@ keys:
       remove_in_version: 6.0.0
       url: https://avd.arista.com/6.x/docs/porting-guides/6.x.x.html#removal-of-designtype
     type: dict
+  device_profile:
+    type: str
+    documentation_options:
+      table: devices
+    description: 'PREVIEW - This datamodel is still under development and may change
+      or get removed at any time.
+
+      Inherit settings from a device profile defined under `device_profiles`.
+
+      If the device is defined under `devices` it is recommended to set the `profile`
+      there instead.
+
+      Max two levels of profile inheritance: device -> profile -> parent_profile'
+  device_profiles:
+    type: list
+    primary_key: name
+    description: PREVIEW - This datamodel is still under development and may change
+      or get removed at any time.
+    documentation_options:
+      table: devices
+    items:
+      $ref: eos_designs#/$defs/node_type/keys/defaults
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Profile Name
+        parent_profile:
+          type: str
+          description: 'Inherit settings from a parent profile defined under `device_profiles`.
+
+            Max two levels of profile inheritance: device -> profile -> parent_profile'
+        type:
+          type: str
+          description: 'Set the type of the device as defined under `node_type_keys`.
+
+            This takes precedence over the global `type` key.'
+        mlag_group:
+          type: str
+          description: 'Name of MLAG group. Exactly two devices must share the same
+            mlag_group.
+
+            The group is used for creating MLAG Pairs, for port-channel descriptions
+            on peers and for MLAG domain-id (unless mlag_domain_id is set).'
+  devices:
+    $ref: eos_designs#/$defs/node_type/keys/nodes
+    documentation_options:
+      table: devices
+    description: PREVIEW - This datamodel is still under development and may change
+      or get removed at any time.
+    type: list
+    items:
+      type: dict
+      keys:
+        profile:
+          type: str
+          description: 'Inherit settings from a profile defined under `device_profiles`.
+
+            Max two levels of profile inheritance: device -> profile -> parent_profile
+
+            This takes precedence over the global `device_profile` key.'
+        type:
+          type: str
+          description: 'Set the type of the device as defined under `node_type_keys`.
+
+            This takes precedence over the global `type` key.'
+        mlag_group:
+          type: str
+          description: 'Name of MLAG group. Exactly two devices must share the same
+            mlag_group.
+
+            The group is used for creating MLAG Pairs, for port-channel descriptions
+            on peers and for MLAG domain-id (unless mlag_domain_id is set).'
   digital_twin:
     documentation_options:
       table: digital-twin-configuration
@@ -2098,8 +2157,11 @@ keys:
   evpn_prevent_readvertise_to_server:
     documentation_options:
       table: evpn-settings
-    description: 'Configure route-map on eBGP sessions towards route-servers, where
-      prefixes with the peer''s ASN in the AS Path are filtered away.
+    description: 'Prevent sending EVPN BGP updates to the route-server if they came
+      from or passed through the route-server already.
+
+      Refer to `evpn_prevent_readvertise_to_server_mode` to control which configuration
+      style to use.
 
       This is very useful in large-scale networks, where convergence will be quicker
       by not returning all updates received
@@ -2110,6 +2172,28 @@ keys:
       '
     type: bool
     default: false
+  evpn_prevent_readvertise_to_server_mode:
+    documentation_options:
+      table: evpn-settings
+    description: '`evpn_prevent_readvertise_to_server_mode` controls the method of
+      identifying EVPN routes that should not be advertised to the EVPN route-servers.
+
+      Only used when `evpn_prevent_readvertise_to_server` is set to `true`.
+
+      `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers
+      which filter out BGP updates learned directly from the ASN of the route-server.
+      This mode will still allow routes learned via any other peer, even if they have
+      the route-server''s ASN in the AS-path.
+
+      `as_path_acl` mode configures an outbound route-map and as-path access-list
+      which filters out BGP updates with the route-server ASN anywhere in the AS-path.
+
+      '
+    type: str
+    valid_values:
+    - source_peer_asn
+    - as_path_acl
+    default: source_peer_asn
   evpn_short_esi_prefix:
     documentation_options:
       table: evpn-settings
@@ -3097,6 +3181,9 @@ keys:
       level:
         type: list
         $ref: eos_cli_config_gen#/keys/logging/keys/level
+      validate_no_errors_period:
+        type: int
+        $ref: eos_cli_config_gen#/keys/metadata/keys/validate_no_errors_period
   mac_address_table:
     documentation_options:
       table: system-settings
@@ -4428,6 +4515,18 @@ keys:
             '
           min: 68
           max: 65535
+        kernel_ecmp_cli:
+          type: bool
+          default: true
+          description: 'Use EOS CLI to configure kernel forwarding ECMP programming.
+
+            For EOS kernel forwarding, ECMP programming can be enabled in two different
+            ways, depending on the EOS version.
+
+            - For newer EOS versions (starting 4.33.2) use the proper CLI.
+
+            - For older EOS versions use an agent environment variable. Changing this
+            requires restarting the KernelFib agent.'
         feature_support:
           type: dict
           keys:
@@ -6463,6 +6562,10 @@ keys:
     documentation_options:
       table: wan-settings
     default: false
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
     description: 'For EOS kernel forwarding, ECMP programming can be enabled in two
       different ways depending on the EOS version.
 

@@ -107,6 +107,56 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "<node_type_keys.key>.nodes.[].campus_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "<node_type_keys.key>.nodes.[].campus_access_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "<node_type_keys.key>.nodes.[].cv_tags_topology_type") | String |  |  |  | Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf". |
+    | [<samp>device_profiles</samp>](## "device_profiles") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "device_profiles.[].id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "device_profiles.[].platform") | String |  |  |  | Arista platform family. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "device_profiles.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "device_profiles.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "device_profiles.[].serial_number") | String |  |  |  | Set to the Serial Number of the device.<br>Only used for documentation purpose in the fabric documentation and part of the structured_config.<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "device_profiles.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "device_profiles.[].mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "device_profiles.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "device_profiles.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "device_profiles.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "device_profiles.[].mgmt_interface") | String |  |  |  | Management Interface Name.<br>Default -> platform_management_interface -> mgmt_interface -> "Management1".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lacp_port_id_range</samp>](## "device_profiles.[].lacp_port_id_range") | Dictionary |  |  |  | This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".<br>Unique LACP port-id ranges are recommended for EVPN Multihoming designs.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].lacp_port_id_range.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "device_profiles.[].lacp_port_id_range.size") | Integer |  | `128` |  | Recommended size > = number of ports in the switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset</samp>](## "device_profiles.[].lacp_port_id_range.offset") | Integer |  | `0` |  | Offset is used to avoid overlapping port-id ranges of different switches.<br>Useful when a "connected-endpoint" is connected to switches in different "node_groups".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;always_configure_ip_routing</samp>](## "device_profiles.[].always_configure_ip_routing") | Boolean |  | `False` |  | Force configuration of "ip routing" even on L2 devices.<br>Use this to retain behavior of AVD versions below 4.0.0.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "device_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "device_profiles.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker_type</samp>](## "device_profiles.[].flow_tracker_type") | String |  |  | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the flow tracker type.<br>Override the `default_flow_tracker_type`` set at the `node_type_key` level.<br>`default_flow_tracker_type` default value is `sampled`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "device_profiles.[].campus") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "device_profiles.[].campus_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "device_profiles.[].campus_access_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "device_profiles.[].cv_tags_topology_type") | String |  |  |  | Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf". |
+    | [<samp>devices</samp>](## "devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "devices.[].id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "devices.[].platform") | String |  |  |  | Arista platform family. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "devices.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "devices.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "devices.[].serial_number") | String |  |  |  | Set to the Serial Number of the device.<br>Only used for documentation purpose in the fabric documentation and part of the structured_config.<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "devices.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "devices.[].mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "devices.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "devices.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "devices.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "devices.[].mgmt_interface") | String |  |  |  | Management Interface Name.<br>Default -> platform_management_interface -> mgmt_interface -> "Management1".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lacp_port_id_range</samp>](## "devices.[].lacp_port_id_range") | Dictionary |  |  |  | This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".<br>Unique LACP port-id ranges are recommended for EVPN Multihoming designs.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].lacp_port_id_range.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "devices.[].lacp_port_id_range.size") | Integer |  | `128` |  | Recommended size > = number of ports in the switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset</samp>](## "devices.[].lacp_port_id_range.offset") | Integer |  | `0` |  | Offset is used to avoid overlapping port-id ranges of different switches.<br>Useful when a "connected-endpoint" is connected to switches in different "node_groups".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;always_configure_ip_routing</samp>](## "devices.[].always_configure_ip_routing") | Boolean |  | `False` |  | Force configuration of "ip routing" even on L2 devices.<br>Use this to retain behavior of AVD versions below 4.0.0.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "devices.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "devices.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker_type</samp>](## "devices.[].flow_tracker_type") | String |  |  | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the flow tracker type.<br>Override the `default_flow_tracker_type`` set at the `node_type_key` level.<br>`default_flow_tracker_type` default value is `sampled`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "devices.[].campus") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "devices.[].campus_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "devices.[].campus_access_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "devices.[].cv_tags_topology_type") | String |  |  |  | Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf". |
 
 === "YAML"
 
@@ -462,4 +512,180 @@
 
           # Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
           cv_tags_topology_type: <str>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    device_profiles:
+
+        # Profile Name
+      - name: <str; required; unique>
+
+        # Unique identifier used for IP addressing and other algorithms.
+        id: <int>
+
+        # Arista platform family.
+        platform: <str>
+
+        # Leverage to document management interface mac address.
+        mac_address: <str>
+
+        # System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".
+        # Set to the same MAC address as available in "show version" on the device.
+        # "system_mac_address" can also be set directly as a hostvar.
+        # If both are set, the setting under node type settings takes precedence.
+        system_mac_address: <str>
+
+        # Set to the Serial Number of the device.
+        # Only used for documentation purpose in the fabric documentation and part of the structured_config.
+        # "serial_number" can also be set directly as a hostvar.
+        # If both are set, the setting under node type settings takes precedence.
+        serial_number: <str>
+
+        # Rack that the switch is located in (only used in snmp_settings location).
+        rack: <str>
+
+        # Node management interface IPv4 address.
+        mgmt_ip: <str>
+
+        # This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
+        mgmt_gateway: <str>
+
+        # Node management interface IPv6 address.
+        ipv6_mgmt_ip: <str>
+
+        # This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.
+        ipv6_mgmt_gateway: <str>
+
+        # Management Interface Name.
+        # Default -> platform_management_interface -> mgmt_interface -> "Management1".
+        mgmt_interface: <str>
+
+        # This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".
+        # Unique LACP port-id ranges are recommended for EVPN Multihoming designs.
+        lacp_port_id_range:
+          enabled: <bool; default=False>
+
+          # Recommended size > = number of ports in the switch.
+          size: <int; default=128>
+
+          # Offset is used to avoid overlapping port-id ranges of different switches.
+          # Useful when a "connected-endpoint" is connected to switches in different "node_groups".
+          offset: <int; default=0>
+
+        # Force configuration of "ip routing" even on L2 devices.
+        # Use this to retain behavior of AVD versions below 4.0.0.
+        always_configure_ip_routing: <bool; default=False>
+
+        # EOS CLI rendered directly on the root level of the final EOS configuration.
+        raw_eos_cli: <str>
+
+        # Custom structured config for eos_cli_config_gen.
+        structured_config: <dict>
+
+        # Set the flow tracker type.
+        # Override the `default_flow_tracker_type`` set at the `node_type_key` level.
+        # `default_flow_tracker_type` default value is `sampled`.
+        flow_tracker_type: <str; "sampled" | "hardware">
+
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        # Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+        campus: <str>
+
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        # Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+        campus_pod: <str>
+
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        # Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+        campus_access_pod: <str>
+
+        # Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
+        cv_tags_topology_type: <str>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    devices:
+
+        # The Node Name is used as "hostname".
+        name: <str; required; unique>
+
+        # Unique identifier used for IP addressing and other algorithms.
+        id: <int>
+
+        # Arista platform family.
+        platform: <str>
+
+        # Leverage to document management interface mac address.
+        mac_address: <str>
+
+        # System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".
+        # Set to the same MAC address as available in "show version" on the device.
+        # "system_mac_address" can also be set directly as a hostvar.
+        # If both are set, the setting under node type settings takes precedence.
+        system_mac_address: <str>
+
+        # Set to the Serial Number of the device.
+        # Only used for documentation purpose in the fabric documentation and part of the structured_config.
+        # "serial_number" can also be set directly as a hostvar.
+        # If both are set, the setting under node type settings takes precedence.
+        serial_number: <str>
+
+        # Rack that the switch is located in (only used in snmp_settings location).
+        rack: <str>
+
+        # Node management interface IPv4 address.
+        mgmt_ip: <str>
+
+        # This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
+        mgmt_gateway: <str>
+
+        # Node management interface IPv6 address.
+        ipv6_mgmt_ip: <str>
+
+        # This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.
+        ipv6_mgmt_gateway: <str>
+
+        # Management Interface Name.
+        # Default -> platform_management_interface -> mgmt_interface -> "Management1".
+        mgmt_interface: <str>
+
+        # This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".
+        # Unique LACP port-id ranges are recommended for EVPN Multihoming designs.
+        lacp_port_id_range:
+          enabled: <bool; default=False>
+
+          # Recommended size > = number of ports in the switch.
+          size: <int; default=128>
+
+          # Offset is used to avoid overlapping port-id ranges of different switches.
+          # Useful when a "connected-endpoint" is connected to switches in different "node_groups".
+          offset: <int; default=0>
+
+        # Force configuration of "ip routing" even on L2 devices.
+        # Use this to retain behavior of AVD versions below 4.0.0.
+        always_configure_ip_routing: <bool; default=False>
+
+        # EOS CLI rendered directly on the root level of the final EOS configuration.
+        raw_eos_cli: <str>
+
+        # Custom structured config for eos_cli_config_gen.
+        structured_config: <dict>
+
+        # Set the flow tracker type.
+        # Override the `default_flow_tracker_type`` set at the `node_type_key` level.
+        # `default_flow_tracker_type` default value is `sampled`.
+        flow_tracker_type: <str; "sampled" | "hardware">
+
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        # Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+        campus: <str>
+
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        # Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+        campus_pod: <str>
+
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        # Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+        campus_access_pod: <str>
+
+        # Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
+        cv_tags_topology_type: <str>
     ```

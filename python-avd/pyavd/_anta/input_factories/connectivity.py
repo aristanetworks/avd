@@ -59,7 +59,7 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
             # LLDP neighbor is the FQDN when dns domain is set in EOS
             fqdn = (
                 f"{intf.metadata.peer}.{dns_domain}"
-                if (dns_domain := self.minimal_structured_configs[intf.metadata.peer].dns_domain) is not None
+                if (dns_domain := self.fabric_data.devices[intf.metadata.peer].dns_domain) is not None
                 else intf.metadata.peer
             )
 
@@ -135,7 +135,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                 self.logger_adapter.debug(LogMessage.INTERFACE_UNNUMBERED, interface=intf.name)
                 continue
 
-            if (peer_interface_ip := self.get_interface_ip(intf.metadata.peer, intf.metadata.peer_interface, intf.name)) is None:
+            if (peer_interface_ip := self.get_peer_interface_ip(intf.metadata.peer, intf.metadata.peer_interface, intf.name)) is None:
                 continue
 
             if self.is_peer_interface_shutdown(intf.metadata.peer, intf.metadata.peer_interface, intf.name) is True:
