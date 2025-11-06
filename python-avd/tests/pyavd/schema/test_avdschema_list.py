@@ -87,3 +87,21 @@ def test_generated_schema(
     else:
         # No errors expected.
         assert not validation_errors
+
+
+def test_list_allowing_duplicate_primary_keys() -> None:
+    schema = {
+        "type": "list",
+        "primary_key": "pri",
+        "allow_duplicate_primary_key": True,
+        "items": {
+            "type": "dict",
+            "keys": {
+                "pri": {"type": "int"},
+            },
+        },
+    }
+    avdschema = AvdSchema(schema)
+    data = [{"pri": 123}, {"pri": 123}]
+    validation_errors = list(avdschema.validate(data))
+    assert len(validation_errors) == 0

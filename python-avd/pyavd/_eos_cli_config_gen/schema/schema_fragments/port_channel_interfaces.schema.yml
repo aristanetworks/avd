@@ -619,6 +619,11 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask or "dhcp".
+        ip_address_secondaries:
+          type: list
+          items:
+            type: str
+            description: IPv4 address/mask.
         dhcp_client_accept_default_route:
           type: bool
           description: Install default-route obtained via DHCP.
@@ -755,6 +760,15 @@ keys:
         ospf_authentication_key:
           type: str
           description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+            - int
+          description: Authentication key type.
+          default: "7"
+          valid_values:
+            - "7"
+            - "8a"
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -776,6 +790,15 @@ keys:
               key:
                 type: str
                 description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                  - int
+                description: Authentication key type.
+                default: "7"
+                valid_values:
+                  - "7"
+                  - "8a"
         flow_tracker:
           type: dict
           keys:
@@ -846,15 +869,21 @@ keys:
               min: 1
               max: 3
               description: IGMP version on IGMP host-proxy interface.
-        peer:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_interface:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_type:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          keys:
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_interface:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_type:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_key:
+              type: str
+              description: Key only used for documentation or validation purposes.
         sflow:
           type: dict
           keys:

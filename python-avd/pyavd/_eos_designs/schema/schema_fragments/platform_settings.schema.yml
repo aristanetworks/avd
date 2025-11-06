@@ -14,7 +14,7 @@ keys:
     description:
       Custom Platform settings to override the default `platform_settings`.
       This list will be prepended to the list of `platform_settings`.
-      The first entry containing `platforms` matching the `platform` node setting will be chosen.
+      The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.
       If no matches are found, the first entry containing a platform `default` will be chosen.
     type: list
   platform_settings:
@@ -23,7 +23,7 @@ keys:
       table: platform-settings
     description:
       Platform settings.
-      The first entry containing `platforms` matching the `platform` node setting will be chosen.
+      The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.
       If no matches are found, the first entry containing a platform `default` will be chosen.
       The default values will be overridden if `platform_settings` is defined.
       If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.
@@ -81,6 +81,14 @@ keys:
             <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
           min: 68
           max: 65535
+        kernel_ecmp_cli:
+          type: bool
+          default: true
+          description: |-
+            Use EOS CLI to configure kernel forwarding ECMP programming.
+            For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.
+            - For newer EOS versions (starting 4.33.2) use the proper CLI.
+            - For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent.
         feature_support:
           type: dict
           keys:

@@ -528,7 +528,7 @@
           connected_endpoints: true
           mlag_support: true
           network_services:
-            l2: true,
+            l2: true
           underlay_router: false
           uplink_type: port-channel
           cv_tags_topology_type: leaf
@@ -550,22 +550,22 @@
           cv_tags_topology_type: spine
         - key: wan_router
           type: wan_router
-          default_evpn_role: client
+          default_evpn_role: none
           default_wan_role: client
           default_underlay_routing_protocol: none
-          default_overlay_routing_protocol: ibgp
+          default_overlay_routing_protocol: none
           default_flow_tracker_type: hardware
           vtep: true
           network_services:
             l3: true
         - key: wan_rr
           type: wan_rr
-          default_evpn_role: server
+          default_evpn_role: none
           default_wan_role: server
           default_underlay_routing_protocol: none
-          default_overlay_routing_protocol: ibgp
+          default_overlay_routing_protocol: none
           default_flow_tracker_type: hardware
           vtep: true
           network_services:
-            l3: true,
+            l3: true
         ```

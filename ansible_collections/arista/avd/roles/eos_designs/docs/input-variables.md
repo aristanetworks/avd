@@ -428,6 +428,13 @@ mlag_l3_ip_primary & mlag_l3_ip_secondary:
 - `{{ switch_data.combined.mlag_peer_l3_ipv4_pool }}`
 - All group/hostvars
 
+mlag_ibgp_peering_ip_primary & mlag_ibgp_peering_ip_secondary:
+
+- `{{ mlag_primary_id }}`
+- `{{ mlag_secondary_id }}`
+- `{{ vrf.mlag_ibgp_peering_ipv4_pool }}`
+- All group/hostvars
+
 p2p_uplinks_ip & p2p_uplinks_peer_ip:
 
 - `{{ switch.uplink_ipv4_pool }}`
@@ -451,13 +458,7 @@ vtep_ip:
 - `{{ loopback_ipv4_offset }}`
 - All group/hostvars
 
-While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
-the values are not part of the officially supported data models, and may change without notice.
-
 ### Context for interface_descriptions templates
-
-!!! warning  "Caveat"
-    In AVD 4.x, it is not possible to completely overwrite the description of the subinterfaces when `uplink_type` is set to `p2p-vrfs`. The string `_vrf_<VRF>` is always appended to the description.
 
 To help format the custom interface descriptions, the following contextual variables are available to the custom templates:
 
@@ -516,9 +517,6 @@ vtep_loopback_interface:
 
 - `{{ vtep_loopback_description }}`
 - All group/hostvars
-
-While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
-the values are not part of the officially supported data models and may change without notice.
 
 ## Type setting
 
@@ -1622,7 +1620,7 @@ This feature is intended to be used for the integration of AVD and CloudVision S
 
 The topology should be pulled from the CloudVision "Inventory and Topology Studio" inputs. Device IDs must be translated to hostnames.
 
-This feature currently provides the following configurations based on the given CloudVision topology and `default_interfaces`:
+This feature currently provides the following configurations based on the given CloudVision topology:
 
 - `uplink_switches`
 - `uplink_interfaces`
@@ -1632,18 +1630,28 @@ This feature currently provides the following configurations based on the given 
 - `mgmt_interface` (if interface "ManagementX" is found in the list)
 
 !!! note
-    Any derived configuration can be overridden by setting the key manually.
-    Even keys set under node type `defaults` will take precedence over these derived configurations.
+    `cv_topology` can not be combined with manually set `uplink_switches`, `uplink_interfaces`, `uplink_switch_interfaces` and `mlag_interfaces`.
 
     When using parallel links between the same devices for L3 uplinks it is important to set
     `max_uplink_switches` and `max_parallel_uplinks` to ensure consistent IP addressing.
 
 ??? example "`cv_topology` example"
-    To use this feature set `default_interfaces` according to the intended design (see [default_interfaces](#default-interface-settings) for details) and set `use_cv_topology` to `true`.
+    To use this feature set `cv_topology_levels` according to the intended design and set `use_cv_topology` to `true`.
     Provide a full topology under `cv_topology` like this example:
 
     ```yaml
     use_cv_topology: true
+    cv_topology_levels:
+      - type: super-spine
+        level: 1
+      - type: spine
+        level: 2
+      - type: l3leaf
+        level: 3
+      - type: l2leaf
+        level: 4
+      - type: overlay-controller
+        level: 5
     cv_topology:
       - hostname: s2-spine2
         platform: vEOS-LAB
@@ -1775,4 +1783,10 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/digital-twin-config
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-digital-twin-configuration.md
+--8<--
+
+### PREVIEW - New devices models
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/devices.md
 --8<--

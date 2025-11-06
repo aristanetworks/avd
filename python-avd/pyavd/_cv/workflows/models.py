@@ -11,6 +11,7 @@ from uuid import NAMESPACE_DNS, uuid4, uuid5
 
 from pyavd._cv.client.configlet import ASSIGNMENT_MATCH_POLICY_MAP
 from pyavd._cv.client.exceptions import CVManifestError
+from pyavd._cv.client.models import CVTag, CVTagAssignment
 
 AVD_NAMESPACE = uuid5(NAMESPACE_DNS, "avd.arista.com")
 AVD_ENTITY_PREFIX = "avd_"
@@ -25,7 +26,11 @@ class CloudVision:
     token: str | None
     username: str | None
     password: str | None
-    verify_certs: bool = True
+    verify_certs: bool
+    proxy_host: str | None
+    proxy_port: int | None
+    proxy_username: str | None
+    proxy_password: str | None
 
 
 @dataclass
@@ -60,6 +65,27 @@ class CVDeviceTag:
     value: str
     device: CVDevice | None = None
 
+    def as_cv_tag(self) -> CVTag:
+        """Return the CVTag model for this tag."""
+        return CVTag(
+            element_type="device",
+            label=self.label,
+            value=self.value,
+        )
+
+    def as_cv_tag_assignment(self) -> CVTagAssignment | None:
+        """Return the CVTagAssignment model for this tag."""
+        if self.device is None or self.device.serial_number is None:
+            return None
+
+        return CVTagAssignment(
+            element_type="device",
+            label=self.label,
+            value=self.value,
+            device_id=self.device.serial_number,
+            interface_id=None,
+        )
+
 
 @dataclass
 class CVInterfaceTag:
@@ -68,6 +94,27 @@ class CVInterfaceTag:
     device: CVDevice | None = None
     interface: str | None = None
     """Must be set if device is set"""
+
+    def as_cv_tag(self) -> CVTag:
+        """Return the CVTag model for this tag."""
+        return CVTag(
+            element_type="interface",
+            label=self.label,
+            value=self.value,
+        )
+
+    def as_cv_tag_assignment(self) -> CVTagAssignment | None:
+        """Return the CVTagAssignment model for this tag."""
+        if self.device is None or self.device.serial_number is None or self.interface is None:
+            return None
+
+        return CVTagAssignment(
+            element_type="interface",
+            label=self.label,
+            value=self.value,
+            device_id=self.device.serial_number,
+            interface_id=self.interface,
+        )
 
 
 @dataclass
@@ -158,6 +205,11 @@ class CVDevice:
     system_mac_address: str | None = None
     _exists_on_cv: bool | None = None
     """ Do not set this manually. """
+    _streaming: bool | None = None
+    """
+    Device's streaming status.
+    Do not set this manually.
+    """
 
 
 @dataclass

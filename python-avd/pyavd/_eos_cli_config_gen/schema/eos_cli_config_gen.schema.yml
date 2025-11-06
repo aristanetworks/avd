@@ -3066,7 +3066,16 @@ keys:
           - message-digest
         ospf_authentication_key:
           type: str
-          description: Encrypted password - only type 7 supported.
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+          - int
+          description: Authentication key type.
+          default: '7'
+          valid_values:
+          - '7'
+          - 8a
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -3087,7 +3096,16 @@ keys:
                 - sha512
               key:
                 type: str
-                description: Encrypted password - only type 7 supported.
+                description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                - int
+                description: Authentication key type.
+                default: '7'
+                valid_values:
+                - '7'
+                - 8a
         pim:
           type: dict
           keys:
@@ -3947,15 +3965,24 @@ keys:
               min: 1
               max: 3
               description: IGMP version on IGMP host-proxy interface.
-        peer:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_interface:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_type:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          keys:
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_interface:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_type:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_key:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            port_profile:
+              type: str
+              description: Key only used for documentation or validation purposes.
         sflow:
           type: dict
           keys:
@@ -3980,9 +4007,6 @@ keys:
                 any integer between 1-255, or set to `disabled`.
               convert_types:
               - int
-        port_profile:
-          type: str
-          description: Key only used for documentation or validation purposes.
         uc_tx_queues:
           type: list
           primary_key: id
@@ -6193,10 +6217,43 @@ keys:
       keys:
         name:
           type: str
+        vrfs:
+          type: list
+          primary_key: name
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                convert_types:
+                - int
+                description: VRF name. Use "default" for the default VRF.
+              name_servers:
+                type: list
+                required: true
+                primary_key: ip_address
+                min_length: 1
+                items:
+                  type: dict
+                  keys:
+                    ip_address:
+                      type: str
+                      description: IPv4 or IPv6 address for DNS server.
+                    priority:
+                      description: Priority value (lower is first).
+                      type: int
+                      convert_types:
+                      - str
+                      min: 0
+                      max: 15
         name_servers:
           type: list
           primary_key: ip_address
           allow_duplicate_primary_key: true
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
           items:
             type: dict
             keys:
@@ -7143,11 +7200,6 @@ keys:
             remove_in_version: 6.0.0
             new_key: next_hop
   ipv6_unicast_routing:
-    type: bool
-  is_deployed:
-    description: 'Key only used for documentation or validation purposes.
-
-      This key is deprecated and new key is metadata.is_deployed.'
     type: bool
   kernel:
     type: dict
@@ -8989,7 +9041,7 @@ keys:
             type: bool
             description: Enforce strict host key checking.
       enable:
-        description: Enable SSH for VRF default.
+        description: Explicitly enable or disable SSH for all VRFs.
         type: bool
       connection:
         type: dict
@@ -9202,6 +9254,14 @@ keys:
         type: str
       fabric_name:
         type: str
+      serial_number:
+        description: 'Serial Number of the device.
+
+          Used only for documentation and deployment purposes. It is used by the ''cv_deploy''
+          role.'
+        type: str
+        convert_types:
+        - int
       cv_tags:
         type: dict
         keys:
@@ -9573,6 +9633,13 @@ keys:
 
               ACT does not provide direct Internet access to `cloudeos` or `veos`
               devices by default.'
+      validate_no_errors_period:
+        type: int
+        convert_types:
+        - str
+        description: Threshold (in minutes) defining the recent time window during
+          which no error-level logs should have been generated for the validation
+          to pass.
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -12180,6 +12247,11 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask or "dhcp".
+        ip_address_secondaries:
+          type: list
+          items:
+            type: str
+            description: IPv4 address/mask.
         dhcp_client_accept_default_route:
           type: bool
           description: Install default-route obtained via DHCP.
@@ -12318,6 +12390,15 @@ keys:
         ospf_authentication_key:
           type: str
           description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+          - int
+          description: Authentication key type.
+          default: '7'
+          valid_values:
+          - '7'
+          - 8a
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -12339,6 +12420,15 @@ keys:
               key:
                 type: str
                 description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                - int
+                description: Authentication key type.
+                default: '7'
+                valid_values:
+                - '7'
+                - 8a
         flow_tracker:
           type: dict
           keys:
@@ -12411,15 +12501,21 @@ keys:
               min: 1
               max: 3
               description: IGMP version on IGMP host-proxy interface.
-        peer:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_interface:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_type:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          keys:
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_interface:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_type:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_key:
+              type: str
+              description: Key only used for documentation or validation purposes.
         sflow:
           type: dict
           keys:
@@ -14759,9 +14855,12 @@ keys:
             name:
               type: str
               description: Peer-group name.
-            type:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            metadata:
+              type: dict
+              keys:
+                type:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
             remote_as:
               type: str
               description: 'BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -15058,9 +15157,12 @@ keys:
                 prepend_own_disabled:
                   type: bool
                   description: Disable prepending own AS number to AS path.
-            peer:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            metadata:
+              type: dict
+              keys:
+                peer:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
             description:
               type: str
             route_reflector_client:
@@ -15309,9 +15411,12 @@ keys:
 
                 For asdot notation in YAML inputs, the value must be put in quotes,
                 to prevent it from being interpreted as a float number.'
-            peer:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            metadata:
+              type: dict
+              keys:
+                peer:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
             peer_group:
               type: str
               default: Peer-group name
@@ -15583,12 +15688,15 @@ keys:
             name:
               type: str
               description: VLAN aware bundle name.
-            tenant:
-              type: str
-              description: Key only used for documentation or validation purposes.
-            description:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            metadata:
+              type: dict
+              keys:
+                tenant:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
+                description:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
             rd:
               description: Route distinguisher.
               type: str
@@ -15681,9 +15789,12 @@ keys:
               type: int
               convert_types:
               - str
-            tenant:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            metadata:
+              type: dict
+              keys:
+                tenant:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
             rd:
               description: Route distinguisher.
               type: str
@@ -21692,6 +21803,9 @@ keys:
           ssm_range:
             type: str
             description: IPv4 Prefix associated with SSM.
+          register_local_interface:
+            type: str
+            description: Local interface to use for PIM register messages.
           rp_addresses:
             type: list
             primary_key: address
@@ -21762,6 +21876,9 @@ keys:
                 make_before_break:
                   type: bool
                   description: Enable/Disable Make-Before-Break.
+                register_local_interface:
+                  type: str
+                  description: Local interface to use for PIM register messages.
                 rp_addresses:
                   type: list
                   items:
@@ -22182,16 +22299,6 @@ keys:
                 be less than the value of B) formats. Example. 30-34,55,RED
               convert_types:
               - int
-  serial_number:
-    documentation_options:
-      table: metadata
-    description: 'Serial Number of the device.
-
-      Used only for documentation and deployment purposes. It is used by the ''cv_deploy''
-      role.'
-    type: str
-    convert_types:
-    - int
   service_routing_configuration_bgp:
     type: dict
     keys:
@@ -22515,6 +22622,11 @@ keys:
               description: 'Hostname or ip of remote engine.
 
                 The remote_address and udp_port are used for remote users.
+
+                A `snmp_server.engine_ids.remotes` entry with a matching address is
+                required when this is set
+
+                and `localized` is not set.
 
                 '
             udp_port:
@@ -23407,6 +23519,10 @@ keys:
                             - initial
                         icmp_type:
                           type: list
+                          description: 'List of ICMP message types to match.
+
+                            This field is applicable only when the protocol is set
+                            to `icmp` or `icmpv6`.'
                           items:
                             type: str
                         enforce_gtsm:
@@ -24100,7 +24216,16 @@ keys:
           - message-digest
         ospf_authentication_key:
           type: str
-          description: Encrypted password used for simple authentication.
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+          - int
+          description: Authentication key type.
+          default: '7'
+          valid_values:
+          - '7'
+          - 8a
         ospf_message_digest_keys:
           type: list
           description: Keys used for message-digest authentication.
@@ -24123,6 +24248,15 @@ keys:
               key:
                 type: str
                 description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                - int
+                description: Authentication key type.
+                default: '7'
+                valid_values:
+                - '7'
+                - 8a
         pim:
           type: dict
           keys:
@@ -24375,23 +24509,35 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+        traffic_policy:
+          type: dict
+          keys:
+            input:
+              type: str
+              description: Ingress traffic policy.
+            output:
+              type: str
+              description: Egress traffic policy.
         ntp_serve:
           type: bool
           description: Enable/disable serving NTP to clients.
         pvlan_mapping:
           type: str
           description: List of VLANs as string.
-        tenant:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        tags:
-          type: list
-          items:
-            type: str
-          description: Key only used for documentation or validation purposes.
-        type:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          keys:
+            tenant:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            tags:
+              type: list
+              items:
+                type: str
+              description: Key only used for documentation or validation purposes.
+            type:
+              type: str
+              description: Key only used for documentation or validation purposes.
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the VLAN interface in
@@ -24553,6 +24699,8 @@ keys:
               source_interface:
                 type: str
                 description: Source Interface Name.
+              shutdown:
+                type: bool
               multicast:
                 type: dict
                 keys:

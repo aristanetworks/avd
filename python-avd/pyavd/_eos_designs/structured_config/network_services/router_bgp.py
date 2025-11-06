@@ -120,13 +120,11 @@ class RouterBgpMixin(Protocol):
 
         # router bgp default vrf configuration for evpn
         if self._vrf_default_evpn and (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]):
-            self.structured_config.router_bgp.peer_groups.append_new(
-                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-                type="ipv4",
-                send_community="all",
-                maximum_routes=12000,
-                route_map_out="RM-BGP-UNDERLAY-PEERS-OUT",
-            )
+            target_peer_group = self.structured_config.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
+            target_peer_group.metadata.type = "ipv4"
+            target_peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
+            target_peer_group.send_community= "all",
+            target_peer_group.maximum_routes= 12000,
 
     def _router_bgp_vrfs(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
@@ -177,6 +175,14 @@ class RouterBgpMixin(Protocol):
                     if self.shared_utils.inband_mgmt_vrf == vrf.name and self.shared_utils.inband_management_parent_vlans:
                         bgp_vrf.redistribute.attached_host.enabled = True
 
+                    # Common things but need it repeated between default and non-default since type checker gets too confused
+                    # about the type of bgp_vrf vs. bgp_peer_config.
+                    for aggregate_address in vrf.aggregate_addresses:
+                        # Below we recast directly to eos_cli_config_gen. Losing incompatible keys, but relaying everything else.
+                        bgp_vrf.aggregate_addresses.append(
+                            aggregate_address._cast_as(EosCliConfigGen.RouterBgp.VrfsItem.AggregateAddressesItem, ignore_extra_keys=True)
+                        )
+
                 else:
                     # VRF default
 
@@ -193,10 +199,11 @@ class RouterBgpMixin(Protocol):
                         # We need to add redistribute connected for the default VRF when underlay_routing_protocol is "none"
                         bgp_vrf.redistribute.connected.enabled = True
 
-                for address in vrf.aggregate_addresses:
-                    self.structured_config.router_bgp.aggregate_addresses.append(
-                        address._cast_as(EosCliConfigGen.RouterBgp.AggregateAddressesItem, ignore_extra_keys=True)
-                    )
+                    # Common things but need it repeated between default and non-default since type checker gets too confused
+                    # about the type of bgp_vrf vs. bgp_peer_config.
+                    for aggregate_address in vrf.aggregate_addresses:
+                        # Below we recast directly to eos_cli_config_gen. Losing incompatible keys, but relaying everything else.
+                        bgp_vrf.aggregate_addresses.append(aggregate_address._cast_as(EosCliConfigGen.RouterBgp.AggregateAddressesItem, ignore_extra_keys=True))
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
@@ -253,7 +260,8 @@ class RouterBgpMixin(Protocol):
                 else:
                     bgp_vrf = cast("EosCliConfigGen.RouterBgp.VrfsItem", bgp_vrf)
                     bgp_vrf.name = vrf.name
-                    self.structured_config.router_bgp.vrfs.append(bgp_vrf)
+                    maybe_existing_vrf = self.structured_config.router_bgp.vrfs.obtain(vrf.name)
+                    maybe_existing_vrf._combine(bgp_vrf)
 
     def _update_router_bgp_vrf_evpn_or_mpls_cfg(
         self: AvdStructuredConfigNetworkServicesProtocol,
@@ -320,7 +328,7 @@ class RouterBgpMixin(Protocol):
             bgp_vrf.neighbor_interfaces.append_new(
                 name=interface_name,
                 peer_group=self.shared_utils.mlag_vrfs_peer_group_name,
-                remote_as=self.shared_utils.bgp_as,
+                remote_as=self.shared_utils.formatted_bgp_as,
                 description=AvdStringFormatter().format(
                     self.inputs.mlag_bgp_peer_description,
                     mlag_peer=self.shared_utils.mlag_peer,
@@ -416,7 +424,7 @@ class RouterBgpMixin(Protocol):
             for vrf in tenant.vrfs:
                 for svi in tenant_svis_l2vlans_dict[tenant.name]["svi_non_bundle"][vrf.name]:
                     if (vlan := self._router_bgp_vlans_vlan(svi, tenant, vrf)) is not None:
-                        self.structured_config.router_bgp.vlans.append(vlan, ignore_fields=("tenant",))
+                        self.structured_config.router_bgp.vlans.append(vlan, ignore_fields=("metadata",))
 
             # L2 Vlans per Tenant
             for l2vlans in tenant_svis_l2vlans_dict[tenant.name]["l2vlan_non_bundle"].values():
@@ -426,7 +434,7 @@ class RouterBgpMixin(Protocol):
                             l2vlan, tenant, vrf=EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem()
                         )
                     ) is not None:
-                        self.structured_config.router_bgp.vlans.append(vlan, ignore_fields=("tenant",))
+                        self.structured_config.router_bgp.vlans.append(vlan, ignore_fields=("metadata",))
 
     def _router_bgp_vlans_vlan(
         self: AvdStructuredConfigNetworkServicesProtocol,
@@ -444,9 +452,9 @@ class RouterBgpMixin(Protocol):
 
         bgp_vlan = EosCliConfigGen.RouterBgp.VlansItem(
             id=vlan.id,
-            tenant=tenant.name,
             rd=vlan_rd,
         )
+        bgp_vlan.metadata.tenant = tenant.name
         bgp_vlan.route_targets.both.append(vlan_rt)
         bgp_vlan.redistribute_routes.append("learned")
 

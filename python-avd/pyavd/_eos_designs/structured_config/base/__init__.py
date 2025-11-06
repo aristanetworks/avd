@@ -13,7 +13,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     structured_config_contributor,
 )
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import Undefined, default, get_v2
+from pyavd._utils import default, get_v2
 from pyavd.j2filters import natural_sort
 
 from .address_locking import AddressLockingMixin
@@ -58,11 +58,6 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.hostname = self.shared_utils.hostname
 
     @structured_config_contributor
-    def serial_number(self) -> None:
-        """serial_number variable set based on serial_number fact."""
-        self.structured_config.serial_number = self.shared_utils.serial_number
-
-    @structured_config_contributor
     def router_bgp(self) -> None:
         """
         Set the structured config for router_bgp.
@@ -72,20 +67,19 @@ class AvdStructuredConfigBaseProtocol(
         if self.shared_utils.bgp_as is None:
             return
 
+        # Keeping None since EOS default is asplain.
+        self.structured_config.router_bgp.as_notation = "asdot" if self.shared_utils.bgp_as_notation == "asdot" else None
+
         platform_bgp_update_wait_for_convergence = self.shared_utils.platform_settings.feature_support.bgp_update_wait_for_convergence
         platform_bgp_update_wait_install = self.shared_utils.platform_settings.feature_support.bgp_update_wait_install
 
-        if self.shared_utils.is_wan_router:
-            # Special defaults for WAN routers
-            default_maximum_paths = 16
-            default_ecmp = None
-        else:
-            default_maximum_paths = 4
-            default_ecmp = 4
+        default_maximum_paths = 16 if self.shared_utils.is_wan_router else 4
 
         self.structured_config.router_bgp._update(
-            router_id=self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None, field_as=self.shared_utils.bgp_as
+            router_id=self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None,
+            field_as=self.shared_utils.formatted_bgp_as,
         )
+
         if bgp_defaults := self.shared_utils.node_config.bgp_defaults:
             self.structured_config.router_bgp.bgp_defaults = bgp_defaults._cast_as(EosCliConfigGen.RouterBgp.BgpDefaults)
 
@@ -93,9 +87,7 @@ class AvdStructuredConfigBaseProtocol(
             self.structured_config.router_bgp.distance = bgp_distance
 
         self.structured_config.router_bgp.bgp.default.ipv4_unicast = self.inputs.bgp_default_ipv4_unicast
-        self.structured_config.router_bgp.maximum_paths._update(
-            paths=self.inputs.bgp_maximum_paths or default_maximum_paths, ecmp=self.inputs.bgp_ecmp or default_ecmp
-        )
+        self.structured_config.router_bgp.maximum_paths._update(paths=self.inputs.bgp_maximum_paths or default_maximum_paths, ecmp=self.inputs.bgp_ecmp)
 
         if self.shared_utils.underlay_bgp or self.shared_utils.is_wan_router or self.shared_utils.l3_bgp_neighbors:
             self.structured_config.router_bgp.redistribute.connected.enabled = True
@@ -512,18 +504,9 @@ class AvdStructuredConfigBaseProtocol(
                 default_services=self.inputs.management_eapi.default_services,
             )
 
-            # TODO: For backward compatibility, checking in advance if we are using the default value
-            # remove in AVD 6.0 as well as the try/except below
-            using_default_vrfs = self.inputs.management_eapi._get_defined_attr("vrfs") == Undefined
-
             for vrf in self.inputs.management_eapi.vrfs:
                 if vrf.enabled:
-                    try:
-                        vrf_name = self.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
-                    except AristaAvdInvalidInputsError:
-                        if not using_default_vrfs:
-                            raise
-                        vrf_name = self.inputs.mgmt_interface_vrf
+                    vrf_name = self.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
                     self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name, access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl)
 
         # Enforce eAPI management access in default VRF for ACT Digital Twin if required

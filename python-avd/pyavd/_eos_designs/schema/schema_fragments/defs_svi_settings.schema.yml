@@ -25,6 +25,11 @@ $defs:
       ip_address:
         type: str
         description: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+      ip_address_secondaries:
+        type: list
+        items:
+          type: str
+          description: IPv4_address/Mask.
       ipv6_address:
         type: str
         description: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
@@ -298,7 +303,7 @@ $defs:
             max_length: 8
           message_digest_keys:
             type: list
-            # TODO: AVD 6.0.0: Make id primary_key and key required.
+            primary_key: id
             items:
               type: dict
               keys:

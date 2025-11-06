@@ -1,0 +1,132 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: ethernet1
+  description: P2P link, included in underlay protocol, PIM SM disabled.
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.4/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  metadata:
+    peer: peer1
+    peer_interface: ethernet1
+    peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet2
+  description: P2P link, included in underlay protocol, PIM SM default, expect enabled.
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.2/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  pim:
+    ipv4:
+      sparse_mode: true
+  metadata:
+    peer: peer2
+    peer_interface: ethernet2
+    peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet3
+  description: P2P link, NOT included in underlay protocol, PIM SM enabled.
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.6/31
+  pim:
+    ipv4:
+      sparse_mode: true
+  metadata:
+    peer: peer3
+    peer_interface: ethernet3
+    peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet4
+  description: P2P link, included in underlay protocol, static multicast disabled.
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.8/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  metadata:
+    peer: peer4
+    peer_interface: ethernet4
+    peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet5
+  description: P2P link, included in underlay protocol, static multicast default, expect enabled.
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.10/31
+  multicast:
+    ipv4:
+      static: true
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  metadata:
+    peer: peer5
+    peer_interface: ethernet5
+    peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet6
+  description: P2P link, NOT included in underlay protocol, static multicast enabled.
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.12/31
+  multicast:
+    ipv4:
+      static: true
+  metadata:
+    peer: peer6
+    peer_interface: ethernet6
+    peer_type: other
+  switchport:
+    enabled: false
+hostname: l3_edge_multicast
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 1.2.3.1/32
+  ospf_area: 0.0.0.0
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+router_multicast:
+  ipv4:
+    routing: true
+router_ospf:
+  process_ids:
+  - id: 100
+    passive_interface_default: true
+    router_id: 1.2.3.1
+    bfd_enable: false
+    no_passive_interfaces:
+    - ethernet1
+    - ethernet2
+    - ethernet4
+    - ethernet5
+    max_lsa: 12000
+    graceful_restart:
+      enabled: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

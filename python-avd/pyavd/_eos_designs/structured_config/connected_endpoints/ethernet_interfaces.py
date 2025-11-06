@@ -54,7 +54,8 @@ class EthernetInterfacesMixin(Protocol):
         network_ports_ethernet_interfaces: dict[str, tuple[EosCliConfigGen.EthernetInterfacesItem, EosCliConfigGen.EthernetInterfacesItem]] = {}
         for network_port in self.shared_utils.filtered_network_ports:
             connected_endpoint = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem(name=network_port.endpoint or Undefined)
-            connected_endpoint._internal_data.type = "network_port"
+            connected_endpoint.type = "network_port"
+            connected_endpoint._internal_data.context = "network_ports"
             network_port_as_adapter = network_port._cast_as(
                 EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem, ignore_extra_keys=True
             )
@@ -174,17 +175,13 @@ class EthernetInterfacesMixin(Protocol):
         # Common ethernet_interface settings
         ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
             name=adapter.switch_ports[node_index],
-            peer=peer,
-            peer_interface=peer_interface,
-            peer_type=connected_endpoint._internal_data.type,
-            port_profile=adapter.profile,
             description=self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interface(
                 InterfaceDescriptionData(
                     shared_utils=self.shared_utils,
                     interface=adapter.switch_ports[node_index],
                     peer=peer,
                     peer_interface=peer_interface,
-                    peer_type=connected_endpoint._internal_data.type,
+                    peer_type=connected_endpoint.type,
                     description=interface_description,
                     port_channel_id=channel_group_id if port_channel_mode is not None else None,
                 ),
@@ -197,6 +194,13 @@ class EthernetInterfacesMixin(Protocol):
             dot1x=adapter.dot1x,
             poe=adapter.poe if self.shared_utils.platform_settings.feature_support.poe else Undefined,
             eos_cli=adapter.raw_eos_cli,
+        )
+        ethernet_interface.metadata._update(
+            peer=peer,
+            peer_interface=peer_interface,
+            peer_type=connected_endpoint.type,
+            port_profile=adapter.profile,
+            peer_key=connected_endpoint._internal_data.context,
         )
 
         # Port-channel member

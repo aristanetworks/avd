@@ -21,11 +21,14 @@ keywords = ["pyavd"]
 requires-python = ">=3.10"
 dependencies = [
     "aristaproto>=0.1.1",
-    "cryptography>=38.0.4",
+    "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
     "Jinja2>=3.0",
     "PyYAML>=6.0.0",
     "requests>=2.27.0",
+    # Pinned grpclib since we patch the connection code to get proxy support
+    "grpclib==0.4.8",
+    "python-socks[asyncio]>=2.7.2",
 ]
 
 [project.urls]
@@ -34,29 +37,25 @@ repository = "https://github.com/aristanetworks/avd"
 
 [dependency-groups]
 pytest = [
-    "ansible-core>=2.16.0,<2.19.0",
-    "anta>=1.5.0",
-    "pytest",
-    "pytest-asyncio",
+    "ansible-core>=2.16.0,<2.20.0",
+    "anta>=1.6.0",
+    "pytest>=8.2.0",
+    "pytest-asyncio>=1.2.0",
     "pydantic>=2.3.0",
     "referencing>=0.35.0",
 ]
 coverage = [
-    "coverage[toml]==7.10.7",
+    "coverage[toml]==7.11.0",
 ]
 
 [project.optional-dependencies]
 ansible = [
-    "ansible-core>=2.16.0,<2.19.0",
+    "ansible-core>=2.16.0,<2.20.0",
     "pyavd[ansible-collection]",
 ]
 ansible-collection = [
-    "anta>=1.5.0",
-    "cvprac>=1.4.0",
+    "anta>=1.6.0",
     "netaddr>=0.7.19",
-    "treelib>=1.5.5",
-    # jsonschema is required for the arista.cvp Ansible collection
-    "jsonschema>=3.2.0",
     # distlib is required to install the collection from source as it is using manifest
     "distlib>=0.3.9",
 ]
@@ -72,9 +71,9 @@ requires = [
     "pyyaml>=6.0.0",
     "mkdocstrings[python]",
     "pydantic>=2.3.0",
-    "cryptography>=38.0.4",
+    "cryptography>=43.0.0",
     "aristaproto>=0.1.1",
-    "ruff==0.13.2",
+    "ruff==0.14.3",
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]
@@ -122,7 +121,8 @@ parallel = true
 show_missing = true
 fail_under = 85
 include = [
-  "pyavd/*"
+  "pyavd/*",
+  "schema_tools/*"
 ]
 omit = [
   "pyavd/_cv/api/*"

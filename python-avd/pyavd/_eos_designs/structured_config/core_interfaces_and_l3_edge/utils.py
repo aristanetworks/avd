@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, TypeVar, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get_ip_from_pool
 from pyavd._utils.password_utils.password import isis_encrypt
 
@@ -120,21 +120,17 @@ class UtilsMixin(Protocol):
         # Set descriptions or fallback to list with None values
         descriptions = p2p_link.descriptions or [None, None]
 
-        try:
-            ip = ips[index]
-            peer_ip = ips[peer_index]
-            description = descriptions[index]
-        except IndexError as exc:
-            msg = "p2p_links model is intended to work for only two devices per entry."
-            raise AristaAvdError(msg) from exc
+        ip = ips[index]
+        peer_ip = ips[peer_index]
+        description = descriptions[index]
 
         data = {
             "peer": peer,
             "peer_type": peer_type,
             "ip": ip,
             "peer_ip": peer_ip,
-            "bgp_as": str(bgp_as[index]) if index < len(bgp_as) and bgp_as[index] else None,
-            "peer_bgp_as": str(bgp_as[peer_index]) if peer_index < len(bgp_as) and bgp_as[peer_index] else None,
+            "bgp_as": self.shared_utils.get_asn(str(bgp_as[index])) if index < len(bgp_as) and bgp_as[index] else None,
+            "peer_bgp_as": self.shared_utils.get_asn(str(bgp_as[peer_index])) if peer_index < len(bgp_as) and bgp_as[peer_index] else None,
             "description": description,
         }
 
@@ -240,29 +236,13 @@ class UtilsMixin(Protocol):
         """
         interface._update(
             name=p2p_link_data["interface"],
-            peer=p2p_link_data["peer"],
-            peer_interface=p2p_link_data["peer_interface"],
-            peer_type=p2p_link_data["peer_type"],
             shutdown=False,
             mtu=self.shared_utils.get_interface_mtu(p2p_link_data["interface"], p2p_link._get("mtu", self.shared_utils.p2p_uplinks_mtu)),
             service_profile=p2p_link._get("qos_profile", self.inputs.p2p_uplinks_qos_profile),
             eos_cli=p2p_link.raw_eos_cli,
         )
+        interface.metadata._update(peer_interface=p2p_link_data["peer_interface"], peer=p2p_link_data["peer"], peer_type=p2p_link_data["peer_type"])
         interface.switchport.enabled = False
-        # Remove this block after removing p2p_links[].structured_config from schema.
-        if not (p2p_link.ethernet_structured_config or p2p_link.port_channel_structured_config) and p2p_link.structured_config:
-            if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
-                # Port-channel
-                self.custom_structured_configs.nested.port_channel_interfaces.obtain(interface.name)._deepmerge(
-                    EosCliConfigGen.PortChannelInterfacesItem._from_dict(p2p_link.structured_config),
-                    list_merge=self.custom_structured_configs.list_merge_strategy,
-                )
-            else:
-                # Ethernet
-                self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface.name)._deepmerge(
-                    EosCliConfigGen.EthernetInterfacesItem._from_dict(p2p_link.structured_config),
-                    list_merge=self.custom_structured_configs.list_merge_strategy,
-                )
 
         if p2p_link_data["ip"]:
             interface.ip_address = p2p_link_data["ip"]

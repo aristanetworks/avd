@@ -1,0 +1,14 @@
+---
+# Test enabling eAPI (in the default VRF) in ACT Digital Twin mode with eAPI default settings.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-enforce-eapi-2
+      id: 1
+      mgmt_ip: 192.168.0.2/32
+
+digital_twin:
+  environment: act
+  fabric:
+    act_ensure_eapi_access: true

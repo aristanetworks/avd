@@ -311,11 +311,11 @@ class CvTagsMixin(Protocol):
         tags = EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags()
         tags.append_new(name="Link-Type", value="AVD-Managed")
 
-        if interface_peer := generic_interface.peer:
+        if interface_peer := generic_interface.metadata.peer:
             if interface_peer in self.shared_utils.all_fabric_devices:
                 tags.append_new(name="Link-Type", value="Fabric")
 
-            if generic_interface.peer_type == "mlag_peer":
+            if generic_interface.metadata.peer_type == "mlag_peer":
                 tags.append_new(name="Link-Type", value="MLAG")
             elif self.facts.uplink_peers and interface_peer in self.facts.uplink_peers:
                 tags.append_new(name="Link-Type", value="Uplink")

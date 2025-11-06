@@ -11,6 +11,9 @@ keys:
     documentation_options:
       table: management-settings
     keys:
+      enabled:
+        type: bool
+        description: Explicitly enable or disable management ssh for all VRFs. By default EOS enables management ssh for all VRFs.
       vrfs:
         type: list
         primary_key: name
