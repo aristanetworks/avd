@@ -302,10 +302,6 @@
           {
             "name": "Vlan4094",
             "status": "up"
-          },
-          {
-            "name": "Vxlan1",
-            "status": "up"
           }
         ]
       }

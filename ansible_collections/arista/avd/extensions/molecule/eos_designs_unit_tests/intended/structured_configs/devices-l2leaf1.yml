@@ -1,0 +1,58 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet7
+  description: L2_devices-leaf1a_Ethernet8
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  metadata:
+    peer: devices-leaf1a
+    peer_interface: Ethernet8
+    peer_type: l3leaf
+- name: Ethernet8
+  description: L2_devices-leaf1b_Ethernet8
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  metadata:
+    peer: devices-leaf1b
+    peer_interface: Ethernet8
+    peer_type: l3leaf
+hostname: devices-l2leaf1
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.16.1.151/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+port_channel_interfaces:
+- name: Port-Channel7
+  description: L2_L3LEAF1_Port-Channel8
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
