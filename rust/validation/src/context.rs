@@ -10,16 +10,16 @@ use crate::feedback::{Feedback, Issue};
 /// All coercions and violations will be registered in the context with the path carried in the context.
 /// The store is used for looking up schema references.
 #[derive(Debug)]
-pub(crate) struct Context<'a> {
-    pub(crate) configuration: Configuration,
-    pub(crate) store: &'a Store,
-    pub(crate) path: Vec<String>,
-    pub(crate) violations: Vec<Feedback>,
-    pub(crate) coercions: Vec<Feedback>,
+pub struct Context<'a> {
+    pub configuration: Configuration,
+    pub store: &'a Store,
+    pub path: Vec<String>,
+    pub violations: Vec<Feedback>,
+    pub coercions: Vec<Feedback>,
 }
 
 impl<'a> Context<'a> {
-    pub(crate) fn new(store: &'a Store, configuration: Option<&'a Configuration>) -> Self {
+    pub fn new(store: &'a Store, configuration: Option<&'a Configuration>) -> Self {
         Self {
             configuration: configuration.cloned().unwrap_or_default(),
             store,

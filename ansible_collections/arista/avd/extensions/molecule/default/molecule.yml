@@ -1,0 +1,33 @@
+---
+ansible:
+  executor:
+    backend: ansible-playbook
+    args:
+      ansible_playbook:
+        - --inventory=inventory/
+  env:
+    ANSIBLE_FORCE_COLOR: true
+  cfg:
+    defaults:
+      jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
+      gathering: explicit
+scenario:
+  converge_sequence:
+    - syntax
+    - converge
+    - verify
+  test_sequence:
+    - syntax
+    - create
+    - converge
+    - idempotence
+    - verify
+  cleanup_sequence:
+    - destroy
+
+dependency:
+  name: galaxy
+  enabled: false
+
+verifier:
+  name: ansible

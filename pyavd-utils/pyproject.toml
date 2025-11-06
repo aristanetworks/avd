@@ -1,9 +1,9 @@
 [build-system]
-requires = ["setuptools", "setuptools-rust"]
+requires = ["setuptools", "setuptools-rust>=1.12.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "avdutils"
+name = "pyavd-utils"
 version = "0.0.1"
 
 [dependency-groups]
@@ -14,20 +14,19 @@ coverage = ["coverage[toml]"]
 py-limited-api = "cp310"
 
 [tool.setuptools.packages.find]
-include = ["avdutils"]
+include = ["pyavd_utils"]
 
 [tool.setuptools.package-data]
-"avdutils" = ["*.pyi"]
+"pyavd_utils" = ["*.pyi"]
 
 [[tool.setuptools-rust.ext-modules]]
-target = "avdutils.validation"
-path = "../../rust/validation/Cargo.toml"
+target = "pyavd_utils.passwords"
+path = "rust/pypasswords/Cargo.toml"
 binding = "PyO3"
-features = ["python_bindings"]
 
 [[tool.setuptools-rust.ext-modules]]
-target = "avdutils.passwords"
-path = "../../rust/passwords/Cargo.toml"
+target = "pyavd_utils.validation"
+path = "rust/pyvalidation/Cargo.toml"
 binding = "PyO3"
 
 [tool.pytest.ini_options]

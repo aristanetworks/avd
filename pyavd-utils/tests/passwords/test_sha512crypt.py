@@ -7,7 +7,7 @@ from contextlib import nullcontext as does_not_raise
 
 import pytest
 
-from avdutils.passwords import sha512_crypt
+from pyavd_utils.passwords import sha512_crypt
 
 SHA512_CRYPT_TEST_DATA = [
     pytest.param(

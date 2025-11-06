@@ -356,6 +356,10 @@ ethernet_interfaces:
       - id: 1
         hash_algorithm: sha512
         key: "asfddja23452"
+      - id: 2
+        hash_algorithm: sha512
+        key: $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo
+        key_type: "8a"
     pim:
       ipv4:
         dr_priority: 200
@@ -441,6 +445,9 @@ ethernet_interfaces:
       address_family:
         ipv4: false
         ipv6: true
+    # test for ospf_authentication_key_type: "8a"
+    ospf_authentication_key: $kUVyoj7FVQ//yw9D2lbqjA==$kxxohBiofI46IX3pw18KYQ==$DOOM0l9uU4TrQt2kyA7XCKtjUA==
+    ospf_authentication_key_type: "8a"
 
   - name: Ethernet7
     description: Molecule L2

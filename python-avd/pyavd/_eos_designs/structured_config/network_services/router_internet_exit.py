@@ -133,7 +133,7 @@ class RouterInternetExitMixin(Protocol):
                 monitor_host=wan_interface.peer_ip,
             )
             self.set_direct_ie_router_service_insertion(monitor_name=connection_name, source_interface=wan_interface.name, next_hop=wan_interface.peer_ip)
-            self.set_direct_ie_connection_ethernet_interfaces(source_interface=wan_interface.name)
+            # The NAT profile is configured for the interface in underlay
             direct_ie_acl_interface_ips.add(ip_address)
 
             # Adding exit group
