@@ -89,51 +89,24 @@ impl StoreValidate<Schema> for Store {
 }
 
 trait SchemaStringHelper {
-    fn process_schema_string<F>(
+    fn with_resolved_schema<T: std::convert::From<ValidationResult>, F: FnOnce(Schema) -> T>(
         &self,
         schema_name: &str,
         func: F,
-    ) -> Result<ValidationResult, StoreValidateError>
-    where
-        F: FnOnce(Schema) -> Result<ValidationResult, StoreValidateError>;
-    fn process_schema_string_unfaillible<F>(&self, schema_name: &str, func: F) -> ValidationResult
-    where
-        F: FnOnce(Schema) -> ValidationResult;
+    ) -> T;
 }
 
 impl SchemaStringHelper for Store {
-    fn process_schema_string<F>(
+    fn with_resolved_schema<T: std::convert::From<ValidationResult>, F: FnOnce(Schema) -> T>(
         &self,
         schema_name: &str,
         func: F,
-    ) -> Result<ValidationResult, StoreValidateError>
-    where
-        F: FnOnce(Schema) -> Result<ValidationResult, StoreValidateError>,
-    {
+    ) -> T {
         match Schema::try_from(schema_name) {
             Ok(schema_type) => func(schema_type),
-            Err(_) => Ok({
-                let mut ctx = Context::new(self, None);
-                ctx.add_violation(Violation::InvalidSchema {
-                    schema: schema_name.into(),
-                });
-                ctx.into()
-            }),
-        }
-    }
-    fn process_schema_string_unfaillible<F>(&self, schema_name: &str, func: F) -> ValidationResult
-    where
-        F: FnOnce(Schema) -> ValidationResult,
-    {
-        match Schema::try_from(schema_name) {
-            Ok(schema_type) => func(schema_type),
-            Err(_) => {
-                let mut ctx = Context::new(self, None);
-                ctx.add_violation(Violation::InvalidSchema {
-                    schema: schema_name.into(),
-                });
-                ctx.into()
-            }
+            Err(_) => SchemaConversionError::InvalidSchemaName(schema_name.to_string())
+                .to_validation_result(self)
+                .into(),
         }
     }
 }
@@ -145,7 +118,7 @@ impl StoreValidate<&str> for Store {
         schema_name: &str,
         configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError> {
-        self.process_schema_string(schema_name, |schema_type| {
+        self.with_resolved_schema(schema_name, |schema_type| {
             self.validate_json(json, schema_type, configuration)
         })
     }
@@ -156,7 +129,7 @@ impl StoreValidate<&str> for Store {
         schema_name: &str,
         configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError> {
-        self.process_schema_string(schema_name, |schema_type| {
+        self.with_resolved_schema(schema_name, |schema_type| {
             self.validate_yaml(yaml, schema_type, configuration)
         })
     }
@@ -167,12 +140,12 @@ impl StoreValidate<&str> for Store {
         schema_name: &str,
         configuration: Option<&Configuration>,
     ) -> ValidationResult {
-        self.process_schema_string_unfaillible(schema_name, |schema_type| {
+        self.with_resolved_schema(schema_name, |schema_type| {
             self.validate_value(value, schema_type, configuration)
         })
     }
     fn coerce_value(&self, value: &mut Value, schema_name: &str) -> ValidationResult {
-        self.process_schema_string_unfaillible(schema_name, |schema_type| {
+        self.with_resolved_schema(schema_name, |schema_type| {
             self.coerce_value(value, schema_type)
         })
     }
@@ -182,6 +155,33 @@ impl StoreValidate<&str> for Store {
 pub enum StoreValidateError {
     JsonError(serde_json::Error),
     YamlError(serde_yaml::Error),
+}
+
+#[derive(Debug, derive_more::Display, derive_more::From)]
+pub enum SchemaConversionError {
+    InvalidSchemaName(String),
+}
+
+impl SchemaConversionError {
+    pub fn get_invalid_schema_name(&self) -> String {
+        match self {
+            SchemaConversionError::InvalidSchemaName(s) => s.clone(),
+        }
+    }
+
+    pub fn to_validation_result(&self, store: &Store) -> ValidationResult {
+        let mut ctx = Context::new(store, None);
+        ctx.add_violation(Violation::InvalidSchema {
+            schema: self.get_invalid_schema_name(),
+        });
+        ctx.into()
+    }
+}
+
+impl From<ValidationResult> for Result<ValidationResult, StoreValidateError> {
+    fn from(result: ValidationResult) -> Self {
+        Ok(result)
+    }
 }
 
 #[cfg(test)]
