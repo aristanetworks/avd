@@ -34,6 +34,41 @@ keys:
         type: str
         convert_types:
           - int
+      hardware_requirements:
+        type: dict
+        description: |-
+          Defines the minimum hardware specifications required for the device.
+          Used for validation by the `anta_runner` role.
+        keys:
+          min_power_supplies:
+            type: int
+            description: |-
+              Minimum number of power supplies required for the device.
+          min_fans:
+            type: int
+            description: |-
+              Minimum number of fans required for the device.
+          min_supervisors:
+            type: int
+            description: |-
+              Minimum number of supervisor modules required for the device.
+          min_line_cards:
+            type: int
+            description: |-
+              Minimum number of line cards required for the device.
+          min_fabric_cards:
+            type: int
+            description: |-
+              Minimum number of fabric cards required for the device.
+          transceiver_manufacturers:
+            type: list
+            description: |-
+              List of approved transceiver manufacturers for the device.
+            items:
+              type: str
+            default:
+              - 'Arista Networks'
+              - 'Arastra, Inc.'
       cv_tags:
         type: dict
         keys:

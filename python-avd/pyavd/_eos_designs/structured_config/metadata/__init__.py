@@ -36,6 +36,7 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
         self._set_cv_pathfinder()
         if self.shared_utils.digital_twin:
             self._set_digital_twin()
+        self.structured_config.metadata.hardware_requirements = self.shared_utils.platform_settings.validate_hardware_inventory
 
 
 class AvdStructuredConfigMetadata(StructuredConfigGenerator, AvdStructuredConfigMetadataProtocol):
