@@ -11174,9 +11174,9 @@ AS Path Regex Mode is **asn**.
 
 | List Name | Type | Match | Origin |
 | --------- | ---- | ----- | ------ |
-| mylist1 | permit | `^(64512\|645115)` | egp |
-| mylist1 | deny | `(64513\|64515)$` | any |
-| mylist2 | deny | `_64517$` | igp |
+| mylist1 | permit | ^(64512\|645115) | egp |
+| mylist1 | deny | (64513\|64515)$ | any |
+| mylist2 | deny | _64517$ | igp |
 
 #### AS Path Lists Device Configuration
 
@@ -12659,8 +12659,6 @@ IP DHCP Snooping is enabled
 
 IP DHCP Snooping Bridging is enabled
 
-IP DHCP Snooping Insertion of Option 82 is enabled
-
 IP DHCP Snooping Circuit-ID Suboption: 10
 
 IP DHCP Snooping Circuit-ID Format: %h:%p
@@ -12672,7 +12670,6 @@ IP DHCP Snooping enabled VLAN: 10,20,500,1000-2000
 ```eos
 !
 ip dhcp snooping bridging
-ip dhcp snooping information option
 ip dhcp snooping information option circuit-id type 10 format %h:%p
 ip dhcp snooping vlan 10,20,500,1000-2000
 ```
