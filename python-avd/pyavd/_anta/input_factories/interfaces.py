@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from itertools import chain
+from typing import TYPE_CHECKING
 
 from anta.input_models.interfaces import InterfaceState
 from anta.tests.interfaces import VerifyInterfacesStatus, VerifyPortChannels, VerifyStormControlDrops
@@ -13,61 +14,108 @@ from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
 
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
 
 class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesStatus.Input]):
     """
     Input factory class for the `VerifyInterfacesStatus` test.
 
-    This factory generates test inputs for verifying the status of interfaces.
-
-    The following interfaces are checked:
-    - Ethernet interfaces - `ethernet_interfaces`
-    - Port-Channel interfaces - `port_channel_interfaces`
-    - VLAN interfaces - `vlan_interfaces`
-    - Loopback interfaces - `loopback_interfaces`
-    - DPS interfaces - `dps_interfaces`
-    - Vxlan1 interface, if the device is a VTEP
+    Generates test inputs for verifying the status of the following interface types:
+    - Ethernet, Port-Channel, VLAN, Loopback, and DPS interfaces
+    - Vxlan1 interface (only if the device is a VTEP)
 
     The expected status is 'adminDown' when the interface is shutdown, 'up' otherwise.
 
-    For Ethernet and Port-Channel interfaces, `validate_state` knob (default: True) is considered.
-
-    For Ethernet interfaces, `interface_defaults.ethernet.shutdown` is considered when `shutdown` is not set
+    Notes:
+    - Ethernet/Port-Channel: Considers `validate_state` knob (default: True)
+    - Ethernet: Considers `interface_defaults.ethernet.shutdown` when `shutdown` is not explicitly set
+    - Vxlan1: Only tested if at least one VNI (L2 or L3) is configured and its source interface is operational (not shutdown and has required IP address)
     """
 
     def create(self) -> list[VerifyInterfacesStatus.Input] | None:
         """Create a list of inputs for the `VerifyInterfacesStatus` test."""
         interfaces: list[InterfaceState] = []
 
-        # Add Ethernet interfaces, considering `validate_state` knob and interface defaults
+        interfaces.extend(self._get_ethernet_interfaces())
+        interfaces.extend(self._get_port_channel_interfaces())
+        interfaces.extend(self._get_miscellaneous_interfaces())
+
+        if vxlan_intf := self._get_vxlan_interface():
+            interfaces.append(vxlan_intf)
+
+        return [VerifyInterfacesStatus.Input(interfaces=natural_sort(interfaces, sort_key="name"))] if interfaces else None
+
+    def _get_ethernet_interfaces(self) -> Iterator[InterfaceState]:
+        """Get Ethernet interfaces, considering `validate_state` knob and interface defaults."""
         for intf in self.structured_config.ethernet_interfaces:
             if intf.validate_state is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
-            status = "adminDown" if intf.shutdown or (intf.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown) else "up"
 
-            interfaces.append(InterfaceState(name=intf.name, status=status))
+            is_shutdown = intf.shutdown
+            if is_shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown:
+                is_shutdown = True
 
-        # Add Port-Channel interfaces, considering `validate_state` knob
+            yield InterfaceState(name=intf.name, status="adminDown" if is_shutdown else "up")
+
+    def _get_port_channel_interfaces(self) -> Iterator[InterfaceState]:
+        """Get Port-Channel interfaces, considering `validate_state` knob."""
         for intf in self.structured_config.port_channel_interfaces:
             if intf.validate_state is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
-            interfaces.append(InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up"))
+            yield InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up")
 
-        # Add VLAN, Loopback, and DPS interfaces
-        interfaces.extend(
-            [
-                InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up")
-                for intf in chain(self.structured_config.vlan_interfaces, self.structured_config.loopback_interfaces, self.structured_config.dps_interfaces)
-            ]
-        )
+    def _get_miscellaneous_interfaces(self) -> Iterator[InterfaceState]:
+        """Get VLAN, Loopback, and DPS interfaces."""
+        for intf in chain(self.structured_config.vlan_interfaces, self.structured_config.loopback_interfaces, self.structured_config.dps_interfaces):
+            yield InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up")
 
-        # If the device is a VTEP, add the Vxlan1 interface to the list
-        if self.device.is_vtep:
-            interfaces.append(InterfaceState(name="Vxlan1", status="up"))
+    def _get_vxlan_interface(self) -> InterfaceState | None:
+        """Get the VXLAN interface."""
+        if not self.device.is_vtep:
+            return None
 
-        return [VerifyInterfacesStatus.Input(interfaces=natural_sort(interfaces, sort_key="name"))] if interfaces else None
+        vxlan_config = self.structured_config.vxlan_interface.vxlan1.vxlan
+
+        # Check if VNIs are configured (VLANs or VRFs)
+        has_vnis = bool(vxlan_config.vlans or vxlan_config.vlan_range or vxlan_config.vrfs)
+
+        if not has_vnis:
+            self.logger_adapter.debug(LogMessage.INTERFACE_VXLAN1_NO_VNI)
+            return None
+
+        if not self._is_vxlan_source_interface_operational():
+            self.logger_adapter.debug(LogMessage.INTERFACE_VXLAN1_NOT_OPERATIONAL, source_interface=vxlan_config.source_interface)
+            return None
+
+        return InterfaceState(name="Vxlan1", status="adminDown" if vxlan_config.shutdown else "up")
+
+    def _is_vxlan_source_interface_operational(self) -> bool:
+        """Check if the VXLAN source interface is operational (not shutdown and has IP configured)."""
+        if (vxlan_src_intf := self.structured_config.vxlan_interface.vxlan1.vxlan.source_interface) is None:
+            return False
+
+        ipv6_enabled = bool(self.structured_config.vxlan_interface.vxlan1.vxlan.encapsulations.ipv6)
+
+        # Check DPS interfaces
+        if "Dps" in vxlan_src_intf and vxlan_src_intf in self.structured_config.dps_interfaces:
+            # No ipv6_address supported in dps_interfaces models
+            if ipv6_enabled:
+                return False
+            interface = self.structured_config.dps_interfaces[vxlan_src_intf]
+            has_ip = bool(interface.ip_address)
+        # Check Loopback interfaces
+        elif vxlan_src_intf in self.structured_config.loopback_interfaces:
+            interface = self.structured_config.loopback_interfaces[vxlan_src_intf]
+            has_ip = bool(interface.ipv6_address if ipv6_enabled else interface.ip_address)
+        else:
+            return False
+
+        # Interface is operational if it's not shutdown AND has the required IP address
+        return not interface.shutdown and has_ip
 
 
 class VerifyPortChannelsInputFactory(AntaTestInputFactory[VerifyPortChannels.Input]):
