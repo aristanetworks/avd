@@ -31,10 +31,6 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
-[dependency-groups]
-pytest = ["pytest"]
-coverage = ["coverage[toml]"]
-
 [tool.distutils.bdist_wheel]
 py-limited-api = "cp310"
 
@@ -57,51 +53,10 @@ target = "pyavd_utils.validation"
 path = "rust/pyvalidation/Cargo.toml"
 binding = "PyO3"
 
-[tool.coverage.run]
-branch = true
-parallel = true
-
-[tool.coverage.report]
-show_missing = true
-fail_under = 85
-include = [
-  "python_avd/*",
-]
-# Regexes for lines to exclude from consideration
-exclude_also = [
-    # Have to re-enable the standard pragma
-    "pragma: no cover",
-    # Don't complain about missing debug-only code:
-    "def __repr__",
-    "if self\\.debug",
-    # Don't complain if tests don't hit defensive assertion code:
-    "raise AssertionError",
-    "raise NotImplementedError",
-    # Don't complain if non-runnable code isn't run:
-    "if 0:",
-    "if __name__ == .__main__.:",
-    # Don't complain about abstract methods, they aren't run:
-    "@(abc\\.)?abstractmethod",
-    # Don't complain about TYPE_CHECKING blocks
-    "if TYPE_CHECKING:",
-    # Ignore typing overloads
-    "@overload",
-    # Don't complain about Jinja2 internalcode
-    # Note that except KeyError is a bit sad but this is the pattern
-    "except KeyError:",
-    "@internalcode",
-    "raise TemplateRuntimeError",
-    "^blocks = {}",
-    "^debug_info =.*",
-]
-
 [tool.ruff]
 # Extend the `pyproject.toml` file in the parent directory...
 # Should not be needed, but the ruff vscode extension does not seem to respect the ruff behavior of ignoring files without tool.ruff
 extend = "../pyproject.toml"
-
-[tool.pytest.ini_options]
-testpaths = "tests"
 
 [tool.pyright]
 # Pyright stops at the first parent pyproject.toml it finds so as documented adding base config

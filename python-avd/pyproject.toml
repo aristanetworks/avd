@@ -113,20 +113,6 @@ extend_skip_glob = [
   "pyavd/_cv/api/**/*"
 ]
 
-[tool.coverage.run]
-branch = true
-parallel = true
-
-[tool.coverage.report]
-show_missing = true
-fail_under = 85
-include = [
-  "pyavd/*",
-  "schema_tools/*"
-]
-omit = [
-  "pyavd/_cv/api/*"
-]
 # Regexes for lines to exclude from consideration
 exclude_also = [
     # Have to re-enable the standard pragma
@@ -159,13 +145,6 @@ exclude_also = [
 # Extend the `pyproject.toml` file in the parent directory...
 # Should not be needed, but the ruff vscode extension does not seem to respect the ruff behavior of ignoring files without tool.ruff
 extend = "../pyproject.toml"
-
-[tool.pytest.ini_options]
-markers = [
-    "molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios.",
-    "digital_twin_molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios executed in digital_twin mode.",
-]
-asyncio_default_fixture_loop_scope = "function"
 
 [tool.pyright]
 # Pyright stops at the first parent pyproject.toml it finds so as documented adding base config
