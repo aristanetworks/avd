@@ -3,11 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import asyncio
-import ssl
 from typing import TYPE_CHECKING, Protocol
 
-from grpclib.client import Channel
 from requests import JSONDecodeError, get, post
 from requests.exceptions import HTTPError, RequestException
 
@@ -15,7 +12,7 @@ from .change_control import ChangeControlMixin
 from .configlet import ConfigletMixin
 from .exceptions import CVClientException
 from .inventory import InventoryMixin
-from .proxy import HTTPProxyManager
+from .proxy import CVConnectionManager
 from .studio import StudioMixin
 from .swg import SwgMixin
 from .tag import TagMixin
@@ -26,7 +23,7 @@ from .workspace import WorkspaceMixin
 if TYPE_CHECKING:
     from types import TracebackType
 
-    from grpclib.protocol import H2Protocol
+    from grpclib.client import Channel
     from typing_extensions import Self
 
 
@@ -52,7 +49,7 @@ class CVClientProtocol(
     _username: str | None
     _password: str | None
     _cv_version: CvVersion | None = None
-    _proxy_manager: HTTPProxyManager
+    cv_connection_manager: CVConnectionManager
 
     async def __aenter__(self) -> Self:
         """Using asynchronous context manager since grpclib must be initialized inside an asyncio loop."""
@@ -69,7 +66,7 @@ class CVClientProtocol(
         # TODO: Handle multinode clusters
 
         # Ensure that the default ssl context is initialized before doing any requests.
-        ssl_context = self._ssl_context()
+        ssl_context = self.cv_connection_manager.get_ssl_context(self._verify_certs)
 
         if not self._token:
             self._set_token()
@@ -77,69 +74,9 @@ class CVClientProtocol(
         self._set_version()
 
         if self._channel is None:
-            self._channel = await self._create_proxy_channel(ssl_context)
+            self._channel = await self.cv_connection_manager.create_proxy_channel(ssl_context)
 
         self._metadata = {"authorization": "Bearer " + self._token}
-
-    async def _create_proxy_channel(self, ssl_context: ssl.SSLContext | bool) -> Channel:
-        """
-        Create a gRPC channel using the proxy manager.
-
-        Args:
-            ssl_context: SSL context for destination server connection.
-
-        Returns:
-            Configured gRPC Channel instance.
-        """
-        # Create the channel first
-        channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
-
-        if not self._proxy_manager.use_proxy:
-            return channel
-
-        # Create custom connector that uses proxy
-        async def proxy_connection() -> H2Protocol:
-            loop = asyncio.get_running_loop()
-
-            try:
-                # Create socket through proxy using python-socks
-                proxy_sock = await self._proxy_manager.create_socket_for_grpc()
-
-                # Create the gRPC protocol using the proxy socket
-                _, protocol = await loop.create_connection(
-                    lambda: channel._protocol_factory(),
-                    sock=proxy_sock,
-                    ssl=channel._ssl,
-                    server_hostname=self._servers[0] if ssl_context else None,
-                )
-
-            except Exception as e:
-                msg = f"Failed to create proxy connection: {type(e).__name__}: {e}"
-                raise CVClientException(msg) from e
-
-            return protocol
-
-        # Override the standard method from grpclib with our proxy variant.
-        channel._create_connection = proxy_connection
-        return channel
-
-    def _ssl_context(self) -> ssl.SSLContext | bool:
-        """
-        Initialize the default SSL context with relaxed verification if needed.
-
-        Otherwise we just return True.
-        The return value (The default ssl context or True) will be passed to grpclib.
-        Requests will pick it up from ssl lib itself.
-        """
-        if not self._verify_certs:
-            # Accepting SonarLint issue: We are purposely implementing no verification of certs.
-            context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
-            context.check_hostname = False
-            context.verify_mode = ssl.CERT_NONE  # NOSONAR
-            context.set_alpn_protocols(["h2"])
-        else:
-            context = True
-        return context
 
     def _set_token(self) -> None:
         """
@@ -161,7 +98,7 @@ class CVClientProtocol(
                 "https://" + self._servers[0] + "/cvpservice/login/authenticate.do",
                 auth=(self._username, self._password),
                 verify=self._verify_certs,
-                proxies=self._proxy_manager.get_requests_proxies,
+                proxies=self._requests_proxies,
                 json={},
             )
             response.raise_for_status()
@@ -192,7 +129,7 @@ class CVClientProtocol(
                 "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
                 headers={"Authorization": f"Bearer {self._token}"},
                 verify=self._verify_certs,
-                proxies=self._proxy_manager.get_requests_proxies,
+                proxies=self._requests_proxies,
                 json={},
             )
             response.raise_for_status()
@@ -204,6 +141,22 @@ class CVClientProtocol(
             self._cv_version = CvVersion(response.json()["version"])
         except (KeyError, JSONDecodeError) as e:
             msg = f"Unable to get version from CloudVision server. Got {response.text if response else 'No response'}"
+            raise CVClientException(msg) from e
+
+    @property
+    def use_proxy(self) -> bool:
+        try:
+            return self.cv_connection_manager.use_proxy
+        except AttributeError as e:
+            msg = "The following attribute/method was accessed before it was initialized: '<CVClient>.cv_connection_manager.cv_proxy_manager.use_proxy'."
+            raise CVClientException(msg) from e
+
+    @property
+    def _requests_proxies(self) -> dict[str, str]:
+        try:
+            return self.cv_connection_manager.requests_proxies
+        except AttributeError as e:
+            msg = "The following attribute/method was accessed before it was initialized: '<CVClient>.cv_connection_manager.requests_proxies'."
             raise CVClientException(msg) from e
 
 
@@ -252,13 +205,13 @@ class CVClient(CVClientProtocol):
         self._password = password
         self._verify_certs = verify_certs
 
-        # Initialize Proxy manager
-        self._proxy_manager = HTTPProxyManager(
-            scheme=proxy_scheme,
-            host=proxy_host,
-            port=proxy_port,
-            username=proxy_username,
-            password=proxy_password,
+        # Initialize connection manager
+        self.cv_connection_manager = CVConnectionManager(
             target_host=self._servers[0],
             target_port=self._port,
+            proxy_scheme=proxy_scheme,
+            proxy_host=proxy_host,
+            proxy_port=proxy_port,
+            proxy_username=proxy_username,
+            proxy_password=proxy_password,
         )

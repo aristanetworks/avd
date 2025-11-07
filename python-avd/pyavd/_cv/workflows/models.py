@@ -34,15 +34,6 @@ class CloudVision:
 
 
 @dataclass
-class CVProxyServerCandidate:
-    scheme: str
-    host: str | None
-    port: int | None
-    username: str | None
-    password: str | None
-
-
-@dataclass
 class CVChangeControl:
     name: str | None = None
     description: str | None = None
