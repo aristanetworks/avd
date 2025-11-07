@@ -41,7 +41,7 @@ jobs:
       - ansible_lint
       - test_pyavd
       - cargo_build_and_test
-      - python_rust_bindings_build_and_test
+      - pyavd_utils_build_and_test_cross_platform
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -92,8 +92,8 @@ jobs:
               - 'sonar-project.properties'
               - '.pre-commit-config.yaml'
             pyavd:
-              - 'python-avd/*'
               - 'python-avd/**/*'
+              - 'pyavd-utils/**/*'
             anta_runner:
               - 'ansible_collections/arista/avd/roles/anta_runner/*'
               - 'ansible_collections/arista/avd/roles/anta_runner/**/*'
