@@ -779,3 +779,43 @@ jobs:
         # For most runs without an environment set here. The environment is mapped with the tox gh-action plugin.
         run: |
           tox -- pyavd-utils/tests
+
+  # ----------------------------------- #
+  # Build cross platform pyavd-utils
+  # ----------------------------------- #
+  pyavd_utils_build_wheels:
+    name: Build pyavd-utils wheel on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: [file-changes]
+    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
+    strategy:
+      fail-fast: false
+      matrix:
+        # macos-14 covers x64 and macos-latest covers arm
+        # note that at some point x64 won't be available anymore as per
+        # https://github.com/actions/runner-images/issues/13046
+        # the next update will be macos-15-intel
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - windows-latest
+          - macos-14
+          - macos-latest
+        python: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v5
+      # Used to host cibuildwheel
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install cibuildwheel
+        run: |
+          pip install cibuildwheel==3.2.1
+      - name: Build wheels
+        working-directory: pyavd-utils
+        run: |-
+          python -m cibuildwheel --output-dir wheelhouse
+      - uses: actions/upload-artifact@v5
+        with:
+          name: pyavd-utils-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: pyavd-utils/wheelhouse/*.whl

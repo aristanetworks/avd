@@ -1,0 +1,28 @@
+---
+name: "Publish Python package"
+on:
+  release:
+    types:
+      - published
+  # Allow for manual trigger on the selected branch in UI
+  workflow_dispatch:
+
+# For now only pyavd-utils
+jobs:
+  pyavd-utils-pypi:
+    name: Publish pyavd-utils to PyPI
+    runs-on: ubuntu-latest
+    environment:
+      name: test-pypi
+      url: https://test.pypi.org/p/pyavd-utils
+    permissions:
+      id-token: write
+    steps:
+      - name: Download pyavd-utils wheels
+        uses: actions/download-artifact@v6
+        with:
+          path: pyavd-utils
+          merge-multiple: true
+          pattern: pyavd-utils-wheels-*
+      # - name: Publish distribution to PyPI
+      #  uses: pypa/gh-action-pypi-publish@release/v1
