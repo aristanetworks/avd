@@ -47,6 +47,9 @@ traffic_policies:
               flags:
                 - established
           ttl: "10, 20-30"
+          packet_type:
+            vxlan: decap
+            multicast: true
           actions:
             traffic_class: 5
             redirect:
@@ -65,6 +68,9 @@ traffic_policies:
               flags:
                 - established
             - protocol: icmp
+          packet_type:
+            vxlan: decap exclude
+            multicast: false
           actions:
             # The count won't be active since it is not defined under counters
             count: DEMO-TRAFFIC

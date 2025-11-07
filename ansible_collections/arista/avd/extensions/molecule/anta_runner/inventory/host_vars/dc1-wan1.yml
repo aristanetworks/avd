@@ -7,3 +7,13 @@ custom_structured_configuration_router_path_selection:
           name: dc1-leaf1a
           ipv4_addresses:
             - 172.18.1.2
+
+# Custom vxlan structured_config to validate that the vxlan interface is skipped when using ipv6 encapsulation in combination with dps source interface
+custom_structured_configuration_vxlan_interface:
+  vxlan1:
+    description: dc1-leaf1c_VTEP
+    vxlan:
+      source_interface: Dps1
+      udp_port: 4789
+      encapsulations:
+        ipv6: true

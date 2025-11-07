@@ -528,7 +528,7 @@
           connected_endpoints: true
           mlag_support: true
           network_services:
-            l2: true,
+            l2: true
           underlay_router: false
           uplink_type: port-channel
           cv_tags_topology_type: leaf
@@ -567,5 +567,5 @@
           default_flow_tracker_type: hardware
           vtep: true
           network_services:
-            l3: true,
+            l3: true
         ```

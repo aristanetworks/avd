@@ -189,7 +189,10 @@ jobs:
     name: Validate eos_cli_config_gen
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
+    if: |
+      needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.requirements == 'true' ||
+      github.event_name == 'merge_group'
     strategy:
       fail-fast: true
       matrix:
@@ -232,7 +235,11 @@ jobs:
     name: Validate eos_designs
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
+    if: |
+      needs.file-changes.outputs.eos_design == 'true' ||
+      needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.requirements == 'true' ||
+      github.event_name == 'merge_group'
     strategy:
       fail-fast: true
       matrix:
@@ -289,7 +296,8 @@ jobs:
     name: Validate eos_designs with minimum requirements
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true' ||
+      github.event_name == 'merge_group'
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
@@ -327,7 +335,11 @@ jobs:
     name: Validate anta_runner
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.anta_runner == 'true' || needs.file-changes.outputs.requirements == 'true'
+    if: |
+      needs.file-changes.outputs.eos_design == 'true' ||
+      needs.file-changes.outputs.anta_runner == 'true' ||
+      needs.file-changes.outputs.requirements == 'true' ||
+      github.event_name == 'merge_group'
     strategy:
       fail-fast: true
       matrix:
@@ -567,7 +579,8 @@ jobs:
       needs.file-changes.outputs.eos_design == 'true' ||
       needs.file-changes.outputs.config_gen == 'true' ||
       needs.file-changes.outputs.pyavd == 'true' ||
-      needs.file-changes.outputs.requirements == 'true'
+      needs.file-changes.outputs.requirements == 'true' ||
+      github.event_name == 'merge_group'
     strategy:
       fail-fast: false
       matrix:
@@ -668,7 +681,9 @@ jobs:
     name: Cargo build, test and linting on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: [file-changes]
-    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true'
+    if: |
+      needs.file-changes.outputs.rust_src_or_ci_changed == 'true' ||
+      github.event_name == 'merge_group'
     strategy:
       fail-fast: false
       matrix:
@@ -732,7 +747,7 @@ jobs:
     name: Python ${{ matrix.python }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: [file-changes]
-    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true'
+    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
     strategy:
       fail-fast: false
       matrix:

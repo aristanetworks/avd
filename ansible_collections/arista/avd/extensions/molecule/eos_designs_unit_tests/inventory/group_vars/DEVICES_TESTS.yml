@@ -1,0 +1,55 @@
+---
+# Basic testing of the devices and device_profiles models.
+
+type: l2leaf # Overridden on l3leaf and/or profile to test that those takes precedence
+devices:
+  - name: devices-leaf1a
+    # Profile set with device_profile under hostvars
+    type: l3leaf
+    id: 1
+
+  - name: devices-leaf1b
+    profile: L3LEAF1B
+    id: 2
+
+  - name: devices-l2leaf1
+    # No profile
+    id: 1
+    mgmt_ip: 172.16.1.151/24
+    uplink_switches: [devices-leaf1a, devices-leaf1b]
+    uplink_interfaces: [Ethernet7, Ethernet8]
+    uplink_switch_interfaces: [Ethernet8, Ethernet8]
+
+device_profiles:
+  - name: L3LEAF_PARENT_PROFILE
+    mlag_group: L3LEAF1
+    type: l3leaf
+    bgp_as: 65101
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.0.0/27
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 10.255.1.0/27
+    mlag_peer_ipv4_pool: 10.255.1.64/27
+    mlag_peer_l3_ipv4_pool: 10.255.1.96/27
+    mlag_interfaces: [Ethernet5, Ethernet6]
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+
+  - name: L3LEAF1A
+    # No parent_profile
+    mlag_group: L3LEAF1
+    bgp_as: 65101
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.0.0/27
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 10.255.1.0/27
+    mlag_peer_ipv4_pool: 10.255.1.64/27
+    mlag_peer_l3_ipv4_pool: 10.255.1.96/27
+    mlag_interfaces: [Ethernet5, Ethernet6]
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+
+  - name: L3LEAF1B
+    parent_profile: L3LEAF_PARENT_PROFILE
