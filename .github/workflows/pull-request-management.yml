@@ -41,7 +41,7 @@ jobs:
       - ansible_lint
       - test_pyavd
       - cargo_build_and_test
-      - python_rust_bindings_build_and_test
+      - pyavd_utils_build_and_test_cross_platform
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -92,8 +92,8 @@ jobs:
               - 'sonar-project.properties'
               - '.pre-commit-config.yaml'
             pyavd:
-              - 'python-avd/*'
               - 'python-avd/**/*'
+              - 'pyavd-utils/**/*'
             anta_runner:
               - 'ansible_collections/arista/avd/roles/anta_runner/*'
               - 'ansible_collections/arista/avd/roles/anta_runner/**/*'
@@ -588,14 +588,20 @@ jobs:
         suite:
           - name: "Main-Tests"
             id: Main-Tests
-            pytest_args: "--ignore=tests/pyavd/molecule_scenarios/test_get_device_config.py --ignore=tests/pyavd/molecule_scenarios/test_negative_eos_designs.py --ignore=tests/schema_tools/metaschema/test_meta_schema_model.py"
+            pytest_args: >-
+              --ignore=python-avd/tests/pyavd/molecule_scenarios/test_get_device_config.py
+              --ignore=python-avd/tests/pyavd/molecule_scenarios/test_negative_eos_designs.py
+              --ignore=python-avd/tests/schema_tools/metaschema/test_meta_schema_model.py
             upload_compiled_templates: true
           - name: "Excluded-Tests (test_get_device_config and test_meta_schema_model)"
             id: Excluded-test_get_device_config-and-test_meta_schema_model
-            pytest_args: "tests/pyavd/molecule_scenarios/test_get_device_config.py tests/schema_tools/metaschema/test_meta_schema_model.py"
+            pytest_args: >-
+              python-avd/tests/pyavd/molecule_scenarios/test_get_device_config.py
+              python-avd/tests/schema_tools/metaschema/test_meta_schema_model.py
           - name: "Excluded-Tests (test_negative_eos_designs)"
             id: Excluded-test_negative_eos_designs
-            pytest_args: "tests/pyavd/molecule_scenarios/test_negative_eos_designs.py"
+            pytest_args: >-
+              python-avd/tests/pyavd/molecule_scenarios/test_negative_eos_designs.py
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python 3
@@ -606,13 +612,12 @@ jobs:
         run: |
           pip install tox tox-gh-actions --upgrade
       - name: Run pytest via tox for ${{ matrix.python }}
-        working-directory: python-avd
         run: |
           tox -- ${{ matrix.suite.pytest_args }}
       - name: Rename the coverage file
         if: matrix.python == '3.11'
         run: |
-          mv ./python-avd/.coverage.* ./coverage-${{ matrix.suite.id }}.dat
+          mv .coverage coverage-${{ matrix.suite.id }}.dat
       - name: Upload pytest coverage data
         if: matrix.python == '3.11'
         uses: actions/upload-artifact@v5
@@ -643,13 +648,11 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install coverage
-        working-directory: python-avd
         run: pip install --group coverage
       - name: Download coverage artifacts
         uses: actions/download-artifact@v6
         with:
           pattern: coverage-data-*
-          path: python-avd
           merge-multiple: true
       - name: Download eos_designs compiled templates artifact
         uses: actions/download-artifact@v6
@@ -662,17 +665,16 @@ jobs:
           name: pytest-eos-cli-config-gen-compiled-templates
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
       - name: Combine and report test coverage
-        working-directory: python-avd
         run: |
           set -ex
-          coverage combine --rcfile=pyproject.toml coverage-*.dat
-          coverage report --rcfile=pyproject.toml
-          coverage xml --rcfile=pyproject.toml
+          coverage combine coverage-*.dat
+          coverage report
+          coverage xml
       - name: Upload pytest coverage report
         uses: actions/upload-artifact@v5
         with:
           name: pytest-coverage
-          path: python-avd/coverage.xml
+          path: coverage.xml
 
   # ----------------------------------- #
   # Cargo build, test and linting
@@ -740,11 +742,11 @@ jobs:
         if: |
           matrix.os == 'ubuntu-latest'
 
-  # ----------------------------------- #
-  # Python integration build and test
-  # ----------------------------------- #
-  python_rust_bindings_build_and_test:
-    name: Python ${{ matrix.python }} on ${{ matrix.os }}
+  # -------------------------------------------- #
+  # pyavd-utils build and test on other platforms
+  # -------------------------------------------- #
+  pyavd_utils_build_and_test_cross_platform:
+    name: pyavd-utils ${{ matrix.python }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: [file-changes]
     if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
@@ -756,7 +758,6 @@ jobs:
         # https://github.com/actions/runner-images/issues/13046
         # the next update will be macos-15-intel
         os:
-          - ubuntu-latest
           - ubuntu-24.04-arm
           - windows-latest
           - macos-14
@@ -774,34 +775,7 @@ jobs:
         run: |
           pip install tox tox-gh-actions --upgrade
       - name: Run pytest via tox
-        working-directory: pyavd-utils
         # Running tox  which will build the package (including rust).
         # For most runs without an environment set here. The environment is mapped with the tox gh-action plugin.
         run: |
-          tox
-
-  # We always need the coverage report
-  # Coverage only runs for ubuntu x64 on python 3.11.
-  python_rust_bindings_coverage:
-    name: Python 3.11 on ubuntu x64
-    runs-on: ubuntu-latest
-    needs: [file-changes]
-    steps:
-      - uses: actions/checkout@v5
-      - name: Upgrade rust and cargo
-        run: rustup update stable
-      - uses: actions/setup-python@v6
-        with:
-          python-version: 3.11
-      - name: Install tox
-        run: |
-          pip install tox tox-gh-actions --upgrade
-      - name: Run pytest via tox
-        working-directory: pyavd-utils
-        run: |
-          tox -e coverage,report
-      - name: Upload coverage from pytest
-        uses: actions/upload-artifact@v5
-        with:
-          name: pytest-pyavd-utils-coverage
-          path: pyavd-utils/coverage.xml
+          tox -- pyavd-utils/tests
