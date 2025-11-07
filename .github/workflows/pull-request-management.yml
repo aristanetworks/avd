@@ -801,13 +801,12 @@ jobs:
           - windows-latest
           - macos-14
           - macos-latest
-        python: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v5
       # Used to host cibuildwheel
       - uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python }}
+          python-version: "3.12"
       - name: Install cibuildwheel
         run: |
           pip install cibuildwheel==3.2.1
