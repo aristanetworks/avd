@@ -25749,6 +25749,7 @@ class EosDesigns(EosDesignsRootModel):
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
             "digital_twin": {"type": DigitalTwin},
+            "validate_hardware_inventory": {"type": EosCliConfigGen.Metadata.HardwareRequirements},
             "structured_config": {"type": EosCliConfigGen},
             "raw_eos_cli": {"type": str},
         }
@@ -25802,6 +25803,12 @@ class EosDesigns(EosDesignsRootModel):
         Subclass
         of AvdModel.
         """
+        validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
+        """
+        Defines the minimum hardware specifications required for the device.
+        Used for validation by the
+        `anta_runner` role.
+        """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
         raw_eos_cli: str | None
@@ -25824,6 +25831,7 @@ class EosDesigns(EosDesignsRootModel):
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
+                validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -25867,6 +25875,10 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
+                    validate_hardware_inventory:
+                       Defines the minimum hardware specifications required for the device.
+                       Used for validation by the
+                       `anta_runner` role.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -26512,6 +26524,7 @@ class EosDesigns(EosDesignsRootModel):
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
             "digital_twin": {"type": DigitalTwin},
+            "validate_hardware_inventory": {"type": EosCliConfigGen.Metadata.HardwareRequirements},
             "structured_config": {"type": EosCliConfigGen},
             "raw_eos_cli": {"type": str},
         }
@@ -26565,6 +26578,12 @@ class EosDesigns(EosDesignsRootModel):
         Subclass
         of AvdModel.
         """
+        validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
+        """
+        Defines the minimum hardware specifications required for the device.
+        Used for validation by the
+        `anta_runner` role.
+        """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
         raw_eos_cli: str | None
@@ -26587,6 +26606,7 @@ class EosDesigns(EosDesignsRootModel):
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
+                validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -26630,6 +26650,10 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
+                    validate_hardware_inventory:
+                       Defines the minimum hardware specifications required for the device.
+                       Used for validation by the
+                       `anta_runner` role.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
