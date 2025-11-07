@@ -152,7 +152,7 @@ testpaths = [
   "pyavd-utils/tests",
 ]
 pythonpath = [
-  ".",
+  ".", # This is needed to import from ansible_collections
   "python-avd",
   "pyavd-utils"
 ]

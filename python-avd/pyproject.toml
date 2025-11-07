@@ -35,19 +35,6 @@ dependencies = [
 homepage = "https://avd.arista.com"
 repository = "https://github.com/aristanetworks/avd"
 
-[dependency-groups]
-pytest = [
-    "ansible-core>=2.16.0,<2.20.0",
-    "anta>=1.6.0",
-    "pytest>=8.2.0",
-    "pytest-asyncio>=1.2.0",
-    "pydantic>=2.3.0",
-    "referencing>=0.35.0",
-]
-coverage = [
-    "coverage[toml]==7.11.0",
-]
-
 [project.optional-dependencies]
 ansible = [
     "ansible-core>=2.16.0,<2.20.0",
@@ -111,34 +98,6 @@ known_first_party = ["pyavd", "schema_tools"]
 
 extend_skip_glob = [
   "pyavd/_cv/api/**/*"
-]
-
-# Regexes for lines to exclude from consideration
-exclude_also = [
-    # Have to re-enable the standard pragma
-    "pragma: no cover",
-    # Don't complain about missing debug-only code:
-    "def __repr__",
-    "if self\\.debug",
-    # Don't complain if tests don't hit defensive assertion code:
-    "raise AssertionError",
-    "raise NotImplementedError",
-    # Don't complain if non-runnable code isn't run:
-    "if 0:",
-    "if __name__ == .__main__.:",
-    # Don't complain about abstract methods, they aren't run:
-    "@(abc\\.)?abstractmethod",
-    # Don't complain about TYPE_CHECKING blocks
-    "if TYPE_CHECKING:",
-    # Ignore typing overloads
-    "@overload",
-    # Don't complain about Jinja2 internalcode
-    # Note that except KeyError is a bit sad but this is the pattern
-    "except KeyError:",
-    "@internalcode",
-    "raise TemplateRuntimeError",
-    "^blocks = {}",
-    "^debug_info =.*",
 ]
 
 [tool.ruff]
