@@ -21539,7 +21539,7 @@ class EosDesigns(EosDesignsRootModel):
         """Configure logging severity."""
         validate_no_errors_period: int | None
         """
-        Threshold (in days) defining how far back to check the logging buffer for error-level logs during
+        Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
         the validation performed by the `anta_runner` role.
         """
 
@@ -21584,7 +21584,7 @@ class EosDesigns(EosDesignsRootModel):
                     event: event
                     level: Configure logging severity.
                     validate_no_errors_period:
-                       Threshold (in days) defining how far back to check the logging buffer for error-level logs during
+                       Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
                        the validation performed by the `anta_runner` role.
 
                 """
