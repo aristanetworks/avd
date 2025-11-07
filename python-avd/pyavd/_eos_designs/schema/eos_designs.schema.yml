@@ -1976,6 +1976,34 @@ keys:
 
           Can be set to `false` to avoid changes when migrating from the old `name_servers`
           model.'
+  dot1x_settings:
+    documentation_options:
+      table: dot1x-settings
+    type: dict
+    description: Settings for 802.1X deployments.
+    keys:
+      enabled:
+        type: bool
+        default: false
+        description: Enable 802.1X port authentication on the switch.
+      protocol_bypasses:
+        type: dict
+        keys:
+          bpdu:
+            type: bool
+            default: true
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_bpdu_bypass
+          lldp:
+            type: bool
+            default: true
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_lldp_bypass
+      dynamic_authorization:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            default: true
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/dynamic_authorization
   enable_trunk_groups:
     documentation_options:
       table: fabric-settings

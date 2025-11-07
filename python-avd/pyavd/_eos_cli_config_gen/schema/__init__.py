@@ -5513,8 +5513,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         system_auth_control: bool | None
         protocol_lldp_bypass: bool | None
+        """Allow LLDP packets to be processed even if the port is not authenticated."""
         protocol_bpdu_bypass: bool | None
+        """Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection."""
         dynamic_authorization: bool | None
+        """
+        Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
+        adjust an active client session.
+        """
         statistics_packets_dropped: bool | None
         """Enable the 802.1X port authentication dropped data packet statistics."""
         mac_based_authentication: MacBasedAuthentication
@@ -5571,9 +5577,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     system_auth_control: system_auth_control
-                    protocol_lldp_bypass: protocol_lldp_bypass
-                    protocol_bpdu_bypass: protocol_bpdu_bypass
-                    dynamic_authorization: dynamic_authorization
+                    protocol_lldp_bypass: Allow LLDP packets to be processed even if the port is not authenticated.
+                    protocol_bpdu_bypass: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+                    dynamic_authorization:
+                       Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
+                       adjust an active client session.
                     statistics_packets_dropped: Enable the 802.1X port authentication dropped data packet statistics.
                     mac_based_authentication: Subclass of AvdModel.
                     radius_av_pair_username_format:

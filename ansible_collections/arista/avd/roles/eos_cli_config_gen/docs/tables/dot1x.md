@@ -9,9 +9,9 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>dot1x</samp>](## "dot1x") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;system_auth_control</samp>](## "dot1x.system_auth_control") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;protocol_lldp_bypass</samp>](## "dot1x.protocol_lldp_bypass") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;protocol_bpdu_bypass</samp>](## "dot1x.protocol_bpdu_bypass") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "dot1x.dynamic_authorization") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;protocol_lldp_bypass</samp>](## "dot1x.protocol_lldp_bypass") | Boolean |  |  |  | Allow LLDP packets to be processed even if the port is not authenticated. |
+    | [<samp>&nbsp;&nbsp;protocol_bpdu_bypass</samp>](## "dot1x.protocol_bpdu_bypass") | Boolean |  |  |  | Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection. |
+    | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "dot1x.dynamic_authorization") | Boolean |  |  |  | Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to adjust an active client session. |
     | [<samp>&nbsp;&nbsp;statistics_packets_dropped</samp>](## "dot1x.statistics_packets_dropped") | Boolean |  |  |  | Enable the 802.1X port authentication dropped data packet statistics. |
     | [<samp>&nbsp;&nbsp;mac_based_authentication</samp>](## "dot1x.mac_based_authentication") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "dot1x.mac_based_authentication.delay") | Integer |  |  | Min: 0<br>Max: 300 |  |
@@ -88,8 +88,14 @@
     ```yaml
     dot1x:
       system_auth_control: <bool>
+
+      # Allow LLDP packets to be processed even if the port is not authenticated.
       protocol_lldp_bypass: <bool>
+
+      # Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
       protocol_bpdu_bypass: <bool>
+
+      # Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to adjust an active client session.
       dynamic_authorization: <bool>
 
       # Enable the 802.1X port authentication dropped data packet statistics.

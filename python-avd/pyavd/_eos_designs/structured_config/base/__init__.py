@@ -7,6 +7,7 @@ from functools import cached_property
 from typing import Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import (
     StructuredConfigGenerator,
     StructuredConfigGeneratorProtocol,
@@ -18,6 +19,7 @@ from pyavd.j2filters import natural_sort
 
 from .address_locking import AddressLockingMixin
 from .daemon_terminattr import DaemonTerminattrMixin
+from .dot1x import Dot1xMixin
 from .management_ssh import ManagementSshMixin
 from .monitor_sessions import MonitorSessionsMixin
 from .ntp import NtpMixin
@@ -30,6 +32,7 @@ from .utils import UtilsMixin
 class AvdStructuredConfigBaseProtocol(
     AddressLockingMixin,
     DaemonTerminattrMixin,
+    Dot1xMixin,
     ManagementSshMixin,
     NtpMixin,
     SnmpServerMixin,
@@ -691,9 +694,27 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def aaa_authentication(self) -> None:
         """Assign AAA authentication configuration from inputs to structured config."""
-        if not (aaa_authentication := self.inputs.aaa_settings.authentication):
-            return
-        self.structured_config.aaa_authentication = aaa_authentication
+        aaa_authentication = self.inputs.aaa_settings.authentication
+
+        # Handle 802.1X requirements
+        if self.is_dot1x_enabled:
+            if not self.inputs.aaa_settings.radius.servers:
+                message = "At least one RADIUS server must be defined in 'aaa_settings.radius.servers' when global 802.1X is enabled."
+                raise AristaAvdInvalidInputsError(message)
+
+            # Set the authentication methods from the RADIUS server groups if not already set
+            if not aaa_authentication.dot1x.default:
+                # Collect unique groups while preserving order
+                groups = []
+                for server in self.inputs.aaa_settings.radius.servers:
+                    for group in server.groups:
+                        if group not in groups:
+                            groups.append(group)
+
+                aaa_authentication.dot1x.default = " ".join(f"group {group}" for group in groups)
+
+        if aaa_authentication:
+            self.structured_config.aaa_authentication = aaa_authentication
 
     @structured_config_contributor
     def aaa_authorization(self) -> None:
@@ -705,9 +726,28 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def aaa_accounting(self) -> None:
         """Assign AAA accounting configuration from inputs to structured config."""
-        if not (aaa_accounting := self.inputs.aaa_settings.accounting):
-            return
-        self.structured_config.aaa_accounting = aaa_accounting
+        aaa_accounting = self.inputs.aaa_settings.accounting
+
+        # TODO: Uncomment the code below when https://github.com/aristanetworks/avd/issues/6126 is resolved.
+
+        # Handle 802.1X requirements
+        # if self.is_dot1x_enabled:
+        #     if not self.inputs.aaa_settings.radius.servers:
+        #         message = "At least one RADIUS server must be defined in 'aaa_settings.radius.servers' when global 802.1X is enabled."
+        #         raise AristaAvdInvalidInputsError(message)
+
+        #     # Set the accounting methods from the RADIUS server groups if not already set
+        #     if not aaa_accounting.dot1x.default:
+        #         aaa_accounting.dot1x.default.type = "start-stop"
+        #         # Collect unique groups while preserving order
+        #         for server in self.inputs.aaa_settings.radius.servers:
+        #             for group in server.groups:
+        #                 aaa_accounting.dot1x.default.methods.append_unique(
+        #                     EosCliConfigGen.AaaAccounting.Dot1x.Default.MethodsItem(method="group", group=group)
+        #                 )
+
+        if aaa_accounting:
+            self.structured_config.aaa_accounting = aaa_accounting
 
     @structured_config_contributor
     def aaa_root_login(self) -> None:

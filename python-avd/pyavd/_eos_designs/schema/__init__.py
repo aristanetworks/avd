@@ -16450,6 +16450,107 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class Dot1xSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class ProtocolBypasses(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"bpdu": {"type": bool, "default": True}, "lldp": {"type": bool, "default": True}}
+            bpdu: bool
+            """
+            Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+
+            Default value: `True`
+            """
+            lldp: bool
+            """
+            Allow LLDP packets to be processed even if the port is not authenticated.
+
+            Default value: `True`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, bpdu: bool | UndefinedType = Undefined, lldp: bool | UndefinedType = Undefined) -> None:
+                    """
+                    ProtocolBypasses.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        bpdu: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+                        lldp: Allow LLDP packets to be processed even if the port is not authenticated.
+
+                    """
+
+        class DynamicAuthorization(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}}
+            enabled: bool
+            """
+            Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
+            adjust an active client session.
+
+            Default value: `True`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                    """
+                    DynamicAuthorization.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
+                           adjust an active client session.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "enabled": {"type": bool, "default": False},
+            "protocol_bypasses": {"type": ProtocolBypasses},
+            "dynamic_authorization": {"type": DynamicAuthorization},
+        }
+        enabled: bool
+        """
+        Enable 802.1X port authentication on the switch.
+
+        Default value: `False`
+        """
+        protocol_bypasses: ProtocolBypasses
+        """Subclass of AvdModel."""
+        dynamic_authorization: DynamicAuthorization
+        """Subclass of AvdModel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                enabled: bool | UndefinedType = Undefined,
+                protocol_bypasses: ProtocolBypasses | UndefinedType = Undefined,
+                dynamic_authorization: DynamicAuthorization | UndefinedType = Undefined,
+            ) -> None:
+                """
+                Dot1xSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    enabled: Enable 802.1X port authentication on the switch.
+                    protocol_bypasses: Subclass of AvdModel.
+                    dynamic_authorization: Subclass of AvdModel.
+
+                """
+
     class EosDesignsCustomTemplatesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -85456,6 +85557,7 @@ class EosDesigns(EosDesignsRootModel):
         "devices": {"type": Devices},
         "digital_twin": {"type": DigitalTwin},
         "dns_settings": {"type": DnsSettings},
+        "dot1x_settings": {"type": Dot1xSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
@@ -86532,6 +86634,12 @@ class EosDesigns(EosDesignsRootModel):
     dns_settings: DnsSettings
     """
     DNS settings
+
+    Subclass of AvdModel.
+    """
+    dot1x_settings: Dot1xSettings
+    """
+    Settings for 802.1X deployments.
 
     Subclass of AvdModel.
     """
@@ -87941,6 +88049,7 @@ class EosDesigns(EosDesignsRootModel):
             devices: Devices | UndefinedType = Undefined,
             digital_twin: DigitalTwin | UndefinedType = Undefined,
             dns_settings: DnsSettings | UndefinedType = Undefined,
+            dot1x_settings: Dot1xSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
@@ -88557,6 +88666,10 @@ class EosDesigns(EosDesignsRootModel):
                    AvdModel.
                 dns_settings:
                    DNS settings
+
+                   Subclass of AvdModel.
+                dot1x_settings:
+                   Settings for 802.1X deployments.
 
                    Subclass of AvdModel.
                 enable_trunk_groups:
