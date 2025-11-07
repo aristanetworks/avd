@@ -31,6 +31,14 @@ pub trait StoreValidate<T> {
         configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError>;
 
+    /// Entrypoint for validating a serde_json::Value against the given schema name.
+    fn validate_value(
+        &self,
+        value: &mut Value,
+        schema_name: T,
+        configuration: Option<&Configuration>,
+    ) -> ValidationResult;
+
     /// Coerce the given value recursively to match the types of the schema.
     /// Returns a ValidationResult where only coercions have been populated.
     ///
@@ -43,34 +51,34 @@ impl StoreValidate<Schema> for Store {
     fn validate_json(
         &self,
         json: &str,
-        schema_type: Schema,
+        schema_name: Schema,
         configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError> {
         let mut value = serde_json::from_str(json)?;
-        let mut ctx = Context::new(self, configuration);
-
-        let schema = self.get(schema_type);
-        schema.coerce(&mut value, &mut ctx);
-        schema.validate_value(&value, &mut ctx);
-
-        Ok(ctx.into())
+        Ok(self.validate_value(&mut value, schema_name, configuration))
     }
     fn validate_yaml(
         &self,
         yaml: &str,
-        schema_type: Schema,
+        schema_name: Schema,
         configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError> {
         // todo: remove `serde_yaml` once `saphyr` adds `serde` support
         // https://github.com/saphyr-rs/saphyr/issues/1
         let mut value = serde_yaml::from_str::<Value>(yaml)?;
+        Ok(self.validate_value(&mut value, schema_name, configuration))
+    }
+    fn validate_value(
+        &self,
+        value: &mut Value,
+        schema_name: Schema,
+        configuration: Option<&Configuration>,
+    ) -> ValidationResult {
         let mut ctx = Context::new(self, configuration);
-
-        let schema = self.get(schema_type);
-        schema.coerce(&mut value, &mut ctx);
+        let schema = self.get(schema_name);
+        schema.coerce(value, &mut ctx);
         schema.validate_value(&value, &mut ctx);
-
-        Ok(ctx.into())
+        ctx.into()
     }
     fn coerce_value(&self, value: &mut Value, schema_name: Schema) -> ValidationResult {
         let mut ctx = Context::new(self, None);
@@ -113,6 +121,23 @@ impl StoreValidate<&str> for Store {
             });
 
             Ok(ctx.into())
+        }
+    }
+    fn validate_value(
+        &self,
+        value: &mut Value,
+        schema_name: &str,
+        configuration: Option<&Configuration>,
+    ) -> ValidationResult {
+        if let Ok(schema_type) = Schema::try_from(schema_name) {
+            self.validate_value(value, schema_type, configuration)
+        } else {
+            let mut ctx = Context::new(self, None);
+            ctx.add_violation(Violation::InvalidSchema {
+                schema: schema_name.into(),
+            });
+
+            ctx.into()
         }
     }
     fn coerce_value(&self, value: &mut Value, schema_name: &str) -> ValidationResult {

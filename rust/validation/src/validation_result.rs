@@ -13,7 +13,7 @@ use crate::{context::Context, feedback::Feedback};
     feature = "python_bindings",
     pyo3::pyclass(frozen, get_all, module = "validation")
 )]
-#[derive(Debug, Serialize)]
+#[derive(Clone, Debug, Serialize)]
 pub struct ValidationResult {
     pub violations: Vec<Feedback>,
     pub coercions: Vec<Feedback>,
