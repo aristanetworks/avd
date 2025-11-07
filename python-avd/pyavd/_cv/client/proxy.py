@@ -8,7 +8,7 @@ import ssl
 from ipaddress import IPv4Address, IPv4Network, IPv6Address, IPv6Network, ip_address, ip_network
 from logging import getLogger
 from os import environ
-from typing import TYPE_CHECKING, Final, Literal, TypeGuard, TypeVar
+from typing import TYPE_CHECKING, Final, Literal, TypeGuard
 from urllib.parse import ParseResult, quote, urlparse
 
 from grpclib.client import Channel
@@ -33,8 +33,6 @@ if TYPE_CHECKING:
     IpOrStr = IPv4Address | IPv6Address | str
     IpOrCidr = Ip | IPv4Network | IPv6Network
 
-
-T_ProxyBypassRule = TypeVar("T_ProxyBypassRule", bound="ProxyBypassRule")
 
 LOGGER = getLogger(__name__)
 
@@ -72,6 +70,7 @@ class CVConnectionManager:
             proxy_username: Proxy server authentication username.
             proxy_password: Proxy server authentication password.
         """
+        LOGGER.debug("Initializing CVConnectionManager...")
         # Set attributes related to the target CloudVision instance
         self._target_host = target_host
         self._target_port = target_port
@@ -101,6 +100,7 @@ class CVConnectionManager:
         channel = Channel(host=self._target_host, port=self._target_port, ssl=ssl_context)
 
         if not self.use_proxy:
+            LOGGER.debug("<CVConnectionManager>.create_proxy_channel: No proxy server. Building standard gRPC Channel.")
             return channel
 
         # Create custom connector that uses proxy
@@ -126,6 +126,7 @@ class CVConnectionManager:
             return protocol
 
         # Override the standard method from grpclib with our proxy variant.
+        LOGGER.debug("<CVConnectionManager>.create_proxy_channel: Proxy server is used. Building gRPC Channel through proxy server.")
         channel._create_connection = proxy_connection
         return channel
 
@@ -139,12 +140,14 @@ class CVConnectionManager:
         Requests will pick it up from ssl lib itself.
         """
         if not verify_certs:
+            LOGGER.debug("<CVConnectionManager>.get_ssl_context: Using relaxed 'ssl_context' (no hostname or cerfificate validation).")
             # Accepting SonarLint issue: We are purposely implementing no verification of certs.
             context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
             context.check_hostname = False
             context.verify_mode = ssl.CERT_NONE  # NOSONAR
             context.set_alpn_protocols(["h2"])
         else:
+            LOGGER.debug("<CVConnectionManager>.get_ssl_context: Using regular 'ssl_context'.")
             context = True
         return context
 
@@ -204,6 +207,7 @@ class CVProxyManager:
         proxy_username: str | None = None,
         proxy_password: str | None = None,
     ) -> None:
+        LOGGER.debug("Initializing CVProxyManager...")
         # Set attributes related to the target CloudVision instance
         self._target_host = target_host
         self._target_port = target_port
@@ -213,26 +217,29 @@ class CVProxyManager:
 
         # Check if usage of the proxy server was requested using explicit inputs
         if proxy_scheme and proxy_host and proxy_port:
-            LOGGER.debug("CVProxyManager: sufficient proxy server info is passed explicitly. Verifying it's validity...")
+            LOGGER.info("<CVProxyManager>: Proxy server information is passed explicitly. Verifying it's validity...")
             # Verify that all mandatory settings comply with validity requirements
             # Raise an exception if any of the explicitly provided settings does not pass validity checks
             if self._proxy_candidate_is_valid(proxy_scheme, proxy_host, proxy_port, "explicit", raise_on_failure=True):
-                LOGGER.debug("CVProxyManager: Explicitly passed proxy server info passed all validations.")
+                LOGGER.debug("<CVProxyManager>: Explicitly passed proxy server information passed all validations.")
                 self.use_proxy = True
                 self._proxy_configuration_source = "explicit"
                 self._proxy_scheme = proxy_scheme
                 self._proxy_host = proxy_host
                 self._proxy_port = proxy_port
-                self._proxy_username = proxy_username
-                self._proxy_password = proxy_password
-            # Valid proxy server settings successfully discovered using explicit parameters
-            return
+                # Use urllib.parse.quote to convert all special symbols in username and password
+                self._proxy_username = quote(proxy_username, safe="") if isinstance(proxy_username, str) else None
+                self._proxy_password = quote(proxy_password, safe="") if isinstance(proxy_password, str) else None
+                # Valid proxy server settings successfully discovered using explicit parameters
+                return
 
-        LOGGER.info("CVProxyManager: falling back to discovering proxy server settings via environment variables...")
+        LOGGER.info("<CVProxyManager>: Trying to discovering proxy server settings using environment variables...")
         # Fallback to discovering proxy-related settings passed via environment variables
         # Identify format of the target host
         self._identify_target_host_format()
+        LOGGER.debug("<CVProxyManager>: Target CloudVision destination is specified using '%s' format.", self._target_host_format)
 
+        LOGGER.debug("<CVProxyManager>: Checking if target CloudVision destination is matching any proxy bypass environment variables...")
         # Check if target CloudVision instance is listed as a part of the proxy bypass variables.
         # Initialize proxy bypass manager
         self.cv_proxy_bypass_manager = CVProxyBypassManager()
@@ -241,20 +248,34 @@ class CVProxyManager:
         if self.cv_proxy_bypass_manager.proxy_bypass_discovered and self.cv_proxy_bypass_manager.bypass_proxy_for_destination(
             self._target_host, self._target_host_format, self._target_port
         ):
+            LOGGER.info(
+                "<CVProxyManager>: Target CloudVision matched proxy bypass rule specified in environment variable '%s'. Proxy server will not be used by AVD.",
+                self.cv_proxy_bypass_manager.env_var_no_proxy_name,
+            )
             self.use_proxy = False
             return
 
+        LOGGER.debug("<CVProxyManager>: Target CloudVision has not matched any proxy bypass environment variables.")
         # Read interesting proxy-related environment variables
         self._get_env_proxy()
 
         if not self.proxy_discovered:
+            LOGGER.info("<CVProxyManager>: No proxy environment variables discovered. AVD will not use proxy server.")
             self.use_proxy = False
             return
 
+        LOGGER.info(
+            "<CVProxyManager>: Proxy settings were discovered using environment variable '%s'.",
+            self._env_var_proxy_name,
+        )
         self._parse_env_var_proxy_content()
 
         # Verify that all mandatory settings comply with validity requirements
         # Raise an exception if any of the explicitly provided settings does not pass validity checks
+        LOGGER.debug(
+            "<CVProxyManager>: Verifying validity of the proxy settings discovered using environment variable '%s'.",
+            self._env_var_proxy_name,
+        )
         if self._proxy_candidate_is_valid(
             self._parsed_env_var_proxy_content.scheme,
             self._parsed_env_var_proxy_content.hostname,
@@ -267,8 +288,13 @@ class CVProxyManager:
             self._proxy_scheme = self._parsed_env_var_proxy_content.scheme
             self._proxy_host = self._parsed_env_var_proxy_content.hostname
             self._proxy_port = self._parsed_env_var_proxy_content.port
+            # Proxy username and password in evn variables are expected to have all special symbols quoted
             self._proxy_username = self._parsed_env_var_proxy_content.username
             self._proxy_password = self._parsed_env_var_proxy_content.password
+            LOGGER.info(
+                "<CVProxyManager>: Discovered proxy server settings passed all validity checks. AVD will use proxy server '%s'.",
+                self.get_proxy_url(hide_password=True),
+            )
 
     def _identify_target_host_format(self) -> None:
         """Identify if target_host is passed as an IPv4 address, an IPv6 address or an FQDN."""
@@ -292,14 +318,18 @@ class CVProxyManager:
             raise AristaAvdError(msg) from e
 
     def _get_env_proxy(self) -> None:
+        LOGGER.debug("<CVProxyManager>: Reading proxy environment variables: '%s'...", PROXY_ENV_VARS)
         for env_variable_candidate in PROXY_ENV_VARS:
             if env_proxy_candidate := environ.get(env_variable_candidate):
+                LOGGER.debug("<CVProxyManager>: Environment variable '%s' is found.", env_variable_candidate)
                 self._env_var_proxy_name = env_variable_candidate
                 self._env_var_proxy_content = env_proxy_candidate
                 return
+        LOGGER.debug("<CVProxyManager>: No proxy environment variables found.")
 
     def _parse_env_var_proxy_content(self) -> None:
         if isinstance(self._env_var_proxy_content, str):
+            LOGGER.debug("<CVProxyManager>: Parsing content of the environment variable '%s'...", self._env_var_proxy_name)
             try:
                 self._parsed_env_var_proxy_content = urlparse(self._env_var_proxy_content)
             except Exception as e:
@@ -337,7 +367,7 @@ class CVProxyManager:
         Returns:
             Dictionary with proxy configuration for requests.
         """
-        return {"http": self.proxy_url, "https": self.proxy_url, "no_proxy": "_"} if self.use_proxy else {"no_proxy": self._target_host}
+        return {"http": self.get_proxy_url(), "https": self.get_proxy_url(), "no_proxy": "_"} if self.use_proxy else {"no_proxy": self._target_host}
 
     async def create_socket_for_grpc(self) -> socket.socket:
         """
@@ -346,8 +376,9 @@ class CVProxyManager:
         Returns:
             Raw socket connected to target through proxy.
         """
+        LOGGER.debug("<CVProxyManager>.create_socket_for_grpc: Building a Socket through a proxy server...")
         # Create proxy using python-socks
-        proxy = Proxy.from_url(self.proxy_url)
+        proxy = Proxy.from_url(self.get_proxy_url())
 
         # Connect through proxy to target
         return await proxy.connect(dest_host=self._target_host, dest_port=self._target_port)
@@ -397,16 +428,15 @@ class CVProxyManager:
 
     @property
     def proxy_discovered(self) -> bool:
-        return bool(self._get_env_var_proxy_name() and self._get_env_var_proxy_content())
+        return bool(self.get_env_var_proxy_name() and self.get_env_var_proxy_content())
 
-    def _get_env_var_proxy_name(self) -> T_ProxyEnvVars | None:
+    def get_env_var_proxy_name(self) -> T_ProxyEnvVars | None:
         return getattr(self, "_env_var_proxy_name", None)
 
-    def _get_env_var_proxy_content(self) -> str | None:
+    def get_env_var_proxy_content(self) -> str | None:
         return getattr(self, "_env_var_proxy_content", None)
 
-    @property
-    def proxy_url(self) -> str:
+    def get_proxy_url(self, hide_password: bool = False) -> str:
         """
         Generate proxy URL.
 
@@ -417,8 +447,8 @@ class CVProxyManager:
             # Excempting the lines below from Sonar since we cannot use HTTPS here.
             return (
                 f"{self._proxy_scheme}://"
-                f"{quote(self._proxy_username, safe='')}:"
-                f"{quote(self._proxy_password, safe='')}@"
+                f"{self._proxy_username}:"
+                f"{'<removed>' if hide_password else self._proxy_password}@"
                 f"{self._proxy_host}:{self._proxy_port}"
             )  # NOSONAR
         return f"{self._proxy_scheme}://{self._proxy_host}:{self._proxy_port}"  # NOSONAR
@@ -445,6 +475,7 @@ class CVProxyBypassManager:
     _fqdn_no_proxy_rules: list[ProxyBypassRule]
 
     def __init__(self) -> None:
+        LOGGER.debug("Initializing CVProxyBypassManager...")
         self._all_no_proxy_rule = False
         self._ipv4_address_no_proxy_rules = []
         self._ipv4_cidr_no_proxy_rules = []
@@ -457,19 +488,29 @@ class CVProxyBypassManager:
         self._get_env_no_proxy()
 
         if not self.proxy_bypass_discovered:
+            LOGGER.info("<CVProxyBypassManager>: No proxy bypass environment variables discovered.")
             return
 
+        LOGGER.info(
+            "<CVProxyBypassManager>: The following proxy bypass settings were discovered using environment variable '%s': '%s'.",
+            self._env_var_no_proxy_name,
+            self._env_var_no_proxy_content,
+        )
         # Process raw content to build bypass rules
         self._process_env_var_no_proxy_content()
 
     def _get_env_no_proxy(self) -> None:
+        LOGGER.debug("<CVProxyBypassManager>: Reading proxy bypass environment variables: '%s'...", NO_PROXY_ENV_VARS)
         for env_variable_candidate in NO_PROXY_ENV_VARS:
             if env_no_proxy_candidate := environ.get(env_variable_candidate):
+                LOGGER.debug("<CVProxyBypassManager>: Environment variable '%s' is found.", env_variable_candidate)
                 self._env_var_no_proxy_name = env_variable_candidate
                 self._env_var_no_proxy_content = env_no_proxy_candidate
                 return
+        LOGGER.debug("<CVProxyBypassManager>: No proxy bypass environment variables found.")
 
     def _process_env_var_no_proxy_content(self) -> None:
+        LOGGER.info("<CVProxyBypassManager>: Parsing content of the environment variable '%s' to form proxy bypass rules...", self._env_var_no_proxy_name)
         for raw_rule_input in self._env_var_no_proxy_content.split(","):
             rule_candidate = ProxyBypassRule.from_raw_value(raw_rule_input)
             match rule_candidate.rule_type:
@@ -535,6 +576,10 @@ class CVProxyBypassManager:
                     return True
         # Use proxy otherwise
         return False
+
+    @property
+    def env_var_no_proxy_name(self) -> T_NoProxyEnvVars:
+        return self._env_var_no_proxy_name
 
 
 class ProxyBypassRule:

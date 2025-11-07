@@ -64,7 +64,7 @@ async def test_cv_client_unauthenticated_proxy() -> None:
             proxy_host=proxy_host,
         ) as cvclient:
             assert (
-                cvclient.cv_connection_manager.cv_proxy_manager.proxy_url
+                cvclient.cv_connection_manager.cv_proxy_manager.get_proxy_url()
                 == f"http://{proxy_host}:{cvclient.cv_connection_manager.cv_proxy_manager._proxy_port}"
             )
 
