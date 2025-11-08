@@ -6,6 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 
 if TYPE_CHECKING:
@@ -35,4 +36,6 @@ class Dot1xMixin(Protocol):
             protocol_bpdu_bypass=self.inputs.dot1x_settings.protocol_bypasses.bpdu,
             protocol_lldp_bypass=self.inputs.dot1x_settings.protocol_bypasses.lldp,
             dynamic_authorization=self.inputs.dot1x_settings.dynamic_authorization.enabled,
+            radius_av_pair=EosCliConfigGen.Dot1x.RadiusAvPair(service_type=self.inputs.dot1x_settings.always_send_service_type),
+            radius_av_pair_username_format=EosCliConfigGen.Dot1x.RadiusAvPairUsernameFormat(delimiter="none", mac_string_case="lowercase"),
         )

@@ -37,3 +37,7 @@ keys:
             type: bool
             default: true
             $ref: eos_cli_config_gen#/keys/dot1x/keys/dynamic_authorization
+      always_send_service_type:
+        type: bool
+        default: true
+        $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/service_type

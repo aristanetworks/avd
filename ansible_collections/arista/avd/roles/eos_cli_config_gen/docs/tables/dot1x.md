@@ -20,7 +20,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delimiter</samp>](## "dot1x.radius_av_pair_username_format.delimiter") | String | Required |  | Valid Values:<br>- <code>colon</code><br>- <code>hyphen</code><br>- <code>none</code><br>- <code>period</code> | Delimiter to use in MAC address string. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_string_case</samp>](## "dot1x.radius_av_pair_username_format.mac_string_case") | String | Required |  | Valid Values:<br>- <code>lowercase</code><br>- <code>uppercase</code> | MAC address string in lowercase/uppercase. |
     | [<samp>&nbsp;&nbsp;radius_av_pair</samp>](## "dot1x.radius_av_pair") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_type</samp>](## "dot1x.radius_av_pair.service_type") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_type</samp>](## "dot1x.radius_av_pair.service_type") | Boolean |  |  |  | Always send the Service-Type attribute in RADIUS accounting messages. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;framed_mtu</samp>](## "dot1x.radius_av_pair.framed_mtu") | Integer |  |  | Min: 68<br>Max: 9236 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lldp</samp>](## "dot1x.radius_av_pair.lldp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_name</samp>](## "dot1x.radius_av_pair.lldp.system_name") | Dictionary |  |  |  | LLDP system name (LLDP TLV 5) av-pair. |
@@ -113,6 +113,8 @@
         # MAC address string in lowercase/uppercase.
         mac_string_case: <str; "lowercase" | "uppercase"; required>
       radius_av_pair:
+
+        # Always send the Service-Type attribute in RADIUS accounting messages.
         service_type: <bool>
         framed_mtu: <int; 68-9236>
         lldp:

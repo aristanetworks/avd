@@ -5001,6 +5001,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "filter_id": {"type": FilterId},
             }
             service_type: bool | None
+            """Always send the Service-Type attribute in RADIUS accounting messages."""
             framed_mtu: int | None
             lldp: Lldp
             """Subclass of AvdModel."""
@@ -5027,7 +5028,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        service_type: service_type
+                        service_type: Always send the Service-Type attribute in RADIUS accounting messages.
                         framed_mtu: framed_mtu
                         lldp: Subclass of AvdModel.
                         dhcp: Subclass of AvdModel.

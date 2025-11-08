@@ -14,6 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lldp</samp>](## "dot1x_settings.protocol_bypasses.lldp") | Boolean |  | `True` |  | Allow LLDP packets to be processed even if the port is not authenticated. |
     | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "dot1x_settings.dynamic_authorization") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.dynamic_authorization.enabled") | Boolean |  | `True` |  | Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to adjust an active client session. |
+    | [<samp>&nbsp;&nbsp;always_send_service_type</samp>](## "dot1x_settings.always_send_service_type") | Boolean |  | `True` |  | Always send the Service-Type attribute in RADIUS accounting messages. |
 
 === "YAML"
 
@@ -34,4 +35,7 @@
 
         # Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to adjust an active client session.
         enabled: <bool; default=True>
+
+      # Always send the Service-Type attribute in RADIUS accounting messages.
+      always_send_service_type: <bool; default=True>
     ```

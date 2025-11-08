@@ -16517,6 +16517,7 @@ class EosDesigns(EosDesignsRootModel):
             "enabled": {"type": bool, "default": False},
             "protocol_bypasses": {"type": ProtocolBypasses},
             "dynamic_authorization": {"type": DynamicAuthorization},
+            "always_send_service_type": {"type": bool, "default": True},
         }
         enabled: bool
         """
@@ -16528,6 +16529,12 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         dynamic_authorization: DynamicAuthorization
         """Subclass of AvdModel."""
+        always_send_service_type: bool
+        """
+        Always send the Service-Type attribute in RADIUS accounting messages.
+
+        Default value: `True`
+        """
 
         if TYPE_CHECKING:
 
@@ -16537,6 +16544,7 @@ class EosDesigns(EosDesignsRootModel):
                 enabled: bool | UndefinedType = Undefined,
                 protocol_bypasses: ProtocolBypasses | UndefinedType = Undefined,
                 dynamic_authorization: DynamicAuthorization | UndefinedType = Undefined,
+                always_send_service_type: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 Dot1xSettings.
@@ -16548,6 +16556,7 @@ class EosDesigns(EosDesignsRootModel):
                     enabled: Enable 802.1X port authentication on the switch.
                     protocol_bypasses: Subclass of AvdModel.
                     dynamic_authorization: Subclass of AvdModel.
+                    always_send_service_type: Always send the Service-Type attribute in RADIUS accounting messages.
 
                 """
 
