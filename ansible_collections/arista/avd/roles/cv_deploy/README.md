@@ -371,8 +371,6 @@ To enable proxy server explicitly, set `proxy_host`. Setting `proxy_port` (port 
 
 If valid `proxy_host` (must be non-empty string) and `proxy_port` (greater than 0, less than 65536) are set, `cv_deploy` will ignore (for both REST and gRPC calls) any proxy-related environment variables (`https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY`/`no_proxy`/`NO_PROXY`) and will force all REST and gRPC egress connections through this proxy.
 
-If valid `proxy_host` (must be non-empty string) and `proxy_port` (greater than 0, less than 65536) are not set, `cv_deploy` will try to discover usable proxy server using proxy and proxy bypass environment variables.
-
 Below settings allow modifying the default proxy-related behavior as needed. The values below are the default values.
 
 ```yaml
@@ -401,6 +399,23 @@ proxy_port: 3128
 proxy_username: "avd_proxy_user"
 proxy_password: "avd_proxy_password"
 ```
+
+!!! None
+
+    All special symbols present in the explicitly passed proxy username and password will be automatically encoded by AVD.
+
+    Example:
+
+    ```yaml
+    proxy_host: proxy.local.domain
+    proxy_port: 3128
+    proxy_username: "p:r/o$x@yuser"
+    proxy_password: "p:r/o$x@ypassword"
+    ```
+
+    will be equal to setting the following via the environment variable: `http://p%3Ar%2Fo%24x%40yuser:p%3Ar%2Fo%24x%40ypassword@proxy.local.domain:3128`
+
+If valid `proxy_host` (must be non-empty string) and `proxy_port` (greater than 0, less than 65536) are not set, `cv_deploy` will try to discover usable proxy server using proxy and proxy bypass environment variables.
 
 ### Configure proxy settings using environment variables
 
@@ -462,7 +477,7 @@ Table below explains how each of the items in the environment variable above wou
 | `www.arista.io` | Full FQDN match. | `www.arista.io`:443 | `cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
 | `www.arista.io:443` | Full FQDN + port match | `www.arista.io`:443 | `cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
 | `.arista.io` | Wildcard domain match | `www.arista.io`:443 | `cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
-| `.arista.io:443` | Wildcard domain match | `www.arista.io`:443 | `cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
+| `.arista.io:443` | Wildcard domain + port match | `www.arista.io`:443 | `cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
 | `34.67.65.165` |IPv4 address match | `34.67.65.165`:443<br>`34.67.65.165`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
 | `34.67.65.165/32` |IPv4 CIDR match | `34.67.65.165`:443<br>`34.67.65.165`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
 | `34.67.65.0/24` |IPv4 CIDR match | `34.67.65.165`:443<br>`34.67.65.165`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
@@ -479,6 +494,10 @@ http://proxy-server.local:8081
 http://user1:pass1@10.10.10.10:8081
 http://user1:pass1@proxy-server.local:8081
 ```
+
+!!! None
+
+    When setting proxy credentials via environment variables, make sure to quote all special symbols (like `:`, `@`, etc. ) otherwise such proxy URI string will be invalid.
 
 Examples below show invalid values of `https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY` environment variables which will be ignored by `cv_deploy`:
 
