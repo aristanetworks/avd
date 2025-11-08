@@ -415,8 +415,6 @@ proxy_password: "avd_proxy_password"
 
     will be equal to setting the following via the environment variable: `http://p%3Ar%2Fo%24x%40yuser:p%3Ar%2Fo%24x%40ypassword@proxy.local.domain:3128`
 
-If valid `proxy_host` (must be non-empty string) and `proxy_port` (greater than 0, less than 65536) are not set, `cv_deploy` will try to discover usable proxy server using proxy and proxy bypass environment variables.
-
 ### Configure proxy settings using environment variables
 
 If proxy-related settings are not passed to `cv_deploy` explicitly, `cv_deploy` will try to discover usable proxy server (scheme is `http`, host is a non-empty string, port is greater than 0 and less than 65536) using environment variables in the following order:
