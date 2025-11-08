@@ -361,15 +361,17 @@ The `arista.avd.cv_deploy` role supports connecting to CloudVision through an [H
 
 There are two ways to enable proxy server for `cv_deploy`: explicitly and via environment variables.
 
-If proxy-related settings are passed to `cv_deploy` explicitly and execution environment has proxy-related environment variables set (`https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY`/`no_proxy`/`NO_PROXY`), such environment variables will be ignored for all REST and gRPC calls initiated by `cv_deploy`.
+!!! Note
+
+    If proxy-related settings are passed to `cv_deploy` explicitly and execution environment has proxy-related environment variables set (`https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY`/`no_proxy`/`NO_PROXY`), such environment variables will be ignored for all REST and gRPC calls initiated by `cv_deploy`.
 
 ### Configure proxy settings explicitly
 
-To enable the proxy explicitly, set `proxy_host`. Setting `proxy_port` (port `TCP/8080` will be used by default), `proxy_username` and `proxy_password` is optional.
+To enable proxy server explicitly, set `proxy_host`. Setting `proxy_port` (port `TCP/8080` will be used by default), `proxy_username` and `proxy_password` is optional.
 
-If valid `proxy_host` (must be non-empty string) and `proxy_port` (greater than 0, less than 65536) are set, `cv_deploy` will ignore (for both REST and gRPC calls) any proxy-related environment variables (`https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY`/`no_proxy`/`NO_PROXY`).
+If valid `proxy_host` (must be non-empty string) and `proxy_port` (greater than 0, less than 65536) are set, `cv_deploy` will ignore (for both REST and gRPC calls) any proxy-related environment variables (`https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY`/`no_proxy`/`NO_PROXY`) and will force all REST and gRPC egress connections through this proxy.
 
-If valid `proxy_host` (must be non-empty string) and `proxy_port` (greater than 0, less than 65536) are not set, `cv_deploy` will try to discover usable proxy server using environment variables.
+If valid `proxy_host` (must be non-empty string) and `proxy_port` (greater than 0, less than 65536) are not set, `cv_deploy` will try to discover usable proxy server using proxy and proxy bypass environment variables.
 
 Below settings allow modifying the default proxy-related behavior as needed. The values below are the default values.
 
@@ -404,23 +406,69 @@ proxy_password: "avd_proxy_password"
 
 If proxy-related settings are not passed to `cv_deploy` explicitly, `cv_deploy` will try to discover usable proxy server (scheme is `http`, host is a non-empty string, port is greater than 0 and less than 65536) using environment variables in the following order:
 
-1. Discover proxy server
+1. Check if proxy bypass is requested for CloudVision
 
-    - Check `https_proxy` environment variable. If valid proxy settings are discovered, proceed to step 2. Otherwise, check next environment variable.
+    - Check `no_proxy` environment variable. Proceed to the next environment variable if it's not set. Otherwise if it is a non-empty string, check if target CloudVision is part of this string. Do not use proxy if it is.
 
-    - Check `HTTPS_PROXY` environment variable. If valid proxy settings are discovered, proceed to step 2. Otherwise, check next environment variable.
+    - Check `NO_PROXY` environment variable. If it is a non-empty string, check if target CloudVision is part of this string. Do not use proxy if it is. Otherwise proceed to step 2.
 
-    - Check `all_proxy` environment variable. If valid proxy settings are discovered, proceed to step 2. Otherwise, check next environment variable.
+2. Discover proxy server
 
-    - Check `ALL_PROXY` environment variable. If valid proxy settings are discovered, proceed to step 2. Otherwise, check next environment variable.
+    - Check `https_proxy` environment variable. Proceed to the next environment variable if it's not set. Otherwise if valid proxy settings are discovered, use this proxy server.
 
-    If no valid proxy settings are discovered after checking all interesting environment variables in step 1, `cv_deploy` will not use any proxy server for its outbound REST and gRPC requests.
+    - Check `HTTPS_PROXY` environment variable. Proceed to the next environment variable if it's not set. Otherwise if valid proxy settings are discovered, use this proxy server.
 
-2. Check if proxy bypass is requested for CloudVision
+    - Check `all_proxy` environment variable. Proceed to the next environment variable if it's not set. Otherwise if valid proxy settings are discovered, use this proxy server.
 
-    - Check `no_proxy` environment variable. If it is a non-empty string, check if target CloudVision is part of this string. Do not use proxy if it is. Otherwise proceed to next environment variable.
+    - Check `ALL_PROXY` environment variable. If valid proxy settings are discovered, use this proxy server.
 
-    - Check `NO_PROXY` environment variable. If it is a non-empty string, check if target CloudVision is part of this string. Do not use proxy if it is. Otherwise `cv_deploy` will use proxy server discovered in step 1 for all outbound REST and gRPC requests.
+    If no valid proxy settings are discovered after checking all interesting environment variables in step 2, `cv_deploy` will not use any proxy server for its outbound REST and gRPC requests.
+
+Value of the proxy bypass environment variables supported by AVD must be a comma-separated string of the following supported items:
+
+- Literal `*`
+
+- FQDN
+
+- FQDN + PORT
+
+- wildcard domain
+
+- wildcard domain + PORT
+
+- IPv4 address
+
+- IPv4 CIDR
+
+- IPv6 address
+
+- IPv6 CIDR
+
+Example of a string with all types of valid values:
+
+```code
+export no_proxy='*,www.arista.io,www.arista.io:443,.arista.io,.arista.io:443,34.67.65.165,34.67.65.165/32,34.67.65.0/24,2a06:98c1:58::1f6,2a06:98c1:58::1f6/128,2a06:98c1:58::/64'
+```
+
+Table below explains how each of the items in the environment variable above would impact an AVD decision tree of selecting proxy bypass settings:
+
+!!! Note
+
+    Convention `<fqdn/ip>:<port>` used in `Matching CloudVision destinations` and `Non-matching CloudVision destinations` columns of the table below means that AVD is instructed to run deployment against CloudVision / CVaaS `<fqnd/ip>` over port `<port>`. Non-standard port assumes usage of an intermediate proxy/load-balancer.
+
+| Item | Comment | Matching CloudVision destinations | Non-matching CloudVision destinations |
+| ---- | ------- | ----------------- | --------------------- |
+| `*` | Matches all destination.<br>Effectively disables proxy server for AVD. | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 | |
+| `www.arista.io` | Full FQDN match. | `www.arista.io`:443 | `cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
+| `www.arista.io:443` | Full FQDN + port match | `www.arista.io`:443 | `cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
+| `.arista.io` | Wildcard domain match | `www.arista.io`:443 | `cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
+| `.arista.io:443` | Wildcard domain match | `www.arista.io`:443 | `cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
+| `34.67.65.165` |IPv4 address match | `34.67.65.165`:443<br>`34.67.65.165`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
+| `34.67.65.165/32` |IPv4 CIDR match | `34.67.65.165`:443<br>`34.67.65.165`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
+| `34.67.65.0/24` |IPv4 CIDR match | `34.67.65.165`:443<br>`34.67.65.165`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
+| `2a06:98c1:58::1f6` |IPv6 address match | `2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443 |
+| `2a06:98c1:58::1f6/128` |IPv6 CIDR match | `2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443 |
+| `2a06:98c1:58::/64` |IPv6 CIDR match | `2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443 |
 
 Examples below show values that can be used for `https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY` environment variables to influence proxy server settings in `cv_deploy`:
 
@@ -442,16 +490,6 @@ https://10.10.10.10:8081
 http://proxy-server.local
 # Specified proxy server port is out of expected range
 http://proxy-server.local:65555
-```
-
-Examples below show values that can be used for `no_proxy`/`NO_PROXY` environment variables to influence proxy server settings in `cv_deploy`:
-
-```code
-# Assuming 192.168.10.10, 192.168.10.11 and 192.168.10.12 being IPv4 addresses of the members of the 3-nodes CVP cluster
-192.168.10.10,192.168.10.11,192.168.10.12
-9.9.9.9:555,192.168.10.10:443,192.168.10.11:443,192.168.10.12:443,11.11.11.11:666
-www.arista.io,www.arista.com
-www.arista.io:443,www.arista.com:443
 ```
 
 ## License
