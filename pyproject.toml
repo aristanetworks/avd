@@ -145,6 +145,7 @@ extraPaths = [
   "python-avd",
   "pyavd-utils"
 ]
+reportMissingImports = "error"
 
 [tool.pytest.ini_options]
 testpaths = [
