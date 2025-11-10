@@ -145,8 +145,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Install pyavd and Ansible requirements
+        # Adding pyavd-utils as editable to force a build of the .so files. The pyavd-utils is already added to the python path in the pyright config.
         run: |
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt -e pyavd-utils/ --upgrade
       - name: PyRight static type checker
         # Specific SHA as allowed by github org admins
         uses: jakebailey/pyright-action@6cabc0f01c4994be48fd45cd9dbacdd6e1ee6e5e
