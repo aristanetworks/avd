@@ -270,6 +270,7 @@ class EosDesigns(EosDesignsRootModel):
                     "vrf": {"type": str},
                     "key": {"type": str},
                     "cleartext_key": {"type": str},
+                    "tls": {"type": EosCliConfigGen.RadiusServer.HostsItem.Tls},
                 }
                 host: str
                 """
@@ -307,6 +308,8 @@ class EosDesigns(EosDesignsRootModel):
                 To protect the password at rest it is strongly
                 recommended to make use of a vault or similar.
                 """
+                tls: EosCliConfigGen.RadiusServer.HostsItem.Tls
+                """When TLS is configured, `key` and `cleartext_key` are ignored."""
 
                 if TYPE_CHECKING:
 
@@ -318,6 +321,7 @@ class EosDesigns(EosDesignsRootModel):
                         vrf: str | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         cleartext_key: str | None | UndefinedType = Undefined,
+                        tls: EosCliConfigGen.RadiusServer.HostsItem.Tls | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ServersItem.
@@ -353,6 +357,7 @@ class EosDesigns(EosDesignsRootModel):
                                Encrypted to Type 7 by AVD.
                                To protect the password at rest it is strongly
                                recommended to make use of a vault or similar.
+                            tls: When TLS is configured, `key` and `cleartext_key` are ignored.
 
                         """
 
