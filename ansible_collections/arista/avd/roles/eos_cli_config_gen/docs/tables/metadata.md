@@ -16,6 +16,14 @@
     | [<samp>&nbsp;&nbsp;dc_name</samp>](## "metadata.dc_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;fabric_name</samp>](## "metadata.fabric_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;serial_number</samp>](## "metadata.serial_number") | String |  |  |  | Serial Number of the device.<br>Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role. |
+    | [<samp>&nbsp;&nbsp;hardware_requirements</samp>](## "metadata.hardware_requirements") | Dictionary |  |  |  | Defines the minimum hardware specifications required for the device.<br>Used for validation by the `anta_runner` role. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "metadata.hardware_requirements.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_fans</samp>](## "metadata.hardware_requirements.min_fans") | Integer |  |  |  | Minimum number of fans required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "metadata.hardware_requirements.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_line_cards</samp>](## "metadata.hardware_requirements.min_line_cards") | Integer |  |  |  | Minimum number of line cards required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "metadata.hardware_requirements.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "metadata.hardware_requirements.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "metadata.hardware_requirements.transceiver_manufacturers.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;cv_tags</samp>](## "metadata.cv_tags") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;device_tags</samp>](## "metadata.cv_tags.device_tags") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_tags.device_tags.[].name") | String | Required |  |  |  |
@@ -153,6 +161,29 @@
       # Serial Number of the device.
       # Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role.
       serial_number: <str>
+
+      # Defines the minimum hardware specifications required for the device.
+      # Used for validation by the `anta_runner` role.
+      hardware_requirements:
+
+        # Minimum number of power supplies required for the device.
+        min_power_supplies: <int>
+
+        # Minimum number of fans required for the device.
+        min_fans: <int>
+
+        # Minimum number of supervisor modules required for the device.
+        min_supervisors: <int>
+
+        # Minimum number of line cards required for the device.
+        min_line_cards: <int>
+
+        # Minimum number of fabric cards required for the device.
+        min_fabric_cards: <int>
+
+        # List of approved transceiver manufacturers for the device.
+        transceiver_manufacturers: # (1)!
+          - <str>
       cv_tags:
         device_tags:
           - name: <str; required>
@@ -294,3 +325,11 @@
       # Threshold (in minutes) defining the recent time window during which no error-level logs should have been generated for the validation to pass.
       validate_no_errors_period: <int>
     ```
+
+    1. Default Value
+
+        ```yaml
+        transceiver_manufacturers:
+        - Arista Networks
+        - Arastra, Inc.
+        ```
