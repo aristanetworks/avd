@@ -138,6 +138,7 @@ exclude = [
   "python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py",
   "python-avd/pyavd/_eos_designs/j2templates/compiled_templates",
   "python-avd/pyavd/_eos_designs/schema/__init__.py",
+  ".tox",
 ]
 pythonVersion = "3.10"
 # This is to direct pyright where to look for schema_tools
@@ -145,6 +146,7 @@ extraPaths = [
   "python-avd",
   "pyavd-utils"
 ]
+reportMissingImports = "error"
 
 [tool.pytest.ini_options]
 testpaths = [
