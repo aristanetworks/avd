@@ -7,7 +7,9 @@
 {% for dynamic_prefix_list in dynamic_prefix_lists | arista.avd.natural_sort('name') %}
 !
 dynamic prefix-list {{ dynamic_prefix_list.name }}
+{%     if dynamic_prefix_list.match_map is arista.avd.defined %}
    match-map {{ dynamic_prefix_list.match_map }}
+{%     endif %}
 {%     if dynamic_prefix_list.prefix_list.ipv4 is arista.avd.defined %}
    prefix-list ipv4 {{ dynamic_prefix_list.prefix_list.ipv4 }}
 {%     endif  %}
