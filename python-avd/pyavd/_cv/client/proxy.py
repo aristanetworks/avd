@@ -8,7 +8,7 @@ import ssl
 from ipaddress import IPv4Address, IPv4Network, IPv6Address, IPv6Network, ip_address, ip_network
 from logging import getLogger
 from os import environ
-from typing import TYPE_CHECKING, Final, Literal, TypeGuard
+from typing import TYPE_CHECKING, Final, Literal, TypeGuard, overload
 from urllib.parse import ParseResult, quote, urlparse
 
 from grpclib.client import Channel
@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     T_ProxyEnvVars = Literal["https_proxy", "HTTPS_PROXY", "all_proxy", "ALL_PROXY"]
     T_NoProxyEnvVars = Literal["no_proxy", "NO_PROXY"]
     T_ProxyBypassRuleType = Literal["all", "ipv4_address", "ipv4_cidr", "ipv6_address", "ipv6_cidr", "wildcard_domain", "fqdn"]
-    T_TargetHostFormat = Literal["ipv4_address", "ipv6_address", "fqdn"]
+    T_HostFormat = Literal["ipv4_address", "ipv6_address", "fqdn"]
     Ip = IPv4Address | IPv6Address
     IpOrStr = IPv4Address | IPv6Address | str
     IpOrCidr = Ip | IPv4Network | IPv6Network
@@ -178,10 +178,11 @@ class CVProxyManager:
 
     use_proxy: bool
     _target_host: str
-    _target_host_format: T_TargetHostFormat
+    _target_host_format: T_HostFormat
     _target_port: int
     _proxy_scheme: str | None
     _proxy_host: str | None
+    _proxy_host_format: T_HostFormat | None
     _proxy_port: int | None
     _proxy_username: str | None
     _proxy_password: str | None
@@ -218,6 +219,10 @@ class CVProxyManager:
         # Check if usage of the proxy server was requested using explicit inputs
         if proxy_scheme and proxy_host and proxy_port:
             LOGGER.info("<CVProxyManager>: Proxy server information is passed explicitly. Verifying it's validity...")
+
+            # Identify format of the proxy host
+            self._proxy_host_format = self._identify_host_format(proxy_host, "proxy server")
+
             # Verify that all mandatory settings comply with validity requirements
             # Raise an exception if any of the explicitly provided settings does not pass validity checks
             if self._proxy_candidate_is_valid(proxy_scheme, proxy_host, proxy_port, "explicit", raise_on_failure=True):
@@ -235,8 +240,8 @@ class CVProxyManager:
 
         LOGGER.info("<CVProxyManager>: Trying to discovering proxy server settings using environment variables...")
         # Fallback to discovering proxy-related settings passed via environment variables
-        # Identify format of the target host
-        self._identify_target_host_format()
+        # Identify format of the target CloudVision host
+        self._target_host_format = self._identify_host_format(self._target_host, "CloudVision host")
         LOGGER.debug("<CVProxyManager>: Target CloudVision destination is specified using '%s' format.", self._target_host_format)
 
         LOGGER.debug("<CVProxyManager>: Checking if target CloudVision destination is matching any proxy bypass environment variables...")
@@ -283,6 +288,9 @@ class CVProxyManager:
             self._env_var_proxy_name,
             raise_on_failure=True,
         ):
+            # Identify format of the proxy host
+            self._proxy_host_format = self._identify_host_format(self._parsed_env_var_proxy_content.hostname, "proxy server")
+
             self.use_proxy = True
             self._proxy_configuration_source = self._env_var_proxy_name
             self._proxy_scheme = self._parsed_env_var_proxy_content.scheme
@@ -295,27 +303,6 @@ class CVProxyManager:
                 "<CVProxyManager>: Discovered proxy server settings passed all validity checks. AVD will use proxy server '%s'.",
                 self.get_proxy_url(hide_password=True),
             )
-
-    def _identify_target_host_format(self) -> None:
-        """Identify if target_host is passed as an IPv4 address, an IPv6 address or an FQDN."""
-        msg = f"AVD faced an exception trying to identify the format ('ipv4', 'ipv6' or 'fqdn') of the targeted CloudVision host '{self._target_host}'."
-        try:
-            # Check if used format is IPv4 or IPv6 address
-            ip_candidate = ip_address(self._target_host)
-            match ip_candidate.version:
-                case 4:
-                    self._target_host_format = "ipv4_address"
-                    return
-                case 6:
-                    self._target_host_format = "ipv6_address"
-                    return
-                case _:
-                    self._target_host_format = "fqdn"
-        except ValueError:
-            # If it is not an IPv4 or IPv6 address we treat it as an FQDN.
-            self._target_host_format = "fqdn"
-        except Exception as e:
-            raise AristaAvdError(msg) from e
 
     def _get_env_proxy(self) -> None:
         LOGGER.debug("<CVProxyManager>: Reading proxy environment variables: '%s'...", PROXY_ENV_VARS)
@@ -383,6 +370,36 @@ class CVProxyManager:
         # Connect through proxy to target
         return await proxy.connect(dest_host=self._target_host, dest_port=self._target_port)
 
+    @overload
+    @staticmethod
+    def _identify_host_format(host: None, context: str) -> None: ...
+
+    @overload
+    @staticmethod
+    def _identify_host_format(host: str, context: str) -> Literal["ipv4_address", "ipv6_address", "fqdn"]: ...
+
+    @staticmethod
+    def _identify_host_format(host: str | None, context: str) -> Literal["ipv4_address", "ipv6_address", "fqdn"] | None:
+        if host is None:
+            return None
+        """Identify if host is passed as an IPv4 address, an IPv6 address or an FQDN."""
+        msg = f"AVD faced an exception trying to identify the format ('ipv4_address', 'ipv6_address' or 'fqdn') of the target {context} '{host}'."
+        try:
+            # Check if used format is IPv4 or IPv6 address
+            ip_candidate = ip_address(host)
+            match ip_candidate.version:
+                case 4:
+                    return "ipv4_address"
+                case 6:
+                    return "ipv6_address"
+                case _:
+                    return "fqdn"
+        except ValueError:
+            # If it is not an IPv4 or IPv6 address we treat it as an FQDN.
+            return "fqdn"
+        except Exception as e:
+            raise AristaAvdError(msg) from e
+
     @staticmethod
     def _proxy_scheme_is_valid(
         proxy_scheme_candidate: str | None, candidate_source: T_ProxyConfigurationSource | None, raise_on_failure: bool = False
@@ -443,15 +460,22 @@ class CVProxyManager:
         Returns:
             HTTP proxy URL.
         """
+        if not self.use_proxy:
+            return ""
+        if self._proxy_host_format is None:
+            msg = "Can not generate proxy URL due to missing definition of the proxy server format."
+            raise AristaAvdError(msg)
+        formatted_proxy_host = f"[{self._proxy_host}]" if self._proxy_host_format == "ipv6_address" else self._proxy_host
         if self._proxy_username_is_set(self._proxy_username) and self._proxy_password_is_set(self._proxy_password):
             # Excempting the lines below from Sonar since we cannot use HTTPS here.
             return (
                 f"{self._proxy_scheme}://"
                 f"{self._proxy_username}:"
                 f"{'<removed>' if hide_password else self._proxy_password}@"
-                f"{self._proxy_host}:{self._proxy_port}"
+                f"{formatted_proxy_host}:"
+                f"{self._proxy_port}"
             )  # NOSONAR
-        return f"{self._proxy_scheme}://{self._proxy_host}:{self._proxy_port}"  # NOSONAR
+        return f"{self._proxy_scheme}://{formatted_proxy_host}:{self._proxy_port}"  # NOSONAR
 
 
 class CVProxyBypassManager:
@@ -539,7 +563,7 @@ class CVProxyBypassManager:
     def _get_env_var_no_proxy_content(self) -> str | None:
         return getattr(self, "_env_var_no_proxy_content", None)
 
-    def bypass_proxy_for_destination(self, target_host: str, target_host_format: T_TargetHostFormat, target_port: int) -> bool:
+    def bypass_proxy_for_destination(self, target_host: str, target_host_format: T_HostFormat, target_port: int) -> bool:
         """Check if target destination and port match any proxy bypass rule and thereofre should not go through proxy server."""
         # If '*' is present in the bypass string - bypass proxy for any destination
         if self._all_no_proxy_rule:

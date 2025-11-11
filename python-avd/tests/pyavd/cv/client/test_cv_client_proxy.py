@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import ssl
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 from os import environ
@@ -17,58 +16,17 @@ from pyavd._cv.client.exceptions import CVClientException
 ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
 
 
-@pytest.mark.asyncio
-async def test_cv_client_proxy_socket_error() -> None:
-    servers = "www.arista.io"
-    token = "secret_access_token"  # noqa: S105
-    proxy_host = "127.0.0.1"
-    proxy_username = "avd_user"
-    proxy_password = "avd_password"  # noqa: S105
-
-    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
-        async with CVClient(
-            servers=servers,
-            token=token,
-            proxy_host=proxy_host,
-            proxy_username=proxy_username,
-            proxy_password=proxy_password,
-        ) as cvclient:
-            with pytest.raises(CVClientException) as exception_info:
-                await cvclient.get_inventory_devices([(None, None, "spine1")])
-
-            assert "Failed to create proxy connection" in str(exception_info.value)
+USER: str = "user1"
+PASS: str = "pass1"  # noqa: S105
+USER_SS: str = "u:s@e/r.1"
+PASS_SS: str = "p:a@s/s.1"  # noqa: S105
+USER_SS_QUOTED: str = "u%3As%40e%2Fr.1"
+PASS_SS_QUOTED: str = "p%3Aa%40s%2Fs.1"  # noqa: S105
 
 
-@pytest.mark.asyncio
-async def test_cv_client_no_verify_certs() -> None:
-    servers = "www.arista.io"
-    token = "secret_access_token"  # noqa: S105
-
-    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
-        async with CVClient(servers=servers, token=token, verify_certs=False) as cvclient:
-            ssl_context = cvclient.cv_connection_manager.get_ssl_context(cvclient._verify_certs)
-            assert ssl_context.check_hostname is False
-            assert ssl_context.verify_mode == ssl.CERT_NONE
-
-
-@pytest.mark.asyncio
-async def test_cv_client_unauthenticated_proxy() -> None:
-    servers = "www.arista.io"
-    token = "secret_access_token"  # noqa: S105
-    proxy_host = "127.0.0.1"
-
-    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
-        async with CVClient(
-            servers=servers,
-            token=token,
-            proxy_host=proxy_host,
-        ) as cvclient:
-            assert (
-                cvclient.cv_connection_manager.cv_proxy_manager.get_proxy_url()
-                == f"http://{proxy_host}:{cvclient.cv_connection_manager.cv_proxy_manager._proxy_port}"
-            )
-
-
+######################
+## Helper functions ##
+######################
 def unset_proxy_related_env_vars(monkeypatch: pytest.MonkeyPatch) -> None:
     """Unsets all proxy-related environment variables prior to the start of the proxy tests."""
     for env_var in ["https_proxy", "HTTPS_PROXY", "all_proxy", "ALL_PROXY", "no_proxy", "NO_PROXY"]:
@@ -78,13 +36,500 @@ def unset_proxy_related_env_vars(monkeypatch: pytest.MonkeyPatch) -> None:
 def form_proxy_string(
     proxy_schema: str | None, proxy_username: str | None, proxy_password: str | None, proxy_host: str | None, proxy_port: str | int | None
 ) -> str:
-    """Forms proxy server URI based on the input variables."""
+    """Forms proxy server URL based on the input variables."""
     if proxy_username and proxy_password:
         return f"{proxy_schema}://{proxy_username}:{proxy_password}@{proxy_host}:{proxy_port!s}"  # NOSONAR
 
     return f"{proxy_schema}://{proxy_host}:{proxy_port!s}"
 
 
+#########################
+## Offline proxy tests ##
+#########################
+@pytest.mark.asyncio
+async def test_cv_client_proxy_socket_error() -> None:
+    servers = "www.arista.io"
+    token = "secret_access_token"  # noqa: S105
+    proxy_host = "127.0.0.1"
+
+    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
+        async with CVClient(
+            servers=servers,
+            token=token,
+            proxy_host=proxy_host,
+        ) as cvclient:
+            with pytest.raises(CVClientException) as exception_info:
+                await cvclient.get_inventory_devices({(None, None, "spine1")})
+
+            assert "Failed to create proxy connection" in str(exception_info.value)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("proxy_host", "proxy_username", "proxy_password", "expected_proxy_url"),
+    [
+        pytest.param(None, None, None, "", id="NOTHING"),
+        pytest.param(None, None, PASS, "", id="PASS"),
+        pytest.param(None, None, PASS_SS, "", id="PASS_SS"),
+        pytest.param(None, USER, None, "", id="USER"),
+        pytest.param(None, USER_SS, None, "", id="USER_SS"),
+        pytest.param(None, USER, PASS, "", id="USER_PASS"),
+        pytest.param(None, USER_SS, PASS_SS, "", id="USER_SS_PASS_SS"),
+        pytest.param("10.10.10.10", None, None, "http://10.10.10.10:8080", id="IPV4"),
+        pytest.param("10.10.10.10", None, PASS, "http://10.10.10.10:8080", id="IPV4_PASS"),
+        pytest.param("10.10.10.10", None, PASS_SS, "http://10.10.10.10:8080", id="IPV4_PASS_SS"),
+        pytest.param("10.10.10.10", USER, None, "http://10.10.10.10:8080", id="IPV4_USER"),
+        pytest.param("10.10.10.10", USER_SS, None, "http://10.10.10.10:8080", id="IPV4_USER_SS"),
+        pytest.param("10.10.10.10", USER, PASS, f"http://{USER}:{PASS}@10.10.10.10:8080", id="IPV4_USER_PASS"),
+        pytest.param("10.10.10.10", USER_SS, PASS_SS, f"http://{USER_SS_QUOTED}:{PASS_SS_QUOTED}@10.10.10.10:8080", id="IPV4_USER_SS_PASS_SS"),
+        pytest.param("2002::20", None, None, "http://[2002::20]:8080", id="IPV6"),
+        pytest.param("2002::20", None, PASS, "http://[2002::20]:8080", id="IPV6_PASS"),
+        pytest.param("2002::20", None, PASS_SS, "http://[2002::20]:8080", id="IPV6_PASS_SS"),
+        pytest.param("2002::20", USER, None, "http://[2002::20]:8080", id="IPV6_USER"),
+        pytest.param("2002::20", USER_SS, None, "http://[2002::20]:8080", id="IPV6_USER_SS"),
+        pytest.param("2002::20", USER, PASS, f"http://{USER}:{PASS}@[2002::20]:8080", id="IPV6_USER_PASS"),
+        pytest.param("2002::20", USER_SS, PASS_SS, f"http://{USER_SS_QUOTED}:{PASS_SS_QUOTED}@[2002::20]:8080", id="IPV6_USER_SS_PASS_SS"),
+        pytest.param("proxy1", None, None, "http://proxy1:8080", id="NAME"),
+        pytest.param("proxy1", None, PASS, "http://proxy1:8080", id="NAME_PASS"),
+        pytest.param("proxy1", None, PASS_SS, "http://proxy1:8080", id="NAME_PASS_SS"),
+        pytest.param("proxy1", USER, None, "http://proxy1:8080", id="NAME_USER"),
+        pytest.param("proxy1", USER_SS, None, "http://proxy1:8080", id="NAME_USER_SS"),
+        pytest.param("proxy1", USER, PASS, f"http://{USER}:{PASS}@proxy1:8080", id="NAME_USER_PASS"),
+        pytest.param("proxy1", USER_SS, PASS_SS, f"http://{USER_SS_QUOTED}:{PASS_SS_QUOTED}@proxy1:8080", id="NAME_USER_SS_PASS_SS"),
+        pytest.param("proxy1.local.domain", None, None, "http://proxy1.local.domain:8080", id="FQDN"),
+        pytest.param("proxy1.local.domain", None, PASS, "http://proxy1.local.domain:8080", id="FQDN_PASS"),
+        pytest.param("proxy1.local.domain", None, PASS_SS, "http://proxy1.local.domain:8080", id="FQDN_PASS_SS"),
+        pytest.param("proxy1.local.domain", USER, None, "http://proxy1.local.domain:8080", id="FQDN_USER"),
+        pytest.param("proxy1.local.domain", USER_SS, None, "http://proxy1.local.domain:8080", id="FQDN_USER_SS"),
+        pytest.param("proxy1.local.domain", USER, PASS, f"http://{USER}:{PASS}@proxy1.local.domain:8080", id="FQDN_USER_PASS"),
+        pytest.param("proxy1.local.domain", USER_SS, PASS_SS, f"http://{USER_SS_QUOTED}:{PASS_SS_QUOTED}@proxy1.local.domain:8080", id="FQDN_USER_PASS"),
+    ],
+)
+async def test_cv_client_proxy_url(proxy_host: str | None, proxy_username: str | None, proxy_password: str | None, expected_proxy_url: str) -> None:
+    servers = "www.arista.io"
+    token = "secret_access_token"  # noqa: S105
+
+    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
+        async with CVClient(
+            servers=servers,
+            token=token,
+            proxy_host=proxy_host,
+            proxy_username=proxy_username,
+            proxy_password=proxy_password,
+        ) as cvclient:
+            assert cvclient.cv_connection_manager.cv_proxy_manager.get_proxy_url() == expected_proxy_url
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("proxy_host", "proxy_port", "proxy_username", "proxy_password", "expected_proxy_url"),
+    [
+        pytest.param(None, 3128, None, None, "", id="NOTHING"),
+        pytest.param(None, 3128, None, PASS, "", id="PASS"),
+        pytest.param(None, 3128, None, PASS_SS, "", id="PASS_SS"),
+        pytest.param(None, 3128, USER, None, "", id="USER"),
+        pytest.param(None, 3128, USER_SS, None, "", id="USER_SS"),
+        pytest.param(None, 3128, USER, PASS, "", id="USER_PASS"),
+        pytest.param(None, 3128, USER_SS, PASS_SS, "", id="USER_SS_PASS_SS"),
+        pytest.param("10.10.10.10", 3128, None, None, "http://10.10.10.10:3128", id="IPV4"),
+        pytest.param("10.10.10.10", 3128, None, PASS, "http://10.10.10.10:3128", id="IPV4_PASS"),
+        pytest.param("10.10.10.10", 3128, None, PASS_SS, "http://10.10.10.10:3128", id="IPV4_PASS_SS"),
+        pytest.param("10.10.10.10", 3128, USER, None, "http://10.10.10.10:3128", id="IPV4_USER"),
+        pytest.param("10.10.10.10", 3128, USER_SS, None, "http://10.10.10.10:3128", id="IPV4_USER_SS"),
+        pytest.param("10.10.10.10", 3128, USER, PASS, f"http://{USER}:{PASS}@10.10.10.10:3128", id="IPV4_USER_PASS"),
+        pytest.param("10.10.10.10", 8080, USER, PASS, f"http://{USER}:{PASS}@10.10.10.10:8080", id="IPV4_DEFPORT_USER_PASS"),
+        pytest.param("10.10.10.10", 3128, USER_SS, PASS_SS, f"http://{USER_SS_QUOTED}:{PASS_SS_QUOTED}@10.10.10.10:3128", id="IPV4_USER_SS_PASS_SS"),
+        pytest.param("10.10.10.10", 8080, USER_SS, PASS_SS, f"http://{USER_SS_QUOTED}:{PASS_SS_QUOTED}@10.10.10.10:8080", id="IPV4_DEFPORT_USER_SS_PASS_SS"),
+        pytest.param("2002::20", 3128, None, None, "http://[2002::20]:3128", id="IPV6"),
+        pytest.param("2002::20", 3128, None, PASS, "http://[2002::20]:3128", id="IPV6_PASS"),
+        pytest.param("2002::20", 3128, None, PASS_SS, "http://[2002::20]:3128", id="IPV6_PASS_SS"),
+        pytest.param("2002::20", 3128, USER, None, "http://[2002::20]:3128", id="IPV6_USER"),
+        pytest.param("2002::20", 3128, USER_SS, None, "http://[2002::20]:3128", id="IPV6_USER_SS"),
+        pytest.param("2002::20", 3128, USER, PASS, f"http://{USER}:{PASS}@[2002::20]:3128", id="IPV6_USER_PASS"),
+        pytest.param("2002::20", 8080, USER, PASS, f"http://{USER}:{PASS}@[2002::20]:8080", id="IPV6_DEFPORT_USER_PASS"),
+        pytest.param("2002::20", 3128, USER_SS, PASS_SS, f"http://{USER_SS_QUOTED}:{PASS_SS_QUOTED}@[2002::20]:3128", id="IPV6_USER_SS_PASS_SS"),
+        pytest.param("2002::20", 8080, USER_SS, PASS_SS, f"http://{USER_SS_QUOTED}:{PASS_SS_QUOTED}@[2002::20]:8080", id="IPV6_DEFPORT_USER_SS_PASS_SS"),
+        pytest.param("proxy1", 3128, None, None, "http://proxy1:3128", id="NAME"),
+        pytest.param("proxy1", 3128, None, PASS, "http://proxy1:3128", id="NAME_PASS"),
+        pytest.param("proxy1", 3128, None, PASS_SS, "http://proxy1:3128", id="NAME_PASS_SS"),
+        pytest.param("proxy1", 3128, USER, None, "http://proxy1:3128", id="NAME_USER"),
+        pytest.param("proxy1", 3128, USER_SS, None, "http://proxy1:3128", id="NAME_USER_SS"),
+        pytest.param("proxy1", 3128, USER, PASS, f"http://{USER}:{PASS}@proxy1:3128", id="NAME_USER_PASS"),
+        pytest.param("proxy1", 8080, USER, PASS, f"http://{USER}:{PASS}@proxy1:8080", id="NAME_DEFPORT_USER_PASS"),
+        pytest.param("proxy1", 3128, USER_SS, PASS_SS, f"http://{USER_SS_QUOTED}:{PASS_SS_QUOTED}@proxy1:3128", id="NAME_USER_SS_PASS_SS"),
+        pytest.param("proxy1", 8080, USER_SS, PASS_SS, f"http://{USER_SS_QUOTED}:{PASS_SS_QUOTED}@proxy1:8080", id="NAME_DEFPORT_USER_SS_PASS_SS"),
+        pytest.param("proxy1.local.domain", 3128, None, None, "http://proxy1.local.domain:3128", id="FQDN"),
+        pytest.param("proxy1.local.domain", 3128, None, PASS, "http://proxy1.local.domain:3128", id="FQDN_PASS"),
+        pytest.param("proxy1.local.domain", 3128, None, PASS_SS, "http://proxy1.local.domain:3128", id="FQDN_PASS_SS"),
+        pytest.param("proxy1.local.domain", 3128, USER, None, "http://proxy1.local.domain:3128", id="FQDN_USER"),
+        pytest.param("proxy1.local.domain", 3128, USER_SS, None, "http://proxy1.local.domain:3128", id="FQDN_USER_SS"),
+        pytest.param("proxy1.local.domain", 3128, USER_SS, None, "http://proxy1.local.domain:3128", id="FQDN_DEFPORT_USER_SS"),
+        pytest.param("proxy1.local.domain", 3128, USER, PASS, f"http://{USER}:{PASS}@proxy1.local.domain:3128", id="FQDN_USER_PASS"),
+        pytest.param("proxy1.local.domain", 8080, USER, PASS, f"http://{USER}:{PASS}@proxy1.local.domain:8080", id="FQDN_DEFPORT_USER_PASS"),
+        pytest.param(
+            "proxy1.local.domain", 3128, USER_SS, PASS_SS, f"http://{USER_SS_QUOTED}:{PASS_SS_QUOTED}@proxy1.local.domain:3128", id="FQDNHOST_USER_PASS"
+        ),
+        pytest.param(
+            "proxy1.local.domain", 8080, USER_SS, PASS_SS, f"http://{USER_SS_QUOTED}:{PASS_SS_QUOTED}@proxy1.local.domain:8080", id="FQDNHOST_DEFPORT_USER_PASS"
+        ),
+    ],
+)
+async def test_cv_client_proxy_url_with_port(
+    proxy_host: str | None, proxy_port: int, proxy_username: str | None, proxy_password: str | None, expected_proxy_url: str
+) -> None:
+    servers = "www.arista.io"
+    token = "secret_access_token"  # noqa: S105
+
+    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
+        async with CVClient(
+            servers=servers,
+            token=token,
+            proxy_host=proxy_host,
+            proxy_port=proxy_port,
+            proxy_username=proxy_username,
+            proxy_password=proxy_password,
+        ) as cvclient:
+            assert cvclient.cv_connection_manager.cv_proxy_manager.get_proxy_url() == expected_proxy_url
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("servers"),
+    [
+        pytest.param("www.arista.io", id="FQDN"),
+        pytest.param("192.168.10.10", id="IPV4"),
+        pytest.param("2001::10", id="IPV6"),
+    ],
+)
+@pytest.mark.parametrize(
+    ("proxy_env_var_value"),
+    [
+        pytest.param(None, id="PROXY_NONE"),
+        pytest.param("http://10.10.10.10", id="PROXY_MATCHING"),
+        pytest.param("http://11.11.11.11", id="PROXY_NONMATCHING"),
+        pytest.param("http://11.11.11.11:8090", id="PROXY_NONMATCHING_WITH_PORT"),
+        pytest.param("http://new_user:new_password@11.11.11.11:8090", id="PROXY_NONMATCHING_FULL"),
+    ],
+)
+@pytest.mark.parametrize(
+    ("no_proxy_env_var_value"),
+    [
+        pytest.param(None, id="NO_PROXY_NONE"),
+        pytest.param("www.arista.io", id="NO_PROXY_MATCHING"),
+        pytest.param("www.arista.io:443", id="NO_PROXY_MATCHING_WITH_PORT"),
+        pytest.param(".arista.io", id="NO_PROXY_WILDCARD_DOMAIN"),
+        pytest.param("*", id="NO_PROXY_STAR"),
+        pytest.param("192.168.10.10", id="NO_PROXY_IPV4"),
+        pytest.param("192.168.10.10/32", id="NO_PROXY_IPV4_CIDR_32"),
+        pytest.param("192.168.10.0/24", id="NO_PROXY_IPV4_CIDR_24"),
+        pytest.param("2001::10", id="NO_PROXY_IPV6"),
+        pytest.param("2001::10/128", id="NO_PROXY_IPV6_CIDR_128"),
+        pytest.param("2001::/64", id="NO_PROXY_IPV6_CIDR_64"),
+        pytest.param("www.arista.com", id="NO_PROXY_NONMATCHING"),
+    ],
+)
+@pytest.mark.parametrize(
+    ("proxy_username"),
+    [
+        pytest.param(None, id="PROXY_USERNAME_NONE"),
+        pytest.param(USER, id="PROXY_USERNAME_SET"),
+    ],
+)
+@pytest.mark.parametrize(
+    ("proxy_password"),
+    [
+        pytest.param(None, id="PROXY_PASSWORD_NONE"),
+        pytest.param(PASS, id="PROXY_PASSWORD_SET"),
+    ],
+)
+async def test_cv_client_proxy_settings_explicit(
+    monkeypatch: pytest.MonkeyPatch,
+    servers: str,
+    proxy_env_var_value: str | None,
+    no_proxy_env_var_value: str | None,
+    proxy_username: str | None,
+    proxy_password: str | None,
+) -> None:
+    """Test ability of explicitly-passed (to `cv_deploy`) proxy settings to override any proxy-related environment variables."""
+    token = "secret_access_token"  # noqa: S105
+    proxy_host = "10.10.10.10"
+
+    # Unset all relevant ENV Variables in case they are set in testing environment
+    unset_proxy_related_env_vars(monkeypatch)
+
+    # Set proxy ENV Variables based on the pytest parametrize inputs
+    if proxy_env_var_value is not None:
+        for proxy_env_var_name in ["https_proxy", "HTTPS_PROXY", "all_proxy", "ALL_PROXY"]:
+            monkeypatch.setenv(proxy_env_var_name, proxy_env_var_value)
+
+    # Set proxy bypass ENV Variables based on the pytest parametrize inputs
+    if no_proxy_env_var_value is not None:
+        for no_proxy_env_var_name in ["no_proxy", "NO_PROXY"]:
+            monkeypatch.setenv(no_proxy_env_var_name, no_proxy_env_var_value)
+
+    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
+        async with CVClient(
+            servers=servers,
+            token=token,
+            proxy_host=proxy_host,
+            proxy_username=proxy_username,
+            proxy_password=proxy_password,
+        ) as cvclient:
+            pass
+
+    assert cvclient.cv_connection_manager.cv_proxy_manager.use_proxy
+    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_scheme == "http"
+    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_host == proxy_host
+    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_port == 8080
+    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_username == proxy_username
+    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_password == proxy_password
+    assert cvclient.cv_connection_manager.cv_proxy_manager._target_host == servers
+    assert cvclient.cv_connection_manager.cv_proxy_manager._target_port == 443
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("https_proxy", "HTTPS_PROXY", "all_proxy", "ALL_PROXY"),
+    [
+        pytest.param(
+            "http://new_user1:new_password1@10.10.10.10:8081",
+            "http://new_user2:new_password2@11.11.11.11:8082",
+            None,
+            None,
+            id="LOWER_HTTPS_PROXY_WINS",
+        ),
+        pytest.param(
+            None,
+            "http://new_user1:new_password1@10.10.10.10:8081",
+            "http://new_user2:new_password2@11.11.11.11:8082",
+            None,
+            id="UPPER_HTTPS_PROXY_WINS",
+        ),
+        pytest.param(
+            None,
+            None,
+            "http://new_user1:new_password1@10.10.10.10:8081",
+            "http://new_user2:new_password2@11.11.11.11:8082",
+            id="LOWER_ALL_PROXY_WINS",
+        ),
+        pytest.param(
+            None,
+            None,
+            None,
+            "http://new_user1:new_password1@10.10.10.10:8081",
+            id="UPPER_ALL_PROXY_WINS",
+        ),
+    ],
+)
+@pytest.mark.parametrize(
+    ("proxy_username"),
+    [
+        pytest.param(None, id="PROXY_USERNAME_NONE"),
+        pytest.param(USER, id="PROXY_USERNAME_SET"),
+    ],
+)
+@pytest.mark.parametrize(
+    ("proxy_password"),
+    [
+        pytest.param(None, id="PROXY_PASSWORD_NONE"),
+        pytest.param(PASS, id="PROXY_PASSWORD_SET"),
+    ],
+)
+async def test_cv_client_proxy_settings_env_vars(
+    monkeypatch: pytest.MonkeyPatch,
+    https_proxy: str | None,
+    HTTPS_PROXY: str | None,  # noqa: N803
+    all_proxy: str | None,
+    ALL_PROXY: str | None,  # noqa: N803
+    proxy_username: str | None,
+    proxy_password: str | None,
+) -> None:
+    """Test order of preference for proxy-related environment variables (`https_proxy` -> `HTTPS_PROXY` -> `all_proxy` -> `ALL_PROXY`)."""
+    servers = "www.arista.io"
+    token = "secret_access_token"  # noqa: S105
+
+    # Unset all relevant ENV Variables in case they are set in testing environment
+    unset_proxy_related_env_vars(monkeypatch)
+
+    # Set proxy-related ENV Variables based on the pytest parametrize inputs
+    if https_proxy is not None:
+        monkeypatch.setenv("https_proxy", https_proxy)
+    if HTTPS_PROXY is not None:
+        monkeypatch.setenv("HTTPS_PROXY", HTTPS_PROXY)
+    if all_proxy is not None:
+        monkeypatch.setenv("all_proxy", all_proxy)
+    if ALL_PROXY is not None:
+        monkeypatch.setenv("ALL_PROXY", ALL_PROXY)
+
+    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
+        async with CVClient(
+            servers=servers,
+            token=token,
+            proxy_username=proxy_username,
+            proxy_password=proxy_password,
+        ) as cvclient:
+            pass
+
+    assert cvclient.cv_connection_manager.cv_proxy_manager.use_proxy
+    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_scheme == "http"
+    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_host == "10.10.10.10"
+    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_port == 8081
+    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_username == "new_user1"
+    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_password == "new_password1"  # noqa: S105
+    assert cvclient.cv_connection_manager.cv_proxy_manager._target_host == servers
+    assert cvclient.cv_connection_manager.cv_proxy_manager._target_port == 443
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(("proxy_env_var_value"), [pytest.param("http://user1:pass1@10.10.10.10:8081", id="PROXY")])
+@pytest.mark.parametrize(
+    ("no_proxy_env_var_name"),
+    [
+        pytest.param("no_proxy", id="LOWER_NO_PROXY"),
+        pytest.param("NO_PROXY", id="UPPER_NO_PROXY"),
+    ],
+)
+@pytest.mark.parametrize(
+    ("no_proxy_env_var_value"),
+    [
+        pytest.param("www.arista.io", id="NO_PROXY_FQDN_1"),
+        pytest.param("www.arista.io,www.arista.com", id="NO_PROXY_FQDN_2"),
+        pytest.param("www.arista.io:443", id="NO_PROXY_FQDN_WITH_PORT_1"),
+        pytest.param("www.arista.io:443,www.arista.com:443", id="NO_PROXY_FQDN_WITH_PORT_2"),
+        pytest.param(".arista.io", id="NO_PROXY_WILDCARD_DOMAIN"),
+        pytest.param(".arista.io:443", id="NO_PROXY_WILDCARD_DOMAIN_WITH_PORT"),
+        pytest.param("*", id="NO_PROXY_STAR"),
+    ],
+)
+async def test_cv_client_proxy_settings_no_proxy_override_fqdn(
+    monkeypatch: pytest.MonkeyPatch,
+    proxy_env_var_value: str,
+    no_proxy_env_var_name: str,
+    no_proxy_env_var_value: str,
+) -> None:
+    """Test ability of proxy bypass vars to override proxy vars for fqdn-based CloudVision host."""
+    servers = "www.arista.io"
+    token = "secret_access_token"  # noqa: S105
+
+    # Unset all relevant ENV Variables in case they are set in testing environment
+    unset_proxy_related_env_vars(monkeypatch)
+
+    # Set proxy ENV Variables based on the pytest parametrize inputs
+    for proxy_env_var_name in ["https_proxy", "HTTPS_PROXY", "all_proxy", "ALL_PROXY"]:
+        monkeypatch.setenv(proxy_env_var_name, proxy_env_var_value)
+
+    # Set proxy bypass ENV Variables based on the pytest parametrize inputs
+    monkeypatch.setenv(no_proxy_env_var_name, no_proxy_env_var_value)
+
+    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
+        async with CVClient(
+            servers=servers,
+            token=token,
+        ) as cvclient:
+            pass
+
+    assert not cvclient.cv_connection_manager.use_proxy
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(("proxy_env_var_value"), [pytest.param("http://user1:pass1@10.10.10.10:8081", id="PROXY")])
+@pytest.mark.parametrize(
+    ("no_proxy_env_var_name"),
+    [
+        pytest.param("no_proxy", id="LOWER_NO_PROXY"),
+        pytest.param("NO_PROXY", id="UPPER_NO_PROXY"),
+    ],
+)
+@pytest.mark.parametrize(
+    ("no_proxy_env_var_value"),
+    [
+        pytest.param("192.168.10.10", id="NO_PROXY_IPV4"),
+        pytest.param("192.168.10.10/32", id="NO_PROXY_IPV4_CIDR_32"),
+        pytest.param("192.168.10.0/24", id="NO_PROXY_IPV4_CIDR_24"),
+        pytest.param("*", id="NO_PROXY_STAR"),
+    ],
+)
+async def test_cv_client_proxy_settings_no_proxy_override_ipv4(
+    monkeypatch: pytest.MonkeyPatch,
+    proxy_env_var_value: str,
+    no_proxy_env_var_name: str,
+    no_proxy_env_var_value: str,
+) -> None:
+    """Test ability of proxy bypass vars to override proxy vars for ipv4-based CloudVision host."""
+    servers = "192.168.10.10"
+    token = "secret_access_token"  # noqa: S105
+
+    # Unset all relevant ENV Variables in case they are set in testing environment
+    unset_proxy_related_env_vars(monkeypatch)
+
+    # Set proxy ENV Variables based on the pytest parametrize inputs
+    for proxy_env_var_name in ["https_proxy", "HTTPS_PROXY", "all_proxy", "ALL_PROXY"]:
+        monkeypatch.setenv(proxy_env_var_name, proxy_env_var_value)
+
+    # Set proxy bypass ENV Variables based on the pytest parametrize inputs
+    monkeypatch.setenv(no_proxy_env_var_name, no_proxy_env_var_value)
+
+    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
+        async with CVClient(
+            servers=servers,
+            token=token,
+        ) as cvclient:
+            pass
+
+    assert not cvclient.cv_connection_manager.use_proxy
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(("proxy_env_var_value"), [pytest.param("http://user1:pass1@[2002::20]:8081", id="PROXY")])
+@pytest.mark.parametrize(
+    ("no_proxy_env_var_name"),
+    [
+        pytest.param("no_proxy", id="LOWER_NO_PROXY"),
+        pytest.param("NO_PROXY", id="UPPER_NO_PROXY"),
+    ],
+)
+@pytest.mark.parametrize(
+    ("no_proxy_env_var_value"),
+    [
+        pytest.param("2001::10", id="NO_PROXY_IPV6"),
+        pytest.param("2001::10/128", id="NO_PROXY_IPV6_CIDR_128"),
+        pytest.param("2001::/64", id="NO_PROXY_IPV6_CIDR_64"),
+        pytest.param("*", id="NO_PROXY_STAR"),
+    ],
+)
+async def test_cv_client_proxy_settings_no_proxy_override_ipv6(
+    monkeypatch: pytest.MonkeyPatch,
+    proxy_env_var_value: str,
+    no_proxy_env_var_name: str,
+    no_proxy_env_var_value: str,
+) -> None:
+    """Test ability of proxy bypass vars to override proxy vars for ipv6-based CloudVision host."""
+    servers = "2001::10"
+    token = "secret_access_token"  # noqa: S105
+
+    # Unset all relevant ENV Variables in case they are set in testing environment
+    unset_proxy_related_env_vars(monkeypatch)
+
+    # Set proxy ENV Variables based on the pytest parametrize inputs
+    for proxy_env_var_name in ["https_proxy", "HTTPS_PROXY", "all_proxy", "ALL_PROXY"]:
+        monkeypatch.setenv(proxy_env_var_name, proxy_env_var_value)
+
+    # Set proxy bypass ENV Variables based on the pytest parametrize inputs
+    monkeypatch.setenv(no_proxy_env_var_name, no_proxy_env_var_value)
+
+    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
+        async with CVClient(
+            servers=servers,
+            token=token,
+        ) as cvclient:
+            pass
+
+    assert not cvclient.cv_connection_manager.use_proxy
+
+
+######################
+## Live proxy tests ##
+######################
 @pytest.mark.skipif(environ.get("CV_LIVE_PROXY_TEST") is None, reason="CV_LIVE_PROXY_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
@@ -153,7 +598,7 @@ async def test_cvclient_with_cvaas_via_proxy(
             proxy_username=proxy_auth["proxy_username"],
             proxy_password=proxy_auth["proxy_password"],
         ) as cvclient_via_proxy:
-            result = await cvclient_via_proxy.get_inventory_devices(devices=[(None, None, "nonexisting-avd-ci-hostname")])
+            result = await cvclient_via_proxy.get_inventory_devices(devices={(None, None, "nonexisting-avd-ci-hostname")})
         assert result == []
 
 
@@ -242,7 +687,7 @@ async def test_cvclient_with_cvaas_via_proxy_env_vars(
             token=targeted_cv["cv_access_token"],
             verify_certs=verify_certs,
         ) as cvclient_via_proxy:
-            result = await cvclient_via_proxy.get_inventory_devices(devices=[(None, None, "nonexisting-avd-ci-hostname")])
+            result = await cvclient_via_proxy.get_inventory_devices(devices={(None, None, "nonexisting-avd-ci-hostname")})
         assert result == []
 
 
@@ -305,7 +750,7 @@ async def test_cvclient_with_onprem_via_proxy(
             proxy_username=proxy_auth["proxy_username"],
             proxy_password=proxy_auth["proxy_password"],
         ) as cvclient_via_proxy:
-            result = await cvclient_via_proxy.get_inventory_devices(devices=[(None, None, "nonexisting-avd-ci-hostname")])
+            result = await cvclient_via_proxy.get_inventory_devices(devices={(None, None, "nonexisting-avd-ci-hostname")})
         assert result == []
 
 
@@ -388,271 +833,5 @@ async def test_cvclient_with_onprem_via_proxy_env_vars(
             token=targeted_cv["cv_access_token"],
             verify_certs=verify_certs,
         ) as cvclient_via_proxy:
-            result = await cvclient_via_proxy.get_inventory_devices(devices=[(None, None, "nonexisting-avd-ci-hostname")])
+            result = await cvclient_via_proxy.get_inventory_devices(devices={(None, None, "nonexisting-avd-ci-hostname")})
         assert result == []
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize(
-    ("https_proxy"),
-    [
-        pytest.param(None, id="LOWER_HTTPS_PROXY_NONE"),
-        pytest.param("http://127.0.0.1", id="LOWER_HTTPS_PROXY_MATCHING"),
-        pytest.param("http://127.0.0.2", id="LOWER_HTTPS_PROXY_NONMATCHING"),
-        pytest.param("http://new_user:new_password@127.0.0.2:8090", id="LOWER_HTTPS_PROXY_NONMATCHING_FULL"),
-    ],
-)
-@pytest.mark.parametrize(
-    ("HTTPS_PROXY"),
-    [
-        pytest.param(None, id="UPPER_HTTPS_PROXY_NONE"),
-        pytest.param("http://127.0.0.1", id="UPPER_HTTPS_PROXY_MATCHING"),
-        pytest.param("http://127.0.0.2", id="UPPER_HTTPS_PROXY_NONMATCHING"),
-        pytest.param("http://new_user:new_password@127.0.0.2:8090", id="UPPER_HTTPS_PROXY_NONMATCHING_FULL"),
-    ],
-)
-@pytest.mark.parametrize(
-    ("all_proxy"),
-    [
-        pytest.param(None, id="LOWER_ALL_PROXY_NONE"),
-        pytest.param("http://127.0.0.1", id="LOWER_ALL_PROXY_MATCHING"),
-        pytest.param("http://127.0.0.2", id="LOWER_ALL_PROXY_NONMATCHING"),
-        pytest.param("http://new_user:new_password@127.0.0.2:8090", id="LOWER_ALL_PROXY_NONMATCHING_FULL"),
-    ],
-)
-@pytest.mark.parametrize(
-    ("ALL_PROXY"),
-    [
-        pytest.param(None, id="UPPER_ALL_PROXY_NONE"),
-        pytest.param("http://127.0.0.1", id="UPPER_ALL_PROXY_MATCHING"),
-        pytest.param("http://127.0.0.2", id="UPPER_ALL_PROXY_NONMATCHING"),
-        pytest.param("http://new_user:new_password@127.0.0.2:8090", id="UPPER_ALL_PROXY_NONMATCHING_FULL"),
-    ],
-)
-@pytest.mark.parametrize(
-    ("no_proxy"),
-    [
-        pytest.param(None, id="LOWER_NO_PROXY_NONE"),
-        pytest.param("www.arista.io", id="LOWER_NO_PROXY_MATCHING"),
-        pytest.param("www.arista.com", id="LOWER_NO_PROXY_NONMATCHING"),
-    ],
-)
-@pytest.mark.parametrize(
-    ("NO_PROXY"),
-    [
-        pytest.param(None, id="UPPER_NO_PROXY_NONE"),
-        pytest.param("www.arista.io", id="UPPER_NO_PROXY_MATCHING"),
-        pytest.param("www.arista.com", id="UPPER_NO_PROXY_NONMATCHING"),
-    ],
-)
-@pytest.mark.parametrize(
-    ("proxy_username"),
-    [
-        pytest.param(None, id="PROXY_USERNAME_NONE"),
-        pytest.param("avd_user", id="PROXY_USERNAME_SET"),
-    ],
-)
-@pytest.mark.parametrize(
-    ("proxy_password"),
-    [
-        pytest.param(None, id="PROXY_PASSWORD_NONE"),
-        pytest.param("avd_password", id="PROXY_PASSWORD_SET"),
-    ],
-)
-async def test_cv_client_proxy_settings_explicit(
-    monkeypatch: pytest.MonkeyPatch,
-    https_proxy: str | None,
-    HTTPS_PROXY: str | None,  # noqa: N803
-    all_proxy: str | None,
-    ALL_PROXY: str | None,  # noqa: N803
-    no_proxy: str | None,
-    NO_PROXY: str | None,  # noqa: N803
-    proxy_username: str | None,
-    proxy_password: str | None,
-) -> None:
-    """Test ability of explicitly-passed (to `cv_deploy`) proxy settings to override any proxy-related environment variables."""
-    servers = "www.arista.io"
-    token = "secret_access_token"  # noqa: S105
-    proxy_host = "127.0.0.1"
-
-    # Unset all relevant ENV Variables in case they are set in testing environment
-    unset_proxy_related_env_vars(monkeypatch)
-
-    # Set proxy-related ENV Variables based on the pytest parametrize inputs
-    if https_proxy is not None:
-        monkeypatch.setenv("https_proxy", https_proxy)
-    if HTTPS_PROXY is not None:
-        monkeypatch.setenv("HTTPS_PROXY", HTTPS_PROXY)
-    if all_proxy is not None:
-        monkeypatch.setenv("all_proxy", all_proxy)
-    if ALL_PROXY is not None:
-        monkeypatch.setenv("ALL_PROXY", ALL_PROXY)
-    if no_proxy is not None:
-        monkeypatch.setenv("no_proxy", no_proxy)
-    if NO_PROXY is not None:
-        monkeypatch.setenv("NO_PROXY", NO_PROXY)
-
-    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
-        async with CVClient(
-            servers=servers,
-            token=token,
-            proxy_host=proxy_host,
-            proxy_username=proxy_username,
-            proxy_password=proxy_password,
-        ) as cvclient:
-            pass
-
-    assert cvclient.cv_connection_manager.cv_proxy_manager.use_proxy
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_scheme == "http"
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_host == proxy_host
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_port == 8080
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_username == proxy_username
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_password == proxy_password
-    assert cvclient.cv_connection_manager.cv_proxy_manager._target_host == servers
-    assert cvclient.cv_connection_manager.cv_proxy_manager._target_port == 443
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize(
-    ("https_proxy", "HTTPS_PROXY", "all_proxy", "ALL_PROXY"),
-    [
-        pytest.param(
-            "http://new_user1:new_password1@127.0.0.1:8081",
-            "http://new_user2:new_password2@127.0.0.2:8082",
-            None,
-            None,
-            id="LOWER_HTTPS_PROXY_WINS",
-        ),
-        pytest.param(
-            None,
-            "http://new_user1:new_password1@127.0.0.1:8081",
-            "http://new_user2:new_password2@127.0.0.2:8082",
-            None,
-            id="UPPER_HTTPS_PROXY_WINS",
-        ),
-        pytest.param(
-            None,
-            None,
-            "http://new_user1:new_password1@127.0.0.1:8081",
-            "http://new_user2:new_password2@127.0.0.2:8082",
-            id="LOWER_ALL_PROXY_WINS",
-        ),
-        pytest.param(
-            None,
-            None,
-            None,
-            "http://new_user1:new_password1@127.0.0.1:8081",
-            id="UPPER_ALL_PROXY_WINS",
-        ),
-    ],
-)
-@pytest.mark.parametrize(
-    ("proxy_username"),
-    [
-        pytest.param(None, id="PROXY_USERNAME_NONE"),
-        pytest.param("avd_user", id="PROXY_USERNAME_SET"),
-    ],
-)
-@pytest.mark.parametrize(
-    ("proxy_password"),
-    [
-        pytest.param(None, id="PROXY_PASSWORD_NONE"),
-        pytest.param("avd_password", id="PROXY_PASSWORD_SET"),
-    ],
-)
-async def test_cv_client_proxy_settings_env_vars(
-    monkeypatch: pytest.MonkeyPatch,
-    https_proxy: str | None,
-    HTTPS_PROXY: str | None,  # noqa: N803
-    all_proxy: str | None,
-    ALL_PROXY: str | None,  # noqa: N803
-    proxy_username: str | None,
-    proxy_password: str | None,
-) -> None:
-    """Test order of preference for proxy-related environment variables (`https_proxy` -> `HTTPS_PROXY` -> `all_proxy` -> `ALL_PROXY`)."""
-    servers = "www.arista.io"
-    token = "secret_access_token"  # noqa: S105
-
-    # Unset all relevant ENV Variables in case they are set in testing environment
-    unset_proxy_related_env_vars(monkeypatch)
-
-    # Set proxy-related ENV Variables based on the pytest parametrize inputs
-    if https_proxy is not None:
-        monkeypatch.setenv("https_proxy", https_proxy)
-    if HTTPS_PROXY is not None:
-        monkeypatch.setenv("HTTPS_PROXY", HTTPS_PROXY)
-    if all_proxy is not None:
-        monkeypatch.setenv("all_proxy", all_proxy)
-    if ALL_PROXY is not None:
-        monkeypatch.setenv("ALL_PROXY", ALL_PROXY)
-
-    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
-        async with CVClient(
-            servers=servers,
-            token=token,
-            proxy_username=proxy_username,
-            proxy_password=proxy_password,
-        ) as cvclient:
-            pass
-
-    assert cvclient.cv_connection_manager.cv_proxy_manager.use_proxy
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_scheme == "http"
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_host == "127.0.0.1"
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_port == 8081
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_username == "new_user1"
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_password == "new_password1"  # noqa: S105
-    assert cvclient.cv_connection_manager.cv_proxy_manager._target_host == servers
-    assert cvclient.cv_connection_manager.cv_proxy_manager._target_port == 443
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize(
-    ("env_variable_name", "env_variable_value"),
-    [
-        pytest.param("https_proxy", "http://new_user1:new_password1@127.0.0.1:8081", id="LOWER_HTTPS_PROXY"),
-        pytest.param("HTTPS_PROXY", "http://new_user1:new_password1@127.0.0.1:8081", id="UPPER_HTTPS_PROXY"),
-        pytest.param("all_proxy", "http://new_user1:new_password1@127.0.0.1:8081", id="LOWER_ALL_PROXY"),
-        pytest.param("ALL_PROXY", "http://new_user1:new_password1@127.0.0.1:8081", id="UPPER_ALL_PROXY"),
-    ],
-)
-@pytest.mark.parametrize(
-    ("no_proxy_env_variable_name", "no_proxy_env_variable_value"),
-    [
-        pytest.param("no_proxy", "www.arista.io", id="LOWER_NO_PROXY_1"),
-        pytest.param("no_proxy", "www.arista.io,www.arista.com", id="LOWER_NO_PROXY_2"),
-        pytest.param("no_proxy", "www.arista.io:443", id="LOWER_NO_PROXY_3"),
-        pytest.param("no_proxy", "www.arista.io:443,www.arista.com:443", id="LOWER_NO_PROXY_4"),
-        pytest.param("NO_PROXY", "www.arista.io", id="UPPER_NO_PROXY_1"),
-        pytest.param("NO_PROXY", "www.arista.io,www.arista.com", id="UPPER_NO_PROXY_2"),
-        pytest.param("NO_PROXY", "www.arista.io:443", id="UPPER_NO_PROXY_3"),
-        pytest.param("NO_PROXY", "www.arista.io:443,www.arista.com:443", id="UPPER_NO_PROXY_4"),
-    ],
-)
-async def test_cv_client_proxy_settings_no_proxy_override(
-    monkeypatch: pytest.MonkeyPatch,
-    env_variable_name: str | None,
-    env_variable_value: str | None,
-    no_proxy_env_variable_name: str | None,
-    no_proxy_env_variable_value: str | None,
-) -> None:
-    """Test ability of `no_proxy` and `NO_PROXY` to override `https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY` leading to proxy bypass for `cv_deploy`."""
-    servers = "www.arista.io"
-    token = "secret_access_token"  # noqa: S105
-
-    # Unset all relevant ENV Variables in case they are set in testing environment
-    unset_proxy_related_env_vars(monkeypatch)
-
-    # Set proxy-related ENV Variables based on the pytest parametrize inputs
-    if env_variable_value is not None:
-        monkeypatch.setenv(env_variable_name, env_variable_value)
-    if no_proxy_env_variable_value is not None:
-        monkeypatch.setenv(no_proxy_env_variable_name, no_proxy_env_variable_value)
-
-    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
-        async with CVClient(
-            servers=servers,
-            token=token,
-        ) as cvclient:
-            pass
-
-    assert not cvclient.cv_connection_manager.use_proxy
