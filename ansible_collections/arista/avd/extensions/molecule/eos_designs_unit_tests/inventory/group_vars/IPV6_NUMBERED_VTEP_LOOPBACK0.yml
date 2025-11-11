@@ -2,6 +2,15 @@
 underlay_routing_protocol: ebgp
 overlay_routing_protocol: ebgp
 
+
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - ".*SPINE"
+  - node_type: l3leaf
+    match_hostnames:
+      - ".*LEAF.*"
+
 default_interfaces:
   - types: [ spine ]
     platforms: [ default ]
@@ -16,7 +25,18 @@ default_interfaces:
 underlay_ipv6: true
 underlay_ipv6_numbered: true
 
-type: l3leaf
+spine:
+  defaults:
+    id: 10
+    platform: vEOS-lab
+    router_id_pool: 10.255.0.0/24
+    loopback_ipv6_pool: 2001:DB8:0::/48
+    bgp_as: 65100
+
+  nodes:
+    - name: IPV6_NUMBERED_VTEP_LOOPBACK0_SPINE
+      id: 1
+      mgmt_ip: 192.168.1.35/24
 
 l3leaf:
   defaults:
