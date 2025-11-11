@@ -19,8 +19,6 @@ from .digital_twin import DigitalTwinMixin
 class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, DigitalTwinMixin, StructuredConfigGeneratorProtocol, Protocol):
     """Protocol for the AvdStructuredConfigMetadata Class."""
 
-    ignore_avd_eos_designs_enforce_duplication_checks_across_all_models = True
-
     @structured_config_contributor
     def metadata(self) -> None:
         self.structured_config.metadata._update(
@@ -38,6 +36,7 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
         self._set_cv_pathfinder()
         if self.shared_utils.digital_twin:
             self._set_digital_twin()
+        self.structured_config.metadata.hardware_requirements = self.shared_utils.platform_settings.validate_hardware_inventory
 
 
 class AvdStructuredConfigMetadata(StructuredConfigGenerator, AvdStructuredConfigMetadataProtocol):

@@ -3066,7 +3066,16 @@ keys:
           - message-digest
         ospf_authentication_key:
           type: str
-          description: Encrypted password - only type 7 supported.
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+          - int
+          description: Authentication key type.
+          default: '7'
+          valid_values:
+          - '7'
+          - 8a
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -3087,7 +3096,16 @@ keys:
                 - sha512
               key:
                 type: str
-                description: Encrypted password - only type 7 supported.
+                description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                - int
+                description: Authentication key type.
+                default: '7'
+                valid_values:
+                - '7'
+                - 8a
         pim:
           type: dict
           keys:
@@ -9248,6 +9266,36 @@ keys:
         type: str
         convert_types:
         - int
+      hardware_requirements:
+        type: dict
+        description: 'Defines the minimum hardware specifications required for the
+          device.
+
+          Used for validation by the `anta_runner` role.'
+        keys:
+          min_power_supplies:
+            type: int
+            description: Minimum number of power supplies required for the device.
+          min_fans:
+            type: int
+            description: Minimum number of fans required for the device.
+          min_supervisors:
+            type: int
+            description: Minimum number of supervisor modules required for the device.
+          min_line_cards:
+            type: int
+            description: Minimum number of line cards required for the device.
+          min_fabric_cards:
+            type: int
+            description: Minimum number of fabric cards required for the device.
+          transceiver_manufacturers:
+            type: list
+            description: List of approved transceiver manufacturers for the device.
+            items:
+              type: str
+            default:
+            - Arista Networks
+            - Arastra, Inc.
       cv_tags:
         type: dict
         keys:
@@ -12376,6 +12424,15 @@ keys:
         ospf_authentication_key:
           type: str
           description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+          - int
+          description: Authentication key type.
+          default: '7'
+          valid_values:
+          - '7'
+          - 8a
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -12397,6 +12454,15 @@ keys:
               key:
                 type: str
                 description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                - int
+                description: Authentication key type.
+                default: '7'
+                valid_values:
+                - '7'
+                - 8a
         flow_tracker:
           type: dict
           keys:
@@ -23497,6 +23563,18 @@ keys:
                           type: bool
                           description: Enforce the GTSM for BGP speakers. Only supported
                             when protocol is set to 'neighbors'.
+                  packet_type:
+                    type: dict
+                    keys:
+                      vxlan:
+                        type: str
+                        valid_values:
+                        - decap
+                        - decap exclude
+                        description: Configure VXLAN decapsulation match.
+                      multicast:
+                        type: bool
+                        description: Configure multicast packet type match.
                   actions:
                     type: dict
                     keys:
@@ -24184,7 +24262,16 @@ keys:
           - message-digest
         ospf_authentication_key:
           type: str
-          description: Encrypted password used for simple authentication.
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+          - int
+          description: Authentication key type.
+          default: '7'
+          valid_values:
+          - '7'
+          - 8a
         ospf_message_digest_keys:
           type: list
           description: Keys used for message-digest authentication.
@@ -24207,6 +24294,15 @@ keys:
               key:
                 type: str
                 description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                - int
+                description: Authentication key type.
+                default: '7'
+                valid_values:
+                - '7'
+                - 8a
         pim:
           type: dict
           keys:
@@ -24459,6 +24555,15 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+        traffic_policy:
+          type: dict
+          keys:
+            input:
+              type: str
+              description: Ingress traffic policy.
+            output:
+              type: str
+              description: Egress traffic policy.
         ntp_serve:
           type: bool
           description: Enable/disable serving NTP to clients.
