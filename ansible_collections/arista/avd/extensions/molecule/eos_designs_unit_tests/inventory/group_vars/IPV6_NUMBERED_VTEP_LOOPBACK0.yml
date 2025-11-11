@@ -2,7 +2,6 @@
 underlay_routing_protocol: ebgp
 overlay_routing_protocol: ebgp
 
-
 default_node_types:
   - node_type: spine
     match_hostnames:
