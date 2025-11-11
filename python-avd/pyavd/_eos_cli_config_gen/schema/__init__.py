@@ -29456,6 +29456,103 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class AddressLocking(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AddressFamily(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+                ipv4: bool | None
+                """Enable/disable address locking for IPv4."""
+                ipv6: bool | None
+                """Enable/disable address locking for IPv6."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        AddressFamily.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv4: Enable/disable address locking for IPv4.
+                            ipv6: Enable/disable address locking for IPv6.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "ipv4": {"type": bool},
+                "ipv6": {"type": bool},
+                "address_family": {"type": AddressFamily},
+                "ipv4_enforcement_disabled": {"type": bool},
+            }
+            ipv4: bool | None
+            """
+            Enable address locking for IPv4.
+            For EOS version 4.31 and above, the `address_family.ipv4` parameter
+            should be used instead.
+            """
+            ipv6: bool | None
+            """
+            Enable address locking for IPv6.
+            For EOS version 4.31 and above, the `address_family.ipv6` parameter
+            should be used instead.
+            """
+            address_family: AddressFamily
+            """
+            Configure address locking per address family.
+            The `address_locking.ipv4/ipv6` and
+            `address_locking.address_family.ipv4/ipv6` are mutually exclusive and
+            `address_locking.address_family.ipv4/ipv6` take precedence.
+            Introduced in EOS 4.31.0F.
+
+            Subclass of
+            AvdModel.
+            """
+            ipv4_enforcement_disabled: bool | None
+            """Disable enforcement for IPv4 locked addresses."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ipv4: bool | None | UndefinedType = Undefined,
+                    ipv6: bool | None | UndefinedType = Undefined,
+                    address_family: AddressFamily | UndefinedType = Undefined,
+                    ipv4_enforcement_disabled: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    AddressLocking.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4:
+                           Enable address locking for IPv4.
+                           For EOS version 4.31 and above, the `address_family.ipv4` parameter
+                           should be used instead.
+                        ipv6:
+                           Enable address locking for IPv6.
+                           For EOS version 4.31 and above, the `address_family.ipv6` parameter
+                           should be used instead.
+                        address_family:
+                           Configure address locking per address family.
+                           The `address_locking.ipv4/ipv6` and
+                           `address_locking.address_family.ipv4/ipv6` are mutually exclusive and
+                           `address_locking.address_family.ipv4/ipv6` take precedence.
+                           Introduced in EOS 4.31.0F.
+
+                           Subclass of
+                           AvdModel.
+                        ipv4_enforcement_disabled: Disable enforcement for IPv4 locked addresses.
+
+                    """
+
         class EncapsulationDot1q(AvdModel):
             """Subclass of AvdModel."""
 
@@ -33768,6 +33865,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "l2_mru": {"type": int},
             "arp_gratuitous_accept": {"type": bool},
             "snmp_trap_link_change": {"type": bool},
+            "address_locking": {"type": AddressLocking},
             "encapsulation_dot1q": {"type": EncapsulationDot1q},
             "vrf": {"type": str},
             "encapsulation_vlan": {"type": EncapsulationVlan},
@@ -33861,6 +33959,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         arp_gratuitous_accept: bool | None
         """Accept gratuitous ARP."""
         snmp_trap_link_change: bool | None
+        address_locking: AddressLocking
+        """Subclass of AvdModel."""
         encapsulation_dot1q: EncapsulationDot1q
         """Subclass of AvdModel."""
         vrf: str | None
@@ -34027,6 +34127,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 l2_mru: int | None | UndefinedType = Undefined,
                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 snmp_trap_link_change: bool | None | UndefinedType = Undefined,
+                address_locking: AddressLocking | UndefinedType = Undefined,
                 encapsulation_dot1q: EncapsulationDot1q | UndefinedType = Undefined,
                 vrf: str | None | UndefinedType = Undefined,
                 encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
@@ -34121,6 +34222,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     snmp_trap_link_change: snmp_trap_link_change
+                    address_locking: Subclass of AvdModel.
                     encapsulation_dot1q: Subclass of AvdModel.
                     vrf: VRF name.
                     encapsulation_vlan:
