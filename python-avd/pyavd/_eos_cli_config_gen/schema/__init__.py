@@ -29462,15 +29462,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class AddressFamily(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+                _fields: ClassVar[dict] = {"ipv4": {"type": bool}}
                 ipv4: bool | None
                 """Enable/disable address locking for IPv4."""
-                ipv6: bool | None
-                """Enable/disable address locking for IPv6."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined) -> None:
                         """
                         AddressFamily.
 
@@ -29479,52 +29477,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             ipv4: Enable/disable address locking for IPv4.
-                            ipv6: Enable/disable address locking for IPv6.
 
                         """
 
-            _fields: ClassVar[dict] = {
-                "ipv4": {"type": bool},
-                "ipv6": {"type": bool},
-                "address_family": {"type": AddressFamily},
-                "ipv4_enforcement_disabled": {"type": bool},
-            }
-            ipv4: bool | None
-            """
-            Enable address locking for IPv4.
-            For EOS version 4.31 and above, the `address_family.ipv4` parameter
-            should be used instead.
-            """
-            ipv6: bool | None
-            """
-            Enable address locking for IPv6.
-            For EOS version 4.31 and above, the `address_family.ipv6` parameter
-            should be used instead.
-            """
+            _fields: ClassVar[dict] = {"address_family": {"type": AddressFamily}}
             address_family: AddressFamily
             """
             Configure address locking per address family.
-            The `address_locking.ipv4/ipv6` and
-            `address_locking.address_family.ipv4/ipv6` are mutually exclusive and
-            `address_locking.address_family.ipv4/ipv6` take precedence.
-            Introduced in EOS 4.31.0F.
+            Introduced in EOS 4.31.0F, on port-channel interfaces
+            only IPv4 disablement is supported
 
-            Subclass of
-            AvdModel.
+            Subclass of AvdModel.
             """
-            ipv4_enforcement_disabled: bool | None
-            """Disable enforcement for IPv4 locked addresses."""
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    ipv4: bool | None | UndefinedType = Undefined,
-                    ipv6: bool | None | UndefinedType = Undefined,
-                    address_family: AddressFamily | UndefinedType = Undefined,
-                    ipv4_enforcement_disabled: bool | None | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, address_family: AddressFamily | UndefinedType = Undefined) -> None:
                     """
                     AddressLocking.
 
@@ -29532,24 +29500,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        ipv4:
-                           Enable address locking for IPv4.
-                           For EOS version 4.31 and above, the `address_family.ipv4` parameter
-                           should be used instead.
-                        ipv6:
-                           Enable address locking for IPv6.
-                           For EOS version 4.31 and above, the `address_family.ipv6` parameter
-                           should be used instead.
                         address_family:
                            Configure address locking per address family.
-                           The `address_locking.ipv4/ipv6` and
-                           `address_locking.address_family.ipv4/ipv6` are mutually exclusive and
-                           `address_locking.address_family.ipv4/ipv6` take precedence.
-                           Introduced in EOS 4.31.0F.
+                           Introduced in EOS 4.31.0F, on port-channel interfaces
+                           only IPv4 disablement is supported
 
-                           Subclass of
-                           AvdModel.
-                        ipv4_enforcement_disabled: Disable enforcement for IPv4 locked addresses.
+                           Subclass of AvdModel.
 
                     """
 
