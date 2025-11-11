@@ -23702,6 +23702,7 @@ class EosDesigns(EosDesignsRootModel):
             "default_evpn_encapsulation": {"type": str, "default": "vxlan"},
             "default_wan_role": {"type": str},
             "default_flow_tracker_type": {"type": str, "default": "sampled"},
+            "default_exclude_extra_fabric_validation_target": {"type": bool, "default": False},
             "mlag_support": {"type": bool, "default": False},
             "network_services": {"type": NetworkServices},
             "underlay_router": {"type": bool, "default": True},
@@ -23784,6 +23785,18 @@ class EosDesigns(EosDesignsRootModel):
         Set the default flow tracker type.
 
         Default value: `"sampled"`
+        """
+        default_exclude_extra_fabric_validation_target: bool
+        """
+        When true, excludes this node's loopback interfaces from being selected
+        as destination targets in
+        extra fabric-level reachability or routing validation
+        tests executed by `anta_runner`. This helps
+        prevent non-essential or special-purpose
+        nodes from being used as validation endpoints during
+        fabric-wide checks.
+
+        Default value: `False`
         """
         mlag_support: bool
         """
@@ -23880,6 +23893,7 @@ class EosDesigns(EosDesignsRootModel):
                 default_evpn_encapsulation: DefaultEvpnEncapsulation | UndefinedType = Undefined,
                 default_wan_role: DefaultWanRole | None | UndefinedType = Undefined,
                 default_flow_tracker_type: DefaultFlowTrackerType | UndefinedType = Undefined,
+                default_exclude_extra_fabric_validation_target: bool | UndefinedType = Undefined,
                 mlag_support: bool | UndefinedType = Undefined,
                 network_services: NetworkServices | UndefinedType = Undefined,
                 underlay_router: bool | UndefinedType = Undefined,
@@ -23928,6 +23942,14 @@ class EosDesigns(EosDesignsRootModel):
                        `server` indicates that the router is a
                        route-reflector.
                     default_flow_tracker_type: Set the default flow tracker type.
+                    default_exclude_extra_fabric_validation_target:
+                       When true, excludes this node's loopback interfaces from being selected
+                       as destination targets in
+                       extra fabric-level reachability or routing validation
+                       tests executed by `anta_runner`. This helps
+                       prevent non-essential or special-purpose
+                       nodes from being used as validation endpoints during
+                       fabric-wide checks.
                     mlag_support: Can this node type support mlag.
                     network_services:
                        Will network services be deployed on this node type.
@@ -24229,6 +24251,7 @@ class EosDesigns(EosDesignsRootModel):
             "default_evpn_encapsulation": {"type": str, "default": "vxlan"},
             "default_wan_role": {"type": str},
             "default_flow_tracker_type": {"type": str, "default": "sampled"},
+            "default_exclude_extra_fabric_validation_target": {"type": bool, "default": False},
             "mlag_support": {"type": bool, "default": False},
             "network_services": {"type": NetworkServices},
             "underlay_router": {"type": bool, "default": True},
@@ -24311,6 +24334,18 @@ class EosDesigns(EosDesignsRootModel):
         Set the default flow tracker type.
 
         Default value: `"sampled"`
+        """
+        default_exclude_extra_fabric_validation_target: bool
+        """
+        When true, excludes this node's loopback interfaces from being selected
+        as destination targets in
+        extra fabric-level reachability or routing validation
+        tests executed by `anta_runner`. This helps
+        prevent non-essential or special-purpose
+        nodes from being used as validation endpoints during
+        fabric-wide checks.
+
+        Default value: `False`
         """
         mlag_support: bool
         """
@@ -24407,6 +24442,7 @@ class EosDesigns(EosDesignsRootModel):
                 default_evpn_encapsulation: DefaultEvpnEncapsulation | UndefinedType = Undefined,
                 default_wan_role: DefaultWanRole | None | UndefinedType = Undefined,
                 default_flow_tracker_type: DefaultFlowTrackerType | UndefinedType = Undefined,
+                default_exclude_extra_fabric_validation_target: bool | UndefinedType = Undefined,
                 mlag_support: bool | UndefinedType = Undefined,
                 network_services: NetworkServices | UndefinedType = Undefined,
                 underlay_router: bool | UndefinedType = Undefined,
@@ -24455,6 +24491,14 @@ class EosDesigns(EosDesignsRootModel):
                        `server` indicates that the router is a
                        route-reflector.
                     default_flow_tracker_type: Set the default flow tracker type.
+                    default_exclude_extra_fabric_validation_target:
+                       When true, excludes this node's loopback interfaces from being selected
+                       as destination targets in
+                       extra fabric-level reachability or routing validation
+                       tests executed by `anta_runner`. This helps
+                       prevent non-essential or special-purpose
+                       nodes from being used as validation endpoints during
+                       fabric-wide checks.
                     mlag_support: Can this node type support mlag.
                     network_services:
                        Will network services be deployed on this node type.
