@@ -58,8 +58,8 @@ impl Validation<Map<String, Value>> for Dict {
 }
 
 fn validate_allowed_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
-    if !schema.allow_other_keys.unwrap_or_default() {
-        if let Some(keys) = &schema.keys {
+    if !schema.allow_other_keys.unwrap_or_default()
+        && let Some(keys) = &schema.keys {
             input
                 .keys()
                 // keys starting with "_" are passed over to allow for custom usage
@@ -71,7 +71,6 @@ fn validate_allowed_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Co
                     ctx.path.pop();
                 });
         }
-    }
 }
 
 fn validate_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
