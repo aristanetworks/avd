@@ -123,8 +123,6 @@ class RouterBgpMixin(Protocol):
             target_peer_group = self.structured_config.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
             target_peer_group.metadata.type = "ipv4"
             target_peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
-            # target_peer_group.send_community= "all",
-            # target_peer_group.maximum_routes= 12000,
 
     def _router_bgp_vrfs(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
