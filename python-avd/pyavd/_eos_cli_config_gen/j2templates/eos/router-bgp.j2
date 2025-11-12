@@ -503,6 +503,9 @@ router bgp {{ router_bgp.as }}
 {%         if aggregate_address.advertise_only is arista.avd.defined(true) %}
 {%             set aggregate_address_cli = aggregate_address_cli ~ " advertise-only" %}
 {%         endif %}
+{%         if aggregate_address.attribute.rcf is arista.avd.defined %}
+{%             set aggregate_address_cli = aggregate_address_cli ~ " attribute rcf " ~ aggregate_address.attribute.rcf %}
+{%         endif %}
    {{ aggregate_address_cli }}
 {%     endfor %}
 {%     if router_bgp.redistribute is arista.avd.defined %}
@@ -2970,6 +2973,9 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if aggregate_address.advertise_only is arista.avd.defined(true) %}
 {%                 set aggregate_address_cli = aggregate_address_cli ~ " advertise-only" %}
+{%             endif %}
+{%             if aggregate_address.attribute.rcf is arista.avd.defined %}
+{%                 set aggregate_address_cli = aggregate_address_cli ~ " attribute rcf " ~ aggregate_address.attribute.rcf %}
 {%             endif %}
       {{ aggregate_address_cli }}
 {%         endfor %}

@@ -528,12 +528,13 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             endif %}
 {%             set attribute_map = aggregate_address.attribute_map | arista.avd.default("-") %}
 {%             set match_map = aggregate_address.match_map | arista.avd.default("-") %}
+{%             set attribute_rcf = aggregate_address.attribute.rcf | arista.avd.default("-") %}
 {%             if aggregate_address.advertise_only is arista.avd.defined(true) %}
 {%                 set advertise_only = true %}
 {%             else %}
 {%                 set advertise_only = false %}
 {%             endif %}
-| {{ aggregate_address.prefix }} | {{ as_set }} | {{ summary_only }} | {{ attribute_map }} | {{ match_map }} | {{ advertise_only }} |
+| {{ aggregate_address.prefix }} | {{ as_set }} | {{ summary_only }} | {{ attribute_map }} | {{ match_map }} | {{ attribute_rcf }} | {{ advertise_only }} |
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
