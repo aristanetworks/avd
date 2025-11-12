@@ -1400,7 +1400,7 @@ $defs:
             documentation_options:
               table: node-type-wan-configuration
             type: str
-            $ref: "eos_designs#/keys/node_type_keys/items/keys/default_wan_role"
+            $ref: "eos_designs#/$defs/node_type_keys/items/keys/default_wan_role"
             description: |-
               Override the default WAN role.
 
