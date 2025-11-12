@@ -708,9 +708,8 @@ class AvdStructuredConfigBaseProtocol(
                 )
                 raise AristaAvdInvalidInputsError(msg)
 
-            # Set the authentication methods from the input RADIUS server groups if not already set
-            if not aaa_authentication.dot1x.default:
-                aaa_authentication.dot1x.default = " ".join(f"group {group}" for group in self.inputs.dot1x_settings.radius_groups)
+            # Set the authentication methods from the input RADIUS server groups
+            aaa_authentication.dot1x.default = " ".join(f"group {group}" for group in self.inputs.dot1x_settings.radius_groups)
 
         if aaa_authentication:
             self.structured_config.aaa_authentication = aaa_authentication
@@ -740,11 +739,10 @@ class AvdStructuredConfigBaseProtocol(
                 )
                 raise AristaAvdInvalidInputsError(msg)
 
-            # Set the accounting methods from the input RADIUS server groups if not already set
-            if not aaa_accounting.dot1x.default:
-                aaa_accounting.dot1x.default.type = "start-stop"
-                for group in self.inputs.dot1x_settings.radius_groups:
-                    aaa_accounting.dot1x.default.methods.append_unique(EosCliConfigGen.AaaAccounting.Dot1x.Default.MethodsItem(method="group", group=group))
+            # Set the accounting methods from the input RADIUS server groups
+            aaa_accounting.dot1x.default.type = "start-stop"
+            for group in self.inputs.dot1x_settings.radius_groups:
+                aaa_accounting.dot1x.default.methods.append_unique(EosCliConfigGen.AaaAccounting.Dot1x.Default.MethodsItem(method="group", group=group))
 
         if aaa_accounting:
             self.structured_config.aaa_accounting = aaa_accounting
