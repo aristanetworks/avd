@@ -63,7 +63,7 @@ keys:
             address_family:
               description: |-
                 Configure address locking per address family.
-                Introduced in EOS 4.31.0F, on port-channel interfaces only IPv4 disablement is supported
+                Introduced in EOS 4.31.0F, on port-channel interfaces only IPv4 disablement is supported.
               type: dict
               keys:
                 ipv4:
