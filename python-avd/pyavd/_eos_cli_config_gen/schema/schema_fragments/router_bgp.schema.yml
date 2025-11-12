@@ -810,7 +810,7 @@ keys:
             attribute:
               type: dict
               keys:
-                rcf:  
+                rcf:
                   type: str
                   description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
       redistribute:
@@ -4226,7 +4226,7 @@ keys:
                   attribute:
                     type: dict
                     keys:
-                      rcf:  
+                      rcf:
                         type: str
                         description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
             address_family_ipv4:
