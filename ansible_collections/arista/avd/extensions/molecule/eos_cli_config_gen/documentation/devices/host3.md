@@ -133,8 +133,6 @@ cvx
 | ---- | -------- | ----------- | ------ | ------- |
 | Commands - Console | all | none | - | - |
 | Commands - Console | 0 | none | - | - |
-| System - Default | - | none | - | - |
-| Dot1x - Default | - | start-stop | - | True |
 | Commands - Default | all | none | - | - |
 | Commands - Default | 0 | none | - | - |
 
@@ -143,8 +141,6 @@ cvx
 ```eos
 aaa accounting commands all console none
 aaa accounting commands 0 console none
-aaa accounting system default none
-aaa accounting dot1x default start-stop logging
 aaa accounting commands all default none
 aaa accounting commands 0 default none
 ```

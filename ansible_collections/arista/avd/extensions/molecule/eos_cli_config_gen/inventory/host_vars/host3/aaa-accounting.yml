@@ -1,13 +1,5 @@
-## AAA Accounting without exec
+## AAA Accounting without exec, system and dot1x
 aaa_accounting:
-  system:
-    default:
-      type: none
-  dot1x:
-    default:
-      type: start-stop
-      methods:
-        - method: logging
   commands:
     console:
       - commands: all
