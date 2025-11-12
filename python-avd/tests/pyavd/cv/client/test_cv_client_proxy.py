@@ -65,6 +65,34 @@ async def test_cv_client_proxy_socket_error() -> None:
             assert "Failed to create proxy connection" in str(exception_info.value)
 
 
+@pytest.mark.parametrize(
+    ("proxy_related_attribute"),
+    [
+        pytest.param("use_proxy", id="USE_PROXY"),
+        pytest.param("_requests_proxies", id="_REQUESTS_PROXIES"),
+    ],
+)
+@pytest.mark.parametrize(
+    ("proxy_requested"),
+    [
+        pytest.param(True, id="PROXY"),
+        pytest.param(False, id="NO_PROXY"),
+    ],
+)
+def test_cv_client_proxy_early_access(proxy_related_attribute: str, proxy_requested: bool) -> None:
+    """Test ability to safely access proxy-related properties of the CVClient instance at any time."""
+    servers = "www.arista.io"
+    token = "secret_access_token"  # noqa: S105
+    proxy_host = "proxy1.domain.local"
+
+    if proxy_requested:
+        cv_client = CVClient(servers=servers, token=token, proxy_host=proxy_host)
+    else:
+        cv_client = CVClient(servers=servers, token=token)
+    
+    _ = getattr(cv_client, proxy_related_attribute)
+
+
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("proxy_host", "proxy_username", "proxy_password", "expected_proxy_url"),

@@ -145,19 +145,11 @@ class CVClientProtocol(
 
     @property
     def use_proxy(self) -> bool:
-        try:
-            return self.cv_connection_manager.use_proxy
-        except AttributeError as e:
-            msg = "The following attribute/method was accessed before it was initialized: '<CVClient>.cv_connection_manager.cv_proxy_manager.use_proxy'."
-            raise CVClientException(msg) from e
+        return self.cv_connection_manager.use_proxy
 
     @property
     def _requests_proxies(self) -> dict[str, str]:
-        try:
-            return self.cv_connection_manager.requests_proxies
-        except AttributeError as e:
-            msg = "The following attribute/method was accessed before it was initialized: '<CVClient>.cv_connection_manager.requests_proxies'."
-            raise CVClientException(msg) from e
+        return self.cv_connection_manager.requests_proxies
 
 
 class CVClient(CVClientProtocol):
