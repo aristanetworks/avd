@@ -82,6 +82,8 @@
     | [<samp>&nbsp;&nbsp;vlan_assignment_groups</samp>](## "dot1x.vlan_assignment_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "dot1x.vlan_assignment_groups.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;members</samp>](## "dot1x.vlan_assignment_groups.[].members") | String | Required |  |  | VLAN value(s) or range(s) of VLAN values. |
+    | [<samp>&nbsp;&nbsp;eapol</samp>](## "dot1x.eapol") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlan_change_logoff_disabled</samp>](## "dot1x.eapol.vlan_change_logoff_disabled") | Boolean |  |  |  | Disable host log off when there is a VLAN change. |
 
 === "YAML"
 
@@ -249,4 +251,8 @@
 
           # VLAN value(s) or range(s) of VLAN values.
           members: <str; required>
+      eapol:
+
+        # Disable host log off when there is a VLAN change.
+        vlan_change_logoff_disabled: <bool>
     ```

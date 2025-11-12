@@ -5497,6 +5497,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         VlanAssignmentGroups._item_type = VlanAssignmentGroupsItem
 
+        class Eapol(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"vlan_change_logoff_disabled": {"type": bool}}
+            vlan_change_logoff_disabled: bool | None
+            """Disable host log off when there is a VLAN change."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, vlan_change_logoff_disabled: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    Eapol.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        vlan_change_logoff_disabled: Disable host log off when there is a VLAN change.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "system_auth_control": {"type": bool},
             "protocol_lldp_bypass": {"type": bool},
@@ -5510,6 +5531,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "captive_portal": {"type": CaptivePortal},
             "supplicant": {"type": Supplicant},
             "vlan_assignment_groups": {"type": VlanAssignmentGroups},
+            "eapol": {"type": Eapol},
         }
         system_auth_control: bool | None
         protocol_lldp_bypass: bool | None
@@ -5544,6 +5566,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         vlan_assignment_groups: VlanAssignmentGroups
         """Subclass of AvdIndexedList with `VlanAssignmentGroupsItem` items. Primary key is `name` (`str`)."""
+        eapol: Eapol
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -5562,6 +5586,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 captive_portal: CaptivePortal | UndefinedType = Undefined,
                 supplicant: Supplicant | UndefinedType = Undefined,
                 vlan_assignment_groups: VlanAssignmentGroups | UndefinedType = Undefined,
+                eapol: Eapol | UndefinedType = Undefined,
             ) -> None:
                 """
                 Dot1x.
@@ -5592,6 +5617,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of AvdModel.
                     supplicant: Subclass of AvdModel.
                     vlan_assignment_groups: Subclass of AvdIndexedList with `VlanAssignmentGroupsItem` items. Primary key is `name` (`str`).
+                    eapol: Subclass of AvdModel.
 
                 """
 

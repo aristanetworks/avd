@@ -316,3 +316,9 @@ keys:
               convert_types:
                 - int
               description: VLAN value(s) or range(s) of VLAN values.
+      eapol:
+        type: dict
+        keys:
+          vlan_change_logoff_disabled:
+            type: bool
+            description: Disable host log off when there is a VLAN change.
