@@ -8784,12 +8784,12 @@ ASN Notation: asdot
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | False | - | - | True |
-| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
-| 2.2.1.0/24 | False | False | - | - | False |
-| 3.3.3.0/24 | False | False | - | - | False |
+| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Attribute RCF | Advertise Only |
+| ------ | ------ | ------------ | ------------- | --------- | ------------- | -------------- |
+| 1.1.1.0/24 | False | False | - | - | - | True |
+| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | - | True |
+| 2.2.1.0/24 | False | False | - | - | - | False |
+| 3.3.3.0/24 | False | False | - | - | AGG-ADD-RCF() | False |
 
 #### Router BGP EVPN Address Family
 
