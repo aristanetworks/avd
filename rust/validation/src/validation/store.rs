@@ -88,29 +88,6 @@ impl StoreValidate<Schema> for Store {
     }
 }
 
-trait SchemaStringHelper {
-    fn with_resolved_schema<T: std::convert::From<ValidationResult>, F: FnOnce(Schema) -> T>(
-        &self,
-        schema_name: &str,
-        func: F,
-    ) -> T;
-}
-
-impl SchemaStringHelper for Store {
-    fn with_resolved_schema<T: std::convert::From<ValidationResult>, F: FnOnce(Schema) -> T>(
-        &self,
-        schema_name: &str,
-        func: F,
-    ) -> T {
-        match Schema::try_from(schema_name) {
-            Ok(schema_type) => func(schema_type),
-            Err(_) => SchemaConversionError::InvalidSchemaName(schema_name.to_string())
-                .to_validation_result(self)
-                .into(),
-        }
-    }
-}
-
 impl StoreValidate<&str> for Store {
     fn validate_json(
         &self,
@@ -118,7 +95,7 @@ impl StoreValidate<&str> for Store {
         schema_name: &str,
         configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError> {
-        self.with_resolved_schema(schema_name, |schema_type| {
+        with_resolved_schema(schema_name, self, |schema_type| {
             self.validate_json(json, schema_type, configuration)
         })
     }
@@ -129,7 +106,7 @@ impl StoreValidate<&str> for Store {
         schema_name: &str,
         configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError> {
-        self.with_resolved_schema(schema_name, |schema_type| {
+        with_resolved_schema(schema_name, self, |schema_type| {
             self.validate_yaml(yaml, schema_type, configuration)
         })
     }
@@ -140,13 +117,13 @@ impl StoreValidate<&str> for Store {
         schema_name: &str,
         configuration: Option<&Configuration>,
     ) -> ValidationResult {
-        self.with_resolved_schema(schema_name, |schema_type| {
+        with_resolved_schema(schema_name, self, |schema_type| {
             self.validate_value(value, schema_type, configuration)
         })
     }
 
     fn coerce_value(&self, value: &mut Value, schema_name: &str) -> ValidationResult {
-        self.with_resolved_schema(schema_name, |schema_type| {
+        with_resolved_schema(schema_name, self, |schema_type| {
             self.coerce_value(value, schema_type)
         })
     }
@@ -182,6 +159,19 @@ impl SchemaConversionError {
 impl From<ValidationResult> for Result<ValidationResult, StoreValidateError> {
     fn from(result: ValidationResult) -> Self {
         Ok(result)
+    }
+}
+
+fn with_resolved_schema<T: std::convert::From<ValidationResult>, F: FnOnce(Schema) -> T>(
+    schema_name: &str,
+    store: &Store,
+    func: F,
+) -> T {
+    match Schema::try_from(schema_name) {
+        Ok(schema_type) => func(schema_type),
+        Err(_) => SchemaConversionError::InvalidSchemaName(schema_name.to_string())
+            .to_validation_result(store)
+            .into(),
     }
 }
 
