@@ -13,7 +13,7 @@ clean: ## Build pyavd-utils package
 	rm -rf $(CURRENT_DIR)/build/ $(CURRENT_DIR)/dist/ $(CURRENT_DIR)/pyavd.egg-info/ $(CURRENT_DIR)/pyavd_utils/*.so
 
 .PHONY: build
-build: clean ## Build pyavd package
+build: clean ## Build pyavd-utils package
 	pip3 install build
 	python3 -m build --wheel
 
