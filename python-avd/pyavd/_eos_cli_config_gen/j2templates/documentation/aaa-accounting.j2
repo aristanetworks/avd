@@ -12,7 +12,7 @@
 
 | Type | Commands | Record type | Groups | Logging |
 | ---- | -------- | ----------- | ------ | ------- |
-{%     if aaa_accounting.exec.console.type == "none" %}
+{%     if aaa_accounting.exec.console.type is arista.avd.defined("none") %}
 | Exec - Console | - | none | - | - |
 {%     elif aaa_accounting.exec.console.methods is arista.avd.defined %}
 {%         set methods_list = [] %}
@@ -52,7 +52,7 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if aaa_accounting.exec.default.type == "none" %}
+{%     if aaa_accounting.exec.default.type is arista.avd.defined("none") %}
 | Exec - Default | - | none | - | - |
 {%     elif aaa_accounting.exec.default.methods is arista.avd.defined %}
 {%         set methods_list = [] %}
