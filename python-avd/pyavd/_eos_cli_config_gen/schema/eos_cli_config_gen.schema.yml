@@ -9673,9 +9673,9 @@ keys:
         type: int
         convert_types:
         - str
-        description: Threshold (in minutes) defining the recent time window during
-          which no error-level logs should have been generated for the validation
-          to pass.
+        description: Threshold (in minutes) defining how far back to check the logging
+          buffer for error-level logs during the validation performed by the `anta_runner`
+          role.
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -11693,6 +11693,18 @@ keys:
           description: Accept gratuitous ARP.
         snmp_trap_link_change:
           type: bool
+        address_locking:
+          type: dict
+          keys:
+            address_family:
+              description: 'Configure address locking per address family.
+
+                Introduced in EOS 4.31.0F.'
+              type: dict
+              keys:
+                ipv4:
+                  type: bool
+                  description: Enable/disable address locking for IPv4.
         encapsulation_dot1q:
           type: dict
           keys:
