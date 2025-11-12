@@ -7147,6 +7147,8 @@ $defs:
               '
       dot1x:
         type: dict
+        description: 802.1X settings for the interface. Requires 802.1X to be enabled
+          globally under 'dot1x_settings.enabled'.
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x
       poe:
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/poe

@@ -150,6 +150,7 @@ class EthernetInterfacesMixin(Protocol):
 
         Raises:
             AristaAvdError: If the lengths of the lists 'switches', 'switch_ports', and 'descriptions' (if used) do not match.
+            AristaAvdInvalidInputsError: If 802.1X is enabled on the adapter but not globally under 'dot1x_settings.enabled'.
             AristaAvdInvalidInputsError: If a port-channel set to LACP fallback mode 'individual' does not have a 'profile' defined.
         """
         peer = connected_endpoint.name
@@ -169,7 +170,7 @@ class EthernetInterfacesMixin(Protocol):
             )
             raise AristaAvdError(msg)
 
-        if adapter.dot1x.pae.mode == "authenticator" and not self.inputs.dot1x_settings.enabled:
+        if adapter.dot1x and not self.inputs.dot1x_settings.enabled:
             msg = f"802.1X cannot be enabled on '{adapter.switch_ports[node_index]}' unless 802.1X is also enabled globally under 'dot1x_settings.enabled'."
             raise AristaAvdInvalidInputsError(msg)
 
