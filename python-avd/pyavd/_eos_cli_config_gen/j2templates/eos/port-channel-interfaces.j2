@@ -245,11 +245,6 @@ interface {{ port_channel_interface.name }}
 {%     elif port_channel_interface.snmp_trap_link_change is arista.avd.defined(true) %}
    snmp trap link-change
 {%     endif %}
-{%     if port_channel_interface.address_locking.address_family.ipv4 is arista.avd.defined(false) %}
-   !
-   address locking
-      address-family ipv4 disabled
-{%     endif %}
 {%     if port_channel_interface.vrf is arista.avd.defined %}
    vrf {{ port_channel_interface.vrf }}
 {%     endif %}
@@ -393,6 +388,11 @@ interface {{ port_channel_interface.name }}
 {%     endif %}
 {%     if port_channel_interface.lacp_id is arista.avd.defined %}
    lacp system-id {{ port_channel_interface.lacp_id }}
+{%     endif %}
+{%     if port_channel_interface.address_locking.address_family.ipv4 is arista.avd.defined(false) %}
+   !
+   address locking
+      address-family ipv4 disabled
 {%     endif %}
 {%     if port_channel_interface.mpls.ldp.igp_sync is arista.avd.defined(true) %}
    mpls ldp igp sync

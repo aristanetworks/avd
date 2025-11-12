@@ -5961,9 +5961,6 @@ interface Port-Channel5
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    switchport
-   !
-   address locking
-      address-family ipv4 disabled
    ip verify unicast source reachable-via rx
    ip igmp host-proxy
    ip igmp host-proxy 239.0.0.1
@@ -5979,6 +5976,9 @@ interface Port-Channel5
    ip igmp host-proxy version 2
    l2 mtu 8000
    l2 mru 8000
+   !
+   address locking
+      address-family ipv4 disabled
    mlag 5
    ntp serve
    ip ospf authentication-key 8a <removed>
