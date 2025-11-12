@@ -18,7 +18,7 @@ build: clean ## Build pyavd package
 	python3 -m build --wheel
 
 .PHONY: uv-build
-uv-build: clean ## Build pyavd package
+uv-build: clean ## Build pyavd-utils package
 	uv pip install build
 	python3 -m build --wheel
 
