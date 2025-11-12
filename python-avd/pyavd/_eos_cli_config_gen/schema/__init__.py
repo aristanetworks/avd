@@ -29485,7 +29485,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             Configure address locking per address family.
             Introduced in EOS 4.31.0F, on port-channel interfaces
-            only IPv4 disablement is supported
+            only IPv4 disablement is supported.
 
             Subclass of AvdModel.
             """
@@ -29503,7 +29503,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         address_family:
                            Configure address locking per address family.
                            Introduced in EOS 4.31.0F, on port-channel interfaces
-                           only IPv4 disablement is supported
+                           only IPv4 disablement is supported.
 
                            Subclass of AvdModel.
 

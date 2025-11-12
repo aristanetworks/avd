@@ -22,7 +22,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;arp_gratuitous_accept</samp>](## "port_channel_interfaces.[].arp_gratuitous_accept") | Boolean |  |  |  | Accept gratuitous ARP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;snmp_trap_link_change</samp>](## "port_channel_interfaces.[].snmp_trap_link_change") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "port_channel_interfaces.[].address_locking") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family</samp>](## "port_channel_interfaces.[].address_locking.address_family") | Dictionary |  |  |  | Configure address locking per address family.<br>Introduced in EOS 4.31.0F, on port-channel interfaces only IPv4 disablement is supported |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family</samp>](## "port_channel_interfaces.[].address_locking.address_family") | Dictionary |  |  |  | Configure address locking per address family.<br>Introduced in EOS 4.31.0F, on port-channel interfaces only IPv4 disablement is supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "port_channel_interfaces.[].address_locking.address_family.ipv4") | Boolean |  |  |  | Enable/disable address locking for IPv4. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q</samp>](## "port_channel_interfaces.[].encapsulation_dot1q") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "port_channel_interfaces.[].encapsulation_dot1q.vlan") | Integer | Required |  | Min: 1<br>Max: 4094 | VLAD ID. |
@@ -516,7 +516,7 @@
         address_locking:
 
           # Configure address locking per address family.
-          # Introduced in EOS 4.31.0F, on port-channel interfaces only IPv4 disablement is supported
+          # Introduced in EOS 4.31.0F, on port-channel interfaces only IPv4 disablement is supported.
           address_family:
 
             # Enable/disable address locking for IPv4.
