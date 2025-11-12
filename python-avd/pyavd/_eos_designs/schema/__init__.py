@@ -3042,10 +3042,7 @@ class EosDesigns(EosDesignsRootModel):
             Subclass of AvdModel.
             """
             dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-            """
-            802.1X settings for the interface. Requires 802.1X to be enabled globally under
-            'dot1x_settings.enabled'.
-            """
+            """802.1x"""
             poe: EosCliConfigGen.EthernetInterfacesItem.Poe
             """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
             storm_control: StormControl
@@ -3267,9 +3264,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                            Subclass of AvdModel.
-                        dot1x:
-                           802.1X settings for the interface. Requires 802.1X to be enabled globally under
-                           'dot1x_settings.enabled'.
+                        dot1x: 802.1x
                         poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                         storm_control:
                            Storm control settings applied on port toward the endpoint.
@@ -23289,10 +23284,7 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdModel.
         """
         dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-        """
-        802.1X settings for the interface. Requires 802.1X to be enabled globally under
-        'dot1x_settings.enabled'.
-        """
+        """802.1x"""
         poe: EosCliConfigGen.EthernetInterfacesItem.Poe
         """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
         storm_control: StormControl
@@ -23516,9 +23508,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdModel.
-                    dot1x:
-                       802.1X settings for the interface. Requires 802.1X to be enabled globally under
-                       'dot1x_settings.enabled'.
+                    dot1x: 802.1x
                     poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                     storm_control:
                        Storm control settings applied on port toward the endpoint.
@@ -28105,10 +28095,7 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdModel.
         """
         dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-        """
-        802.1X settings for the interface. Requires 802.1X to be enabled globally under
-        'dot1x_settings.enabled'.
-        """
+        """802.1x"""
         poe: EosCliConfigGen.EthernetInterfacesItem.Poe
         """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
         storm_control: StormControl
@@ -28291,9 +28278,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdModel.
-                    dot1x:
-                       802.1X settings for the interface. Requires 802.1X to be enabled globally under
-                       'dot1x_settings.enabled'.
+                    dot1x: 802.1x
                     poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                     storm_control:
                        Storm control settings applied on port toward the endpoint.
@@ -55060,10 +55045,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
                     """
                     dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-                    """
-                    802.1X settings for the interface. Requires 802.1X to be enabled globally under
-                    'dot1x_settings.enabled'.
-                    """
+                    """802.1x"""
                     poe: EosCliConfigGen.EthernetInterfacesItem.Poe
                     """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
                     storm_control: StormControl
@@ -55285,9 +55267,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdModel.
-                                dot1x:
-                                   802.1X settings for the interface. Requires 802.1X to be enabled globally under
-                                   'dot1x_settings.enabled'.
+                                dot1x: 802.1x
                                 poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                                 storm_control:
                                    Storm control settings applied on port toward the endpoint.
@@ -56817,10 +56797,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
                     """
                     dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
-                    """
-                    802.1X settings for the interface. Requires 802.1X to be enabled globally under
-                    'dot1x_settings.enabled'.
-                    """
+                    """802.1x"""
                     poe: EosCliConfigGen.EthernetInterfacesItem.Poe
                     """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
                     storm_control: StormControl
@@ -57042,9 +57019,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdModel.
-                                dot1x:
-                                   802.1X settings for the interface. Requires 802.1X to be enabled globally under
-                                   'dot1x_settings.enabled'.
+                                dot1x: 802.1x
                                 poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                                 storm_control:
                                    Storm control settings applied on port toward the endpoint.
