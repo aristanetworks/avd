@@ -31,14 +31,14 @@ impl<'a> Context<'a> {
 
     pub(crate) fn add_violation(&mut self, violation: impl Into<Issue>) {
         self.violations.push(Feedback {
-            path: self.path.clone(),
+            path: self.path.clone().into(),
             issue: violation.into(),
         });
     }
 
     pub(crate) fn add_coercion(&mut self, coercion: impl Into<Issue>) {
         self.coercions.push(Feedback {
-            path: self.path.clone(),
+            path: self.path.clone().into(),
             issue: coercion.into(),
         });
     }

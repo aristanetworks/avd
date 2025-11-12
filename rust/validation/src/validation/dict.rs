@@ -2,12 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use avdschema::{any::AnySchema, dict::Dict, get_dynamic_keys, resolve_ref};
+use avdschema::{any::AnySchema, dict::Dict, get_dynamic_keys, resolve_ref, base::Deprecation};
 use serde_json::{Map, Value};
 
 use crate::{
     context::Context,
-    feedback::{Type, Violation},
+    feedback::{Deprecated, DeprecationMessage, Removed, Type, Violation},
 };
 
 use super::Validation;
@@ -55,6 +55,9 @@ impl Validation<Map<String, Value>> for Dict {
             None
         }
     }
+    fn deprecation(&self) -> &Option<Deprecation> {
+        &self.base.deprecation
+    }
 }
 
 fn validate_allowed_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
@@ -92,6 +95,7 @@ fn validate_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
                 }
                 Some(value) => {
                     ctx.path.push(key.to_owned());
+                    check_deprecation(key, key_schema, input, ctx);
                     key_schema.validate(value, ctx);
                     ctx.path.pop();
                 }
@@ -107,11 +111,23 @@ fn validate_dynamic_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Co
             // validate the computed dynamic keys' corresponding values
             for key in keys {
                 if let Some(value) = input.get(&key) {
-                    ctx.path.push(key);
+                    ctx.path.push(key.to_owned());
+                    check_deprecation(&key, key_schema, input, ctx);
                     key_schema.validate(value, ctx);
                     ctx.path.pop();
                 }
             }
+        }
+    }
+}
+
+fn check_deprecation(_key: &str, key_schema: &AnySchema, _parent_dict_input: &Map<String, Value>, ctx: &mut Context) {
+    if let Some(deprecation) = key_schema.deprecation() && deprecation.warning {
+        if deprecation.removed.unwrap_or_default() {
+            ctx.add_violation(DeprecationMessage::Removed(Removed::from_deprecation(&ctx.path, deprecation)));
+        } else {
+            // TODO: Catch conflict.
+            ctx.add_violation(DeprecationMessage::Deprecated(Deprecated::from_deprecation(&ctx.path, deprecation)));
         }
     }
 }
@@ -151,7 +167,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::InvalidType {
                     expected: Type::Dict,
                     found: Type::Bool
@@ -195,7 +211,7 @@ mod tests {
             ctx.violations,
             vec![
                 Feedback {
-                    path: vec!["foo".into()],
+                    path: vec!["foo".into()].into(),
                     issue: Violation::InvalidType {
                         expected: Type::Str,
                         found: Type::List
@@ -203,7 +219,7 @@ mod tests {
                     .into()
                 },
                 Feedback {
-                    path: vec!["bar".into()],
+                    path: vec!["bar".into()].into(),
                     issue: Violation::InvalidType {
                         expected: Type::Int,
                         found: Type::Str
@@ -233,7 +249,7 @@ mod tests {
             ctx.coercions,
             vec![
                 Feedback {
-                    path: vec!["foo".into()],
+                    path: vec!["foo".into()].into(),
                     issue: CoercionNote {
                         found: 321.into(),
                         made: "321".into()
@@ -241,7 +257,7 @@ mod tests {
                     .into()
                 },
                 Feedback {
-                    path: vec!["bar".into()],
+                    path: vec!["bar".into()].into(),
                     issue: CoercionNote {
                         found: "123".into(),
                         made: 123.into()
@@ -333,7 +349,7 @@ mod tests {
             ctx.violations,
             vec![
                 Feedback {
-                    path: vec!["dynkey1".into()],
+                    path: vec!["dynkey1".into()].into(),
                     issue: Violation::ValueAboveMaximum {
                         maximum: 10,
                         found: 11
@@ -341,7 +357,7 @@ mod tests {
                     .into()
                 },
                 Feedback {
-                    path: vec!["dynkey2".into()],
+                    path: vec!["dynkey2".into()].into(),
                     issue: Violation::InvalidType {
                         expected: Type::Int,
                         found: Type::Str
@@ -387,7 +403,7 @@ mod tests {
         assert_eq!(
             ctx.coercions,
             vec![Feedback {
-                path: vec!["my_dynamic_keys".into()],
+                path: vec!["my_dynamic_keys".into()].into(),
                 issue: Issue::DefaultValueInserted()
             }]
         );
@@ -435,7 +451,7 @@ mod tests {
         assert_eq!(
             ctx.coercions,
             vec![Feedback {
-                path: vec!["my_dynamic_keys".into()],
+                path: vec!["my_dynamic_keys".into()].into(),
                 issue: Issue::DefaultValueInserted()
             }]
         );
@@ -443,7 +459,7 @@ mod tests {
             ctx.violations,
             vec![
                 Feedback {
-                    path: vec!["dynkey1".into(), "sub_key".into()],
+                    path: vec!["dynkey1".into(), "sub_key".into()].into(),
                     issue: Violation::ValueAboveMaximum {
                         maximum: 10,
                         found: 11
@@ -451,11 +467,11 @@ mod tests {
                     .into()
                 },
                 Feedback {
-                    path: vec!["dynkey1".into(), "bad_key".into()],
+                    path: vec!["dynkey1".into(), "bad_key".into()].into(),
                     issue: Violation::UnexpectedKey {}.into()
                 },
                 Feedback {
-                    path: vec!["dynkey2".into()],
+                    path: vec!["dynkey2".into()].into(),
                     issue: Violation::InvalidType {
                         expected: Type::Dict,
                         found: Type::Str
@@ -494,7 +510,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec!["foo1".into()],
+                path: vec!["foo1".into()].into(),
                 issue: Violation::UnexpectedKey().into()
             }]
         )
@@ -525,7 +541,7 @@ mod tests {
         assert_eq!(
             ctx.coercions,
             vec![Feedback {
-                path: vec!["foo".into()],
+                path: vec!["foo".into()].into(),
                 issue: CoercionNote {
                     found: true.into(),
                     made: "True".into()
@@ -559,7 +575,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::MissingRequiredKey { key: "foo".into() }.into()
             }]
         )
@@ -626,7 +642,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec!["deeper".into()],
+                path: vec!["deeper".into()].into(),
                 issue: Violation::MissingRequiredKey { key: "foo".into() }.into()
             }]
         )

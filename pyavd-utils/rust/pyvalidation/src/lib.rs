@@ -38,7 +38,7 @@ mod validation {
         fn from(value: &validation::feedback::Feedback) -> Feedback {
             Feedback {
                 message: value.issue.to_string(),
-                path: value.path.clone(),
+                path: value.path.clone().into(),
             }
         }
     }

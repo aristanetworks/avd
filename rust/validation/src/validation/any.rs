@@ -5,7 +5,7 @@
 use serde_json::Value;
 
 use crate::context::Context;
-use avdschema::any::AnySchema;
+use avdschema::{any::AnySchema, base::Deprecation};
 
 use super::Validation;
 
@@ -43,6 +43,16 @@ impl Validation<Value> for AnySchema {
             Self::Str(schema) => schema.default_value().map(Value::String),
             Self::List(schema) => schema.default_value().map(Value::Array),
             Self::Dict(schema) => schema.default_value().map(Value::Object),
+        }
+    }
+
+    fn deprecation(&self) -> &Option<Deprecation> {
+        match self {
+            Self::Bool(schema) => schema.deprecation(),
+            Self::Int(schema) => schema.deprecation(),
+            Self::Str(schema) => schema.deprecation(),
+            Self::List(schema) => schema.deprecation(),
+            Self::Dict(schema) => schema.deprecation(),
         }
     }
 

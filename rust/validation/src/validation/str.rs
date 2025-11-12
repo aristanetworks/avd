@@ -2,7 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use avdschema::{any::AnySchema, resolve_ref, str::Str};
+use avdschema::{any::AnySchema, base::Deprecation, resolve_ref, str::Str};
 use regex::Regex;
 use serde_json::Value;
 
@@ -50,6 +50,9 @@ impl Validation<String> for Str {
 
     fn default_value(&self) -> Option<String> {
         self.base.default.to_owned()
+    }
+    fn deprecation(&self) -> &Option<Deprecation> {
+        &self.base.deprecation
     }
 }
 
@@ -127,7 +130,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::InvalidType {
                     expected: Type::Str,
                     found: Type::List
@@ -170,7 +173,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::InvalidValue {
                     expected: vec!["foo".to_string()].into(),
                     found: "FOO".into()
@@ -199,7 +202,7 @@ mod tests {
         assert_eq!(
             ctx.coercions,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: CoercionNote {
                     found: "FOO".into(),
                     made: "foo".into()
@@ -229,7 +232,7 @@ mod tests {
             ctx.coercions,
             vec![
                 Feedback {
-                    path: vec![],
+                    path: vec![].into(),
                     issue: CoercionNote {
                         found: true.into(),
                         made: "True".into()
@@ -237,7 +240,7 @@ mod tests {
                     .into()
                 },
                 Feedback {
-                    path: vec![],
+                    path: vec![].into(),
                     issue: CoercionNote {
                         found: "True".into(),
                         made: "true".into()
@@ -275,7 +278,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::LengthBelowMinimum {
                     minimum: 3,
                     found: 2
@@ -312,7 +315,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::LengthAboveMaximum {
                     maximum: 3,
                     found: 4
@@ -349,7 +352,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::NotMatchingPattern {
                     pattern: "[a-z][A-Z][a-z]".into(),
                     found: "foo".into(),

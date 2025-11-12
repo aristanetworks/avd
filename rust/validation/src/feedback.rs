@@ -56,12 +56,38 @@ impl From<&str> for Value {
     }
 }
 
+#[derive(Clone, Debug, PartialEq, Serialize, derive_more::From)]
+pub struct Path(Vec<String>);
+impl std::fmt::Display for Path {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut string = String::default();
+        for (index, element) in self.0.iter().enumerate() {
+            if element.parse::<u64>().is_ok() {
+                string.push('[');
+                string.push_str(element);
+                string.push(']');
+            } else {
+                if index > 0 {
+                    string.push('.');
+                }
+                string.push_str(element);
+            }
+        };
+        f.write_str(&string)
+    }
+}
+impl From<Path> for Vec<String> {
+    fn from(value: Path) -> Self {
+        value.0
+    }
+}
+
 /// Feedback item carried in the Context under either `coercions` or `violations`
 #[derive(Clone, Debug, PartialEq, Serialize, derive_more::Display)]
 #[display("Feedback for path {path:?}: {issue}.")]
 pub struct Feedback {
     /// Data path which the feedback concerns.
-    pub path: Vec<String>,
+    pub path: Path,
     pub issue: Issue,
 }
 
@@ -78,6 +104,8 @@ pub enum Issue {
     /// Some internal error occurred.
     #[display("An internal error occurred: {message}.")]
     InternalError { message: String },
+    /// Deprecation of data model.
+    Deprecation(DeprecationMessage),
 }
 
 /// One coercion performed during recursive coercion.
@@ -161,4 +189,119 @@ pub enum ViolationValidValues {
     Int(Vec<i64>),
     #[display("{_0:?}")]
     Str(Vec<String>),
+}
+
+/// Deprecation message for either warning about a data model that will be removed,
+/// or a data model that was removed in the previous version.
+#[derive(Clone, Debug, PartialEq, Serialize, derive_more::Display)]
+pub enum DeprecationMessage {
+    Removed(Removed),
+    Deprecated(Deprecated),
+    Conflict(Conflict),
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize)]
+pub struct Deprecated {
+    path: Path,
+    replacement: Option<String>,
+    version: Option<String>,
+    url: Option<String>,
+}
+impl std::fmt::Display for Deprecated {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut string = format!("The input data model '{}' is deprecated", self.path);
+        if let Some(version) = &self.version {
+            string.push_str(&format!(" and will be removed in AVD version {version}"));
+        }
+        string.push('.');
+        if let Some(replacement) = &self.replacement {
+            string.push_str(&format!(" Use '{replacement} instead."));
+        }
+        if let Some(url) = &self.url {
+            string.push_str(&format!(" See '{url} for details."));
+        }
+        f.write_str(&string)
+    }
+}
+impl Deprecated {
+    pub(crate) fn from_deprecation(
+        path: &Vec<String>,
+        deprecation: &avdschema::base::Deprecation,
+    ) -> Self {
+        Self {
+            path: path.to_owned().into(),
+            replacement: deprecation.new_key.to_owned(),
+            version: deprecation.remove_in_version.to_owned(),
+            url: deprecation.url.to_owned(),
+        }
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize)]
+pub struct Removed {
+    path: Path,
+    replacement: Option<String>,
+    version: Option<String>,
+    url: Option<String>,
+}
+impl std::fmt::Display for Removed {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut string = format!("The input data model '{}' was removed", self.path);
+        if let Some(version) = &self.version {
+            string.push_str(&format!(" in AVD version {version}"));
+        }
+        string.push('.');
+        if let Some(replacement) = &self.replacement {
+            string.push_str(&format!(" Use '{replacement}' instead."));
+        }
+        if let Some(url) = &self.url {
+            string.push_str(&format!(" See '{url} for details."));
+        }
+        f.write_str(&string)
+    }
+}
+impl Removed {
+    pub(crate) fn from_deprecation(
+        path: &Vec<String>,
+        deprecation: &avdschema::base::Deprecation,
+    ) -> Self {
+        Self {
+            path: path.to_owned().into(),
+            replacement: deprecation.new_key.to_owned(),
+            version: deprecation.remove_in_version.to_owned(),
+            url: deprecation.url.to_owned(),
+        }
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize)]
+pub struct Conflict {
+    path: Path,
+    replacement_path: Path,
+    url: Option<String>,
+}
+impl std::fmt::Display for Conflict {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut string = format!(
+            "The input data model '{}' is deprecated and cannot be used in conjunction with the new data model {}.",
+            self.path, self.replacement_path
+        );
+        if let Some(url) = &self.url {
+            string.push_str(&format!(" See '{url} for details."));
+        }
+        f.write_str(&string)
+    }
+}
+impl Conflict {
+    pub(crate) fn from_deprecation(
+        path: &Vec<String>,
+        replacement_path: Path,
+        deprecation: &avdschema::base::Deprecation,
+    ) -> Self {
+        Self {
+            path: path.to_owned().into(),
+            replacement_path,
+            url: deprecation.url.to_owned(),
+        }
+    }
 }
