@@ -153,19 +153,11 @@ class CVConnectionManager:
 
     @property
     def use_proxy(self) -> bool:
-        try:
-            return self.cv_proxy_manager.use_proxy
-        except AttributeError as e:
-            msg = "The following attribute/method was accessed before it was initialized: '<CVConnectionManager>.cv_proxy_manager.use_proxy'."
-            raise CVClientException(msg) from e
+        return self.cv_proxy_manager.use_proxy
 
     @property
     def requests_proxies(self) -> dict[str, str]:
-        try:
-            return self.cv_proxy_manager.get_requests_proxies()
-        except AttributeError as e:
-            msg = "The following attribute/method was accessed before it was initialized: '<CVConnectionManager>.cv_proxy_manager.get_requests_proxies()'."
-            raise CVClientException(msg) from e
+        return self.cv_proxy_manager.get_requests_proxies()
 
 
 class CVProxyManager:
@@ -315,16 +307,18 @@ class CVProxyManager:
         LOGGER.debug("<CVProxyManager>: No proxy environment variables found.")
 
     def _parse_env_var_proxy_content(self) -> None:
-        if isinstance(self._env_var_proxy_content, str):
-            LOGGER.debug("<CVProxyManager>: Parsing content of the environment variable '%s'...", self._env_var_proxy_name)
-            try:
-                self._parsed_env_var_proxy_content = urlparse(self._env_var_proxy_content)
-            except Exception as e:
-                msg = (
-                    f"AVD faced an exception trying to extract proxe server settings from string '{self._env_var_proxy_content}' learned using environment"
-                    f" variable '{self._env_var_proxy_name}'"
-                )
-                raise AristaAvdError(msg) from e
+        LOGGER.debug("<CVProxyManager>: Parsing content of the environment variable '%s'...", self._env_var_proxy_name)
+        try:
+            self._parsed_env_var_proxy_content = urlparse(self._env_var_proxy_content)
+            # urlparse will success parsing any URL <str> but will raise at access time if port value is invalid
+            # Try accessing proxy port attribute to catch any issues with its value
+            _ = self._parsed_env_var_proxy_content.port
+        except Exception as e:
+            msg = (
+                f"AVD faced an exception trying to extract proxy server settings from string '{self._env_var_proxy_content}' learned using environment"
+                f" variable '{self._env_var_proxy_name}'"
+            )
+            raise AristaAvdInvalidInputsError(msg) from e
 
     def _proxy_candidate_is_valid(
         self,

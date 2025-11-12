@@ -14,8 +14,9 @@ from pyavd._cv.client import CVClient
 from pyavd._cv.client.exceptions import CVClientException
 from pyavd._errors import AristaAvdInvalidInputsError
 
-ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
+from .helpers import form_proxy_string, unset_proxy_related_env_vars
 
+ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
 
 USER: str = "user1"
 PASS: str = "pass1"  # noqa: S105
@@ -25,28 +26,7 @@ USER_SS_QUOTED: str = "u%3As%40e%2Fr.1"
 PASS_SS_QUOTED: str = "p%3Aa%40s%2Fs.1"  # noqa: S105
 
 
-######################
-## Helper functions ##
-######################
-def unset_proxy_related_env_vars(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Unsets all proxy-related environment variables prior to the start of the proxy tests."""
-    for env_var in ["https_proxy", "HTTPS_PROXY", "all_proxy", "ALL_PROXY", "no_proxy", "NO_PROXY"]:
-        monkeypatch.delenv(env_var, raising=False)
-
-
-def form_proxy_string(
-    proxy_schema: str | None, proxy_username: str | None, proxy_password: str | None, proxy_host: str | None, proxy_port: str | int | None
-) -> str:
-    """Forms proxy server URL based on the input variables."""
-    if proxy_username and proxy_password:
-        return f"{proxy_schema}://{proxy_username}:{proxy_password}@{proxy_host}:{proxy_port!s}"  # NOSONAR
-
-    return f"{proxy_schema}://{proxy_host}:{proxy_port!s}"
-
-
-#########################
 ## Offline proxy tests ##
-#########################
 @pytest.mark.asyncio
 async def test_cv_client_proxy_socket_error() -> None:
     servers = "www.arista.io"
@@ -85,11 +65,8 @@ def test_cv_client_proxy_early_access(proxy_related_attribute: str, proxy_reques
     token = "secret_access_token"  # noqa: S105
     proxy_host = "proxy1.domain.local"
 
-    if proxy_requested:
-        cv_client = CVClient(servers=servers, token=token, proxy_host=proxy_host)
-    else:
-        cv_client = CVClient(servers=servers, token=token)
-    
+    cv_client = CVClient(servers=servers, token=token, proxy_host=proxy_host) if proxy_requested else CVClient(servers=servers, token=token)
+
     _ = getattr(cv_client, proxy_related_attribute)
 
 
@@ -147,6 +124,40 @@ async def test_cv_client_proxy_explicit(proxy_host: str | None, proxy_username: 
             proxy_password=proxy_password,
         ) as cvclient:
             assert cvclient.cv_connection_manager.cv_proxy_manager.get_proxy_url() == expected_proxy_url
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("proxy_scheme", "proxy_host", "proxy_port"),
+    [
+        pytest.param(None, None, -1, id="INVALID_PROXY_PORT_-1"),
+        pytest.param(None, None, 65536, id="INVALID_PROXY_PORT_65536"),
+        pytest.param(None, 25, None, id="INVALID_PROXY_HOST"),
+        pytest.param(None, 25, -1, id="INVALID_PROXY_HOST_PROXY_PORT_-1"),
+        pytest.param(None, 25, 65536, id="INVALID_PROXY_HOST_PROXY_PORT_65536"),
+        pytest.param("https", None, None, id="INVALID_PROXY_SCHEME"),
+        pytest.param("https", None, -1, id="INVALID_PROXY_SCHEME_PROXY_PORT_-1"),
+        pytest.param("https", None, 65536, id="INVALID_PROXY_SCHEME_PROXY_PORT_65536"),
+        pytest.param("https", 25, None, id="INVALID_PROXY_SCHEME_PROXY_HOS"),
+        pytest.param("https", 25, -1, id="INVALID_PROXY_SCHEME_PROXY_HOST_PROXY_PORT_-1"),
+        pytest.param("https", 25, 65536, id="INVALID_PROXY_SCHEME_PROXY_HOST_PROXY_PORT_65536"),
+    ],
+)
+async def test_cv_client_proxy_explicit_invalid(proxy_scheme: str | None, proxy_host: str | None, proxy_port: int | None) -> None:
+    """Test initialization of CVClient when passing incorrect explicit proxy server settings."""
+    servers = "www.arista.io"
+    token = "secret_access_token"  # noqa: S105
+
+    if proxy_scheme is None:
+        proxy_scheme = "http"
+    if proxy_host is None:
+        proxy_host = "192.168.10.10"
+    if proxy_port is None:
+        proxy_port = 8081
+
+    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"), pytest.raises(AristaAvdInvalidInputsError, match="is not supported by AVD"):
+        async with CVClient(servers=servers, token=token, proxy_scheme=proxy_scheme, proxy_host=proxy_host, proxy_port=proxy_port):
+            pass
 
 
 @pytest.mark.asyncio
@@ -404,13 +415,14 @@ async def test_cv_client_proxy_env_vars(monkeypatch: pytest.MonkeyPatch, proxy_e
             id="PROXY_NO_PORT_3",
         ),
         pytest.param("http://proxy1:0", pytest.raises(AristaAvdInvalidInputsError, match=r"Port '0'.*is not supported"), id="PROXY_INVALID_PORT_1"),
+        pytest.param("http://proxy1:-1", pytest.raises(AristaAvdInvalidInputsError, match="AVD faced an exception"), id="PROXY_INVALID_PORT_2"),
         pytest.param(
-            f"http://{USER}:{PASS}@proxy1:0", pytest.raises(AristaAvdInvalidInputsError, match=r"Port '0'.*is not supported"), id="PROXY_INVALID_PORT_2"
+            f"http://{USER}:{PASS}@proxy1:0", pytest.raises(AristaAvdInvalidInputsError, match=r"Port '0'.*is not supported"), id="PROXY_INVALID_PORT_3"
         ),
         pytest.param(
             f"http://{USER_SS_QUOTED}:{PASS_SS_QUOTED}@proxy1:0",
             pytest.raises(AristaAvdInvalidInputsError, match=r"Port '0'.*is not supported"),
-            id="PROXY_INVALID_PORT_3",
+            id="PROXY_INVALID_PORT_4",
         ),
     ],
 )
@@ -676,9 +688,7 @@ async def test_cv_client_proxy_settings_no_proxy_override_ipv6(
     assert not cvclient.cv_connection_manager.use_proxy
 
 
-######################
 ## Live proxy tests ##
-######################
 @pytest.mark.skipif(environ.get("CV_LIVE_PROXY_TEST") is None, reason="CV_LIVE_PROXY_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
