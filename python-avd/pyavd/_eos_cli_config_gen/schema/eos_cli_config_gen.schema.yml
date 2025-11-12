@@ -9667,9 +9667,9 @@ keys:
         type: int
         convert_types:
         - str
-        description: Threshold (in minutes) defining the recent time window during
-          which no error-level logs should have been generated for the validation
-          to pass.
+        description: Threshold (in minutes) defining how far back to check the logging
+          buffer for error-level logs during the validation performed by the `anta_runner`
+          role.
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration

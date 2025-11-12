@@ -24632,8 +24632,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         validate_no_errors_period: int | None
         """
-        Threshold (in minutes) defining the recent time window during which no error-level logs should have
-        been generated for the validation to pass.
+        Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
+        the validation performed by the `anta_runner` role.
         """
 
         if TYPE_CHECKING:
@@ -24689,8 +24689,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                        Subclass of AvdModel.
                     validate_no_errors_period:
-                       Threshold (in minutes) defining the recent time window during which no error-level logs should have
-                       been generated for the validation to pass.
+                       Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
+                       the validation performed by the `anta_runner` role.
 
                 """
 
