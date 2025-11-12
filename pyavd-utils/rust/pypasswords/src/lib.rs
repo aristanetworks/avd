@@ -62,6 +62,8 @@ mod tests {
 
             let expected_hash = pyo3::types::PyString::new(
                 py,
+                // Ignoring test data.
+                // NOSONAR
                 "$6$1234567890ABCDEF$5h/.K2RuwSPqXTncNaqmw./4HduYZNE4RHDfivjrQ8nrYX3AcB8gKSsKFC1VSVOl3E46/QFZ85uHZWhxQGTeS0",
             );
             assert!(result.eq(expected_hash).unwrap());
