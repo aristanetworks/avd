@@ -580,7 +580,6 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "local_interface": {"type": str, "default": "use_default_mgmt_method_interface"},
-            "local_users": {"type": EosCliConfigGen.LocalUsers},
             "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
             "disabled": {"type": bool},
             "leases": {"type": Leases},
@@ -600,7 +599,6 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `"use_default_mgmt_method_interface"`
         """
-        local_users: EosCliConfigGen.LocalUsers
         dhcp_servers_ipv4: DhcpServersIpv4
         """Subclass of AvdList with `str` items."""
         disabled: bool | None
@@ -616,7 +614,6 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 local_interface: str | UndefinedType = Undefined,
-                local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
                 dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
                 disabled: bool | None | UndefinedType = Undefined,
                 leases: Leases | UndefinedType = Undefined,
@@ -639,7 +636,6 @@ class EosDesigns(EosDesignsRootModel):
                        configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
                        of `default_mgmt_method`.
                          - Any other string will be used directly as the local interface.
-                    local_users: local_users
                     dhcp_servers_ipv4: Subclass of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
@@ -16453,37 +16449,10 @@ class EosDesigns(EosDesignsRootModel):
     class Dot1xSettings(AvdModel):
         """Subclass of AvdModel."""
 
-        class ProtocolBypasses(AvdModel):
-            """Subclass of AvdModel."""
+        class RadiusGroups(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
 
-            _fields: ClassVar[dict] = {"bpdu": {"type": bool, "default": True}, "lldp": {"type": bool, "default": True}}
-            bpdu: bool
-            """
-            Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
-
-            Default value: `True`
-            """
-            lldp: bool
-            """
-            Allow LLDP packets to be processed even if the port is not authenticated.
-
-            Default value: `True`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, bpdu: bool | UndefinedType = Undefined, lldp: bool | UndefinedType = Undefined) -> None:
-                    """
-                    ProtocolBypasses.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        bpdu: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
-                        lldp: Allow LLDP packets to be processed even if the port is not authenticated.
-
-                    """
+        RadiusGroups._item_type = str
 
         class DynamicAuthorization(AvdModel):
             """Subclass of AvdModel."""
@@ -16513,25 +16482,92 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class MacBasedAuthentication(AvdModel):
+            """Subclass of AvdModel."""
+
+            UsernameDelimiter: TypeAlias = Literal["colon", "hyphen", "none", "period"]
+            UsernameLetterCase: TypeAlias = Literal["lowercase", "uppercase"]
+            _fields: ClassVar[dict] = {"username_delimiter": {"type": str, "default": "none"}, "username_letter_case": {"type": str, "default": "lowercase"}}
+            username_delimiter: UsernameDelimiter
+            """
+            RADIUS User-Name attribute delimiter to use on the MAC address.
+
+            Default value: `"none"`
+            """
+            username_letter_case: UsernameLetterCase
+            """
+            RADIUS User-Name attribute letter case to use on the MAC address.
+
+            Default value: `"lowercase"`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    username_delimiter: UsernameDelimiter | UndefinedType = Undefined,
+                    username_letter_case: UsernameLetterCase | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    MacBasedAuthentication.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        username_delimiter: RADIUS User-Name attribute delimiter to use on the MAC address.
+                        username_letter_case: RADIUS User-Name attribute letter case to use on the MAC address.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "enabled": {"type": bool, "default": False},
-            "protocol_bypasses": {"type": ProtocolBypasses},
+            "radius_groups": {"type": RadiusGroups},
+            "bypass_bpdu": {"type": bool, "default": True},
+            "bypass_lldp": {"type": bool, "default": True},
             "dynamic_authorization": {"type": DynamicAuthorization},
-            "always_send_service_type": {"type": bool, "default": True},
+            "mac_based_authentication": {"type": MacBasedAuthentication},
+            "redistribute_in_evpn": {"type": bool, "default": True},
         }
         enabled: bool
         """
-        Enable 802.1X port authentication on the switch.
+        Globally enable 802.1X port authentication on the switch.
+        This must be `true` for 802.1X to be
+        active on any interface.
+        When `true`, `dot1x_settings.radius_groups` is required.
 
         Default value: `False`
         """
-        protocol_bypasses: ProtocolBypasses
-        """Subclass of AvdModel."""
+        radius_groups: RadiusGroups
+        """
+        List of RADIUS server groups to be used for 802.1X authentication and accounting.
+        The order of the
+        list defines the priority. Each group name must also be defined on at least one server under
+        `aaa_settings.radius.servers`.
+
+        Subclass of AvdList with `str` items.
+        """
+        bypass_bpdu: bool
+        """
+        Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+
+        Default value: `True`
+        """
+        bypass_lldp: bool
+        """
+        Allow LLDP packets to be processed even if the port is not authenticated.
+
+        Default value: `True`
+        """
         dynamic_authorization: DynamicAuthorization
         """Subclass of AvdModel."""
-        always_send_service_type: bool
+        mac_based_authentication: MacBasedAuthentication
+        """Subclass of AvdModel."""
+        redistribute_in_evpn: bool
         """
-        Always send the Service-Type attribute in RADIUS accounting messages.
+        Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all
+        configured MAC-VRFs.
 
         Default value: `True`
         """
@@ -16542,9 +16578,12 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 enabled: bool | UndefinedType = Undefined,
-                protocol_bypasses: ProtocolBypasses | UndefinedType = Undefined,
+                radius_groups: RadiusGroups | UndefinedType = Undefined,
+                bypass_bpdu: bool | UndefinedType = Undefined,
+                bypass_lldp: bool | UndefinedType = Undefined,
                 dynamic_authorization: DynamicAuthorization | UndefinedType = Undefined,
-                always_send_service_type: bool | UndefinedType = Undefined,
+                mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
+                redistribute_in_evpn: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 Dot1xSettings.
@@ -16553,10 +16592,25 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    enabled: Enable 802.1X port authentication on the switch.
-                    protocol_bypasses: Subclass of AvdModel.
+                    enabled:
+                       Globally enable 802.1X port authentication on the switch.
+                       This must be `true` for 802.1X to be
+                       active on any interface.
+                       When `true`, `dot1x_settings.radius_groups` is required.
+                    radius_groups:
+                       List of RADIUS server groups to be used for 802.1X authentication and accounting.
+                       The order of the
+                       list defines the priority. Each group name must also be defined on at least one server under
+                       `aaa_settings.radius.servers`.
+
+                       Subclass of AvdList with `str` items.
+                    bypass_bpdu: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+                    bypass_lldp: Allow LLDP packets to be processed even if the port is not authenticated.
                     dynamic_authorization: Subclass of AvdModel.
-                    always_send_service_type: Always send the Service-Type attribute in RADIUS accounting messages.
+                    mac_based_authentication: Subclass of AvdModel.
+                    redistribute_in_evpn:
+                       Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all
+                       configured MAC-VRFs.
 
                 """
 
@@ -21649,8 +21703,8 @@ class EosDesigns(EosDesignsRootModel):
         """Configure logging severity."""
         validate_no_errors_period: int | None
         """
-        Threshold (in minutes) defining the recent time window during which no error-level logs should have
-        been generated for the validation to pass.
+        Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
+        the validation performed by the `anta_runner` role.
         """
 
         if TYPE_CHECKING:
@@ -21694,8 +21748,8 @@ class EosDesigns(EosDesignsRootModel):
                     event: event
                     level: Configure logging severity.
                     validate_no_errors_period:
-                       Threshold (in minutes) defining the recent time window during which no error-level logs should have
-                       been generated for the validation to pass.
+                       Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
+                       the validation performed by the `anta_runner` role.
 
                 """
 

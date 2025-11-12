@@ -17,18 +17,25 @@ keys:
         type: bool
         default: false
         description: |-
-          Enable 802.1X port authentication on the switch.
-      protocol_bypasses:
-        type: dict
-        keys:
-          bpdu:
-            type: bool
-            default: true
-            $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_bpdu_bypass
-          lldp:
-            type: bool
-            default: true
-            $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_lldp_bypass
+          Globally enable 802.1X port authentication on the switch.
+          This must be `true` for 802.1X to be active on any interface.
+          When `true`, `dot1x_settings.radius_groups` is required.
+      radius_groups:
+        type: list
+        description: |-
+          List of RADIUS server groups to be used for 802.1X authentication and accounting.
+          The order of the list defines the priority. Each group name must also be defined on at least one server under `aaa_settings.radius.servers`.
+        items:
+          type: str
+          description: RADIUS server group name.
+      bypass_bpdu:
+        type: bool
+        default: true
+        $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_bpdu_bypass
+      bypass_lldp:
+        type: bool
+        default: true
+        $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_lldp_bypass
       dynamic_authorization:
         # Using a dict to eventually support a non-default port (Cisco ISE uses 1700 by default)
         type: dict
@@ -37,7 +44,27 @@ keys:
             type: bool
             default: true
             $ref: eos_cli_config_gen#/keys/dot1x/keys/dynamic_authorization
-      always_send_service_type:
+      mac_based_authentication:
+        type: dict
+        keys:
+          username_delimiter:
+            type: str
+            default: none
+            description: RADIUS User-Name attribute delimiter to use on the MAC address.
+            valid_values:
+              - colon
+              - hyphen
+              - none
+              - period
+          username_letter_case:
+            type: str
+            default: lowercase
+            description: RADIUS User-Name attribute letter case to use on the MAC address.
+            valid_values:
+              - lowercase
+              - uppercase
+      redistribute_in_evpn:
         type: bool
         default: true
-        $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/service_type
+        description: |-
+          Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs.

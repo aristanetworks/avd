@@ -169,6 +169,10 @@ class EthernetInterfacesMixin(Protocol):
             )
             raise AristaAvdError(msg)
 
+        if adapter.dot1x.pae.mode == "authenticator" and not self.inputs.dot1x_settings.enabled:
+            msg = f"802.1X cannot be enabled on '{adapter.switch_ports[node_index]}' unless 802.1X is also enabled globally under 'dot1x_settings.enabled'."
+            raise AristaAvdInvalidInputsError(msg)
+
         # if 'descriptions' is set, it is preferred
         interface_description = adapter.descriptions[node_index] if adapter.descriptions else adapter.description
 
