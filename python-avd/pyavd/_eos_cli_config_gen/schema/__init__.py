@@ -9975,6 +9975,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "peer_type": {"type": str},
                 "peer_key": {"type": str},
                 "port_profile": {"type": str},
+                "validate_state": {"type": bool},
+                "validate_lldp": {"type": bool},
             }
             peer: str | None
             """Key only used for documentation or validation purposes."""
@@ -9986,6 +9988,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Key only used for documentation or validation purposes."""
             port_profile: str | None
             """Key only used for documentation or validation purposes."""
+            validate_state: bool | None
+            """
+            Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+            role.
+            """
+            validate_lldp: bool | None
+            """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
 
             if TYPE_CHECKING:
 
@@ -9997,6 +10006,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_type: str | None | UndefinedType = Undefined,
                     peer_key: str | None | UndefinedType = Undefined,
                     port_profile: str | None | UndefinedType = Undefined,
+                    validate_state: bool | None | UndefinedType = Undefined,
+                    validate_lldp: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Metadata.
@@ -10010,6 +10021,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         peer_type: Key only used for documentation or validation purposes.
                         peer_key: Key only used for documentation or validation purposes.
                         port_profile: Key only used for documentation or validation purposes.
+                        validate_state:
+                           Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                           role.
+                        validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
 
                     """
 
@@ -12322,8 +12337,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "uc_tx_queues": {"type": UcTxQueues},
             "tx_queues": {"type": TxQueues},
             "vrrp_ids": {"type": VrrpIds},
-            "validate_state": {"type": bool},
-            "validate_lldp": {"type": bool},
             "switchport": {"type": Switchport},
             "traffic_engineering": {"type": TrafficEngineering},
             "eos_cli": {"type": str},
@@ -12536,13 +12549,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdIndexedList with `VrrpIdsItem` items. Primary key is `id` (`int`).
         """
-        validate_state: bool | None
-        """
-        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
-        role.
-        """
-        validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
         switchport: Switchport
         """
         This should not be combined with `ethernet_interfaces[].type = switched/routed`.
@@ -12659,8 +12665,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 uc_tx_queues: UcTxQueues | UndefinedType = Undefined,
                 tx_queues: TxQueues | UndefinedType = Undefined,
                 vrrp_ids: VrrpIds | UndefinedType = Undefined,
-                validate_state: bool | None | UndefinedType = Undefined,
-                validate_lldp: bool | None | UndefinedType = Undefined,
                 switchport: Switchport | UndefinedType = Undefined,
                 traffic_engineering: TrafficEngineering | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
@@ -12796,10 +12800,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        VRRP model.
 
                        Subclass of AvdIndexedList with `VrrpIdsItem` items. Primary key is `id` (`int`).
-                    validate_state:
-                       Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
-                       role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                     switchport:
                        This should not be combined with `ethernet_interfaces[].type = switched/routed`.
 
@@ -31812,7 +31812,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Metadata(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"peer": {"type": str}, "peer_interface": {"type": str}, "peer_type": {"type": str}, "peer_key": {"type": str}}
+            _fields: ClassVar[dict] = {
+                "peer": {"type": str},
+                "peer_interface": {"type": str},
+                "peer_type": {"type": str},
+                "peer_key": {"type": str},
+                "validate_state": {"type": bool},
+                "validate_lldp": {"type": bool},
+            }
             peer: str | None
             """Key only used for documentation or validation purposes."""
             peer_interface: str | None
@@ -31821,6 +31828,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Key only used for documentation or validation purposes."""
             peer_key: str | None
             """Key only used for documentation or validation purposes."""
+            validate_state: bool | None
+            """
+            Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+            role.
+            """
+            validate_lldp: bool | None
+            """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
 
             if TYPE_CHECKING:
 
@@ -31831,6 +31845,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_interface: str | None | UndefinedType = Undefined,
                     peer_type: str | None | UndefinedType = Undefined,
                     peer_key: str | None | UndefinedType = Undefined,
+                    validate_state: bool | None | UndefinedType = Undefined,
+                    validate_lldp: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Metadata.
@@ -31843,6 +31859,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         peer_interface: Key only used for documentation or validation purposes.
                         peer_type: Key only used for documentation or validation purposes.
                         peer_key: Key only used for documentation or validation purposes.
+                        validate_state:
+                           Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                           role.
+                        validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
 
                     """
 
@@ -33841,8 +33861,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "vrrp_ids": {"type": VrrpIds},
             "switchport": {"type": Switchport},
             "traffic_engineering": {"type": TrafficEngineering},
-            "validate_state": {"type": bool},
-            "validate_lldp": {"type": bool},
             "eos_cli": {"type": str},
         }
         name: str
@@ -34002,13 +34020,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         traffic_engineering: TrafficEngineering
         """Subclass of AvdModel."""
-        validate_state: bool | None
-        """
-        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
-        role.
-        """
-        validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
         eos_cli: str | None
         """Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
 
@@ -34100,8 +34111,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 vrrp_ids: VrrpIds | UndefinedType = Undefined,
                 switchport: Switchport | UndefinedType = Undefined,
                 traffic_engineering: TrafficEngineering | UndefinedType = Undefined,
-                validate_state: bool | None | UndefinedType = Undefined,
-                validate_lldp: bool | None | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -34203,10 +34212,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of AvdIndexedList with `VrrpIdsItem` items. Primary key is `id` (`int`).
                     switchport: Subclass of AvdModel.
                     traffic_engineering: Subclass of AvdModel.
-                    validate_state:
-                       Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
-                       role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                     eos_cli: Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
 
                 """

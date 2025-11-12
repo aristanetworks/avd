@@ -433,6 +433,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_type</samp>](## "ethernet_interfaces.[].metadata.peer_type") | String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_key</samp>](## "ethernet_interfaces.[].metadata.peer_key") | String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_profile</samp>](## "ethernet_interfaces.[].metadata.port_profile") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "ethernet_interfaces.[].metadata.validate_state") | Boolean |  |  |  | Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "ethernet_interfaces.[].metadata.validate_lldp") | Boolean |  |  |  | Set to false to disable the LLDP topology validation performed by the `anta_runner` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "ethernet_interfaces.[].sflow") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "ethernet_interfaces.[].sflow.enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;egress</samp>](## "ethernet_interfaces.[].sflow.egress") | Dictionary |  |  |  |  |
@@ -494,8 +496,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].vrrp_ids.[].peer_authentication.mode") | String | Required |  | Valid Values:<br>- <code>text</code><br>- <code>ietf-md5</code> | Authentication mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "ethernet_interfaces.[].vrrp_ids.[].peer_authentication.key") | String | Required |  |  | Authentication key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "ethernet_interfaces.[].vrrp_ids.[].peer_authentication.key_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Authentication key type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "ethernet_interfaces.[].validate_state") | Boolean |  |  |  | Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "ethernet_interfaces.[].validate_lldp") | Boolean |  |  |  | Set to false to disable the LLDP topology validation performed by the `anta_runner` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switchport</samp>](## "ethernet_interfaces.[].switchport") | Dictionary |  |  |  | This should not be combined with `ethernet_interfaces[].type = switched/routed`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ethernet_interfaces.[].switchport.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].switchport.mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code><br>- <code>tap</code><br>- <code>tool</code><br>- <code>tap-tool</code> |  |
@@ -1481,6 +1481,12 @@
 
           # Key only used for documentation or validation purposes.
           port_profile: <str>
+
+          # Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
+          validate_state: <bool>
+
+          # Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+          validate_lldp: <bool>
         sflow:
           enable: <bool>
           egress:
@@ -1607,12 +1613,6 @@
 
               # Authentication key type.
               key_type: <str; "0" | "7" | "8a">
-
-        # Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
-        validate_state: <bool>
-
-        # Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
-        validate_lldp: <bool>
 
         # This should not be combined with `ethernet_interfaces[].type = switched/routed`.
         switchport:

@@ -34,7 +34,7 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
         """Create a list of inputs for the `VerifyLLDPNeighbors` test."""
         neighbors: list[LLDPNeighbor] = []
         for intf in self.structured_config.ethernet_interfaces:
-            if intf.validate_state is False or intf.validate_lldp is False:
+            if intf.metadata.validate_state is False or intf.metadata.validate_lldp is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
 

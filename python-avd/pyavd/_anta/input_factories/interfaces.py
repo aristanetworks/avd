@@ -50,7 +50,7 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
     def _get_ethernet_interfaces(self) -> Iterator[InterfaceState]:
         """Get Ethernet interfaces, considering `validate_state` knob and interface defaults."""
         for intf in self.structured_config.ethernet_interfaces:
-            if intf.validate_state is False:
+            if intf.metadata.validate_state is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
 
@@ -63,7 +63,7 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
     def _get_port_channel_interfaces(self) -> Iterator[InterfaceState]:
         """Get Port-Channel interfaces, considering `validate_state` knob."""
         for intf in self.structured_config.port_channel_interfaces:
-            if intf.validate_state is False:
+            if intf.metadata.validate_state is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
             yield InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up")
@@ -132,7 +132,7 @@ class VerifyPortChannelsInputFactory(AntaTestInputFactory[VerifyPortChannels.Inp
         ignored_interfaces: list[str] = []
 
         for po_intf in self.structured_config.port_channel_interfaces:
-            if po_intf.validate_state is False:
+            if po_intf.metadata.validate_state is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=po_intf.name)
                 ignored_interfaces.append(po_intf.name)
                 continue
