@@ -11252,6 +11252,12 @@ ip as-path access-list mylist2 deny _64517$ igp
 | Profile2 | - | user_id2 | - |
 | Profile3 | - | - | PF2 |
 
+#### 802.1X EAPOL
+
+| Attribute | Value |
+| --------- | ----- |
+| VLAN Change Logoff Disabled | True |
+
 #### 802.1X Interfaces
 
 | Interface | PAE Mode | Supplicant Profile | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
