@@ -64,7 +64,7 @@ keys:
         keys:
           service_type:
             type: bool
-            description: Always send the Service-Type attribute in RADIUS accounting messages.
+            description: Include the Service-Type attribute in RADIUS accounting messages.
           framed_mtu:
             type: int
             min: 68

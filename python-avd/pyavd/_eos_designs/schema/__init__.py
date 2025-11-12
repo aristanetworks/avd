@@ -16533,9 +16533,9 @@ class EosDesigns(EosDesignsRootModel):
         enabled: bool
         """
         Globally enable 802.1X port authentication on the switch.
-        This must be `true` for 802.1X to be
-        active on any interface.
-        When `true`, `dot1x_settings.radius_groups` is required.
+        Must be set for 802.1X to be active on any
+        interface.
+        When set, `dot1x_settings.radius_groups` is required.
 
         Default value: `False`
         """
@@ -16594,9 +16594,9 @@ class EosDesigns(EosDesignsRootModel):
                 Args:
                     enabled:
                        Globally enable 802.1X port authentication on the switch.
-                       This must be `true` for 802.1X to be
-                       active on any interface.
-                       When `true`, `dot1x_settings.radius_groups` is required.
+                       Must be set for 802.1X to be active on any
+                       interface.
+                       When set, `dot1x_settings.radius_groups` is required.
                     radius_groups:
                        List of RADIUS server groups to be used for 802.1X authentication and accounting.
                        The order of the

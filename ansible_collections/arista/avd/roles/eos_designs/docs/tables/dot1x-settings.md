@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>dot1x_settings</samp>](## "dot1x_settings") | Dictionary |  |  |  | Settings for 802.1X deployments. |
-    | [<samp>&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.enabled") | Boolean |  | `False` |  | Globally enable 802.1X port authentication on the switch.<br>This must be `true` for 802.1X to be active on any interface.<br>When `true`, `dot1x_settings.radius_groups` is required. |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.enabled") | Boolean |  | `False` |  | Globally enable 802.1X port authentication on the switch.<br>Must be set for 802.1X to be active on any interface.<br>When set, `dot1x_settings.radius_groups` is required. |
     | [<samp>&nbsp;&nbsp;radius_groups</samp>](## "dot1x_settings.radius_groups") | List, items: String |  |  |  | List of RADIUS server groups to be used for 802.1X authentication and accounting.<br>The order of the list defines the priority. Each group name must also be defined on at least one server under `aaa_settings.radius.servers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dot1x_settings.radius_groups.[]") | String |  |  |  | RADIUS server group name. |
     | [<samp>&nbsp;&nbsp;bypass_bpdu</samp>](## "dot1x_settings.bypass_bpdu") | Boolean |  | `True` |  | Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection. |
@@ -27,8 +27,8 @@
     dot1x_settings:
 
       # Globally enable 802.1X port authentication on the switch.
-      # This must be `true` for 802.1X to be active on any interface.
-      # When `true`, `dot1x_settings.radius_groups` is required.
+      # Must be set for 802.1X to be active on any interface.
+      # When set, `dot1x_settings.radius_groups` is required.
       enabled: <bool; default=False>
 
       # List of RADIUS server groups to be used for 802.1X authentication and accounting.

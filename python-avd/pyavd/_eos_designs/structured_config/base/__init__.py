@@ -698,15 +698,15 @@ class AvdStructuredConfigBaseProtocol(
         # Handle 802.1X requirements
         if self.inputs.dot1x_settings.enabled:
             if not self.inputs.dot1x_settings.radius_groups:
-                message = "'dot1x_settings.radius_groups' is required when 802.1X is enabled globally."
-                raise AristaAvdInvalidInputsError(message)
+                msg = "'dot1x_settings.radius_groups' is required when 802.1X is enabled globally."
+                raise AristaAvdInvalidInputsError(msg)
 
             if undefined_groups := set(self.inputs.dot1x_settings.radius_groups).difference(self._radius_server_groups):
-                message = (
+                msg = (
                     f"The RADIUS server groups '{', '.join(sorted(undefined_groups))}' "
                     "are not defined on at least one server under 'aaa_settings.radius.servers'."
                 )
-                raise AristaAvdInvalidInputsError(message)
+                raise AristaAvdInvalidInputsError(msg)
 
             # Set the authentication methods from the input RADIUS server groups if not already set
             if not aaa_authentication.dot1x.default:
@@ -730,15 +730,15 @@ class AvdStructuredConfigBaseProtocol(
         # Handle 802.1X requirements
         if self.inputs.dot1x_settings.enabled:
             if not self.inputs.dot1x_settings.radius_groups:
-                message = "'dot1x_settings.radius_groups' is required when 802.1X is enabled globally."
-                raise AristaAvdInvalidInputsError(message)
+                msg = "'dot1x_settings.radius_groups' is required when 802.1X is enabled globally."
+                raise AristaAvdInvalidInputsError(msg)
 
             if undefined_groups := set(self.inputs.dot1x_settings.radius_groups).difference(self._radius_server_groups):
-                message = (
+                msg = (
                     f"The RADIUS server groups '{', '.join(sorted(undefined_groups))}' "
                     "are not defined on at least one server under 'aaa_settings.radius.servers'."
                 )
-                raise AristaAvdInvalidInputsError(message)
+                raise AristaAvdInvalidInputsError(msg)
 
             # Set the accounting methods from the input RADIUS server groups if not already set
             if not aaa_accounting.dot1x.default:

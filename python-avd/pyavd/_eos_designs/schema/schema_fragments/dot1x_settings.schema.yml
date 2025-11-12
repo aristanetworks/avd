@@ -10,16 +10,15 @@ keys:
     documentation_options:
       table: dot1x-settings
     type: dict
-    description: |-
-      Settings for 802.1X deployments.
+    description: Settings for 802.1X deployments.
     keys:
       enabled:
         type: bool
         default: false
         description: |-
           Globally enable 802.1X port authentication on the switch.
-          This must be `true` for 802.1X to be active on any interface.
-          When `true`, `dot1x_settings.radius_groups` is required.
+          Must be set for 802.1X to be active on any interface.
+          When set, `dot1x_settings.radius_groups` is required.
       radius_groups:
         type: list
         description: |-
