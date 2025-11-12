@@ -32,7 +32,7 @@
 {%     if aaa_accounting.commands.console is arista.avd.defined %}
 {%         for command_console in aaa_accounting.commands.console %}
 {%             if command_console.commands is arista.avd.defined %}
-{%                 if command_console.type is arista.avd.defined("none") %}
+{%                 if command_console.type == "none" %}
 | Commands - Console | {{ command_console.commands }} | none | - | - |
 {%                 elif command_console.methods is arista.avd.defined %}
 {%                     set methods_list = [] %}
@@ -109,7 +109,7 @@
 {%     endif %}
 {%     if aaa_accounting.commands.default is arista.avd.defined %}
 {%         for command_default in aaa_accounting.commands.default %}
-{%             if command_default.type is arista.avd.defined("none") %}
+{%             if command_default.type == "none" %}
 | Commands - Default | {{ command_default.commands }} | none | - | - |
 {%             elif command_default.methods is arista.avd.defined %}
 {%                 set methods_list = [] %}
