@@ -89,6 +89,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyLoggingErrors,
+        input_factory=VerifyLoggingErrorsInputFactory,
     ),
     TestSpec(
         test_class=VerifyMaintenance,
