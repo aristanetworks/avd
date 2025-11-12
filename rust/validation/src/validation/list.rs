@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
+use avdschema::base::Deprecation;
 use ordermap::OrderMap;
 use serde_json::Value;
 
@@ -46,6 +47,9 @@ impl Validation<Vec<Value>> for List {
 
     fn default_value(&self) -> Option<Vec<Value>> {
         self.base.default.to_owned()
+    }
+    fn deprecation(&self) -> &Option<Deprecation> {
+        &self.base.deprecation
     }
 }
 
@@ -100,7 +104,7 @@ fn validate_unique_keys(schema: &List, items: &[Value], ctx: &mut Context) {
                         path: {
                             let mut path = ctx.path.clone();
                             path.extend_from_slice(current_trail);
-                            path
+                            path.into()
                         },
                         issue: Violation::ValueNotUnique {
                             other_path: {
@@ -134,11 +138,12 @@ fn validate_item_schema(schema: &List, item: &Value, ctx: &mut Context) {
 
 fn validate_item_primary_key(schema: &List, item: &Value, ctx: &mut Context) {
     if let Some(primary_key) = &schema.primary_key
-        && item.get(primary_key).is_none_or(|value| value.is_null()) {
-            ctx.add_violation(Violation::MissingRequiredKey {
-                key: primary_key.to_owned(),
-            });
-        }
+        && item.get(primary_key).is_none_or(|value| value.is_null())
+    {
+        ctx.add_violation(Violation::MissingRequiredKey {
+            key: primary_key.to_owned(),
+        });
+    }
 }
 
 #[cfg(test)]
@@ -174,7 +179,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::InvalidType {
                     expected: Type::List,
                     found: Type::Bool
@@ -212,7 +217,7 @@ mod tests {
             ctx.violations,
             vec![
                 Feedback {
-                    path: vec!["0".into()],
+                    path: vec!["0".into()].into(),
                     issue: Violation::InvalidType {
                         expected: Type::Str,
                         found: Type::Dict
@@ -220,7 +225,7 @@ mod tests {
                     .into()
                 },
                 Feedback {
-                    path: vec!["1".into()],
+                    path: vec!["1".into()].into(),
                     issue: Violation::InvalidType {
                         expected: Type::Str,
                         found: Type::Dict
@@ -245,7 +250,7 @@ mod tests {
         assert_eq!(
             ctx.coercions,
             vec![Feedback {
-                path: vec!["0".into()],
+                path: vec!["0".into()].into(),
                 issue: CoercionNote {
                     found: 1.into(),
                     made: "1".into()
@@ -256,7 +261,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec!["1".into()],
+                path: vec!["1".into()].into(),
                 issue: Violation::InvalidType {
                     expected: Type::Str,
                     found: Type::List
@@ -293,7 +298,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::LengthBelowMinimum {
                     minimum: 3,
                     found: 2
@@ -330,7 +335,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::LengthAboveMaximum {
                     maximum: 2,
                     found: 3
@@ -381,7 +386,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec!["0".into()],
+                path: vec!["0".into()].into(),
                 issue: Violation::MissingRequiredKey { key: "foo".into() }.into()
             }]
         );
@@ -409,14 +414,14 @@ mod tests {
             ctx.violations,
             vec![
                 Feedback {
-                    path: vec!["0".into(), "foo".into()],
+                    path: vec!["0".into(), "foo".into()].into(),
                     issue: Violation::ValueNotUnique {
                         other_path: vec!["2".into(), "foo".into()]
                     }
                     .into()
                 },
                 Feedback {
-                    path: vec!["2".into(), "foo".into()],
+                    path: vec!["2".into(), "foo".into()].into(),
                     issue: Violation::ValueNotUnique {
                         other_path: vec!["0".into(), "foo".into()]
                     }

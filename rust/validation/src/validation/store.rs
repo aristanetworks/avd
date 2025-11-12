@@ -195,7 +195,7 @@ mod tests {
         assert_eq!(
             validation_result.violations,
             vec![Feedback {
-                path: vec!["key3".into()],
+                path: vec!["key3".into()].into(),
                 issue: Violation::InvalidType {
                     expected: Type::Str,
                     found: Type::Dict

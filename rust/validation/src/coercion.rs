@@ -34,6 +34,10 @@ impl Coercion for Dict {
         if let Value::Object(dict) = input {
             if let Some(keys) = &self.keys {
                 for (key, key_schema) in keys {
+                    // Skip removed keys
+                    if let Some(deprecation) = key_schema.deprecation() && deprecation.removed.unwrap_or_default() {
+                        continue;
+                    }
                     match dict.get_mut(key) {
                         Some(value) => {
                             ctx.path.push(key.to_owned());
@@ -54,7 +58,10 @@ impl Coercion for Dict {
             }
             if let Some(dynamic_keys) = &self.dynamic_keys {
                 for (key_path, key_schema) in dynamic_keys {
-                    let keys = get_dynamic_keys(key_path, dict);
+                    // Skip removed keys
+                    if let Some(deprecation) = key_schema.deprecation() && deprecation.removed.unwrap_or_default() {
+                        continue;
+                    }                    let keys = get_dynamic_keys(key_path, dict);
                     // validate the computed dynamic keys' corresponding values
                     for key in keys {
                         if let Some(value) = dict.get_mut(&key) {
@@ -221,7 +228,7 @@ mod tests {
         assert_eq!(
             ctx.coercions,
             vec![Feedback {
-                path: vec!["my_dynamic_keys".into()],
+                path: vec!["my_dynamic_keys".into()].into(),
                 issue: Issue::DefaultValueInserted()
             }]
         );

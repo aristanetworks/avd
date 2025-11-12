@@ -11,6 +11,7 @@ pub(crate) mod store;
 pub(crate) mod str;
 pub(crate) mod valid_values;
 
+use avdschema::base::Deprecation;
 use serde_json::Value;
 
 use crate::context::Context;
@@ -35,6 +36,9 @@ pub trait Validation<T> {
     /// Returns the default value from the schema if set.
     /// Used by coercion to insert the default values in the data before validation.
     fn default_value(&self) -> Option<T>;
+
+    /// Returns the deprecation information from the schema if set.
+    fn deprecation(&self) -> &Option<Deprecation>;
 }
 
 #[cfg(test)]

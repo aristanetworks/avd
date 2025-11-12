@@ -2,7 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use avdschema::{any::AnySchema, boolean::Bool, resolve_ref};
+use avdschema::{any::AnySchema, base::Deprecation, boolean::Bool, resolve_ref};
 use serde_json::Value;
 
 use crate::{
@@ -45,6 +45,9 @@ impl Validation<bool> for Bool {
     fn default_value(&self) -> Option<bool> {
         self.base.default
     }
+    fn deprecation(&self) -> &Option<Deprecation> {
+        &self.base.deprecation
+    }
 }
 
 #[cfg(test)]
@@ -76,7 +79,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::InvalidType {
                     expected: Type::Bool,
                     found: Type::List,

@@ -9,7 +9,7 @@ use crate::{
     feedback::{Type, Violation},
 };
 
-use avdschema::{any::AnySchema, int::Int, resolve_ref};
+use avdschema::{any::AnySchema, base::Deprecation, int::Int, resolve_ref};
 
 use super::{Validation, valid_values::ValidateValidValues};
 
@@ -50,26 +50,31 @@ impl Validation<i64> for Int {
     fn default_value(&self) -> Option<i64> {
         self.base.default
     }
+    fn deprecation(&self) -> &Option<Deprecation> {
+        &self.base.deprecation
+    }
 }
 
 fn validate_min(schema: &Int, input: &i64, ctx: &mut Context) {
     if let Some(min) = schema.min
-        && min > *input {
-            ctx.add_violation(Violation::ValueBelowMinimum {
-                minimum: min,
-                found: *input,
-            });
-        }
+        && min > *input
+    {
+        ctx.add_violation(Violation::ValueBelowMinimum {
+            minimum: min,
+            found: *input,
+        });
+    }
 }
 
 fn validate_max(schema: &Int, input: &i64, ctx: &mut Context) {
     if let Some(max) = schema.max
-        && max < *input {
-            ctx.add_violation(Violation::ValueAboveMaximum {
-                maximum: max,
-                found: *input,
-            });
-        }
+        && max < *input
+    {
+        ctx.add_violation(Violation::ValueAboveMaximum {
+            maximum: max,
+            found: *input,
+        });
+    }
 }
 
 #[cfg(test)]
@@ -102,7 +107,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::InvalidType {
                     expected: Type::Int,
                     found: Type::Dict,
@@ -124,7 +129,7 @@ mod tests {
         assert_eq!(
             ctx.coercions,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: CoercionNote {
                     found: "123".into(),
                     made: 123.into()
@@ -145,7 +150,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::InvalidType {
                     expected: Type::Int,
                     found: Type::Str
@@ -184,7 +189,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::InvalidValue {
                     expected: vec![123].into(),
                     found: input.into()
@@ -221,7 +226,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::ValueBelowMinimum {
                     minimum: 122,
                     found: 121
@@ -258,7 +263,7 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec![].into(),
                 issue: Violation::ValueAboveMaximum {
                     maximum: 124,
                     found: 125
