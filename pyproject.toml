@@ -10,6 +10,10 @@ pytest = [
 coverage = [
     "coverage[toml]==7.11.3",
 ]
+# group used to build cross platform pyavd-utils wheels
+build_wheel = [
+    "cibuildwheel==3.3.0",
+]
 
 [tool.black]
 # Black has been replaced with Ruff.

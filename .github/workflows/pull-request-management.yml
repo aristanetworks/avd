@@ -781,9 +781,9 @@ jobs:
         run: |
           tox -- pyavd-utils/tests
 
-  # ----------------------------------- #
-  # Build cross platform pyavd-utils
-  # ----------------------------------- #
+  # --------------------------------------- #
+  # Build cross platform pyavd-utils wheels
+  # --------------------------------------- #
   pyavd_utils_build_wheels:
     name: Build pyavd-utils wheel on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -814,12 +814,11 @@ jobs:
         # TODO: could use the action instead but need approval
         # otherwise will need some file we can tell dependabot to track to upgrade
         run: |
-          pip install cibuildwheel==3.3.0
+          pip install --group build_wheel
       - name: Build wheels
-        # Testing not using working-directory
+        # Not using working-directory
         # because manylinux uses a container and will not copy the
         # parent Cargo.toml and we will be sad
-        # working-directory: pyavd-utils
         run: |-
           python -m cibuildwheel --output-dir wheelhouse pyavd-utils
       - uses: actions/upload-artifact@v5
