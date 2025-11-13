@@ -2,7 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use avdschema::{any::AnySchema, dict::Dict, get_dynamic_keys, resolve_ref, base::Deprecation};
+use avdschema::{any::AnySchema, base::Deprecation, dict::Dict, get_dynamic_keys, resolve_ref};
 use serde_json::{Map, Value};
 
 use crate::{
@@ -62,18 +62,19 @@ impl Validation<Map<String, Value>> for Dict {
 
 fn validate_allowed_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
     if !schema.allow_other_keys.unwrap_or_default()
-        && let Some(keys) = &schema.keys {
-            input
-                .keys()
-                // keys starting with "_" are passed over to allow for custom usage
-                .filter(|key| !key.starts_with('_'))
-                .filter(|key| !keys.contains_key(key.as_str()))
-                .for_each(|key| {
-                    ctx.path.push(key.to_owned());
-                    ctx.add_error(Violation::UnexpectedKey());
-                    ctx.path.pop();
-                });
-        }
+        && let Some(keys) = &schema.keys
+    {
+        input
+            .keys()
+            // keys starting with "_" are passed over to allow for custom usage
+            .filter(|key| !key.starts_with('_'))
+            .filter(|key| !keys.contains_key(key.as_str()))
+            .for_each(|key| {
+                ctx.path.push(key.to_owned());
+                ctx.add_error(Violation::UnexpectedKey());
+                ctx.path.pop();
+            });
+    }
 }
 
 fn validate_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
@@ -121,8 +122,15 @@ fn validate_dynamic_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Co
     }
 }
 
-fn check_deprecation(_key: &str, key_schema: &AnySchema, _parent_dict_input: &Map<String, Value>, ctx: &mut Context) {
-    if let Some(deprecation) = key_schema.deprecation() && deprecation.warning {
+fn check_deprecation(
+    _key: &str,
+    key_schema: &AnySchema,
+    _parent_dict_input: &Map<String, Value>,
+    ctx: &mut Context,
+) {
+    if let Some(deprecation) = key_schema.deprecation()
+        && deprecation.warning
+    {
         if deprecation.removed.unwrap_or_default() {
             ctx.add_error(Removed::from_schema(&ctx.path, deprecation));
         } else {
@@ -241,7 +249,11 @@ mod tests {
         };
         let mut input = serde_json::json!({ "foo": 321, "bar": "123" });
         let store = get_test_store();
-        let mut ctx = Context::new(&store, None);
+        let configuration = Configuration {
+            return_coercion_infos: true,
+            ..Default::default()
+        };
+        let mut ctx = Context::new(&store, Some(&configuration));
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.result.errors.is_empty());
@@ -396,7 +408,11 @@ mod tests {
         };
         let mut input = serde_json::json!({ "dynkey1": 5, "dynkey2": 9 });
         let store = get_test_store();
-        let mut ctx = Context::new(&store, None);
+        let configuration = Configuration {
+            return_default_value_inserted_infos: true,
+            ..Default::default()
+        };
+        let mut ctx = Context::new(&store, Some(&configuration));
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.result.errors.is_empty());
@@ -445,7 +461,11 @@ mod tests {
         let mut input =
             serde_json::json!({ "dynkey1": {"sub_key": 11, "bad_key": true}, "dynkey2": "wrong" });
         let store = get_test_store();
-        let mut ctx = Context::new(&store, None);
+        let configuration = Configuration {
+            return_default_value_inserted_infos: true,
+            ..Default::default()
+        };
+        let mut ctx = Context::new(&store, Some(&configuration));
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert_eq!(
@@ -534,7 +554,11 @@ mod tests {
         };
         let mut input = serde_json::json!({ "foo": true });
         let store = get_test_store();
-        let mut ctx = Context::new(&store, None);
+        let configuration = Configuration {
+            return_coercion_infos: true,
+            ..Default::default()
+        };
+        let mut ctx = Context::new(&store, Some(&configuration));
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.result.errors.is_empty());
@@ -599,12 +623,11 @@ mod tests {
         };
         let mut input = serde_json::json!({});
         let store = get_test_store();
-        let mut ctx = Context::new(
-            &store,
-            Some(&Configuration {
-                ignore_required_keys_on_root_dict: true,
-            }),
-        );
+        let configuration = Configuration {
+            ignore_required_keys_on_root_dict: true,
+            ..Default::default()
+        };
+        let mut ctx = Context::new(&store, Some(&configuration));
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.result.errors.is_empty());
@@ -629,12 +652,11 @@ mod tests {
         };
         let input = serde_json::json!({});
         let store = get_test_store();
-        let mut ctx = Context::new(
-            &store,
-            Some(&Configuration {
-                ignore_required_keys_on_root_dict: true,
-            }),
-        );
+        let configuration = Configuration {
+            ignore_required_keys_on_root_dict: true,
+            ..Default::default()
+        };
+        let mut ctx = Context::new(&store, Some(&configuration));
         // Using a deeper path and see that we still get the error even though we relax for the root dict.
         ctx.path.push("deeper".into());
         schema.validate_value(&input, &mut ctx);

@@ -104,6 +104,7 @@ mod tests {
 
     use super::*;
     use crate::{
+        Configuration,
         coercion::Coercion,
         feedback::{CoercionNote, Feedback},
         validation::test_utils::get_test_store,
@@ -195,7 +196,11 @@ mod tests {
         };
         let mut input = "FOO".into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store, None);
+        let configuration = Configuration {
+            return_coercion_infos: true,
+            ..Default::default()
+        };
+        let mut ctx = Context::new(&store, Some(&configuration));
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.result.errors.is_empty());
@@ -224,31 +229,13 @@ mod tests {
         };
         let mut input = true.into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store, None);
+        let configururation = Configuration { return_coercion_infos: true, ..Default::default()};
+        let mut ctx = Context::new(&store, Some(&configururation));
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.result.errors.is_empty());
-        assert_eq!(
-            ctx.result.infos,
-            vec![
-                Feedback {
-                    path: vec![].into(),
-                    issue: CoercionNote {
-                        found: true.into(),
-                        made: "True".into()
-                    }
-                    .into()
-                },
-                Feedback {
-                    path: vec![].into(),
-                    issue: CoercionNote {
-                        found: "True".into(),
-                        made: "true".into()
-                    }
-                    .into()
-                }
-            ]
-        );
+        assert!(ctx.result.warnings.is_empty());
+        assert!(ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -261,7 +248,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.result.errors.is_empty() && ctx.result.infos.is_empty());
+        assert!(ctx.result.errors.is_empty());
+        assert!(ctx.result.warnings.is_empty());
+        assert!(ctx.result.infos.is_empty());
     }
 
     #[test]

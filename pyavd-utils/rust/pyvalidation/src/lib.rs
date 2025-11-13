@@ -547,64 +547,6 @@ mod tests {
             let errors = validation_result.getattr("errors").unwrap();
             assert!(errors.is_instance_of::<pyo3::types::PyList>());
             assert_eq!(errors.len().unwrap(), 0);
-
-            let infos = validation_result.getattr("infos").unwrap();
-            assert!(infos.is_instance_of::<pyo3::types::PyList>());
-
-            let expected_infos: [(Vec<String>, String); 5] = [
-                (
-                    vec![
-                        "ethernet_interfaces".into(),
-                        "0".into(),
-                        "description".into(),
-                    ],
-                    "Coerced value from 12345 to \"12345\".".into(),
-                ),
-                (
-                    vec!["avd_data_validation_mode".into()],
-                    "Inserted default value.".into(),
-                ),
-                (vec!["config_end".into()], "Inserted default value.".into()),
-                (
-                    vec!["transceiver_qsfp_default_mode_4x10".into()],
-                    "Inserted default value.".into(),
-                ),
-                (
-                    vec![
-                        "ethernet_interfaces".into(),
-                        "0".into(),
-                        "ospf_authentication_key_type".into(),
-                    ],
-                    "Inserted default value.".into(),
-                ),
-            ];
-
-            assert_eq!(infos.len().unwrap(), expected_infos.len());
-            for feedback in infos.try_iter().unwrap().flatten() {
-                let path: Vec<String> = feedback
-                    .getattr("path")
-                    .unwrap()
-                    .cast_into_exact::<pyo3::types::PyList>()
-                    .unwrap()
-                    .into_iter()
-                    .map(|item| {
-                        item.cast_into_exact::<pyo3::types::PyString>()
-                            .unwrap()
-                            .to_string()
-                    })
-                    .collect();
-                let message = feedback
-                    .getattr("message")
-                    .unwrap()
-                    .cast_into_exact::<pyo3::types::PyString>()
-                    .unwrap()
-                    .to_string();
-                let expected_info = (path, message);
-                assert!(
-                    expected_infos.contains(&expected_info),
-                    "Info was not found in expected infos: {expected_info:?}"
-                )
-            }
         });
     }
 

@@ -52,6 +52,8 @@ impl<'a> Context<'a> {
 #[derive(Clone, Debug, Default)]
 pub struct Configuration {
     pub ignore_required_keys_on_root_dict: bool,
+    pub return_default_value_inserted_infos: bool,
+    pub return_coercion_infos: bool,
 }
 
 #[derive(Clone, Debug, Default)]
