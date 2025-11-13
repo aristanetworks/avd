@@ -29,4 +29,4 @@ class VerifyTransceiversManufacturersInputFactory(AntaTestInputFactory[VerifyTra
 
     def create(self) -> list[VerifyTransceiversManufacturers.Input] | None:
         """Create a list of inputs for the `VerifyTransceiversManufacturers` test."""
-        return [VerifyTransceiversManufacturers.Input(manufacturers=self.structured_config.metadata.hardware_requirements.transceiver_manufacturers)]
+        return [VerifyTransceiversManufacturers.Input(manufacturers=list(self.structured_config.metadata.hardware_requirements.transceiver_manufacturers))]
