@@ -13,8 +13,9 @@ use crate::feedback::{ErrorIssue, Feedback, InfoIssue, WarningIssue};
 pub struct Context<'a> {
     pub configuration: Configuration,
     pub store: &'a Store,
-    pub path: Vec<String>,
+    pub path: Vec<String>,  // TODO: Move path into State
     pub result: ValidationResult,
+    pub(crate) state: State,
 }
 
 impl<'a> Context<'a> {
@@ -24,6 +25,7 @@ impl<'a> Context<'a> {
             store,
             path: Default::default(),
             result: Default::default(),
+            state: Default::default(),
         }
     }
     pub(crate) fn add_error(&mut self, error: impl Into<ErrorIssue>) {
@@ -46,6 +48,14 @@ impl<'a> Context<'a> {
             issue: info.into(),
         });
     }
+}
+
+/// Validation state set on Context during validation.
+#[derive(Clone, Debug, Default)]
+pub(crate) struct State {
+    /// Don't validate required keys.
+    /// Used for structured_config where we overload other config, and only the final result should be validated for required keys.
+    pub(crate) relaxed_validation: bool,
 }
 
 /// Configuration to use during validation.
