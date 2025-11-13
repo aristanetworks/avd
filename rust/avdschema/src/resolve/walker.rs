@@ -101,63 +101,30 @@ pub enum SchemaWalkError {
     PointingToKeys(PointingToKeys),
 }
 
-#[derive(Debug, derive_more::Constructor)]
+#[derive(Debug, derive_more::Constructor, derive_more::Display)]
+#[display("Internal error. AnySchema should have returned the schema.")]
 pub struct InternalError {}
-impl std::fmt::Display for InternalError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "Internal error. AnySchema should have returned the schema."
-        )
-    }
-}
 
-#[derive(Debug, derive_more::Constructor)]
+#[derive(Debug, derive_more::Constructor, derive_more::Display)]
+#[display(
+    "Invalid schema path. The element '{element}' is invalid. All path elements except the last must go via lists or dicts."
+)]
 pub struct InvalidPathElement {
     element: String,
 }
-impl std::fmt::Display for InvalidPathElement {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "Invalid schema path. The element '{}' is invalid. All path elements except the last must go via lists or dicts.",
-            self.element
-        )
-    }
-}
 
-#[derive(Debug, derive_more::Constructor)]
+#[derive(Debug, derive_more::Constructor, derive_more::Display)]
+#[display(
+    "Invalid schema path. An intermediate element pointed to a schema that is not a dict or list."
+)]
 pub struct NotDictOrList {}
-impl std::fmt::Display for NotDictOrList {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "Invalid schema path. An intermediate element pointed to a schema that is not a dict or list."
-        )
-    }
-}
 
-#[derive(Debug, derive_more::Constructor)]
+#[derive(Debug, derive_more::Constructor, derive_more::Display)]
+#[display("Invalid schema path. The element '{element}' was not found.")]
 pub struct PathNotFound {
     element: String,
 }
-impl std::fmt::Display for PathNotFound {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "Invalid schema path. The element '{}' was not found.",
-            self.element
-        )
-    }
-}
 
-#[derive(Debug, derive_more::Constructor)]
+#[derive(Debug, derive_more::Constructor, derive_more::Display)]
+#[display("Invalid schema path. A path can not point to 'keys' of a dict schema.")]
 pub struct PointingToKeys {}
-impl std::fmt::Display for PointingToKeys {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "Invalid schema path. A path can not point to 'keys' of a dict schema."
-        )
-    }
-}

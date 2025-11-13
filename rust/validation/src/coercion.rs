@@ -112,15 +112,14 @@ impl Coercion for Int {
 }
 impl Coercion for List {
     fn coerce(&self, input: &mut Value, ctx: &mut Context) {
-        if let Some(item_schema) = &self.items {
-            if let Value::Array(list) = input {
+        if let Some(item_schema) = &self.items
+            && let Value::Array(list) = input {
                 for (i, item) in list.iter_mut().enumerate() {
                     ctx.path.push(i.to_string());
                     item_schema.coerce(item, ctx);
                     ctx.path.pop();
                 }
             }
-        }
     }
 }
 impl Coercion for Str {
