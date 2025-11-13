@@ -14,7 +14,7 @@ from urllib.parse import ParseResult, quote, urlparse
 from grpclib.client import Channel
 from python_socks.async_.asyncio import Proxy
 
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 
 from .exceptions import CVClientException
 
@@ -213,7 +213,7 @@ class CVProxyManager:
             LOGGER.info("<CVProxyManager>: Proxy server information is passed explicitly. Verifying it's validity...")
 
             # Identify format of the proxy host
-            self._proxy_host_format = self._identify_host_format(proxy_host, "proxy server")
+            self._proxy_host_format = self._identify_host_format(proxy_host)
 
             # Verify that all mandatory settings comply with validity requirements
             # Raise an exception if any of the explicitly provided settings does not pass validity checks
@@ -233,7 +233,7 @@ class CVProxyManager:
         LOGGER.info("<CVProxyManager>: Trying to discovering proxy server settings using environment variables...")
         # Fallback to discovering proxy-related settings passed via environment variables
         # Identify format of the target CloudVision host
-        self._target_host_format = self._identify_host_format(self._target_host, "CloudVision host")
+        self._target_host_format = self._identify_host_format(self._target_host)
         LOGGER.debug("<CVProxyManager>: Target CloudVision destination is specified using '%s' format.", self._target_host_format)
 
         LOGGER.debug("<CVProxyManager>: Checking if target CloudVision destination is matching any proxy bypass environment variables...")
@@ -281,7 +281,7 @@ class CVProxyManager:
             raise_on_failure=True,
         ):
             # Identify format of the proxy host
-            self._proxy_host_format = self._identify_host_format(self._parsed_env_var_proxy_content.hostname, "proxy server")
+            self._proxy_host_format = self._identify_host_format(self._parsed_env_var_proxy_content.hostname)
 
             self.use_proxy = True
             self._proxy_configuration_source = self._env_var_proxy_name
@@ -366,33 +366,30 @@ class CVProxyManager:
 
     @overload
     @staticmethod
-    def _identify_host_format(host: None, context: str) -> None: ...
+    def _identify_host_format(host: None) -> None: ...
 
     @overload
     @staticmethod
-    def _identify_host_format(host: str, context: str) -> Literal["ipv4_address", "ipv6_address", "fqdn"]: ...
+    def _identify_host_format(host: str) -> Literal["ipv4_address", "ipv6_address", "fqdn"]: ...
 
     @staticmethod
-    def _identify_host_format(host: str | None, context: str) -> Literal["ipv4_address", "ipv6_address", "fqdn"] | None:
+    def _identify_host_format(host: str | None) -> Literal["ipv4_address", "ipv6_address", "fqdn"] | None:
         if host is None:
             return None
         """Identify if host is passed as an IPv4 address, an IPv6 address or an FQDN."""
-        msg = f"AVD faced an exception trying to identify the format ('ipv4_address', 'ipv6_address' or 'fqdn') of the target {context} '{host}'."
         try:
             # Check if used format is IPv4 or IPv6 address
             ip_candidate = ip_address(host)
             match ip_candidate.version:
                 case 4:
                     return "ipv4_address"
-                case 6:
-                    return "ipv6_address"
+                # It is IPv6 otherwise
                 case _:
-                    return "fqdn"
+                    return "ipv6_address"
+        # The only exception that can be raised is a ValueError meaning input string was not an IP address
         except ValueError:
             # If it is not an IPv4 or IPv6 address we treat it as an FQDN.
             return "fqdn"
-        except Exception as e:
-            raise AristaAvdError(msg) from e
 
     @staticmethod
     def _proxy_scheme_is_valid(
@@ -456,9 +453,6 @@ class CVProxyManager:
         """
         if not self.use_proxy:
             return ""
-        if self._proxy_host_format is None:
-            msg = "Can not generate proxy URL due to missing definition of the proxy server format."
-            raise AristaAvdError(msg)
         formatted_proxy_host = f"[{self._proxy_host}]" if self._proxy_host_format == "ipv6_address" else self._proxy_host
         if self._proxy_username_is_set(self._proxy_username) and self._proxy_password_is_set(self._proxy_password):
             # Excempting the lines below from Sonar since we cannot use HTTPS here.
