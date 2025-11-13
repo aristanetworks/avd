@@ -301,12 +301,12 @@ impl Display for Conflict {
 impl Conflict {
     pub(crate) fn from_schema(
         path: &Vec<String>,
-        replacement_path: Path,
+        replacement_path: &Vec<String>,
         deprecation: &avdschema::base::Deprecation,
     ) -> Self {
         Self {
             path: path.to_owned().into(),
-            replacement_path,
+            replacement_path: replacement_path.to_owned().into(),
             url: deprecation.url.to_owned(),
         }
     }
@@ -393,7 +393,7 @@ mod tests {
         );
     }
 
-        #[test]
+    #[test]
     fn removed_display() {
         let removed = Removed {
             path: Path::from(vec![
@@ -411,7 +411,7 @@ mod tests {
         );
     }
 
-            #[test]
+    #[test]
     fn conflict_display() {
         let conflict = Conflict {
             path: Path::from(vec![
@@ -430,5 +430,54 @@ mod tests {
             format!("{}", conflict).as_str(),
             "The input data model 'key[1].subkey' is deprecated and cannot be used in conjunction with the new data model 'key[1].another_key'. See 'foo.bar' for details."
         );
+    }
+
+    fn get_deprecation_test_schema() -> avdschema::base::Deprecation {
+        avdschema::base::Deprecation {
+            warning: true,
+            new_key: Some("new_key".to_string()),
+            removed: Some(true),
+            remove_in_version: Some("6.0.0".to_string()),
+            url: Some("my.url".to_string()),
+            ..Default::default()
+        }
+    }
+
+    #[test]
+    fn deprecated_from_schema() {
+        let deprecated =
+            Deprecated::from_schema(&vec!["foo".to_string()], &get_deprecation_test_schema());
+        let expected_deprecated = Deprecated {
+            path: Path::from(vec!["foo".to_string()]),
+            replacement: Some("new_key".to_string()),
+            version: Some("6.0.0".to_string()),
+            url: Some("my.url".to_string()),
+        };
+        assert_eq!(deprecated, expected_deprecated);
+    }
+
+        #[test]
+    fn removed_from_schema() {
+        let removed =
+            Removed::from_schema(&vec!["foo".to_string()], &get_deprecation_test_schema());
+        let expected_removed = Removed {
+            path: Path::from(vec!["foo".to_string()]),
+            replacement: Some("new_key".to_string()),
+            version: Some("6.0.0".to_string()),
+            url: Some("my.url".to_string()),
+        };
+        assert_eq!(removed, expected_removed);
+    }
+
+            #[test]
+    fn conflict_from_schema() {
+        let conflict =
+            Conflict::from_schema(&vec!["foo".to_string()], &vec!["new_foo".to_string()], &get_deprecation_test_schema());
+        let expected_conflict = Conflict {
+            path: Path::from(vec!["foo".to_string()]),
+            replacement_path: Path::from(vec!["new_foo".to_string()]),
+            url: Some("my.url".to_string()),
+        };
+        assert_eq!(conflict, expected_conflict);
     }
 }
