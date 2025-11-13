@@ -52,8 +52,8 @@
       filters:
         exclude_statuses: "{{ anta_report_exclude_statuses | arista.avd.default([]) }}"
       sorting:
-        sort_by: "{{ anta_report_sort_by | arista.avd.default([]) }}"
-        status_priority: "{{ anta_report_status_priority | arista.avd.default([]) }}"
+        sort_by: "{{ anta_report_sort_by }}"
+        status_priority: "{{ anta_report_status_priority }}"
   register: anta
   delegate_to: localhost
   run_once: true

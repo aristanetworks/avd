@@ -306,7 +306,7 @@ By default, filters apply to all devices targeted by the run. `device_list` can 
 
 #### Report Filtering
 
-`anta_report_hide_statuses`: A list of test result statuses to hide from the generated reports. The available statuses are `success`, `failure`, `error`, `skipped`, and `unset`.
+`anta_report_exclude_statuses`: A list of test result statuses to hide from the generated reports. The available statuses are `success`, `failure`, `error`, `skipped`, and `unset`.
 
 ```yaml
 # In the playbook
@@ -320,6 +320,31 @@ By default, filters apply to all devices targeted by the run. `device_list` can 
         name: arista.avd.anta_runner
       vars:
         anta_report_hide_statuses: [ success, skipped ]
+```
+
+#### Report Sorting
+
+`anta_report_sort_by`: A list of test result statuses to sort the generated reports. The available statuses are `categories`, `custom_field`, `description`, `device` and `test`. By default, sorting apply on `device`, `categories`, `test`, `description`, `custom_field`.
+
+`anta_report_status_priority`: A list of test result statuses to sort the generated reports, tests are grouped by their status based on the defined priority order. By default, priority order is `error`, `failure`, `skipped`, `success`, `unset`.
+
+!!! note
+    `status_priority` serves as the primary sorting criterion, tests are first grouped by their status
+    based on the defined priority order. Within each status group, a secondary sort is applied using `sort_by`.
+
+```yaml
+# In the playbook
+- name: Run ANTA
+  hosts: FABRIC
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Run ANTA on EOS devices
+      import_role:
+        name: arista.avd.anta_runner
+      vars:
+        anta_report_status_priority: [ success, skipped ]
+        anta_report_sort_by: [device, categories, test, description, custom_field]
 ```
 
 ## AVD-generated Catalog Test Index

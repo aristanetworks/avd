@@ -25,5 +25,7 @@ anta_runner_dry_run: false
 avd_structured_config_file_format: "yml"
 
 # ANTA runner reporting sorting.
+# `status_priority` serves as the primary sorting criterion, tests are first grouped by their status
+# based on the defined priority order. Within each status group, a secondary sort is applied using `sort_by`.
 anta_report_status_priority: ["error", "failure", "skipped", "success", "unset"]
 anta_report_sort_by: ["device", "categories", "test", "description", "custom_field"]
