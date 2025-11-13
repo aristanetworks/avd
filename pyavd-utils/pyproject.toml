@@ -67,19 +67,11 @@ extends = "../pyproject.toml"
 skip = [
     "cp38-*",
     "cp39-*",
-#     "pp*",
     "*-win32",
     "*-musllinux*",
     "*_i686",
-    "cp314t-*", # for now building with cp310 is breaking Python 3.14 which is free threaded and not controlled below.
+    "cp3??t-*", # for now building with cp310 which does not work with free threading
 ]
-# enable = [
-#  "pypy",
-#  "cpython-freethreading", # TODO: not considering free threaded support for now for Python 3.13
-#]
-
-
-build-verbosity=2
 
 before-all = "uname -a"
 
