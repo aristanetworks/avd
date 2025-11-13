@@ -15,8 +15,10 @@ if TYPE_CHECKING:
 
     T = TypeVar("T")
 
+
 def convert_type(value: Any, converter: Callable[[Any], T]) -> T:
     return converter(value)
+
 
 def coerce_type(value: Any, target_type: type[T]) -> T:
     """
