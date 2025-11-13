@@ -41,7 +41,13 @@ impl Validation<Map<String, Value>> for Dict {
             // Ignoring a wrong schema type at the ref. Since Validation is infallible.
             // TODO: What to do?
             if let Ok(AnySchema::Dict(ref_schema)) = resolve_ref(ref_, ctx.store) {
+                // Handle relaxed validation here, since the places we use it is also where we skip resolving the $ref before validation.
+                let previous_relaxed_validation = ctx.state.relaxed_validation;
+                if self.relaxed_validation.unwrap_or_default() {
+                    ctx.state.relaxed_validation = true
+                }
                 ref_schema.validate(value, ctx);
+                ctx.state.relaxed_validation = previous_relaxed_validation;
             }
         }
     }
@@ -84,10 +90,14 @@ fn validate_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
                 Some(Value::Null) | None => {
                     // nullish values don't need to be validated beyond a requiredness check
 
-                    // Don't validate required keys if we are at the root level.
-                    if ctx.configuration.ignore_required_keys_on_root_dict && ctx.path.is_empty() {
+                    // Don't validate required keys if we are below a dict with relaxed validation or if we are at the root level.
+                    if ctx.state.relaxed_validation
+                        || (ctx.configuration.ignore_required_keys_on_root_dict
+                            && ctx.path.is_empty())
+                    {
                         continue;
                     }
+
                     if key_schema.is_required() {
                         ctx.add_error(Violation::MissingRequiredKey {
                             key: key.to_string(),

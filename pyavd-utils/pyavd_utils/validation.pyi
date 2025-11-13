@@ -9,11 +9,11 @@ from typing import Literal
 class Feedback:
     """Feedback item carried in the Context under either `errors`, `warnings` or `infos`."""
 
-    path: list[str]
-    """Path to the data which the feedback concerns."""
-
     message: str
     """String detailing the feedback."""
+
+    path: list[str]
+    """Path to the data which the feedback concerns."""
 
 class ValidationResult:
     """Result of data validation."""
