@@ -64,32 +64,27 @@ extend = "../pyproject.toml"
 extends = "../pyproject.toml"
 
 [tool.cibuildwheel]
-#build =  [
-#    "cp310-*" ,  # We have portable abi3 wheels.
-#    "cp314t-*", # Free-threading / nogil.
-#    "pp310-*",
-#]
 skip = [
     "cp38-*",
     "cp39-*",
-    "pp*",
+#     "pp*",
     "*-win32",
     "*-musllinux*",
     "*_i686",
 ]
-enable = [
-  "pypy",
-  # "cpython-freethreading" # TODO: decide if we want to try freethreading - for now it is failing in CI
-]
+# enable = [
+#  "pypy",
+#]
+free-threaded-support = false
+
 
 build-verbosity=2
 
 before-all = "uname -a"
 
-test-command = "pytest pyavd-utils/tests"
-test-requires = [
-    "pytest"
-]
+test-requires = ["pytest"]
+test-sources = ["tests"]
+test-command = "pytest"
 
 [tool.cibuildwheel.macos]
 # PyPy has no universal2, so let's build them all, always.
