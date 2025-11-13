@@ -24633,8 +24633,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         validate_no_errors_period: int | None
         """
-        Threshold (in minutes) defining the recent time window during which no error-level logs should have
-        been generated for the validation to pass.
+        Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
+        the validation performed by the `anta_runner` role.
         """
         exclude_as_extra_fabric_validation_target: bool | None
         """
@@ -24701,8 +24701,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                        Subclass of AvdModel.
                     validate_no_errors_period:
-                       Threshold (in minutes) defining the recent time window during which no error-level logs should have
-                       been generated for the validation to pass.
+                       Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
+                       the validation performed by the `anta_runner` role.
                     exclude_as_extra_fabric_validation_target:
                        When true, excludes this node's loopback interfaces from being selected
                        as destination targets in
@@ -29476,6 +29476,57 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class AddressLocking(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AddressFamily(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ipv4": {"type": bool}}
+                ipv4: bool | None
+                """Enable/disable address locking for IPv4."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        AddressFamily.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv4: Enable/disable address locking for IPv4.
+
+                        """
+
+            _fields: ClassVar[dict] = {"address_family": {"type": AddressFamily}}
+            address_family: AddressFamily
+            """
+            Configure address locking per address family.
+            Introduced in EOS 4.31.0F.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, address_family: AddressFamily | UndefinedType = Undefined) -> None:
+                    """
+                    AddressLocking.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        address_family:
+                           Configure address locking per address family.
+                           Introduced in EOS 4.31.0F.
+
+                           Subclass of AvdModel.
+
+                    """
+
         class EncapsulationDot1q(AvdModel):
             """Subclass of AvdModel."""
 
@@ -33788,6 +33839,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "l2_mru": {"type": int},
             "arp_gratuitous_accept": {"type": bool},
             "snmp_trap_link_change": {"type": bool},
+            "address_locking": {"type": AddressLocking},
             "encapsulation_dot1q": {"type": EncapsulationDot1q},
             "vrf": {"type": str},
             "encapsulation_vlan": {"type": EncapsulationVlan},
@@ -33881,6 +33933,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         arp_gratuitous_accept: bool | None
         """Accept gratuitous ARP."""
         snmp_trap_link_change: bool | None
+        address_locking: AddressLocking
+        """Subclass of AvdModel."""
         encapsulation_dot1q: EncapsulationDot1q
         """Subclass of AvdModel."""
         vrf: str | None
@@ -34047,6 +34101,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 l2_mru: int | None | UndefinedType = Undefined,
                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 snmp_trap_link_change: bool | None | UndefinedType = Undefined,
+                address_locking: AddressLocking | UndefinedType = Undefined,
                 encapsulation_dot1q: EncapsulationDot1q | UndefinedType = Undefined,
                 vrf: str | None | UndefinedType = Undefined,
                 encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
@@ -34141,6 +34196,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     snmp_trap_link_change: snmp_trap_link_change
+                    address_locking: Subclass of AvdModel.
                     encapsulation_dot1q: Subclass of AvdModel.
                     vrf: VRF name.
                     encapsulation_vlan:

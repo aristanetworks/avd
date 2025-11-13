@@ -75,6 +75,9 @@ port_channel_interfaces:
     # test for ospf_authentication_key_type: "8a"
     ospf_authentication_key: $kUVyoj7FVQ//yw9D2lbqjA==$kxxohBiofI46IX3pw18KYQ==$DOOM0l9uU4TrQt2kyA7XCKtjUA==
     ospf_authentication_key_type: "8a"
+    address_locking:
+      address_family:
+        ipv4: false
 
   - name: Port-Channel15
     comment: |
