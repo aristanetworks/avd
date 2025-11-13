@@ -95,8 +95,8 @@ class UtilsMixin(Protocol):
                         downlink.link_tracking_groups.append_new(name=first_group.name, direction="downstream")
                     elif downlink_group not in self.shared_utils.link_tracking_groups:
                         msg = (
-                                f"Link tracking group '{downlink_group}' referenced under node setting 'link_tracking.downlinks.group' "
-                                f"is not defined in 'link_tracking.groups' for device '{self.shared_utils.hostname}'."
+                            f"Link tracking group '{downlink_group}' referenced under node setting 'link_tracking.downlinks.group' "
+                            f"is not defined in 'link_tracking.groups' for device '{self.shared_utils.hostname}'."
                         )
                         raise AristaAvdInvalidInputsError(msg)
                     else:
