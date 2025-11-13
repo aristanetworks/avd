@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, ClassVar, Literal, TypeAlias
 
+from pyavd._schema.coerce_type import coerce_type
 from pyavd._schema.models.avd_indexed_list import AvdIndexedList
 from pyavd._schema.models.avd_list import AvdList
 from pyavd._schema.models.avd_model import AvdModel
@@ -23330,6 +23331,75 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class Metadata(AvdModel):
         """Subclass of AvdModel."""
 
+        class HardwareRequirements(AvdModel):
+            """Subclass of AvdModel."""
+
+            class TransceiverManufacturers(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            TransceiverManufacturers._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "min_power_supplies": {"type": int},
+                "min_fans": {"type": int},
+                "min_supervisors": {"type": int},
+                "min_line_cards": {"type": int},
+                "min_fabric_cards": {"type": int},
+                "transceiver_manufacturers": {
+                    "type": TransceiverManufacturers,
+                    "default": lambda cls: coerce_type(["Arista Networks", "Arastra, Inc."], target_type=cls),
+                },
+            }
+            min_power_supplies: int | None
+            """Minimum number of power supplies required for the device."""
+            min_fans: int | None
+            """Minimum number of fans required for the device."""
+            min_supervisors: int | None
+            """Minimum number of supervisor modules required for the device."""
+            min_line_cards: int | None
+            """Minimum number of line cards required for the device."""
+            min_fabric_cards: int | None
+            """Minimum number of fabric cards required for the device."""
+            transceiver_manufacturers: TransceiverManufacturers
+            """
+            List of approved transceiver manufacturers for the device.
+
+            Subclass of AvdList with `str` items.
+
+            Default value: `lambda cls: coerce_type(["Arista Networks", "Arastra, Inc."], target_type=cls)`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    min_power_supplies: int | None | UndefinedType = Undefined,
+                    min_fans: int | None | UndefinedType = Undefined,
+                    min_supervisors: int | None | UndefinedType = Undefined,
+                    min_line_cards: int | None | UndefinedType = Undefined,
+                    min_fabric_cards: int | None | UndefinedType = Undefined,
+                    transceiver_manufacturers: TransceiverManufacturers | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    HardwareRequirements.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        min_power_supplies: Minimum number of power supplies required for the device.
+                        min_fans: Minimum number of fans required for the device.
+                        min_supervisors: Minimum number of supervisor modules required for the device.
+                        min_line_cards: Minimum number of line cards required for the device.
+                        min_fabric_cards: Minimum number of fabric cards required for the device.
+                        transceiver_manufacturers:
+                           List of approved transceiver manufacturers for the device.
+
+                           Subclass of AvdList with `str` items.
+
+                    """
+
         class CvTags(AvdModel):
             """Subclass of AvdModel."""
 
@@ -24518,6 +24588,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "dc_name": {"type": str},
             "fabric_name": {"type": str},
             "serial_number": {"type": str},
+            "hardware_requirements": {"type": HardwareRequirements},
             "cv_tags": {"type": CvTags},
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
@@ -24537,6 +24608,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Used only for documentation and deployment purposes. It is used by the
         'cv_deploy' role.
         """
+        hardware_requirements: HardwareRequirements
+        """
+        Defines the minimum hardware specifications required for the device.
+        Used for validation by the
+        `anta_runner` role.
+
+        Subclass of AvdModel.
+        """
         cv_tags: CvTags
         """Subclass of AvdModel."""
         cv_pathfinder: CvPathfinder
@@ -24553,8 +24632,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         validate_no_errors_period: int | None
         """
-        Threshold (in minutes) defining the recent time window during which no error-level logs should have
-        been generated for the validation to pass.
+        Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
+        the validation performed by the `anta_runner` role.
         """
 
         if TYPE_CHECKING:
@@ -24570,6 +24649,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 dc_name: str | None | UndefinedType = Undefined,
                 fabric_name: str | None | UndefinedType = Undefined,
                 serial_number: str | None | UndefinedType = Undefined,
+                hardware_requirements: HardwareRequirements | UndefinedType = Undefined,
                 cv_tags: CvTags | UndefinedType = Undefined,
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
@@ -24593,6 +24673,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Serial Number of the device.
                        Used only for documentation and deployment purposes. It is used by the
                        'cv_deploy' role.
+                    hardware_requirements:
+                       Defines the minimum hardware specifications required for the device.
+                       Used for validation by the
+                       `anta_runner` role.
+
+                       Subclass of AvdModel.
                     cv_tags: Subclass of AvdModel.
                     cv_pathfinder:
                        Metadata used for CV Pathfinder visualization on CloudVision.
@@ -24603,8 +24689,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                        Subclass of AvdModel.
                     validate_no_errors_period:
-                       Threshold (in minutes) defining the recent time window during which no error-level logs should have
-                       been generated for the validation to pass.
+                       Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
+                       the validation performed by the `anta_runner` role.
 
                 """
 
@@ -29370,6 +29456,57 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class AddressLocking(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AddressFamily(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ipv4": {"type": bool}}
+                ipv4: bool | None
+                """Enable/disable address locking for IPv4."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        AddressFamily.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv4: Enable/disable address locking for IPv4.
+
+                        """
+
+            _fields: ClassVar[dict] = {"address_family": {"type": AddressFamily}}
+            address_family: AddressFamily
+            """
+            Configure address locking per address family.
+            Introduced in EOS 4.31.0F.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, address_family: AddressFamily | UndefinedType = Undefined) -> None:
+                    """
+                    AddressLocking.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        address_family:
+                           Configure address locking per address family.
+                           Introduced in EOS 4.31.0F.
+
+                           Subclass of AvdModel.
+
+                    """
+
         class EncapsulationDot1q(AvdModel):
             """Subclass of AvdModel."""
 
@@ -33682,6 +33819,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "l2_mru": {"type": int},
             "arp_gratuitous_accept": {"type": bool},
             "snmp_trap_link_change": {"type": bool},
+            "address_locking": {"type": AddressLocking},
             "encapsulation_dot1q": {"type": EncapsulationDot1q},
             "vrf": {"type": str},
             "encapsulation_vlan": {"type": EncapsulationVlan},
@@ -33775,6 +33913,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         arp_gratuitous_accept: bool | None
         """Accept gratuitous ARP."""
         snmp_trap_link_change: bool | None
+        address_locking: AddressLocking
+        """Subclass of AvdModel."""
         encapsulation_dot1q: EncapsulationDot1q
         """Subclass of AvdModel."""
         vrf: str | None
@@ -33941,6 +34081,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 l2_mru: int | None | UndefinedType = Undefined,
                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 snmp_trap_link_change: bool | None | UndefinedType = Undefined,
+                address_locking: AddressLocking | UndefinedType = Undefined,
                 encapsulation_dot1q: EncapsulationDot1q | UndefinedType = Undefined,
                 vrf: str | None | UndefinedType = Undefined,
                 encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
@@ -34035,6 +34176,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     snmp_trap_link_change: snmp_trap_link_change
+                    address_locking: Subclass of AvdModel.
                     encapsulation_dot1q: Subclass of AvdModel.
                     vrf: VRF name.
                     encapsulation_vlan:
@@ -63349,6 +63491,31 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Protocols._item_type = ProtocolsItem
 
+                class PacketType(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Vxlan: TypeAlias = Literal["decap", "decap exclude"]
+                    _fields: ClassVar[dict] = {"vxlan": {"type": str}, "multicast": {"type": bool}}
+                    vxlan: Vxlan | None
+                    """Configure VXLAN decapsulation match."""
+                    multicast: bool | None
+                    """Configure multicast packet type match."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, vxlan: Vxlan | None | UndefinedType = Undefined, multicast: bool | None | UndefinedType = Undefined) -> None:
+                            """
+                            PacketType.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                vxlan: Configure VXLAN decapsulation match.
+                                multicast: Configure multicast packet type match.
+
+                            """
+
                 class Actions(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -63588,6 +63755,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "ttl": {"type": str},
                     "fragment": {"type": Fragment},
                     "protocols": {"type": Protocols},
+                    "packet_type": {"type": PacketType},
                     "actions": {"type": Actions},
                 }
                 name: str
@@ -63610,6 +63778,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 protocols: Protocols
                 """Subclass of AvdIndexedList with `ProtocolsItem` items. Primary key is `protocol` (`str`)."""
+                packet_type: PacketType
+                """Subclass of AvdModel."""
                 actions: Actions
                 """Subclass of AvdModel."""
 
@@ -63625,6 +63795,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         ttl: str | None | UndefinedType = Undefined,
                         fragment: Fragment | UndefinedType = Undefined,
                         protocols: Protocols | UndefinedType = Undefined,
+                        packet_type: PacketType | UndefinedType = Undefined,
                         actions: Actions | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -63647,6 +63818,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                Subclass of AvdModel.
                             protocols: Subclass of AvdIndexedList with `ProtocolsItem` items. Primary key is `protocol` (`str`).
+                            packet_type: Subclass of AvdModel.
                             actions: Subclass of AvdModel.
 
                         """
