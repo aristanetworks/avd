@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import contextlib
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 from pyavd._errors import AvdDeprecationWarning
 from pyavd._utils import get_all
@@ -162,23 +162,36 @@ class AvdDataConverter:
         schema_type = schema.get("type")
 
         # Get value from input data
-        value = data[index]
+        # Pyright is not able to understand that if index is a str, data is a dict.
+        # So we have to cast it.
+        value = cast("dict", data)[index] if isinstance(index, str) else cast("list", data)[index]
 
         # For simple conversions, skip conversion if the value is of the correct type
         # Avoid corner case where we want to convert bool to int. Bool is a subclass of Int so it passes the check above.
+        if schema_type is None:
+            return
+
+        py_schema_type = SCHEMA_TO_PY_TYPE_MAP.get(schema_type)
         if (
             schema_type in SIMPLE_CONVERTERS
-            and isinstance(value, SCHEMA_TO_PY_TYPE_MAP.get(schema_type))
+            and py_schema_type is not None
+            and isinstance(value, py_schema_type)
             and not (schema_type == "int" and isinstance(value, bool))
         ):
             return
 
         for convert_type in convert_types:
-            if isinstance(value, SCHEMA_TO_PY_TYPE_MAP.get(convert_type)) and schema_type in SIMPLE_CONVERTERS:
+            py_convert_type = SCHEMA_TO_PY_TYPE_MAP.get(convert_type)
+            if py_convert_type is not None and isinstance(value, py_convert_type) and schema_type in SIMPLE_CONVERTERS:
                 # Ignore errors
                 # TODO: Log message
                 with contextlib.suppress(Exception):
-                    data[index] = SIMPLE_CONVERTERS[schema_type](value)
+                    if isinstance(index, str):
+                        # Pyright is not able to understand that if index is a str, data is a dict.
+                        # So we have to cast it.
+                        cast("dict", data)[index] = SIMPLE_CONVERTERS[schema_type](value)
+                    else:
+                        cast("list", data)[index] = SIMPLE_CONVERTERS[schema_type](value)
 
                 return
 

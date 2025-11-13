@@ -35,7 +35,7 @@ def coerce_type(value: Any, target_type: type[T]) -> T:
 
     elif target_type in ACCEPTED_COERCION_MAP and isinstance(value, ACCEPTED_COERCION_MAP[target_type]):
         try:
-            return target_type(value)
+            return target_type()
         except ValueError as exception:
             raise_coerce_error(value, target_type, exception)
 

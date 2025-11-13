@@ -64,9 +64,14 @@ class AvdSchema:
         elif not schema:
             schema = DEFAULT_SCHEMA
 
+        if not isinstance(schema, dict):
+            # This should not happen, so raising a generic error.
+            msg = "Internal error: Schema is not a dict."
+            raise AristaAvdError(msg)
+
         self._schema = schema
-        self._validator = AvdValidator(schema)
-        self._dataconverter = AvdDataConverter(schema)
+        self._validator = AvdValidator(self._schema)
+        self._dataconverter = AvdDataConverter(self._schema)
 
     def validate(self, data: Any) -> Generator:
         yield from self._validator.validate(data)

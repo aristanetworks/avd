@@ -4,7 +4,7 @@
 from collections import ChainMap
 from collections.abc import Generator, Mapping
 from re import fullmatch, match
-from typing import Any, Literal, NoReturn
+from typing import Any, Literal, NoReturn, cast
 
 from pyavd._errors import AvdValidationError
 from pyavd._utils import get_all, get_all_with_path, get_indices_of_duplicate_items
@@ -58,7 +58,7 @@ class AvdValidator:
 
     def type_validator(self, schema_type: str, instance: Any, _schema: dict, path: list[str | int]) -> Generator:
         """Validates the type of `instance` equal to `schema_type`."""
-        if not is_type(instance, schema_type):
+        if not is_type(instance, cast("Literal['dict', 'int', 'str', 'bool', 'list']", schema_type)):
             yield AvdValidationError(
                 f"Invalid type '{type(instance).__name__}'. Expected a '{schema_type}'.",
                 path=path,
@@ -79,7 +79,7 @@ class AvdValidator:
             paths, values = zip(*paths_and_values, strict=False)
 
             # Find any duplicate values and emit errors for each index.
-            for duplicate_value, duplicate_indices in get_indices_of_duplicate_items(values):
+            for duplicate_value, duplicate_indices in get_indices_of_duplicate_items(list(values)):
                 for duplicate_index in duplicate_indices:
                     yield AvdValidationError(
                         f"The value '{duplicate_value}' is not unique between all {'nested ' if len(unique_key_path) > 1 else ''}list items as required.",
@@ -250,7 +250,7 @@ class AvdValidator:
                     )
             case "mac":
                 # Matching for format 01:23:45:67:89:AB or 0123.4567.89ab or 0123:4567:89ab
-                if fullmatch(r"([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}|([0-9a-fA-F]{4}[:\.]){2}[0-9a-fA-F]{4}", instance) is None:
+                if fullmatch(r"([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}|([0-9a-fA-F]{4}[:\.]){2}[0-9a-fA-F]{4}", str(instance)) is None:
                     yield AvdValidationError(
                         f"The value '{instance}' is not a valid MAC address (Expecting bytes separated by colons like 01:23:45:67:89:AB).", path=path
                     )
