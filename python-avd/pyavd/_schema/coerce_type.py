@@ -10,10 +10,13 @@ from pyavd._schema.models.avd_base import AvdBase
 from .constants import ACCEPTED_COERCION_MAP
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
     from typing import NoReturn, TypeVar
 
     T = TypeVar("T")
 
+def convert_type(value: Any, converter: Callable[[Any], T]) -> T:
+    return converter(value)
 
 def coerce_type(value: Any, target_type: type[T]) -> T:
     """
@@ -35,7 +38,7 @@ def coerce_type(value: Any, target_type: type[T]) -> T:
 
     elif target_type in ACCEPTED_COERCION_MAP and isinstance(value, ACCEPTED_COERCION_MAP[target_type]):
         try:
-            return target_type()
+            return convert_type(value, target_type)
         except ValueError as exception:
             raise_coerce_error(value, target_type, exception)
 
