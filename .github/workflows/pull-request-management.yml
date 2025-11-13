@@ -816,9 +816,12 @@ jobs:
         run: |
           pip install cibuildwheel==3.3.0
       - name: Build wheels
-        working-directory: pyavd-utils
+        # Testing not using working-directory
+        # because manylinux uses a container and will not copy the
+        # parent Cargo.toml and we will be sad
+        # working-directory: pyavd-utils
         run: |-
-          python -m cibuildwheel --output-dir wheelhouse
+          python -m cibuildwheel --output-dir wheelhouse pyavd-utils
       - uses: actions/upload-artifact@v5
         with:
           name: pyavd-utils-wheels-${{ matrix.os }}-${{ strategy.job-index }}
