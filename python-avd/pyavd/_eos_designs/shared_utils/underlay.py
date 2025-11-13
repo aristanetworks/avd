@@ -142,37 +142,3 @@ class UnderlayMixin(Protocol):
             mode=self.inputs.underlay_isis_authentication_mode or "none",
             key=cast("str", self.isis_instance_name),
         )
-
-    @cached_property
-    def underlay_bgp_peer_group(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.PeerGroupsItem:
-        """Returns underlay BGP peer group instance."""
-        af_type = "ipv4" if not self.underlay_ipv6_numbered else "ipv6"
-        return EosCliConfigGen.RouterBgp.PeerGroupsItem(
-            name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-            metadata=EosCliConfigGen.RouterBgp.PeerGroupsItem.Metadata(type=af_type),
-            password=self.get_bgp_password(self.inputs.bgp_peer_groups.ipv4_underlay_peers),
-            bfd=self.inputs.bgp_peer_groups.ipv4_underlay_peers.bfd or None,
-            maximum_routes=12000,
-            send_community="all",
-        )
-
-    @cached_property
-    def address_family_ipv4_peer_group(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem | None:
-        """Returns an instance of address_family_ipv4_peer_group."""
-        if self.underlay_ipv6_numbered:
-            return None
-
-        address_family_ipv4_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(
-            name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
-        )
-        if self.inputs.underlay_rfc5549 is True:
-            address_family_ipv4_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
-
-        return address_family_ipv4_peer_group
-
-    @cached_property
-    def address_family_ipv6_peer_group(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.AddressFamilyIpv6.PeerGroupsItem | None:
-        """Returns an instance of address_family_ipv6_peer_group."""
-        if not self.underlay_ipv6:
-            return None
-        return EosCliConfigGen.RouterBgp.AddressFamilyIpv6.PeerGroupsItem(name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True)
