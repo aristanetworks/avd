@@ -15,26 +15,24 @@ pub(crate) trait ValidateValidValues<T> {
 
 impl ValidateValidValues<i64> for ValidValues<i64> {
     fn validate(&self, input: &i64, ctx: &mut Context) {
-        if let Some(valid_values) = self.valid_values.as_ref() {
-            if !valid_values.contains(input) {
+        if let Some(valid_values) = self.valid_values.as_ref()
+            && !valid_values.contains(input) {
                 ctx.add_violation(Violation::InvalidValue {
                     expected: valid_values.to_owned().into(),
                     found: input.to_owned().into(),
                 });
             }
-        }
     }
 }
 
 impl ValidateValidValues<String> for ValidValues<String> {
     fn validate(&self, input: &String, ctx: &mut Context) {
-        if let Some(valid_values) = self.valid_values.as_ref() {
-            if !valid_values.contains(input) {
+        if let Some(valid_values) = self.valid_values.as_ref()
+            && !valid_values.contains(input) {
                 ctx.add_violation(Violation::InvalidValue {
                     expected: valid_values.to_owned().into(),
                     found: input.to_owned().into(),
                 });
             }
-        }
     }
 }
