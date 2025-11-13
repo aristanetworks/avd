@@ -4,7 +4,8 @@ dynamic = ["version"]
 authors=[{ name = "Arista Networks", email = "avd-dev@arista.com"}]
 description="Arista AVD"
 readme = "README.md"
-license = { file = "pyavd/LICENSE" }
+license = "Apache-2.0"
+license-files = ["pyavd/LICENSE"]
 classifiers = [
     "Operating System :: OS Independent",
     "Development Status :: 5 - Production/Stable",

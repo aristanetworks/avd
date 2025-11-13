@@ -4,7 +4,8 @@ dynamic = ["version"]
 authors=[{ name = "Arista Networks", email = "avd-dev@arista.com"}]
 description="Rust based utilities used by PyAVD. Should not be used directly and may not follow semantic versioning."
 readme = "README.md"
-license = { file = "pyavd_utils/LICENSE" }
+license = "Apache-2.0"
+license-files = ["pyavd_utils/LICENSE"]
 classifiers = [
     "Operating System :: OS Independent",
     "Development Status :: 5 - Production/Stable",
@@ -93,11 +94,13 @@ test-requires = [
 [tool.cibuildwheel.macos]
 # PyPy has no universal2, so let's build them all, always.
 archs = ["all"]
+# What CI error said.
+before-build = "rustup target add x86_64-apple-darwin"
+
 # Following recommendations:
 # https://cibuildwheel.pypa.io/en/stable/faq/#building-rust-wheels
 [tool.cibuildwheel.macos.environment]
 MACOSX_DEPLOYMENT_TARGET = "10.12"
-
 
 
 [tool.cibuildwheel.linux]
