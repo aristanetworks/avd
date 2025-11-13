@@ -85,7 +85,7 @@ before-all = "uname -a"
 # TODO: could use test-groups but we have a lot in the root pyproject.
 test-requires = ["pytest"]
 # Relative to the root of the avd repo
-test-sources = ["pyavd-utils/tests", "python-avd/schema_tools", "pyproject.toml"]
+test-sources = ["pyavd-utils/tests", "python-avd/schema_tools", "pyproject.toml", "development/license-short.txt"]
 test-command = "pytest"
 
 [tool.cibuildwheel.macos]
