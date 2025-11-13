@@ -1,6 +1,15 @@
 ---
 type: spine
 
+platform_settings:
+  - platforms:
+      - vEOS-lab
+    feature_support:
+      bgp_update_wait_install: false
+    validate_hardware_inventory:
+      transceiver_manufacturers:
+        - Arastra, Inc.
+
 spine:
   defaults:
     platform: vEOS-lab

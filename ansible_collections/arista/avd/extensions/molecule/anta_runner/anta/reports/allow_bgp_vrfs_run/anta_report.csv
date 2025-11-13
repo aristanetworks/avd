@@ -189,6 +189,7 @@ dc1-spine1,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc1-spine1,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-spine1,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-spine1,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-spine1,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-spine1,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-spine1,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-spine1,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -220,6 +221,7 @@ dc1-spine2,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc1-spine2,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-spine2,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-spine2,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-spine2,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-spine2,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-spine2,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-spine2,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces

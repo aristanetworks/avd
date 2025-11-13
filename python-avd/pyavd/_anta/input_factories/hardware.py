@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from anta.tests.hardware import VerifyEnvironmentCooling, VerifyEnvironmentPower
+from anta.tests.hardware import VerifyEnvironmentCooling, VerifyEnvironmentPower, VerifyTransceiversManufacturers
 
 from ._base_classes import AntaTestInputFactory
 
@@ -22,3 +22,11 @@ class VerifyEnvironmentPowerInputFactory(AntaTestInputFactory[VerifyEnvironmentP
     def create(self) -> list[VerifyEnvironmentPower.Input] | None:
         """Create a list of inputs for the `VerifyEnvironmentPower` test."""
         return [VerifyEnvironmentPower.Input(states=["ok"])]
+
+
+class VerifyTransceiversManufacturersInputFactory(AntaTestInputFactory[VerifyTransceiversManufacturers.Input]):
+    """Input factory class for the `VerifyTransceiversManufacturers` test."""
+
+    def create(self) -> list[VerifyTransceiversManufacturers.Input] | None:
+        """Create a list of inputs for the `VerifyTransceiversManufacturers` test."""
+        return [VerifyTransceiversManufacturers.Input(manufacturers=self.structured_config.metadata.hardware_requirements.transceiver_manufacturers)]
