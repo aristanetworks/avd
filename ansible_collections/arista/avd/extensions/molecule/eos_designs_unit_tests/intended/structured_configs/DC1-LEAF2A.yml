@@ -103,6 +103,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.33/31
   metadata:
     peer: DC1-SPINE1
@@ -115,6 +120,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.35/31
   metadata:
     peer: DC1-SPINE2
@@ -127,6 +137,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.37/31
   metadata:
     peer: DC1-SPINE2
@@ -139,6 +154,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.39/31
   metadata:
     peer: DC1-SPINE1
@@ -151,6 +171,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.41/31
   metadata:
     peer: DC1-SPINE3
@@ -163,6 +188,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.43/31
   metadata:
     peer: DC1-SPINE4
@@ -175,6 +205,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.45/31
   metadata:
     peer: DC1-SPINE4
@@ -187,6 +222,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.47/31
   metadata:
     peer: DC1-SPINE3
@@ -392,6 +432,11 @@ ipv6_static_routes:
   next_hop: 2001:db8:310::1
   track_bfd: true
   name: Track-bfd-network-services
+link_tracking_groups:
+- name: l2leaf-server01
+  recovery_delay: 301
+- name: l2leaf-server02
+  recovery_delay: 300
 local_users:
 - name: admin
   disabled: true
@@ -497,6 +542,9 @@ port_channel_interfaces:
 - name: Port-Channel7
   description: DC1_L2LEAF1_Po1
   shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: downstream
   evpn_ethernet_segment:
     identifier: 0000:0000:0808:0707:0606
     route_target: 08:08:07:07:06:06
@@ -511,6 +559,9 @@ port_channel_interfaces:
 - name: Port-Channel9
   description: DC1-L2LEAF3A_Po1
   shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: downstream
   evpn_ethernet_segment:
     identifier: 0000:0000:0606:0707:0808
     route_target: 06:06:07:07:08:08
@@ -523,6 +574,9 @@ port_channel_interfaces:
 - name: Port-Channel1013
   description: DC1-L2LEAF4A_Po1001
   shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: downstream
   evpn_ethernet_segment:
     identifier: 0000:0000:a36b:7013:457b
     route_target: a3:6b:70:13:45:7b
@@ -535,6 +589,9 @@ port_channel_interfaces:
 - name: Port-Channel141
   description: DC1_L2LEAF5_Po1
   shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: downstream
   evpn_ethernet_segment:
     identifier: 0000:0000:fa91:ce62:ce95
     route_target: fa:91:ce:62:ce:95
@@ -547,6 +604,9 @@ port_channel_interfaces:
 - name: Port-Channel30
   description: DC1_L2LEAF6_Po1
   shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: downstream
   evpn_ethernet_segment:
     identifier: 0000:0000:a8be:743c:0a1a
     route_target: a8:be:74:3c:0a:1a
@@ -559,6 +619,9 @@ port_channel_interfaces:
 - name: Port-Channel32
   description: description through uplink_switch_port_channel_structured_config(DC1.L2LEAF7A)
   shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: downstream
   switchport:
     enabled: true
     mode: trunk
