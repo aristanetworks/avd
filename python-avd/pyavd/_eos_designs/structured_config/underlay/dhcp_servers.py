@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import re
-from ipaddress import AddressValueError, IPv4Address, ip_network
+from ipaddress import AddressValueError, IPv4Address, IPv6Address, ip_network
 from typing import TYPE_CHECKING, Protocol
 
 if TYPE_CHECKING:
@@ -29,7 +29,7 @@ class DhcpServersMixin(Protocol):
         dhcp_server = EosCliConfigGen.DhcpServersItem()
         # Set subnets for DHCP server
         self._update_subnets(dhcp_server)
-        if len(dhcp_server.subnets) == 0:
+        if len(dhcp_server.ipv4_subnets) == 0 and len(dhcp_server.ipv6_subnets) == 0:
             return
         dhcp_server.vrf = "default"
         # Set ZTP bootfile
@@ -60,13 +60,23 @@ class DhcpServersMixin(Protocol):
                     and "unnumbered" not in uplink.ip_address
                     and peer_facts.inband_ztp
                 ):
-                    subnet_item = EosCliConfigGen.DhcpServersItem.SubnetsItem(
-                        subnet=str(ip_network(f"{uplink.peer_ip_address}/{uplink.prefix_length}", strict=False)),
-                        name=f"inband ztp for {peer}-{uplink.interface}",
-                        default_gateway=f"{uplink.peer_ip_address}",
-                    )
-                    subnet_item.ranges.append_new(start=str(uplink.ip_address), end=str(uplink.ip_address))
-                    dhcp_server.subnets.append(subnet_item)
+                    ip_address = ip_network(f"{uplink.peer_ip_address}/{uplink.prefix_length}", strict=False)
+                    if isinstance(ip_address, IPv4Address):
+                        subnet_item = EosCliConfigGen.DhcpServersItem.Ipv4SubnetsItem(
+                            subnet=str(ip_address),
+                            name=f"inband ztp for {peer}-{uplink.interface}",
+                            default_gateway=f"{uplink.peer_ip_address}",
+                        )
+                        subnet_item.ranges.append_new(start=str(uplink.ip_address), end=str(uplink.ip_address))
+                        dhcp_server.ipv4_subnets.append(subnet_item)
+                    elif isinstance(ip_address, IPv6Address):
+                        subnet_item = EosCliConfigGen.DhcpServersItem.Ipv6SubnetsItem(
+                            subnet=str(ip_address),
+                            name=f"inband ztp for {peer}-{uplink.interface}",
+                            default_gateway=f"{uplink.peer_ip_address}",
+                        )
+                        subnet_item.ranges.append_new(start=str(uplink.ip_address), end=str(uplink.ip_address))
+                        dhcp_server.ipv6_subnets.append(subnet_item)
 
     def _get_cvp_server_for_dhcp(self: AvdStructuredConfigUnderlayProtocol) -> str | None:
         """Return the first CVP server using either new or old data models."""
