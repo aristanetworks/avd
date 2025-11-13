@@ -74,14 +74,15 @@ skip = [
 ]
 # enable = [
 #  "pypy",
+#  "cpython-freethreading", # TODO: not considering free threaded support for now
 #]
-free-threaded-support = false
 
 
 build-verbosity=2
 
 before-all = "uname -a"
 
+# TODO: could use test-groups but we have a lot in the root pyproject.
 test-requires = ["pytest"]
 test-sources = ["tests"]
 test-command = "pytest"
@@ -99,6 +100,7 @@ MACOSX_DEPLOYMENT_TARGET = "10.12"
 
 
 [tool.cibuildwheel.linux]
+# TODO: find a better solution here
 before-build = "curl -sSf https://sh.rustup.rs | sh -s -- -y"
 
 [tool.cibuildwheel.linux.environment]
