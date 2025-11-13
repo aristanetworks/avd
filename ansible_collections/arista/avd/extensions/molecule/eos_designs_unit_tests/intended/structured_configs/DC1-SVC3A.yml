@@ -65,6 +65,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: link-tracking-group01
+    direction: upstream
+  - name: link-tracking-group02
+    direction: upstream
   ip_address: 172.31.254.97/31
   metadata:
     peer: DC1-SPINE1
@@ -77,6 +82,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: link-tracking-group01
+    direction: upstream
+  - name: link-tracking-group02
+    direction: upstream
   ip_address: 172.31.254.99/31
   metadata:
     peer: DC1-SPINE2
@@ -89,6 +99,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: link-tracking-group01
+    direction: upstream
+  - name: link-tracking-group02
+    direction: upstream
   ip_address: 172.31.254.101/31
   metadata:
     peer: DC1-SPINE3
@@ -101,6 +116,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: link-tracking-group01
+    direction: upstream
+  - name: link-tracking-group02
+    direction: upstream
   ip_address: 172.31.254.103/31
   metadata:
     peer: DC1-SPINE4
@@ -564,6 +584,11 @@ ip_name_servers:
   vrf: MGMT
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+link_tracking_groups:
+- name: link-tracking-group01
+  recovery_delay: 350
+- name: link-tracking-group02
+  recovery_delay: 500
 local_users:
 - name: admin
   disabled: true
@@ -676,6 +701,9 @@ port_channel_interfaces:
 - name: Port-Channel1007
   description: DC1_L2LEAF2_Po1001
   shutdown: false
+  link_tracking_groups:
+  - name: link-tracking-group02
+    direction: downstream
   mlag: 1007
   switchport:
     enabled: true
