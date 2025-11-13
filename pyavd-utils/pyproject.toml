@@ -84,7 +84,8 @@ before-all = "uname -a"
 
 # TODO: could use test-groups but we have a lot in the root pyproject.
 test-requires = ["pytest"]
-test-sources = ["tests"]
+# Testing how broken this is below:
+test-sources = ["pyavd-utils/tests"]
 test-command = "pytest"
 
 [tool.cibuildwheel.macos]
