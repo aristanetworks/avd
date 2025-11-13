@@ -35,7 +35,9 @@ impl Coercion for Dict {
             if let Some(keys) = &self.keys {
                 for (key, key_schema) in keys {
                     // Skip removed keys
-                    if let Some(deprecation) = key_schema.deprecation() && deprecation.removed.unwrap_or_default() {
+                    if let Some(deprecation) = key_schema.deprecation()
+                        && deprecation.removed.unwrap_or_default()
+                    {
                         continue;
                     }
                     match dict.get_mut(key) {
@@ -48,9 +50,11 @@ impl Coercion for Dict {
                         None => {
                             if let Some(default_value) = key_schema.default_value() {
                                 dict.insert(key.to_owned(), default_value);
-                                ctx.path.push(key.to_owned());
-                                ctx.add_info(InfoIssue::DefaultValueInserted());
-                                ctx.path.pop();
+                                if ctx.configuration.return_default_value_inserted_infos {
+                                    ctx.path.push(key.to_owned());
+                                    ctx.add_info(InfoIssue::DefaultValueInserted());
+                                    ctx.path.pop();
+                                }
                             }
                         }
                     }
@@ -59,9 +63,12 @@ impl Coercion for Dict {
             if let Some(dynamic_keys) = &self.dynamic_keys {
                 for (key_path, key_schema) in dynamic_keys {
                     // Skip removed keys
-                    if let Some(deprecation) = key_schema.deprecation() && deprecation.removed.unwrap_or_default() {
+                    if let Some(deprecation) = key_schema.deprecation()
+                        && deprecation.removed.unwrap_or_default()
+                    {
                         continue;
-                    }                    let keys = get_dynamic_keys(key_path, dict);
+                    }
+                    let keys = get_dynamic_keys(key_path, dict);
                     // validate the computed dynamic keys' corresponding values
                     for key in keys {
                         if let Some(value) = dict.get_mut(&key) {
@@ -83,10 +90,12 @@ impl Coercion for Int {
                 Some(integer) => Some(integer),
                 None => match number.as_f64() {
                     Some(float) if float.fract() == 0.0 => {
-                        ctx.add_info(CoercionNote {
-                            found: float.into(),
-                            made: (float as i64).into(),
-                        });
+                        if ctx.configuration.return_coercion_infos {
+                            ctx.add_info(CoercionNote {
+                                found: float.into(),
+                                made: (float as i64).into(),
+                            });
+                        }
                         Some(float as i64)
                     }
                     _ => None,
@@ -94,19 +103,23 @@ impl Coercion for Int {
             },
             Value::Bool(boolean) => {
                 let value: i64 = (*boolean).into();
-                ctx.add_info(CoercionNote {
-                    found: (*boolean).into(),
-                    made: value.into(),
-                });
+                if ctx.configuration.return_coercion_infos {
+                    ctx.add_info(CoercionNote {
+                        found: (*boolean).into(),
+                        made: value.into(),
+                    });
+                }
                 Some(value)
             }
             Value::String(string) => string
                 .parse()
                 .inspect(|value: &i64| {
-                    ctx.add_info(CoercionNote {
-                        found: string.clone().into(),
-                        made: (*value).into(),
-                    });
+                    if ctx.configuration.return_coercion_infos {
+                        ctx.add_info(CoercionNote {
+                            found: string.clone().into(),
+                            made: (*value).into(),
+                        });
+                    }
                 })
                 .ok(),
             _ => None,
@@ -120,13 +133,14 @@ impl Coercion for Int {
 impl Coercion for List {
     fn coerce(&self, input: &mut Value, ctx: &mut Context) {
         if let Some(item_schema) = &self.items
-            && let Value::Array(list) = input {
-                for (i, item) in list.iter_mut().enumerate() {
-                    ctx.path.push(i.to_string());
-                    item_schema.coerce(item, ctx);
-                    ctx.path.pop();
-                }
+            && let Value::Array(list) = input
+        {
+            for (i, item) in list.iter_mut().enumerate() {
+                ctx.path.push(i.to_string());
+                item_schema.coerce(item, ctx);
+                ctx.path.pop();
             }
+        }
     }
 }
 impl Coercion for Str {
@@ -134,10 +148,12 @@ impl Coercion for Str {
         let value = match input {
             Value::String(string) => Some(string.to_string()),
             Value::Number(number) => {
-                ctx.add_info(CoercionNote {
-                    found: Value::Number(number.clone()).into(),
-                    made: number.to_string().into(),
-                });
+                if ctx.configuration.return_coercion_infos {
+                    ctx.add_info(CoercionNote {
+                        found: Value::Number(number.clone()).into(),
+                        made: number.to_string().into(),
+                    });
+                }
                 Some(number.to_string())
             }
             Value::Bool(boolean) => {
@@ -146,10 +162,12 @@ impl Coercion for Str {
                     true => "True".into(),
                     false => "False".into(),
                 };
-                ctx.add_info(CoercionNote {
-                    found: boolean.to_owned().into(),
-                    made: string.to_owned().into(),
-                });
+                if ctx.configuration.return_coercion_infos {
+                    ctx.add_info(CoercionNote {
+                        found: boolean.to_owned().into(),
+                        made: string.to_owned().into(),
+                    });
+                }
                 Some(string)
             }
             _ => None,
@@ -158,10 +176,12 @@ impl Coercion for Str {
             if self.convert_to_lower_case.unwrap_or_default() {
                 let lower_case_string = string.to_lowercase();
                 if lower_case_string != string {
-                    ctx.add_info(CoercionNote {
-                        found: string.into(),
-                        made: lower_case_string.to_owned().into(),
-                    });
+                    if ctx.configuration.return_coercion_infos {
+                        ctx.add_info(CoercionNote {
+                            found: string.into(),
+                            made: lower_case_string.to_owned().into(),
+                        });
+                    }
                     lower_case_string
                 } else {
                     string
@@ -199,6 +219,7 @@ mod tests {
 
     use super::*;
 
+    use crate::Configuration;
     use crate::context::Context;
     use crate::feedback::Feedback;
     use crate::validation::test_utils::get_test_store;
@@ -222,7 +243,11 @@ mod tests {
         };
         let mut input = json!({});
         let store = get_test_store();
-        let mut ctx = Context::new(&store, None);
+        let configuration = Configuration {
+            return_default_value_inserted_infos: true,
+            ..Default::default()
+        };
+        let mut ctx = Context::new(&store, Some(&configuration));
         schema.coerce(&mut input, &mut ctx);
         assert!(ctx.result.errors.is_empty());
         assert_eq!(

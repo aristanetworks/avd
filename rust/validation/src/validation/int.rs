@@ -81,6 +81,7 @@ fn validate_max(schema: &Int, input: &i64, ctx: &mut Context) {
 mod tests {
     use super::*;
 
+    use crate::Configuration;
     use crate::coercion::Coercion as _;
     use crate::context::Context;
     use crate::feedback::{CoercionNote, Feedback, Violation};
@@ -122,7 +123,8 @@ mod tests {
         let schema = Int::default();
         let mut input = "123".into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store, None);
+        let configuration = Configuration { return_coercion_infos: true, ..Default::default()};
+        let mut ctx = Context::new(&store, Some(&configuration));
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.result.errors.is_empty());

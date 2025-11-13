@@ -153,6 +153,7 @@ mod tests {
 
     use super::*;
     use crate::{
+        Configuration,
         coercion::Coercion as _,
         feedback::{CoercionNote, Feedback},
         validation::test_utils::get_test_store,
@@ -244,7 +245,11 @@ mod tests {
         };
         let mut input = serde_json::json!([1, []]);
         let store = get_test_store();
-        let mut ctx = Context::new(&store, None);
+        let configuration = Configuration {
+            return_coercion_infos: true,
+            ..Default::default()
+        };
+        let mut ctx = Context::new(&store, Some(&configuration));
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert_eq!(
