@@ -82,6 +82,13 @@ local_users:
   privilege: 15
   role: network-admin
   sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+logging:
+  vrfs:
+  - name: MGMT
+    source_interface: Management1
+    hosts:
+    - name: graylog-server
+      protocol: udp
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -105,6 +112,7 @@ metadata:
   platform: vEOS-lab
   dc_name: DC1
   fabric_name: FABRIC
+  validate_no_errors_period: 1
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

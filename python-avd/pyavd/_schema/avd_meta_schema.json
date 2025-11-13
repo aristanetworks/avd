@@ -207,16 +207,8 @@
                             ]
                         },
                         "default": {
-                            "oneOf": [
-                                {
-                                    "description": "Default value",
-                                    "type": "array"
-                                },
-                                {
-                                    "description": "Default value",
-                                    "type": "null"
-                                }
-                            ]
+                            "description": "Default value",
+                            "type": "array"
                         },
                         "items": {
                             "description": "Schema for list items",
