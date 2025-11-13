@@ -21,7 +21,7 @@ impl Validation<bool> for Bool {
         if let Some(v) = value.as_bool() {
             self.validate(&v, ctx)
         } else {
-            ctx.add_violation(Violation::InvalidType {
+            ctx.add_error(Violation::InvalidType {
                 expected: Type::Bool,
                 found: value.into(),
             })
@@ -65,7 +65,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+        assert!(ctx.result.errors.is_empty() && ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -75,9 +75,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![Feedback {
                 path: vec![].into(),
                 issue: Violation::InvalidType {

@@ -8,7 +8,7 @@ use serde_json::Value;
 
 use crate::{
     context::Context,
-    feedback::{Issue, Type, Violation},
+    feedback::{ErrorIssue, Type, Violation},
 };
 
 use super::{Validation, valid_values::ValidateValidValues as _};
@@ -26,7 +26,7 @@ impl Validation<String> for Str {
         if let Some(v) = value.as_str() {
             self.validate(&v.into(), ctx)
         } else {
-            ctx.add_violation(Violation::InvalidType {
+            ctx.add_error(Violation::InvalidType {
                 expected: Type::Str,
                 found: value.into(),
             })
@@ -60,7 +60,7 @@ fn validate_min_length(schema: &Str, input: &str, ctx: &mut Context) {
     if let Some(min_length) = schema.min_length {
         let length = input.chars().count() as u64;
         if min_length > length {
-            ctx.add_violation(Violation::LengthBelowMinimum {
+            ctx.add_error(Violation::LengthBelowMinimum {
                 minimum: min_length,
                 found: length,
             });
@@ -72,7 +72,7 @@ fn validate_max_length(schema: &Str, input: &str, ctx: &mut Context) {
     if let Some(max_length) = schema.max_length {
         let length = input.chars().count() as u64;
         if max_length < length {
-            ctx.add_violation(Violation::LengthAboveMaximum {
+            ctx.add_error(Violation::LengthAboveMaximum {
                 maximum: max_length,
                 found: length,
             });
@@ -85,13 +85,13 @@ fn validate_pattern(schema: &Str, input: &str, ctx: &mut Context) {
         match Regex::new(&format!("^{pattern}$")) {
             Ok(regex) => {
                 if !regex.is_match(input) {
-                    ctx.add_violation(Violation::NotMatchingPattern {
+                    ctx.add_error(Violation::NotMatchingPattern {
                         pattern: pattern.to_string(),
                         found: input.into(),
                     });
                 }
             }
-            Err(e) => ctx.add_violation(Issue::InternalError {
+            Err(e) => ctx.add_error(ErrorIssue::InternalError {
                 message: e.to_string(),
             }),
         }
@@ -116,7 +116,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+        assert!(ctx.result.errors.is_empty() && ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -126,9 +126,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![Feedback {
                 path: vec![].into(),
                 issue: Violation::InvalidType {
@@ -153,7 +153,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+        assert!(ctx.result.errors.is_empty() && ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -169,9 +169,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![Feedback {
                 path: vec![].into(),
                 issue: Violation::InvalidValue {
@@ -198,9 +198,9 @@ mod tests {
         let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty());
+        assert!(ctx.result.errors.is_empty());
         assert_eq!(
-            ctx.coercions,
+            ctx.result.infos,
             vec![Feedback {
                 path: vec![].into(),
                 issue: CoercionNote {
@@ -227,9 +227,9 @@ mod tests {
         let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty());
+        assert!(ctx.result.errors.is_empty());
         assert_eq!(
-            ctx.coercions,
+            ctx.result.infos,
             vec![
                 Feedback {
                     path: vec![].into(),
@@ -261,7 +261,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+        assert!(ctx.result.errors.is_empty() && ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -274,9 +274,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![Feedback {
                 path: vec![].into(),
                 issue: Violation::LengthBelowMinimum {
@@ -298,7 +298,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+        assert!(ctx.result.errors.is_empty() && ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -311,9 +311,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![Feedback {
                 path: vec![].into(),
                 issue: Violation::LengthAboveMaximum {
@@ -335,7 +335,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+        assert!(ctx.result.errors.is_empty() && ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -348,9 +348,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![Feedback {
                 path: vec![].into(),
                 issue: Violation::NotMatchingPattern {

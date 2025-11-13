@@ -9,7 +9,7 @@ use serde_json::Value;
 
 use crate::{
     context::Context,
-    feedback::{CoercionNote, Issue},
+    feedback::{CoercionNote, InfoIssue},
     validation::Validation,
 };
 
@@ -49,7 +49,7 @@ impl Coercion for Dict {
                             if let Some(default_value) = key_schema.default_value() {
                                 dict.insert(key.to_owned(), default_value);
                                 ctx.path.push(key.to_owned());
-                                ctx.add_coercion(Issue::DefaultValueInserted());
+                                ctx.add_info(InfoIssue::DefaultValueInserted());
                                 ctx.path.pop();
                             }
                         }
@@ -83,7 +83,7 @@ impl Coercion for Int {
                 Some(integer) => Some(integer),
                 None => match number.as_f64() {
                     Some(float) if float.fract() == 0.0 => {
-                        ctx.add_coercion(CoercionNote {
+                        ctx.add_info(CoercionNote {
                             found: float.into(),
                             made: (float as i64).into(),
                         });
@@ -94,7 +94,7 @@ impl Coercion for Int {
             },
             Value::Bool(boolean) => {
                 let value: i64 = (*boolean).into();
-                ctx.add_coercion(CoercionNote {
+                ctx.add_info(CoercionNote {
                     found: (*boolean).into(),
                     made: value.into(),
                 });
@@ -103,7 +103,7 @@ impl Coercion for Int {
             Value::String(string) => string
                 .parse()
                 .inspect(|value: &i64| {
-                    ctx.add_coercion(CoercionNote {
+                    ctx.add_info(CoercionNote {
                         found: string.clone().into(),
                         made: (*value).into(),
                     });
@@ -134,7 +134,7 @@ impl Coercion for Str {
         let value = match input {
             Value::String(string) => Some(string.to_string()),
             Value::Number(number) => {
-                ctx.add_coercion(CoercionNote {
+                ctx.add_info(CoercionNote {
                     found: Value::Number(number.clone()).into(),
                     made: number.to_string().into(),
                 });
@@ -146,7 +146,7 @@ impl Coercion for Str {
                     true => "True".into(),
                     false => "False".into(),
                 };
-                ctx.add_coercion(CoercionNote {
+                ctx.add_info(CoercionNote {
                     found: boolean.to_owned().into(),
                     made: string.to_owned().into(),
                 });
@@ -158,7 +158,7 @@ impl Coercion for Str {
             if self.convert_to_lower_case.unwrap_or_default() {
                 let lower_case_string = string.to_lowercase();
                 if lower_case_string != string {
-                    ctx.add_coercion(CoercionNote {
+                    ctx.add_info(CoercionNote {
                         found: string.into(),
                         made: lower_case_string.to_owned().into(),
                     });
@@ -224,12 +224,12 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
-        assert!(ctx.violations.is_empty());
+        assert!(ctx.result.errors.is_empty());
         assert_eq!(
-            ctx.coercions,
+            ctx.result.infos,
             vec![Feedback {
                 path: vec!["my_dynamic_keys".into()].into(),
-                issue: Issue::DefaultValueInserted()
+                issue: InfoIssue::DefaultValueInserted()
             }]
         );
         assert_eq!(input, json!({"my_dynamic_keys": ["dynkey1", "dynkey2"]}));

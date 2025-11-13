@@ -7,7 +7,7 @@ use serde_json::{Map, Value};
 
 use crate::{
     context::Context,
-    feedback::{Deprecated, DeprecationMessage, Removed, Type, Violation},
+    feedback::{Deprecated, Removed, Type, Violation},
 };
 
 use super::Validation;
@@ -24,7 +24,7 @@ impl Validation<Map<String, Value>> for Dict {
         if let Some(v) = value.as_object() {
             self.validate(v, ctx)
         } else {
-            ctx.add_violation(Violation::InvalidType {
+            ctx.add_error(Violation::InvalidType {
                 expected: Type::Dict,
                 found: value.into(),
             })
@@ -70,7 +70,7 @@ fn validate_allowed_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Co
                 .filter(|key| !keys.contains_key(key.as_str()))
                 .for_each(|key| {
                     ctx.path.push(key.to_owned());
-                    ctx.add_violation(Violation::UnexpectedKey());
+                    ctx.add_error(Violation::UnexpectedKey());
                     ctx.path.pop();
                 });
         }
@@ -88,7 +88,7 @@ fn validate_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
                         continue;
                     }
                     if key_schema.is_required() {
-                        ctx.add_violation(Violation::MissingRequiredKey {
+                        ctx.add_error(Violation::MissingRequiredKey {
                             key: key.to_string(),
                         });
                     }
@@ -124,10 +124,10 @@ fn validate_dynamic_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Co
 fn check_deprecation(_key: &str, key_schema: &AnySchema, _parent_dict_input: &Map<String, Value>, ctx: &mut Context) {
     if let Some(deprecation) = key_schema.deprecation() && deprecation.warning {
         if deprecation.removed.unwrap_or_default() {
-            ctx.add_violation(DeprecationMessage::Removed(Removed::from_deprecation(&ctx.path, deprecation)));
+            ctx.add_error(Removed::from_schema(&ctx.path, deprecation));
         } else {
             // TODO: Catch conflict.
-            ctx.add_violation(DeprecationMessage::Deprecated(Deprecated::from_deprecation(&ctx.path, deprecation)));
+            ctx.add_warning(Deprecated::from_schema(&ctx.path, deprecation));
         }
     }
 }
@@ -143,7 +143,7 @@ mod tests {
     use super::*;
     use crate::coercion::Coercion as _;
     use crate::context::{Configuration, Context};
-    use crate::feedback::{CoercionNote, Feedback, Issue};
+    use crate::feedback::{CoercionNote, Feedback, InfoIssue};
     use crate::validation::test_utils::get_test_store;
 
     #[test]
@@ -153,7 +153,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+        assert!(ctx.result.errors.is_empty() && ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -163,9 +163,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![Feedback {
                 path: vec![].into(),
                 issue: Violation::InvalidType {
@@ -190,7 +190,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+        assert!(ctx.result.errors.is_empty() && ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -206,9 +206,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![
                 Feedback {
                     path: vec!["foo".into()].into(),
@@ -244,9 +244,9 @@ mod tests {
         let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty());
+        assert!(ctx.result.errors.is_empty());
         assert_eq!(
-            ctx.coercions,
+            ctx.result.infos,
             vec![
                 Feedback {
                     path: vec!["foo".into()].into(),
@@ -304,8 +304,8 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert_eq!(ctx.violations, vec![]);
-        assert_eq!(ctx.coercions, vec![]);
+        assert_eq!(ctx.result.errors, vec![]);
+        assert_eq!(ctx.result.infos, vec![]);
     }
 
     #[test]
@@ -344,9 +344,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert_eq!(ctx.coercions, vec![]);
+        assert_eq!(ctx.result.infos, vec![]);
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![
                 Feedback {
                     path: vec!["dynkey1".into()].into(),
@@ -399,12 +399,12 @@ mod tests {
         let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty());
+        assert!(ctx.result.errors.is_empty());
         assert_eq!(
-            ctx.coercions,
+            ctx.result.infos,
             vec![Feedback {
                 path: vec!["my_dynamic_keys".into()].into(),
-                issue: Issue::DefaultValueInserted()
+                issue: InfoIssue::DefaultValueInserted()
             }]
         );
     }
@@ -449,14 +449,14 @@ mod tests {
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert_eq!(
-            ctx.coercions,
+            ctx.result.infos,
             vec![Feedback {
                 path: vec!["my_dynamic_keys".into()].into(),
-                issue: Issue::DefaultValueInserted()
+                issue: InfoIssue::DefaultValueInserted()
             }]
         );
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![
                 Feedback {
                     path: vec!["dynkey1".into(), "sub_key".into()].into(),
@@ -493,7 +493,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+        assert!(ctx.result.errors.is_empty() && ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -506,9 +506,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![Feedback {
                 path: vec!["foo1".into()].into(),
                 issue: Violation::UnexpectedKey().into()
@@ -537,9 +537,9 @@ mod tests {
         let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty());
+        assert!(ctx.result.errors.is_empty());
         assert_eq!(
-            ctx.coercions,
+            ctx.result.infos,
             vec![Feedback {
                 path: vec!["foo".into()].into(),
                 issue: CoercionNote {
@@ -571,9 +571,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![Feedback {
                 path: vec![].into(),
                 issue: Violation::MissingRequiredKey { key: "foo".into() }.into()
@@ -607,8 +607,8 @@ mod tests {
         );
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty());
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.errors.is_empty());
+        assert!(ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -638,9 +638,9 @@ mod tests {
         // Using a deeper path and see that we still get the error even though we relax for the root dict.
         ctx.path.push("deeper".into());
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![Feedback {
                 path: vec!["deeper".into()].into(),
                 issue: Violation::MissingRequiredKey { key: "foo".into() }.into()

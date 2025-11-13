@@ -34,44 +34,41 @@ mod validation {
         pub message: String,
         pub path: Vec<String>,
     }
-    impl From<&validation::feedback::Feedback> for Feedback {
-        fn from(value: &validation::feedback::Feedback) -> Feedback {
-            Feedback {
-                message: value.issue.to_string(),
-                path: value.path.clone().into(),
-            }
-        }
-    }
 
     #[pyclass(frozen, get_all)]
     #[derive(Clone)]
     pub struct ValidationResult {
-        pub violations: Vec<Feedback>,
-        pub coercions: Vec<Feedback>,
-        pub insertions: Vec<Feedback>,
+        pub errors: Vec<Feedback>,
+        pub warnings: Vec<Feedback>,
+        pub infos: Vec<Feedback>,
     }
     impl From<validation::ValidationResult> for ValidationResult {
         fn from(value: validation::ValidationResult) -> ValidationResult {
-            let mut coercions: Vec<Feedback> = Vec::new();
-            let mut insertions: Vec<Feedback> = Vec::new();
-            value
-                .coercions
-                .iter()
-                .for_each(|feedback| match feedback.issue {
-                    validation::feedback::Issue::Coercion(_) => coercions.push(feedback.into()),
-                    validation::feedback::Issue::DefaultValueInserted() => {
-                        insertions.push(feedback.into())
-                    }
-                    _ => {}
-                });
             ValidationResult {
-                violations: value
-                    .violations
+                errors: value
+                    .errors
                     .iter()
-                    .map(|feedback| feedback.into())
+                    .map(|feedback| Feedback {
+                        message: feedback.issue.to_string(),
+                        path: feedback.path.to_owned().into(),
+                    })
                     .collect(),
-                coercions,
-                insertions,
+                warnings: value
+                    .warnings
+                    .iter()
+                    .map(|feedback| Feedback {
+                        message: feedback.issue.to_string(),
+                        path: feedback.path.to_owned().into(),
+                    })
+                    .collect(),
+                infos: value
+                    .infos
+                    .iter()
+                    .map(|feedback| Feedback {
+                        message: feedback.issue.to_string(),
+                        path: feedback.path.to_owned().into(),
+                    })
+                    .collect(),
             }
         }
     }
@@ -145,7 +142,7 @@ mod validation {
             .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?;
 
         let validation_result = get_store().validate_value(&mut data_as_value, schema_name, None);
-        let validated_data = if validation_result.violations.is_empty() {
+        let validated_data = if validation_result.errors.is_empty() {
             Some(serde_json::to_string(&data_as_value).map_err(|err| {
                 PyRuntimeError::new_err(format!("Invalid JSON in coerced data: {err}"))
             })?)
@@ -175,7 +172,7 @@ mod validation {
         schema.coerce(&mut data, &mut ctx);
         schema.validate_value(&data, &mut ctx);
 
-        let validation_result: validation::ValidationResult = ctx.into();
+        let validation_result: validation::ValidationResult = ctx.result;
         Ok(validation_result.into())
     }
 }
@@ -244,17 +241,17 @@ mod tests {
                     .call_method("validate_json", args, Some(&kwargs))
                     .unwrap()
             };
-            assert!(validation_result.hasattr("violations").unwrap());
-            let violations = validation_result.getattr("violations").unwrap();
-            assert!(violations.is_instance_of::<pyo3::types::PyList>());
-            let expected_violations: [(Vec<String>, String); 3] = [
+            assert!(validation_result.hasattr("errors").unwrap());
+            let errors = validation_result.getattr("errors").unwrap();
+            assert!(errors.is_instance_of::<pyo3::types::PyList>());
+            let expected_errors: [(Vec<String>, String); 3] = [
                 (vec!["ethernet_interfaces".into(), "2".into()], "Missing the required key 'name'.".into()),
                 (vec!["ethernet_interfaces".into(), "0".into(), "name".into()], "The value is not unique among similar items. Conflicting items: [\"ethernet_interfaces\", \"1\", \"name\"]".into()),
                 (vec!["ethernet_interfaces".into(), "1".into(), "name".into()], "The value is not unique among similar items. Conflicting items: [\"ethernet_interfaces\", \"0\", \"name\"]".into()),
             ];
 
-            assert_eq!(violations.len().unwrap(), expected_violations.len());
-            for feedback in violations.try_iter().unwrap().flatten() {
+            assert_eq!(errors.len().unwrap(), expected_errors.len());
+            for feedback in errors.try_iter().unwrap().flatten() {
                 let path: Vec<String> = feedback
                     .getattr("path")
                     .unwrap()
@@ -273,10 +270,10 @@ mod tests {
                     .cast_into_exact::<pyo3::types::PyString>()
                     .unwrap()
                     .to_string();
-                let expected_violation = (path, message);
+                let expected_error = (path, message);
                 assert!(
-                    expected_violations.contains(&expected_violation),
-                    "Violation was not found in expected violations: {expected_violation:?}"
+                    expected_errors.contains(&expected_error),
+                    "Error was not found in expected errors: {expected_error:?}"
                 )
             }
         });
@@ -409,16 +406,16 @@ mod tests {
                     .call_method("validate_json_with_adhoc_schema", args, Some(&kwargs))
                     .unwrap()
             };
-            assert!(validation_result.hasattr("violations").unwrap());
-            let violations = validation_result.getattr("violations").unwrap();
-            assert!(violations.is_instance_of::<pyo3::types::PyList>());
-            let expected_violations: [(Vec<String>, String); 1] = [(
+            assert!(validation_result.hasattr("errors").unwrap());
+            let errors = validation_result.getattr("errors").unwrap();
+            assert!(errors.is_instance_of::<pyo3::types::PyList>());
+            let expected_errors: [(Vec<String>, String); 1] = [(
                 vec![],
                 "The value '1234' is above the maximum allowed '1233'.".into(),
             )];
 
-            assert_eq!(violations.len().unwrap(), expected_violations.len());
-            for feedback in violations.try_iter().unwrap().flatten() {
+            assert_eq!(errors.len().unwrap(), expected_errors.len());
+            for feedback in errors.try_iter().unwrap().flatten() {
                 let path: Vec<String> = feedback
                     .getattr("path")
                     .unwrap()
@@ -437,10 +434,10 @@ mod tests {
                     .cast_into_exact::<pyo3::types::PyString>()
                     .unwrap()
                     .to_string();
-                let expected_violation = (path, message);
+                let expected_error = (path, message);
                 assert!(
-                    expected_violations.contains(&expected_violation),
-                    "Violation was not found in expected violations: {expected_violation:?}"
+                    expected_errors.contains(&expected_error),
+                    "Error was not found in expected errors: {expected_error:?}"
                 )
             }
         });
@@ -536,8 +533,6 @@ mod tests {
                     // These are defaults inserted by the validation tooling.
                     "avd_data_validation_mode":"error",
                     "config_end":false,
-                    "generate_default_config":false,
-                    "generate_device_documentation":true,
                     "transceiver_qsfp_default_mode_4x10":true
                 })
                 .to_string(),
@@ -549,24 +544,43 @@ mod tests {
             let validation_result = get_validated_data_result
                 .getattr("validation_result")
                 .unwrap();
-            let violations = validation_result.getattr("violations").unwrap();
-            assert!(violations.is_instance_of::<pyo3::types::PyList>());
-            assert_eq!(violations.len().unwrap(), 0);
+            let errors = validation_result.getattr("errors").unwrap();
+            assert!(errors.is_instance_of::<pyo3::types::PyList>());
+            assert_eq!(errors.len().unwrap(), 0);
 
-            let coercions = validation_result.getattr("coercions").unwrap();
-            assert!(coercions.is_instance_of::<pyo3::types::PyList>());
+            let infos = validation_result.getattr("infos").unwrap();
+            assert!(infos.is_instance_of::<pyo3::types::PyList>());
 
-            let expected_coercions: [(Vec<String>, String); 1] = [(
-                vec![
-                    "ethernet_interfaces".into(),
-                    "0".into(),
-                    "description".into(),
-                ],
-                "Coerced value from 12345 to \"12345\".".into(),
-            )];
+            let expected_infos: [(Vec<String>, String); 5] = [
+                (
+                    vec![
+                        "ethernet_interfaces".into(),
+                        "0".into(),
+                        "description".into(),
+                    ],
+                    "Coerced value from 12345 to \"12345\".".into(),
+                ),
+                (
+                    vec!["avd_data_validation_mode".into()],
+                    "Inserted default value.".into(),
+                ),
+                (vec!["config_end".into()], "Inserted default value.".into()),
+                (
+                    vec!["transceiver_qsfp_default_mode_4x10".into()],
+                    "Inserted default value.".into(),
+                ),
+                (
+                    vec![
+                        "ethernet_interfaces".into(),
+                        "0".into(),
+                        "ospf_authentication_key_type".into(),
+                    ],
+                    "Inserted default value.".into(),
+                ),
+            ];
 
-            assert_eq!(coercions.len().unwrap(), expected_coercions.len());
-            for feedback in coercions.try_iter().unwrap().flatten() {
+            assert_eq!(infos.len().unwrap(), expected_infos.len());
+            for feedback in infos.try_iter().unwrap().flatten() {
                 let path: Vec<String> = feedback
                     .getattr("path")
                     .unwrap()
@@ -585,10 +599,10 @@ mod tests {
                     .cast_into_exact::<pyo3::types::PyString>()
                     .unwrap()
                     .to_string();
-                let expected_coercion = (path, message);
+                let expected_info = (path, message);
                 assert!(
-                    expected_coercions.contains(&expected_coercion),
-                    "Violation was not found in expected violations: {expected_coercion:?}"
+                    expected_infos.contains(&expected_info),
+                    "Info was not found in expected infos: {expected_info:?}"
                 )
             }
         });
@@ -621,15 +635,15 @@ mod tests {
             let validation_result = get_validated_data_result
                 .getattr("validation_result")
                 .unwrap();
-            let violations = validation_result.getattr("violations").unwrap();
-            assert!(violations.is_instance_of::<pyo3::types::PyList>());
-            let expected_violations: [(Vec<String>, String); 1] = [(
+            let errors = validation_result.getattr("errors").unwrap();
+            assert!(errors.is_instance_of::<pyo3::types::PyList>());
+            let expected_errors: [(Vec<String>, String); 1] = [(
                 vec!["ethernet_interfaces".into(), "0".into(), "unknown".into()],
                 "Invalid key.".into(),
             )];
 
-            assert_eq!(violations.len().unwrap(), expected_violations.len());
-            for feedback in violations.try_iter().unwrap().flatten() {
+            assert_eq!(errors.len().unwrap(), expected_errors.len());
+            for feedback in errors.try_iter().unwrap().flatten() {
                 let path: Vec<String> = feedback
                     .getattr("path")
                     .unwrap()
@@ -648,10 +662,10 @@ mod tests {
                     .cast_into_exact::<pyo3::types::PyString>()
                     .unwrap()
                     .to_string();
-                let expected_violation = (path, message);
+                let expected_error = (path, message);
                 assert!(
-                    expected_violations.contains(&expected_violation),
-                    "Violation was not found in expected violations: {expected_violation:?}"
+                    expected_errors.contains(&expected_error),
+                    "Error was not found in expected errors: {expected_error:?}"
                 )
             }
         });
