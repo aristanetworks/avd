@@ -1,17 +1,41 @@
-[build-system]
-requires = ["setuptools", "setuptools-rust>=1.12.0"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "pyavd-utils"
-version = "0.0.1"
+dynamic = ["version"]
+authors=[{ name = "Arista Networks", email = "avd-dev@arista.com"}]
+description="Rust based utilities used by PyAVD. Should not be used directly and may not follow semantic versioning."
+readme = "README.md"
+license = { file = "pyavd_utils/LICENSE" }
+classifiers = [
+    "Operating System :: OS Independent",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Testing",
+]
+keywords = ["pyavd", "pyavd-utils"]
+requires-python = ">=3.10"
 
-[dependency-groups]
-pytest = ["pytest"]
-coverage = ["coverage[toml]"]
+[project.urls]
+homepage = "https://avd.arista.com"
+repository = "https://github.com/aristanetworks/avd"
+
+[build-system]
+requires = [
+    "setuptools",
+    "setuptools-rust>=1.12.0",
+]
+build-backend = "setuptools.build_meta"
 
 [tool.distutils.bdist_wheel]
 py-limited-api = "cp310"
+
+[tool.setuptools.dynamic]
+version = {attr = "pyavd_utils.__version__"}
 
 [tool.setuptools.packages.find]
 include = ["pyavd_utils"]
@@ -29,5 +53,11 @@ target = "pyavd_utils.validation"
 path = "rust/pyvalidation/Cargo.toml"
 binding = "PyO3"
 
-[tool.pytest.ini_options]
-testpaths = "tests"
+[tool.ruff]
+# Extend the `pyproject.toml` file in the parent directory...
+# Should not be needed, but the ruff vscode extension does not seem to respect the ruff behavior of ignoring files without tool.ruff
+extend = "../pyproject.toml"
+
+[tool.pyright]
+# Pyright stops at the first parent pyproject.toml it finds so as documented adding base config
+extends = "../pyproject.toml"

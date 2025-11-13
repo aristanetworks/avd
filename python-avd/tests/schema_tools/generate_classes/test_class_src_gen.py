@@ -8,9 +8,6 @@ from pathlib import Path
 
 import pytest
 
-# Override global path to load schema from source instead of any installed version.
-sys.path.insert(0, str(Path(__file__).parents[3]))
-
 import pyavd._schema.models.avd_model
 from schema_tools.generate_classes.src_generators import FileSrc
 from schema_tools.generate_classes.utils import generate_class_name

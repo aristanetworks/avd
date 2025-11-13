@@ -50,6 +50,11 @@ local_users:
   privilege: 15
   role: network-admin
   sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: true
+  ip_address: 10.255.0.3/32
 management_api_http:
   enable_https: true
   https_ssl_profile: eAPI_SSL_Profile
@@ -122,3 +127,15 @@ vlans:
 vrfs:
 - name: MGMT
   ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: dc1-leaf1c_VTEP
+    vxlan:
+      source_interface: Loopback0
+      udp_port: 4789
+      vlans:
+      - id: 11
+        vni: 10011
+      vrfs:
+      - name: VRF10
+        vni: 10
