@@ -112,6 +112,12 @@ metadata:
   platform: vEOS-lab
   dc_name: DC1
   fabric_name: FABRIC
+  hardware_requirements:
+    min_power_supplies: 2
+    min_fans: 4
+    min_supervisors: 2
+    min_line_cards: 10
+    min_fabric_cards: 5
   validate_no_errors_period: 1
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY

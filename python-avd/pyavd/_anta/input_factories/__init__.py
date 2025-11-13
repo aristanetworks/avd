@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from .avt import VerifyAVTSpecificPathInputFactory
 from .connectivity import VerifyLLDPNeighborsInputFactory, VerifyReachabilityInputFactory
-from .hardware import VerifyEnvironmentCoolingInputFactory, VerifyEnvironmentPowerInputFactory
+from .hardware import VerifyEnvironmentCoolingInputFactory, VerifyEnvironmentPowerInputFactory, VerifyInventoryInputFactory
 from .interfaces import VerifyInterfacesStatusInputFactory, VerifyPortChannelsInputFactory, VerifyStormControlDropsInputFactory
 from .logging import VerifyLoggingErrorsInputFactory
 from .router_path_selection import VerifySpecificPathInputFactory
@@ -23,6 +23,7 @@ __all__ = [
     "VerifyEnvironmentCoolingInputFactory",
     "VerifyEnvironmentPowerInputFactory",
     "VerifyInterfacesStatusInputFactory",
+    "VerifyInventoryInputFactory",
     "VerifyLLDPNeighborsInputFactory",
     "VerifyLoggingErrorsInputFactory",
     "VerifyPortChannelsInputFactory",
