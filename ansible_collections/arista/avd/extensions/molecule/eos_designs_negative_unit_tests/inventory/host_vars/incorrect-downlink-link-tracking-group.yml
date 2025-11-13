@@ -16,6 +16,7 @@ l3leaf:
         enabled: true
         downlinks:
           enabled: true
+          # The specified group is not defined under 'link_tracking.groups'
           group: DOWNLINK_GROUP1
 
 expected_error_message: >-
