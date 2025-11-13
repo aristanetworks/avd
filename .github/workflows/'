@@ -811,7 +811,7 @@ jobs:
           python-version: "3.12"
       - name: Install cibuildwheel
         # TODO: could use the action instead but need approval
-        # otherwise will need some file we can tell dependabot to track to upgrade
+        # otherwise may need some file we can tell dependabot to track to upgrade
         run: |
           pip install cibuildwheel==3.3.0
           env:
