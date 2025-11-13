@@ -7,9 +7,8 @@ use serde_json::Value;
 
 use crate::{
     coercion::Coercion,
-    context::{Configuration, Context},
+    context::{Configuration, Context, ValidationResult},
     feedback::Violation,
-    validation_result::ValidationResult,
 };
 
 use super::Validation;
@@ -78,13 +77,13 @@ impl StoreValidate<Schema> for Store {
         let schema = self.get(schema_name);
         schema.coerce(value, &mut ctx);
         schema.validate_value(value, &mut ctx);
-        ctx.into()
+        ctx.result
     }
     fn coerce_value(&self, value: &mut Value, schema_name: Schema) -> ValidationResult {
         let mut ctx = Context::new(self, None);
         let schema = self.get(schema_name);
         schema.coerce(value, &mut ctx);
-        ctx.into()
+        ctx.result
     }
 }
 
@@ -99,11 +98,11 @@ impl StoreValidate<&str> for Store {
             self.validate_json(json, schema_type, configuration)
         } else {
             let mut ctx = Context::new(self, None);
-            ctx.add_violation(Violation::InvalidSchema {
+            ctx.add_error(Violation::InvalidSchema {
                 schema: schema_name.into(),
             });
 
-            Ok(ctx.into())
+            Ok(ctx.result)
         }
     }
     fn validate_yaml(
@@ -116,11 +115,11 @@ impl StoreValidate<&str> for Store {
             self.validate_yaml(yaml, schema_type, configuration)
         } else {
             let mut ctx = Context::new(self, None);
-            ctx.add_violation(Violation::InvalidSchema {
+            ctx.add_error(Violation::InvalidSchema {
                 schema: schema_name.into(),
             });
 
-            Ok(ctx.into())
+            Ok(ctx.result)
         }
     }
     fn validate_value(
@@ -133,11 +132,11 @@ impl StoreValidate<&str> for Store {
             self.validate_value(value, schema_type, configuration)
         } else {
             let mut ctx = Context::new(self, None);
-            ctx.add_violation(Violation::InvalidSchema {
+            ctx.add_error(Violation::InvalidSchema {
                 schema: schema_name.into(),
             });
 
-            ctx.into()
+            ctx.result
         }
     }
     fn coerce_value(&self, value: &mut Value, schema_name: &str) -> ValidationResult {
@@ -145,10 +144,10 @@ impl StoreValidate<&str> for Store {
             self.coerce_value(value, schema_type)
         } else {
             let mut ctx = Context::new(self, None);
-            ctx.add_violation(Violation::InvalidSchema {
+            ctx.add_error(Violation::InvalidSchema {
                 schema: schema_name.into(),
             });
-            ctx.into()
+            ctx.result
         }
     }
 }
@@ -175,9 +174,9 @@ mod tests {
         let result = store.validate_yaml(input, "eos_designs", None);
         assert!(result.is_ok());
         let validation_result = result.unwrap();
-        assert!(validation_result.coercions.is_empty());
+        assert!(validation_result.infos.is_empty());
         assert_eq!(
-            validation_result.violations,
+            validation_result.errors,
             vec![Feedback {
                 path: vec!["key3".into()].into(),
                 issue: Violation::InvalidType {

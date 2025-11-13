@@ -4,7 +4,7 @@
 
 use avdschema::Store;
 
-use crate::feedback::{Feedback, Issue};
+use crate::feedback::{ErrorIssue, Feedback, InfoIssue, WarningIssue};
 
 /// The Context object is passed along during coercion and validation.
 /// All coercions and violations will be registered in the context with the path carried in the context.
@@ -14,8 +14,7 @@ pub struct Context<'a> {
     pub configuration: Configuration,
     pub store: &'a Store,
     pub path: Vec<String>,
-    pub violations: Vec<Feedback>,
-    pub coercions: Vec<Feedback>,
+    pub result: ValidationResult,
 }
 
 impl<'a> Context<'a> {
@@ -23,23 +22,28 @@ impl<'a> Context<'a> {
         Self {
             configuration: configuration.cloned().unwrap_or_default(),
             store,
-            path: vec![],
-            violations: vec![],
-            coercions: vec![],
+            path: Default::default(),
+            result: Default::default(),
         }
     }
-
-    pub(crate) fn add_violation(&mut self, violation: impl Into<Issue>) {
-        self.violations.push(Feedback {
-            path: self.path.clone().into(),
-            issue: violation.into(),
+    pub(crate) fn add_error(&mut self, error: impl Into<ErrorIssue>) {
+        self.result.errors.push(Feedback {
+            path: self.path.to_owned().into(),
+            issue: error.into(),
         });
     }
 
-    pub(crate) fn add_coercion(&mut self, coercion: impl Into<Issue>) {
-        self.coercions.push(Feedback {
-            path: self.path.clone().into(),
-            issue: coercion.into(),
+    pub(crate) fn add_warning(&mut self, warning: impl Into<WarningIssue>) {
+        self.result.warnings.push(Feedback {
+            path: self.path.to_owned().into(),
+            issue: warning.into(),
+        });
+    }
+
+    pub(crate) fn add_info(&mut self, info: impl Into<InfoIssue>) {
+        self.result.infos.push(Feedback {
+            path: self.path.to_owned().into(),
+            issue: info.into(),
         });
     }
 }
@@ -48,4 +52,11 @@ impl<'a> Context<'a> {
 #[derive(Clone, Debug, Default)]
 pub struct Configuration {
     pub ignore_required_keys_on_root_dict: bool,
+}
+
+#[derive(Clone, Debug, Default)]
+pub struct ValidationResult {
+    pub errors: Vec<Feedback<ErrorIssue>>,
+    pub warnings: Vec<Feedback<WarningIssue>>,
+    pub infos: Vec<Feedback<InfoIssue>>,
 }

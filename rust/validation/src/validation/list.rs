@@ -23,7 +23,7 @@ impl Validation<Vec<Value>> for List {
         if let Some(v) = value.as_array() {
             self.validate(v, ctx)
         } else {
-            ctx.add_violation(Violation::InvalidType {
+            ctx.add_error(Violation::InvalidType {
                 expected: Type::List,
                 found: value.into(),
             })
@@ -57,7 +57,7 @@ fn validate_min_length(schema: &List, input: &[Value], ctx: &mut Context) {
     if let Some(min_length) = schema.min_length {
         let length = input.len() as u64;
         if min_length > length {
-            ctx.add_violation(Violation::LengthBelowMinimum {
+            ctx.add_error(Violation::LengthBelowMinimum {
                 minimum: min_length,
                 found: length,
             });
@@ -69,7 +69,7 @@ fn validate_max_length(schema: &List, input: &[Value], ctx: &mut Context) {
     if let Some(max_length) = schema.max_length {
         let length = input.len() as u64;
         if max_length < length {
-            ctx.add_violation(Violation::LengthAboveMaximum {
+            ctx.add_error(Violation::LengthAboveMaximum {
                 maximum: max_length,
                 found: length,
             });
@@ -100,7 +100,7 @@ fn validate_unique_keys(schema: &List, items: &[Value], ctx: &mut Context) {
         for (current_trail, current_item) in &items {
             for (trail, item) in &items {
                 if current_trail != trail && current_item == item {
-                    ctx.violations.push(Feedback {
+                    ctx.result.errors.push(Feedback {
                         path: {
                             let mut path = ctx.path.clone();
                             path.extend_from_slice(current_trail);
@@ -140,7 +140,7 @@ fn validate_item_primary_key(schema: &List, item: &Value, ctx: &mut Context) {
     if let Some(primary_key) = &schema.primary_key
         && item.get(primary_key).is_none_or(|value| value.is_null())
     {
-        ctx.add_violation(Violation::MissingRequiredKey {
+        ctx.add_error(Violation::MissingRequiredKey {
             key: primary_key.to_owned(),
         });
     }
@@ -165,7 +165,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+        assert!(ctx.result.errors.is_empty() && ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -175,9 +175,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![Feedback {
                 path: vec![].into(),
                 issue: Violation::InvalidType {
@@ -199,7 +199,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+        assert!(ctx.result.errors.is_empty() && ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -212,9 +212,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![
                 Feedback {
                     path: vec!["0".into()].into(),
@@ -248,7 +248,7 @@ mod tests {
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert_eq!(
-            ctx.coercions,
+            ctx.result.infos,
             vec![Feedback {
                 path: vec!["0".into()].into(),
                 issue: CoercionNote {
@@ -259,7 +259,7 @@ mod tests {
             }]
         );
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![Feedback {
                 path: vec!["1".into()].into(),
                 issue: Violation::InvalidType {
@@ -281,7 +281,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+        assert!(ctx.result.errors.is_empty() && ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -294,9 +294,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![Feedback {
                 path: vec![].into(),
                 issue: Violation::LengthBelowMinimum {
@@ -318,7 +318,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+        assert!(ctx.result.errors.is_empty() && ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -331,9 +331,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![Feedback {
                 path: vec![].into(),
                 issue: Violation::LengthAboveMaximum {
@@ -362,7 +362,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+        assert!(ctx.result.errors.is_empty() && ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -382,9 +382,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![Feedback {
                 path: vec!["0".into()].into(),
                 issue: Violation::MissingRequiredKey { key: "foo".into() }.into()
@@ -409,9 +409,9 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
-            ctx.violations,
+            ctx.result.errors,
             vec![
                 Feedback {
                     path: vec!["0".into(), "foo".into()].into(),
@@ -449,7 +449,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
-        assert!(ctx.violations.is_empty());
+        assert!(ctx.result.infos.is_empty());
+        assert!(ctx.result.errors.is_empty());
     }
 }

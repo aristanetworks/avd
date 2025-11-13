@@ -2,7 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use std::collections::HashMap;
+use std::{
+    collections::HashMap,
+    fmt::{Debug, Display},
+};
 
 use serde::Serialize;
 
@@ -72,7 +75,7 @@ impl std::fmt::Display for Path {
                 }
                 string.push_str(element);
             }
-        };
+        }
         f.write_str(&string)
     }
 }
@@ -85,27 +88,39 @@ impl From<Path> for Vec<String> {
 /// Feedback item carried in the Context under either `coercions` or `violations`
 #[derive(Clone, Debug, PartialEq, Serialize, derive_more::Display)]
 #[display("Feedback for path {path:?}: {issue}.")]
-pub struct Feedback {
+pub struct Feedback<T: Clone + Debug + PartialEq + Serialize + Display> {
     /// Data path which the feedback concerns.
     pub path: Path,
-    pub issue: Issue,
+    pub issue: T,
 }
 
-/// Issue is wrapped in Feedback and added to the Context during coercion and validation.
+/// Error issue is wrapped in Feedback and added to the Context during coercion and validation.
 #[derive(Clone, Debug, PartialEq, Serialize, derive_more::From, derive_more::Display)]
-pub enum Issue {
+pub enum ErrorIssue {
     /// Violation found during validation.
-    Validation(Violation),
+    Violation(Violation),
+    /// Some internal error occurred.
+    #[display("An internal error occurred: {message}.")]
+    InternalError { message: String },
+    /// Removed after deprecation of data model.
+    Removed(Removed),
+}
+
+/// WarningIssue is wrapped in Feedback and added to the Context during coercion and validation.
+#[derive(Clone, Debug, PartialEq, Serialize, derive_more::From, derive_more::Display)]
+pub enum WarningIssue {
+    /// Deprecation of data model.
+    Deprecated(Deprecated),
+}
+
+/// InfoIssue is wrapped in Feedback and added to the Context during coercion and validation.
+#[derive(Clone, Debug, PartialEq, Serialize, derive_more::From, derive_more::Display)]
+pub enum InfoIssue {
     /// Coercion performed during coercion.
     Coercion(CoercionNote),
     /// Default value as specified in the schema was inserted into the data.
     #[display("Inserted default value.")]
     DefaultValueInserted(),
-    /// Some internal error occurred.
-    #[display("An internal error occurred: {message}.")]
-    InternalError { message: String },
-    /// Deprecation of data model.
-    Deprecation(DeprecationMessage),
 }
 
 /// One coercion performed during recursive coercion.
@@ -191,15 +206,6 @@ pub enum ViolationValidValues {
     Str(Vec<String>),
 }
 
-/// Deprecation message for either warning about a data model that will be removed,
-/// or a data model that was removed in the previous version.
-#[derive(Clone, Debug, PartialEq, Serialize, derive_more::Display)]
-pub enum DeprecationMessage {
-    Removed(Removed),
-    Deprecated(Deprecated),
-    Conflict(Conflict),
-}
-
 #[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct Deprecated {
     path: Path,
@@ -207,7 +213,7 @@ pub struct Deprecated {
     version: Option<String>,
     url: Option<String>,
 }
-impl std::fmt::Display for Deprecated {
+impl Display for Deprecated {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut string = format!("The input data model '{}' is deprecated", self.path);
         if let Some(version) = &self.version {
@@ -224,7 +230,7 @@ impl std::fmt::Display for Deprecated {
     }
 }
 impl Deprecated {
-    pub(crate) fn from_deprecation(
+    pub(crate) fn from_schema(
         path: &Vec<String>,
         deprecation: &avdschema::base::Deprecation,
     ) -> Self {
@@ -244,7 +250,7 @@ pub struct Removed {
     version: Option<String>,
     url: Option<String>,
 }
-impl std::fmt::Display for Removed {
+impl Display for Removed {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut string = format!("The input data model '{}' was removed", self.path);
         if let Some(version) = &self.version {
@@ -261,7 +267,7 @@ impl std::fmt::Display for Removed {
     }
 }
 impl Removed {
-    pub(crate) fn from_deprecation(
+    pub(crate) fn from_schema(
         path: &Vec<String>,
         deprecation: &avdschema::base::Deprecation,
     ) -> Self {
@@ -280,7 +286,7 @@ pub struct Conflict {
     replacement_path: Path,
     url: Option<String>,
 }
-impl std::fmt::Display for Conflict {
+impl Display for Conflict {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut string = format!(
             "The input data model '{}' is deprecated and cannot be used in conjunction with the new data model {}.",
@@ -293,7 +299,7 @@ impl std::fmt::Display for Conflict {
     }
 }
 impl Conflict {
-    pub(crate) fn from_deprecation(
+    pub(crate) fn from_schema(
         path: &Vec<String>,
         replacement_path: Path,
         deprecation: &avdschema::base::Deprecation,

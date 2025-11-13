@@ -7,10 +7,8 @@ mod coercion;
 mod context;
 pub mod feedback;
 mod validation;
-mod validation_result;
 
 pub use self::coercion::Coercion;
-pub use self::context::{Configuration, Context};
+pub use self::context::{Configuration, Context, ValidationResult};
 pub use self::validation::Validation;
 pub use self::validation::store::StoreValidate;
-pub use self::validation_result::ValidationResult;
