@@ -1,6 +1,6 @@
 ---
 name: "Publish Python package"
-on:
+"on":
   release:
     types:
       - published

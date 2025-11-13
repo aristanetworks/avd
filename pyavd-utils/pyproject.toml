@@ -71,7 +71,7 @@ skip = [
     "*-win32",
     "*-musllinux*",
     "*_i686",
-    "cp314t-*", # for now building with cp310 is breaking Python 3.14 which is free threaded and not controled below.
+    "cp314t-*", # for now building with cp310 is breaking Python 3.14 which is free threaded and not controlled below.
 ]
 # enable = [
 #  "pypy",
