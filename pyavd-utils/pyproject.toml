@@ -86,7 +86,7 @@ build-verbosity=2
 
 before-all = "uname -a"
 
-test-command = "pytest ./tests"
+test-command = "pytest pyavd-utils/tests"
 test-requires = [
     "pytest"
 ]
