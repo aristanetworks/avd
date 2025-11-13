@@ -826,4 +826,4 @@ jobs:
       - uses: actions/upload-artifact@v5
         with:
           name: pyavd-utils-wheels-${{ matrix.os }}-${{ strategy.job-index }}
-          path: pyavd-utils/wheelhouse/*.whl
+          path: wheelhouse/*.whl
