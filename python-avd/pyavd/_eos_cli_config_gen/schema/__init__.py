@@ -13131,11 +13131,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
 
         _fields: ClassVar[dict] = {"enabled": {"type": bool}}
-        enabled: bool
+        enabled: bool | None
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
                 """
                 EventMonitor.
 
