@@ -6,7 +6,7 @@ import warnings
 from collections.abc import Generator
 from contextlib import ExitStack
 from typing import Any
-from unittest.mock import MagicMock, call, patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 from ansible.errors import AnsibleActionFail
