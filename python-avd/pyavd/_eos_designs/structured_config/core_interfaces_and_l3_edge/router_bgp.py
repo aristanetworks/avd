@@ -69,7 +69,9 @@ class RouterBgpMixin(Protocol):
             target_peer_group.send_community = "all"
 
             if not self.shared_utils.underlay_ipv6_numbered:
-                target_address_family = self.structured_config.router_bgp.address_family_ipv4.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
+                target_address_family = self.structured_config.router_bgp.address_family_ipv4.peer_groups.obtain(
+                    self.inputs.bgp_peer_groups.ipv4_underlay_peers.name
+                )
                 target_address_family.activate = True
 
                 if self.inputs.underlay_rfc5549:
