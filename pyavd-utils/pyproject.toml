@@ -71,10 +71,11 @@ skip = [
     "*-win32",
     "*-musllinux*",
     "*_i686",
+    "cp314t-*", # for now building with cp310 is breaking Python 3.14 which is free threaded and not controled below.
 ]
 # enable = [
 #  "pypy",
-#  "cpython-freethreading", # TODO: not considering free threaded support for now
+#  "cpython-freethreading", # TODO: not considering free threaded support for now for Python 3.13
 #]
 
 
