@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import re
-from ipaddress import AddressValueError, IPv4Address, IPv6Address, ip_network
+from ipaddress import AddressValueError, IPv4Address, IPv6Network, ip_network
 from typing import TYPE_CHECKING, Protocol
 
 if TYPE_CHECKING:
@@ -61,15 +61,7 @@ class DhcpServersMixin(Protocol):
                     and peer_facts.inband_ztp
                 ):
                     ip_address = ip_network(f"{uplink.peer_ip_address}/{uplink.prefix_length}", strict=False)
-                    if isinstance(ip_address, IPv4Address):
-                        subnet_item = EosCliConfigGen.DhcpServersItem.Ipv4SubnetsItem(
-                            subnet=str(ip_address),
-                            name=f"inband ztp for {peer}-{uplink.interface}",
-                            default_gateway=f"{uplink.peer_ip_address}",
-                        )
-                        subnet_item.ranges.append_new(start=str(uplink.ip_address), end=str(uplink.ip_address))
-                        dhcp_server.ipv4_subnets.append(subnet_item)
-                    elif isinstance(ip_address, IPv6Address):
+                    if isinstance(ip_address, IPv6Network):
                         subnet_item = EosCliConfigGen.DhcpServersItem.Ipv6SubnetsItem(
                             subnet=str(ip_address),
                             name=f"inband ztp for {peer}-{uplink.interface}",
@@ -77,6 +69,14 @@ class DhcpServersMixin(Protocol):
                         )
                         subnet_item.ranges.append_new(start=str(uplink.ip_address), end=str(uplink.ip_address))
                         dhcp_server.ipv6_subnets.append(subnet_item)
+                    else:
+                        subnet_item = EosCliConfigGen.DhcpServersItem.Ipv4SubnetsItem(
+                            subnet=str(ip_address),
+                            name=f"inband ztp for {peer}-{uplink.interface}",
+                            default_gateway=f"{uplink.peer_ip_address}",
+                        )
+                        subnet_item.ranges.append_new(start=str(uplink.ip_address), end=str(uplink.ip_address))
+                        dhcp_server.ipv4_subnets.append(subnet_item)
 
     def _get_cvp_server_for_dhcp(self: AvdStructuredConfigUnderlayProtocol) -> str | None:
         """Return the first CVP server using either new or old data models."""
