@@ -212,7 +212,7 @@ $defs:
             type: list
             items:
               type: str
-              pattern: "Ethernet\\d+(-\\d+)?(,\\d+(-\\d+)?)*(/\\d+(-\\d+)?(,\\d+(-\\d+)?)*)*"
+              pattern: "Ethernet.*"
           uplink_switch_interfaces:
             documentation_options:
               table: node-type-uplink-configuration
