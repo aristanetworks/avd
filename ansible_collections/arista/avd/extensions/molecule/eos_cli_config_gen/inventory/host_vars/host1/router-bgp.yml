@@ -295,6 +295,8 @@ router_bgp:
       attribute_map: RM-ATTRIBUTE
       match_map: RM-MATCH
       advertise_only: true
+      attribute:
+        rcf: AGG-ADD-RCF()
     - prefix: 3.3.3.0/24
       attribute:
         rcf: AGG-ADD-RCF()

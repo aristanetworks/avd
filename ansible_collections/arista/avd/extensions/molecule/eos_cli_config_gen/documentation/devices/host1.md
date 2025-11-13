@@ -8784,12 +8784,12 @@ ASN Notation: asdot
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Attribute RCF | Advertise Only |
-| ------ | ------ | ------------ | ------------- | --------- | ------------- | -------------- |
+| Prefix | AS Set | Summary Only | Attribute Map | Attribute RCF | Match Map | Advertise Only |
+| ------ | ------ | ------------ | ------------- | ------------- | --------- | -------------- |
 | 1.1.1.0/24 | False | False | - | - | - | True |
-| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | - | True |
+| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | AGG-ADD-RCF() | RM-MATCH | True |
 | 2.2.1.0/24 | False | False | - | - | - | False |
-| 3.3.3.0/24 | False | False | - | - | AGG-ADD-RCF() | False |
+| 3.3.3.0/24 | False | False | - | AGG-ADD-RCF() | - | False |
 
 #### Router BGP EVPN Address Family
 
@@ -9310,7 +9310,7 @@ router bgp 65101
    neighbor fe80::b%Vl4094 peer group IPV6-UNDERLAY-MLAG
    no bgp redistribute-internal
    aggregate-address 1.1.1.0/24 advertise-only
-   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
+   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE attribute rcf AGG-ADD-RCF() match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24
    aggregate-address 3.3.3.0/24 attribute rcf AGG-ADD-RCF()
    redistribute connected rcf Router_BGP_Connected()
