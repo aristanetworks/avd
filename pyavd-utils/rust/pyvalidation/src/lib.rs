@@ -222,6 +222,30 @@ mod tests {
         };
     }
 
+    fn get_path_and_message_from_py_feedback<'py>(
+        feedback: pyo3::Bound<'py, pyo3::PyAny>,
+    ) -> (Vec<String>, String) {
+        let path: Vec<String> = feedback
+            .getattr("path")
+            .unwrap()
+            .cast_into_exact::<pyo3::types::PyList>()
+            .unwrap()
+            .into_iter()
+            .map(|item| {
+                item.cast_into_exact::<pyo3::types::PyString>()
+                    .unwrap()
+                    .to_string()
+            })
+            .collect();
+        let message = feedback
+            .getattr("message")
+            .unwrap()
+            .cast_into_exact::<pyo3::types::PyString>()
+            .unwrap()
+            .to_string();
+        (path, message)
+    }
+
     #[test]
     fn validate_json_py_ok() {
         setup();
@@ -252,25 +276,7 @@ mod tests {
 
             assert_eq!(errors.len().unwrap(), expected_errors.len());
             for feedback in errors.try_iter().unwrap().flatten() {
-                let path: Vec<String> = feedback
-                    .getattr("path")
-                    .unwrap()
-                    .cast_into_exact::<pyo3::types::PyList>()
-                    .unwrap()
-                    .into_iter()
-                    .map(|item| {
-                        item.cast_into_exact::<pyo3::types::PyString>()
-                            .unwrap()
-                            .to_string()
-                    })
-                    .collect();
-                let message = feedback
-                    .getattr("message")
-                    .unwrap()
-                    .cast_into_exact::<pyo3::types::PyString>()
-                    .unwrap()
-                    .to_string();
-                let expected_error = (path, message);
+                let expected_error = get_path_and_message_from_py_feedback(feedback);
                 assert!(
                     expected_errors.contains(&expected_error),
                     "Error was not found in expected errors: {expected_error:?}"
@@ -416,25 +422,7 @@ mod tests {
 
             assert_eq!(errors.len().unwrap(), expected_errors.len());
             for feedback in errors.try_iter().unwrap().flatten() {
-                let path: Vec<String> = feedback
-                    .getattr("path")
-                    .unwrap()
-                    .cast_into_exact::<pyo3::types::PyList>()
-                    .unwrap()
-                    .into_iter()
-                    .map(|item| {
-                        item.cast_into_exact::<pyo3::types::PyString>()
-                            .unwrap()
-                            .to_string()
-                    })
-                    .collect();
-                let message = feedback
-                    .getattr("message")
-                    .unwrap()
-                    .cast_into_exact::<pyo3::types::PyString>()
-                    .unwrap()
-                    .to_string();
-                let expected_error = (path, message);
+                let expected_error = get_path_and_message_from_py_feedback(feedback);
                 assert!(
                     expected_errors.contains(&expected_error),
                     "Error was not found in expected errors: {expected_error:?}"
@@ -586,25 +574,7 @@ mod tests {
 
             assert_eq!(errors.len().unwrap(), expected_errors.len());
             for feedback in errors.try_iter().unwrap().flatten() {
-                let path: Vec<String> = feedback
-                    .getattr("path")
-                    .unwrap()
-                    .cast_into_exact::<pyo3::types::PyList>()
-                    .unwrap()
-                    .into_iter()
-                    .map(|item| {
-                        item.cast_into_exact::<pyo3::types::PyString>()
-                            .unwrap()
-                            .to_string()
-                    })
-                    .collect();
-                let message = feedback
-                    .getattr("message")
-                    .unwrap()
-                    .cast_into_exact::<pyo3::types::PyString>()
-                    .unwrap()
-                    .to_string();
-                let expected_error = (path, message);
+                let expected_error = get_path_and_message_from_py_feedback(feedback);
                 assert!(
                     expected_errors.contains(&expected_error),
                     "Error was not found in expected errors: {expected_error:?}"
