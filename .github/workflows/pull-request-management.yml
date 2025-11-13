@@ -810,14 +810,11 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install cibuildwheel
+        # See pyproject.toml for config
         # TODO: could use the action instead but need approval
         # otherwise will need some file we can tell dependabot to track to upgrade
         run: |
           pip install cibuildwheel==3.3.0
-          env:
-            CIBW_BEFORE_BUILD_LINUX: curl -sSf https://sh.rustup.rs | sh -s -- -y
-            CIBW_ENVIRONMENT_LINUX: "PATH=$HOME/.cargo/bin:$PATH"
-            CIBW_SKIP: "cp36-* cp37-* cp38-* pp* *-win32 *-musllinux* *_i686"
       - name: Build wheels
         working-directory: pyavd-utils
         run: |-

@@ -61,3 +61,47 @@ extend = "../pyproject.toml"
 [tool.pyright]
 # Pyright stops at the first parent pyproject.toml it finds so as documented adding base config
 extends = "../pyproject.toml"
+
+[tool.cibuildwheel]
+#build =  [
+#    "cp310-*" ,  # We have portable abi3 wheels.
+#    "cp314t-*", # Free-threading / nogil.
+#    "pp310-*", 
+#]
+skip = [
+    "cp38-*",
+    "cp39-*",
+    "pp*",
+    "*-win32",
+    "*-musllinux*",
+    "*_i686",
+]
+enable = [
+  "pypy",
+  # "cpython-freethreading" # TODO: decide if we want to try freethreading - for now it is failing in CI
+]
+
+build-verbosity=2
+
+before-all = "uname -a"
+
+test-command = "pytest ./tests"
+test-requires = [
+    "pytest"
+]
+
+[tool.cibuildwheel.macos]
+# PyPy has no universal2, so let's build them all, always.
+archs = ["all"]
+# Following recommendations:
+# https://cibuildwheel.pypa.io/en/stable/faq/#building-rust-wheels
+[tool.cibuildwheel.macos.environment]
+MACOSX_DEPLOYMENT_TARGET = "10.12"
+
+
+
+[tool.cibuildwheel.linux]
+before-build = "curl -sSf https://sh.rustup.rs | sh -s -- -y"
+
+[tool.cibuildwheel.linux.environment]
+PATH = "$HOME/.cargo/bin:$PATH"
