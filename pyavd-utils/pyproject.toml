@@ -85,10 +85,8 @@ before-all = "uname -a"
 # TODO: could use test-groups but we have a lot in the root pyproject.
 test-requires = ["pytest"]
 # Relative to the root of the avd repo
-test-sources = ["pyavd-utils/tests", "python-avd/schema_tools"]
+test-sources = ["pyavd-utils/tests", "python-avd/schema_tools", "pyproject.toml"]
 test-command = "pytest"
-# Set PYTHONPATH in the test environment
-test-environment = { PYTHONPATH="python-avd/schema_tools" }
 
 [tool.cibuildwheel.macos]
 # PyPy has no universal2, so let's build them all, always.
