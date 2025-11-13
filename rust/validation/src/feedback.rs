@@ -221,10 +221,10 @@ impl Display for Deprecated {
         }
         string.push('.');
         if let Some(replacement) = &self.replacement {
-            string.push_str(&format!(" Use '{replacement} instead."));
+            string.push_str(&format!(" Use '{replacement}' instead."));
         }
         if let Some(url) = &self.url {
-            string.push_str(&format!(" See '{url} for details."));
+            string.push_str(&format!(" See '{url}' for details."));
         }
         f.write_str(&string)
     }
@@ -261,7 +261,7 @@ impl Display for Removed {
             string.push_str(&format!(" Use '{replacement}' instead."));
         }
         if let Some(url) = &self.url {
-            string.push_str(&format!(" See '{url} for details."));
+            string.push_str(&format!(" See '{url}' for details."));
         }
         f.write_str(&string)
     }
@@ -289,11 +289,11 @@ pub struct Conflict {
 impl Display for Conflict {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut string = format!(
-            "The input data model '{}' is deprecated and cannot be used in conjunction with the new data model {}.",
+            "The input data model '{}' is deprecated and cannot be used in conjunction with the new data model '{}'.",
             self.path, self.replacement_path
         );
         if let Some(url) = &self.url {
-            string.push_str(&format!(" See '{url} for details."));
+            string.push_str(&format!(" See '{url}' for details."));
         }
         f.write_str(&string)
     }
@@ -309,5 +309,126 @@ impl Conflict {
             replacement_path,
             url: deprecation.url.to_owned(),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn value_from_json_value() {
+        let value = Value::from(serde_json::json!(true));
+        assert_eq!(value, Value::Bool(true));
+        let value = Value::from(serde_json::json!(-123));
+        assert_eq!(value, Value::Int(-123));
+        let value = Value::from(serde_json::json!(123.45));
+        assert_eq!(value, Value::Float(123.45));
+        let value: Value = Value::from(serde_json::json!(null));
+        assert_eq!(value, Value::Null());
+        let value = Value::from(serde_json::json!("string"));
+        assert_eq!(value, Value::Str("string".to_string()));
+        let value = Value::from(serde_json::json!({"key": "value"}));
+        assert_eq!(
+            value,
+            Value::Dict([("key".to_string(), Value::Str("value".to_string()))].into())
+        );
+        let value = Value::from(serde_json::json!(["item", 123]));
+        assert_eq!(
+            value,
+            Value::List([Value::Str("item".to_string()), Value::Int(123)].into())
+        );
+    }
+
+    #[test]
+    fn type_from_json_value() {
+        let type_ = Type::from(&serde_json::json!(null));
+        assert_eq!(type_, Type::Null);
+        let type_ = Type::from(&serde_json::json!(true));
+        assert_eq!(type_, Type::Bool);
+        let type_ = Type::from(&serde_json::json!(-123));
+        assert_eq!(type_, Type::Int);
+        let type_ = Type::from(&serde_json::json!("string"));
+        assert_eq!(type_, Type::Str);
+        let type_ = Type::from(&serde_json::json!({"key": "value"}));
+        assert_eq!(type_, Type::Dict);
+        let type_ = Type::from(&serde_json::json!(["item", 123]));
+        assert_eq!(type_, Type::List);
+    }
+
+    #[test]
+    fn value_display() {
+        let value = Value::Bool(true);
+        assert_eq!(format!("{}", value).as_str(), "true");
+        let value = Value::Int(-123);
+        assert_eq!(format!("{}", value).as_str(), "-123");
+        let value = Value::Float(123.45);
+        assert_eq!(format!("{}", value).as_str(), "123.45");
+        let value = Value::Null();
+        assert_eq!(format!("{}", value).as_str(), "null");
+        let value = Value::Str("string".to_string());
+        assert_eq!(format!("{}", value).as_str(), "\"string\"");
+        let value = Value::Dict([("key".to_string(), Value::Str("value".to_string()))].into());
+        // TODO: Improve the output format for dicts. Not really used currently.
+        assert_eq!(format!("{}", value).as_str(), "{\"key\": Str(\"value\")}");
+        let value = Value::List([Value::Str("item".to_string()), Value::Int(123)].into());
+        // TODO: Improve the output format for lists. Not really used currently.
+        assert_eq!(format!("{}", value).as_str(), "[Str(\"item\"), Int(123)]");
+    }
+    #[test]
+    fn deprecated_display() {
+        let deprecated = Deprecated {
+            path: Path::from(vec![
+                "key".to_string(),
+                "1".to_string(),
+                "subkey".to_string(),
+            ]),
+            replacement: Some("another_key".to_string()),
+            version: Some("6.0.0".to_string()),
+            url: Some("foo.bar".to_string()),
+        };
+        assert_eq!(
+            format!("{}", deprecated).as_str(),
+            "The input data model 'key[1].subkey' is deprecated and will be removed in AVD version 6.0.0. Use 'another_key' instead. See 'foo.bar' for details."
+        );
+    }
+
+        #[test]
+    fn removed_display() {
+        let removed = Removed {
+            path: Path::from(vec![
+                "key".to_string(),
+                "1".to_string(),
+                "subkey".to_string(),
+            ]),
+            replacement: Some("another_key".to_string()),
+            version: Some("6.0.0".to_string()),
+            url: Some("foo.bar".to_string()),
+        };
+        assert_eq!(
+            format!("{}", removed).as_str(),
+            "The input data model 'key[1].subkey' was removed in AVD version 6.0.0. Use 'another_key' instead. See 'foo.bar' for details."
+        );
+    }
+
+            #[test]
+    fn conflict_display() {
+        let conflict = Conflict {
+            path: Path::from(vec![
+                "key".to_string(),
+                "1".to_string(),
+                "subkey".to_string(),
+            ]),
+            replacement_path: Path::from(vec![
+                "key".to_string(),
+                "1".to_string(),
+                "another_key".to_string(),
+            ]),
+            url: Some("foo.bar".to_string()),
+        };
+        assert_eq!(
+            format!("{}", conflict).as_str(),
+            "The input data model 'key[1].subkey' is deprecated and cannot be used in conjunction with the new data model 'key[1].another_key'. See 'foo.bar' for details."
+        );
     }
 }
