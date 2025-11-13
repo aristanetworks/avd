@@ -234,8 +234,27 @@ mod tests {
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.result.errors.is_empty());
-        assert!(ctx.result.warnings.is_empty());
-        assert!(ctx.result.infos.is_empty());
+        assert_eq!(
+            ctx.result.infos,
+            vec![
+                Feedback {
+                    path: vec![].into(),
+                    issue: CoercionNote {
+                        found: true.into(),
+                        made: "True".into()
+                    }
+                    .into()
+                },
+                Feedback {
+                    path: vec![].into(),
+                    issue: CoercionNote {
+                        found: "True".into(),
+                        made: "true".into()
+                    }
+                    .into()
+                }
+            ]
+        );
     }
 
     #[test]
