@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>dot1x_settings</samp>](## "dot1x_settings") | Dictionary |  |  |  | Settings for 802.1X deployments. |
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.enabled") | Boolean |  | `False` |  | Globally enable 802.1X port authentication on the switch.<br>Must be set for 802.1X to be active on any interface.<br>When set, `dot1x_settings.radius_groups` is required. |
-    | [<samp>&nbsp;&nbsp;radius_groups</samp>](## "dot1x_settings.radius_groups") | List, items: String |  |  |  | List of RADIUS server groups to be used for 802.1X authentication and accounting.<br>The order of the list defines the priority. Each group name must also be defined on at least one server under `aaa_settings.radius.servers`. |
+    | [<samp>&nbsp;&nbsp;radius_groups</samp>](## "dot1x_settings.radius_groups") | List, items: String |  |  |  | List of RADIUS server groups to be used for 802.1X authentication and accounting.<br>Automatically generates `aaa_settings.authentication.dot1x.default` and `aaa_settings.accounting.dot1x.default`, overriding any manual settings.<br>The order of the list defines the server group priority. Each group name must also be defined on at least one server under `aaa_settings.radius.servers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dot1x_settings.radius_groups.[]") | String |  |  |  | RADIUS server group name. |
     | [<samp>&nbsp;&nbsp;bypass_bpdu</samp>](## "dot1x_settings.bypass_bpdu") | Boolean |  | `True` |  | Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection. |
     | [<samp>&nbsp;&nbsp;bypass_lldp</samp>](## "dot1x_settings.bypass_lldp") | Boolean |  | `True` |  | Allow LLDP packets to be processed even if the port is not authenticated. |
@@ -32,7 +32,8 @@
       enabled: <bool; default=False>
 
       # List of RADIUS server groups to be used for 802.1X authentication and accounting.
-      # The order of the list defines the priority. Each group name must also be defined on at least one server under `aaa_settings.radius.servers`.
+      # Automatically generates `aaa_settings.authentication.dot1x.default` and `aaa_settings.accounting.dot1x.default`, overriding any manual settings.
+      # The order of the list defines the server group priority. Each group name must also be defined on at least one server under `aaa_settings.radius.servers`.
       radius_groups:
 
           # RADIUS server group name.

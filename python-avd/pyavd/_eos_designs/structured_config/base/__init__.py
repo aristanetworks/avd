@@ -708,7 +708,7 @@ class AvdStructuredConfigBaseProtocol(
                 )
                 raise AristaAvdInvalidInputsError(msg)
 
-            # Set the authentication methods from the input RADIUS server groups
+            # Set the authentication methods from the input RADIUS server groups, overriding existing settings if any
             aaa_authentication.dot1x.default = " ".join(f"group {group}" for group in self.inputs.dot1x_settings.radius_groups)
 
         if aaa_authentication:
@@ -728,19 +728,9 @@ class AvdStructuredConfigBaseProtocol(
 
         # Handle 802.1X requirements
         if self.inputs.dot1x_settings.enabled:
-            if not self.inputs.dot1x_settings.radius_groups:
-                msg = "'dot1x_settings.radius_groups' is required when 802.1X is enabled globally."
-                raise AristaAvdInvalidInputsError(msg)
-
-            if undefined_groups := set(self.inputs.dot1x_settings.radius_groups).difference(self._radius_server_groups):
-                msg = (
-                    f"The RADIUS server groups '{', '.join(sorted(undefined_groups))}' "
-                    "are not defined on at least one server under 'aaa_settings.radius.servers'."
-                )
-                raise AristaAvdInvalidInputsError(msg)
-
-            # Set the accounting methods from the input RADIUS server groups
+            # Set the accounting methods from the input RADIUS server groups, overriding existing settings if any
             aaa_accounting.dot1x.default.type = "start-stop"
+            aaa_accounting.dot1x.default.methods = EosCliConfigGen.AaaAccounting.Dot1x.Default.Methods()
             for group in self.inputs.dot1x_settings.radius_groups:
                 aaa_accounting.dot1x.default.methods.append_unique(EosCliConfigGen.AaaAccounting.Dot1x.Default.MethodsItem(method="group", group=group))
 

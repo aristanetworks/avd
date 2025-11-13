@@ -16542,11 +16542,14 @@ class EosDesigns(EosDesignsRootModel):
         radius_groups: RadiusGroups
         """
         List of RADIUS server groups to be used for 802.1X authentication and accounting.
-        The order of the
-        list defines the priority. Each group name must also be defined on at least one server under
-        `aaa_settings.radius.servers`.
+        Automatically
+        generates `aaa_settings.authentication.dot1x.default` and `aaa_settings.accounting.dot1x.default`,
+        overriding any manual settings.
+        The order of the list defines the server group priority. Each group
+        name must also be defined on at least one server under `aaa_settings.radius.servers`.
 
-        Subclass of AvdList with `str` items.
+        Subclass of
+        AvdList with `str` items.
         """
         bypass_bpdu: bool
         """
@@ -16599,11 +16602,14 @@ class EosDesigns(EosDesignsRootModel):
                        When set, `dot1x_settings.radius_groups` is required.
                     radius_groups:
                        List of RADIUS server groups to be used for 802.1X authentication and accounting.
-                       The order of the
-                       list defines the priority. Each group name must also be defined on at least one server under
-                       `aaa_settings.radius.servers`.
+                       Automatically
+                       generates `aaa_settings.authentication.dot1x.default` and `aaa_settings.accounting.dot1x.default`,
+                       overriding any manual settings.
+                       The order of the list defines the server group priority. Each group
+                       name must also be defined on at least one server under `aaa_settings.radius.servers`.
 
-                       Subclass of AvdList with `str` items.
+                       Subclass of
+                       AvdList with `str` items.
                     bypass_bpdu: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
                     bypass_lldp: Allow LLDP packets to be processed even if the port is not authenticated.
                     dynamic_authorization: Subclass of AvdModel.

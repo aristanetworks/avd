@@ -1992,8 +1992,11 @@ keys:
         description: 'List of RADIUS server groups to be used for 802.1X authentication
           and accounting.
 
-          The order of the list defines the priority. Each group name must also be
-          defined on at least one server under `aaa_settings.radius.servers`.'
+          Automatically generates `aaa_settings.authentication.dot1x.default` and
+          `aaa_settings.accounting.dot1x.default`, overriding any manual settings.
+
+          The order of the list defines the server group priority. Each group name
+          must also be defined on at least one server under `aaa_settings.radius.servers`.'
         items:
           type: str
           description: RADIUS server group name.

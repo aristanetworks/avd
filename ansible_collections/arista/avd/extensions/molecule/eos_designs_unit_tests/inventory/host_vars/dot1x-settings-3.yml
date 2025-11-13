@@ -1,0 +1,30 @@
+---
+# Test for global 802.1X enabled with manual AAA authentication and accounting settings being overridden
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: dot1x-settings-3
+      mgmt_ip: 192.168.0.2/24
+
+dot1x_settings:
+  enabled: true
+  radius_groups: [agni-server-group]
+
+aaa_settings:
+  radius:
+    servers:
+      - host: agni.arista.com
+        groups:
+          - agni-server-group
+        cleartext_key: super-secret-key
+  authentication:
+    dot1x:
+      default: group overridden_group
+  accounting:
+    dot1x:
+      default:
+        type: stop-only
+        methods:
+          - method: group
+            group: overridden_group
