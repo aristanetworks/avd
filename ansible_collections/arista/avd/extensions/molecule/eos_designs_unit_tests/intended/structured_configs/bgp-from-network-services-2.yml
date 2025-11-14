@@ -110,6 +110,7 @@ router_bgp:
   vrfs:
   - name: validate_bgp_peers
     router_id: 192.0.255.2
+    timers: 42 42
     updates:
       wait_install: true
     neighbors:
@@ -132,6 +133,7 @@ router_bgp:
       neighbors:
       - ip_address: 10.10.2.2
         activate: true
+    eos_cli: '! Comment for bgp'
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
