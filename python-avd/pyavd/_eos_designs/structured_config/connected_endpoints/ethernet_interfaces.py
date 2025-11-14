@@ -199,8 +199,8 @@ class EthernetInterfacesMixin(Protocol):
             peer_type=connected_endpoint.type,
             port_profile=adapter.profile,
             peer_key=connected_endpoint._internal_data.context,
-            validate_state=None if (adapter.validate_state if adapter.validate_state is not None else True) else False,
-            validate_lldp=None if (adapter.validate_lldp if adapter.validate_lldp is not None else True) else False,
+            validate_state=False if adapter.validate_state is False else None,
+            validate_lldp=False if adapter.validate_lldp is False else None,
         )
 
         # Port-channel member
