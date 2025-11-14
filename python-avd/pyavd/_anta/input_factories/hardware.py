@@ -28,8 +28,9 @@ class VerifyTransceiversManufacturersInputFactory(AntaTestInputFactory[VerifyTra
     """
     Input factory class for the `VerifyTransceiversManufacturers` test.
 
-    Generates test inputs using `hardware_requirements.transceiver_manufacturers` from metadata to check the transceivers
-    come from approved manufacturers.
+    Generates test inputs to verify transceivers are from approved manufacturers. Uses
+    `hardware_requirements.transceiver_manufacturers` from metadata, defaulting to
+    ['Arista Networks', 'Arastra, Inc.'] if not specified.
     """
 
     def create(self) -> list[VerifyTransceiversManufacturers.Input] | None:
