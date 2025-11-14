@@ -815,9 +815,8 @@ jobs:
         run: |
           pip install --group build_wheel
       - name: Build wheels
-        # Not using working-directory
-        # because manylinux uses a container and will not copy the
-        # parent Cargo.toml and we will be sad
+        # Not using working-directory because manylinux uses a container
+        # and will not copy the parent Cargo.toml and we will be sad
         run: |-
           python -m cibuildwheel --output-dir wheelhouse pyavd-utils
       - uses: actions/upload-artifact@v5
