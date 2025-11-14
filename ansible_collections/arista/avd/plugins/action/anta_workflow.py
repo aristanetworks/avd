@@ -341,7 +341,7 @@ def sort_result_manager(result_manager: ResultManager, status_priority: list[str
 
     def sort_key(item: TestResult) -> tuple[str, ...]:
         # Start with the status_order
-        key = [status_index[item.result]]
+        key = [status_index.get(item.result, float("inf"))]
         # Added secondary from sort_by
         key.extend(value if (value := getattr(item, field)) else "" for field in sort_by)
         return tuple(key)
