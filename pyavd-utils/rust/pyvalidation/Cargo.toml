@@ -10,7 +10,7 @@ pyo3-build-config = { workspace = true }
 [dependencies]
 avdschema = { path = "../../../rust/avdschema", features = ["dump_load_files"] }
 included_store = { path = "../../../rust/included_store" }
-validation = { path = "../../../rust/validation", features = ["python_bindings"] }
+validation = { path = "../../../rust/validation" }
 
 derive_more = { workspace = true, features = ["display", "from"] }
 log = { workspace = true }
