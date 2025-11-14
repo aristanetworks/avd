@@ -161,7 +161,6 @@ keys:
               subnet:
                 description: IPv4 subnet.
                 type: str
-                required: true
               name:
                 type: str
                 convert_types:
@@ -233,7 +232,6 @@ keys:
               subnet:
                 description: IPv6 subnet.
                 type: str
-                required: true
               name:
                 type: str
                 convert_types:
