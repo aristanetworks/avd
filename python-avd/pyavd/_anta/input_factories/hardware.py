@@ -27,7 +27,7 @@ class VerifyEnvironmentPowerInputFactory(AntaTestInputFactory[VerifyEnvironmentP
 class VerifyTransceiversManufacturersInputFactory(AntaTestInputFactory[VerifyTransceiversManufacturers.Input]):
     """
     Input factory class for the `VerifyTransceiversManufacturers` test.
-    
+
     Generates test inputs using `hardware_requirements.transceiver_manufacturers` from metadata to check the transceivers
     come from approved manufacturers.
     """
