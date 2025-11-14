@@ -664,7 +664,7 @@ keys:
                     convert_types:
                     - int
                     description: DSCP value or range syntax.
-                    pattern: ^(?:cs[1-7]|af[1-4][1-3]|ef|(?:(?:,|,\s|^)(?:\d|[1-5]\d|6[0-3])(?:-(?:\d|[1-5]\d|6[0-3]))?)+)$
+                    pattern: (?:cs[1-7]|af[1-4][1-3]|ef|(?:(?:,|,\s|^)(?:\d|[1-5]\d|6[0-3])(?:-(?:\d|[1-5]\d|6[0-3]))?)+)
           l4_applications:
             type: list
             description: List of user defined L4 applications. The name should be
@@ -807,7 +807,7 @@ keys:
               type: str
               description: ARP entry MAC address.
               required: true
-              pattern: ^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$
+              pattern: '[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}'
   as_path:
     type: dict
     keys:
@@ -4711,11 +4711,11 @@ keys:
                   keys:
                     source:
                       type: str
-                      pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$
+                      pattern: ([0-9a-f]{2}:){5}[0-9a-f]{2}
                       description: MAC address for the source.
                     destination:
                       type: str
-                      pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$
+                      pattern: ([0-9a-f]{2}:){5}[0-9a-f]{2}
                       description: MAC address for the destination.
                 encapsulation:
                   type: dict
@@ -6935,7 +6935,7 @@ keys:
               type: str
               required: true
               description: MAC address of neighbor like 'aa:af:12:34:bc:bf'
-              pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$
+              pattern: ([0-9a-f]{2}:){5}[0-9a-f]{2}
       persistent:
         type: dict
         keys:
@@ -8028,7 +8028,7 @@ keys:
             mac_address:
               type: str
               required: true
-              pattern: ^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$
+              pattern: '[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}'
               description: 'The static MAC address to configure.
 
                 The combination of ''mac_address'' and ''vlan'' must be unique across
@@ -13164,7 +13164,7 @@ keys:
               '
           timeout:
             type: str
-            pattern: ^\d+(\.\d{1,2})?$
+            pattern: \d+(\.\d{1,2})?
             convert_types:
             - int
             - float
@@ -13180,7 +13180,7 @@ keys:
               '
           polling_interval:
             type: str
-            pattern: ^\d+(\.\d{1,3})?$
+            pattern: \d+(\.\d{1,3})?
             convert_types:
             - int
             - float
@@ -13194,7 +13194,7 @@ keys:
               '
           recovery_time:
             type: str
-            pattern: ^\d+(\.\d{1,2})?$
+            pattern: \d+(\.\d{1,2})?
             convert_types:
             - int
             - float
@@ -13898,7 +13898,7 @@ keys:
                     timeout:
                       type: str
                       required: true
-                      pattern: ^\d+(\.\d{1,2})?$
+                      pattern: \d+(\.\d{1,2})?
                       convert_types:
                       - int
                       - float
@@ -13915,7 +13915,7 @@ keys:
                     polling_interval:
                       type: str
                       required: true
-                      pattern: ^auto|\d+(\.\d{1,3})?$
+                      pattern: auto|\d+(\.\d{1,3})?
                       convert_types:
                       - int
                       - float
@@ -13932,7 +13932,7 @@ keys:
                     recovery_time:
                       type: str
                       required: true
-                      pattern: ^\d+(\.\d{1,2})?$
+                      pattern: \d+(\.\d{1,2})?
                       convert_types:
                       - int
                       - float
@@ -14394,7 +14394,7 @@ keys:
           name:
             type: str
             required: true
-            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
+            pattern: '[A-Za-z0-9_.:{}\[\]-]+'
           id:
             type: int
             convert_types:
@@ -14409,7 +14409,7 @@ keys:
           name:
             type: str
             required: true
-            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
+            pattern: '[A-Za-z0-9_.:{}\[\]-]+'
           id:
             type: int
             convert_types:
@@ -14424,7 +14424,7 @@ keys:
           name:
             type: str
             required: true
-            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
+            pattern: '[A-Za-z0-9_.:{}\[\]-]+'
           id:
             type: int
             convert_types:
@@ -21605,7 +21605,7 @@ keys:
                   name:
                     type: str
                     description: Local interface name.
-                    pattern: ^(Port-Channel|Ethernet(\d+/)*)\d+(\.\d+)?$
+                    pattern: (Port-Channel|Ethernet(\d+/)*)\d+(\.\d+)?
                   public_address:
                     type: str
                     description: Public IP assigned by NAT.
@@ -21731,7 +21731,7 @@ keys:
               convert_types:
               - int
               - float
-              pattern: ^\d+(\.\d{1,2})?$
+              pattern: \d+(\.\d{1,2})?
             path_groups:
               type: list
               primary_key: name
