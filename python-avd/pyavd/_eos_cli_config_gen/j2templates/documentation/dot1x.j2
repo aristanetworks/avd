@@ -143,6 +143,19 @@
 {%                 endfor %}
 {%             endif %}
 {%         endif %}
+{%         if dot1x.eapol is arista.avd.defined %}
+
+#### 802.1X EAPOL
+
+| Attribute | Value |
+| --------- | ----- |
+{%             if dot1x.eapol.vlan_change_logoff_disabled is arista.avd.defined %}
+| VLAN Change Logoff Disabled | {{ dot1x.eapol.vlan_change_logoff_disabled }} |
+{%             endif %}
+{%             if dot1x.eapol.unresponsive_action_traffic_allow_vlan is arista.avd.defined %}
+| Unresponsive Action Traffic Allow VLAN | {{ dot1x.eapol.unresponsive_action_traffic_allow_vlan }} |
+{%             endif %}
+{%         endif %}
 {%     endif %}
 {%     if ethernet_interfaces_dot1x | length > 0 %}
 
