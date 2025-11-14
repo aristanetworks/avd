@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from collections import ChainMap
 from collections.abc import Generator, Mapping
-from re import fullmatch, match
+from re import fullmatch
 from typing import Any, Literal, NoReturn
 
 from pyavd._errors import AvdValidationError
@@ -256,7 +256,7 @@ class AvdValidator:
                     )
 
     def pattern_validator(self, pattern: str, instance: str, _schema: dict, path: list[str | int]) -> Generator:
-        if match(pattern, instance) is None:
+        if fullmatch(pattern, instance) is None:
             yield AvdValidationError(f"The value '{instance}' is not matching the pattern '{pattern}'.", path=path)
 
 
