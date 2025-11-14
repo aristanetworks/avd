@@ -13,6 +13,7 @@ coverage = [
 # group used to build cross platform pyavd-utils wheels
 build_wheel = [
     "cibuildwheel==3.3.0",
+    "abi3audit==0.0.22",
 ]
 
 [tool.black]
