@@ -62,7 +62,9 @@ class RouterBgpMixin(Protocol):
             self.shared_utils.set_underlay_bgp_peer_group(target_peer_group)
 
             if not self.shared_utils.underlay_ipv6_numbered:
-                target_address_family = self.structured_config.router_bgp.address_family_ipv4.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
+                target_address_family = self.structured_config.router_bgp.address_family_ipv4.peer_groups.obtain(
+                    self.inputs.bgp_peer_groups.ipv4_underlay_peers.name
+                )
                 self.shared_utils.set_ipv4_address_family(target_address_family)
 
             if self.shared_utils.underlay_ipv6:
