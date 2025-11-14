@@ -791,7 +791,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     needs: [file-changes]
     if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
-    # testing but I don't like the curl...
     strategy:
       fail-fast: false
       matrix:
