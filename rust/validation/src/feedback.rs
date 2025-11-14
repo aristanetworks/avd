@@ -229,91 +229,86 @@ pub enum ViolationValidValues {
     Str(Vec<String>),
 }
 
-#[derive(Clone, Debug, PartialEq, Serialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, derive_more::From)]
+pub struct ReplacementField(Option<String>);
+impl Display for ReplacementField {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(replacement) = &self.0 {
+            write!(f, " Use '{replacement}' instead.")
+        } else {
+            Ok(())
+        }
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, derive_more::From)]
+struct VersionField(Option<String>);
+impl Display for VersionField {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(version) = &self.0 {
+            write!(f, " in AVD version {version}")
+        } else {
+            Ok(())
+        }
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, derive_more::From)]
+pub struct UrlField(Option<String>);
+impl Display for UrlField {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(url) = &self.0 {
+            write!(f, " See '{url}' for details.")
+        } else {
+            Ok(())
+        }
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, derive_more::Display)]
+#[display("The input data model '{path}' is deprecated and will be removed{version}.{replacement}{url}")]
 pub struct Deprecated {
     path: Path,
-    replacement: Option<String>,
-    version: Option<String>,
-    url: Option<String>,
-}
-impl Display for Deprecated {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let mut string = format!("The input data model '{}' is deprecated", self.path);
-        if let Some(version) = &self.version {
-            string.push_str(&format!(" and will be removed in AVD version {version}"));
-        }
-        string.push('.');
-        if let Some(replacement) = &self.replacement {
-            string.push_str(&format!(" Use '{replacement}' instead."));
-        }
-        if let Some(url) = &self.url {
-            string.push_str(&format!(" See '{url}' for details."));
-        }
-        f.write_str(&string)
-    }
+    replacement: ReplacementField,
+    version: VersionField,
+    url: UrlField,
 }
 impl Deprecated {
     pub(crate) fn from_schema(path: &Path, deprecation: &avdschema::base::Deprecation) -> Self {
         Self {
             path: path.to_owned(),
-            replacement: deprecation.new_key.to_owned(),
-            version: deprecation.remove_in_version.to_owned(),
-            url: deprecation.url.to_owned(),
+            replacement: deprecation.new_key.to_owned().into(),
+            version: deprecation.remove_in_version.to_owned().into(),
+            url: deprecation.url.to_owned().into(),
         }
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Serialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, derive_more::Display)]
+#[display("The input data model '{path}' was removed{version}.{replacement}{url}")]
 pub struct Removed {
     path: Path,
-    replacement: Option<String>,
-    version: Option<String>,
-    url: Option<String>,
-}
-impl Display for Removed {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let mut string = format!("The input data model '{}' was removed", self.path);
-        if let Some(version) = &self.version {
-            string.push_str(&format!(" in AVD version {version}"));
-        }
-        string.push('.');
-        if let Some(replacement) = &self.replacement {
-            string.push_str(&format!(" Use '{replacement}' instead."));
-        }
-        if let Some(url) = &self.url {
-            string.push_str(&format!(" See '{url}' for details."));
-        }
-        f.write_str(&string)
-    }
+    replacement: ReplacementField,
+    version: VersionField,
+    url: UrlField,
 }
 impl Removed {
     pub(crate) fn from_schema(path: &Path, deprecation: &avdschema::base::Deprecation) -> Self {
         Self {
             path: path.to_owned(),
-            replacement: deprecation.new_key.to_owned(),
-            version: deprecation.remove_in_version.to_owned(),
-            url: deprecation.url.to_owned(),
+            replacement: deprecation.new_key.to_owned().into(),
+            version: deprecation.remove_in_version.to_owned().into(),
+            url: deprecation.url.to_owned().into(),
         }
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Serialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, derive_more::Display)]
+#[display("The input data model '{path}' is deprecated and cannot be used in conjunction with the new data model '{replacement_path}'.{url}")]
 pub struct Conflict {
     path: Path,
     replacement_path: Path,
-    url: Option<String>,
-}
-impl Display for Conflict {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let mut string = format!(
-            "The input data model '{}' is deprecated and cannot be used in conjunction with the new data model '{}'.",
-            self.path, self.replacement_path
-        );
-        if let Some(url) = &self.url {
-            string.push_str(&format!(" See '{url}' for details."));
-        }
-        f.write_str(&string)
-    }
+    url: UrlField,
 }
 impl Conflict {
     pub(crate) fn from_schema(
@@ -324,7 +319,7 @@ impl Conflict {
         Self {
             path: path.to_owned(),
             replacement_path: replacement_path.to_owned(),
-            url: deprecation.url.to_owned(),
+            url: deprecation.url.to_owned().into(),
         }
     }
 }
