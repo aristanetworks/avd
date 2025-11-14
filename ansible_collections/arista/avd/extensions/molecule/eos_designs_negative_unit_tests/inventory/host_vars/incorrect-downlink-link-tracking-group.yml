@@ -1,0 +1,24 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    uplink_ipv4_pool: 172.31.254.0/30
+    loopback_ipv4_pool: 172.31.253.0/24
+    vtep_loopback_ipv4_pool: 172.31.252.0/24
+  nodes:
+    - name: incorrect-downlink-link-tracking-group
+      id: 4
+      mgmt_ip: 192.168.200.108/24
+      mac_address: '0c:1d:c0:1d:62:01'
+      bgp_as: 65103
+      link_tracking:
+        enabled: true
+        downlinks:
+          enabled: true
+          # The specified group is not defined under 'link_tracking.groups'
+          group: DOWNLINK_GROUP1
+
+expected_error_message: >-
+  Link tracking group 'DOWNLINK_GROUP1' referenced under node setting 'link_tracking.downlinks.group' is
+  not defined in 'link_tracking.groups' for device 'incorrect-downlink-link-tracking-group'.
