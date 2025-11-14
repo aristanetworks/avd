@@ -7,7 +7,7 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal, Protocol, overload
 
-from pyavd._eos_designs.schema import EosDesigns
+from pyavd._eos_designs.schema import EosCliConfigGen, EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import template_var
 from pyavd.j2filters import range_expand
@@ -184,7 +184,7 @@ class UtilsMixin(Protocol):
                 break
         return vlans
 
-    def set_underlay_bgp_peer_group(self: SharedUtilsProtocol, peer_group):
+    def set_underlay_bgp_peer_group(self: SharedUtilsProtocol, peer_group: EosCliConfigGen.RouterBgp.PeerGroupsItem) -> None:
         af_type = "ipv4" if not self.underlay_ipv6_numbered else "ipv6"
         peer_group.metadata.type = af_type
         if password := self.get_bgp_password(self.inputs.bgp_peer_groups.ipv4_underlay_peers):
@@ -194,7 +194,7 @@ class UtilsMixin(Protocol):
         peer_group.maximum_routes = 12000
         peer_group.send_community = "all"
 
-    def set_ipv4_address_family(self: SharedUtilsProtocol, address_family):
+    def set_ipv4_address_family(self: SharedUtilsProtocol, address_family: EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem) -> None:
         address_family.activate = True
         if self.inputs.underlay_rfc5549:
             address_family.next_hop.address_family_ipv6._update(enabled=True, originate=True)
