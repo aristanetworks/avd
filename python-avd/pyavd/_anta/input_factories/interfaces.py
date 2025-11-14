@@ -29,7 +29,7 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
     The expected status is 'adminDown' when the interface is shutdown, 'up' otherwise.
 
     Notes:
-    - Ethernet/Port-Channel: Considers `validate_state` knob (default: True)
+    - Ethernet/Port-Channel: Considers `metadata.validate_state` knob (default: True)
     - Ethernet: Considers `interface_defaults.ethernet.shutdown` when `shutdown` is not explicitly set
     - Vxlan1: Only tested if at least one VNI (L2 or L3) is configured and its source interface is operational (not shutdown and has required IP address)
     """
@@ -48,7 +48,7 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
         return [VerifyInterfacesStatus.Input(interfaces=natural_sort(interfaces, sort_key="name"))] if interfaces else None
 
     def _get_ethernet_interfaces(self) -> Iterator[InterfaceState]:
-        """Get Ethernet interfaces, considering `validate_state` knob and interface defaults."""
+        """Get Ethernet interfaces, considering `metadata.validate_state` knob and interface defaults."""
         for intf in self.structured_config.ethernet_interfaces:
             if intf.metadata.validate_state is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
@@ -61,7 +61,7 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
             yield InterfaceState(name=intf.name, status="adminDown" if is_shutdown else "up")
 
     def _get_port_channel_interfaces(self) -> Iterator[InterfaceState]:
-        """Get Port-Channel interfaces, considering `validate_state` knob."""
+        """Get Port-Channel interfaces, considering `metadata.validate_state` knob."""
         for intf in self.structured_config.port_channel_interfaces:
             if intf.metadata.validate_state is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
@@ -123,7 +123,7 @@ class VerifyPortChannelsInputFactory(AntaTestInputFactory[VerifyPortChannels.Inp
     Input factory class for the `VerifyPortChannels` test.
 
     Port-channel interfaces from `port_channel_interfaces` in the device
-    structured config with `validate_state` set to False or `shutdown` set to True
+    structured config with `metadata.validate_state` set to False or `shutdown` set to True
     are ignored.
     """
 
