@@ -39684,6 +39684,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class AggregateAddressesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class Attribute(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"rcf": {"type": str}}
+                rcf: str | None
+                """RCF name with parenthesis. Example "AGG-ADD-RCF()"."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, rcf: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Attribute.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            rcf: RCF name with parenthesis. Example "AGG-ADD-RCF()".
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "prefix": {"type": str},
                 "advertise_only": {"type": bool},
@@ -39691,6 +39712,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "summary_only": {"type": bool},
                 "attribute_map": {"type": str},
                 "match_map": {"type": str},
+                "attribute": {"type": Attribute},
             }
             prefix: str
             """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
@@ -39701,6 +39723,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Route-map name."""
             match_map: str | None
             """Route-map name."""
+            attribute: Attribute
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -39713,6 +39737,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     summary_only: bool | None | UndefinedType = Undefined,
                     attribute_map: str | None | UndefinedType = Undefined,
                     match_map: str | None | UndefinedType = Undefined,
+                    attribute: Attribute | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AggregateAddressesItem.
@@ -39727,6 +39752,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         summary_only: summary_only
                         attribute_map: Route-map name.
                         match_map: Route-map name.
+                        attribute: Subclass of AvdModel.
 
                     """
 
@@ -50652,6 +50678,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class AggregateAddressesItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                class Attribute(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"rcf": {"type": str}}
+                    rcf: str | None
+                    """RCF name with parenthesis. Example "AGG-ADD-RCF()"."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, rcf: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            Attribute.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                rcf: RCF name with parenthesis. Example "AGG-ADD-RCF()".
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "prefix": {"type": str},
                     "advertise_only": {"type": bool},
@@ -50659,6 +50706,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "summary_only": {"type": bool},
                     "attribute_map": {"type": str},
                     "match_map": {"type": str},
+                    "attribute": {"type": Attribute},
                 }
                 prefix: str
                 """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
@@ -50667,6 +50715,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 summary_only: bool | None
                 attribute_map: str | None
                 match_map: str | None
+                attribute: Attribute
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -50679,6 +50729,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         summary_only: bool | None | UndefinedType = Undefined,
                         attribute_map: str | None | UndefinedType = Undefined,
                         match_map: str | None | UndefinedType = Undefined,
+                        attribute: Attribute | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AggregateAddressesItem.
@@ -50693,6 +50744,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             summary_only: summary_only
                             attribute_map: attribute_map
                             match_map: match_map
+                            attribute: Subclass of AvdModel.
 
                         """
 

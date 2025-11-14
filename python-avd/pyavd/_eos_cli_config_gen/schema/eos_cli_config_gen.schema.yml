@@ -15499,6 +15499,12 @@ keys:
             match_map:
               type: str
               description: Route-map name.
+            attribute:
+              type: dict
+              keys:
+                rcf:
+                  type: str
+                  description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
       redistribute:
         type: dict
         description: Redistribute routes in to BGP.
@@ -19065,6 +19071,12 @@ keys:
                     type: str
                   match_map:
                     type: str
+                  attribute:
+                    type: dict
+                    keys:
+                      rcf:
+                        type: str
+                        description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
             address_family_ipv4:
               type: dict
               keys:
