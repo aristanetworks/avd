@@ -8787,11 +8787,12 @@ ASN Notation: asdot
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | False | - | - | True |
-| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
-| 2.2.1.0/24 | False | False | - | - | False |
+| Prefix | AS Set | Summary Only | Attribute Map | Attribute RCF | Match Map | Advertise Only |
+| ------ | ------ | ------------ | ------------- | ------------- | --------- | -------------- |
+| 1.1.1.0/24 | False | False | - | - | - | True |
+| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | AGG-ADD-RCF() | RM-MATCH | True |
+| 2.2.1.0/24 | False | False | - | - | - | False |
+| 3.3.3.0/24 | False | False | - | AGG-ADD-RCF() | - | False |
 
 #### Router BGP EVPN Address Family
 
@@ -9312,8 +9313,9 @@ router bgp 65101
    neighbor fe80::b%Vl4094 peer group IPV6-UNDERLAY-MLAG
    no bgp redistribute-internal
    aggregate-address 1.1.1.0/24 advertise-only
-   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
+   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE attribute rcf AGG-ADD-RCF() match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24
+   aggregate-address 3.3.3.0/24 attribute rcf AGG-ADD-RCF()
    redistribute connected rcf Router_BGP_Connected()
    redistribute isis level-2 include leaked route-map RM_BGP_EVPN
    redistribute ospf match internal
@@ -9909,6 +9911,7 @@ router bgp 65101
       neighbor 101.0.3.6 bfd interval 2500 min-rx 2000 multiplier 3
       neighbor 101.0.3.7 bfd
       aggregate-address 0.0.0.0/0 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET advertise-only
+      aggregate-address 3.3.3.0/24 attribute rcf AGG-ADD-RCF()
       aggregate-address 193.1.0.0/16 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET match-map VRF-MATCH-MAP
       redistribute ospf include leaked
       redistribute static rcf VRF_STATIC_RCF()
