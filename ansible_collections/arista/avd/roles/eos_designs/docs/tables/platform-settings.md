@@ -81,6 +81,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "custom_platform_settings.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Digital Twin settings applied when `avd_digital_twin_mode` is `true`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "custom_platform_settings.[].digital_twin.platform") | String |  |  |  | Name of an alternate `platform_settings` platform used when running in Digital Twin mode.<br>The `platform_settings` for the regular `platform` is used if this is not set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_node_type</samp>](## "custom_platform_settings.[].digital_twin.act_node_type") | String |  |  | Valid Values:<br>- <code>cloudeos</code><br>- <code>cvp</code><br>- <code>generic</code><br>- <code>third-party</code><br>- <code>tools-server</code><br>- <code>veos</code> | ACT node type. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_hardware_inventory</samp>](## "custom_platform_settings.[].validate_hardware_inventory") | Dictionary |  |  |  | Defines the minimum hardware specifications required for the device.<br>Used for validation by the `anta_runner` role. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fans</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_fans") | Integer |  |  |  | Minimum number of fans required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_line_cards</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_line_cards") | Integer |  |  |  | Minimum number of line cards required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "custom_platform_settings.[].validate_hardware_inventory.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "custom_platform_settings.[].validate_hardware_inventory.transceiver_manufacturers.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "custom_platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "custom_platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
     | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  | Platform settings. The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. The default values will be overridden if `platform_settings` is defined. If you need to replace all the default platforms, it is recommended to copy the defaults and modify them. If you need to add custom platforms, create them under `custom_platform_settings`. Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`. |
@@ -157,6 +165,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "platform_settings.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Digital Twin settings applied when `avd_digital_twin_mode` is `true`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "platform_settings.[].digital_twin.platform") | String |  |  |  | Name of an alternate `platform_settings` platform used when running in Digital Twin mode.<br>The `platform_settings` for the regular `platform` is used if this is not set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_node_type</samp>](## "platform_settings.[].digital_twin.act_node_type") | String |  |  | Valid Values:<br>- <code>cloudeos</code><br>- <code>cvp</code><br>- <code>generic</code><br>- <code>third-party</code><br>- <code>tools-server</code><br>- <code>veos</code> | ACT node type. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_hardware_inventory</samp>](## "platform_settings.[].validate_hardware_inventory") | Dictionary |  |  |  | Defines the minimum hardware specifications required for the device.<br>Used for validation by the `anta_runner` role. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "platform_settings.[].validate_hardware_inventory.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fans</samp>](## "platform_settings.[].validate_hardware_inventory.min_fans") | Integer |  |  |  | Minimum number of fans required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "platform_settings.[].validate_hardware_inventory.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_line_cards</samp>](## "platform_settings.[].validate_hardware_inventory.min_line_cards") | Integer |  |  |  | Minimum number of line cards required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "platform_settings.[].validate_hardware_inventory.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "platform_settings.[].validate_hardware_inventory.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "platform_settings.[].validate_hardware_inventory.transceiver_manufacturers.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
     | [<samp>platform_speed_groups</samp>](## "platform_speed_groups") | List, items: Dictionary |  |  |  | Set Hardware Speed Groups per Platform. |
@@ -349,6 +365,29 @@
           # ACT node type.
           act_node_type: <str; "cloudeos" | "cvp" | "generic" | "third-party" | "tools-server" | "veos">
 
+        # Defines the minimum hardware specifications required for the device.
+        # Used for validation by the `anta_runner` role.
+        validate_hardware_inventory:
+
+          # Minimum number of power supplies required for the device.
+          min_power_supplies: <int>
+
+          # Minimum number of fans required for the device.
+          min_fans: <int>
+
+          # Minimum number of supervisor modules required for the device.
+          min_supervisors: <int>
+
+          # Minimum number of line cards required for the device.
+          min_line_cards: <int>
+
+          # Minimum number of fabric cards required for the device.
+          min_fabric_cards: <int>
+
+          # List of approved transceiver manufacturers for the device.
+          transceiver_manufacturers: # (1)!
+            - <str>
+
         # Custom structured config for eos_cli_config_gen.
         structured_config: <dict>
 
@@ -356,7 +395,7 @@
         raw_eos_cli: <str>
 
     # Platform settings. The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. The default values will be overridden if `platform_settings` is defined. If you need to replace all the default platforms, it is recommended to copy the defaults and modify them. If you need to add custom platforms, create them under `custom_platform_settings`. Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
-    platform_settings: # (1)!
+    platform_settings: # (2)!
       - platforms:
           - <str>
 
@@ -535,6 +574,29 @@
           # ACT node type.
           act_node_type: <str; "cloudeos" | "cvp" | "generic" | "third-party" | "tools-server" | "veos">
 
+        # Defines the minimum hardware specifications required for the device.
+        # Used for validation by the `anta_runner` role.
+        validate_hardware_inventory:
+
+          # Minimum number of power supplies required for the device.
+          min_power_supplies: <int>
+
+          # Minimum number of fans required for the device.
+          min_fans: <int>
+
+          # Minimum number of supervisor modules required for the device.
+          min_supervisors: <int>
+
+          # Minimum number of line cards required for the device.
+          min_line_cards: <int>
+
+          # Minimum number of fabric cards required for the device.
+          min_fabric_cards: <int>
+
+          # List of approved transceiver manufacturers for the device.
+          transceiver_manufacturers: # (3)!
+            - <str>
+
         # Custom structured config for eos_cli_config_gen.
         structured_config: <dict>
 
@@ -551,6 +613,14 @@
     ```
 
     1. Default Value
+
+        ```yaml
+        transceiver_manufacturers:
+        - Arista Networks
+        - Arastra, Inc.
+        ```
+
+    2. Default Value
 
         ```yaml
         platform_settings:
@@ -786,4 +856,12 @@
           p2p_uplinks_mtu: 9194
           digital_twin:
             platform: CloudEOS
+        ```
+
+    3. Default Value
+
+        ```yaml
+        transceiver_manufacturers:
+        - Arista Networks
+        - Arastra, Inc.
         ```
