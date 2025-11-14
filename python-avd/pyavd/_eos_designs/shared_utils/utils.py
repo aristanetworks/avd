@@ -183,3 +183,18 @@ class UtilsMixin(Protocol):
                 # No need to go through the other uplinks as the configuration is the same
                 break
         return vlans
+
+    def set_underlay_bgp_peer_group(self: SharedUtilsProtocol, peer_group):
+        af_type = "ipv4" if not self.underlay_ipv6_numbered else "ipv6"
+        peer_group.metadata.type = af_type
+        if password := self.get_bgp_password(self.inputs.bgp_peer_groups.ipv4_underlay_peers):
+            peer_group.password = password
+        if self.inputs.bgp_peer_groups.ipv4_underlay_peers.bfd:
+            peer_group.bfd = True
+        peer_group.maximum_routes = 12000
+        peer_group.send_community = "all"
+
+    def set_ipv4_address_family(self: SharedUtilsProtocol, address_family):
+        address_family.activate = True
+        if self.inputs.underlay_rfc5549:
+            address_family.next_hop.address_family_ipv6._update(enabled=True, originate=True)

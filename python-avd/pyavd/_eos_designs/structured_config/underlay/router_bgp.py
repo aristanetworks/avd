@@ -29,7 +29,6 @@ class RouterBgpMixin(Protocol):
         if not self._underlay_p2p_links:
             return
 
-        af_type = "ipv4" if not self.shared_utils.underlay_ipv6_numbered else "ipv6"
         target_peer_group = self.structured_config.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
 
         if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
@@ -37,13 +36,7 @@ class RouterBgpMixin(Protocol):
                 self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
             )
 
-        target_peer_group.metadata.type = af_type
-        if password := self.shared_utils.get_bgp_password(self.inputs.bgp_peer_groups.ipv4_underlay_peers):
-            target_peer_group.password = password
-        if self.inputs.bgp_peer_groups.ipv4_underlay_peers.bfd:
-            target_peer_group.bfd = True
-        target_peer_group.maximum_routes = 12000
-        target_peer_group.send_community = "all"
+        self.shared_utils.set_underlay_bgp_peer_group(target_peer_group)
 
         if self.shared_utils.is_cv_pathfinder_router:
             target_peer_group.route_map_in = "RM-BGP-UNDERLAY-PEERS-IN"
@@ -56,13 +49,8 @@ class RouterBgpMixin(Protocol):
         # Address Families
         # TODO: - see if it makes sense to extract logic in method
         if not self.shared_utils.underlay_ipv6_numbered:
-            target_address_family = self.structured_config.router_bgp.address_family_ipv4.peer_groups.obtain(
-                self.inputs.bgp_peer_groups.ipv4_underlay_peers.name
-            )
-            target_address_family.activate = True
-
-            if self.inputs.underlay_rfc5549:
-                target_address_family.next_hop.address_family_ipv6._update(enabled=True, originate=True)
+            target_address_family = self.structured_config.router_bgp.address_family_ipv4.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
+            self.shared_utils.set_ipv4_address_family(target_address_family)
 
         if self.shared_utils.underlay_ipv6:
             ipv6_address_family = self.structured_config.router_bgp.address_family_ipv6.peer_groups.obtain(target_peer_group.name)
