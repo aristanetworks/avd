@@ -1997,10 +1997,10 @@ dhcp relay
 
 ###### DHCP Reservations in subnet 10.0.0.0/24
 
-| Mac Address | IPv4 Address | IPv6 Address | Hostname |
-| ----------- | ------------ | ------------ | -------- |
-| 0001.0001.0001 | 10.0.0.2 | - |  host3 |
-| 1a1b.1c1d.1e1f | 10.0.0.1 | - |  host1 |
+| Mac Address | IPv4 Address | Hostname |
+| ----------- | ------------ | -------- |
+| 0001.0001.0001 | 10.0.0.2 | host3 |
+| 1a1b.1c1d.1e1f | 10.0.0.1 | host1 |
 
 ##### IPv6 Subnets
 
@@ -2011,9 +2011,9 @@ dhcp relay
 
 ###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
 
-| Mac Address | IPv4 Address | IPv6 Address | Hostname |
-| ----------- | ------------ | ------------ | -------- |
-| 0003.0003.003 | - | 2001:db8:abcd:1234:c000::1 |  - |
+| Mac Address | IPv6 Address | Hostname |
+| ----------- | ------------ | -------- |
+| 0003.0003.003 | 2001:db8:abcd:1234:c000::1 |  - |
 
 ##### IPv4 Vendor Options
 
@@ -2031,10 +2031,10 @@ dhcp relay
 
 ###### DHCP Reservations in subnet 10.0.0.0/24
 
-| Mac Address | IPv4 Address | IPv6 Address | Hostname |
-| ----------- | ------------ | ------------ | -------- |
-| 0001.0001.0001 | 10.0.0.2 | - |  host3 |
-| 1a1b.1c1d.1e1f | 10.0.0.1 | - |  host1 |
+| Mac Address | IPv4 Address | Hostname |
+| ----------- | ------------ | -------- |
+| 0001.0001.0001 | 10.0.0.2 | host3 |
+| 1a1b.1c1d.1e1f | 10.0.0.1 | host1 |
 
 ##### IPv6 Subnets
 
@@ -2044,9 +2044,9 @@ dhcp relay
 
 ###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
 
-| Mac Address | IPv4 Address | IPv6 Address | Hostname |
-| ----------- | ------------ | ------------ | -------- |
-| 0003.0003.003 | - | 2001:db8:abcd:1234:c000::1 |  - |
+| Mac Address | IPv6 Address | Hostname |
+| ----------- | ------------ | -------- |
+| 0003.0003.003 | 2001:db8:abcd:1234:c000::1 |  - |
 
 ##### IPv4 Vendor Options
 
