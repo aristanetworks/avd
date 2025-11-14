@@ -2233,6 +2233,17 @@ keys:
               convert_types:
               - int
               description: VLAN value(s) or range(s) of VLAN values.
+      eapol:
+        type: dict
+        keys:
+          vlan_change_logoff_disabled:
+            type: bool
+            description: Disable host log off when there is a VLAN change.
+          unresponsive_action_traffic_allow_vlan:
+            type: int
+            convert_types:
+            - str
+            description: EAPOL unresponsive hosts VLAN ID.
   dps_interfaces:
     type: list
     primary_key: name
@@ -3983,6 +3994,14 @@ keys:
             port_profile:
               type: str
               description: Key only used for documentation or validation purposes.
+            validate_state:
+              type: bool
+              description: Set to false to disable interface state and LLDP topology
+                validation performed by the `anta_runner` role.
+            validate_lldp:
+              type: bool
+              description: Set to false to disable the LLDP topology validation performed
+                by the `anta_runner` role.
         sflow:
           type: dict
           keys:
@@ -4287,14 +4306,6 @@ keys:
                     - '0'
                     - '7'
                     - 8a
-        validate_state:
-          type: bool
-          description: Set to false to disable interface state and LLDP topology validation
-            performed by the `anta_runner` role.
-        validate_lldp:
-          type: bool
-          description: Set to false to disable the LLDP topology validation performed
-            by the `anta_runner` role.
         switchport:
           type: dict
           description: This should not be combined with `ethernet_interfaces[].type
@@ -12558,6 +12569,14 @@ keys:
             peer_key:
               type: str
               description: Key only used for documentation or validation purposes.
+            validate_state:
+              type: bool
+              description: Set to false to disable interface state and LLDP topology
+                validation performed by the `anta_runner` role.
+            validate_lldp:
+              type: bool
+              description: Set to false to disable the LLDP topology validation performed
+                by the `anta_runner` role.
         sflow:
           type: dict
           keys:
@@ -12993,14 +13012,6 @@ keys:
                 removed: true
                 remove_in_version: 6.0.0
                 new_key: srlgs
-        validate_state:
-          type: bool
-          description: Set to false to disable interface state and LLDP topology validation
-            performed by the `anta_runner` role.
-        validate_lldp:
-          type: bool
-          description: Set to false to disable the LLDP topology validation performed
-            by the `anta_runner` role.
         vlans:
           type: str
           deprecation:
@@ -15488,6 +15499,12 @@ keys:
             match_map:
               type: str
               description: Route-map name.
+            attribute:
+              type: dict
+              keys:
+                rcf:
+                  type: str
+                  description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
       redistribute:
         type: dict
         description: Redistribute routes in to BGP.
@@ -19054,6 +19071,12 @@ keys:
                     type: str
                   match_map:
                     type: str
+                  attribute:
+                    type: dict
+                    keys:
+                      rcf:
+                        type: str
+                        description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
             address_family_ipv4:
               type: dict
               keys:
