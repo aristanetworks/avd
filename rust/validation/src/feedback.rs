@@ -191,8 +191,8 @@ pub enum Violation {
     #[display("The value '{found}' is below the minimum allowed '{minimum}'.")]
     ValueBelowMinimum { minimum: i64, found: i64 },
     /// The value is not unique as required.
-    #[display("The value is not unique among similar items. Conflicting items: {other_path:?}")]
-    ValueNotUnique { other_path: Vec<String> },
+    #[display("The value is not unique among similar items. Conflicting item: {other_path}")]
+    ValueNotUnique { other_path: Path },
 }
 
 /// Data Type used in Violation.
@@ -395,9 +395,9 @@ mod tests {
                 "1".to_string(),
                 "subkey".to_string(),
             ]),
-            replacement: Some("another_key".to_string()),
-            version: Some("6.0.0".to_string()),
-            url: Some("foo.bar".to_string()),
+            replacement: Some("another_key".to_string()).into(),
+            version: Some("6.0.0".to_string()).into(),
+            url: Some("foo.bar".to_string()).into(),
         };
         assert_eq!(
             format!("{}", deprecated).as_str(),
@@ -413,9 +413,9 @@ mod tests {
                 "1".to_string(),
                 "subkey".to_string(),
             ]),
-            replacement: Some("another_key".to_string()),
-            version: Some("6.0.0".to_string()),
-            url: Some("foo.bar".to_string()),
+            replacement: Some("another_key".to_string()).into(),
+            version: Some("6.0.0".to_string()).into(),
+            url: Some("foo.bar".to_string()).into(),
         };
         assert_eq!(
             format!("{}", removed).as_str(),
@@ -436,7 +436,7 @@ mod tests {
                 "1".to_string(),
                 "another_key".to_string(),
             ]),
-            url: Some("foo.bar".to_string()),
+            url: Some("foo.bar".to_string()).into(),
         };
         assert_eq!(
             format!("{}", conflict).as_str(),
@@ -461,9 +461,9 @@ mod tests {
             Deprecated::from_schema(&Path::from_iter(["foo"]), &get_deprecation_test_schema());
         let expected_deprecated = Deprecated {
             path: Path::from(vec!["foo".to_string()]),
-            replacement: Some("new_key".to_string()),
-            version: Some("6.0.0".to_string()),
-            url: Some("my.url".to_string()),
+            replacement: Some("new_key".to_string()).into(),
+            version: Some("6.0.0".to_string()).into(),
+            url: Some("my.url".to_string()).into(),
         };
         assert_eq!(deprecated, expected_deprecated);
     }
@@ -474,9 +474,9 @@ mod tests {
             Removed::from_schema(&Path::from_iter(["foo"]), &get_deprecation_test_schema());
         let expected_removed = Removed {
             path: Path::from(vec!["foo".to_string()]),
-            replacement: Some("new_key".to_string()),
-            version: Some("6.0.0".to_string()),
-            url: Some("my.url".to_string()),
+            replacement: Some("new_key".to_string()).into(),
+            version: Some("6.0.0".to_string()).into(),
+            url: Some("my.url".to_string()).into(),
         };
         assert_eq!(removed, expected_removed);
     }
@@ -491,7 +491,7 @@ mod tests {
         let expected_conflict = Conflict {
             path: Path::from_iter(["foo"]),
             replacement_path: Path::from_iter(["new_foo"]),
-            url: Some("my.url".to_string()),
+            url: Some("my.url".to_string()).into(),
         };
         assert_eq!(conflict, expected_conflict);
     }

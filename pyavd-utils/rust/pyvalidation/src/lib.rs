@@ -270,8 +270,8 @@ mod tests {
             assert!(errors.is_instance_of::<pyo3::types::PyList>());
             let expected_errors: [(Vec<String>, String); 3] = [
                 (vec!["ethernet_interfaces".into(), "2".into()], "Missing the required key 'name'.".into()),
-                (vec!["ethernet_interfaces".into(), "0".into(), "name".into()], "The value is not unique among similar items. Conflicting items: [\"ethernet_interfaces\", \"1\", \"name\"]".into()),
-                (vec!["ethernet_interfaces".into(), "1".into(), "name".into()], "The value is not unique among similar items. Conflicting items: [\"ethernet_interfaces\", \"0\", \"name\"]".into()),
+                (vec!["ethernet_interfaces".into(), "0".into(), "name".into()], "The value is not unique among similar items. Conflicting item: ethernet_interfaces[1].name".into()),
+                (vec!["ethernet_interfaces".into(), "1".into(), "name".into()], "The value is not unique among similar items. Conflicting item: ethernet_interfaces[0].name".into()),
             ];
 
             assert_eq!(errors.len().unwrap(), expected_errors.len());
