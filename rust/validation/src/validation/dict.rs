@@ -76,9 +76,9 @@ fn validate_allowed_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Co
             .filter(|key| !key.starts_with('_'))
             .filter(|key| !keys.contains_key(key.as_str()))
             .for_each(|key| {
-                ctx.path.push(key.to_owned());
+                ctx.state.path.push(key.to_owned());
                 ctx.add_error(Violation::UnexpectedKey());
-                ctx.path.pop();
+                ctx.state.path.pop();
             });
     }
 }
@@ -93,7 +93,7 @@ fn validate_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
                     // Don't validate required keys if we are below a dict with relaxed validation or if we are at the root level.
                     if ctx.state.relaxed_validation
                         || (ctx.configuration.ignore_required_keys_on_root_dict
-                            && ctx.path.is_empty())
+                            && ctx.state.path.is_empty())
                     {
                         continue;
                     }
@@ -105,10 +105,10 @@ fn validate_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
                     }
                 }
                 Some(value) => {
-                    ctx.path.push(key.to_owned());
+                    ctx.state.path.push(key.to_owned());
                     check_deprecation(key, key_schema, input, ctx);
                     key_schema.validate(value, ctx);
-                    ctx.path.pop();
+                    ctx.state.path.pop();
                 }
             }
         }
@@ -122,10 +122,10 @@ fn validate_dynamic_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Co
             // validate the computed dynamic keys' corresponding values
             for key in keys {
                 if let Some(value) = input.get(&key) {
-                    ctx.path.push(key.to_owned());
+                    ctx.state.path.push(key.to_owned());
                     check_deprecation(&key, key_schema, input, ctx);
                     key_schema.validate(value, ctx);
-                    ctx.path.pop();
+                    ctx.state.path.pop();
                 }
             }
         }
@@ -142,10 +142,10 @@ fn check_deprecation(
         && deprecation.warning
     {
         if deprecation.removed.unwrap_or_default() {
-            ctx.add_error(Removed::from_schema(&ctx.path, deprecation));
+            ctx.add_error(Removed::from_schema(&ctx.state.path, deprecation));
         } else {
             // TODO: Catch conflict.
-            ctx.add_warning(Deprecated::from_schema(&ctx.path, deprecation));
+            ctx.add_warning(Deprecated::from_schema(&ctx.state.path, deprecation));
         }
     }
 }
@@ -668,7 +668,7 @@ mod tests {
         };
         let mut ctx = Context::new(&store, Some(&configuration));
         // Using a deeper path and see that we still get the error even though we relax for the root dict.
-        ctx.path.push("deeper".into());
+        ctx.state.path.push("deeper".into());
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.result.infos.is_empty());
         assert_eq!(

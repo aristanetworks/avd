@@ -101,17 +101,9 @@ fn validate_unique_keys(schema: &List, items: &[Value], ctx: &mut Context) {
             for (trail, item) in &items {
                 if current_trail != trail && current_item == item {
                     ctx.result.errors.push(Feedback {
-                        path: {
-                            let mut path = ctx.path.clone();
-                            path.extend_from_slice(current_trail);
-                            path.into()
-                        },
+                        path: { ctx.state.path.clone_with_slice(current_trail) },
                         issue: Violation::ValueNotUnique {
-                            other_path: {
-                                let mut path = ctx.path.clone();
-                                path.extend_from_slice(trail);
-                                path
-                            },
+                            other_path: ctx.state.path.clone_with_slice(current_trail).into(),
                         }
                         .into(),
                     });
@@ -123,10 +115,10 @@ fn validate_unique_keys(schema: &List, items: &[Value], ctx: &mut Context) {
 
 fn validate_items(schema: &List, items: &[Value], ctx: &mut Context) {
     for (i, item) in items.iter().enumerate() {
-        ctx.path.push(i.to_string());
+        ctx.state.path.push(i.to_string());
         validate_item_schema(schema, item, ctx);
         validate_item_primary_key(schema, item, ctx);
-        ctx.path.pop();
+        ctx.state.path.pop();
     }
 }
 

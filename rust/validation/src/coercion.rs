@@ -42,18 +42,18 @@ impl Coercion for Dict {
                     }
                     match dict.get_mut(key) {
                         Some(value) => {
-                            ctx.path.push(key.to_owned());
+                            ctx.state.path.push(key.to_owned());
                             key_schema.coerce(value, ctx);
-                            ctx.path.pop();
+                            ctx.state.path.pop();
                         }
                         // Insert default value since dynamic keys and dynamic values may rely on these.
                         None => {
                             if let Some(default_value) = key_schema.default_value() {
                                 dict.insert(key.to_owned(), default_value);
                                 if ctx.configuration.return_default_value_inserted_infos {
-                                    ctx.path.push(key.to_owned());
+                                    ctx.state.path.push(key.to_owned());
                                     ctx.add_info(InfoIssue::DefaultValueInserted());
-                                    ctx.path.pop();
+                                    ctx.state.path.pop();
                                 }
                             }
                         }
@@ -72,9 +72,9 @@ impl Coercion for Dict {
                     // validate the computed dynamic keys' corresponding values
                     for key in keys {
                         if let Some(value) = dict.get_mut(&key) {
-                            ctx.path.push(key);
+                            ctx.state.path.push(key);
                             key_schema.coerce(value, ctx);
-                            ctx.path.pop();
+                            ctx.state.path.pop();
                         }
                     }
                 }
@@ -136,9 +136,9 @@ impl Coercion for List {
             && let Value::Array(list) = input
         {
             for (i, item) in list.iter_mut().enumerate() {
-                ctx.path.push(i.to_string());
+                ctx.state.path.push(i.to_string());
                 item_schema.coerce(item, ctx);
-                ctx.path.pop();
+                ctx.state.path.pop();
             }
         }
     }

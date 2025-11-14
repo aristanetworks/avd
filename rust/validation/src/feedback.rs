@@ -59,8 +59,24 @@ impl From<&str> for Value {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Serialize, derive_more::From)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, derive_more::From)]
 pub struct Path(Vec<String>);
+impl Path {
+    pub(crate) fn push(&mut self, step: String) {
+        self.0.push(step)
+    }
+    pub(crate) fn pop(&mut self) -> Option<String> {
+        self.0.pop()
+    }
+    pub(crate) fn is_empty(&self) -> bool {
+        self.0.is_empty()
+    }
+    pub(crate) fn clone_with_slice(&self, slice: &[String]) -> Self {
+        let mut new = self.clone();
+        new.0.extend_from_slice(slice);
+        new
+    }
+}
 impl std::fmt::Display for Path {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut string = String::default();
@@ -82,6 +98,13 @@ impl std::fmt::Display for Path {
 impl From<Path> for Vec<String> {
     fn from(value: Path) -> Self {
         value.0
+    }
+}
+impl<'a> FromIterator<&'a str> for Path {
+    fn from_iter<T: IntoIterator<Item = &'a str>>(iter: T) -> Self {
+        Self(Vec::from_iter(
+            iter.into_iter().map(|item| item.to_string()),
+        ))
     }
 }
 
@@ -230,12 +253,9 @@ impl Display for Deprecated {
     }
 }
 impl Deprecated {
-    pub(crate) fn from_schema(
-        path: &Vec<String>,
-        deprecation: &avdschema::base::Deprecation,
-    ) -> Self {
+    pub(crate) fn from_schema(path: &Path, deprecation: &avdschema::base::Deprecation) -> Self {
         Self {
-            path: path.to_owned().into(),
+            path: path.to_owned(),
             replacement: deprecation.new_key.to_owned(),
             version: deprecation.remove_in_version.to_owned(),
             url: deprecation.url.to_owned(),
@@ -267,12 +287,9 @@ impl Display for Removed {
     }
 }
 impl Removed {
-    pub(crate) fn from_schema(
-        path: &Vec<String>,
-        deprecation: &avdschema::base::Deprecation,
-    ) -> Self {
+    pub(crate) fn from_schema(path: &Path, deprecation: &avdschema::base::Deprecation) -> Self {
         Self {
-            path: path.to_owned().into(),
+            path: path.to_owned(),
             replacement: deprecation.new_key.to_owned(),
             version: deprecation.remove_in_version.to_owned(),
             url: deprecation.url.to_owned(),
@@ -300,13 +317,13 @@ impl Display for Conflict {
 }
 impl Conflict {
     pub(crate) fn from_schema(
-        path: &Vec<String>,
-        replacement_path: &Vec<String>,
+        path: &Path,
+        replacement_path: &Path,
         deprecation: &avdschema::base::Deprecation,
     ) -> Self {
         Self {
-            path: path.to_owned().into(),
-            replacement_path: replacement_path.to_owned().into(),
+            path: path.to_owned(),
+            replacement_path: replacement_path.to_owned(),
             url: deprecation.url.to_owned(),
         }
     }
@@ -446,7 +463,7 @@ mod tests {
     #[test]
     fn deprecated_from_schema() {
         let deprecated =
-            Deprecated::from_schema(&vec!["foo".to_string()], &get_deprecation_test_schema());
+            Deprecated::from_schema(&Path::from_iter(["foo"]), &get_deprecation_test_schema());
         let expected_deprecated = Deprecated {
             path: Path::from(vec!["foo".to_string()]),
             replacement: Some("new_key".to_string()),
@@ -456,10 +473,10 @@ mod tests {
         assert_eq!(deprecated, expected_deprecated);
     }
 
-        #[test]
+    #[test]
     fn removed_from_schema() {
         let removed =
-            Removed::from_schema(&vec!["foo".to_string()], &get_deprecation_test_schema());
+            Removed::from_schema(&Path::from_iter(["foo"]), &get_deprecation_test_schema());
         let expected_removed = Removed {
             path: Path::from(vec!["foo".to_string()]),
             replacement: Some("new_key".to_string()),
@@ -469,13 +486,16 @@ mod tests {
         assert_eq!(removed, expected_removed);
     }
 
-            #[test]
+    #[test]
     fn conflict_from_schema() {
-        let conflict =
-            Conflict::from_schema(&vec!["foo".to_string()], &vec!["new_foo".to_string()], &get_deprecation_test_schema());
+        let conflict = Conflict::from_schema(
+            &Path::from_iter(["foo"]),
+            &Path::from_iter(["new_foo"]),
+            &get_deprecation_test_schema(),
+        );
         let expected_conflict = Conflict {
-            path: Path::from(vec!["foo".to_string()]),
-            replacement_path: Path::from(vec!["new_foo".to_string()]),
+            path: Path::from_iter(["foo"]),
+            replacement_path: Path::from_iter(["new_foo"]),
             url: Some("my.url".to_string()),
         };
         assert_eq!(conflict, expected_conflict);
