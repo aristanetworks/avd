@@ -5500,13 +5500,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Eapol(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"vlan_change_logoff_disabled": {"type": bool}}
+            _fields: ClassVar[dict] = {"vlan_change_logoff_disabled": {"type": bool}, "unresponsive_action_traffic_allow_vlan": {"type": int}}
             vlan_change_logoff_disabled: bool | None
             """Disable host log off when there is a VLAN change."""
+            unresponsive_action_traffic_allow_vlan: int | None
+            """EAPOL unresponsive hosts VLAN ID."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, vlan_change_logoff_disabled: bool | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    vlan_change_logoff_disabled: bool | None | UndefinedType = Undefined,
+                    unresponsive_action_traffic_allow_vlan: int | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     Eapol.
 
@@ -5515,6 +5522,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         vlan_change_logoff_disabled: Disable host log off when there is a VLAN change.
+                        unresponsive_action_traffic_allow_vlan: EAPOL unresponsive hosts VLAN ID.
 
                     """
 
