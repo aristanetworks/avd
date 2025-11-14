@@ -10,8 +10,8 @@ from pyavd_utils.validation import validate_json
 def test_validate_json() -> None:
     expected_errors: list[tuple[list[str], str]] = [
         (["ethernet_interfaces", "2"], "Missing the required key 'name'."),
-        (["ethernet_interfaces", "0", "name"], 'The value is not unique among similar items. Conflicting items: ["ethernet_interfaces", "1", "name"]'),
-        (["ethernet_interfaces", "1", "name"], 'The value is not unique among similar items. Conflicting items: ["ethernet_interfaces", "0", "name"]'),
+        (["ethernet_interfaces", "0", "name"], "The value is not unique among similar items. Conflicting item: ethernet_interfaces[1].name"),
+        (["ethernet_interfaces", "1", "name"], "The value is not unique among similar items. Conflicting item: ethernet_interfaces[0].name"),
     ]
     validation_result = validate_json('{"ethernet_interfaces": [{"name": "Ethernet1", "description": 12345}, {"name": "Ethernet1"}, {}]}', "eos_cli_config_gen")
 

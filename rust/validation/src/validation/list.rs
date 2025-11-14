@@ -101,9 +101,9 @@ fn validate_unique_keys(schema: &List, items: &[Value], ctx: &mut Context) {
             for (trail, item) in &items {
                 if current_trail != trail && current_item == item {
                     ctx.result.errors.push(Feedback {
-                        path: { ctx.state.path.clone_with_slice(current_trail) },
+                        path: ctx.state.path.clone_with_slice(current_trail),
                         issue: Violation::ValueNotUnique {
-                            other_path: ctx.state.path.clone_with_slice(current_trail).into(),
+                            other_path: ctx.state.path.clone_with_slice(trail),
                         }
                         .into(),
                     });
@@ -413,14 +413,14 @@ mod tests {
                 Feedback {
                     path: vec!["0".into(), "foo".into()].into(),
                     issue: Violation::ValueNotUnique {
-                        other_path: vec!["2".into(), "foo".into()]
+                        other_path: vec!["2".into(), "foo".into()].into()
                     }
                     .into()
                 },
                 Feedback {
                     path: vec!["2".into(), "foo".into()].into(),
                     issue: Violation::ValueNotUnique {
-                        other_path: vec!["0".into(), "foo".into()]
+                        other_path: vec!["0".into(), "foo".into()].into()
                     }
                     .into()
                 }
