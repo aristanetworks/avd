@@ -61,15 +61,20 @@ class AvdDeviceData:
         loopback0_ip = get(get_item(get(structured_config, "loopback_interfaces", []), "name", "Loopback0", default={}), "ip_address")
 
         # Get the VTEP IP
+        vtep_ip_str = None
         vxlan_source_interface = get(structured_config, "vxlan_interface.vxlan1.vxlan.source_interface")
         if vxlan_source_interface is not None:
             if "Dps" in vxlan_source_interface:
                 interface_model = get(structured_config, "dps_interfaces", default=[])
             else:
                 interface_model = get(structured_config, "loopback_interfaces", default=[])
-            vtep_ip = get(get_item(interface_model, "name", vxlan_source_interface, default={}), "ip_address")
-        else:
-            vtep_ip = None
+            vtep_ip_str = get(get_item(interface_model, "name", vxlan_source_interface, default={}), "ip_address")
+
+        vtep_ip = None
+        if vtep_ip_str:
+            ip = ip_interface(vtep_ip_str).ip
+            if ip.version == 4:
+                vtep_ip = ip
 
         # Create and return the device AvdDeviceData
         return AvdDeviceData(
@@ -77,8 +82,8 @@ class AvdDeviceData:
             is_deployed=get(structured_config, "metadata.is_deployed", default=False),
             dns_domain=get(structured_config, "dns_domain"),
             ethernet_interfaces=ethernet_interfaces,
-            loopback0_ip=ip_interface(loopback0_ip).ip if loopback0_ip else None,
-            vtep_ip=ip_interface(vtep_ip).ip if vtep_ip else None,
+            loopback0_ip=ip if (loopback0_ip and (ip := ip_interface(loopback0_ip).ip) and ip.version == 4) else None,
+            vtep_ip=vtep_ip
         )
 
 
