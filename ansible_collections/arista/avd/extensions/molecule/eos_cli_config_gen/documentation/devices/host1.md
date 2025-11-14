@@ -11260,6 +11260,7 @@ ip as-path access-list mylist2 deny _64517$ igp
 | Attribute | Value |
 | --------- | ----- |
 | VLAN Change Logoff Disabled | True |
+| Unresponsive Action Traffic Allow VLAN | 20 |
 
 #### 802.1X Interfaces
 
