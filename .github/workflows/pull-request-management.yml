@@ -806,7 +806,6 @@ jobs:
           - macos-latest
     steps:
       - uses: actions/checkout@v5
-      # Used to host cibuildwheel
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
