@@ -305,13 +305,15 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VLAN11
-  tenant: FLOW_TRACKING
+  metadata:
+    tenant: FLOW_TRACKING
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
-  tenant: FLOW_TRACKING
+  metadata:
+    tenant: FLOW_TRACKING
 vxlan_interface:
   vxlan1:
     description: flow-tracking-tests-leaf1_VTEP

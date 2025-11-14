@@ -13,7 +13,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_routing</samp>](## "vrfs.[].ip_routing") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_routing</samp>](## "vrfs.[].ipv6_routing") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_routing_ipv6_interfaces</samp>](## "vrfs.[].ip_routing_ipv6_interfaces") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "vrfs.[].tenant") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "vrfs.[].metadata") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "vrfs.[].metadata.tenant") | String |  |  |  | Key only used for documentation or validation purposes. |
 
 === "YAML"
 
@@ -27,7 +28,8 @@
         ip_routing: <bool>
         ipv6_routing: <bool>
         ip_routing_ipv6_interfaces: <bool>
+        metadata:
 
-        # Key only used for documentation or validation purposes.
-        tenant: <str>
+          # Key only used for documentation or validation purposes.
+          tenant: <str>
     ```

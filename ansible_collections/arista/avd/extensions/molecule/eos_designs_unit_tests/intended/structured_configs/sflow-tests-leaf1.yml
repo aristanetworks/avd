@@ -238,13 +238,15 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VLAN11
-  tenant: SFLOW
+  metadata:
+    tenant: SFLOW
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
-  tenant: SFLOW
+  metadata:
+    tenant: SFLOW
 vxlan_interface:
   vxlan1:
     description: sflow-tests-leaf1_VTEP

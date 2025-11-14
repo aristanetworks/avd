@@ -324,42 +324,54 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 110
   name: IDF1-Data
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 120
   name: IDF1-Voice
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 130
   name: IDF1-Guest
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 210
   name: IDF2-Data
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 220
   name: IDF2-Voice
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 230
   name: IDF2-Guest
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 310
   name: IDF3-Data
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 320
   name: IDF3-Voice
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 330
   name: IDF3-Guest
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 10
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

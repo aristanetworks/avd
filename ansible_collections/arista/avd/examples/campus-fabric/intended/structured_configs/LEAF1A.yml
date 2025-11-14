@@ -1779,19 +1779,24 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 110
   name: IDF1-Data
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 120
   name: IDF1-Voice
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 130
   name: IDF1-Guest
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 10
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

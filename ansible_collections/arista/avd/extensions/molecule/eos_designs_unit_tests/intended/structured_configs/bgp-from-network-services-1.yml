@@ -154,12 +154,14 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 3099
   name: MLAG_L3_VRF_default
   trunk_groups:
   - MLAG
-  tenant: TEST
+  metadata:
+    tenant: TEST
 vrfs:
 - name: MGMT
   ip_routing: false

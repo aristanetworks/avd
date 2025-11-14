@@ -24,7 +24,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;private_vlan</samp>](## "vlans.[].private_vlan") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "vlans.[].private_vlan.type") | String |  |  | Valid Values:<br>- <code>community</code><br>- <code>isolated</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_vlan</samp>](## "vlans.[].private_vlan.primary_vlan") | Integer |  |  |  | Primary VLAN ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "vlans.[].tenant") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "vlans.[].metadata") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "vlans.[].metadata.tenant") | String |  |  |  | Key only used for documentation or validation purposes. |
 
 === "YAML"
 
@@ -64,7 +65,8 @@
 
           # Primary VLAN ID.
           primary_vlan: <int>
+        metadata:
 
-        # Key only used for documentation or validation purposes.
-        tenant: <str>
+          # Key only used for documentation or validation purposes.
+          tenant: <str>
     ```

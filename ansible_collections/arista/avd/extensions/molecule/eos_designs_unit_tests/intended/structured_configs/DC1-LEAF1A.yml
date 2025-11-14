@@ -592,48 +592,61 @@ vlan_internal_order:
 vlans:
 - id: 130
   name: Tenant_A_APP_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 131
   name: Tenant_A_APP_Zone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 132
   name: Tenant_A_APP_Zone_3
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 113
   name: Tenant_A_OP_Zone_4
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 120
   name: Tenant_A_WEB_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 121
   name: Tenant_A_WEBZone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 450
   name: Tenant_D_v6_WAN_Zone_1
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 - id: 451
   name: Tenant_D_v6_WAN_Zone_2
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 - id: 452
   name: Tenant_D_v6_WAN_Zone_3
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_A_APP_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_A_OP_Zone
   description: Tenant_A_OP_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_A_WEB_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: '12345678'
   ip_routing: true
   ipv6_routing: true
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 vxlan_interface:
   vxlan1:
     description: DC1-LEAF1A_VTEP

@@ -278,29 +278,35 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 11
   name: VRF10_VLAN11
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 12
   name: VRF10_VLAN12
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 3009
   name: MLAG_L3_VRF_VRF10
   trunk_groups:
   - MLAG
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF10
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vxlan_interface:
   vxlan1:
     description: IPV6_NUMBERED_VTEP_LOOPBACK0_LEAF1b_VTEP
