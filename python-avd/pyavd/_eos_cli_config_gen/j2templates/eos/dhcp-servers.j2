@@ -56,9 +56,6 @@
 {%                     if reservation.ipv4_address is arista.avd.defined %}
             ipv4-address {{ reservation.ipv4_address }}
 {%                     endif %}
-{%                     if reservation.ipv6_address is arista.avd.defined %}
-            ipv6-address {{ reservation.ipv6_address }}
-{%                     endif %}
 {%                     if reservation.hostname is arista.avd.defined %}
             hostname {{ reservation.hostname }}
 {%                     endif %}
@@ -93,9 +90,6 @@
       reservations
 {%                 for reservation in subnet.reservations | arista.avd.natural_sort("mac_address") %}
          mac-address {{ reservation.mac_address }}
-{%                     if reservation.ipv4_address is arista.avd.defined %}
-            ipv4-address {{ reservation.ipv4_address }}
-{%                     endif %}
 {%                     if reservation.ipv6_address is arista.avd.defined %}
             ipv6-address {{ reservation.ipv6_address }}
 {%                     endif %}

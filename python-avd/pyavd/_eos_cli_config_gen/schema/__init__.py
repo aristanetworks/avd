@@ -4473,12 +4473,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ReservationsItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {
-                    "mac_address": {"type": str},
-                    "hostname": {"type": str},
-                    "ipv4_address": {"type": str},
-                    "ipv6_address": {"type": str},
-                }
+                _fields: ClassVar[dict] = {"mac_address": {"type": str}, "hostname": {"type": str}, "ipv4_address": {"type": str}}
                 mac_address: str
                 """Ethernet address in format - HHHH.HHHH.HHHH"""
                 hostname: str | None
@@ -4486,11 +4481,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 Valid IPv4 address from the given subnet.
                 This should only be used within an IPv4 subnet.
-                """
-                ipv6_address: str | None
-                """
-                Valid IPv6 address from the given subnet.
-                This should only be used within an IPv6 subnet.
                 """
 
                 if TYPE_CHECKING:
@@ -4501,7 +4491,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         mac_address: str | UndefinedType = Undefined,
                         hostname: str | None | UndefinedType = Undefined,
                         ipv4_address: str | None | UndefinedType = Undefined,
-                        ipv6_address: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ReservationsItem.
@@ -4515,9 +4504,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             ipv4_address:
                                Valid IPv4 address from the given subnet.
                                This should only be used within an IPv4 subnet.
-                            ipv6_address:
-                               Valid IPv6 address from the given subnet.
-                               This should only be used within an IPv6 subnet.
 
                         """
 
@@ -4660,20 +4646,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ReservationsItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {
-                    "mac_address": {"type": str},
-                    "hostname": {"type": str},
-                    "ipv4_address": {"type": str},
-                    "ipv6_address": {"type": str},
-                }
+                _fields: ClassVar[dict] = {"mac_address": {"type": str}, "hostname": {"type": str}, "ipv6_address": {"type": str}}
                 mac_address: str
                 """Ethernet address in format - HHHH.HHHH.HHHH"""
                 hostname: str | None
-                ipv4_address: str | None
-                """
-                Valid IPv4 address from the given subnet.
-                This should only be used within an IPv4 subnet.
-                """
                 ipv6_address: str | None
                 """
                 Valid IPv6 address from the given subnet.
@@ -4687,7 +4663,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         mac_address: str | UndefinedType = Undefined,
                         hostname: str | None | UndefinedType = Undefined,
-                        ipv4_address: str | None | UndefinedType = Undefined,
                         ipv6_address: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -4699,9 +4674,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             mac_address: Ethernet address in format - HHHH.HHHH.HHHH
                             hostname: hostname
-                            ipv4_address:
-                               Valid IPv4 address from the given subnet.
-                               This should only be used within an IPv4 subnet.
                             ipv6_address:
                                Valid IPv6 address from the given subnet.
                                This should only be used within an IPv6 subnet.

@@ -55,7 +55,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;mac_address</samp>](## "dhcp_servers.[].ipv4_subnets.[].reservations.[].mac_address") | String | Required, Unique |  |  | Ethernet address in format - HHHH.HHHH.HHHH |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "dhcp_servers.[].ipv4_subnets.[].reservations.[].hostname") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_address</samp>](## "dhcp_servers.[].ipv4_subnets.[].reservations.[].ipv4_address") | String |  |  |  | Valid IPv4 address from the given subnet.<br>This should only be used within an IPv4 subnet. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "dhcp_servers.[].ipv4_subnets.[].reservations.[].ipv6_address") | String |  |  |  | Valid IPv6 address from the given subnet.<br>This should only be used within an IPv6 subnet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_subnets</samp>](## "dhcp_servers.[].ipv6_subnets") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;subnet</samp>](## "dhcp_servers.[].ipv6_subnets.[].subnet") | String | Required, Unique |  |  | IPv6 subnet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "dhcp_servers.[].ipv6_subnets.[].name") | String |  |  |  |  |
@@ -72,7 +71,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reservations</samp>](## "dhcp_servers.[].ipv6_subnets.[].reservations") | List, items: Dictionary |  |  |  | DHCP client reservations. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;mac_address</samp>](## "dhcp_servers.[].ipv6_subnets.[].reservations.[].mac_address") | String | Required, Unique |  |  | Ethernet address in format - HHHH.HHHH.HHHH |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "dhcp_servers.[].ipv6_subnets.[].reservations.[].hostname") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_address</samp>](## "dhcp_servers.[].ipv6_subnets.[].reservations.[].ipv4_address") | String |  |  |  | Valid IPv4 address from the given subnet.<br>This should only be used within an IPv4 subnet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "dhcp_servers.[].ipv6_subnets.[].reservations.[].ipv6_address") | String |  |  |  | Valid IPv6 address from the given subnet.<br>This should only be used within an IPv6 subnet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;subnets</samp>](## "dhcp_servers.[].subnets") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ipv4_subnets or ipv6_subnets</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "dhcp_servers.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the dhcp server in the final EOS configuration. |
@@ -167,10 +165,6 @@
                 # Valid IPv4 address from the given subnet.
                 # This should only be used within an IPv4 subnet.
                 ipv4_address: <str>
-
-                # Valid IPv6 address from the given subnet.
-                # This should only be used within an IPv6 subnet.
-                ipv6_address: <str>
         ipv6_subnets:
 
             # IPv6 subnet.
@@ -193,10 +187,6 @@
                 # Ethernet address in format - HHHH.HHHH.HHHH
               - mac_address: <str; required; unique>
                 hostname: <str>
-
-                # Valid IPv4 address from the given subnet.
-                # This should only be used within an IPv4 subnet.
-                ipv4_address: <str>
 
                 # Valid IPv6 address from the given subnet.
                 # This should only be used within an IPv6 subnet.
