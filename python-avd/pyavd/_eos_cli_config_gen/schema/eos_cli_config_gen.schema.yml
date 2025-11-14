@@ -3994,6 +3994,14 @@ keys:
             port_profile:
               type: str
               description: Key only used for documentation or validation purposes.
+            validate_state:
+              type: bool
+              description: Set to false to disable interface state and LLDP topology
+                validation performed by the `anta_runner` role.
+            validate_lldp:
+              type: bool
+              description: Set to false to disable the LLDP topology validation performed
+                by the `anta_runner` role.
         sflow:
           type: dict
           keys:
@@ -4298,14 +4306,6 @@ keys:
                     - '0'
                     - '7'
                     - 8a
-        validate_state:
-          type: bool
-          description: Set to false to disable interface state and LLDP topology validation
-            performed by the `anta_runner` role.
-        validate_lldp:
-          type: bool
-          description: Set to false to disable the LLDP topology validation performed
-            by the `anta_runner` role.
         switchport:
           type: dict
           description: This should not be combined with `ethernet_interfaces[].type
@@ -12569,6 +12569,14 @@ keys:
             peer_key:
               type: str
               description: Key only used for documentation or validation purposes.
+            validate_state:
+              type: bool
+              description: Set to false to disable interface state and LLDP topology
+                validation performed by the `anta_runner` role.
+            validate_lldp:
+              type: bool
+              description: Set to false to disable the LLDP topology validation performed
+                by the `anta_runner` role.
         sflow:
           type: dict
           keys:
@@ -13004,14 +13012,6 @@ keys:
                 removed: true
                 remove_in_version: 6.0.0
                 new_key: srlgs
-        validate_state:
-          type: bool
-          description: Set to false to disable interface state and LLDP topology validation
-            performed by the `anta_runner` role.
-        validate_lldp:
-          type: bool
-          description: Set to false to disable the LLDP topology validation performed
-            by the `anta_runner` role.
         vlans:
           type: str
           deprecation:
