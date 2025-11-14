@@ -83,6 +83,8 @@ test-command = "pytest pyavd-utils/tests"
 
 [tool.cibuildwheel.macos]
 # PyPy has no universal2, so let's build them all, always.
+# TODO: Note that it means right now we build the same 3 wheels for both macos runner
+# Decide which one to keep?
 archs = ["all"]
 # What CI error said.
 before-build = "rustup target add x86_64-apple-darwin"
