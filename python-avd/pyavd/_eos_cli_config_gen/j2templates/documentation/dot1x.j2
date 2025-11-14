@@ -149,8 +149,8 @@
 
 | Attribute | Value |
 | --------- | ----- |
-{%             if dot1x.eapol.vlan_change_logoff_disabled is arista.avd.defined(true) %}
-| VLAN Change Logoff Disabled | True |
+{%             if dot1x.eapol.vlan_change_logoff_disabled is arista.avd.defined %}
+| VLAN Change Logoff Disabled | {{ dot1x.eapol.vlan_change_logoff_disabled }} |
 {%             endif %}
 {%         endif %}
 {%     endif %}
