@@ -83,7 +83,7 @@ class AvdDeviceData:
             dns_domain=get(structured_config, "dns_domain"),
             ethernet_interfaces=ethernet_interfaces,
             loopback0_ip=ip if (loopback0_ip and (ip := ip_interface(loopback0_ip).ip) and ip.version == 4) else None,
-            vtep_ip=vtep_ip
+            vtep_ip=vtep_ip,
         )
 
 
