@@ -5497,6 +5497,35 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         VlanAssignmentGroups._item_type = VlanAssignmentGroupsItem
 
+        class Eapol(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"vlan_change_logoff_disabled": {"type": bool}, "unresponsive_action_traffic_allow_vlan": {"type": int}}
+            vlan_change_logoff_disabled: bool | None
+            """Disable host log off when there is a VLAN change."""
+            unresponsive_action_traffic_allow_vlan: int | None
+            """EAPOL unresponsive hosts VLAN ID."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    vlan_change_logoff_disabled: bool | None | UndefinedType = Undefined,
+                    unresponsive_action_traffic_allow_vlan: int | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Eapol.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        vlan_change_logoff_disabled: Disable host log off when there is a VLAN change.
+                        unresponsive_action_traffic_allow_vlan: EAPOL unresponsive hosts VLAN ID.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "system_auth_control": {"type": bool},
             "protocol_lldp_bypass": {"type": bool},
@@ -5510,6 +5539,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "captive_portal": {"type": CaptivePortal},
             "supplicant": {"type": Supplicant},
             "vlan_assignment_groups": {"type": VlanAssignmentGroups},
+            "eapol": {"type": Eapol},
         }
         system_auth_control: bool | None
         protocol_lldp_bypass: bool | None
@@ -5544,6 +5574,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         vlan_assignment_groups: VlanAssignmentGroups
         """Subclass of AvdIndexedList with `VlanAssignmentGroupsItem` items. Primary key is `name` (`str`)."""
+        eapol: Eapol
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -5562,6 +5594,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 captive_portal: CaptivePortal | UndefinedType = Undefined,
                 supplicant: Supplicant | UndefinedType = Undefined,
                 vlan_assignment_groups: VlanAssignmentGroups | UndefinedType = Undefined,
+                eapol: Eapol | UndefinedType = Undefined,
             ) -> None:
                 """
                 Dot1x.
@@ -5592,6 +5625,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of AvdModel.
                     supplicant: Subclass of AvdModel.
                     vlan_assignment_groups: Subclass of AvdIndexedList with `VlanAssignmentGroupsItem` items. Primary key is `name` (`str`).
+                    eapol: Subclass of AvdModel.
 
                 """
 
@@ -39650,6 +39684,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class AggregateAddressesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class Attribute(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"rcf": {"type": str}}
+                rcf: str | None
+                """RCF name with parenthesis. Example "AGG-ADD-RCF()"."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, rcf: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Attribute.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            rcf: RCF name with parenthesis. Example "AGG-ADD-RCF()".
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "prefix": {"type": str},
                 "advertise_only": {"type": bool},
@@ -39657,6 +39712,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "summary_only": {"type": bool},
                 "attribute_map": {"type": str},
                 "match_map": {"type": str},
+                "attribute": {"type": Attribute},
             }
             prefix: str
             """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
@@ -39667,6 +39723,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Route-map name."""
             match_map: str | None
             """Route-map name."""
+            attribute: Attribute
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -39679,6 +39737,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     summary_only: bool | None | UndefinedType = Undefined,
                     attribute_map: str | None | UndefinedType = Undefined,
                     match_map: str | None | UndefinedType = Undefined,
+                    attribute: Attribute | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AggregateAddressesItem.
@@ -39693,6 +39752,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         summary_only: summary_only
                         attribute_map: Route-map name.
                         match_map: Route-map name.
+                        attribute: Subclass of AvdModel.
 
                     """
 
@@ -50618,6 +50678,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class AggregateAddressesItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                class Attribute(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"rcf": {"type": str}}
+                    rcf: str | None
+                    """RCF name with parenthesis. Example "AGG-ADD-RCF()"."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, rcf: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            Attribute.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                rcf: RCF name with parenthesis. Example "AGG-ADD-RCF()".
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "prefix": {"type": str},
                     "advertise_only": {"type": bool},
@@ -50625,6 +50706,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "summary_only": {"type": bool},
                     "attribute_map": {"type": str},
                     "match_map": {"type": str},
+                    "attribute": {"type": Attribute},
                 }
                 prefix: str
                 """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
@@ -50633,6 +50715,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 summary_only: bool | None
                 attribute_map: str | None
                 match_map: str | None
+                attribute: Attribute
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -50645,6 +50729,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         summary_only: bool | None | UndefinedType = Undefined,
                         attribute_map: str | None | UndefinedType = Undefined,
                         match_map: str | None | UndefinedType = Undefined,
+                        attribute: Attribute | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AggregateAddressesItem.
@@ -50659,6 +50744,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             summary_only: summary_only
                             attribute_map: attribute_map
                             match_map: match_map
+                            attribute: Subclass of AvdModel.
 
                         """
 

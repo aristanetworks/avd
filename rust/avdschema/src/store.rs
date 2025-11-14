@@ -59,18 +59,10 @@ pub enum SchemaStoreError {
     SchemaName(SchemaName),
 }
 
-#[derive(Debug, derive_more::Constructor)]
+#[derive(Debug, derive_more::Constructor, derive_more::Display)]
+#[display("Schema name '{name}' not found in the schema store.")]
 pub struct SchemaName {
     pub name: String,
-}
-impl std::fmt::Display for SchemaName {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "Schema name '{}' not found in the schema store.",
-            self.name
-        )
-    }
 }
 
 #[cfg(test)]

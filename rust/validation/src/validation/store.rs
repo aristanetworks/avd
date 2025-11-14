@@ -77,7 +77,7 @@ impl StoreValidate<Schema> for Store {
         let mut ctx = Context::new(self, configuration);
         let schema = self.get(schema_name);
         schema.coerce(value, &mut ctx);
-        schema.validate_value(&value, &mut ctx);
+        schema.validate_value(value, &mut ctx);
         ctx.into()
     }
     fn coerce_value(&self, value: &mut Value, schema_name: Schema) -> ValidationResult {
