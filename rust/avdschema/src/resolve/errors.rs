@@ -18,38 +18,22 @@ pub enum SchemaResolverError {
     SchemaWalkError(SchemaWalkError),
 }
 
-#[derive(Debug, derive_more::Constructor)]
+#[derive(Debug, derive_more::Constructor, derive_more::Display)]
+#[display("Invalid schema type '{found}' found in $ref '{schema_ref}'. Expected '{expected}'.")]
 pub struct SchemaType {
     pub schema_ref: String,
     pub expected: String,
     pub found: String,
 }
-impl std::fmt::Display for SchemaType {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "Invalid schema type '{}' found in $ref '{}'. Expected '{}'.",
-            self.found, self.schema_ref, self.expected
-        )
-    }
-}
 
-#[derive(Debug, derive_more::Constructor)]
+#[derive(Debug, derive_more::Constructor, derive_more::Display)]
+#[display("Invalid syntax for schema $ref '{schema_ref}'.")]
 pub struct RefSyntax {
     pub schema_ref: String,
 }
-impl std::fmt::Display for RefSyntax {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Invalid syntax for schema $ref '{}'.", self.schema_ref)
-    }
-}
 
-#[derive(Debug, derive_more::Constructor)]
+#[derive(Debug, derive_more::Constructor, derive_more::Display)]
+#[display("Schema $ref path '{path}' was not found.")]
 pub struct SchemaPath {
     pub path: String,
-}
-impl std::fmt::Display for SchemaPath {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Schema $ref path '{}' was not found.", self.path)
-    }
 }
