@@ -812,7 +812,6 @@ jobs:
       - name: Install cibuildwheel
         # See pyproject.toml for config
         # TODO: could use the action instead but need approval
-        # otherwise will need some file we can tell dependabot to track to upgrade
         run: |
           pip install --group build_wheel
       - name: Build wheels
