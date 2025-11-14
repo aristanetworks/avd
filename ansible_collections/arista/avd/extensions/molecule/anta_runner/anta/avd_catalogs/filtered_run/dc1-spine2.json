@@ -208,13 +208,6 @@
           "tags": [
             "dc1-spine2"
           ]
-        },
-        "requirements": {
-          "power_supplies": 2,
-          "fan_trays": 4,
-          "fabric_cards": 5,
-          "line_cards": 10,
-          "supervisors": 2
         }
       }
     },

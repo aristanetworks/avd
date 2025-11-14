@@ -27,13 +27,12 @@ class VerifyEnvironmentPowerInputFactory(AntaTestInputFactory[VerifyEnvironmentP
 
 class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
     """
-    Input factory class for the `VerifyEnvironmentPower` test.
+    Input factory class for the `VerifyInventory` test.
 
     Generates test inputs for verifying the following:
     - If no hardware requirements provided:
         * By default, this test checks that all slots for the following component types
-    are populated: **power supply**, **fan tray**, **fabric card**,
-    **line card** and **supervisor**.
+    are populated: `power supply`, `fan tray`, `fabric card`, `line card` and `supervisor`.
     - If specific requirements provided:
         * Strictly check that all provided slots are filled.
     """
