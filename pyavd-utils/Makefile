@@ -8,16 +8,18 @@ SCRIPTS_DIR = $(CURRENT_DIR)/scripts
 help: ## Display help message
 	@grep -E '^[0-9a-zA-Z_-]+\.*[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
+.PHONY: clean
+clean: ## Build pyavd-utils package
+	rm -rf $(CURRENT_DIR)/build/ $(CURRENT_DIR)/dist/ $(CURRENT_DIR)/pyavd.egg-info/ $(CURRENT_DIR)/pyavd_utils/*.so
+
 .PHONY: build
-build: ## Build pyavd package
+build: clean ## Build pyavd-utils package
 	pip3 install build
-	rm -rf $(CURRENT_DIR)/build/ $(CURRENT_DIR)/dist/ $(CURRENT_DIR)/pyavd.egg-info/
 	python3 -m build --wheel
 
 .PHONY: uv-build
-uv-build: ## Build pyavd package
+uv-build: clean ## Build pyavd-utils package
 	uv pip install build
-	rm -rf $(CURRENT_DIR)/build/ $(CURRENT_DIR)/dist/ $(CURRENT_DIR)/pyavd.egg-info/
 	python3 -m build --wheel
 
 
