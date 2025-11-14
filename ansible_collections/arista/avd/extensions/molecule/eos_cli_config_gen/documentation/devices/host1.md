@@ -11255,6 +11255,13 @@ ip as-path access-list mylist2 deny _64517$ igp
 | Profile2 | - | user_id2 | - |
 | Profile3 | - | - | PF2 |
 
+#### 802.1X EAPOL
+
+| Attribute | Value |
+| --------- | ----- |
+| VLAN Change Logoff Disabled | True |
+| Unresponsive Action Traffic Allow VLAN | 20 |
+
 #### 802.1X Interfaces
 
 | Interface | PAE Mode | Supplicant Profile | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
@@ -11309,6 +11316,8 @@ dot1x
    radius av-pair filter-id ipv4 ipv6 required
    radius av-pair framed-mtu 1500
    mac-based-auth radius av-pair user-name delimiter colon lowercase
+   eapol vlan change logoff disabled
+   eapol unresponsive action traffic allow vlan 20
    aaa unresponsive recovery action reauthenticate
    supplicant disconnect cached-results timeout 79 seconds
    captive-portal url http://portal-nacm08/captiveredirect/ ssl profile Profile1

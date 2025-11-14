@@ -2233,6 +2233,17 @@ keys:
               convert_types:
               - int
               description: VLAN value(s) or range(s) of VLAN values.
+      eapol:
+        type: dict
+        keys:
+          vlan_change_logoff_disabled:
+            type: bool
+            description: Disable host log off when there is a VLAN change.
+          unresponsive_action_traffic_allow_vlan:
+            type: int
+            convert_types:
+            - str
+            description: EAPOL unresponsive hosts VLAN ID.
   dps_interfaces:
     type: list
     primary_key: name
