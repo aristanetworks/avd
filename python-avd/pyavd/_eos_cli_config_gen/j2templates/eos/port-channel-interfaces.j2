@@ -389,6 +389,11 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.lacp_id is arista.avd.defined %}
    lacp system-id {{ port_channel_interface.lacp_id }}
 {%     endif %}
+{%     if port_channel_interface.address_locking.address_family.ipv4 is arista.avd.defined(false) %}
+   !
+   address locking
+      address-family ipv4 disabled
+{%     endif %}
 {%     if port_channel_interface.mpls.ldp.igp_sync is arista.avd.defined(true) %}
    mpls ldp igp sync
 {%     endif %}
