@@ -105,9 +105,6 @@ metadata:
   platform: vEOS-lab
   dc_name: DC1
   fabric_name: FABRIC
-  hardware_requirements:
-    transceiver_manufacturers:
-    - Arastra, Inc.
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

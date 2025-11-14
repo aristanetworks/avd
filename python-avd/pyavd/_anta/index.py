@@ -151,7 +151,6 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyTransceiversManufacturers,
-        conditional_keys=[StructuredConfigKey.TRANSCEIVER_MFG],
         input_factory=VerifyTransceiversManufacturersInputFactory,
     ),
     TestSpec(
