@@ -4,7 +4,7 @@
 
 use avdschema::Store;
 
-use crate::feedback::{ErrorIssue, Feedback, InfoIssue, WarningIssue};
+use crate::feedback::{ErrorIssue, Feedback, InfoIssue, Path, WarningIssue};
 
 /// The Context object is passed along during coercion and validation.
 /// All coercions and violations will be registered in the context with the path carried in the context.
@@ -13,7 +13,6 @@ use crate::feedback::{ErrorIssue, Feedback, InfoIssue, WarningIssue};
 pub struct Context<'a> {
     pub configuration: Configuration,
     pub store: &'a Store,
-    pub path: Vec<String>,  // TODO: Move path into State
     pub result: ValidationResult,
     pub(crate) state: State,
 }
@@ -23,28 +22,27 @@ impl<'a> Context<'a> {
         Self {
             configuration: configuration.cloned().unwrap_or_default(),
             store,
-            path: Default::default(),
             result: Default::default(),
             state: Default::default(),
         }
     }
     pub(crate) fn add_error(&mut self, error: impl Into<ErrorIssue>) {
         self.result.errors.push(Feedback {
-            path: self.path.to_owned().into(),
+            path: self.state.path.to_owned(),
             issue: error.into(),
         });
     }
 
     pub(crate) fn add_warning(&mut self, warning: impl Into<WarningIssue>) {
         self.result.warnings.push(Feedback {
-            path: self.path.to_owned().into(),
+            path: self.state.path.to_owned(),
             issue: warning.into(),
         });
     }
 
     pub(crate) fn add_info(&mut self, info: impl Into<InfoIssue>) {
         self.result.infos.push(Feedback {
-            path: self.path.to_owned().into(),
+            path: self.state.path.to_owned(),
             issue: info.into(),
         });
     }
@@ -56,6 +54,7 @@ pub(crate) struct State {
     /// Don't validate required keys.
     /// Used for structured_config where we overload other config, and only the final result should be validated for required keys.
     pub(crate) relaxed_validation: bool,
+    pub(crate) path: Path,
 }
 
 /// Configuration to use during validation.
