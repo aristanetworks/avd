@@ -142,7 +142,7 @@ fn check_deprecation(
         && deprecation.warning
     {
         if deprecation.removed.unwrap_or_default() {
-            ctx.add_error(Removed::from_schema(&ctx.state.path, deprecation));
+            ctx.add_error(Violation::DeprecatedRemoved(Removed::from_schema(&ctx.state.path, deprecation)));
         } else {
             // TODO: Catch conflict.
             ctx.add_warning(Deprecated::from_schema(&ctx.state.path, deprecation));

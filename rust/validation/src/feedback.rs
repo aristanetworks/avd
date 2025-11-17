@@ -125,8 +125,6 @@ pub enum ErrorIssue {
     /// Some internal error occurred.
     #[display("An internal error occurred: {message}.")]
     InternalError { message: String },
-    /// Removed after deprecation of data model.
-    Removed(Removed),
 }
 
 /// WarningIssue is wrapped in Feedback and added to the Context during coercion and validation.
@@ -193,6 +191,11 @@ pub enum Violation {
     /// The value is not unique as required.
     #[display("The value is not unique among similar items. Conflicting item: {other_path}")]
     ValueNotUnique { other_path: Path },
+    /// The input data model is deprecated and cannot be used in conjunction with the new data model.
+    #[display("The input data model is deprecated and cannot be used in conjunction with the new data model '{other_path}'.{url}")]
+    DeprecatedConflict { other_path: Path, url: UrlField },
+    /// Removed after deprecation of data model.
+    DeprecatedRemoved(Removed),
 }
 
 /// Data Type used in Violation.
@@ -240,9 +243,14 @@ impl Display for ReplacementField {
         }
     }
 }
+impl From<ReplacementField> for Option<String> {
+    fn from(value: ReplacementField) -> Self {
+        value.0
+    }
+}
 
 #[derive(Clone, Debug, PartialEq, Serialize, derive_more::From)]
-struct VersionField(Option<String>);
+pub struct VersionField(Option<String>);
 impl Display for VersionField {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         if let Some(version) = &self.0 {
@@ -250,6 +258,11 @@ impl Display for VersionField {
         } else {
             Ok(())
         }
+    }
+}
+impl From<VersionField> for Option<String> {
+    fn from(value: VersionField) -> Self {
+        value.0
     }
 }
 
@@ -264,14 +277,19 @@ impl Display for UrlField {
         }
     }
 }
+impl From<UrlField> for Option<String> {
+    fn from(value: UrlField) -> Self {
+        value.0
+    }
+}
 
 #[derive(Clone, Debug, PartialEq, Serialize, derive_more::Display)]
 #[display("The input data model '{path}' is deprecated and will be removed{version}.{replacement}{url}")]
 pub struct Deprecated {
-    path: Path,
-    replacement: ReplacementField,
-    version: VersionField,
-    url: UrlField,
+    pub path: Path,
+    pub replacement: ReplacementField,
+    pub version: VersionField,
+    pub url: UrlField,
 }
 impl Deprecated {
     pub(crate) fn from_schema(path: &Path, deprecation: &avdschema::base::Deprecation) -> Self {
@@ -287,10 +305,10 @@ impl Deprecated {
 #[derive(Clone, Debug, PartialEq, Serialize, derive_more::Display)]
 #[display("The input data model '{path}' was removed{version}.{replacement}{url}")]
 pub struct Removed {
-    path: Path,
-    replacement: ReplacementField,
-    version: VersionField,
-    url: UrlField,
+    pub path: Path,
+    pub replacement: ReplacementField,
+    pub version: VersionField,
+    pub url: UrlField,
 }
 impl Removed {
     pub(crate) fn from_schema(path: &Path, deprecation: &avdschema::base::Deprecation) -> Self {
@@ -298,27 +316,6 @@ impl Removed {
             path: path.to_owned(),
             replacement: deprecation.new_key.to_owned().into(),
             version: deprecation.remove_in_version.to_owned().into(),
-            url: deprecation.url.to_owned().into(),
-        }
-    }
-}
-
-#[derive(Clone, Debug, PartialEq, Serialize, derive_more::Display)]
-#[display("The input data model '{path}' is deprecated and cannot be used in conjunction with the new data model '{replacement_path}'.{url}")]
-pub struct Conflict {
-    path: Path,
-    replacement_path: Path,
-    url: UrlField,
-}
-impl Conflict {
-    pub(crate) fn from_schema(
-        path: &Path,
-        replacement_path: &Path,
-        deprecation: &avdschema::base::Deprecation,
-    ) -> Self {
-        Self {
-            path: path.to_owned(),
-            replacement_path: replacement_path.to_owned(),
             url: deprecation.url.to_owned().into(),
         }
     }
@@ -423,27 +420,6 @@ mod tests {
         );
     }
 
-    #[test]
-    fn conflict_display() {
-        let conflict = Conflict {
-            path: Path::from(vec![
-                "key".to_string(),
-                "1".to_string(),
-                "subkey".to_string(),
-            ]),
-            replacement_path: Path::from(vec![
-                "key".to_string(),
-                "1".to_string(),
-                "another_key".to_string(),
-            ]),
-            url: Some("foo.bar".to_string()).into(),
-        };
-        assert_eq!(
-            format!("{}", conflict).as_str(),
-            "The input data model 'key[1].subkey' is deprecated and cannot be used in conjunction with the new data model 'key[1].another_key'. See 'foo.bar' for details."
-        );
-    }
-
     fn get_deprecation_test_schema() -> avdschema::base::Deprecation {
         avdschema::base::Deprecation {
             warning: true,
@@ -479,20 +455,5 @@ mod tests {
             url: Some("my.url".to_string()).into(),
         };
         assert_eq!(removed, expected_removed);
-    }
-
-    #[test]
-    fn conflict_from_schema() {
-        let conflict = Conflict::from_schema(
-            &Path::from_iter(["foo"]),
-            &Path::from_iter(["new_foo"]),
-            &get_deprecation_test_schema(),
-        );
-        let expected_conflict = Conflict {
-            path: Path::from_iter(["foo"]),
-            replacement_path: Path::from_iter(["new_foo"]),
-            url: Some("my.url".to_string()).into(),
-        };
-        assert_eq!(conflict, expected_conflict);
     }
 }
