@@ -60,7 +60,7 @@ class DhcpServersMixin(Protocol):
                     and "unnumbered" not in uplink.ip_address
                     and peer_facts.inband_ztp
                 ):
-                    # ipv6 unumbered is not supported with inband_ztp hence right now only ipv4_subnet can be added
+                    # ipv6 numbered is not supported with inband_ztp hence right now only ipv4_subnet can be added
                     subnet_item = EosCliConfigGen.DhcpServersItem.Ipv4SubnetsItem(
                         subnet=str(ip_network(f"{uplink.peer_ip_address}/{uplink.prefix_length}", strict=False)),
                         name=f"inband ztp for {peer}-{uplink.interface}",
