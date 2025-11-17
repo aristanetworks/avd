@@ -3,10 +3,8 @@
 # that can be found in the LICENSE file.
 from collections import ChainMap
 from collections.abc import Generator, Mapping
-
-from re import fullmatch, match
+from re import fullmatch
 from typing import Any, Literal, NoReturn, cast
-
 
 from pyavd._errors import AvdValidationError
 from pyavd._utils import get_all, get_all_with_path, get_indices_of_duplicate_items
