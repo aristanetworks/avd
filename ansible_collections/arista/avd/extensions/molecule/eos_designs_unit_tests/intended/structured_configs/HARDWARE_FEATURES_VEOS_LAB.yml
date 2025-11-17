@@ -27,8 +27,8 @@ ethernet_interfaces:
     enable: true
   switchport:
     enabled: false
-- name: Ethernet2.2
-  description: P2P_HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_Ethernet1.1
+- name: Ethernet10
+  description: P2P_HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_Ethernet10
   shutdown: false
   mtu: 9214
   ip_address: 10.10.50.14/31
@@ -43,7 +43,7 @@ ethernet_interfaces:
     transport: ipv4
   metadata:
     peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
-    peer_interface: Ethernet1.1
+    peer_interface: Ethernet10
     peer_type: l3leaf
   sflow:
     enable: true
@@ -301,7 +301,7 @@ router_bgp:
     remote_as: '65001'
     metadata:
       peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
-    description: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_Ethernet1.1
+    description: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_Ethernet10
   - ip_address: 10.10.30.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
