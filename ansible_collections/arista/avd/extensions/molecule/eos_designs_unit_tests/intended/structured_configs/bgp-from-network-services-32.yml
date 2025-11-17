@@ -79,12 +79,6 @@ router_bgp:
     send_community: all
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
-  neighbors:
-  - ip_address: 10.10.10.60
-    peer_group: MLAG-IPv4-UNDERLAY-PEER
-    metadata:
-      validate_state: false
-    description: bgp-from-network-services-31_Vlan3103
   neighbor_interfaces:
   - name: Vlan3103
     remote_as: '65001'
@@ -104,11 +98,6 @@ router_bgp:
         address_family_ipv6:
           enabled: true
           originate: true
-    neighbors:
-    - ip_address: 10.10.10.60
-      next_hop:
-        address_family_ipv6:
-          enabled: false
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
