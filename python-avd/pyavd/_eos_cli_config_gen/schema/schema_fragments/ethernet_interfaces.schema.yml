@@ -2058,11 +2058,11 @@ keys:
                   keys:
                     source:
                       type: str
-                      pattern: "^([0-9a-f]{2}:){5}[0-9a-f]{2}$"
+                      pattern: "([0-9a-f]{2}:){5}[0-9a-f]{2}"
                       description: MAC address for the source.
                     destination:
                       type: str
-                      pattern: "^([0-9a-f]{2}:){5}[0-9a-f]{2}$"
+                      pattern: "([0-9a-f]{2}:){5}[0-9a-f]{2}"
                       description: MAC address for the destination.
                 encapsulation:
                   type: dict
