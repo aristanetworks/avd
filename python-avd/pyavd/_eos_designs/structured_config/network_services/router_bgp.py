@@ -235,7 +235,7 @@ class RouterBgpMixin(Protocol):
                         # VRF default is added directly under router_bgp
                         bgp_vrf = cast("EosCliConfigGen.RouterBgp", bgp_vrf)
                         bgp_peer_config = cast("EosCliConfigGen.RouterBgp.NeighborsItem", bgp_peer_config)
-                        if vrf.validate_bgp_peers is False:
+                        if vrf._get_defined_attr("validate_bgp_peers") is False:
                             bgp_peer_config.metadata.validate_state = False
                         bgp_vrf.neighbors.append(bgp_peer_config)
                     else:

@@ -90,6 +90,10 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
+  - name: MYPEERGROUP
+    remote_as: '65991'
+    bfd: true
+    next_hop_self: true
   - name: VALIDATE_BGP_PEERS
     remote_as: '65991'
     bfd: true
@@ -103,9 +107,26 @@ router_bgp:
     send_community: all
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
+  neighbors:
+  - ip_address: 10.10.20.0
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
+    metadata:
+      validate_state: false
+    description: bgp-from-network-services-1_Vlan3099
+  - ip_address: 10.10.1.2
+    peer_group: MYPEERGROUP
+    metadata:
+      validate_state: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP-VRFS
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+    neighbors:
+    - ip_address: 10.10.1.2
       activate: true
   vrfs:
   - name: validate_bgp_peers
@@ -150,6 +171,15 @@ vlan_interfaces:
   ip_address: 10.10.10.1/31
   mtu: 9214
   no_autostate: true
+- name: Vlan3099
+  description: MLAG_L3_VRF_default
+  shutdown: false
+  vrf: default
+  ip_address: 10.10.20.1/31
+  mtu: 9214
+  metadata:
+    tenant: TEST1
+    type: underlay_peering
 - name: Vlan3100
   description: MLAG_L3_VRF_validate_bgp_peers
   shutdown: false
@@ -157,7 +187,7 @@ vlan_interfaces:
   ip_address: 10.10.20.1/31
   mtu: 9214
   metadata:
-    tenant: TEST
+    tenant: TEST1
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -170,14 +200,19 @@ vlans:
   trunk_groups:
   - MLAG
   tenant: system
+- id: 3099
+  name: MLAG_L3_VRF_default
+  trunk_groups:
+  - MLAG
+  tenant: TEST1
 - id: 3100
   name: MLAG_L3_VRF_validate_bgp_peers
   trunk_groups:
   - MLAG
-  tenant: TEST
+  tenant: TEST1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: validate_bgp_peers
   ip_routing: true
-  tenant: TEST
+  tenant: TEST1
