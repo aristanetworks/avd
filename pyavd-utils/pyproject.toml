@@ -95,11 +95,6 @@ repair-wheel-command = [
 PATH = "$HOME/.cargo/bin:$PATH"
 
 [tool.cibuildwheel.macos]
-# PyPy has no universal2, so let's build them all, always.
-# TODO: Note that it means right now we build the same 3 wheels for both macos runner
-# Decide which one to keep?
-archs = ["all"]
-# What CI error said.
 before-build = "rustup target add x86_64-apple-darwin"
 repair-wheel-command = [
   "delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}",

@@ -138,6 +138,47 @@ jobs:
           name: pyavd
           path: ./python-avd/dist/*.whl
 
+  # ------------------------------------------------------------ #
+  # Build cross platform pyavd-utils wheels and upload artifacts
+  # ------------------------------------------------------------ #
+  pyavd_utils_build_wheels:
+    name: Build pyavd-utils wheel on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: [file-changes]
+    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
+    strategy:
+      fail-fast: false
+      matrix:
+        # macos-14 covers x64 and macos-latest covers arm
+        # note that at some point x64 won't be available anymore as per
+        # https://github.com/actions/runner-images/issues/13046
+        # the next update will be macos-15-intel
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - windows-latest
+          - macos-14
+          - macos-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install cibuildwheel
+        # See pyproject.toml for config
+        # TODO: could use the action instead but need approval
+        run: |
+          pip install --group build_wheel
+      - name: Build wheels
+        # Not using working-directory because manylinux uses a container
+        # and will not copy the parent Cargo.toml and we will be sad
+        run: |-
+          python -m cibuildwheel --output-dir wheelhouse pyavd-utils
+      - uses: actions/upload-artifact@v5
+        with:
+          name: pyavd-utils-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: wheelhouse/*.whl
+
   # -------------------------------------------- #
   # Python type checking not covered in pre-commit
   # -------------------------------------------- #
@@ -780,46 +821,5 @@ jobs:
       - name: Run pytest via tox
         # Running tox  which will build the package (including rust).
         # For most runs without an environment set here. The environment is mapped with the tox gh-action plugin.
-        run: |
-          tox -- pyavd-utils/tests
-
-  # --------------------------------------- #
-  # Build cross platform pyavd-utils wheels
-  # --------------------------------------- #
-  pyavd_utils_build_wheels:
-    name: Build pyavd-utils wheel on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    needs: [file-changes]
-    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
-    strategy:
-      fail-fast: false
-      matrix:
-        # macos-14 covers x64 and macos-latest covers arm
-        # note that at some point x64 won't be available anymore as per
-        # https://github.com/actions/runner-images/issues/13046
-        # the next update will be macos-15-intel
-        os:
-          - ubuntu-latest
-          - ubuntu-24.04-arm
-          - windows-latest
-          - macos-14
-          - macos-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-      - name: Install cibuildwheel
-        # See pyproject.toml for config
-        # TODO: could use the action instead but need approval
-        run: |
-          pip install --group build_wheel
-      - name: Build wheels
-        # Not using working-directory because manylinux uses a container
-        # and will not copy the parent Cargo.toml and we will be sad
         run: |-
-          python -m cibuildwheel --output-dir wheelhouse pyavd-utils
-      - uses: actions/upload-artifact@v5
-        with:
-          name: pyavd-utils-wheels-${{ matrix.os }}-${{ strategy.job-index }}
-          path: wheelhouse/*.whl
+          tox -- pyavd-utils/tests
