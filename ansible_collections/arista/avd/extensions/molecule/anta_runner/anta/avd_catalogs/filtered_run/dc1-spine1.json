@@ -350,7 +350,9 @@
           "tags": [
             "dc1-spine1"
           ]
-        }
+        },
+        "last_number_time_units": 1,
+        "time_unit": "minutes"
       }
     }
   ],
