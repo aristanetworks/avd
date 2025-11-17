@@ -201,10 +201,9 @@ metadata:
   dc_name: DC1
   fabric_name: FABRIC
   hardware_requirements:
-    min_power_supplies: 2
-    min_fans: 4
-    min_supervisors: 0
-    min_line_cards: 0
+    transceiver_manufacturers:
+    - Arista mfg
+    - Arista transceivers
 mlag_configuration:
   domain_id: DC1_L3_LEAF1
   local_interface: Vlan4094

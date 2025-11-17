@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from anta.input_models.hardware import HardwareInventory
-from anta.tests.hardware import VerifyEnvironmentCooling, VerifyEnvironmentPower, VerifyInventory
+from anta.tests.hardware import VerifyEnvironmentCooling, VerifyEnvironmentPower, VerifyTransceiversManufacturers, VerifyInventory
 
 from ._base_classes import AntaTestInputFactory
 
@@ -23,6 +23,20 @@ class VerifyEnvironmentPowerInputFactory(AntaTestInputFactory[VerifyEnvironmentP
     def create(self) -> list[VerifyEnvironmentPower.Input] | None:
         """Create a list of inputs for the `VerifyEnvironmentPower` test."""
         return [VerifyEnvironmentPower.Input(states=["ok"])]
+
+
+class VerifyTransceiversManufacturersInputFactory(AntaTestInputFactory[VerifyTransceiversManufacturers.Input]):
+    """
+    Input factory class for the `VerifyTransceiversManufacturers` test.
+
+    Generates test inputs to verify transceivers are from approved manufacturers. Uses
+    `hardware_requirements.transceiver_manufacturers` from metadata, defaulting to
+    ['Arista Networks', 'Arastra, Inc.'] if not specified.
+    """
+
+    def create(self) -> list[VerifyTransceiversManufacturers.Input] | None:
+        """Create a list of inputs for the `VerifyTransceiversManufacturers` test."""
+        return [VerifyTransceiversManufacturers.Input(manufacturers=list(self.structured_config.metadata.hardware_requirements.transceiver_manufacturers))]
 
 
 class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):

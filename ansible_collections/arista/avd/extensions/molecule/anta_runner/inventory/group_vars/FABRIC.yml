@@ -100,6 +100,7 @@ custom_node_type_keys:
     vtep: true
 
 # Creating a new custom platform based on `vEOS-lab` with hardware platform specific features enabled for testing purpose.
+# Creating a new custom platform based on `vEOS-lab` with hardware platform specific features enabled for testing purpose.
 custom_platform_settings:
   - platforms: [custom_hardware_test_platform]
     feature_support:
@@ -118,3 +119,7 @@ custom_platform_settings:
       min_fans: 4
       min_supervisors: 0
       min_line_cards: 0
+    validate_hardware_inventory:
+      transceiver_manufacturers:
+        - Arista mfg
+        - Arista transceivers
