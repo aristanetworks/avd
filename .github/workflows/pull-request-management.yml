@@ -189,6 +189,7 @@ jobs:
       - uses: actions/checkout@v5
       - name: Install pyavd and Ansible requirements
         # Adding pyavd-utils as editable to force a build of the .so files. The pyavd-utils is already added to the python path in the pyright config.
+        # TODO: Use the built wheel instead if possible
         run: |
           pip install -r ansible_collections/arista/avd/requirements-dev.txt -e pyavd-utils/ --upgrade
       - name: PyRight static type checker
@@ -267,10 +268,6 @@ jobs:
       - name: Check GIT status
         run: |
           sh .github/check-git-status.sh
-      # - uses: actions/upload-artifact@v5
-      #   with:
-      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
-      #     path: ${PWD}/ansible_collections/arista/avd/extensions/molecule/${{ matrix.avd_scenario }}
 
   # ----------------------------------- #
   # EOS Design MOLECULE
@@ -613,7 +610,7 @@ jobs:
           ansible-lint --force-color --strict -v
 
   # ----------------------------------- #
-  # Test of pyavd
+  # Test of pyavd & pyavd-utils
   # ----------------------------------- #
   test_pyavd:
     name: Test pyavd (Python ${{ matrix.python }}, Suite ${{ matrix.suite.name }})
@@ -786,13 +783,13 @@ jobs:
         if: |
           matrix.os == 'ubuntu-latest'
 
-  # -------------------------------------------- #
-  # pyavd-utils build and test on other platforms
-  # -------------------------------------------- #
+  # ------------------------------------------- #
+  # pyavd-utils test on platforms using wheels
+  # ------------------------------------------- #
   pyavd_utils_build_and_test_cross_platform:
     name: pyavd-utils ${{ matrix.python }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    needs: [file-changes]
+    needs: [pyavd_utils_build_wheels]
     if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
     strategy:
       fail-fast: false
@@ -802,6 +799,7 @@ jobs:
         # https://github.com/actions/runner-images/issues/13046
         # the next update will be macos-15-intel
         os:
+          - ubuntu-latest
           - ubuntu-24.04-arm
           - windows-latest
           - macos-14
@@ -809,17 +807,18 @@ jobs:
         python: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v5
-        # This is needed for arm machines since they don't ship with 2024 edition.
-      - name: Upgrade rust and cargo
-        run: rustup update stable
+      - name: Download {{ matrix.os }} wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-wheels-${{ matrix.os }}-*
+          path: wheelhouse/
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
       - name: Install tox
         run: |
           pip install tox tox-gh-actions --upgrade
-      - name: Run pytest via tox
-        # Running tox  which will build the package (including rust).
+      - name: Run pytest via tox for the wheel
         # For most runs without an environment set here. The environment is mapped with the tox gh-action plugin.
         run: |-
-          tox -- pyavd-utils/tests
+          tox --installpkg wheelhouse/pyavd_utils-.*.whl -- pyavd-utils/tests
