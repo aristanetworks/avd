@@ -51,21 +51,25 @@ class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
         * Strictly check that all provided slots are filled.
     """
 
+    def _get_hardware_requirement(self, requirement: int | None) -> int | str | None:
+        """Helper to determine the hardware requirements."""
+        # Returns "all" if requirement is None, None If requirement == 0. Otherwise, returns the requirement.
+        if requirement is None:
+            return "all"
+        if requirement == 0:
+            return None
+        return requirement
+
     def create(self) -> list[VerifyInventory.Input] | None:
         """Create a list of inputs for the `VerifyInventory` test."""
         if not (hardware_requirements := self.structured_config.metadata.hardware_requirements):
             return [VerifyInventory.Input()]
 
-        power_supply = hardware_requirements.min_power_supplies
-        fans = hardware_requirements.min_fans
-        fabric_cards = hardware_requirements.min_fabric_cards
-        line_cards = hardware_requirements.min_line_cards
-        supervisors = hardware_requirements.min_supervisors
         input_req = HardwareInventory(
-            power_supplies="all" if power_supply is None else (None if power_supply == 0 else power_supply),
-            fan_trays="all" if fans is None else (None if fans == 0 else fans),
-            fabric_cards="all" if fabric_cards is None else (None if fabric_cards == 0 else fabric_cards),
-            line_cards="all" if line_cards is None else (None if line_cards == 0 else line_cards),
-            supervisors="all" if supervisors is None else (None if supervisors == 0 else supervisors),
+            power_supplies=self._get_hardware_requirement(hardware_requirements.min_power_supplies),
+            fan_trays=self._get_hardware_requirement(hardware_requirements.min_fans),
+            fabric_cards=self._get_hardware_requirement(hardware_requirements.min_fabric_cards),
+            line_cards=self._get_hardware_requirement(hardware_requirements.min_line_cards),
+            supervisors=self._get_hardware_requirement(hardware_requirements.min_supervisors),
         )
         return [VerifyInventory.Input(requirements=input_req)]
