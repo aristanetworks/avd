@@ -227,7 +227,7 @@ $defs:
             type: list
             items:
               type: str
-              pattern: "Ethernet[\\d/]+"
+              pattern: "Ethernet.*"
           uplink_switch_interfaces:
             documentation_options:
               table: node-type-uplink-configuration

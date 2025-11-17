@@ -11,13 +11,13 @@
     | [<samp>&nbsp;&nbsp;topology_role</samp>](## "router_adaptive_virtual_topology.topology_role") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>pathfinder</code><br>- <code>transit region</code><br>- <code>transit zone</code> | Role name. |
     | [<samp>&nbsp;&nbsp;gateway_vxlan</samp>](## "router_adaptive_virtual_topology.gateway_vxlan") | Boolean |  |  |  | Enables VXLAN gateway router profile.<br>Only applicable for `topology_role: edge`, `topology_role: transit region` or `topology_role: transit zone`. |
     | [<samp>&nbsp;&nbsp;region</samp>](## "router_adaptive_virtual_topology.region") | Dictionary |  |  |  | Region name and ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "router_adaptive_virtual_topology.region.name") | String | Required |  | Pattern: `^[A-Za-z0-9_.:{}\[\]-]+$` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "router_adaptive_virtual_topology.region.name") | String | Required |  | Pattern: `[A-Za-z0-9_.:{}\[\]-]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "router_adaptive_virtual_topology.region.id") | Integer | Required |  | Min: 1<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;zone</samp>](## "router_adaptive_virtual_topology.zone") | Dictionary |  |  |  | Zone name and ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "router_adaptive_virtual_topology.zone.name") | String | Required |  | Pattern: `^[A-Za-z0-9_.:{}\[\]-]+$` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "router_adaptive_virtual_topology.zone.name") | String | Required |  | Pattern: `[A-Za-z0-9_.:{}\[\]-]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "router_adaptive_virtual_topology.zone.id") | Integer | Required |  | Min: 1<br>Max: 10000 |  |
     | [<samp>&nbsp;&nbsp;site</samp>](## "router_adaptive_virtual_topology.site") | Dictionary |  |  |  | Site name and ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "router_adaptive_virtual_topology.site.name") | String | Required |  | Pattern: `^[A-Za-z0-9_.:{}\[\]-]+$` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "router_adaptive_virtual_topology.site.name") | String | Required |  | Pattern: `[A-Za-z0-9_.:{}\[\]-]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "router_adaptive_virtual_topology.site.id") | Integer | Required |  | Min: 1<br>Max: 10000 |  |
     | [<samp>&nbsp;&nbsp;profiles</samp>](## "router_adaptive_virtual_topology.profiles") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_adaptive_virtual_topology.profiles.[].name") | String | Required, Unique |  |  | AVT Name. |
