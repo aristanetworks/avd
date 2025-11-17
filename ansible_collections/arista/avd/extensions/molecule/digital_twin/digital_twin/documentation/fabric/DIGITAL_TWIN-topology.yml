@@ -19,14 +19,10 @@ nodes:
     node_type: veos
     ip_addr: 10.10.10.100/24
     version: 4.33.1.1F
-    ports:
-    - Ethernet3
 - digital-twin-default-interfaces-original-platform:
     node_type: veos
     ip_addr: 10.10.10.101/24
     version: 4.33.1.1F
-    ports:
-    - Ethernet2
 - digital-twin-enforce-eapi-1:
     node_type: veos
     ip_addr: 192.168.0.1/32
@@ -50,12 +46,18 @@ nodes:
     ports:
     - Ethernet1
     - Ethernet2
-    - Ethernet3
-    - Ethernet4
-    - Ethernet5
-    - Ethernet6
+    - Ethernet9
     - Ethernet10
-    - Ethernet11
+    - Ethernet13
+    - Ethernet15
+    - Ethernet16
+    - Ethernet17
+    - Ethernet18
+    - Ethernet19
+    - Ethernet20
+    - Ethernet21
+    - Ethernet22
+    - Ethernet23
 - digital-twin-ethernet-ports-3:
     node_type: third-party
     ip_addr: 192.169.3.3/32
@@ -67,11 +69,18 @@ nodes:
     ports:
     - Ethernet1
     - Ethernet2
-    - Ethernet3
-    - Ethernet4
-    - Ethernet5
+    - Ethernet9
     - Ethernet10
-    - Ethernet11
+    - Ethernet13
+    - Ethernet15
+    - Ethernet16
+    - Ethernet17
+    - Ethernet18
+    - Ethernet19
+    - Ethernet20
+    - Ethernet21
+    - Ethernet22
+    - Ethernet23
 third-party:
   username: cvpadmin
   password: cvp123!
@@ -97,3 +106,6 @@ links:
 - connection:
   - digital-twin-ethernet-ports-1:Ethernet11
   - digital.twin.ethernet.ports.2:Ethernet11
+- connection:
+  - digital-twin-ethernet-ports-1:Ethernet14
+  - digital.twin.ethernet.ports.2:Ethernet14

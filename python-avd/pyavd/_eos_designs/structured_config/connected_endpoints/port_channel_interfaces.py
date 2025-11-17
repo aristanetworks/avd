@@ -141,6 +141,13 @@ class PortChannelInterfacesMixin(Protocol):
         # if 'descriptions' is set, it is preferred
         adapter_description = interface_descriptions[node_index] if (interface_descriptions := adapter.descriptions) else adapter.description
 
+        # Set validate_state to `False` for Digital Twin mode
+        # TODO: Make logic conditional once functionality allows to include (some) connected endpoints into the ACT topology definition file
+        if self.shared_utils.digital_twin:
+            validate_state = False
+        else:
+            validate_state = None if (adapter.validate_state if adapter.validate_state is not None else True) else False
+
         # Common port_channel_interface settings
         port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
             name=port_channel_interface_name,
@@ -164,7 +171,7 @@ class PortChannelInterfacesMixin(Protocol):
             link_tracking_groups=self._get_adapter_link_tracking_groups(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.LinkTrackingGroups),
             ptp=self._get_adapter_ptp(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.Ptp),
             flow_tracker=self.shared_utils.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.PortChannelInterfacesItem.FlowTracker),
-            validate_state=None if (adapter.validate_state if adapter.validate_state is not None else True) else False,
+            validate_state=validate_state,
             validate_lldp=None if (adapter.validate_lldp if adapter.validate_lldp is not None else True) else False,
             eos_cli=adapter.port_channel.raw_eos_cli,
         )

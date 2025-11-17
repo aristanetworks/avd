@@ -164,6 +164,10 @@ class PortChannelInterfacesMixin(Protocol):
                     )
                     self.shared_utils.update_ospf_authentication(port_channel_interface, l3_port_channel, vrf, tenant)
 
+                # Set validate_state to `False` in Digital Twin mode
+                if self.shared_utils.digital_twin:
+                    port_channel_interface.validate_state = False
+
                 if is_subinterface:
                     port_channel_interface.encapsulation_dot1q.vlan = default(
                         l3_port_channel.encapsulation_dot1q_vlan, int(l3_port_channel.name.split(".", maxsplit=1)[-1])

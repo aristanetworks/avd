@@ -174,6 +174,10 @@ class UtilsMixin(Protocol):
         if l3_generic_interface.ip_address == "dhcp" and l3_generic_interface.dhcp_accept_default_route:
             interface.dhcp_client_accept_default_route = True
 
+        # Set validate_state to `False` in Digital Twin mode
+        if self.shared_utils.digital_twin:
+            interface.validate_state = False
+
         return interface
 
     def _get_l3_uplink_with_l2_as_subint(

@@ -304,6 +304,14 @@ class UtilsMixin(Protocol):
                 interface.mpls.ldp.interface = True
                 interface.mpls.ldp.igp_sync = True
 
+        # Set validate_state to `False` in Digital Twin mode when remote side of the link is not a fabric switch
+        if self.shared_utils.digital_twin and p2p_link_data["peer"] not in self.shared_utils.all_fabric_devices:
+            interface.validate_state = False
+            # Propagate validate_state to all port-channel member interfaces
+            if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
+                for port_channel_member in p2p_link_data.get("port_channel_members", []):
+                    self.structured_config.ethernet_interfaces.obtain(port_channel_member["interface"]).validate_state = False
+
     def _get_channel_id(
         self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol,
         p2p_link: T_P2pLinksItem,

@@ -228,6 +228,7 @@ class EthernetInterfacesMixin(Protocol):
                     switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False),
                     metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(peer_type="l3_interface"),
                     shutdown=False,
+                    validate_state=False if self.shared_utils.digital_twin else None,
                 )
 
         # WAN HA interface(s) for direct connection
@@ -343,6 +344,11 @@ class EthernetInterfacesMixin(Protocol):
                 channel_group=EosCliConfigGen.EthernetInterfacesItem.ChannelGroup(id=int(channel_group_id), mode=l3_port_channel.mode),
             )
             ethernet_interface.metadata._update(peer_interface=member_intf.peer_interface, peer_type="l3_port_channel_member", peer=peer)
+
+            # Set validate_state to `False` in Digital Twin mode
+            if self.shared_utils.digital_twin:
+                ethernet_interface.validate_state = False
+
             self.structured_config.ethernet_interfaces.append(ethernet_interface)
             if member_intf.structured_config:
                 self.custom_structured_configs.nested.ethernet_interfaces.obtain(member_intf.name)._deepmerge(

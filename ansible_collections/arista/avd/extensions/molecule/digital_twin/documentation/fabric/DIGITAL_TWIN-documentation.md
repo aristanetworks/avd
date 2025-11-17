@@ -51,6 +51,7 @@
 | l3leaf | digital-twin-ethernet-ports-1 | Ethernet11 | l3leaf | digital.twin.ethernet.ports.2 | Ethernet11 |
 | l3leaf | digital-twin-ethernet-ports-1 | Ethernet11.100 | l3leaf | digital.twin.ethernet.ports.2 | Ethernet11.100 |
 | l3leaf | digital-twin-ethernet-ports-1 | Ethernet11.101 | l3leaf | digital.twin.ethernet.ports.2 | Ethernet11.101 |
+| l3leaf | digital-twin-ethernet-ports-1 | Ethernet14 | l3leaf | digital.twin.ethernet.ports.2 | Ethernet14 |
 
 ## Fabric IP Allocation
 
@@ -66,9 +67,9 @@
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
 | digital-twin-ethernet-ports-1 | Ethernet3 | 192.168.3.114/31 | digital.twin.ethernet.ports.2 | Ethernet3 | 192.168.3.115/31 |
 | digital-twin-ethernet-ports-1 | Ethernet6 | 192.168.3.112/31 | digital-twin-ethernet-ports-3 | Ethernet6 | 192.168.3.113/31 |
-| digital-twin-ethernet-ports-1 | Ethernet11 | 192.168.3.166/31 | digital.twin.ethernet.ports.2 | Ethernet11 | 192.168.3.167/31 |
-| digital-twin-ethernet-ports-1 | Ethernet11.100 | 192.168.3.168/31 | digital.twin.ethernet.ports.2 | Ethernet11.100 | 192.168.3.169/31 |
-| digital-twin-ethernet-ports-1 | Ethernet11.101 | 192.168.3.170/31 | digital.twin.ethernet.ports.2 | Ethernet11.101 | 192.168.3.171/31 |
+| digital-twin-ethernet-ports-1 | Ethernet11 | 192.168.3.184/31 | digital.twin.ethernet.ports.2 | Ethernet11 | 192.168.3.185/31 |
+| digital-twin-ethernet-ports-1 | Ethernet11.100 | 192.168.3.186/31 | digital.twin.ethernet.ports.2 | Ethernet11.100 | 192.168.3.187/31 |
+| digital-twin-ethernet-ports-1 | Ethernet11.101 | 192.168.3.188/31 | digital.twin.ethernet.ports.2 | Ethernet11.101 | 192.168.3.189/31 |
 
 ### Loopback Interfaces (BGP EVPN Peering)
 

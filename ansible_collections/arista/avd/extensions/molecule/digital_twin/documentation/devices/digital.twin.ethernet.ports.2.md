@@ -197,6 +197,8 @@ vlan 4094
 | Ethernet2 | - | - | - | - | - | - |
 | Ethernet4 | MLAG_digital-twin-ethernet-ports-1_Ethernet4 | *trunk | *- | *- | *MLAG | 4 |
 | Ethernet5 | MLAG_digital-twin-ethernet-ports-1_Ethernet5 | *trunk | *- | *- | *MLAG | 4 |
+| Ethernet9 | FIREWALL_firewall-1_Eth4 | *- | *- | *- | *- | 9 |
+| Ethernet16 | - | *- | *- | *- | *- | 16 |
 
 *Inherited from Port-Channel Interface
 
@@ -206,18 +208,34 @@ vlan 4094
 | --------- | ----------- | ------- | -------------- | -------------------- |
 | Ethernet10.100 | - | - | 100 | - |
 | Ethernet10.101 | - | - | 101 | - |
+| Ethernet20.100 | - | - | 100 | - |
+| Ethernet21.100 | - | - | 100 | - |
 
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet3 | P2P_digital-twin-ethernet-ports-1_Ethernet3 | - | 192.168.3.115/31 | default | 9214 | False | - | - |
-| Ethernet10 | - | - | 192.168.3.165/31 | TENANT_A_VRF_A | - | False | - | - |
+| Ethernet10 | - | - | 192.168.3.170/31 | TENANT_A_VRF_A | - | False | - | - |
 | Ethernet10.100 | - | - | 192.168.3.162/31 | TENANT_A_VRF_A | - | False | - | - |
-| Ethernet10.101 | - | - | 192.168.3.163/31 | TENANT_A_VRF_A | - | False | - | - |
-| Ethernet11 | P2P_digital-twin-ethernet-ports-1_Ethernet11 | - | 192.168.3.167/31 | default | 9214 | False | - | - |
-| Ethernet11.100 | P2P_digital-twin-ethernet-ports-1_Ethernet11.100 | - | 192.168.3.169/31 | default | 9214 | False | - | - |
-| Ethernet11.101 | P2P_digital-twin-ethernet-ports-1_Ethernet11.101 | - | 192.168.3.171/31 | default | 9214 | False | - | - |
+| Ethernet10.101 | - | - | 192.168.3.166/31 | TENANT_A_VRF_A | - | False | - | - |
+| Ethernet11 | P2P_digital-twin-ethernet-ports-1_Ethernet11 | - | 192.168.3.185/31 | default | 9214 | False | - | - |
+| Ethernet11.100 | P2P_digital-twin-ethernet-ports-1_Ethernet11.100 | - | 192.168.3.187/31 | default | 9214 | False | - | - |
+| Ethernet11.101 | P2P_digital-twin-ethernet-ports-1_Ethernet11.101 | - | 192.168.3.189/31 | default | 9214 | False | - | - |
+| Ethernet13 | P2P_external-device-2_Ethernet13 | - | 192.168.3.194/31 | default | 9214 | False | - | - |
+| Ethernet13.100 | P2P_external-device-2_Ethernet13.100 | - | 192.168.3.196/31 | default | 9214 | False | - | - |
+| Ethernet14 | P2P_digital-twin-ethernet-ports-1_Ethernet14 | 14 | *192.168.3.199/31 | *default | *9214 | *False | *- | *- |
+| Ethernet15 | P2P_external-device-4_Ethernet15 | 15 | *192.168.3.202/31 | *default | *9214 | *False | *- | *- |
+| Ethernet17 | - | 17 | *192.168.3.178/31 | *TENANT_A_VRF_A | *- | *False | *- | *- |
+| Ethernet18 | - | 18 | *192.168.3.182/31 | *TENANT_A_VRF_A | *- | *False | *- | *- |
+| Ethernet19 | - | - | 192.168.3.218/31 | default | - | False | - | - |
+| Ethernet20.100 | - | - | 192.168.3.220/31 | default | - | False | - | - |
+| Ethernet21 | - | - | 192.168.3.222/31 | default | - | False | - | - |
+| Ethernet21.100 | - | - | 192.168.3.224/31 | default | - | False | - | - |
+| Ethernet22 | - | 22 | *192.168.3.226/31 | *default | *- | *False | *- | *- |
+| Ethernet23 | - | 23 | *192.168.3.228/31 | *default | *- | *False | *- | *- |
+
+*Inherited from Port-Channel Interface
 
 #### Ethernet Interfaces Device Configuration
 
@@ -249,11 +267,16 @@ interface Ethernet5
    no shutdown
    channel-group 4 mode active
 !
+interface Ethernet9
+   description FIREWALL_firewall-1_Eth4
+   no shutdown
+   channel-group 9 mode active
+!
 interface Ethernet10
    no shutdown
    no switchport
    vrf TENANT_A_VRF_A
-   ip address 192.168.3.165/31
+   ip address 192.168.3.170/31
 !
 interface Ethernet10.100
    no shutdown
@@ -265,28 +288,96 @@ interface Ethernet10.101
    no shutdown
    encapsulation dot1q vlan 101
    vrf TENANT_A_VRF_A
-   ip address 192.168.3.163/31
+   ip address 192.168.3.166/31
 !
 interface Ethernet11
    description P2P_digital-twin-ethernet-ports-1_Ethernet11
    no shutdown
    mtu 9214
    no switchport
-   ip address 192.168.3.167/31
+   ip address 192.168.3.185/31
 !
 interface Ethernet11.100
    description P2P_digital-twin-ethernet-ports-1_Ethernet11.100
    no shutdown
    mtu 9214
    no switchport
-   ip address 192.168.3.169/31
+   ip address 192.168.3.187/31
 !
 interface Ethernet11.101
    description P2P_digital-twin-ethernet-ports-1_Ethernet11.101
    no shutdown
    mtu 9214
    no switchport
-   ip address 192.168.3.171/31
+   ip address 192.168.3.189/31
+!
+interface Ethernet13
+   description P2P_external-device-2_Ethernet13
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 192.168.3.194/31
+!
+interface Ethernet13.100
+   description P2P_external-device-2_Ethernet13.100
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 192.168.3.196/31
+!
+interface Ethernet14
+   description P2P_digital-twin-ethernet-ports-1_Ethernet14
+   no shutdown
+   channel-group 14 mode active
+!
+interface Ethernet15
+   description P2P_external-device-4_Ethernet15
+   no shutdown
+   channel-group 15 mode active
+!
+interface Ethernet16
+   no shutdown
+   channel-group 16 mode active
+!
+interface Ethernet17
+   no shutdown
+   channel-group 17 mode active
+!
+interface Ethernet18
+   no shutdown
+   channel-group 18 mode active
+!
+interface Ethernet19
+   no shutdown
+   no switchport
+   ip address 192.168.3.218/31
+!
+interface Ethernet20
+   no shutdown
+   no switchport
+!
+interface Ethernet20.100
+   no shutdown
+   encapsulation dot1q vlan 100
+   ip address 192.168.3.220/31
+!
+interface Ethernet21
+   no shutdown
+   no switchport
+   ip address 192.168.3.222/31
+!
+interface Ethernet21.100
+   no shutdown
+   encapsulation dot1q vlan 100
+   ip address 192.168.3.224/31
+!
+interface Ethernet22
+   no shutdown
+   channel-group 22 mode active
+!
+interface Ethernet23
+   no shutdown
+   channel-group 23 mode active
 ```
 
 ### Port-Channel Interfaces
@@ -298,6 +389,28 @@ interface Ethernet11.101
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel4 | MLAG_digital-twin-ethernet-ports-1_Port-Channel4 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel9 | FIREWALL_firewall-1 | - | - | - | - | - | - | 9 | - |
+| Port-Channel16 | - | - | - | - | - | - | - | 16 | - |
+
+##### Encapsulation Dot1q
+
+| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------- | -------------------- |
+| Port-Channel17.100 | - | - | 100 | - |
+| Port-Channel23.100 | - | - | 100 | - |
+
+##### IPv4
+
+| Interface | Description | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel14 | P2P_digital-twin-ethernet-ports-1_Port-Channel14 | - | 192.168.3.199/31 | default | 9214 | False | - | - |
+| Port-Channel15 | P2P_external-device-4_Port-Channel15 | - | 192.168.3.202/31 | default | 9214 | False | - | - |
+| Port-Channel17 | - | - | 192.168.3.178/31 | TENANT_A_VRF_A | - | False | - | - |
+| Port-Channel17.100 | - | - | 192.168.3.180/31 | TENANT_A_VRF_A | - | False | - | - |
+| Port-Channel18 | - | - | 192.168.3.182/31 | TENANT_A_VRF_A | - | False | - | - |
+| Port-Channel22 | - | - | 192.168.3.226/31 | default | - | False | - | - |
+| Port-Channel23 | - | - | 192.168.3.228/31 | default | - | False | - | - |
+| Port-Channel23.100 | - | - | 192.168.3.230/31 | default | - | False | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -309,6 +422,64 @@ interface Port-Channel4
    switchport mode trunk
    switchport trunk group MLAG
    switchport
+!
+interface Port-Channel9
+   description FIREWALL_firewall-1
+   no shutdown
+   switchport
+   mlag 9
+!
+interface Port-Channel14
+   description P2P_digital-twin-ethernet-ports-1_Port-Channel14
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 192.168.3.199/31
+!
+interface Port-Channel15
+   description P2P_external-device-4_Port-Channel15
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 192.168.3.202/31
+!
+interface Port-Channel16
+   no shutdown
+   switchport
+   mlag 16
+!
+interface Port-Channel17
+   no shutdown
+   no switchport
+   vrf TENANT_A_VRF_A
+   ip address 192.168.3.178/31
+!
+interface Port-Channel17.100
+   no shutdown
+   encapsulation dot1q vlan 100
+   vrf TENANT_A_VRF_A
+   ip address 192.168.3.180/31
+!
+interface Port-Channel18
+   no shutdown
+   no switchport
+   vrf TENANT_A_VRF_A
+   ip address 192.168.3.182/31
+!
+interface Port-Channel22
+   no shutdown
+   no switchport
+   ip address 192.168.3.226/31
+!
+interface Port-Channel23
+   no shutdown
+   no switchport
+   ip address 192.168.3.228/31
+!
+interface Port-Channel23.100
+   no shutdown
+   encapsulation dot1q vlan 100
+   ip address 192.168.3.230/31
 ```
 
 ### Loopback Interfaces
@@ -506,9 +677,13 @@ ASN Notation: asplain
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 192.168.3.80 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 | 192.168.3.114 | 65001 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 192.168.3.166 | 65001 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 192.168.3.168 | 65001 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 192.168.3.170 | 65001 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 192.168.3.184 | 65001 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 192.168.3.186 | 65001 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 192.168.3.188 | 65001 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 192.168.3.195 | 65001 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 192.168.3.197 | 65001 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 192.168.3.198 | 65001 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 192.168.3.203 | 65001 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -554,15 +729,27 @@ router bgp 65001
    neighbor 192.168.3.114 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.3.114 remote-as 65001
    neighbor 192.168.3.114 description digital-twin-ethernet-ports-1_Ethernet3
-   neighbor 192.168.3.166 peer group IPv4-UNDERLAY-PEERS
-   neighbor 192.168.3.166 remote-as 65001
-   neighbor 192.168.3.166 description digital-twin-ethernet-ports-1
-   neighbor 192.168.3.168 peer group IPv4-UNDERLAY-PEERS
-   neighbor 192.168.3.168 remote-as 65001
-   neighbor 192.168.3.168 description digital-twin-ethernet-ports-1
-   neighbor 192.168.3.170 peer group IPv4-UNDERLAY-PEERS
-   neighbor 192.168.3.170 remote-as 65001
-   neighbor 192.168.3.170 description digital-twin-ethernet-ports-1
+   neighbor 192.168.3.184 peer group IPv4-UNDERLAY-PEERS
+   neighbor 192.168.3.184 remote-as 65001
+   neighbor 192.168.3.184 description digital-twin-ethernet-ports-1
+   neighbor 192.168.3.186 peer group IPv4-UNDERLAY-PEERS
+   neighbor 192.168.3.186 remote-as 65001
+   neighbor 192.168.3.186 description digital-twin-ethernet-ports-1
+   neighbor 192.168.3.188 peer group IPv4-UNDERLAY-PEERS
+   neighbor 192.168.3.188 remote-as 65001
+   neighbor 192.168.3.188 description digital-twin-ethernet-ports-1
+   neighbor 192.168.3.195 peer group IPv4-UNDERLAY-PEERS
+   neighbor 192.168.3.195 remote-as 65001
+   neighbor 192.168.3.195 description external-device-2
+   neighbor 192.168.3.197 peer group IPv4-UNDERLAY-PEERS
+   neighbor 192.168.3.197 remote-as 65001
+   neighbor 192.168.3.197 description external-device-2
+   neighbor 192.168.3.198 peer group IPv4-UNDERLAY-PEERS
+   neighbor 192.168.3.198 remote-as 65001
+   neighbor 192.168.3.198 description digital-twin-ethernet-ports-1
+   neighbor 192.168.3.203 peer group IPv4-UNDERLAY-PEERS
+   neighbor 192.168.3.203 remote-as 65001
+   neighbor 192.168.3.203 description external-device-4
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
