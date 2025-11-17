@@ -7,7 +7,7 @@
 {% if mac_security is arista.avd.defined %}
 !
 mac security
-{%     if mac_security.license.license_name is arista.avd.defined and mac_security.license.license_key is arista.avd.defined %}
+{%     if mac_security.license is arista.avd.defined %}
    license {{ mac_security.license.license_name }} {{ mac_security.license.license_key }}
 {%     endif %}
 {%     if mac_security.fips_restrictions is arista.avd.defined(true) %}
@@ -20,13 +20,11 @@ mac security
       cipher {{ profile.cipher }}
 {%         endif %}
 {%         for connection_key in profile.connection_keys | arista.avd.natural_sort('id') %}
-{%             if connection_key.encrypted_key is arista.avd.defined %}
-{%                 set key_cli = "key " ~ connection_key.id ~ " 7 " ~ connection_key.encrypted_key | arista.avd.hide_passwords(hide_passwords) %}
-{%                 if connection_key.fallback is arista.avd.defined(true) %}
-{%                     set key_cli = key_cli ~ " fallback" %}
-{%                 endif %}
-      {{ key_cli }}
+{%             set key_cli = "key " ~ connection_key.id ~ " 7 " ~ connection_key.encrypted_key | arista.avd.hide_passwords(hide_passwords) %}
+{%             if connection_key.fallback is arista.avd.defined(true) %}
+{%                 set key_cli = key_cli ~ " fallback" %}
 {%             endif %}
+      {{ key_cli }}
 {%         endfor %}
 {%         if profile.mka.key_server_priority is arista.avd.defined %}
       mka key-server priority {{ profile.mka.key_server_priority }}
