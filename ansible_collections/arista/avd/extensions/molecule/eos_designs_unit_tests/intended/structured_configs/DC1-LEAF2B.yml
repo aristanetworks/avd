@@ -93,6 +93,9 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: upstream
   ip_address: 172.31.254.65/31
   metadata:
     peer: DC1-SPINE1
@@ -105,6 +108,9 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: upstream
   ip_address: 172.31.254.67/31
   metadata:
     peer: DC1-SPINE2
@@ -117,6 +123,9 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: upstream
   ip_address: 172.31.254.69/31
   metadata:
     peer: DC1-SPINE2
@@ -129,6 +138,9 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: upstream
   ip_address: 172.31.254.71/31
   metadata:
     peer: DC1-SPINE1
@@ -141,6 +153,9 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: upstream
   ip_address: 172.31.254.73/31
   metadata:
     peer: DC1-SPINE3
@@ -153,6 +168,9 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: upstream
   ip_address: 172.31.254.75/31
   metadata:
     peer: DC1-SPINE4
@@ -165,6 +183,9 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: upstream
   ip_address: 172.31.254.77/31
   metadata:
     peer: DC1-SPINE4
@@ -177,6 +198,9 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: upstream
   ip_address: 172.31.254.79/31
   metadata:
     peer: DC1-SPINE3
@@ -315,6 +339,9 @@ ipv6_static_routes:
   prefix: ::/0
   next_hop: 2001:db8:311::4
   name: IPv6-test-2
+link_tracking_groups:
+- name: LT_GROUP1
+  recovery_delay: 900
 local_users:
 - name: admin
   disabled: true
@@ -415,6 +442,9 @@ port_channel_interfaces:
 - name: Port-Channel7
   description: DC1_L2LEAF1_Po1
   shutdown: false
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: downstream
   evpn_ethernet_segment:
     identifier: 0000:0000:0808:0707:0606
     route_target: 08:08:07:07:06:06
@@ -429,6 +459,9 @@ port_channel_interfaces:
 - name: Port-Channel9
   description: DC1-L2LEAF3A_Po1
   shutdown: false
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: downstream
   evpn_ethernet_segment:
     identifier: 0000:0000:0606:0707:0808
     route_target: 06:06:07:07:08:08
@@ -441,6 +474,9 @@ port_channel_interfaces:
 - name: Port-Channel1013
   description: DC1-L2LEAF4A_Po1001
   shutdown: false
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: downstream
   evpn_ethernet_segment:
     identifier: 0000:0000:a36b:7013:457b
     route_target: a3:6b:70:13:45:7b
@@ -453,6 +489,9 @@ port_channel_interfaces:
 - name: Port-Channel141
   description: DC1_L2LEAF5_Po1
   shutdown: false
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: downstream
   evpn_ethernet_segment:
     identifier: 0000:0000:fa91:ce62:ce95
     route_target: fa:91:ce:62:ce:95
@@ -465,6 +504,9 @@ port_channel_interfaces:
 - name: Port-Channel30
   description: DC1_L2LEAF6_Po1
   shutdown: false
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: downstream
   evpn_ethernet_segment:
     identifier: 0000:0000:a8be:743c:0a1a
     route_target: a8:be:74:3c:0a:1a

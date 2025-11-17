@@ -178,7 +178,7 @@ class EthernetInterfacesMixin(Protocol):
         if self.shared_utils.digital_twin:
             validate_state = False
         else:
-            validate_state = None if (adapter.validate_state if adapter.validate_state is not None else True) else False
+            validate_state = False if adapter.validate_state is False else None
 
         # Common ethernet_interface settings
         ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
@@ -197,8 +197,6 @@ class EthernetInterfacesMixin(Protocol):
             or None,
             speed=adapter.speed,
             shutdown=not (adapter.enabled if adapter.enabled is not None else True),
-            validate_state=validate_state,
-            validate_lldp=None if (adapter.validate_lldp if adapter.validate_lldp is not None else True) else False,
             dot1x=adapter.dot1x,
             poe=adapter.poe if self.shared_utils.platform_settings.feature_support.poe else Undefined,
             eos_cli=adapter.raw_eos_cli,
@@ -209,6 +207,8 @@ class EthernetInterfacesMixin(Protocol):
             peer_type=connected_endpoint.type,
             port_profile=adapter.profile,
             peer_key=connected_endpoint._internal_data.context,
+            validate_state=validate_state,
+            validate_lldp=False if adapter.validate_lldp is False else None,
         )
 
         # Port-channel member
