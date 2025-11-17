@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from anta.input_models.hardware import HardwareInventory
-from anta.tests.hardware import VerifyEnvironmentCooling, VerifyEnvironmentPower, VerifyTransceiversManufacturers, VerifyInventory
+from anta.tests.hardware import VerifyEnvironmentCooling, VerifyEnvironmentPower, VerifyInventory, VerifyTransceiversManufacturers
 
 from ._base_classes import AntaTestInputFactory
 

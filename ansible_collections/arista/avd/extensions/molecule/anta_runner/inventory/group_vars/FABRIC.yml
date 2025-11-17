@@ -119,7 +119,6 @@ custom_platform_settings:
       min_fans: 4
       min_supervisors: 0
       min_line_cards: 0
-    validate_hardware_inventory:
       transceiver_manufacturers:
         - Arista mfg
         - Arista transceivers
