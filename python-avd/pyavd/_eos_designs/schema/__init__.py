@@ -64303,6 +64303,27 @@ class EosDesigns(EosDesignsRootModel):
 
                         Nodes._item_type = str
 
+                        class Attribute(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"rcf": {"type": str}}
+                            rcf: str | None
+                            """RCF name with parenthesis. Example "AGG-ADD-RCF()"."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, rcf: str | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    Attribute.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        rcf: RCF name with parenthesis. Example "AGG-ADD-RCF()".
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "nodes": {"type": Nodes},
                             "prefix": {"type": str},
@@ -64311,6 +64332,7 @@ class EosDesigns(EosDesignsRootModel):
                             "summary_only": {"type": bool},
                             "attribute_map": {"type": str},
                             "match_map": {"type": str},
+                            "attribute": {"type": Attribute},
                         }
                         nodes: Nodes
                         """
@@ -64329,6 +64351,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Route-map name."""
                         match_map: str | None
                         """Route-map name."""
+                        attribute: Attribute
+                        """Subclass of AvdModel."""
 
                         if TYPE_CHECKING:
 
@@ -64342,6 +64366,7 @@ class EosDesigns(EosDesignsRootModel):
                                 summary_only: bool | None | UndefinedType = Undefined,
                                 attribute_map: str | None | UndefinedType = Undefined,
                                 match_map: str | None | UndefinedType = Undefined,
+                                attribute: Attribute | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 AggregateAddressesItem.
@@ -64362,6 +64387,7 @@ class EosDesigns(EosDesignsRootModel):
                                     summary_only: summary_only
                                     attribute_map: Route-map name.
                                     match_map: Route-map name.
+                                    attribute: Subclass of AvdModel.
 
                                 """
 
