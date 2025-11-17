@@ -58,8 +58,8 @@ impl Validation<Map<String, Value>> for Dict {
 }
 
 fn validate_allowed_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
-    if !schema.allow_other_keys.unwrap_or_default() {
-        if let Some(keys) = &schema.keys {
+    if !schema.allow_other_keys.unwrap_or_default()
+        && let Some(keys) = &schema.keys {
             input
                 .keys()
                 // keys starting with "_" are passed over to allow for custom usage
@@ -71,7 +71,6 @@ fn validate_allowed_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Co
                     ctx.path.pop();
                 });
         }
-    }
 }
 
 fn validate_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
@@ -411,8 +410,15 @@ mod tests {
             )])),
             dynamic_keys: Some(OrderMap::from_iter([(
                 "my_dynamic_keys".into(),
-                Int {
-                    max: Some(10),
+                Dict {
+                    keys: Some(OrderMap::from_iter([(
+                        "sub_key".into(),
+                        Int {
+                            max: Some(10),
+                            ..Default::default()
+                        }
+                        .into(),
+                    )])),
                     ..Default::default()
                 }
                 .into(),
@@ -420,7 +426,8 @@ mod tests {
             allow_other_keys: Some(true),
             ..Default::default()
         };
-        let mut input = serde_json::json!({ "dynkey1": 11, "dynkey2": "wrong" });
+        let mut input =
+            serde_json::json!({ "dynkey1": {"sub_key": 11, "bad_key": true}, "dynkey2": "wrong" });
         let store = get_test_store();
         let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
@@ -436,7 +443,7 @@ mod tests {
             ctx.violations,
             vec![
                 Feedback {
-                    path: vec!["dynkey1".into()],
+                    path: vec!["dynkey1".into(), "sub_key".into()],
                     issue: Violation::ValueAboveMaximum {
                         maximum: 10,
                         found: 11
@@ -444,9 +451,13 @@ mod tests {
                     .into()
                 },
                 Feedback {
+                    path: vec!["dynkey1".into(), "bad_key".into()],
+                    issue: Violation::UnexpectedKey {}.into()
+                },
+                Feedback {
                     path: vec!["dynkey2".into()],
                     issue: Violation::InvalidType {
-                        expected: Type::Int,
+                        expected: Type::Dict,
                         found: Type::Str
                     }
                     .into()

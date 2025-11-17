@@ -53,25 +53,23 @@ impl Validation<i64> for Int {
 }
 
 fn validate_min(schema: &Int, input: &i64, ctx: &mut Context) {
-    if let Some(min) = schema.min {
-        if min > *input {
+    if let Some(min) = schema.min
+        && min > *input {
             ctx.add_violation(Violation::ValueBelowMinimum {
                 minimum: min,
                 found: *input,
             });
         }
-    }
 }
 
 fn validate_max(schema: &Int, input: &i64, ctx: &mut Context) {
-    if let Some(max) = schema.max {
-        if max < *input {
+    if let Some(max) = schema.max
+        && max < *input {
             ctx.add_violation(Violation::ValueAboveMaximum {
                 maximum: max,
                 found: *input,
             });
         }
-    }
 }
 
 #[cfg(test)]

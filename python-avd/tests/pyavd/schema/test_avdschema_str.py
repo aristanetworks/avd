@@ -1,6 +1,8 @@
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+import json
+from itertools import product
 from pathlib import Path
 from sys import path
 from typing import Any
@@ -12,6 +14,7 @@ path.insert(0, str(Path(__file__).parents[3]))
 
 from pyavd._errors import AvdValidationError
 from pyavd._schema.avdschema import AvdSchema
+from pyavd.validate_inputs import validate_inputs
 
 TEST_SCHEMA = {
     "type": "dict",
@@ -33,6 +36,9 @@ TEST_SCHEMA = {
         "dynamic": {"type": "list", "items": {"type": "dict", "keys": {"valid_value": {"type": "str"}}}},
     },
 }
+
+# f-string-based pattern is suggested to have a simple way of extending test coverage to new keys (like mlag_interfaces which is not patterned right now)
+NODE_CONFIG_SCHEMA_SECTION = "{{'fabric_name': 'pytest_fabric', 'l3leaf': {{'defaults': {{'{schema_key_name}': ['{schema_key_value}']}}}}}}"
 
 
 @pytest.fixture(scope="module")
@@ -203,3 +209,74 @@ def test_str_format(
     else:
         # No errors expected.
         assert not validation_errors
+
+
+# Helper function to generate possible valid Ethernet interface ranges
+def generate_ethernet_range_patterns(max_depth: int = 5) -> list[str]:
+    base_value = "Ethernet"
+    seeds = ["1", "2,3", "4-5", "6,17-18"]
+    pytest_params = []
+    for length in range(1, max_depth + 1):
+        pytest_params.extend(base_value + "/".join(combo) for combo in product(seeds, repeat=length))
+    pytest_params.sort(key=lambda s: (len(s.split("/")), s))
+    # Append static patterns testing sequence inside each item
+    pytest_params.append("Ethernet1,2-3,4-5/6-7/8-9, Ethernet7,8-9,10/1-3")
+    return pytest_params
+
+
+# Allows a simple coverage adjustment for other schema paths that should use the same patterns in the future (like default_interfaces[].uplink_interfaces)
+@pytest.mark.parametrize(
+    ("raw_schema_section"),
+    [
+        pytest.param(NODE_CONFIG_SCHEMA_SECTION, id="NODE_CONFIG_INTERFACES"),
+    ],
+)
+# Allows a simple coverage adjustment for other schema paths that should use the same patterns in the future (like l3leafs.defaults.mlag_interfaces)
+@pytest.mark.parametrize(
+    ("schema_key_name"),
+    [
+        pytest.param("uplink_interfaces", id="UPLINK_INTERFACES"),
+    ],
+)
+@pytest.mark.parametrize(("schema_key_value"), generate_ethernet_range_patterns())
+def test_node_config_valid_ethernet_ranges(raw_schema_section: str, schema_key_name: str, schema_key_value: str) -> None:
+    """Test matching of the valid Ethernet interface ranges by the patterns of the target schema paths."""
+    raw_inputs_under_test = raw_schema_section.format(schema_key_name=schema_key_name, schema_key_value=schema_key_value).replace("'", '"')
+    inputs_under_test = json.loads(raw_inputs_under_test)
+
+    validation_results = validate_inputs(inputs_under_test)
+
+    assert not validation_results.failed
+    assert not validation_results.validation_errors
+
+
+@pytest.mark.parametrize(
+    ("raw_schema_section"),
+    [
+        pytest.param(NODE_CONFIG_SCHEMA_SECTION, id="NODE_CONFIG_INTERFACES"),
+    ],
+)
+@pytest.mark.parametrize(
+    ("schema_key_name"),
+    [
+        pytest.param("uplink_interfaces", id="UPLINK_INTERFACES"),
+    ],
+)
+@pytest.mark.parametrize(
+    ("schema_key_value"),
+    [
+        pytest.param("Ethernet1/", id="TRAILING_SLASH"),
+        pytest.param("Ethernet1-", id="TRAILING_DASH"),
+        pytest.param("Ethernet1,", id="TRAILING_COMMA"),
+    ],
+)
+def test_node_config_invalid_ethernet_ranges(raw_schema_section: str, schema_key_name: str, schema_key_value: str) -> None:
+    """Test matching of the invalid Ethernet interface ranges by the patterns of the target schema paths."""
+    raw_inputs_under_test = raw_schema_section.format(schema_key_name=schema_key_name, schema_key_value=schema_key_value).replace("'", '"')
+    inputs_under_test = json.loads(raw_inputs_under_test)
+
+    validation_results = validate_inputs(inputs_under_test)
+
+    # TODO: Remove 'not' once strict pattern validation is enforced. Items being tested here should cause validation failure.
+    assert not validation_results.failed
+    assert not validation_results.validation_errors

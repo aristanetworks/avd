@@ -4,8 +4,8 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet1.1
-  description: P2P_HARDWARE_FEATURES_VEOS_LAB_Ethernet2.2
+- name: Ethernet10
+  description: P2P_HARDWARE_FEATURES_VEOS_LAB_Ethernet10
   shutdown: false
   mtu: 9214
   ip_address: 10.10.50.15/31
@@ -20,8 +20,10 @@ ethernet_interfaces:
     transport: ipv4
   metadata:
     peer: HARDWARE_FEATURES_VEOS_LAB
-    peer_interface: Ethernet2.2
+    peer_interface: Ethernet10
     peer_type: l3leaf
+  sflow:
+    enable: true
   switchport:
     enabled: false
 - name: Ethernet4.4
@@ -173,7 +175,7 @@ router_bgp:
     remote_as: '65001'
     metadata:
       peer: HARDWARE_FEATURES_VEOS_LAB
-    description: HARDWARE_FEATURES_VEOS_LAB_Ethernet2.2
+    description: HARDWARE_FEATURES_VEOS_LAB_Ethernet10
   - ip_address: 10.10.30.41
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
@@ -228,6 +230,13 @@ router_bgp:
       - ip_address: 10.10.40.100
         activate: true
 service_routing_protocols_model: multi-agent
+sflow:
+  sample: 1000000
+  polling_interval: 5
+  destinations:
+  - destination: 10.10.10.10
+  source_interface: Vlan10
+  run: true
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
