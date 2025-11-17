@@ -57,6 +57,18 @@ keys:
           description: Accept gratuitous ARP.
         snmp_trap_link_change:
           type: bool
+        address_locking:
+          type: dict
+          keys:
+            address_family:
+              description: |-
+                Configure address locking per address family.
+                Introduced in EOS 4.31.0F.
+              type: dict
+              keys:
+                ipv4:
+                  type: bool
+                  description: Enable/disable address locking for IPv4.
         encapsulation_dot1q:
           type: dict
           keys:
@@ -884,6 +896,12 @@ keys:
             peer_key:
               type: str
               description: Key only used for documentation or validation purposes.
+            validate_state:
+              type: bool
+              description: Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
+            validate_lldp:
+              type: bool
+              description: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
         sflow:
           type: dict
           keys:
@@ -1302,13 +1320,6 @@ keys:
                 removed: true
                 remove_in_version: 6.0.0
                 new_key: srlgs
-
-        validate_state:
-          type: bool
-          description: Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
-        validate_lldp:
-          type: bool
-          description: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
         vlans:
           type: str
           deprecation:

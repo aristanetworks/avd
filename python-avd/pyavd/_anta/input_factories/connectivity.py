@@ -24,7 +24,7 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
 
     Peers must be available (`is_deployed: true`).
 
-    The factory respects `validate_state` and `validate_lldp` settings, excludes
+    The factory respects `metadata.validate_state` and `metadata.validate_lldp` settings, excludes
     subinterfaces and shutdown interfaces on local or peer (considering `interface_defaults.ethernet.shutdown`
     when not set), and uses peer FQDN when `dns_domain` is configured to match EOS
     LLDP format.
@@ -34,7 +34,7 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
         """Create a list of inputs for the `VerifyLLDPNeighbors` test."""
         neighbors: list[LLDPNeighbor] = []
         for intf in self.structured_config.ethernet_interfaces:
-            if intf.validate_state is False or intf.validate_lldp is False:
+            if intf.metadata.validate_state is False or intf.metadata.validate_lldp is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
 

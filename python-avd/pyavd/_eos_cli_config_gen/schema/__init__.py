@@ -5497,6 +5497,35 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         VlanAssignmentGroups._item_type = VlanAssignmentGroupsItem
 
+        class Eapol(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"vlan_change_logoff_disabled": {"type": bool}, "unresponsive_action_traffic_allow_vlan": {"type": int}}
+            vlan_change_logoff_disabled: bool | None
+            """Disable host log off when there is a VLAN change."""
+            unresponsive_action_traffic_allow_vlan: int | None
+            """EAPOL unresponsive hosts VLAN ID."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    vlan_change_logoff_disabled: bool | None | UndefinedType = Undefined,
+                    unresponsive_action_traffic_allow_vlan: int | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Eapol.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        vlan_change_logoff_disabled: Disable host log off when there is a VLAN change.
+                        unresponsive_action_traffic_allow_vlan: EAPOL unresponsive hosts VLAN ID.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "system_auth_control": {"type": bool},
             "protocol_lldp_bypass": {"type": bool},
@@ -5510,6 +5539,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "captive_portal": {"type": CaptivePortal},
             "supplicant": {"type": Supplicant},
             "vlan_assignment_groups": {"type": VlanAssignmentGroups},
+            "eapol": {"type": Eapol},
         }
         system_auth_control: bool | None
         protocol_lldp_bypass: bool | None
@@ -5544,6 +5574,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         vlan_assignment_groups: VlanAssignmentGroups
         """Subclass of AvdIndexedList with `VlanAssignmentGroupsItem` items. Primary key is `name` (`str`)."""
+        eapol: Eapol
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -5562,6 +5594,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 captive_portal: CaptivePortal | UndefinedType = Undefined,
                 supplicant: Supplicant | UndefinedType = Undefined,
                 vlan_assignment_groups: VlanAssignmentGroups | UndefinedType = Undefined,
+                eapol: Eapol | UndefinedType = Undefined,
             ) -> None:
                 """
                 Dot1x.
@@ -5592,6 +5625,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of AvdModel.
                     supplicant: Subclass of AvdModel.
                     vlan_assignment_groups: Subclass of AvdIndexedList with `VlanAssignmentGroupsItem` items. Primary key is `name` (`str`).
+                    eapol: Subclass of AvdModel.
 
                 """
 
@@ -9975,6 +10009,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "peer_type": {"type": str},
                 "peer_key": {"type": str},
                 "port_profile": {"type": str},
+                "validate_state": {"type": bool},
+                "validate_lldp": {"type": bool},
             }
             peer: str | None
             """Key only used for documentation or validation purposes."""
@@ -9986,6 +10022,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Key only used for documentation or validation purposes."""
             port_profile: str | None
             """Key only used for documentation or validation purposes."""
+            validate_state: bool | None
+            """
+            Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+            role.
+            """
+            validate_lldp: bool | None
+            """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
 
             if TYPE_CHECKING:
 
@@ -9997,6 +10040,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_type: str | None | UndefinedType = Undefined,
                     peer_key: str | None | UndefinedType = Undefined,
                     port_profile: str | None | UndefinedType = Undefined,
+                    validate_state: bool | None | UndefinedType = Undefined,
+                    validate_lldp: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Metadata.
@@ -10010,6 +10055,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         peer_type: Key only used for documentation or validation purposes.
                         peer_key: Key only used for documentation or validation purposes.
                         port_profile: Key only used for documentation or validation purposes.
+                        validate_state:
+                           Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                           role.
+                        validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
 
                     """
 
@@ -12322,8 +12371,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "uc_tx_queues": {"type": UcTxQueues},
             "tx_queues": {"type": TxQueues},
             "vrrp_ids": {"type": VrrpIds},
-            "validate_state": {"type": bool},
-            "validate_lldp": {"type": bool},
             "switchport": {"type": Switchport},
             "traffic_engineering": {"type": TrafficEngineering},
             "eos_cli": {"type": str},
@@ -12536,13 +12583,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdIndexedList with `VrrpIdsItem` items. Primary key is `id` (`int`).
         """
-        validate_state: bool | None
-        """
-        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
-        role.
-        """
-        validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
         switchport: Switchport
         """
         This should not be combined with `ethernet_interfaces[].type = switched/routed`.
@@ -12659,8 +12699,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 uc_tx_queues: UcTxQueues | UndefinedType = Undefined,
                 tx_queues: TxQueues | UndefinedType = Undefined,
                 vrrp_ids: VrrpIds | UndefinedType = Undefined,
-                validate_state: bool | None | UndefinedType = Undefined,
-                validate_lldp: bool | None | UndefinedType = Undefined,
                 switchport: Switchport | UndefinedType = Undefined,
                 traffic_engineering: TrafficEngineering | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
@@ -12796,10 +12834,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        VRRP model.
 
                        Subclass of AvdIndexedList with `VrrpIdsItem` items. Primary key is `id` (`int`).
-                    validate_state:
-                       Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
-                       role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                     switchport:
                        This should not be combined with `ethernet_interfaces[].type = switched/routed`.
 
@@ -24632,8 +24666,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         validate_no_errors_period: int | None
         """
-        Threshold (in minutes) defining the recent time window during which no error-level logs should have
-        been generated for the validation to pass.
+        Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
+        the validation performed by the `anta_runner` role.
         """
 
         if TYPE_CHECKING:
@@ -24689,8 +24723,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                        Subclass of AvdModel.
                     validate_no_errors_period:
-                       Threshold (in minutes) defining the recent time window during which no error-level logs should have
-                       been generated for the validation to pass.
+                       Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
+                       the validation performed by the `anta_runner` role.
 
                 """
 
@@ -29456,6 +29490,57 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class AddressLocking(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AddressFamily(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ipv4": {"type": bool}}
+                ipv4: bool | None
+                """Enable/disable address locking for IPv4."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        AddressFamily.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv4: Enable/disable address locking for IPv4.
+
+                        """
+
+            _fields: ClassVar[dict] = {"address_family": {"type": AddressFamily}}
+            address_family: AddressFamily
+            """
+            Configure address locking per address family.
+            Introduced in EOS 4.31.0F.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, address_family: AddressFamily | UndefinedType = Undefined) -> None:
+                    """
+                    AddressLocking.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        address_family:
+                           Configure address locking per address family.
+                           Introduced in EOS 4.31.0F.
+
+                           Subclass of AvdModel.
+
+                    """
+
         class EncapsulationDot1q(AvdModel):
             """Subclass of AvdModel."""
 
@@ -31812,7 +31897,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Metadata(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"peer": {"type": str}, "peer_interface": {"type": str}, "peer_type": {"type": str}, "peer_key": {"type": str}}
+            _fields: ClassVar[dict] = {
+                "peer": {"type": str},
+                "peer_interface": {"type": str},
+                "peer_type": {"type": str},
+                "peer_key": {"type": str},
+                "validate_state": {"type": bool},
+                "validate_lldp": {"type": bool},
+            }
             peer: str | None
             """Key only used for documentation or validation purposes."""
             peer_interface: str | None
@@ -31821,6 +31913,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Key only used for documentation or validation purposes."""
             peer_key: str | None
             """Key only used for documentation or validation purposes."""
+            validate_state: bool | None
+            """
+            Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+            role.
+            """
+            validate_lldp: bool | None
+            """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
 
             if TYPE_CHECKING:
 
@@ -31831,6 +31930,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_interface: str | None | UndefinedType = Undefined,
                     peer_type: str | None | UndefinedType = Undefined,
                     peer_key: str | None | UndefinedType = Undefined,
+                    validate_state: bool | None | UndefinedType = Undefined,
+                    validate_lldp: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Metadata.
@@ -31843,6 +31944,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         peer_interface: Key only used for documentation or validation purposes.
                         peer_type: Key only used for documentation or validation purposes.
                         peer_key: Key only used for documentation or validation purposes.
+                        validate_state:
+                           Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                           role.
+                        validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
 
                     """
 
@@ -33768,6 +33873,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "l2_mru": {"type": int},
             "arp_gratuitous_accept": {"type": bool},
             "snmp_trap_link_change": {"type": bool},
+            "address_locking": {"type": AddressLocking},
             "encapsulation_dot1q": {"type": EncapsulationDot1q},
             "vrf": {"type": str},
             "encapsulation_vlan": {"type": EncapsulationVlan},
@@ -33841,8 +33947,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "vrrp_ids": {"type": VrrpIds},
             "switchport": {"type": Switchport},
             "traffic_engineering": {"type": TrafficEngineering},
-            "validate_state": {"type": bool},
-            "validate_lldp": {"type": bool},
             "eos_cli": {"type": str},
         }
         name: str
@@ -33861,6 +33965,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         arp_gratuitous_accept: bool | None
         """Accept gratuitous ARP."""
         snmp_trap_link_change: bool | None
+        address_locking: AddressLocking
+        """Subclass of AvdModel."""
         encapsulation_dot1q: EncapsulationDot1q
         """Subclass of AvdModel."""
         vrf: str | None
@@ -34002,13 +34108,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         traffic_engineering: TrafficEngineering
         """Subclass of AvdModel."""
-        validate_state: bool | None
-        """
-        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
-        role.
-        """
-        validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
         eos_cli: str | None
         """Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
 
@@ -34027,6 +34126,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 l2_mru: int | None | UndefinedType = Undefined,
                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 snmp_trap_link_change: bool | None | UndefinedType = Undefined,
+                address_locking: AddressLocking | UndefinedType = Undefined,
                 encapsulation_dot1q: EncapsulationDot1q | UndefinedType = Undefined,
                 vrf: str | None | UndefinedType = Undefined,
                 encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
@@ -34100,8 +34200,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 vrrp_ids: VrrpIds | UndefinedType = Undefined,
                 switchport: Switchport | UndefinedType = Undefined,
                 traffic_engineering: TrafficEngineering | UndefinedType = Undefined,
-                validate_state: bool | None | UndefinedType = Undefined,
-                validate_lldp: bool | None | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -34121,6 +34219,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     snmp_trap_link_change: snmp_trap_link_change
+                    address_locking: Subclass of AvdModel.
                     encapsulation_dot1q: Subclass of AvdModel.
                     vrf: VRF name.
                     encapsulation_vlan:
@@ -34203,10 +34302,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of AvdIndexedList with `VrrpIdsItem` items. Primary key is `id` (`int`).
                     switchport: Subclass of AvdModel.
                     traffic_engineering: Subclass of AvdModel.
-                    validate_state:
-                       Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
-                       role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                     eos_cli: Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
 
                 """
@@ -39594,6 +39689,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class AggregateAddressesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class Attribute(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"rcf": {"type": str}}
+                rcf: str | None
+                """RCF name with parenthesis. Example "AGG-ADD-RCF()"."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, rcf: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Attribute.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            rcf: RCF name with parenthesis. Example "AGG-ADD-RCF()".
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "prefix": {"type": str},
                 "advertise_only": {"type": bool},
@@ -39601,6 +39717,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "summary_only": {"type": bool},
                 "attribute_map": {"type": str},
                 "match_map": {"type": str},
+                "attribute": {"type": Attribute},
             }
             prefix: str
             """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
@@ -39611,6 +39728,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Route-map name."""
             match_map: str | None
             """Route-map name."""
+            attribute: Attribute
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -39623,6 +39742,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     summary_only: bool | None | UndefinedType = Undefined,
                     attribute_map: str | None | UndefinedType = Undefined,
                     match_map: str | None | UndefinedType = Undefined,
+                    attribute: Attribute | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AggregateAddressesItem.
@@ -39637,6 +39757,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         summary_only: summary_only
                         attribute_map: Route-map name.
                         match_map: Route-map name.
+                        attribute: Subclass of AvdModel.
 
                     """
 
@@ -50562,6 +50683,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class AggregateAddressesItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                class Attribute(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"rcf": {"type": str}}
+                    rcf: str | None
+                    """RCF name with parenthesis. Example "AGG-ADD-RCF()"."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, rcf: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            Attribute.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                rcf: RCF name with parenthesis. Example "AGG-ADD-RCF()".
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "prefix": {"type": str},
                     "advertise_only": {"type": bool},
@@ -50569,6 +50711,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "summary_only": {"type": bool},
                     "attribute_map": {"type": str},
                     "match_map": {"type": str},
+                    "attribute": {"type": Attribute},
                 }
                 prefix: str
                 """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
@@ -50577,6 +50720,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 summary_only: bool | None
                 attribute_map: str | None
                 match_map: str | None
+                attribute: Attribute
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -50589,6 +50734,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         summary_only: bool | None | UndefinedType = Undefined,
                         attribute_map: str | None | UndefinedType = Undefined,
                         match_map: str | None | UndefinedType = Undefined,
+                        attribute: Attribute | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AggregateAddressesItem.
@@ -50603,6 +50749,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             summary_only: summary_only
                             attribute_map: attribute_map
                             match_map: match_map
+                            attribute: Subclass of AvdModel.
 
                         """
 
