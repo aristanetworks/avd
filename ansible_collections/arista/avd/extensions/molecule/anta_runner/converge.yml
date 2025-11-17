@@ -96,6 +96,6 @@
         anta_runner_dry_run: true
         avd_catalogs_dir: "{{ root_dir }}/anta/avd_catalogs/default_run_sorted_report"
         anta_reports_dir: "{{ root_dir }}/anta/reports/default_run_sorted_report"
-        anta_report_sort_by: ["test", "categories"]
+        anta_report_sort_by: ["test", "categories", "device", "custom_field", "description"]
         anta_report_status_priority: ["success", "failure", "error", "skipped"]
       run_once: true
