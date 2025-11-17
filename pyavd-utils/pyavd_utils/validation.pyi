@@ -6,21 +6,35 @@
 from pathlib import Path
 from typing import Literal
 
-class Feedback:
-    """Feedback item carried in the Context under either `errors`, `warnings` or `infos`."""
+class Violation:
+    """Input data violates the schema."""
 
     message: str
-    """String detailing the feedback."""
-
+    """String detailing the violation."""
     path: list[str]
-    """Path to the data which the feedback concerns."""
+    """Path to the data which the violation concerns."""
+
+class Deprecation:
+    """Input data model is deprecated."""
+
+    message: str
+    """String detailing the deprecation."""
+    path: list[str]
+    """Path to the data which uses a deprecated data model."""
+    removed: bool
+    """True when the data model is removed."""
+    version: str | None
+    """Version where the model will be removed."""
+    replacement: str | None
+    """New data model to use instead."""
+    url: str | None
+    """Url where more information can be found."""
 
 class ValidationResult:
     """Result of data validation."""
 
-    errors: list[Feedback]
-    warnings: list[Feedback]
-    infos: list[Feedback]
+    violations: list[Violation]
+    deprecations: list[Deprecation]
 
 class GetValidatedDataResult:
     """Result of data validation including the validated data as JSON."""
