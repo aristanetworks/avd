@@ -108,7 +108,7 @@ ARGUMENT_SPEC = {
             "json_output": {"type": "str"},
             "filters": {
                 "type": "dict",
-                "options": {"exclude_statuses": {"type": "list", "elements": "str", "choices": ["success", "failure", "error", "skipped", "unset"]}},
+                "options": {"exclude_statuses": {"type": "list", "elements": "str", "choices": ["error", "failure", "skipped", "success", "unset"]}},
             },
             "sorting": {
                 "type": "dict",
@@ -116,7 +116,7 @@ ARGUMENT_SPEC = {
                     "status_priority": {
                         "type": "list",
                         "elements": "str",
-                        "choices": ["success", "failure", "error", "skipped", "unset"],
+                        "choices": ["error", "failure", "skipped", "success", "unset"],
                         "default": ["error", "failure", "skipped", "success", "unset"],
                     },
                     "sort_by": {
@@ -336,10 +336,10 @@ def sort_result_manager(result_manager: ResultManager, status_priority: list[str
     if not result_manager.results:
         return result_manager
 
-    status_index = {s: i for i, s in enumerate(status_priority)}
-    sort_by = ["name" if ele == "device" else ele for ele in sort_by]
+    status_index = {status: idx for idx, status in enumerate(status_priority)}
+    sort_by = ["name" if field == "device" else field for field in sort_by]
 
-    def sort_key(item: TestResult) -> tuple[str, ...]:
+    def sort_key(item: TestResult) -> tuple[int | str | float]:
         # Start with the status_order
         key = [status_index.get(item.result, float("inf"))]
         # Added secondary from sort_by
