@@ -9,6 +9,7 @@ from pyavd._eos_designs.schema import EosDesigns
 
 from .connected_endpoints import ConnectedEndpointsMixin
 from .cv_topology import CvTopology
+from .device_config import DeviceConfigMixin
 from .filtered_tenants import FilteredTenantsMixin
 from .flow_tracking import FlowTrackingMixin
 from .inband_management import InbandManagementMixin
@@ -42,6 +43,7 @@ if TYPE_CHECKING:
 
 class SharedUtilsProtocol(
     ConnectedEndpointsMixin,
+    DeviceConfigMixin,
     FilteredTenantsMixin,
     InbandManagementMixin,
     InterfaceDescriptionsMixin,

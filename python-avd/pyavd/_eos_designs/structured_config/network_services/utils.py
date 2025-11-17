@@ -26,7 +26,7 @@ class UtilsMixin(Protocol):
     """
 
     @cached_property
-    def _local_endpoint_trunk_groups(self: AvdStructuredConfigNetworkServicesProtocol) -> set:
+    def _local_endpoint_trunk_groups(self: AvdStructuredConfigNetworkServicesProtocol) -> set[str]:
         return set(self.facts.local_endpoint_trunk_groups)
 
     @cached_property

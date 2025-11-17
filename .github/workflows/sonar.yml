@@ -43,17 +43,6 @@ jobs:
           name: pytest-coverage
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
-          path: python-avd/
-          merge-multiple: true
-
-      - name: Download coverage from pytest avdutils (bindings for rust)
-        continue-on-error: true
-        uses: actions/download-artifact@v6
-        with:
-          name: pytest-avdutils-coverage
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ github.event.workflow_run.id }}
-          path: python/avdutils/
           merge-multiple: true
 
       - name: Download eos_designs compiled templates from pytest

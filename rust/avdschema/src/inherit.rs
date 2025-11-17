@@ -36,11 +36,10 @@ where
     T: InheritableWithClone + Clone,
 {
     fn inherit(&mut self, other: &Self) {
-        if self.is_none() {
-            if let Some(other_value) = other {
+        if self.is_none()
+            && let Some(other_value) = other {
                 self.replace(other_value.to_owned());
             }
-        }
     }
 }
 impl Inherit for OrderMap<String, AnySchema> {

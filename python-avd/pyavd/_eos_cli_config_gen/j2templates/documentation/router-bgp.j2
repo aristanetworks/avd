@@ -513,8 +513,8 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------ | ------------- | --------- | -------------- |
+| Prefix | AS Set | Summary Only | Attribute Map | Attribute RCF | Match Map | Advertise Only |
+| ------ | ------ | ------------ | ------------- | ------------- | --------- | -------------- |
 {%         for aggregate_address in router_bgp.aggregate_addresses | arista.avd.natural_sort('prefix') %}
 {%             if aggregate_address.as_set is arista.avd.defined(true) %}
 {%                 set as_set = true %}
@@ -527,13 +527,14 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%                 set summary_only = false %}
 {%             endif %}
 {%             set attribute_map = aggregate_address.attribute_map | arista.avd.default("-") %}
+{%             set attribute_rcf = aggregate_address.attribute.rcf | arista.avd.default("-") %}
 {%             set match_map = aggregate_address.match_map | arista.avd.default("-") %}
 {%             if aggregate_address.advertise_only is arista.avd.defined(true) %}
 {%                 set advertise_only = true %}
 {%             else %}
 {%                 set advertise_only = false %}
 {%             endif %}
-| {{ aggregate_address.prefix }} | {{ as_set }} | {{ summary_only }} | {{ attribute_map }} | {{ match_map }} | {{ advertise_only }} |
+| {{ aggregate_address.prefix }} | {{ as_set }} | {{ summary_only }} | {{ attribute_map }} | {{ attribute_rcf }} | {{ match_map }} | {{ advertise_only }} |
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}

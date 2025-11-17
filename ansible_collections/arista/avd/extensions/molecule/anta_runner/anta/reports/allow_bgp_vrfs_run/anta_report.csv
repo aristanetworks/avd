@@ -10,6 +10,7 @@ dc1-leaf1a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc1-leaf1a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-leaf1a,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-leaf1a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-leaf1a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-leaf1a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-leaf1a,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc1-leaf1a,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -48,6 +49,7 @@ dc1-leaf1b,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc1-leaf1b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-leaf1b,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-leaf1b,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-leaf1b,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-leaf1b,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-leaf1b,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc1-leaf1b,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -56,7 +58,6 @@ dc1-leaf1b,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc1-leaf1b,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-leaf1b,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-leaf1b,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc1-leaf1b,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc1-leaf1b,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-leaf1b,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc1-leaf1b,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
@@ -83,6 +84,7 @@ dc1-leaf1c,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc1-leaf1c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-leaf1c,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-leaf1c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-leaf1c,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-leaf1c,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-leaf1c,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc1-leaf1c,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -91,7 +93,6 @@ dc1-leaf1c,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc1-leaf1c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-leaf1c,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-leaf1c,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc1-leaf1c,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc1-leaf1c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-leaf1c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-leaf1c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
@@ -106,6 +107,7 @@ dc1-leaf1c,VerifyMaintenance,unset,,Verifies that the device is not currently un
 dc1-leaf1c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf1c,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-leaf1c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc1-leaf1c,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-leaf2a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-leaf2a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-leaf2a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
@@ -117,6 +119,7 @@ dc1-leaf2a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc1-leaf2a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-leaf2a,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-leaf2a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-leaf2a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-leaf2a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-leaf2a,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc1-leaf2a,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -157,6 +160,7 @@ dc1-leaf2c,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc1-leaf2c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-leaf2c,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-leaf2c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-leaf2c,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-leaf2c,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-leaf2c,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc1-leaf2c,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -165,7 +169,6 @@ dc1-leaf2c,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc1-leaf2c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-leaf2c,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-leaf2c,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc1-leaf2c,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc1-leaf2c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-leaf2c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-leaf2c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
@@ -191,13 +194,13 @@ dc1-spine1,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc1-spine1,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-spine1,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-spine1,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-spine1,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-spine1,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-spine1,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-spine1,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc1-spine1,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc1-spine1,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-spine1,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc1-spine1,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc1-spine1,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-spine1,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-spine1,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
@@ -223,13 +226,13 @@ dc1-spine2,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc1-spine2,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-spine2,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-spine2,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-spine2,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-spine2,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-spine2,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-spine2,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc1-spine2,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc1-spine2,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-spine2,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc1-spine2,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc1-spine2,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-spine2,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-spine2,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
@@ -255,6 +258,7 @@ dc1-svc-leaf1a,VerifyEnvironmentPower,unset,,Verifies the power supplies state a
 dc1-svc-leaf1a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-svc-leaf1a,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-svc-leaf1a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-svc-leaf1a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-svc-leaf1a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-svc-leaf1a,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc1-svc-leaf1a,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -263,7 +267,6 @@ dc1-svc-leaf1a,VerifyInterfaceErrors,unset,,Verifies that the interfaces error c
 dc1-svc-leaf1a,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-svc-leaf1a,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-svc-leaf1a,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc1-svc-leaf1a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc1-svc-leaf1a,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-svc-leaf1a,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc1-svc-leaf1a,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
@@ -293,6 +296,7 @@ dc1-svc-leaf1b,VerifyEnvironmentPower,unset,,Verifies the power supplies state a
 dc1-svc-leaf1b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-svc-leaf1b,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-svc-leaf1b,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-svc-leaf1b,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-svc-leaf1b,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-svc-leaf1b,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc1-svc-leaf1b,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -301,7 +305,6 @@ dc1-svc-leaf1b,VerifyInterfaceErrors,unset,,Verifies that the interfaces error c
 dc1-svc-leaf1b,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-svc-leaf1b,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-svc-leaf1b,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc1-svc-leaf1b,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc1-svc-leaf1b,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-svc-leaf1b,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc1-svc-leaf1b,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
@@ -332,13 +335,13 @@ dc1-wan1,VerifyEnvironmentPower,unset,,Verifies the power supplies state and inp
 dc1-wan1,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-wan1,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-wan1,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-wan1,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-wan1,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-wan1,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-wan1,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc1-wan1,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc1-wan1,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-wan1,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc1-wan1,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc1-wan1,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-wan1,VerifySpecificPath,unset,,Verifies the DPS path and telemetry state of an IPv4 peer.,Path-Selection
 dc1-wan1,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
@@ -368,6 +371,7 @@ dc1-wan2,VerifyEnvironmentPower,unset,,Verifies the power supplies state and inp
 dc1-wan2,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-wan2,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-wan2,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-wan2,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-wan2,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-wan2,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc1-wan2,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -376,7 +380,6 @@ dc1-wan2,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counter
 dc1-wan2,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-wan2,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-wan2,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc1-wan2,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc1-wan2,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-wan2,VerifySpecificPath,unset,,Verifies the DPS path and telemetry state of an IPv4 peer.,Path-Selection
 dc1-wan2,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
@@ -405,6 +408,7 @@ dc2-leaf1a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc2-leaf1a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc2-leaf1a,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc2-leaf1a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc2-leaf1a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc2-leaf1a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf1a,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf1a,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -413,11 +417,12 @@ dc2-leaf1a,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc2-leaf1a,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf1a,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf1a,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc2-leaf1a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc2-leaf1a,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf1a,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf1a,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
 dc2-leaf1a,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
+dc2-leaf1a,VerifyOSPFMaxLSA,unset,,Verifies all OSPF instances did not cross the maximum LSA threshold.,OSPF
+dc2-leaf1a,VerifyOSPFNeighborState,unset,,Verifies all OSPF neighbors are in FULL state.,OSPF
 dc2-leaf1a,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf1a,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc2-leaf1a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
@@ -443,6 +448,7 @@ dc2-leaf1b,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc2-leaf1b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc2-leaf1b,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc2-leaf1b,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc2-leaf1b,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc2-leaf1b,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf1b,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf1b,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -451,11 +457,12 @@ dc2-leaf1b,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc2-leaf1b,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf1b,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf1b,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc2-leaf1b,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc2-leaf1b,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf1b,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf1b,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
 dc2-leaf1b,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
+dc2-leaf1b,VerifyOSPFMaxLSA,unset,,Verifies all OSPF instances did not cross the maximum LSA threshold.,OSPF
+dc2-leaf1b,VerifyOSPFNeighborState,unset,,Verifies all OSPF neighbors are in FULL state.,OSPF
 dc2-leaf1b,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf1b,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc2-leaf1b,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
@@ -478,6 +485,7 @@ dc2-leaf1c,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc2-leaf1c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc2-leaf1c,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc2-leaf1c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc2-leaf1c,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc2-leaf1c,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf1c,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf1c,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -486,7 +494,6 @@ dc2-leaf1c,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc2-leaf1c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf1c,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf1c,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc2-leaf1c,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc2-leaf1c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf1c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf1c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
@@ -512,6 +519,7 @@ dc2-leaf2a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc2-leaf2a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc2-leaf2a,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc2-leaf2a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc2-leaf2a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc2-leaf2a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf2a,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf2a,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -520,11 +528,12 @@ dc2-leaf2a,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc2-leaf2a,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf2a,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf2a,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc2-leaf2a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc2-leaf2a,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf2a,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf2a,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
 dc2-leaf2a,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
+dc2-leaf2a,VerifyOSPFMaxLSA,unset,,Verifies all OSPF instances did not cross the maximum LSA threshold.,OSPF
+dc2-leaf2a,VerifyOSPFNeighborState,unset,,Verifies all OSPF neighbors are in FULL state.,OSPF
 dc2-leaf2a,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf2a,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc2-leaf2a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
@@ -555,6 +564,7 @@ dc2-leaf2b,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc2-leaf2b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc2-leaf2b,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc2-leaf2b,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc2-leaf2b,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc2-leaf2b,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf2b,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf2b,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -563,11 +573,12 @@ dc2-leaf2b,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc2-leaf2b,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf2b,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf2b,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc2-leaf2b,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc2-leaf2b,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf2b,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf2b,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
 dc2-leaf2b,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
+dc2-leaf2b,VerifyOSPFMaxLSA,unset,,Verifies all OSPF instances did not cross the maximum LSA threshold.,OSPF
+dc2-leaf2b,VerifyOSPFNeighborState,unset,,Verifies all OSPF neighbors are in FULL state.,OSPF
 dc2-leaf2b,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf2b,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc2-leaf2b,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
@@ -595,6 +606,7 @@ dc2-leaf2c,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc2-leaf2c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc2-leaf2c,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc2-leaf2c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc2-leaf2c,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc2-leaf2c,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf2c,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf2c,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -603,7 +615,6 @@ dc2-leaf2c,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc2-leaf2c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf2c,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf2c,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc2-leaf2c,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc2-leaf2c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf2c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf2c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
@@ -629,6 +640,7 @@ dc2-leaf3a.arista.com,VerifyEnvironmentPower,unset,,Verifies the power supplies 
 dc2-leaf3a.arista.com,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc2-leaf3a.arista.com,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc2-leaf3a.arista.com,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc2-leaf3a.arista.com,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc2-leaf3a.arista.com,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf3a.arista.com,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf3a.arista.com,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -637,11 +649,12 @@ dc2-leaf3a.arista.com,VerifyInterfaceErrors,unset,,Verifies that the interfaces 
 dc2-leaf3a.arista.com,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf3a.arista.com,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf3a.arista.com,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc2-leaf3a.arista.com,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc2-leaf3a.arista.com,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf3a.arista.com,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf3a.arista.com,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
 dc2-leaf3a.arista.com,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
+dc2-leaf3a.arista.com,VerifyOSPFMaxLSA,unset,,Verifies all OSPF instances did not cross the maximum LSA threshold.,OSPF
+dc2-leaf3a.arista.com,VerifyOSPFNeighborState,unset,,Verifies all OSPF neighbors are in FULL state.,OSPF
 dc2-leaf3a.arista.com,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf3a.arista.com,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc2-leaf3a.arista.com,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
@@ -667,6 +680,7 @@ dc2-leaf3b.arista.com,VerifyEnvironmentPower,unset,,Verifies the power supplies 
 dc2-leaf3b.arista.com,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc2-leaf3b.arista.com,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc2-leaf3b.arista.com,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc2-leaf3b.arista.com,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc2-leaf3b.arista.com,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf3b.arista.com,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf3b.arista.com,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -675,11 +689,12 @@ dc2-leaf3b.arista.com,VerifyInterfaceErrors,unset,,Verifies that the interfaces 
 dc2-leaf3b.arista.com,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf3b.arista.com,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf3b.arista.com,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc2-leaf3b.arista.com,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc2-leaf3b.arista.com,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf3b.arista.com,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf3b.arista.com,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
 dc2-leaf3b.arista.com,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
+dc2-leaf3b.arista.com,VerifyOSPFMaxLSA,unset,,Verifies all OSPF instances did not cross the maximum LSA threshold.,OSPF
+dc2-leaf3b.arista.com,VerifyOSPFNeighborState,unset,,Verifies all OSPF neighbors are in FULL state.,OSPF
 dc2-leaf3b.arista.com,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf3b.arista.com,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc2-leaf3b.arista.com,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
@@ -705,14 +720,16 @@ dc2-spine1,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc2-spine1,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc2-spine1,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc2-spine1,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc2-spine1,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc2-spine1,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-spine1,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-spine1,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc2-spine1,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc2-spine1,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-spine1,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc2-spine1,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc2-spine1,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
+dc2-spine1,VerifyOSPFMaxLSA,unset,,Verifies all OSPF instances did not cross the maximum LSA threshold.,OSPF
+dc2-spine1,VerifyOSPFNeighborState,unset,,Verifies all OSPF neighbors are in FULL state.,OSPF
 dc2-spine1,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-spine1,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc2-spine1,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
@@ -737,14 +754,16 @@ dc2-spine2,VerifyEnvironmentPower,unset,,Verifies the power supplies state and i
 dc2-spine2,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc2-spine2,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc2-spine2,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc2-spine2,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc2-spine2,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-spine2,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-spine2,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc2-spine2,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc2-spine2,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-spine2,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc2-spine2,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc2-spine2,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
+dc2-spine2,VerifyOSPFMaxLSA,unset,,Verifies all OSPF instances did not cross the maximum LSA threshold.,OSPF
+dc2-spine2,VerifyOSPFNeighborState,unset,,Verifies all OSPF neighbors are in FULL state.,OSPF
 dc2-spine2,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-spine2,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc2-spine2,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software

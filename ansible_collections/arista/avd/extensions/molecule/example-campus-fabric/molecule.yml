@@ -1,4 +1,18 @@
 ---
+ansible:
+  executor:
+    backend: ansible-playbook
+    args:
+      ansible_playbook:
+        - --inventory=${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/campus-fabric/inventory.yml
+  env:
+    ANSIBLE_FORCE_COLOR: true
+  cfg:
+    defaults:
+      jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
+      gathering: explicit
+  playbooks:
+    converge: '${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/campus-fabric/build.yml'
 scenario:
   converge_sequence:
     - converge
@@ -10,22 +24,5 @@ scenario:
 dependency:
   name: galaxy
   enabled: false
-driver:
-  name: default
-  options:
-    managed: false
-platforms:
-  - name: dummy
-provisioner:
-  name: ansible
-  config_options:
-    defaults:
-      jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
-      duplicate_dict_key: error
-  playbooks:
-    converge: '../../../examples/campus-fabric/build.yml'
-  ansible_args:
-    - --inventory
-    - ${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/campus-fabric/inventory.yml
 verifier:
   name: ansible

@@ -80,6 +80,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyStormControlDrops,
+        input_factory=VerifyStormControlDropsInputFactory,
     ),
     TestSpec(
         test_class=VerifyLLDPNeighbors,
@@ -88,6 +89,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyLoggingErrors,
+        input_factory=VerifyLoggingErrorsInputFactory,
     ),
     TestSpec(
         test_class=VerifyMaintenance,
@@ -109,6 +111,14 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyNTP,
+    ),
+    TestSpec(
+        test_class=VerifyOSPFNeighborState,
+        conditional_keys=[StructuredConfigKey.ROUTER_OSPF],
+    ),
+    TestSpec(
+        test_class=VerifyOSPFMaxLSA,
+        conditional_keys=[StructuredConfigKey.ROUTER_OSPF],
     ),
     TestSpec(
         test_class=VerifySpecificPath,
@@ -138,6 +148,10 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyTemperature,
+    ),
+    TestSpec(
+        test_class=VerifyTransceiversManufacturers,
+        input_factory=VerifyTransceiversManufacturersInputFactory,
     ),
     TestSpec(
         test_class=VerifyTransceiversTemperature,

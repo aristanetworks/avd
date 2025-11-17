@@ -58,6 +58,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;icmp_type</samp>](## "traffic_policies.policies.[].matches.[].protocols.[].icmp_type") | List, items: String |  |  |  | List of ICMP message types to match.<br>This field is applicable only when the protocol is set to `icmp` or `icmpv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].protocols.[].icmp_type.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enforce_gtsm</samp>](## "traffic_policies.policies.[].matches.[].protocols.[].enforce_gtsm") | Boolean |  |  |  | Enforce the GTSM for BGP speakers. Only supported when protocol is set to 'neighbors'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;packet_type</samp>](## "traffic_policies.policies.[].matches.[].packet_type") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vxlan</samp>](## "traffic_policies.policies.[].matches.[].packet_type.vxlan") | String |  |  | Valid Values:<br>- <code>decap</code><br>- <code>decap exclude</code> | Configure VXLAN decapsulation match. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast</samp>](## "traffic_policies.policies.[].matches.[].packet_type.multicast") | Boolean |  |  |  | Configure multicast packet type match. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;actions</samp>](## "traffic_policies.policies.[].matches.[].actions") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "traffic_policies.policies.[].matches.[].actions.dscp") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "traffic_policies.policies.[].matches.[].actions.traffic_class") | Integer |  |  |  | Traffic class ID. |
@@ -201,6 +204,13 @@
 
                   # Enforce the GTSM for BGP speakers. Only supported when protocol is set to 'neighbors'.
                   enforce_gtsm: <bool>
+              packet_type:
+
+                # Configure VXLAN decapsulation match.
+                vxlan: <str; "decap" | "decap exclude">
+
+                # Configure multicast packet type match.
+                multicast: <bool>
               actions:
                 dscp: <int>
 

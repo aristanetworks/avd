@@ -49,6 +49,7 @@ underlay OSPF process id '{self.inputs.underlay_ospf_process_id}'."
                 if not process_id:
                     msg = f"Missing or invalid 'ospf.process_id' or 'vrf_id' under vrf '{vrf.name}"
                     raise AristaAvdInvalidInputsError(msg)
+
                 process = EosCliConfigGen.RouterOspf.ProcessIdsItem(
                     id=process_id, passive_interface_default=True, max_lsa=vrf.ospf.max_lsa, router_id=self.get_vrf_router_id(vrf, tenant, vrf.ospf.router_id)
                 )
@@ -65,7 +66,11 @@ underlay OSPF process id '{self.inputs.underlay_ospf_process_id}'."
                     process.bfd_enable = vrf.ospf.bfd
                 self._update_ospf_redistribute(process, vrf)
 
-                self.structured_config.router_ospf.process_ids.append(process)
+                # TODO: here we will overwrite what is in the process if it already exists from underlay which is probably not
+                # what we want but is how it behaves today when merging all the structured config across modules
+                maybe_existing_process = self.structured_config.router_ospf.process_ids.obtain(process_id)
+                maybe_existing_process._deepmerge(process)
+
         # If we have static_routes in default VRF and not EPVN, and underlay is OSPF
         # Then add redistribute static to the underlay OSPF process.
         if self._vrf_default_ipv4_static_routes["redistribute_in_underlay"] and self.shared_utils.underlay_routing_protocol in ["ospf", "ospf-ldp"]:

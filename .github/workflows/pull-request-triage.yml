@@ -1,3 +1,4 @@
+---
 name: "Pull Request Triage"
 
 "on":
@@ -71,6 +72,7 @@ jobs:
             plugins
             requirements
             pyavd
+            pyavd-utils
             containers
           # Configure that a scope must always be provided.
           requireScope: false

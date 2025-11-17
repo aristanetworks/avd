@@ -127,9 +127,13 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: false
-  platform: vEOS-lab
+  platform: veos_lab_hw_platform_features
   dc_name: DC1
   fabric_name: FABRIC
+  hardware_requirements:
+    transceiver_manufacturers:
+    - Arista mfg
+    - Arista transceivers
 mlag_configuration:
   domain_id: DC1_L3_LEAF2
   local_interface: Vlan4094
@@ -166,6 +170,19 @@ port_channel_interfaces:
   description: SERVER_dc1-leaf2-server1_PortChannel dc1-leaf2-server1
   shutdown: false
   mlag: 5
+  storm_control:
+    all:
+      level: '10.0'
+      unit: percent
+    broadcast:
+      level: '100.0'
+      unit: pps
+    multicast:
+      level: '1.5'
+      unit: percent
+    unknown_unicast:
+      level: '2.8'
+      unit: percent
   spanning_tree_portfast: edge
   switchport:
     enabled: true
