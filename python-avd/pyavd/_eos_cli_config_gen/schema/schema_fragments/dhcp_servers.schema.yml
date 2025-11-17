@@ -292,7 +292,6 @@ keys:
                       type: str
                       description: |-
                         Valid IPv6 address from the given subnet.
-                        This should only be used within an IPv6 subnet.
         subnets:
           type: list
           deprecation:
