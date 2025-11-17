@@ -19,9 +19,11 @@ keys:
             keys:
               begin:
                 type: int
+                required: true
                 description: Minimum LACP port-ID range.
               end:
                 type: int
+                required: true
                 description: Maximum LACP port-ID range.
       rate_limit:
         type: dict
