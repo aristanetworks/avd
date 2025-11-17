@@ -810,7 +810,7 @@ jobs:
       - name: Download {{ matrix.os }} wheel
         uses: actions/download-artifact@v6
         with:
-          name: pyavd-utils-wheels-${{ matrix.os }}-*
+          pattern: pyavd-utils-wheels-${{ matrix.os }}-*
           path: wheelhouse/
       - uses: actions/setup-python@v6
         with:
