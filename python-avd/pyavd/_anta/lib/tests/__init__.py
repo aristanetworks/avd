@@ -12,6 +12,7 @@ from anta.tests.hardware import (
     VerifyEnvironmentSystemCooling,
     VerifyInventory,
     VerifyTemperature,
+    VerifyTransceiversManufacturers,
     VerifyTransceiversTemperature,
 )
 from anta.tests.interfaces import (
@@ -85,6 +86,7 @@ __all__ = [
     "VerifySpecificPath",
     "VerifyStormControlDrops",
     "VerifyTemperature",
+    "VerifyTransceiversManufacturers",
     "VerifyTransceiversTemperature",
     "VerifyVxlanConfigSanity",
     "VerifyZeroTouch",
