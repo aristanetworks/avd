@@ -222,7 +222,6 @@ keys:
                       type: str
                       description: |-
                         Valid IPv4 address from the given subnet.
-                        This should only be used within an IPv4 subnet.
         ipv6_subnets:
           type: list
           primary_key: subnet
