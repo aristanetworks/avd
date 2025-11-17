@@ -1893,9 +1893,7 @@ keys:
                       type: str
                     ipv4_address:
                       type: str
-                      description: 'Valid IPv4 address from the given subnet.
-
-                        This should only be used within an IPv4 subnet.'
+                      description: Valid IPv4 address from the given subnet.
         ipv6_subnets:
           type: list
           primary_key: subnet
@@ -1964,9 +1962,7 @@ keys:
                       type: str
                     ipv6_address:
                       type: str
-                      description: 'Valid IPv6 address from the given subnet.
-
-                        This should only be used within an IPv6 subnet.'
+                      description: Valid IPv6 address from the given subnet.
         subnets:
           type: list
           deprecation:

@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import re
-from ipaddress import AddressValueError, IPv4Address, ip_network
+from ipaddress import AddressValueError, IPv4Address, IPv4Network
 from typing import TYPE_CHECKING, Protocol
 
 if TYPE_CHECKING:
@@ -62,7 +62,7 @@ class DhcpServersMixin(Protocol):
                 ):
                     # ipv6 numbered is not supported with inband_ztp hence right now only ipv4_subnet can be added
                     subnet_item = EosCliConfigGen.DhcpServersItem.Ipv4SubnetsItem(
-                        subnet=str(ip_network(f"{uplink.peer_ip_address}/{uplink.prefix_length}", strict=False)),
+                        subnet=str(IPv4Network(f"{uplink.peer_ip_address}/{uplink.prefix_length}", strict=False)),
                         name=f"inband ztp for {peer}-{uplink.interface}",
                         default_gateway=f"{uplink.peer_ip_address}",
                     )
