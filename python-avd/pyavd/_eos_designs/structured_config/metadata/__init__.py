@@ -35,7 +35,7 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
         )
         exclude_as_extra_fabric_validation_target = default(
             self.shared_utils.node_config.exclude_as_extra_fabric_validation_target,
-            self.shared_utils.node_type_key_data.default_exclude_extra_fabric_validation_target,
+            self.shared_utils.node_type_key_data.exclude_as_extra_fabric_validation_target,
         )
         if exclude_as_extra_fabric_validation_target:
             self.structured_config.metadata.exclude_as_extra_fabric_validation_target = exclude_as_extra_fabric_validation_target

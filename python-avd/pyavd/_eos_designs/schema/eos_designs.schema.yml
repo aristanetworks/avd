@@ -9678,6 +9678,8 @@ $defs:
           exclude_as_extra_fabric_validation_target:
             type: bool
             $ref: eos_cli_config_gen#/keys/metadata/keys/exclude_as_extra_fabric_validation_target
+            documentation_options:
+              table: node-type-common-configuration
           uplink_ethernet_structured_config:
             type: dict
             $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
@@ -11455,7 +11457,7 @@ $defs:
           - hardware
           description: Set the default flow tracker type.
           default: sampled
-        default_exclude_extra_fabric_validation_target:
+        exclude_as_extra_fabric_validation_target:
           type: bool
           $ref: eos_cli_config_gen#/keys/metadata/keys/exclude_as_extra_fabric_validation_target
           default: false

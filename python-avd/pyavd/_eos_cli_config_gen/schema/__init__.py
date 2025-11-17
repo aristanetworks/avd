@@ -24638,13 +24638,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         exclude_as_extra_fabric_validation_target: bool | None
         """
-        When true, excludes this node's loopback interfaces from being selected
-        as destination targets in
-        extra fabric-level reachability or routing validation
-        tests executed by `anta_runner`. This helps
-        prevent non-essential or special-purpose
-        nodes from being used as validation endpoints during
-        fabric-wide checks.
+        Exclude this node from being used as a destination target from other fabric devices in the extra
+        fabric validation tests performed by the `anta_runner` role.
         """
 
         if TYPE_CHECKING:
@@ -24704,13 +24699,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
                        the validation performed by the `anta_runner` role.
                     exclude_as_extra_fabric_validation_target:
-                       When true, excludes this node's loopback interfaces from being selected
-                       as destination targets in
-                       extra fabric-level reachability or routing validation
-                       tests executed by `anta_runner`. This helps
-                       prevent non-essential or special-purpose
-                       nodes from being used as validation endpoints during
-                       fabric-wide checks.
+                       Exclude this node from being used as a destination target from other fabric devices in the extra
+                       fabric validation tests performed by the `anta_runner` role.
 
                 """
 

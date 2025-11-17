@@ -9,16 +9,12 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>&lt;node_type_keys.key&gt;</samp>](## "<node_type_keys.key>") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "<node_type_keys.key>.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exclude_as_extra_fabric_validation_target</samp>](## "<node_type_keys.key>.defaults.exclude_as_extra_fabric_validation_target") | Boolean |  |  |  | When true, excludes this node's loopback interfaces from being selected<br>as destination targets in extra fabric-level reachability or routing validation<br>tests executed by `anta_runner`. This helps prevent non-essential or special-purpose<br>nodes from being used as validation endpoints during fabric-wide checks.<br> |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exclude_as_extra_fabric_validation_target</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].exclude_as_extra_fabric_validation_target") | Boolean |  |  |  | When true, excludes this node's loopback interfaces from being selected<br>as destination targets in extra fabric-level reachability or routing validation<br>tests executed by `anta_runner`. This helps prevent non-essential or special-purpose<br>nodes from being used as validation endpoints during fabric-wide checks.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exclude_as_extra_fabric_validation_target</samp>](## "<node_type_keys.key>.node_groups.[].exclude_as_extra_fabric_validation_target") | Boolean |  |  |  | When true, excludes this node's loopback interfaces from being selected<br>as destination targets in extra fabric-level reachability or routing validation<br>tests executed by `anta_runner`. This helps prevent non-essential or special-purpose<br>nodes from being used as validation endpoints during fabric-wide checks.<br> |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exclude_as_extra_fabric_validation_target</samp>](## "<node_type_keys.key>.nodes.[].exclude_as_extra_fabric_validation_target") | Boolean |  |  |  | When true, excludes this node's loopback interfaces from being selected<br>as destination targets in extra fabric-level reachability or routing validation<br>tests executed by `anta_runner`. This helps prevent non-essential or special-purpose<br>nodes from being used as validation endpoints during fabric-wide checks.<br> |
 
 === "YAML"
 
@@ -27,12 +23,6 @@
 
       # Define variables for all nodes of this type.
       defaults:
-
-        # When true, excludes this node's loopback interfaces from being selected
-        # as destination targets in extra fabric-level reachability or routing validation
-        # tests executed by `anta_runner`. This helps prevent non-essential or special-purpose
-        # nodes from being used as validation endpoints during fabric-wide checks.
-        exclude_as_extra_fabric_validation_target: <bool>
 
       # Define variables related to all nodes part of this group.
       node_groups:
@@ -47,27 +37,9 @@
               # The Node Name is used as "hostname".
             - name: <str; required; unique>
 
-              # When true, excludes this node's loopback interfaces from being selected
-              # as destination targets in extra fabric-level reachability or routing validation
-              # tests executed by `anta_runner`. This helps prevent non-essential or special-purpose
-              # nodes from being used as validation endpoints during fabric-wide checks.
-              exclude_as_extra_fabric_validation_target: <bool>
-
-          # When true, excludes this node's loopback interfaces from being selected
-          # as destination targets in extra fabric-level reachability or routing validation
-          # tests executed by `anta_runner`. This helps prevent non-essential or special-purpose
-          # nodes from being used as validation endpoints during fabric-wide checks.
-          exclude_as_extra_fabric_validation_target: <bool>
-
       # Define variables per node.
       nodes:
 
           # The Node Name is used as "hostname".
         - name: <str; required; unique>
-
-          # When true, excludes this node's loopback interfaces from being selected
-          # as destination targets in extra fabric-level reachability or routing validation
-          # tests executed by `anta_runner`. This helps prevent non-essential or special-purpose
-          # nodes from being used as validation endpoints during fabric-wide checks.
-          exclude_as_extra_fabric_validation_target: <bool>
     ```

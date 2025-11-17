@@ -371,6 +371,8 @@ $defs:
           exclude_as_extra_fabric_validation_target:
             type: bool
             $ref: "eos_cli_config_gen#/keys/metadata/keys/exclude_as_extra_fabric_validation_target"
+            documentation_options:
+              table: node-type-common-configuration
           uplink_ethernet_structured_config:
             type: dict
             $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"

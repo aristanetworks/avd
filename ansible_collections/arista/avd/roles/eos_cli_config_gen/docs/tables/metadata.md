@@ -141,7 +141,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "metadata.digital_twin.password") | String |  |  |  | Local password assigned to a replica of the fabric device within the Digital Twin environment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;internet_access</samp>](## "metadata.digital_twin.internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default. |
     | [<samp>&nbsp;&nbsp;validate_no_errors_period</samp>](## "metadata.validate_no_errors_period") | Integer |  |  |  | Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role. |
-    | [<samp>&nbsp;&nbsp;exclude_as_extra_fabric_validation_target</samp>](## "metadata.exclude_as_extra_fabric_validation_target") | Boolean |  |  |  | When true, excludes this node's loopback interfaces from being selected<br>as destination targets in extra fabric-level reachability or routing validation<br>tests executed by `anta_runner`. This helps prevent non-essential or special-purpose<br>nodes from being used as validation endpoints during fabric-wide checks.<br> |
+    | [<samp>&nbsp;&nbsp;exclude_as_extra_fabric_validation_target</samp>](## "metadata.exclude_as_extra_fabric_validation_target") | Boolean |  |  |  | Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.<br> |
 
 === "YAML"
 
@@ -326,10 +326,7 @@
       # Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role.
       validate_no_errors_period: <int>
 
-      # When true, excludes this node's loopback interfaces from being selected
-      # as destination targets in extra fabric-level reachability or routing validation
-      # tests executed by `anta_runner`. This helps prevent non-essential or special-purpose
-      # nodes from being used as validation endpoints during fabric-wide checks.
+      # Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.
       exclude_as_extra_fabric_validation_target: <bool>
     ```
 

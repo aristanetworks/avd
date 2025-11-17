@@ -21,7 +21,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_evpn_encapsulation</samp>](## "custom_node_type_keys.[].default_evpn_encapsulation") | String |  | `vxlan` | Value is converted to lower case.<br>Valid Values:<br>- <code>mpls</code><br>- <code>vxlan</code> | Set the default evpn encapsulation.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_wan_role</samp>](## "custom_node_type_keys.[].default_wan_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code> | Set the default WAN role.<br><br>This is used both for AutoVPN and Pathfinder designs.<br>That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.<br>`server` indicates that the router is a route-reflector.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_flow_tracker_type</samp>](## "custom_node_type_keys.[].default_flow_tracker_type") | String |  | `sampled` | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the default flow tracker type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_exclude_extra_fabric_validation_target</samp>](## "custom_node_type_keys.[].default_exclude_extra_fabric_validation_target") | Boolean |  | `False` |  | When true, excludes this node's loopback interfaces from being selected<br>as destination targets in extra fabric-level reachability or routing validation<br>tests executed by `anta_runner`. This helps prevent non-essential or special-purpose<br>nodes from being used as validation endpoints during fabric-wide checks.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exclude_as_extra_fabric_validation_target</samp>](## "custom_node_type_keys.[].exclude_as_extra_fabric_validation_target") | Boolean |  | `False` |  | Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_support</samp>](## "custom_node_type_keys.[].mlag_support") | Boolean |  | `False` |  | Can this node type support mlag. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;network_services</samp>](## "custom_node_type_keys.[].network_services") | Dictionary |  |  |  | Will network services be deployed on this node type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l1</samp>](## "custom_node_type_keys.[].network_services.l1") | Boolean |  | `False` |  | Point-to-point services |
@@ -72,7 +72,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_evpn_encapsulation</samp>](## "node_type_keys.[].default_evpn_encapsulation") | String |  | `vxlan` | Value is converted to lower case.<br>Valid Values:<br>- <code>mpls</code><br>- <code>vxlan</code> | Set the default evpn encapsulation.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_wan_role</samp>](## "node_type_keys.[].default_wan_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code> | Set the default WAN role.<br><br>This is used both for AutoVPN and Pathfinder designs.<br>That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.<br>`server` indicates that the router is a route-reflector.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_flow_tracker_type</samp>](## "node_type_keys.[].default_flow_tracker_type") | String |  | `sampled` | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the default flow tracker type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_exclude_extra_fabric_validation_target</samp>](## "node_type_keys.[].default_exclude_extra_fabric_validation_target") | Boolean |  | `False` |  | When true, excludes this node's loopback interfaces from being selected<br>as destination targets in extra fabric-level reachability or routing validation<br>tests executed by `anta_runner`. This helps prevent non-essential or special-purpose<br>nodes from being used as validation endpoints during fabric-wide checks.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exclude_as_extra_fabric_validation_target</samp>](## "node_type_keys.[].exclude_as_extra_fabric_validation_target") | Boolean |  | `False` |  | Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_support</samp>](## "node_type_keys.[].mlag_support") | Boolean |  | `False` |  | Can this node type support mlag. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;network_services</samp>](## "node_type_keys.[].network_services") | Dictionary |  |  |  | Will network services be deployed on this node type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l1</samp>](## "node_type_keys.[].network_services.l1") | Boolean |  | `False` |  | Point-to-point services |
@@ -162,11 +162,8 @@
         # Set the default flow tracker type.
         default_flow_tracker_type: <str; "sampled" | "hardware"; default="sampled">
 
-        # When true, excludes this node's loopback interfaces from being selected
-        # as destination targets in extra fabric-level reachability or routing validation
-        # tests executed by `anta_runner`. This helps prevent non-essential or special-purpose
-        # nodes from being used as validation endpoints during fabric-wide checks.
-        default_exclude_extra_fabric_validation_target: <bool; default=False>
+        # Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.
+        exclude_as_extra_fabric_validation_target: <bool; default=False>
 
         # Can this node type support mlag.
         mlag_support: <bool; default=False>
@@ -340,11 +337,8 @@
         # Set the default flow tracker type.
         default_flow_tracker_type: <str; "sampled" | "hardware"; default="sampled">
 
-        # When true, excludes this node's loopback interfaces from being selected
-        # as destination targets in extra fabric-level reachability or routing validation
-        # tests executed by `anta_runner`. This helps prevent non-essential or special-purpose
-        # nodes from being used as validation endpoints during fabric-wide checks.
-        default_exclude_extra_fabric_validation_target: <bool; default=False>
+        # Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.
+        exclude_as_extra_fabric_validation_target: <bool; default=False>
 
         # Can this node type support mlag.
         mlag_support: <bool; default=False>

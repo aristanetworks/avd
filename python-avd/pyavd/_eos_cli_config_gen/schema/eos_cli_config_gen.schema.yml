@@ -9672,14 +9672,9 @@ keys:
           role.
       exclude_as_extra_fabric_validation_target:
         type: bool
-        description: 'When true, excludes this node''s loopback interfaces from being
-          selected
-
-          as destination targets in extra fabric-level reachability or routing validation
-
-          tests executed by `anta_runner`. This helps prevent non-essential or special-purpose
-
-          nodes from being used as validation endpoints during fabric-wide checks.
+        description: 'Exclude this node from being used as a destination target from
+          other fabric devices in the extra fabric validation tests performed by the
+          `anta_runner` role.
 
           '
   mlag_configuration:
