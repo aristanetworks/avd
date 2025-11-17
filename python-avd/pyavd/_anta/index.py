@@ -150,6 +150,10 @@ AVD_TEST_INDEX: list[TestSpec] = [
         test_class=VerifyTemperature,
     ),
     TestSpec(
+        test_class=VerifyTransceiversManufacturers,
+        input_factory=VerifyTransceiversManufacturersInputFactory,
+    ),
+    TestSpec(
         test_class=VerifyTransceiversTemperature,
     ),
     TestSpec(test_class=VerifyVxlanConfigSanity, conditional_keys=[StructuredConfigKey.VXLAN1_INTERFACE]),
