@@ -7265,9 +7265,11 @@ keys:
             keys:
               begin:
                 type: int
+                required: true
                 description: Minimum LACP port-ID range.
               end:
                 type: int
+                required: true
                 description: Maximum LACP port-ID range.
       rate_limit:
         type: dict
@@ -7985,6 +7987,7 @@ keys:
                 - str
               action:
                 type: str
+                required: true
   mac_address_table:
     type: dict
     keys:
@@ -8099,6 +8102,7 @@ keys:
                     type: str
                   encrypted_key:
                     type: str
+                    required: true
                   fallback:
                     type: bool
             mka:
