@@ -176,7 +176,7 @@ jobs:
           python -m cibuildwheel --output-dir wheelhouse pyavd-utils
       - uses: actions/upload-artifact@v5
         with:
-          name: pyavd-utils-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          name: pyavd-utils-wheels-${{ matrix.os }}
           path: wheelhouse/*.whl
 
   # -------------------------------------------- #
@@ -810,7 +810,7 @@ jobs:
       - name: Download {{ matrix.os }} wheel
         uses: actions/download-artifact@v6
         with:
-          pattern: pyavd-utils-wheels-${{ matrix.os }}-*
+          name: pyavd-utils-wheels-${{ matrix.os }}
           path: wheelhouse/
       - uses: actions/setup-python@v6
         with:
@@ -821,4 +821,5 @@ jobs:
       - name: Run pytest via tox for the wheel
         # For most runs without an environment set here. The environment is mapped with the tox gh-action plugin.
         run: |-
-          tox --installpkg wheelhouse/pyavd_utils-.*.whl -- pyavd-utils/tests
+          WHEEL_NAME=$(ls wheelhouse/*.whl | xargs basename)
+          tox run --installpkg wheelhouse/$WHEEL_NAME -- pyavd-utils/tests
