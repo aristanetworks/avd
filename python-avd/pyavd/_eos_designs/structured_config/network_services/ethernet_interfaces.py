@@ -86,13 +86,16 @@ class EthernetInterfacesMixin(Protocol):
                     shutdown=not l3_port_channel.enabled,
                     speed=member_intf.speed if member_intf.speed else None,
                 )
-                ethernet_interface.metadata._update(peer_interface=member_intf.peer_interface or None, peer_type="l3_port_channel_member", peer=peer or None)
+                ethernet_interface.metadata._update(
+                    peer_interface=member_intf.peer_interface or None,
+                    peer_type="l3_port_channel_member",
+                    peer=peer or None,
+                    # Set validate_state to `False` in Digital Twin mode
+                    validate_state=False if self.shared_utils.digital_twin else None,
+                )
+
                 ethernet_interface.channel_group.id = int(channel_group_id)
                 ethernet_interface.channel_group.mode = l3_port_channel.mode
-
-                # Set validate_state to `False` in Digital Twin mode
-                if self.shared_utils.digital_twin:
-                    ethernet_interface.validate_state = False
 
                 if member_intf.structured_config:
                     self.custom_structured_configs.nested.ethernet_interfaces.obtain(member_intf.name)._deepmerge(
@@ -140,7 +143,11 @@ class EthernetInterfacesMixin(Protocol):
                     eos_cli=l3_interface.raw_eos_cli,
                     flow_tracker=self.shared_utils.get_flow_tracker(l3_interface.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                 )
-                interface.metadata.peer_type = "l3_interface"
+                interface.metadata._update(
+                    peer_type="l3_interface",
+                    # Set validate_state to `False` in Digital Twin mode
+                    validate_state=False if self.shared_utils.digital_twin else None,
+                )
 
                 if l3_interface.structured_config:
                     self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface_name)._deepmerge(
@@ -219,9 +226,6 @@ class EthernetInterfacesMixin(Protocol):
                 # Propagate campus_link_type for campus devices
                 if self.shared_utils.is_campus_device and l3_interface.campus_link_type:
                     interface._internal_data.campus_link_type = list(l3_interface.campus_link_type)
-                # Set validate_state to `False` in Digital Twin mode
-                if self.shared_utils.digital_twin:
-                    interface.validate_state = False
                 self.structured_config.ethernet_interfaces.append(interface)
 
     def _set_point_to_point_interfaces(
@@ -316,9 +320,11 @@ class EthernetInterfacesMixin(Protocol):
                 name=interface_name,
                 shutdown=False,
             )
-            interface.metadata.peer_type = "l3_interface"
+            interface.metadata._update(
+                peer_type="l3_interface",
+                # Set validate_state to `False` in Digital Twin mode
+                validate_state=False if self.shared_utils.digital_twin else None,
+            )
+
             interface.switchport.enabled = False
-            # Set validate_state to `False` in Digital Twin mode
-            if self.shared_utils.digital_twin:
-                interface.validate_state = False
             self.structured_config.ethernet_interfaces.append(interface)

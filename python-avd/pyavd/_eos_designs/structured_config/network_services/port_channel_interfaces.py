@@ -134,6 +134,8 @@ class PortChannelInterfacesMixin(Protocol):
                     peer_interface=l3_port_channel.peer_port_channel if l3_port_channel.peer_port_channel else None,
                     peer=l3_port_channel.peer,
                     peer_type="l3_port_channel",
+                    # Set validate_state to `False` in Digital Twin mode
+                    validate_state=False if self.shared_utils.digital_twin else None,
                 )
                 if l3_port_channel.ipv4_acl_in:
                     acl = self.shared_utils.get_ipv4_acl(
@@ -163,10 +165,6 @@ class PortChannelInterfacesMixin(Protocol):
                         ospf_cost=l3_port_channel.ospf.cost,
                     )
                     self.shared_utils.update_ospf_authentication(port_channel_interface, l3_port_channel, vrf, tenant)
-
-                # Set validate_state to `False` in Digital Twin mode
-                if self.shared_utils.digital_twin:
-                    port_channel_interface.validate_state = False
 
                 if is_subinterface:
                     port_channel_interface.encapsulation_dot1q.vlan = default(

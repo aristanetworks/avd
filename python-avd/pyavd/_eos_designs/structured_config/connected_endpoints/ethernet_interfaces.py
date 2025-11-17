@@ -172,14 +172,6 @@ class EthernetInterfacesMixin(Protocol):
         # if 'descriptions' is set, it is preferred
         interface_description = adapter.descriptions[node_index] if adapter.descriptions else adapter.description
 
-        # Set validate_state to `False` in Digital Twin mode
-        # TODO: Make logic conditional once functionality allows to include (some) connected endpoints into the ACT topology definition file
-        # If connected endpoint is deploy as a standalone ACT node then we should have "connection" for it and not a node's port
-        if self.shared_utils.digital_twin:
-            validate_state = False
-        else:
-            validate_state = False if adapter.validate_state is False else None
-
         # Common ethernet_interface settings
         ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
             name=adapter.switch_ports[node_index],
@@ -207,7 +199,9 @@ class EthernetInterfacesMixin(Protocol):
             peer_type=connected_endpoint.type,
             port_profile=adapter.profile,
             peer_key=connected_endpoint._internal_data.context,
-            validate_state=validate_state,
+            # Set validate_state to `False` in Digital Twin mode
+            # TODO: Make logic conditional once functionality allows to include (some) connected endpoints into the ACT topology definition file
+            validate_state=False if (self.shared_utils.digital_twin or adapter.validate_state is False) else None,
             validate_lldp=False if adapter.validate_lldp is False else None,
         )
 

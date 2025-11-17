@@ -175,7 +175,11 @@ class UtilsMixin(Protocol):
             service_profile=l3_generic_interface.qos_profile,
             eos_cli=l3_generic_interface.raw_eos_cli,
         )
-        interface.metadata.peer = l3_generic_interface.peer
+        interface.metadata._update(
+            peer=l3_generic_interface.peer,
+            # Set validate_state to `False` in Digital Twin mode
+            validate_state=False if self.shared_utils.digital_twin else None,
+        )
         interface.switchport.enabled = False if "." not in l3_generic_interface.name else None
 
         if is_subinterface:
@@ -185,10 +189,6 @@ class UtilsMixin(Protocol):
 
         if l3_generic_interface.ip_address == "dhcp" and l3_generic_interface.dhcp_accept_default_route:
             interface.dhcp_client_accept_default_route = True
-
-        # Set validate_state to `False` in Digital Twin mode
-        if self.shared_utils.digital_twin:
-            interface.validate_state = False
 
         return interface
 

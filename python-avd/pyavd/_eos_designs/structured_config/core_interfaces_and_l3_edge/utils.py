@@ -242,6 +242,15 @@ class UtilsMixin(Protocol):
             eos_cli=p2p_link.raw_eos_cli,
         )
         interface.metadata._update(peer_interface=p2p_link_data["peer_interface"], peer=p2p_link_data["peer"], peer_type=p2p_link_data["peer_type"])
+
+        # Set validate_state to `False` in Digital Twin mode when remote side of the link is not a fabric switch
+        if self.shared_utils.digital_twin and p2p_link_data["peer"] not in self.shared_utils.all_fabric_devices:
+            interface.metadata.validate_state = False
+            # Propagate validate_state to all port-channel member interfaces
+            if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
+                for port_channel_member in p2p_link_data.get("port_channel_members", []):
+                    self.structured_config.ethernet_interfaces.obtain(port_channel_member["interface"]).metadata.validate_state = False
+
         interface.switchport.enabled = False
 
         if p2p_link_data["ip"]:
@@ -303,14 +312,6 @@ class UtilsMixin(Protocol):
             if p2p_link.include_in_underlay_protocol is True and self.shared_utils.underlay_ldp and default(p2p_link.mpls_ldp, True):  # noqa: FBT003
                 interface.mpls.ldp.interface = True
                 interface.mpls.ldp.igp_sync = True
-
-        # Set validate_state to `False` in Digital Twin mode when remote side of the link is not a fabric switch
-        if self.shared_utils.digital_twin and p2p_link_data["peer"] not in self.shared_utils.all_fabric_devices:
-            interface.validate_state = False
-            # Propagate validate_state to all port-channel member interfaces
-            if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
-                for port_channel_member in p2p_link_data.get("port_channel_members", []):
-                    self.structured_config.ethernet_interfaces.obtain(port_channel_member["interface"]).validate_state = False
 
     def _get_channel_id(
         self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol,
