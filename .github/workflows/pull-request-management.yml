@@ -818,8 +818,12 @@ jobs:
       - name: Install tox
         run: |
           pip install tox tox-gh-actions --upgrade
+      - name: Get the wheel name
+        shell: bash  # Required for windows-latest
+        run: |-
+          WHEEL_NAME=$(ls wheelhouse/*.whl | xargs basename)
+          echo "WHEEL_NAME=$WHEEL_NAME" >> $GITHUB_ENV
       - name: Run pytest via tox for the wheel
         # For most runs without an environment set here. The environment is mapped with the tox gh-action plugin.
         run: |-
-          WHEEL_NAME=$(ls wheelhouse/*.whl | xargs basename)
-          tox run --installpkg wheelhouse/$WHEEL_NAME -- pyavd-utils/tests
+          tox run --installpkg wheelhouse/${{ env.WHEEL_NAME }} -- pyavd-utils/tests
