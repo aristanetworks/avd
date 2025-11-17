@@ -78,12 +78,6 @@ skip = [
 
 before-all = "uname -a"
 
-# TODO: could use test-groups but we have a lot in the root pyproject.
-test-requires = ["pytest"]
-# Relative to the root of the avd repo
-test-sources = ["pyavd-utils/tests", "python-avd", "pyproject.toml", "development/license-short.txt"]
-test-command = "pytest pyavd-utils/tests"
-
 [tool.cibuildwheel.linux]
 before-build = "curl -sSf https://sh.rustup.rs | sh -s -- -y"
 repair-wheel-command = [
