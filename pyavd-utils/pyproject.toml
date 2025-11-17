@@ -101,10 +101,6 @@ repair-wheel-command = [
   "pipx run abi3audit --strict --report {wheel}",
 ]
 
-[tool.cibuildwheel.macos.environment]
-# https://cibuildwheel.pypa.io/en/stable/faq/#building-rust-wheels
-MACOSX_DEPLOYMENT_TARGET = "10.12"
-
 [tool.cibuildwheel.windows]
 repair-wheel-command = [
   "copy {wheel} {dest_dir}",
