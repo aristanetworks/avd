@@ -24644,11 +24644,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         hardware_requirements: HardwareRequirements
         """
-        Defines the minimum hardware specifications required for the device.
-        Used for validation by the
-        `anta_runner` role.
+        Defines hardware requirements for the device, validated by the `anta_runner` role.
+        For
+        `min_power_supplies`, `min_fans`, `min_supervisors`, `min_line_cards`, and `min_fabric_cards`:
+        - If
+        the value is a positive integer, `anta_runner` validates that the number of components is at least
+        the specified minimum.
+        - If the value is 0, `anta_runner` validates that all populated components
+        are in a healthy state.
+        - If not defined, the check for that component is skipped.
 
-        Subclass of AvdModel.
+        Subclass of
+        AvdModel.
         """
         cv_tags: CvTags
         """Subclass of AvdModel."""
@@ -24708,11 +24715,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Used only for documentation and deployment purposes. It is used by the
                        'cv_deploy' role.
                     hardware_requirements:
-                       Defines the minimum hardware specifications required for the device.
-                       Used for validation by the
-                       `anta_runner` role.
+                       Defines hardware requirements for the device, validated by the `anta_runner` role.
+                       For
+                       `min_power_supplies`, `min_fans`, `min_supervisors`, `min_line_cards`, and `min_fabric_cards`:
+                       - If
+                       the value is a positive integer, `anta_runner` validates that the number of components is at least
+                       the specified minimum.
+                       - If the value is 0, `anta_runner` validates that all populated components
+                       are in a healthy state.
+                       - If not defined, the check for that component is skipped.
 
-                       Subclass of AvdModel.
+                       Subclass of
+                       AvdModel.
                     cv_tags: Subclass of AvdModel.
                     cv_pathfinder:
                        Metadata used for CV Pathfinder visualization on CloudVision.

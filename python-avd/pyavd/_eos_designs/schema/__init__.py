@@ -25801,9 +25801,15 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
         """
-        Defines the minimum hardware specifications required for the device.
-        Used for validation by the
-        `anta_runner` role.
+        Defines hardware requirements for the device, validated by the `anta_runner` role.
+        For
+        `min_power_supplies`, `min_fans`, `min_supervisors`, `min_line_cards`, and `min_fabric_cards`:
+        - If
+        the value is a positive integer, `anta_runner` validates that the number of components is at least
+        the specified minimum.
+        - If the value is 0, `anta_runner` validates that all populated components
+        are in a healthy state.
+        - If not defined, the check for that component is skipped.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -25872,9 +25878,15 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass
                        of AvdModel.
                     validate_hardware_inventory:
-                       Defines the minimum hardware specifications required for the device.
-                       Used for validation by the
-                       `anta_runner` role.
+                       Defines hardware requirements for the device, validated by the `anta_runner` role.
+                       For
+                       `min_power_supplies`, `min_fans`, `min_supervisors`, `min_line_cards`, and `min_fabric_cards`:
+                       - If
+                       the value is a positive integer, `anta_runner` validates that the number of components is at least
+                       the specified minimum.
+                       - If the value is 0, `anta_runner` validates that all populated components
+                       are in a healthy state.
+                       - If not defined, the check for that component is skipped.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -26576,9 +26588,15 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
         """
-        Defines the minimum hardware specifications required for the device.
-        Used for validation by the
-        `anta_runner` role.
+        Defines hardware requirements for the device, validated by the `anta_runner` role.
+        For
+        `min_power_supplies`, `min_fans`, `min_supervisors`, `min_line_cards`, and `min_fabric_cards`:
+        - If
+        the value is a positive integer, `anta_runner` validates that the number of components is at least
+        the specified minimum.
+        - If the value is 0, `anta_runner` validates that all populated components
+        are in a healthy state.
+        - If not defined, the check for that component is skipped.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -26647,9 +26665,15 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass
                        of AvdModel.
                     validate_hardware_inventory:
-                       Defines the minimum hardware specifications required for the device.
-                       Used for validation by the
-                       `anta_runner` role.
+                       Defines hardware requirements for the device, validated by the `anta_runner` role.
+                       For
+                       `min_power_supplies`, `min_fans`, `min_supervisors`, `min_line_cards`, and `min_fabric_cards`:
+                       - If
+                       the value is a positive integer, `anta_runner` validates that the number of components is at least
+                       the specified minimum.
+                       - If the value is 0, `anta_runner` validates that all populated components
+                       are in a healthy state.
+                       - If not defined, the check for that component is skipped.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 

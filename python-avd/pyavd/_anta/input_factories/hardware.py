@@ -42,11 +42,16 @@ class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
         if not (hardware_requirements := self.structured_config.metadata.hardware_requirements):
             return [VerifyInventory.Input()]
 
+        power_supply = hardware_requirements.min_power_supplies
+        fans = hardware_requirements.min_fans
+        fabric_cards = hardware_requirements.min_fabric_cards
+        line_cards = hardware_requirements.min_line_cards
+        supervisors = hardware_requirements.min_supervisors
         input_req = HardwareInventory(
-            power_supplies=hardware_requirements.min_power_supplies,
-            fan_trays=hardware_requirements.min_fans,
-            fabric_cards=hardware_requirements.min_fabric_cards,
-            line_cards=hardware_requirements.min_line_cards,
-            supervisors=hardware_requirements.min_supervisors,
+            power_supplies="all" if power_supply is None else (None if power_supply == 0 else power_supply),
+            fan_trays="all" if fans is None else (None if fans == 0 else fans),
+            fabric_cards="all" if fabric_cards is None else (None if fabric_cards == 0 else fabric_cards),
+            line_cards="all" if line_cards is None else (None if line_cards == 0 else line_cards),
+            supervisors="all" if supervisors is None else (None if supervisors == 0 else supervisors),
         )
         return [VerifyInventory.Input(requirements=input_req)]

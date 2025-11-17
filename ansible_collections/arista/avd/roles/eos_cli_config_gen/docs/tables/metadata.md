@@ -16,7 +16,7 @@
     | [<samp>&nbsp;&nbsp;dc_name</samp>](## "metadata.dc_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;fabric_name</samp>](## "metadata.fabric_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;serial_number</samp>](## "metadata.serial_number") | String |  |  |  | Serial Number of the device.<br>Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role. |
-    | [<samp>&nbsp;&nbsp;hardware_requirements</samp>](## "metadata.hardware_requirements") | Dictionary |  |  |  | Defines the minimum hardware specifications required for the device.<br>Used for validation by the `anta_runner` role. |
+    | [<samp>&nbsp;&nbsp;hardware_requirements</samp>](## "metadata.hardware_requirements") | Dictionary |  |  |  | Defines hardware requirements for the device, validated by the `anta_runner` role.<br>For `min_power_supplies`, `min_fans`, `min_supervisors`, `min_line_cards`, and `min_fabric_cards`:<br>- If the value is a positive integer, `anta_runner` validates that the number of components is at least the specified minimum.<br>- If the value is 0, `anta_runner` validates that all populated components are in a healthy state.<br>- If not defined, the check for that component is skipped. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "metadata.hardware_requirements.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_fans</samp>](## "metadata.hardware_requirements.min_fans") | Integer |  |  |  | Minimum number of fans required for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "metadata.hardware_requirements.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. |
@@ -162,8 +162,11 @@
       # Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role.
       serial_number: <str>
 
-      # Defines the minimum hardware specifications required for the device.
-      # Used for validation by the `anta_runner` role.
+      # Defines hardware requirements for the device, validated by the `anta_runner` role.
+      # For `min_power_supplies`, `min_fans`, `min_supervisors`, `min_line_cards`, and `min_fabric_cards`:
+      # - If the value is a positive integer, `anta_runner` validates that the number of components is at least the specified minimum.
+      # - If the value is 0, `anta_runner` validates that all populated components are in a healthy state.
+      # - If not defined, the check for that component is skipped.
       hardware_requirements:
 
         # Minimum number of power supplies required for the device.
