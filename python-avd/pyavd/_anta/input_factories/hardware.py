@@ -50,7 +50,7 @@ class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
         * By default, this test checks that all slots for the following component types
     are populated: `power supply`, `fan tray`, `fabric card`, `line card` and `supervisor`.
     - If specific requirements provided:
-        * Strictly check that all provided slots are filled.
+        * If the specified requirement is set to 0, the test skips the check. Otherwise, it strictly verifies that all provided slots are filled.
     """
 
     def _get_hardware_requirement(self, requirement: int | None) -> int | Literal["all"] | None:
