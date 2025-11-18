@@ -93,6 +93,12 @@ dot1x
 {%         if dot1x.radius_av_pair_username_format.delimiter is arista.avd.defined and dot1x.radius_av_pair_username_format.mac_string_case is arista.avd.defined %}
    mac-based-auth radius av-pair user-name delimiter {{ dot1x.radius_av_pair_username_format.delimiter }} {{ dot1x.radius_av_pair_username_format.mac_string_case }}
 {%         endif %}
+{%         if dot1x.eapol.vlan_change_logoff_disabled is arista.avd.defined(true) %}
+   eapol vlan change logoff disabled
+{%         endif %}
+{%         if dot1x.eapol.unresponsive_action_traffic_allow_vlan is arista.avd.defined %}
+   eapol unresponsive action traffic allow vlan {{ dot1x.eapol.unresponsive_action_traffic_allow_vlan }}
+{%         endif %}
 {%         if dot1x.aaa.unresponsive.recovery_action_reauthenticate is arista.avd.defined(true) %}
    {{ aaa_config }} recovery action reauthenticate
 {%         endif %}
