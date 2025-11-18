@@ -355,6 +355,9 @@ Serial Number: DEADBEEFC0FFEW
 
 ```eos
 !
+agent Dummy environment V1=42:V2=666
+agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=true
+!
 agent Dummy shutdown
 agent Dummy shutdown supervisor active
 agent Dummy shutdown supervisor standby
@@ -1635,6 +1638,7 @@ Policy lockout has been enabled. After **3** failed login attempts within **900*
 #### AAA Authentication Device Configuration
 
 ```eos
+aaa authentication policy local allow-nopassword-remote-login
 aaa authentication login default group TACACS local
 aaa authentication login command-api local
 aaa authentication login console local
@@ -1671,6 +1675,7 @@ Authorization for serial console is enabled.
 #### AAA Authorization Device Configuration
 
 ```eos
+aaa authorization policy local default-role network-admin
 aaa authorization serial-console
 aaa authorization dynamic dot1x additional-groups group radius group RADIUS1
 aaa authorization exec default group TACACS local
