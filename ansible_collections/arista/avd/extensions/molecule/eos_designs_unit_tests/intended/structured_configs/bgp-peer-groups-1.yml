@@ -19,7 +19,7 @@ ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
   - type: permit
-    extcommunities: soo 192.168.254.111:1
+    extcommunities: soo 192.168.255.111:1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -28,10 +28,6 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.111/32
-- name: Loopback1
-  description: VXLAN_TUNNEL_SOURCE
-  shutdown: false
-  ip_address: 192.168.254.111/32
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -57,8 +53,6 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.255.0/24 eq 32
-  - sequence: 20
-    action: permit 192.168.254.0/24 eq 32
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
@@ -86,7 +80,7 @@ route_maps:
   - sequence: 10
     type: permit
     set:
-    - extcommunity soo 192.168.254.111:1 additive
+    - extcommunity soo 192.168.255.111:1 additive
 router_bfd:
   multihop:
     interval: 300
@@ -202,6 +196,6 @@ vxlan_interface:
   vxlan1:
     description: bgp-peer-groups-1_VTEP
     vxlan:
-      source_interface: Loopback1
+      source_interface: Loopback0
       udp_port: 4789
       virtual_router_encapsulation_mac_address: mlag-system-id

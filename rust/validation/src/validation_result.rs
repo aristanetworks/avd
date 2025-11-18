@@ -9,11 +9,7 @@ use crate::{context::Context, feedback::Feedback};
 
 /// Result of coercion and/or validation.
 /// Holds multiple Feedback objects pointing to each Issue.
-#[cfg_attr(
-    feature = "python_bindings",
-    pyo3::pyclass(frozen, get_all, module = "validation")
-)]
-#[derive(Debug, Serialize)]
+#[derive(Clone, Debug, Serialize)]
 pub struct ValidationResult {
     pub violations: Vec<Feedback>,
     pub coercions: Vec<Feedback>,

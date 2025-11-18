@@ -139,11 +139,27 @@ l3leaf:
           mac_address: '0c:1d:c0:1d:62:01'
           ptp:
             enabled: false
+          link_tracking:
+            enabled: true
+            groups:
+              - name: l2leaf-server01
+                recovery_delay: 301
+              - name: l2leaf-server02
+                recovery_delay: 300
+            # test without downlinks.group, this will take the first link tracking group from above list
+            downlinks:
+              enabled: true
           # Commented out for automatic downlink allocation on spine
           # uplink_switch_interfaces: [ Ethernet2, Ethernet2, Ethernet2, Ethernet2 ]
         - name: DC1-LEAF2B
           id: 3
           mgmt_ip: 192.168.200.107/24
+          link_tracking:
+            enabled: true
+            # test 'downlinks.enabled: true' without link_tracking.groups and downlinks.group
+            # this will take the default link tracking group i.e. LT_GROUP1
+            downlinks:
+              enabled: true
           # Commented out for automatic downlink allocation on spine
           # uplink_switch_interfaces: [ Ethernet3, Ethernet3, Ethernet3, Ethernet3 ]
     - group: DC1_SVC3
@@ -159,6 +175,17 @@ l3leaf:
           id: 4
           mgmt_ip: 192.168.200.108/24
           mac_address: '0c:1d:c0:1d:62:01'
+          link_tracking:
+            enabled: true
+            groups:
+              - name: link-tracking-group01
+                recovery_delay: 350
+              - name: link-tracking-group02
+                recovery_delay: 500
+            # testing downlinks with group defined, this will take the defined link tracking group
+            downlinks:
+              enabled: true
+              group: link-tracking-group02
           # Commented out for automatic downlink allocation on spine
           # uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet4, Ethernet4 ]
         - name: DC1-SVC3B

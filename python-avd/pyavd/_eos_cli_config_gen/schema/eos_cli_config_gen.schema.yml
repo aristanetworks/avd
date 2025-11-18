@@ -664,7 +664,7 @@ keys:
                     convert_types:
                     - int
                     description: DSCP value or range syntax.
-                    pattern: ^(?:cs[1-7]|af[1-4][1-3]|ef|(?:(?:,|,\s|^)(?:\d|[1-5]\d|6[0-3])(?:-(?:\d|[1-5]\d|6[0-3]))?)+)$
+                    pattern: (?:cs[1-7]|af[1-4][1-3]|ef|(?:(?:,|,\s|^)(?:\d|[1-5]\d|6[0-3])(?:-(?:\d|[1-5]\d|6[0-3]))?)+)
           l4_applications:
             type: list
             description: List of user defined L4 applications. The name should be
@@ -807,7 +807,7 @@ keys:
               type: str
               description: ARP entry MAC address.
               required: true
-              pattern: ^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$
+              pattern: '[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}'
   as_path:
     type: dict
     keys:
@@ -2233,6 +2233,17 @@ keys:
               convert_types:
               - int
               description: VLAN value(s) or range(s) of VLAN values.
+      eapol:
+        type: dict
+        keys:
+          vlan_change_logoff_disabled:
+            type: bool
+            description: Disable host log off when there is a VLAN change.
+          unresponsive_action_traffic_allow_vlan:
+            type: int
+            convert_types:
+            - str
+            description: EAPOL unresponsive hosts VLAN ID.
   dps_interfaces:
     type: list
     primary_key: name
@@ -3066,7 +3077,16 @@ keys:
           - message-digest
         ospf_authentication_key:
           type: str
-          description: Encrypted password - only type 7 supported.
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+          - int
+          description: Authentication key type.
+          default: '7'
+          valid_values:
+          - '7'
+          - 8a
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -3087,7 +3107,16 @@ keys:
                 - sha512
               key:
                 type: str
-                description: Encrypted password - only type 7 supported.
+                description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                - int
+                description: Authentication key type.
+                default: '7'
+                valid_values:
+                - '7'
+                - 8a
         pim:
           type: dict
           keys:
@@ -3965,6 +3994,14 @@ keys:
             port_profile:
               type: str
               description: Key only used for documentation or validation purposes.
+            validate_state:
+              type: bool
+              description: Set to false to disable interface state and LLDP topology
+                validation performed by the `anta_runner` role.
+            validate_lldp:
+              type: bool
+              description: Set to false to disable the LLDP topology validation performed
+                by the `anta_runner` role.
         sflow:
           type: dict
           keys:
@@ -4269,14 +4306,6 @@ keys:
                     - '0'
                     - '7'
                     - 8a
-        validate_state:
-          type: bool
-          description: Set to false to disable interface state and LLDP topology validation
-            performed by the `anta_runner` role.
-        validate_lldp:
-          type: bool
-          description: Set to false to disable the LLDP topology validation performed
-            by the `anta_runner` role.
         switchport:
           type: dict
           description: This should not be combined with `ethernet_interfaces[].type
@@ -4682,11 +4711,11 @@ keys:
                   keys:
                     source:
                       type: str
-                      pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$
+                      pattern: ([0-9a-f]{2}:){5}[0-9a-f]{2}
                       description: MAC address for the source.
                     destination:
                       type: str
-                      pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$
+                      pattern: ([0-9a-f]{2}:){5}[0-9a-f]{2}
                       description: MAC address for the destination.
                 encapsulation:
                   type: dict
@@ -6906,7 +6935,7 @@ keys:
               type: str
               required: true
               description: MAC address of neighbor like 'aa:af:12:34:bc:bf'
-              pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$
+              pattern: ([0-9a-f]{2}:){5}[0-9a-f]{2}
       persistent:
         type: dict
         keys:
@@ -7236,9 +7265,11 @@ keys:
             keys:
               begin:
                 type: int
+                required: true
                 description: Minimum LACP port-ID range.
               end:
                 type: int
+                required: true
                 description: Maximum LACP port-ID range.
       rate_limit:
         type: dict
@@ -7956,6 +7987,7 @@ keys:
                 - str
               action:
                 type: str
+                required: true
   mac_address_table:
     type: dict
     keys:
@@ -7999,7 +8031,7 @@ keys:
             mac_address:
               type: str
               required: true
-              pattern: ^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$
+              pattern: '[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}'
               description: 'The static MAC address to configure.
 
                 The combination of ''mac_address'' and ''vlan'' must be unique across
@@ -8070,6 +8102,7 @@ keys:
                     type: str
                   encrypted_key:
                     type: str
+                    required: true
                   fallback:
                     type: bool
             mka:
@@ -9250,6 +9283,36 @@ keys:
         type: str
         convert_types:
         - int
+      hardware_requirements:
+        type: dict
+        description: 'Defines the minimum hardware specifications required for the
+          device.
+
+          Used for validation by the `anta_runner` role.'
+        keys:
+          min_power_supplies:
+            type: int
+            description: Minimum number of power supplies required for the device.
+          min_fans:
+            type: int
+            description: Minimum number of fans required for the device.
+          min_supervisors:
+            type: int
+            description: Minimum number of supervisor modules required for the device.
+          min_line_cards:
+            type: int
+            description: Minimum number of line cards required for the device.
+          min_fabric_cards:
+            type: int
+            description: Minimum number of fabric cards required for the device.
+          transceiver_manufacturers:
+            type: list
+            description: List of approved transceiver manufacturers for the device.
+            items:
+              type: str
+            default:
+            - Arista Networks
+            - Arastra, Inc.
       cv_tags:
         type: dict
         keys:
@@ -9625,9 +9688,9 @@ keys:
         type: int
         convert_types:
         - str
-        description: Threshold (in minutes) defining the recent time window during
-          which no error-level logs should have been generated for the validation
-          to pass.
+        description: Threshold (in minutes) defining how far back to check the logging
+          buffer for error-level logs during the validation performed by the `anta_runner`
+          role.
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -11648,6 +11711,18 @@ keys:
           description: Accept gratuitous ARP.
         snmp_trap_link_change:
           type: bool
+        address_locking:
+          type: dict
+          keys:
+            address_family:
+              description: 'Configure address locking per address family.
+
+                Introduced in EOS 4.31.0F.'
+              type: dict
+              keys:
+                ipv4:
+                  type: bool
+                  description: Enable/disable address locking for IPv4.
         encapsulation_dot1q:
           type: dict
           keys:
@@ -12381,6 +12456,15 @@ keys:
         ospf_authentication_key:
           type: str
           description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+          - int
+          description: Authentication key type.
+          default: '7'
+          valid_values:
+          - '7'
+          - 8a
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -12402,6 +12486,15 @@ keys:
               key:
                 type: str
                 description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                - int
+                description: Authentication key type.
+                default: '7'
+                valid_values:
+                - '7'
+                - 8a
         flow_tracker:
           type: dict
           keys:
@@ -12489,6 +12582,14 @@ keys:
             peer_key:
               type: str
               description: Key only used for documentation or validation purposes.
+            validate_state:
+              type: bool
+              description: Set to false to disable interface state and LLDP topology
+                validation performed by the `anta_runner` role.
+            validate_lldp:
+              type: bool
+              description: Set to false to disable the LLDP topology validation performed
+                by the `anta_runner` role.
         sflow:
           type: dict
           keys:
@@ -12924,14 +13025,6 @@ keys:
                 removed: true
                 remove_in_version: 6.0.0
                 new_key: srlgs
-        validate_state:
-          type: bool
-          description: Set to false to disable interface state and LLDP topology validation
-            performed by the `anta_runner` role.
-        validate_lldp:
-          type: bool
-          description: Set to false to disable the LLDP topology validation performed
-            by the `anta_runner` role.
         vlans:
           type: str
           deprecation:
@@ -13084,7 +13177,7 @@ keys:
               '
           timeout:
             type: str
-            pattern: ^\d+(\.\d{1,2})?$
+            pattern: \d+(\.\d{1,2})?
             convert_types:
             - int
             - float
@@ -13100,7 +13193,7 @@ keys:
               '
           polling_interval:
             type: str
-            pattern: ^\d+(\.\d{1,3})?$
+            pattern: \d+(\.\d{1,3})?
             convert_types:
             - int
             - float
@@ -13114,7 +13207,7 @@ keys:
               '
           recovery_time:
             type: str
-            pattern: ^\d+(\.\d{1,2})?$
+            pattern: \d+(\.\d{1,2})?
             convert_types:
             - int
             - float
@@ -13818,7 +13911,7 @@ keys:
                     timeout:
                       type: str
                       required: true
-                      pattern: ^\d+(\.\d{1,2})?$
+                      pattern: \d+(\.\d{1,2})?
                       convert_types:
                       - int
                       - float
@@ -13835,7 +13928,7 @@ keys:
                     polling_interval:
                       type: str
                       required: true
-                      pattern: ^auto|\d+(\.\d{1,3})?$
+                      pattern: auto|\d+(\.\d{1,3})?
                       convert_types:
                       - int
                       - float
@@ -13852,7 +13945,7 @@ keys:
                     recovery_time:
                       type: str
                       required: true
-                      pattern: ^\d+(\.\d{1,2})?$
+                      pattern: \d+(\.\d{1,2})?
                       convert_types:
                       - int
                       - float
@@ -14314,7 +14407,7 @@ keys:
           name:
             type: str
             required: true
-            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
+            pattern: '[A-Za-z0-9_.:{}\[\]-]+'
           id:
             type: int
             convert_types:
@@ -14329,7 +14422,7 @@ keys:
           name:
             type: str
             required: true
-            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
+            pattern: '[A-Za-z0-9_.:{}\[\]-]+'
           id:
             type: int
             convert_types:
@@ -14344,7 +14437,7 @@ keys:
           name:
             type: str
             required: true
-            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
+            pattern: '[A-Za-z0-9_.:{}\[\]-]+'
           id:
             type: int
             convert_types:
@@ -15419,6 +15512,12 @@ keys:
             match_map:
               type: str
               description: Route-map name.
+            attribute:
+              type: dict
+              keys:
+                rcf:
+                  type: str
+                  description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
       redistribute:
         type: dict
         description: Redistribute routes in to BGP.
@@ -18985,6 +19084,12 @@ keys:
                     type: str
                   match_map:
                     type: str
+                  attribute:
+                    type: dict
+                    keys:
+                      rcf:
+                        type: str
+                        description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
             address_family_ipv4:
               type: dict
               keys:
@@ -21513,7 +21618,7 @@ keys:
                   name:
                     type: str
                     description: Local interface name.
-                    pattern: ^(Port-Channel|Ethernet(\d+/)*)\d+(\.\d+)?$
+                    pattern: (Port-Channel|Ethernet(\d+/)*)\d+(\.\d+)?
                   public_address:
                     type: str
                     description: Public IP assigned by NAT.
@@ -21639,7 +21744,7 @@ keys:
               convert_types:
               - int
               - float
-              pattern: ^\d+(\.\d{1,2})?$
+              pattern: \d+(\.\d{1,2})?
             path_groups:
               type: list
               primary_key: name
@@ -23502,6 +23607,18 @@ keys:
                           type: bool
                           description: Enforce the GTSM for BGP speakers. Only supported
                             when protocol is set to 'neighbors'.
+                  packet_type:
+                    type: dict
+                    keys:
+                      vxlan:
+                        type: str
+                        valid_values:
+                        - decap
+                        - decap exclude
+                        description: Configure VXLAN decapsulation match.
+                      multicast:
+                        type: bool
+                        description: Configure multicast packet type match.
                   actions:
                     type: dict
                     keys:
@@ -24189,7 +24306,16 @@ keys:
           - message-digest
         ospf_authentication_key:
           type: str
-          description: Encrypted password used for simple authentication.
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+          - int
+          description: Authentication key type.
+          default: '7'
+          valid_values:
+          - '7'
+          - 8a
         ospf_message_digest_keys:
           type: list
           description: Keys used for message-digest authentication.
@@ -24212,6 +24338,15 @@ keys:
               key:
                 type: str
                 description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                - int
+                description: Authentication key type.
+                default: '7'
+                valid_values:
+                - '7'
+                - 8a
         pim:
           type: dict
           keys:
@@ -24464,6 +24599,15 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+        traffic_policy:
+          type: dict
+          keys:
+            input:
+              type: str
+              description: Ingress traffic policy.
+            output:
+              type: str
+              description: Egress traffic policy.
         ntp_serve:
           type: bool
           description: Enable/disable serving NTP to clients.

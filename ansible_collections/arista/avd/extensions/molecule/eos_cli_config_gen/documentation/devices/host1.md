@@ -4833,6 +4833,7 @@ interface Ethernet5
    ip ospf authentication-key 7 <removed>
    ip ospf area 100
    ip ospf message-digest-key 1 sha512 7 <removed>
+   ip ospf message-digest-key 2 sha512 8a <removed>
    pim ipv4 sparse-mode
    pim ipv4 bidirectional
    pim ipv4 border-router
@@ -4864,6 +4865,7 @@ interface Ethernet6
       address-family ipv4 disabled
       locked-address ipv4 enforcement disabled
    no lldp transmit
+   ip ospf authentication-key 8a <removed>
    ptp enable
    ptp announce interval 3
    ptp announce timeout 9
@@ -5974,8 +5976,12 @@ interface Port-Channel5
    ip igmp host-proxy version 2
    l2 mtu 8000
    l2 mru 8000
+   !
+   address locking
+      address-family ipv4 disabled
    mlag 5
    ntp serve
+   ip ospf authentication-key 8a <removed>
    ptp enable
    ptp mpass
    ptp delay-mechanism e2e
@@ -6127,6 +6133,7 @@ interface Port-Channel18
    ip ospf authentication message-digest
    ip ospf area 0.0.0.12
    ip ospf message-digest-key 55 md5 7 <removed>
+   ip ospf message-digest-key 56 sha512 8a <removed>
 !
 interface Port-Channel20
    description Po_in_mode_access_accepting_tagged_LACP_frames
@@ -6960,6 +6967,7 @@ interface Vlan25
    description SVI Description
    no shutdown
    ipv6 address 1b11:3a00:22b0:16::16/64
+   ip ospf authentication-key 8a <removed>
    ipv6 virtual-router address 1b11:3a00:22b0:16::14
    ipv6 virtual-router address 1b11:3a00:22b0:16::15
 !
@@ -6970,6 +6978,7 @@ interface Vlan26
    ip ospf authentication message-digest
    ip ospf area 0.0.0.24
    ip ospf message-digest-key 55 md5 7 <removed>
+   ip ospf message-digest-key 56 sha512 8a <removed>
    ipv6 ospf network point-to-point
    ipv6 ospf area 0.0.0.29
 !
@@ -7287,6 +7296,8 @@ interface Vlan1002
    ip address virtual 10.1.2.1/24
 !
 interface Vlan2001
+   traffic-policy input Policy-01
+   traffic-policy output Policy-02
    description SVI Description
    logging event link-status
    vrf Tenant_B
@@ -8776,11 +8787,12 @@ ASN Notation: asdot
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | False | - | - | True |
-| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
-| 2.2.1.0/24 | False | False | - | - | False |
+| Prefix | AS Set | Summary Only | Attribute Map | Attribute RCF | Match Map | Advertise Only |
+| ------ | ------ | ------------ | ------------- | ------------- | --------- | -------------- |
+| 1.1.1.0/24 | False | False | - | - | - | True |
+| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | AGG-ADD-RCF() | RM-MATCH | True |
+| 2.2.1.0/24 | False | False | - | - | - | False |
+| 3.3.3.0/24 | False | False | - | AGG-ADD-RCF() | - | False |
 
 #### Router BGP EVPN Address Family
 
@@ -9301,8 +9313,9 @@ router bgp 65101
    neighbor fe80::b%Vl4094 peer group IPV6-UNDERLAY-MLAG
    no bgp redistribute-internal
    aggregate-address 1.1.1.0/24 advertise-only
-   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
+   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE attribute rcf AGG-ADD-RCF() match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24
+   aggregate-address 3.3.3.0/24 attribute rcf AGG-ADD-RCF()
    redistribute connected rcf Router_BGP_Connected()
    redistribute isis level-2 include leaked route-map RM_BGP_EVPN
    redistribute ospf match internal
@@ -9898,6 +9911,7 @@ router bgp 65101
       neighbor 101.0.3.6 bfd interval 2500 min-rx 2000 multiplier 3
       neighbor 101.0.3.7 bfd
       aggregate-address 0.0.0.0/0 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET advertise-only
+      aggregate-address 3.3.3.0/24 attribute rcf AGG-ADD-RCF()
       aggregate-address 193.1.0.0/16 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET match-map VRF-MATCH-MAP
       redistribute ospf include leaked
       redistribute static rcf VRF_STATIC_RCF()
@@ -11166,9 +11180,9 @@ AS Path Regex Mode is **asn**.
 
 | List Name | Type | Match | Origin |
 | --------- | ---- | ----- | ------ |
-| mylist1 | permit | ^(64512\|645115) | egp |
-| mylist1 | deny | (64513\|64515)$ | any |
-| mylist2 | deny | _64517$ | igp |
+| mylist1 | permit | `^(64512\|645115)` | egp |
+| mylist1 | deny | `(64513\|64515)$` | any |
+| mylist2 | deny | `_64517$` | igp |
 
 #### AS Path Lists Device Configuration
 
@@ -11244,6 +11258,13 @@ ip as-path access-list mylist2 deny _64517$ igp
 | Profile2 | - | user_id2 | - |
 | Profile3 | - | - | PF2 |
 
+#### 802.1X EAPOL
+
+| Attribute | Value |
+| --------- | ----- |
+| VLAN Change Logoff Disabled | True |
+| Unresponsive Action Traffic Allow VLAN | 20 |
+
 #### 802.1X Interfaces
 
 | Interface | PAE Mode | Supplicant Profile | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
@@ -11298,6 +11319,8 @@ dot1x
    radius av-pair filter-id ipv4 ipv6 required
    radius av-pair framed-mtu 1500
    mac-based-auth radius av-pair user-name delimiter colon lowercase
+   eapol vlan change logoff disabled
+   eapol unresponsive action traffic allow vlan 20
    aaa unresponsive recovery action reauthenticate
    supplicant disconnect cached-results timeout 79 seconds
    captive-portal url http://portal-nacm08/captiveredirect/ ssl profile Profile1
@@ -13038,31 +13061,31 @@ mac security
 
 Counters: DROP-PACKETS
 
-| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
-| --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
-| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | 1,10-20<br/>any | -<br/>SERVICE-DEMO | any<br/>any | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:db8::1 fd00::abcd:1234 |
-| BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | -<br/>- | any<br/>- | SERVICE-DEMO<br/>- | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop IPv4 address: 2.2.2.1 2.2.2.2 |
-| BLUE-C1-POLICY-03 | ipv4 | DEMO-01 | any | icmp | - | - | - | - | action: DROP<br/>counter: DROP-PACKETS<br/>logging<br/>redirect aggregation groups: group1 group2 group3<br/>redirect interface: Ethernet 1-4 |
-| BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22<br/>- | -<br/>- | 80<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv4 address: 1.1.1.1 3.3.3.3 vrf: VRF_IPv4 |
-| BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | bgp | - | - | - | - | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:0db8:0000:0000:0000:0000:0000:0001 fe80:0000:0000:0000:f2de:f1ff:fe3f:307e vrf: VRF_IPv6 |
-| BLUE-C1-POLICY-06 | ipv4 | any | any | neighbors<br/>udp<br/>tcp<br/>icmp | -<br/>22<br/>22<br/>- | -<br/>-<br/>-<br/>- | -<br/>1,10-20<br/>any<br/>- | -<br/>-<br/>-<br/>- | action: PASS<br/>redirect next-hop groups: load_balancers monitoring_tools |
-| BLUE-C1-POLICY-07 | ipv4 | any | 10.0.0.0/8<br/>192.168.0.0/16 | - | - | - | - | - | action: PASS<br/>redirect next-hop recursive IPv4 address: 1.1.1.3 3.3.3.1 vrf: VRF_IPv4_recursive |
-| BLUE-C1-POLICY-08 | ipv4 | any | DEMO-01 | udp<br/>tcp | any<br/>any | -<br/>SERVICE-DEMO-SRC | 1,10-20<br/>any | -<br/>SERVICE-DEMO-DST | action: PASS<br/>redirect next-hop recursive IPv4 address: 13.2.1.3 14.2.3.1 |
+| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Packet Type | Action |
+| --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ----------- | ------ |
+| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | 1,10-20<br/>any | -<br/>SERVICE-DEMO | any<br/>any | -<br/>- | vxlan decap, multicast | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:db8::1 fd00::abcd:1234 |
+| BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | -<br/>- | any<br/>- | SERVICE-DEMO<br/>- | vxlan decap exclude | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop IPv4 address: 2.2.2.1 2.2.2.2 |
+| BLUE-C1-POLICY-03 | ipv4 | DEMO-01 | any | icmp | - | - | - | - | - | action: DROP<br/>counter: DROP-PACKETS<br/>logging<br/>redirect aggregation groups: group1 group2 group3<br/>redirect interface: Ethernet 1-4 |
+| BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22<br/>- | -<br/>- | 80<br/>- | -<br/>- | - | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv4 address: 1.1.1.1 3.3.3.3 vrf: VRF_IPv4 |
+| BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | bgp | - | - | - | - | - | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:0db8:0000:0000:0000:0000:0000:0001 fe80:0000:0000:0000:f2de:f1ff:fe3f:307e vrf: VRF_IPv6 |
+| BLUE-C1-POLICY-06 | ipv4 | any | any | neighbors<br/>udp<br/>tcp<br/>icmp | -<br/>22<br/>22<br/>- | -<br/>-<br/>-<br/>- | -<br/>1,10-20<br/>any<br/>- | -<br/>-<br/>-<br/>- | - | action: PASS<br/>redirect next-hop groups: load_balancers monitoring_tools |
+| BLUE-C1-POLICY-07 | ipv4 | any | 10.0.0.0/8<br/>192.168.0.0/16 | - | - | - | - | - | - | action: PASS<br/>redirect next-hop recursive IPv4 address: 1.1.1.3 3.3.3.1 vrf: VRF_IPv4_recursive |
+| BLUE-C1-POLICY-08 | ipv4 | any | DEMO-01 | udp<br/>tcp | any<br/>any | -<br/>SERVICE-DEMO-SRC | 1,10-20<br/>any | -<br/>SERVICE-DEMO-DST | - | action: PASS<br/>redirect next-hop recursive IPv4 address: 13.2.1.3 14.2.3.1 |
 
 ##### BLUE-C2-POLICY
 
 Counters: DEMO-TRAFFIC
 
-| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
-| --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
-| BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | any | tcp<br/>icmp | 1,10-20<br/>- | -<br/>- | any<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop recursive IPv6 address: 2a00:1450:4009:821::200e vrf: VRF_IPv6_recursive |
-| BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | SERVICE-DEMO<br/>- | any<br/>- | -<br/>- | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop recursive IPv6 address: 2001:4860:4860::8888 2606:4700:4700::1111 |
-| BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | any | tcp | any | - | any | - | action: DROP<br/>redirect next-hop IPv6 address: 2001:db8::1 fd00::abcd:1234 ttl: 3 |
-| BLUE-C2-POLICY-04 | ipv6 | any | any | - | - | - | - | - | action: PASS<br/>redirect interface: Ethernet 6 |
-| BLUE-C2-POLICY-05 | ipv6 | any | any | - | - | - | - | - | action: PASS<br/>redirect next-hop IPv4 address: 2.2.2.33 2.2.2.43 vrf: VRF_TTL_IPv4 ttl: 5 |
-| BLUE-C2-POLICY-06 | ipv4 | any | any | - | - | - | - | - | action: PASS<br/>redirect next-hop groups: Testing_TTL_GROUP ttl: 44 |
-| BLUE-C2-POLICY-07 | ipv4 | any | any | - | - | - | - | - | action: PASS |
-| BLUE-C2-POLICY-08 | ipv6 | any | any | icmpv6 | - | - | - | - | default action: PASS |
+| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Packet Type | Action |
+| --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ----------- | ------ |
+| BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | any | tcp<br/>icmp | 1,10-20<br/>- | -<br/>- | any<br/>- | -<br/>- | - | action: PASS<br/>traffic-class: 5<br/>redirect next-hop recursive IPv6 address: 2a00:1450:4009:821::200e vrf: VRF_IPv6_recursive |
+| BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | SERVICE-DEMO<br/>- | any<br/>- | -<br/>- | - | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop recursive IPv6 address: 2001:4860:4860::8888 2606:4700:4700::1111 |
+| BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | any | tcp | any | - | any | - | - | action: DROP<br/>redirect next-hop IPv6 address: 2001:db8::1 fd00::abcd:1234 ttl: 3 |
+| BLUE-C2-POLICY-04 | ipv6 | any | any | - | - | - | - | - | - | action: PASS<br/>redirect interface: Ethernet 6 |
+| BLUE-C2-POLICY-05 | ipv6 | any | any | - | - | - | - | - | - | action: PASS<br/>redirect next-hop IPv4 address: 2.2.2.33 2.2.2.43 vrf: VRF_TTL_IPv4 ttl: 5 |
+| BLUE-C2-POLICY-06 | ipv4 | any | any | - | - | - | - | - | - | action: PASS<br/>redirect next-hop groups: Testing_TTL_GROUP ttl: 44 |
+| BLUE-C2-POLICY-07 | ipv4 | any | any | - | - | - | - | - | - | action: PASS |
+| BLUE-C2-POLICY-08 | ipv6 | any | any | icmpv6 | - | - | - | - | - | default action: PASS |
 
 ##### BLUE-C3-POLICY
 
@@ -13078,9 +13101,9 @@ Counters: test
 
 ##### BLUE-C7-POLICY
 
-| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
-| --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
-| BLUE-C7-POLICY-01 | ipv4 | any | any | neighbors | - | - | - | - | default action: PASS |
+| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Packet Type | Action |
+| --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ----------- | ------ |
+| BLUE-C7-POLICY-01 | ipv4 | any | any | neighbors | - | - | - | - | - | default action: PASS |
 
 ##### Traffic-Policy Interfaces
 
@@ -13088,6 +13111,7 @@ Counters: test
 | --------- | -------------------- | --------------------- |
 | Ethernet1 | BLUE-C1-POLICY | BLUE-C2-POLICY |
 | Port-Channel15 | BLUE-C1-POLICY | BLUE-C2-POLICY |
+| Vlan2001 | Policy-01 | Policy-02 |
 
 #### Traffic Policies Device Configuration
 
@@ -13119,6 +13143,10 @@ traffic-policies
          protocol udp source port field-set SERVICE-DEMO
          ttl 10, 20-30
          !
+         packet type
+            multicast
+            vxlan decap
+         !
          actions
             redirect next-hop 2001:db8::1 fd00::abcd:1234
             set traffic class 5
@@ -13128,6 +13156,9 @@ traffic-policies
          protocol tcp flags established
          protocol tcp destination port field-set SERVICE-DEMO
          protocol icmp
+         !
+         packet type
+            vxlan decap exclude
          !
          actions
             count DEMO-TRAFFIC

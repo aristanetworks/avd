@@ -117,13 +117,16 @@ class VlansMixin(Protocol):
                 )
                 raise AristaAvdInvalidInputsError(msg)
         if self.inputs.enable_trunk_groups:
-            trunk_groups = vlan.trunk_groups
+            trunk_groups = set(vlan.trunk_groups)
             if self.shared_utils.only_local_vlan_trunk_groups:
-                trunk_groups = list(self._local_endpoint_trunk_groups.intersection(trunk_groups))
+                trunk_groups = self._local_endpoint_trunk_groups.intersection(trunk_groups)
             if self.shared_utils.mlag:
-                trunk_groups.append(self.inputs.trunk_groups.mlag.name)
+                trunk_groups.add(self.inputs.trunk_groups.mlag.name)
             if self.shared_utils.uplink_type == "port-channel":
-                trunk_groups.append(self.inputs.trunk_groups.uplink.name)
+                trunk_groups.add(self.inputs.trunk_groups.uplink.name)
+            # Add trunk groups required for underlay
+            if vlans_vlan.id in self.shared_utils.underlay_vlan_trunk_groups:
+                trunk_groups.update(self.shared_utils.underlay_vlan_trunk_groups[vlans_vlan.id])
             vlans_vlan.trunk_groups.extend(natural_sort(trunk_groups))
 
         return vlans_vlan
