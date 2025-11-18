@@ -18271,14 +18271,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"begin": {"type": int}, "end": {"type": int}}
-                begin: int | None
+                begin: int
                 """Minimum LACP port-ID range."""
-                end: int | None
+                end: int
                 """Maximum LACP port-ID range."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, begin: int | None | UndefinedType = Undefined, end: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, begin: int | UndefinedType = Undefined, end: int | UndefinedType = Undefined) -> None:
                         """
                         Range.
 
@@ -19806,11 +19806,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"sequence": {"type": int}, "action": {"type": str}}
             sequence: int | None
-            action: str | None
+            action: str
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, sequence: int | None | UndefinedType = Undefined, action: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, sequence: int | None | UndefinedType = Undefined, action: str | UndefinedType = Undefined) -> None:
                     """
                     EntriesItem.
 
@@ -20073,7 +20073,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"id": {"type": str}, "encrypted_key": {"type": str}, "fallback": {"type": bool}}
                 id: str
-                encrypted_key: str | None
+                encrypted_key: str
                 fallback: bool | None
 
                 if TYPE_CHECKING:
@@ -20082,7 +20082,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         id: str | UndefinedType = Undefined,
-                        encrypted_key: str | None | UndefinedType = Undefined,
+                        encrypted_key: str | UndefinedType = Undefined,
                         fallback: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
