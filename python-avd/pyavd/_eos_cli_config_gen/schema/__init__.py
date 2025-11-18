@@ -4478,10 +4478,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Ethernet address in format - HHHH.HHHH.HHHH"""
                 hostname: str | None
                 ipv4_address: str | None
-                """
-                Valid IPv4 address from the given subnet.
-                This should only be used within an IPv4 subnet.
-                """
+                """Valid IPv4 address from the given subnet."""
 
                 if TYPE_CHECKING:
 
@@ -4501,9 +4498,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             mac_address: Ethernet address in format - HHHH.HHHH.HHHH
                             hostname: hostname
-                            ipv4_address:
-                               Valid IPv4 address from the given subnet.
-                               This should only be used within an IPv4 subnet.
+                            ipv4_address: Valid IPv4 address from the given subnet.
 
                         """
 
@@ -4651,10 +4646,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Ethernet address in format - HHHH.HHHH.HHHH"""
                 hostname: str | None
                 ipv6_address: str | None
-                """
-                Valid IPv6 address from the given subnet.
-                This should only be used within an IPv6 subnet.
-                """
+                """Valid IPv6 address from the given subnet."""
 
                 if TYPE_CHECKING:
 
@@ -4674,9 +4666,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             mac_address: Ethernet address in format - HHHH.HHHH.HHHH
                             hostname: hostname
-                            ipv6_address:
-                               Valid IPv6 address from the given subnet.
-                               This should only be used within an IPv6 subnet.
+                            ipv6_address: Valid IPv6 address from the given subnet.
 
                         """
 
