@@ -3,6 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from typing import Literal
+
 from anta.input_models.hardware import HardwareInventory
 from anta.tests.hardware import VerifyEnvironmentCooling, VerifyEnvironmentPower, VerifyInventory, VerifyTransceiversManufacturers
 
@@ -51,7 +53,7 @@ class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
         * Strictly check that all provided slots are filled.
     """
 
-    def _get_hardware_requirement(self, requirement: int | None) -> int | str | None:
+    def _get_hardware_requirement(self, requirement: int | None) -> int | Literal["all"] | None:
         """Helper to determine the hardware requirements."""
         # Returns "all" if requirement is None, None If requirement == 0. Otherwise, returns the requirement.
         if requirement is None:
