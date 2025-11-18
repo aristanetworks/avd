@@ -154,140 +154,36 @@ keys:
                         type: str
         ipv4_subnets:
           type: list
-          primary_key: subnet
+          $ref: "eos_cli_config_gen#/$defs/subnets"
           items:
             type: dict
             keys:
               subnet:
                 description: IPv4 subnet.
                 type: str
-              name:
-                type: str
-                convert_types:
-                - int
-              default_gateway:
-                type: str
-              dns_servers:
-                type: list
-                items:
-                  type: str
-              ranges:
-                type: list
-                items:
-                  type: dict
-                  keys:
-                    start:
-                      type: str
-                      required: true
-                    end:
-                      type: str
-                      required: true
-              lease_time:
-                type: dict
-                keys:
-                  days:
-                    type: int
-                    required: true
-                    min: 0
-                    max: 2000
-                    convert_types:
-                    - str
-                  hours:
-                    type: int
-                    required: true
-                    min: 0
-                    max: 23
-                    convert_types:
-                    - str
-                  minutes:
-                    type: int
-                    required: true
-                    min: 0
-                    max: 59
-                    convert_types:
-                    - str
               reservations:
-                description: DHCP client reservations.
                 type: list
-                primary_key: mac_address
                 items:
                   type: dict
                   keys:
-                    mac_address:
-                      type: str
-                      description: Ethernet address in format - HHHH.HHHH.HHHH
-                    hostname:
-                      type: str
                     ipv4_address:
                       type: str
                       description: |-
                         Valid IPv4 address from the given subnet.
         ipv6_subnets:
           type: list
-          primary_key: subnet
+          $ref: "eos_cli_config_gen#/$defs/subnets"
           items:
             type: dict
             keys:
               subnet:
                 description: IPv6 subnet.
                 type: str
-              name:
-                type: str
-                convert_types:
-                - int
-              default_gateway:
-                type: str
-              dns_servers:
-                type: list
-                items:
-                  type: str
-              ranges:
-                type: list
-                items:
-                  type: dict
-                  keys:
-                    start:
-                      type: str
-                      required: true
-                    end:
-                      type: str
-                      required: true
-              lease_time:
-                type: dict
-                keys:
-                  days:
-                    type: int
-                    required: true
-                    min: 0
-                    max: 2000
-                    convert_types:
-                    - str
-                  hours:
-                    type: int
-                    required: true
-                    min: 0
-                    max: 23
-                    convert_types:
-                    - str
-                  minutes:
-                    type: int
-                    required: true
-                    min: 0
-                    max: 59
-                    convert_types:
-                    - str
               reservations:
-                description: DHCP client reservations.
                 type: list
-                primary_key: mac_address
                 items:
                   type: dict
                   keys:
-                    mac_address:
-                      type: str
-                      description: Ethernet address in format - HHHH.HHHH.HHHH
-                    hostname:
-                      type: str
                     ipv6_address:
                       type: str
                       description: |-

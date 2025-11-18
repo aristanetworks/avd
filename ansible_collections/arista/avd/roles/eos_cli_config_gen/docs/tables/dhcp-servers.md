@@ -40,6 +40,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].sub_options.[].array_ipv4_address.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_subnets</samp>](## "dhcp_servers.[].ipv4_subnets") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;subnet</samp>](## "dhcp_servers.[].ipv4_subnets.[].subnet") | String | Required, Unique |  |  | IPv4 subnet. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reservations</samp>](## "dhcp_servers.[].ipv4_subnets.[].reservations") | List, items: Dictionary |  |  |  | DHCP client reservations. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ipv4_address</samp>](## "dhcp_servers.[].ipv4_subnets.[].reservations.[].ipv4_address") | String |  |  |  | Valid IPv4 address from the given subnet. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "dhcp_servers.[].ipv4_subnets.[].reservations.[].mac_address") | String | Required, Unique |  |  | Ethernet address in format - HHHH.HHHH.HHHH |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "dhcp_servers.[].ipv4_subnets.[].reservations.[].hostname") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "dhcp_servers.[].ipv4_subnets.[].name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_gateway</samp>](## "dhcp_servers.[].ipv4_subnets.[].default_gateway") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers</samp>](## "dhcp_servers.[].ipv4_subnets.[].dns_servers") | List, items: String |  |  |  |  |
@@ -51,12 +55,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;days</samp>](## "dhcp_servers.[].ipv4_subnets.[].lease_time.days") | Integer | Required |  | Min: 0<br>Max: 2000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hours</samp>](## "dhcp_servers.[].ipv4_subnets.[].lease_time.hours") | Integer | Required |  | Min: 0<br>Max: 23 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minutes</samp>](## "dhcp_servers.[].ipv4_subnets.[].lease_time.minutes") | Integer | Required |  | Min: 0<br>Max: 59 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reservations</samp>](## "dhcp_servers.[].ipv4_subnets.[].reservations") | List, items: Dictionary |  |  |  | DHCP client reservations. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;mac_address</samp>](## "dhcp_servers.[].ipv4_subnets.[].reservations.[].mac_address") | String | Required, Unique |  |  | Ethernet address in format - HHHH.HHHH.HHHH |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "dhcp_servers.[].ipv4_subnets.[].reservations.[].hostname") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_address</samp>](## "dhcp_servers.[].ipv4_subnets.[].reservations.[].ipv4_address") | String |  |  |  | Valid IPv4 address from the given subnet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_subnets</samp>](## "dhcp_servers.[].ipv6_subnets") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;subnet</samp>](## "dhcp_servers.[].ipv6_subnets.[].subnet") | String | Required, Unique |  |  | IPv6 subnet. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reservations</samp>](## "dhcp_servers.[].ipv6_subnets.[].reservations") | List, items: Dictionary |  |  |  | DHCP client reservations. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ipv6_address</samp>](## "dhcp_servers.[].ipv6_subnets.[].reservations.[].ipv6_address") | String |  |  |  | Valid IPv6 address from the given subnet. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "dhcp_servers.[].ipv6_subnets.[].reservations.[].mac_address") | String | Required, Unique |  |  | Ethernet address in format - HHHH.HHHH.HHHH |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "dhcp_servers.[].ipv6_subnets.[].reservations.[].hostname") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "dhcp_servers.[].ipv6_subnets.[].name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_gateway</samp>](## "dhcp_servers.[].ipv6_subnets.[].default_gateway") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers</samp>](## "dhcp_servers.[].ipv6_subnets.[].dns_servers") | List, items: String |  |  |  |  |
@@ -68,10 +72,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;days</samp>](## "dhcp_servers.[].ipv6_subnets.[].lease_time.days") | Integer | Required |  | Min: 0<br>Max: 2000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hours</samp>](## "dhcp_servers.[].ipv6_subnets.[].lease_time.hours") | Integer | Required |  | Min: 0<br>Max: 23 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minutes</samp>](## "dhcp_servers.[].ipv6_subnets.[].lease_time.minutes") | Integer | Required |  | Min: 0<br>Max: 59 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reservations</samp>](## "dhcp_servers.[].ipv6_subnets.[].reservations") | List, items: Dictionary |  |  |  | DHCP client reservations. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;mac_address</samp>](## "dhcp_servers.[].ipv6_subnets.[].reservations.[].mac_address") | String | Required, Unique |  |  | Ethernet address in format - HHHH.HHHH.HHHH |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "dhcp_servers.[].ipv6_subnets.[].reservations.[].hostname") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "dhcp_servers.[].ipv6_subnets.[].reservations.[].ipv6_address") | String |  |  |  | Valid IPv6 address from the given subnet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;subnets</samp>](## "dhcp_servers.[].subnets") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ipv4_subnets or ipv6_subnets</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "dhcp_servers.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the dhcp server in the final EOS configuration. |
 
@@ -143,6 +143,16 @@
 
             # IPv4 subnet.
           - subnet: <str; required; unique>
+
+            # DHCP client reservations.
+            reservations:
+
+                # Valid IPv4 address from the given subnet.
+              - ipv4_address: <str>
+
+                # Ethernet address in format - HHHH.HHHH.HHHH
+                mac_address: <str; required; unique>
+                hostname: <str>
             name: <str>
             default_gateway: <str>
             dns_servers:
@@ -154,20 +164,20 @@
               days: <int; 0-2000; required>
               hours: <int; 0-23; required>
               minutes: <int; 0-59; required>
-
-            # DHCP client reservations.
-            reservations:
-
-                # Ethernet address in format - HHHH.HHHH.HHHH
-              - mac_address: <str; required; unique>
-                hostname: <str>
-
-                # Valid IPv4 address from the given subnet.
-                ipv4_address: <str>
         ipv6_subnets:
 
             # IPv6 subnet.
           - subnet: <str; required; unique>
+
+            # DHCP client reservations.
+            reservations:
+
+                # Valid IPv6 address from the given subnet.
+              - ipv6_address: <str>
+
+                # Ethernet address in format - HHHH.HHHH.HHHH
+                mac_address: <str; required; unique>
+                hostname: <str>
             name: <str>
             default_gateway: <str>
             dns_servers:
@@ -179,16 +189,6 @@
               days: <int; 0-2000; required>
               hours: <int; 0-23; required>
               minutes: <int; 0-59; required>
-
-            # DHCP client reservations.
-            reservations:
-
-                # Ethernet address in format - HHHH.HHHH.HHHH
-              - mac_address: <str; required; unique>
-                hostname: <str>
-
-                # Valid IPv6 address from the given subnet.
-                ipv6_address: <str>
 
         # Multiline EOS CLI rendered directly on the dhcp server in the final EOS configuration.
         eos_cli: <str>
