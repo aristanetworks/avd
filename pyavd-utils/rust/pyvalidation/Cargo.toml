@@ -7,6 +7,9 @@ license.workspace = true
 [build-dependencies]
 pyo3-build-config = { workspace = true }
 
+[dev-dependencies]
+criterion = "0.3"
+
 [dependencies]
 avdschema = { path = "../../../rust/avdschema", features = ["dump_load_files"] }
 included_store = { path = "../../../rust/included_store" }
@@ -25,3 +28,7 @@ serde_yaml = { workspace = true }
 
 [lib]
 crate-type = ["cdylib", "lib"]
+
+[[bench]]
+name = "performance"
+harness = false
