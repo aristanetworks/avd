@@ -280,7 +280,6 @@ repos:
         additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=43.0.0', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    # Keep v0.18.0 for now as pre-commit.ci fails on v0.18.1
     rev: v0.18.1
     hooks:
       - id: markdownlint-cli2
