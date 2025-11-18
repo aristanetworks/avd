@@ -355,11 +355,9 @@ Serial Number: DEADBEEFC0FFEW
 
 ```eos
 !
-agent Dummy environment V1=42:V2=666
 agent Dummy shutdown
 agent Dummy shutdown supervisor active
 agent Dummy shutdown supervisor standby
-agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=true
 agent KernelFib shutdown supervisor active
 agent KernelFib shutdown supervisor standby
 ```
@@ -1642,9 +1640,8 @@ aaa authentication login command-api local
 aaa authentication login console local
 aaa authentication enable default group TACACS local
 aaa authentication dot1x default group RADIUS1
-aaa authentication policy on-failure log
 aaa authentication policy on-success log
-aaa authentication policy local allow-nopassword-remote-login
+aaa authentication policy on-failure log
 aaa authentication policy lockout failure 3 window 900 duration 300
 !
 ```
@@ -1674,7 +1671,6 @@ Authorization for serial console is enabled.
 #### AAA Authorization Device Configuration
 
 ```eos
-aaa authorization policy local default-role network-admin
 aaa authorization serial-console
 aaa authorization dynamic dot1x additional-groups group radius group RADIUS1
 aaa authorization exec default group TACACS local
@@ -7658,11 +7654,11 @@ Global ARP timeout: 300
 !
 arp persistent refresh-delay 700
 arp aging timeout default 300
-arp vrf BLAH 42.42.42.42 DEAD.BEEF.CAFE arpa
-arp vrf defauls 42.42.42.42 DEAD.BEEF.CAFE arpa
 arp 41.42.42.42 DEAD.BEEF.CAFE arpa
 arp 42.42.42.42 DEAD.BEEF.CAFE arpa
 arp 43.42.42.42 DEAD.BEEF.CAFE arpa
+arp vrf BLAH 42.42.42.42 DEAD.BEEF.CAFE arpa
+arp vrf defauls 42.42.42.42 DEAD.BEEF.CAFE arpa
 arp vrf defaulu 42.42.42.42 DEAD.BEEF.CAFE arpa
 ```
 
