@@ -26,14 +26,60 @@ mod validation {
     use log::info;
     use pyo3::{Bound, PyResult, exceptions::PyRuntimeError, pyclass, pyfunction, types::PyModule};
     use std::path::PathBuf;
-    use validation::{
-        Coercion as _, Context, StoreValidate as _, Validation as _, ValidationResult,
-    };
+    use validation::{Coercion as _, Context, StoreValidate as _, Validation as _};
+
+    #[pyclass(frozen, get_all)]
+    #[derive(Clone)]
+    pub struct Feedback {
+        pub message: String,
+        pub path: Vec<String>,
+    }
+    impl From<&validation::feedback::Feedback> for Feedback {
+        fn from(value: &validation::feedback::Feedback) -> Feedback {
+            Feedback {
+                message: value.issue.to_string(),
+                path: value.path.clone(),
+            }
+        }
+    }
+
+    #[pyclass(frozen, get_all)]
+    #[derive(Clone)]
+    pub struct ValidationResult {
+        pub violations: Vec<Feedback>,
+        pub coercions: Vec<Feedback>,
+        pub insertions: Vec<Feedback>,
+    }
+    impl From<validation::ValidationResult> for ValidationResult {
+        fn from(value: validation::ValidationResult) -> ValidationResult {
+            let mut coercions: Vec<Feedback> = Vec::new();
+            let mut insertions: Vec<Feedback> = Vec::new();
+            value
+                .coercions
+                .iter()
+                .for_each(|feedback| match feedback.issue {
+                    validation::feedback::Issue::Coercion(_) => coercions.push(feedback.into()),
+                    validation::feedback::Issue::DefaultValueInserted() => {
+                        insertions.push(feedback.into())
+                    }
+                    _ => {}
+                });
+            ValidationResult {
+                violations: value
+                    .violations
+                    .iter()
+                    .map(|feedback| feedback.into())
+                    .collect(),
+                coercions,
+                insertions,
+            }
+        }
+    }
 
     #[pyclass(frozen, get_all)]
     pub struct GetValidatedDataResult {
         pub validation_result: ValidationResult,
-        pub validated_data: String,
+        pub validated_data: Option<String>,
     }
 
     #[pymodule_init]
@@ -41,11 +87,6 @@ mod validation {
         pyo3_log::init();
         Ok(())
     }
-
-    #[pymodule_export]
-    use ::validation::feedback::{
-        CoercionNote, Feedback, Issue, Type, Value, Violation, ViolationValidValues,
-    };
 
     #[pyfunction]
     pub fn init_store_from_fragments(
@@ -90,6 +131,7 @@ mod validation {
     pub fn validate_json(data_as_json: &str, schema_name: &str) -> PyResult<ValidationResult> {
         get_store()
             .validate_json(data_as_json, schema_name, None)
+            .map(|result| result.into())
             .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))
     }
 
@@ -103,11 +145,16 @@ mod validation {
             .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?;
 
         let validation_result = get_store().validate_value(&mut data_as_value, schema_name, None);
-        Ok(GetValidatedDataResult {
-            validation_result,
-            validated_data: serde_json::to_string(&data_as_value).map_err(|err| {
+        let validated_data = if validation_result.violations.is_empty() {
+            Some(serde_json::to_string(&data_as_value).map_err(|err| {
                 PyRuntimeError::new_err(format!("Invalid JSON in coerced data: {err}"))
-            })?,
+            })?)
+        } else {
+            None
+        };
+        Ok(GetValidatedDataResult {
+            validation_result: validation_result.into(),
+            validated_data,
         })
     }
 
@@ -128,7 +175,8 @@ mod validation {
         schema.coerce(&mut data, &mut ctx);
         schema.validate_value(&data, &mut ctx);
 
-        Ok(ctx.into())
+        let validation_result: validation::ValidationResult = ctx.into();
+        Ok(validation_result.into())
     }
 }
 
@@ -199,34 +247,43 @@ mod tests {
             assert!(validation_result.hasattr("violations").unwrap());
             let violations = validation_result.getattr("violations").unwrap();
             assert!(violations.is_instance_of::<pyo3::types::PyList>());
-            assert_eq!(violations.len().unwrap(), 3);
+            let expected_violations: [(Vec<String>, String); 3] = [
+                (vec!["ethernet_interfaces".into(), "2".into()], "Missing the required key 'name'.".into()),
+                (vec!["ethernet_interfaces".into(), "0".into(), "name".into()], "The value is not unique among similar items. Conflicting items: [\"ethernet_interfaces\", \"1\", \"name\"]".into()),
+                (vec!["ethernet_interfaces".into(), "1".into(), "name".into()], "The value is not unique among similar items. Conflicting items: [\"ethernet_interfaces\", \"0\", \"name\"]".into()),
+            ];
 
-            let issue_enum = module.getattr("Issue").unwrap();
-            let violation_enum = module.getattr("Violation").unwrap();
-
-            // Checking the first violation only. The rest are checked in the pytest implementation.
-            let feedback = violations.get_item(0).unwrap();
-            let path = feedback
-                .getattr("path")
-                .unwrap()
-                .cast_into_exact::<pyo3::types::PyList>()
-                .unwrap();
-            let expected_path = pyo3::types::PyList::new(py, ["ethernet_interfaces", "2"]).unwrap();
-            assert!(path.eq(expected_path).unwrap());
-            let issue = feedback.getattr("issue").unwrap();
-            let expected_issue = issue_enum.getattr("Validation").unwrap();
-            assert!(issue.get_type().eq(expected_issue).unwrap());
-            let violation = issue.getattr("_0").unwrap();
-            let expected_violation = violation_enum.getattr("MissingRequiredKey").unwrap();
-            assert!(violation.get_type().eq(expected_violation).unwrap());
-            let key = violation.getattr("key").unwrap();
-            let expected_key = pyo3::types::PyString::new(py, "name");
-            assert!(key.eq(expected_key).unwrap());
+            assert_eq!(violations.len().unwrap(), expected_violations.len());
+            for feedback in violations.try_iter().unwrap().flatten() {
+                let path: Vec<String> = feedback
+                    .getattr("path")
+                    .unwrap()
+                    .cast_into_exact::<pyo3::types::PyList>()
+                    .unwrap()
+                    .into_iter()
+                    .map(|item| {
+                        item.cast_into_exact::<pyo3::types::PyString>()
+                            .unwrap()
+                            .to_string()
+                    })
+                    .collect();
+                let message = feedback
+                    .getattr("message")
+                    .unwrap()
+                    .cast_into_exact::<pyo3::types::PyString>()
+                    .unwrap()
+                    .to_string();
+                let expected_violation = (path, message);
+                assert!(
+                    expected_violations.contains(&expected_violation),
+                    "Violation was not found in expected violations: {expected_violation:?}"
+                )
+            }
         });
     }
 
     #[test]
-    fn init_store_py_invalid_fragment_paths() {
+    fn init_store_py_invalid_fragment_paths_err() {
         setup();
         pyo3::Python::attach(|py| {
             let module = py.import("validation").unwrap();
@@ -273,7 +330,7 @@ mod tests {
     }
 
     #[test]
-    fn init_store_py_twice() {
+    fn init_store_py_twice_err() {
         setup();
         pyo3::Python::attach(|py| {
             shared_init_store(py);
@@ -305,7 +362,7 @@ mod tests {
     }
 
     #[test]
-    fn validate_json_py_invalid_json() {
+    fn validate_json_py_invalid_json_err() {
         setup();
         pyo3::Python::attach(|py| {
             shared_init_store(py);
@@ -355,36 +412,42 @@ mod tests {
             assert!(validation_result.hasattr("violations").unwrap());
             let violations = validation_result.getattr("violations").unwrap();
             assert!(violations.is_instance_of::<pyo3::types::PyList>());
-            assert_eq!(violations.len().unwrap(), 1);
+            let expected_violations: [(Vec<String>, String); 1] = [(
+                vec![],
+                "The value '1234' is above the maximum allowed '1233'.".into(),
+            )];
 
-            let issue_enum = module.getattr("Issue").unwrap();
-            let violation_enum = module.getattr("Violation").unwrap();
-
-            // Checking the first violation only. The rest are checked in the pytest implementation.
-            let feedback = violations.get_item(0).unwrap();
-            let path = feedback
-                .getattr("path")
-                .unwrap()
-                .cast_into_exact::<pyo3::types::PyList>()
-                .unwrap();
-            assert_eq!(path.len().unwrap(), 0);
-            let issue = feedback.getattr("issue").unwrap();
-            let expected_issue = issue_enum.getattr("Validation").unwrap();
-            assert!(issue.get_type().eq(expected_issue).unwrap());
-            let violation = issue.getattr("_0").unwrap();
-            let expected_violation = violation_enum.getattr("ValueAboveMaximum").unwrap();
-            assert!(violation.get_type().eq(expected_violation).unwrap());
-            let expected_maximum = pyo3::types::PyInt::new(py, 1233);
-            let maximum = violation.getattr("maximum").unwrap();
-            assert!(maximum.eq(expected_maximum).unwrap());
-            let expected_found = pyo3::types::PyInt::new(py, 1234);
-            let found = violation.getattr("found").unwrap();
-            assert!(found.eq(expected_found).unwrap());
+            assert_eq!(violations.len().unwrap(), expected_violations.len());
+            for feedback in violations.try_iter().unwrap().flatten() {
+                let path: Vec<String> = feedback
+                    .getattr("path")
+                    .unwrap()
+                    .cast_into_exact::<pyo3::types::PyList>()
+                    .unwrap()
+                    .into_iter()
+                    .map(|item| {
+                        item.cast_into_exact::<pyo3::types::PyString>()
+                            .unwrap()
+                            .to_string()
+                    })
+                    .collect();
+                let message = feedback
+                    .getattr("message")
+                    .unwrap()
+                    .cast_into_exact::<pyo3::types::PyString>()
+                    .unwrap()
+                    .to_string();
+                let expected_violation = (path, message);
+                assert!(
+                    expected_violations.contains(&expected_violation),
+                    "Violation was not found in expected violations: {expected_violation:?}"
+                )
+            }
         });
     }
 
     #[test]
-    fn validate_json_with_adhoc_schema_py_invalid_json() {
+    fn validate_json_with_adhoc_schema_py_invalid_json_err() {
         setup();
         pyo3::Python::attach(|py| {
             shared_init_store(py);
@@ -412,7 +475,7 @@ mod tests {
     }
 
     #[test]
-    fn validate_json_with_adhoc_schema_py_invalid_schema() {
+    fn validate_json_with_adhoc_schema_py_invalid_schema_err() {
         setup();
         pyo3::Python::attach(|py| {
             shared_init_store(py);
@@ -493,46 +556,41 @@ mod tests {
             let coercions = validation_result.getattr("coercions").unwrap();
             assert!(coercions.is_instance_of::<pyo3::types::PyList>());
 
-            // The coercions also contains feedback for insertion of default values, so we first filter to only have actual coercions.
-            let issue_enum = module.getattr("Issue").unwrap();
-            let coercion_feedbacks = coercions
-                .cast_exact::<pyo3::types::PyList>()
-                .unwrap()
-                .into_iter()
-                .filter(|feedback| {
-                    let issue = feedback.getattr("issue").unwrap();
-                    let coercion_type = issue_enum.getattr("Coercion").unwrap();
-                    issue.get_type().eq(coercion_type).unwrap()
-                })
-                .collect::<Vec<pyo3::Bound<'_, pyo3::PyAny>>>();
-            assert_eq!(coercion_feedbacks.len(), 1);
+            let expected_coercions: [(Vec<String>, String); 1] = [(
+                vec![
+                    "ethernet_interfaces".into(),
+                    "0".into(),
+                    "description".into(),
+                ],
+                "Coerced value from 12345 to \"12345\".".into(),
+            )];
 
-            let feedback = coercion_feedbacks.first().unwrap();
-            let path = feedback.getattr("path").unwrap();
-            let expected_path =
-                pyo3::types::PyList::new(py, ["ethernet_interfaces", "0", "description"]).unwrap();
-            assert!(path.eq(expected_path).unwrap());
-            let issue = feedback.getattr("issue").unwrap();
-
-            let coercion_note = issue.getattr("_0").unwrap();
-            let found = coercion_note
-                .getattr("found")
-                .unwrap()
-                .getattr("_0")
-                .unwrap();
-            let expected_found = pyo3::types::PyInt::new(py, 12345);
-            assert!(
-                found.eq(expected_found).unwrap(),
-                "Found something else: {}",
-                found
-            );
-            let made = coercion_note
-                .getattr("made")
-                .unwrap()
-                .getattr("_0")
-                .unwrap();
-            let expected_made = pyo3::types::PyString::new(py, "12345");
-            assert!(made.eq(expected_made).unwrap());
+            assert_eq!(coercions.len().unwrap(), expected_coercions.len());
+            for feedback in coercions.try_iter().unwrap().flatten() {
+                let path: Vec<String> = feedback
+                    .getattr("path")
+                    .unwrap()
+                    .cast_into_exact::<pyo3::types::PyList>()
+                    .unwrap()
+                    .into_iter()
+                    .map(|item| {
+                        item.cast_into_exact::<pyo3::types::PyString>()
+                            .unwrap()
+                            .to_string()
+                    })
+                    .collect();
+                let message = feedback
+                    .getattr("message")
+                    .unwrap()
+                    .cast_into_exact::<pyo3::types::PyString>()
+                    .unwrap()
+                    .to_string();
+                let expected_coercion = (path, message);
+                assert!(
+                    expected_coercions.contains(&expected_coercion),
+                    "Violation was not found in expected violations: {expected_coercion:?}"
+                )
+            }
         });
     }
 
@@ -556,56 +614,46 @@ mod tests {
                     .unwrap()
             };
             let validated_data = get_validated_data_result.getattr("validated_data").unwrap();
-            let expected_data = pyo3::types::PyString::new(
-                py,
-                &serde_json::json!(
-                {
-                    "ethernet_interfaces":[
-                        {
-                            "name":"Ethernet1",
-                            "unknown":12345,
-                            "ospf_authentication_key_type":"7"
-                        }
-                    ],
-                    // These are defaults inserted by the validation tooling.
-                    "avd_data_validation_mode":"error",
-                    "config_end":false,
-                    "generate_default_config":false,
-                    "generate_device_documentation":true,
-                    "transceiver_qsfp_default_mode_4x10":true
-                })
-                .to_string(),
-            );
             assert!(
-                validated_data.eq(&expected_data).unwrap(),
-                "Different data: {validated_data} vs {expected_data}"
+                validated_data.is_none(),
+                "Different data: {validated_data} vs None"
             );
             let validation_result = get_validated_data_result
                 .getattr("validation_result")
                 .unwrap();
             let violations = validation_result.getattr("violations").unwrap();
             assert!(violations.is_instance_of::<pyo3::types::PyList>());
-            assert_eq!(violations.len().unwrap(), 1);
+            let expected_violations: [(Vec<String>, String); 1] = [(
+                vec!["ethernet_interfaces".into(), "0".into(), "unknown".into()],
+                "Invalid key.".into(),
+            )];
 
-            let issue_enum = module.getattr("Issue").unwrap();
-            let violation_enum = module.getattr("Violation").unwrap();
-
-            let violation_feedbacks = violations.cast_exact::<pyo3::types::PyList>().unwrap();
-            assert_eq!(violation_feedbacks.len().unwrap(), 1);
-
-            let feedback = violations.get_item(0).unwrap();
-            let path = feedback.getattr("path").unwrap();
-            let expected_path =
-                pyo3::types::PyList::new(py, ["ethernet_interfaces", "0", "unknown"]).unwrap();
-            assert!(path.eq(expected_path).unwrap());
-
-            let issue = feedback.getattr("issue").unwrap();
-            let expected_issue = issue_enum.getattr("Validation").unwrap();
-            assert!(issue.get_type().eq(expected_issue).unwrap());
-
-            let violation = issue.getattr("_0").unwrap();
-            let expected_violation = violation_enum.getattr("UnexpectedKey").unwrap();
-            assert!(violation.get_type().eq(expected_violation).unwrap());
+            assert_eq!(violations.len().unwrap(), expected_violations.len());
+            for feedback in violations.try_iter().unwrap().flatten() {
+                let path: Vec<String> = feedback
+                    .getattr("path")
+                    .unwrap()
+                    .cast_into_exact::<pyo3::types::PyList>()
+                    .unwrap()
+                    .into_iter()
+                    .map(|item| {
+                        item.cast_into_exact::<pyo3::types::PyString>()
+                            .unwrap()
+                            .to_string()
+                    })
+                    .collect();
+                let message = feedback
+                    .getattr("message")
+                    .unwrap()
+                    .cast_into_exact::<pyo3::types::PyString>()
+                    .unwrap()
+                    .to_string();
+                let expected_violation = (path, message);
+                assert!(
+                    expected_violations.contains(&expected_violation),
+                    "Violation was not found in expected violations: {expected_violation:?}"
+                )
+            }
         });
     }
 }

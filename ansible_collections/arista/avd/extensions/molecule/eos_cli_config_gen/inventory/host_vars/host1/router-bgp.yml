@@ -295,6 +295,11 @@ router_bgp:
       attribute_map: RM-ATTRIBUTE
       match_map: RM-MATCH
       advertise_only: true
+      attribute:
+        rcf: AGG-ADD-RCF()
+    - prefix: 3.3.3.0/24
+      attribute:
+        rcf: AGG-ADD-RCF()
   redistribute:
     attached_host:
       enabled: true
@@ -2030,6 +2035,9 @@ router_bgp:
           summary_only: true
           attribute_map: RM-BGP-AGG-APPLY-SET
           advertise_only: true
+        - prefix: 3.3.3.0/24
+          attribute:
+            rcf: AGG-ADD-RCF()
       eos_cli: |
         comment
         Comment created from eos_cli under router_bgp.vrfs.BLUE-C1

@@ -11,8 +11,6 @@ ipv6 access-list {{ ipv6_access_list.name }}
    counters per-entry
 {%     endif %}
 {%     for sequence in ipv6_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
-{%         if sequence.action is arista.avd.defined %}
    {{ sequence.sequence }} {{ sequence.action }}
-{%         endif %}
 {%     endfor %}
 {% endfor %}

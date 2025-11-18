@@ -89,6 +89,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyLoggingErrors,
+        input_factory=VerifyLoggingErrorsInputFactory,
     ),
     TestSpec(
         test_class=VerifyMaintenance,
@@ -147,6 +148,10 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyTemperature,
+    ),
+    TestSpec(
+        test_class=VerifyTransceiversManufacturers,
+        input_factory=VerifyTransceiversManufacturersInputFactory,
     ),
     TestSpec(
         test_class=VerifyTransceiversTemperature,
