@@ -68,7 +68,3 @@ $defs:
                 description: Ethernet address in format - HHHH.HHHH.HHHH
               hostname:
                 type: str
-              # ipv4_address:
-              #   type: str
-              #   description: |-
-              #     Valid IPv4 address from the given subnet.
