@@ -103,6 +103,17 @@ aaa_settings:
         groups:
           - RADIUS1
 
+      # Test case for TLS configuration. The 'key' field should be ignored during processing
+      - host: 11.10.10.5
+        vrf: MGMT
+        key: 071B245F5A
+        tls:
+          enabled: true
+          ssl_profile: HOST_SSL_PROFILE
+          port: 2080
+        groups:
+          - RADIUS1
+
       # No VRF, so it should honor default_mgmt_method which is oob in this case
       - host: 11.10.10.3
         vrf: MGMT
