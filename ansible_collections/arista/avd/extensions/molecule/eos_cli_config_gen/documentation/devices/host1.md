@@ -2013,7 +2013,7 @@ dhcp relay
 
 | Mac Address | IPv6 Address | Hostname |
 | ----------- | ------------ | -------- |
-| 0003.0003.003 | 2001:db8:abcd:1234:c000::1 |  - |
+| 0003.0003.003 | 2001:db8:abcd:1234:c000::1 | - |
 
 ##### IPv4 Vendor Options
 
@@ -2046,7 +2046,7 @@ dhcp relay
 
 | Mac Address | IPv6 Address | Hostname |
 | ----------- | ------------ | -------- |
-| 0003.0003.003 | 2001:db8:abcd:1234:c000::1 |  - |
+| 0003.0003.003 | 2001:db8:abcd:1234:c000::1 | - |
 
 ##### IPv4 Vendor Options
 

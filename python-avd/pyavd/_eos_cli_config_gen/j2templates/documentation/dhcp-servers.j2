@@ -142,7 +142,7 @@
 | Mac Address | IPv6 Address | Hostname |
 | ----------- | ------------ | -------- |
 {%                             for reservation in subnet.reservations | arista.avd.natural_sort("mac_address") %}
-| {{ reservation.mac_address }} | {{ reservation.ipv6_address | arista.avd.default("-") }} |  {{ reservation.hostname | arista.avd.default("-") }} |
+| {{ reservation.mac_address }} | {{ reservation.ipv6_address | arista.avd.default("-") }} | {{ reservation.hostname | arista.avd.default("-") }} |
 {%                             endfor %}
 {%                         endif %}
 {%                     endfor %}
