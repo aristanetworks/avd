@@ -90,7 +90,7 @@ ethernet_interfaces:
     peer_interface: PCI2
     peer_type: server
     peer_key: servers
-  validate_state: false
+    validate_state: false
 - name: Ethernet41
   description: Cameras
   shutdown: false
@@ -98,7 +98,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     peer_key: network_ports
-  validate_state: false
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -110,7 +110,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     peer_key: network_ports
-  validate_state: false
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -122,7 +122,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     peer_key: network_ports
-  validate_state: false
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -134,7 +134,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     peer_key: network_ports
-  validate_state: false
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -146,7 +146,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     peer_key: network_ports
-  validate_state: false
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -158,7 +158,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     peer_key: network_ports
-  validate_state: false
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -170,7 +170,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     peer_key: network_ports
-  validate_state: false
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -182,7 +182,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     peer_key: network_ports
-  validate_state: false
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -194,7 +194,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     peer_key: network_ports
-  validate_state: false
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -247,9 +247,13 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: true
-  platform: vEOS-lab_with_storm_control
+  platform: veos_lab_hw_platform_features
   dc_name: DC1
   fabric_name: FABRIC
+  hardware_requirements:
+    transceiver_manufacturers:
+    - Arista mfg
+    - Arista transceivers
 mlag_configuration:
   domain_id: DC1_L3_LEAF1
   local_interface: Vlan4094
@@ -285,13 +289,14 @@ port_channel_interfaces:
   shutdown: false
   mlag: 5
   spanning_tree_portfast: edge
+  metadata:
+    validate_state: false
   switchport:
     enabled: true
     mode: trunk
     trunk:
       allowed_vlan: 11-12,21-22
       native_vlan: 4092
-  validate_state: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

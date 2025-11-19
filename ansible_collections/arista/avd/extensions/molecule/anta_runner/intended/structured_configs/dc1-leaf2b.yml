@@ -127,9 +127,13 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: false
-  platform: vEOS-lab_with_storm_control
+  platform: veos_lab_hw_platform_features
   dc_name: DC1
   fabric_name: FABRIC
+  hardware_requirements:
+    transceiver_manufacturers:
+    - Arista mfg
+    - Arista transceivers
 mlag_configuration:
   domain_id: DC1_L3_LEAF2
   local_interface: Vlan4094
