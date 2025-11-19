@@ -816,14 +816,14 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install tox
+        # NOTE: Here we don't need tox-gh-action because we tell which environment to run explicitly.
         run: |
-          pip install tox tox-gh-actions --upgrade
+          pip install tox --upgrade
       - name: Get the wheel name
         shell: bash  # Required for windows-latest
         run: |-
           WHEEL_NAME=$(ls wheelhouse/*.whl | xargs basename)
           echo "WHEEL_NAME=$WHEEL_NAME" >> $GITHUB_ENV
       - name: Run pytest via tox for the wheel
-        # For most runs without an environment set here. The environment is mapped with the tox gh-action plugin.
         run: |-
-          tox run --installpkg wheelhouse/${{ env.WHEEL_NAME }} -- pyavd-utils/tests
+          tox run -e pyavd-utils --installpkg wheelhouse/${{ env.WHEEL_NAME }}
