@@ -135,6 +135,10 @@ keys:
                     To protect the password at rest it is strongly recommended to make use of a vault or similar.
                   convert_types:
                     - int
+                tls:
+                  type: dict
+                  description: When TLS is configured, `key` and `cleartext_key` are ignored.
+                  $ref: "eos_cli_config_gen#/keys/radius_server/keys/hosts/items/keys/tls"
           vrfs:
             type: list
             primary_key: name
