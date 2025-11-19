@@ -1,0 +1,57 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: bgp-from-network-services-41
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing_ipv6_interfaces: true
+ipv6_unicast_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.0.255.41/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 10.1.1.41/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+router_bgp:
+  as: '65001'
+  router_id: 192.0.255.41
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  neighbors:
+  - ip_address: 10.10.41.42
+    peer_group: VALIDATE_BGP_PEERS
+  redistribute:
+    connected:
+      enabled: true
+  address_family_ipv4:
+    neighbors:
+    - ip_address: 10.10.41.42
+      activate: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
