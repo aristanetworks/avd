@@ -91,8 +91,12 @@
 {%                     set min = tx_queue.random_detect.ecn.threshold.min | arista.avd.default("-") %}
 {%                     set max = tx_queue.random_detect.ecn.threshold.max | arista.avd.default("-") %}
 {%                     set prob = tx_queue.random_detect.ecn.threshold.max_probability | arista.avd.default("-") %}
-{%                     set units = tx_queue.random_detect.ecn.threshold.units | arista.avd.default("-") %}
+{%                     set units = tx_queue.random_detect.ecn.threshold.units | arista.avd.default("") %}
+{%                     if units %}
 | {{ tx_queue.id }} | {{ type }} | {{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} |
+{%                     else %}
+| {{ tx_queue.id }} | {{ type }} | {{ min }} | {{ max }} | {{ prob }} |
+{%                     endif %}
 {%                 endfor %}
 {%             endif %}
 {%             if profile.uc_tx_queues is arista.avd.defined %}
@@ -101,8 +105,12 @@
 {%                     set min = uc_tx_queue.random_detect.ecn.threshold.min | arista.avd.default("-") %}
 {%                     set max = uc_tx_queue.random_detect.ecn.threshold.max | arista.avd.default("-") %}
 {%                     set prob = uc_tx_queue.random_detect.ecn.threshold.max_probability | arista.avd.default("-") %}
-{%                     set units = uc_tx_queue.random_detect.ecn.threshold.units | arista.avd.default("-") %}
+{%                     set units = uc_tx_queue.random_detect.ecn.threshold.units | arista.avd.default("") %}
+{%                     if units %}
 | {{ uc_tx_queue.id }} | {{ type }} | {{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} |
+{%                     else %}
+| {{ uc_tx_queue.id }} | {{ type }} | {{ min }} | {{ max }} | {{ prob }} |
+{%                     endif %}
 {%                 endfor %}
 {%             endif %}
 {%             if profile.mc_tx_queues is arista.avd.defined %}
@@ -137,8 +145,12 @@
 {%                     set max = tx_queue.random_detect.drop.threshold.max | arista.avd.default("-") %}
 {%                     set prob = tx_queue.random_detect.drop.threshold.drop_probability | arista.avd.default("-") %}
 {%                     set weight = tx_queue.random_detect.drop.threshold.weight | arista.avd.default("-") %}
-{%                     set units = tx_queue.random_detect.drop.threshold.units | arista.avd.default("-") %}
+{%                     set units = tx_queue.random_detect.drop.threshold.units | arista.avd.default("") %}
+{%                     if units %}
 | {{ tx_queue.id }} | {{ type }} | {{ precedence }} | {{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} | {{ weight }} |
+{%                     else %}
+| {{ tx_queue.id }} | {{ type }} | {{ precedence }} | {{ min }} | {{ max }} | {{ prob }} | {{ weight }} |
+{%                     endif %}
 {%                 endfor %}
 {%             endif %}
 {%             if profile.uc_tx_queues is arista.avd.defined %}
@@ -149,8 +161,12 @@
 {%                     set max = uc_tx_queue.random_detect.drop.threshold.max | arista.avd.default("-") %}
 {%                     set prob = uc_tx_queue.random_detect.drop.threshold.drop_probability | arista.avd.default("-") %}
 {%                     set weight = uc_tx_queue.random_detect.drop.threshold.weight | arista.avd.default("-") %}
-{%                     set units = uc_tx_queue.random_detect.drop.threshold.units | arista.avd.default("-") %}
+{%                     set units = uc_tx_queue.random_detect.drop.threshold.units | arista.avd.default("") %}
+{%                     if units %}
 | {{ uc_tx_queue.id }} | {{ type }} | {{ precedence }} | {{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} | {{ weight }} |
+{%                     else %}
+| {{ uc_tx_queue.id }} | {{ type }} | {{ precedence }} | {{ min }} | {{ max }} | {{ prob }} | {{ weight }} |
+{%                     endif %}
 {%                 endfor %}
 {%             endif %}
 {%             if profile.mc_tx_queues is arista.avd.defined %}

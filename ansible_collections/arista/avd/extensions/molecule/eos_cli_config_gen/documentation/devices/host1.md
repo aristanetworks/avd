@@ -13671,7 +13671,7 @@ policy-map type quality-of-service pmap_test1
 
 | TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
 | -------- | ---- | ------------- | ------------- | -------------------- |
-| 1 | All | - - | - - | - |
+| 1 | All | - | - | - |
 | 2 | All | 320 kbytes | 320 kbytes | 90 |
 | 4 | All | 320 segments | 320 segments | - |
 
@@ -13760,10 +13760,10 @@ Priority Flow Control is **enabled**.
 
 | TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
 | -------- | ---- | ------------- | ------------- | -------------------- |
-| 1 | All | - - | - - | - |
-| 2 | All | - - | - - | - |
+| 1 | All | - | - | - |
+| 2 | All | - | - | - |
 | 3 | All | 320 kbytes | 320 kbytes | - |
-| 4 | All | - - | - - | - |
+| 4 | All | - | - | - |
 | 1 | Multicast | - | - | - |
 | 2 | Multicast | - | - | - |
 | 4 | Multicast | - | - | - |
@@ -13774,7 +13774,7 @@ Priority Flow Control is **enabled**.
 | -------- | ---- | --------------- | ------------- | ------------- | ---------------- | ------ |
 | 1 | All | - | 1 kbytes | 10 kbytes | 100 | - |
 | 2 | All | 2 | 2 kbytes | 200 kbytes | 50 | 10 |
-| 3 | All | - | - - | - - | - | - |
+| 3 | All | - | - | - | - | - |
 | 4 | All | - | 1 kbytes | 10 kbytes | 90 | - |
 | 1 | Multicast | - | - | - | - | - |
 | 2 | Multicast | - | - | - | - | - |
