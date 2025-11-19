@@ -38,7 +38,7 @@
 ## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
-| ---- | ---- | -------------- | --------- | ----------| -------------- |
+| ---- | ---- | -------------- | --------- | --------- | -------------- |
 | p | p1 | Ethernet1 | pe | pe1 | Ethernet1 |
 | p | p1 | Ethernet2 | pe | pe2 | Ethernet2 |
 | p | p1 | Ethernet3 | rr | rr1 | Ethernet3 |

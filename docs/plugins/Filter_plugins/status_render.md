@@ -27,8 +27,8 @@ Returns `:white_check_mark:` if input status string is `PASS` and `rendering` is
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>_input</samp> | string | True | None |  | Text to convert to EMOJI. |
-| <samp>rendering</samp> | string | True | None |  | Markdown Flavor to use for Emoji rendering. Only &#34;github&#34; is supported. |
+| <samp>_input</samp> | string | True | None | - | Text to convert to EMOJI. |
+| <samp>rendering</samp> | string | True | None | - | Markdown Flavor to use for Emoji rendering. Only &#34;github&#34; is supported. |
 
 ## Return Values
 

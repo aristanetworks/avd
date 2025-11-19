@@ -26,7 +26,7 @@
 {%                 set no_passive_interfaces.list = no_passive_interfaces.list ~ ' ' ~ interface ~ ' <br>' %}
 {%             endfor %}
 {%         else %}
-{%             set no_passive_interfaces.list = '-' %}
+{%             set no_passive_interfaces.list = ' -' %}
 {%         endif %}
 {%         if process_id.bfd_enable is arista.avd.defined(true) %}
 {%             set bfd_enable = 'enabled' %}
@@ -219,7 +219,7 @@
 #### Router OSPF Route Summary
 
 | Process ID | Prefix | Tag | Attribute Route Map | Not Advertised |
-|------------|--------|-----|---------------------|----------------|
+| ---------- | ------ | --- | ------------------- | -------------- |
 {%         for process_id in router_ospf.process_ids | arista.avd.natural_sort('id') %}
 {%             if process_id.summary_addresses is arista.avd.defined %}
 {%                 for summary_address in process_id.summary_addresses %}
@@ -270,6 +270,9 @@
 {%                 endif %}
 {%                 if area.nssa_only is arista.avd.defined(true) %}
 {%                     do additional_cfg_options_list.append('nssa-only') %}
+{%                 endif %}
+{%                 if additional_cfg_options_list == [] %}
+{%                     set additional_cfg_options_list = "-" %}
 {%                 endif %}
 | {{ process_id.id }} | {{ area.id }} | {{ area_type }} | {{ network_filter }} | {{ prefix_list_filter }} | {{ additional_cfg_options_list | join(', ') }} |
 {%             endfor %}

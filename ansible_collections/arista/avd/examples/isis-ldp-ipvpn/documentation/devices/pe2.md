@@ -153,7 +153,7 @@ spanning-tree mode none
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -185,8 +185,8 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_p2_Ethernet1 | - | 10.255.3.4/31 | default | 1500 | False | - | - |
 | Ethernet2 | P2P_p1_Ethernet2 | - | 10.255.3.6/31 | default | 1500 | False | - | - |
 | Ethernet4.10 | C1_L3_SERVICE | - | 10.0.1.2/29 | C1_VRF1 | - | False | - | - |
