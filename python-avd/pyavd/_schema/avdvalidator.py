@@ -58,7 +58,7 @@ class AvdValidator:
 
     def type_validator(self, schema_type: str, instance: Any, _schema: dict, path: list[str | int]) -> Generator:
         """Validates the type of `instance` equal to `schema_type`."""
-        if not is_type(instance, cast("Literal['dict', 'int', 'str', 'bool', 'list']", schema_type)):
+        if not is_type(instance, schema_type):
             yield AvdValidationError(
                 f"Invalid type '{type(instance).__name__}'. Expected a '{schema_type}'.",
                 path=path,
@@ -79,7 +79,7 @@ class AvdValidator:
             paths, values = zip(*paths_and_values, strict=False)
 
             # Find any duplicate values and emit errors for each index.
-            for duplicate_value, duplicate_indices in get_indices_of_duplicate_items(list(values)):
+            for duplicate_value, duplicate_indices in get_indices_of_duplicate_items(values):
                 for duplicate_index in duplicate_indices:
                     yield AvdValidationError(
                         f"The value '{duplicate_value}' is not unique between all {'nested ' if len(unique_key_path) > 1 else ''}list items as required.",
@@ -260,7 +260,7 @@ class AvdValidator:
             yield AvdValidationError(f"The value '{instance}' is not matching the pattern '{pattern}'.", path=path)
 
 
-def is_type(instance: Any, type_str: Literal["dict", "int", "str", "bool", "list"]) -> bool:
+def is_type(instance: Any, type_str: str) -> bool:
     match type_str:
         case "int":
             return isinstance(instance, int)
