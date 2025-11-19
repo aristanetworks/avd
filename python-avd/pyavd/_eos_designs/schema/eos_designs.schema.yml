@@ -9068,6 +9068,13 @@ $defs:
                         type: str
                         description: Node name or regex pattern matching the full
                           hostname.
+              validate_bgp_peers:
+                documentation_options:
+                  table: network-services-vrfs-bgp-settings
+                type: bool
+                description: Enable or disable BGP peer state validation by the `anta_runner`
+                  role on a per-VRF basis.
+                default: false
               raw_eos_cli:
                 type: str
                 description: EOS CLI rendered directly on the root level of the final
