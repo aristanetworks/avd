@@ -4409,8 +4409,47 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Ipv4VendorOptions._item_type = Ipv4VendorOptionsItem
 
-        class SubnetsItem(AvdModel):
+        class Ipv4SubnetsItem(AvdModel):
             """Subclass of AvdModel."""
+
+            class ReservationsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ipv4_address": {"type": str}, "mac_address": {"type": str}, "hostname": {"type": str}}
+                ipv4_address: str | None
+                """Valid IPv4 address from the given subnet."""
+                mac_address: str
+                """Ethernet address in format - HHHH.HHHH.HHHH"""
+                hostname: str | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        ipv4_address: str | None | UndefinedType = Undefined,
+                        mac_address: str | UndefinedType = Undefined,
+                        hostname: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ReservationsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv4_address: Valid IPv4 address from the given subnet.
+                            mac_address: Ethernet address in format - HHHH.HHHH.HHHH
+                            hostname: hostname
+
+                        """
+
+            class Reservations(AvdIndexedList[str, ReservationsItem]):
+                """Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is `mac_address` (`str`)."""
+
+                _primary_key: ClassVar[str] = "mac_address"
+
+            Reservations._item_type = ReservationsItem
 
             class DnsServers(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
@@ -4470,38 +4509,95 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            _fields: ClassVar[dict] = {
+                "subnet": {"type": str},
+                "reservations": {"type": Reservations},
+                "name": {"type": str},
+                "default_gateway": {"type": str},
+                "dns_servers": {"type": DnsServers},
+                "ranges": {"type": Ranges},
+                "lease_time": {"type": LeaseTime},
+            }
+            subnet: str
+            """IPv4 subnet."""
+            reservations: Reservations
+            """
+            DHCP client reservations.
+
+            Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
+            `mac_address` (`str`).
+            """
+            name: str | None
+            default_gateway: str | None
+            dns_servers: DnsServers
+            """Subclass of AvdList with `str` items."""
+            ranges: Ranges
+            """Subclass of AvdList with `RangesItem` items."""
+            lease_time: LeaseTime
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    subnet: str | UndefinedType = Undefined,
+                    reservations: Reservations | UndefinedType = Undefined,
+                    name: str | None | UndefinedType = Undefined,
+                    default_gateway: str | None | UndefinedType = Undefined,
+                    dns_servers: DnsServers | UndefinedType = Undefined,
+                    ranges: Ranges | UndefinedType = Undefined,
+                    lease_time: LeaseTime | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv4SubnetsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        subnet: IPv4 subnet.
+                        reservations:
+                           DHCP client reservations.
+
+                           Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
+                           `mac_address` (`str`).
+                        name: name
+                        default_gateway: default_gateway
+                        dns_servers: Subclass of AvdList with `str` items.
+                        ranges: Subclass of AvdList with `RangesItem` items.
+                        lease_time: Subclass of AvdModel.
+
+                    """
+
+        class Ipv4Subnets(AvdIndexedList[str, Ipv4SubnetsItem]):
+            """Subclass of AvdIndexedList with `Ipv4SubnetsItem` items. Primary key is `subnet` (`str`)."""
+
+            _primary_key: ClassVar[str] = "subnet"
+
+        Ipv4Subnets._item_type = Ipv4SubnetsItem
+
+        class Ipv6SubnetsItem(AvdModel):
+            """Subclass of AvdModel."""
+
             class ReservationsItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {
-                    "mac_address": {"type": str},
-                    "hostname": {"type": str},
-                    "ipv4_address": {"type": str},
-                    "ipv6_address": {"type": str},
-                }
+                _fields: ClassVar[dict] = {"ipv6_address": {"type": str}, "mac_address": {"type": str}, "hostname": {"type": str}}
+                ipv6_address: str | None
+                """Valid IPv6 address from the given subnet."""
                 mac_address: str
                 """Ethernet address in format - HHHH.HHHH.HHHH"""
                 hostname: str | None
-                ipv4_address: str | None
-                """
-                Valid IPv4 address from the given subnet.
-                This should only be used within an IPv4 subnet.
-                """
-                ipv6_address: str | None
-                """
-                Valid IPv6 address from the given subnet.
-                This should only be used within an IPv6 subnet.
-                """
 
                 if TYPE_CHECKING:
 
                     def __init__(
                         self,
                         *,
+                        ipv6_address: str | None | UndefinedType = Undefined,
                         mac_address: str | UndefinedType = Undefined,
                         hostname: str | None | UndefinedType = Undefined,
-                        ipv4_address: str | None | UndefinedType = Undefined,
-                        ipv6_address: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ReservationsItem.
@@ -4510,14 +4606,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
+                            ipv6_address: Valid IPv6 address from the given subnet.
                             mac_address: Ethernet address in format - HHHH.HHHH.HHHH
                             hostname: hostname
-                            ipv4_address:
-                               Valid IPv4 address from the given subnet.
-                               This should only be used within an IPv4 subnet.
-                            ipv6_address:
-                               Valid IPv6 address from the given subnet.
-                               This should only be used within an IPv6 subnet.
 
                         """
 
@@ -4528,17 +4619,82 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Reservations._item_type = ReservationsItem
 
+            class DnsServers(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            DnsServers._item_type = str
+
+            class RangesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"start": {"type": str}, "end": {"type": str}}
+                start: str
+                end: str
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, start: str | UndefinedType = Undefined, end: str | UndefinedType = Undefined) -> None:
+                        """
+                        RangesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            start: start
+                            end: end
+
+                        """
+
+            class Ranges(AvdList[RangesItem]):
+                """Subclass of AvdList with `RangesItem` items."""
+
+            Ranges._item_type = RangesItem
+
+            class LeaseTime(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"days": {"type": int}, "hours": {"type": int}, "minutes": {"type": int}}
+                days: int
+                hours: int
+                minutes: int
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, days: int | UndefinedType = Undefined, hours: int | UndefinedType = Undefined, minutes: int | UndefinedType = Undefined
+                    ) -> None:
+                        """
+                        LeaseTime.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            days: days
+                            hours: hours
+                            minutes: minutes
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "subnet": {"type": str},
+                "reservations": {"type": Reservations},
                 "name": {"type": str},
                 "default_gateway": {"type": str},
                 "dns_servers": {"type": DnsServers},
                 "ranges": {"type": Ranges},
                 "lease_time": {"type": LeaseTime},
-                "reservations": {"type": Reservations},
             }
             subnet: str
-            """IPv4/IPv6 subnet."""
+            """IPv6 subnet."""
+            reservations: Reservations
+            """
+            DHCP client reservations.
+
+            Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
+            `mac_address` (`str`).
+            """
             name: str | None
             default_gateway: str | None
             dns_servers: DnsServers
@@ -4547,13 +4703,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `RangesItem` items."""
             lease_time: LeaseTime
             """Subclass of AvdModel."""
-            reservations: Reservations
-            """
-            DHCP client reservations.
-
-            Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
-            `mac_address` (`str`).
-            """
 
             if TYPE_CHECKING:
 
@@ -4561,40 +4710,40 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     subnet: str | UndefinedType = Undefined,
+                    reservations: Reservations | UndefinedType = Undefined,
                     name: str | None | UndefinedType = Undefined,
                     default_gateway: str | None | UndefinedType = Undefined,
                     dns_servers: DnsServers | UndefinedType = Undefined,
                     ranges: Ranges | UndefinedType = Undefined,
                     lease_time: LeaseTime | UndefinedType = Undefined,
-                    reservations: Reservations | UndefinedType = Undefined,
                 ) -> None:
                     """
-                    SubnetsItem.
+                    Ipv6SubnetsItem.
 
 
                     Subclass of AvdModel.
 
                     Args:
-                        subnet: IPv4/IPv6 subnet.
-                        name: name
-                        default_gateway: default_gateway
-                        dns_servers: Subclass of AvdList with `str` items.
-                        ranges: Subclass of AvdList with `RangesItem` items.
-                        lease_time: Subclass of AvdModel.
+                        subnet: IPv6 subnet.
                         reservations:
                            DHCP client reservations.
 
                            Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
                            `mac_address` (`str`).
+                        name: name
+                        default_gateway: default_gateway
+                        dns_servers: Subclass of AvdList with `str` items.
+                        ranges: Subclass of AvdList with `RangesItem` items.
+                        lease_time: Subclass of AvdModel.
 
                     """
 
-        class Subnets(AvdIndexedList[str, SubnetsItem]):
-            """Subclass of AvdIndexedList with `SubnetsItem` items. Primary key is `subnet` (`str`)."""
+        class Ipv6Subnets(AvdIndexedList[str, Ipv6SubnetsItem]):
+            """Subclass of AvdIndexedList with `Ipv6SubnetsItem` items. Primary key is `subnet` (`str`)."""
 
             _primary_key: ClassVar[str] = "subnet"
 
-        Subnets._item_type = SubnetsItem
+        Ipv6Subnets._item_type = Ipv6SubnetsItem
 
         _fields: ClassVar[dict] = {
             "disabled": {"type": bool},
@@ -4607,7 +4756,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "dns_servers_ipv6": {"type": DnsServersIpv6},
             "tftp_server": {"type": TftpServer},
             "ipv4_vendor_options": {"type": Ipv4VendorOptions},
-            "subnets": {"type": Subnets},
+            "ipv4_subnets": {"type": Ipv4Subnets},
+            "ipv6_subnets": {"type": Ipv6Subnets},
             "eos_cli": {"type": str},
         }
         disabled: bool | None
@@ -4635,8 +4785,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         ipv4_vendor_options: Ipv4VendorOptions
         """Subclass of AvdIndexedList with `Ipv4VendorOptionsItem` items. Primary key is `vendor_id` (`str`)."""
-        subnets: Subnets
-        """Subclass of AvdIndexedList with `SubnetsItem` items. Primary key is `subnet` (`str`)."""
+        ipv4_subnets: Ipv4Subnets
+        """Subclass of AvdIndexedList with `Ipv4SubnetsItem` items. Primary key is `subnet` (`str`)."""
+        ipv6_subnets: Ipv6Subnets
+        """Subclass of AvdIndexedList with `Ipv6SubnetsItem` items. Primary key is `subnet` (`str`)."""
         eos_cli: str | None
         """Multiline EOS CLI rendered directly on the dhcp server in the final EOS configuration."""
 
@@ -4655,7 +4807,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 dns_servers_ipv6: DnsServersIpv6 | UndefinedType = Undefined,
                 tftp_server: TftpServer | UndefinedType = Undefined,
                 ipv4_vendor_options: Ipv4VendorOptions | UndefinedType = Undefined,
-                subnets: Subnets | UndefinedType = Undefined,
+                ipv4_subnets: Ipv4Subnets | UndefinedType = Undefined,
+                ipv6_subnets: Ipv6Subnets | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -4681,7 +4834,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of AvdList with `str` items.
                     tftp_server: Subclass of AvdModel.
                     ipv4_vendor_options: Subclass of AvdIndexedList with `Ipv4VendorOptionsItem` items. Primary key is `vendor_id` (`str`).
-                    subnets: Subclass of AvdIndexedList with `SubnetsItem` items. Primary key is `subnet` (`str`).
+                    ipv4_subnets: Subclass of AvdIndexedList with `Ipv4SubnetsItem` items. Primary key is `subnet` (`str`).
+                    ipv6_subnets: Subclass of AvdIndexedList with `Ipv6SubnetsItem` items. Primary key is `subnet` (`str`).
                     eos_cli: Multiline EOS CLI rendered directly on the dhcp server in the final EOS configuration.
 
                 """
