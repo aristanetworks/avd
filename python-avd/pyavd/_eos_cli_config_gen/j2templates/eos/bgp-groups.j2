@@ -16,4 +16,5 @@ group bgp {{ bgp_group.name }}
 {%     for bgp_profile in bgp_group.bgp_maintenance_profiles | arista.avd.natural_sort %}
    maintenance profile bgp {{ bgp_profile }}
 {%     endfor %}
+   exit
 {% endfor %}

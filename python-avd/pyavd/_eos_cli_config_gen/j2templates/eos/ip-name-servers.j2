@@ -4,14 +4,19 @@
  that can be found in the LICENSE file.
 #}
 {# eos - ip name servers #}
-{% for name_server in ip_name_servers | arista.avd.natural_sort('ip_address') %}
-{%     set name_server_cli = "ip name-server" %}
-{%     if name_server.vrf is arista.avd.defined %}
-{%         set name_server_cli = name_server_cli ~ " vrf " ~ name_server.vrf %}
-{%     endif %}
-{%     set name_server_cli = name_server_cli ~ " " ~ name_server.ip_address %}
-{%     if name_server.priority is arista.avd.defined %}
-{%         set name_server_cli = name_server_cli ~ " priority " ~ name_server.priority %}
-{%     endif %}
+{% if ip_name_servers is arista.avd.defined %}
+{%     set without_priority_ns = ip_name_servers | rejectattr("priority", "arista.avd.defined") | arista.avd.natural_sort("ip_address") | arista.avd.natural_sort("vrf") %}
+{%     set with_priority_ns = ip_name_servers | selectattr("priority", "arista.avd.defined") | arista.avd.natural_sort("ip_address") | arista.avd.natural_sort("vrf") %}
+{%     set final_name_servers = without_priority_ns | list + with_priority_ns | list %}
+{%     for name_server in final_name_servers %}
+{%         set name_server_cli = "ip name-server" %}
+{%         if name_server.vrf is arista.avd.defined %}
+{%             set name_server_cli = name_server_cli ~ " vrf " ~ name_server.vrf %}
+{%         endif %}
+{%         set name_server_cli = name_server_cli ~ " " ~ name_server.ip_address %}
+{%         if name_server.priority is arista.avd.defined %}
+{%             set name_server_cli = name_server_cli ~ " priority " ~ name_server.priority %}
+{%         endif %}
 {{ name_server_cli }}
-{% endfor %}
+{%     endfor %}
+{% endif %}

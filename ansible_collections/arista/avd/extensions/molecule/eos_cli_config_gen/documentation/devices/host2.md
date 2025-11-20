@@ -659,6 +659,11 @@ sflow interface egress enable default
 
 ```eos
 !
+flow tracking mirror-on-drop
+   tracker T1
+      record export on inactive timeout 3666
+      record export on interval 5666
+!
 flow tracking sampled
    sample 666
    hardware offload ipv4 ipv6
@@ -666,11 +671,6 @@ flow tracking sampled
       record export on inactive timeout 3666
       record export on interval 5666
       record export mpls
-!
-flow tracking mirror-on-drop
-   tracker T1
-      record export on inactive timeout 3666
-      record export on interval 5666
 ```
 
 ### Monitor Telemetry Postcard Policy
