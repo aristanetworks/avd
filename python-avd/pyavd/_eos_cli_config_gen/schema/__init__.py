@@ -39145,13 +39145,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Metadata(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"peer": {"type": str}}
+                _fields: ClassVar[dict] = {"peer": {"type": str}, "validate_state": {"type": bool, "default": True}}
                 peer: str | None
                 """Key only used for documentation or validation purposes."""
+                validate_state: bool
+                """
+                Used for validation by the `anta_runner` role.
+
+                Default value: `True`
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, peer: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, peer: str | None | UndefinedType = Undefined, validate_state: bool | UndefinedType = Undefined) -> None:
                         """
                         Metadata.
 
@@ -39160,6 +39166,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             peer: Key only used for documentation or validation purposes.
+                            validate_state: Used for validation by the `anta_runner` role.
 
                         """
 
@@ -39750,13 +39757,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Metadata(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"peer": {"type": str}}
+                _fields: ClassVar[dict] = {"peer": {"type": str}, "validate_state": {"type": bool, "default": True}}
                 peer: str | None
                 """Key only used for documentation or validation purposes."""
+                validate_state: bool
+                """
+                Used for validation by the `anta_runner` role.
+
+                Default value: `True`
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, peer: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, peer: str | None | UndefinedType = Undefined, validate_state: bool | UndefinedType = Undefined) -> None:
                         """
                         Metadata.
 
@@ -39765,6 +39778,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             peer: Key only used for documentation or validation purposes.
+                            validate_state: Used for validation by the `anta_runner` role.
 
                         """
 
@@ -49841,6 +49855,31 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class Metadata(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"validate_state": {"type": bool, "default": False}}
+                    validate_state: bool
+                    """
+                    Used for validation by the `anta_runner` role.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, validate_state: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Metadata.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                validate_state: Used for validation by the `anta_runner` role.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "ip_address": {"type": str},
                     "peer_group": {"type": str},
@@ -49874,6 +49913,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "peer_tag_in": {"type": str},
                     "peer_tag_out_discard": {"type": str},
                     "additional_paths": {"type": AdditionalPaths},
+                    "metadata": {"type": Metadata},
                 }
                 ip_address: str
                 peer_group: str | None
@@ -49953,6 +49993,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Outbound discard peer tag name."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
+                metadata: Metadata
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -49991,6 +50033,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         peer_tag_in: str | None | UndefinedType = Undefined,
                         peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
+                        metadata: Metadata | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborsItem.
@@ -50051,6 +50094,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             peer_tag_in: Inbound peer tag name.
                             peer_tag_out_discard: Outbound discard peer tag name.
                             additional_paths: Subclass of AvdModel.
+                            metadata: Subclass of AvdModel.
 
                         """
 
@@ -50064,12 +50108,38 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NeighborInterfacesItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                class Metadata(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"validate_state": {"type": bool, "default": False}}
+                    validate_state: bool
+                    """
+                    Used for validation by the `anta_runner` role.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, validate_state: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Metadata.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                validate_state: Used for validation by the `anta_runner` role.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "remote_as": {"type": str},
                     "peer_group": {"type": str},
                     "peer_filter": {"type": str},
                     "description": {"type": str},
+                    "metadata": {"type": Metadata},
                 }
                 name: str
                 """Interface name."""
@@ -50085,6 +50155,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 peer_filter: str | None
                 """Peer-filter name."""
                 description: str | None
+                metadata: Metadata
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -50096,6 +50168,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         peer_group: str | None | UndefinedType = Undefined,
                         peer_filter: str | None | UndefinedType = Undefined,
                         description: str | None | UndefinedType = Undefined,
+                        metadata: Metadata | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborInterfacesItem.
@@ -50113,6 +50186,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             peer_group: Peer-group name.
                             peer_filter: Peer-filter name.
                             description: description
+                            metadata: Subclass of AvdModel.
 
                         """
 

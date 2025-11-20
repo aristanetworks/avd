@@ -15168,6 +15168,10 @@ keys:
                 peer:
                   type: str
                   description: Key only used for documentation or validation purposes.
+                validate_state:
+                  type: bool
+                  default: true
+                  description: Used for validation by the `anta_runner` role.
             description:
               type: str
             route_reflector_client:
@@ -15422,6 +15426,10 @@ keys:
                 peer:
                   type: str
                   description: Key only used for documentation or validation purposes.
+                validate_state:
+                  type: bool
+                  default: true
+                  description: Used for validation by the `anta_runner` role.
             peer_group:
               type: str
               default: Peer-group name
@@ -18740,6 +18748,13 @@ keys:
                   additional_paths:
                     type: dict
                     $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                  metadata:
+                    type: dict
+                    keys:
+                      validate_state:
+                        type: bool
+                        default: false
+                        description: Used for validation by the `anta_runner` role.
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -18766,6 +18781,13 @@ keys:
                     description: Peer-filter name.
                   description:
                     type: str
+                  metadata:
+                    type: dict
+                    keys:
+                      validate_state:
+                        type: bool
+                        default: false
+                        description: Used for validation by the `anta_runner` role.
             redistribute:
               type: dict
               description: Redistribute routes in to BGP.
