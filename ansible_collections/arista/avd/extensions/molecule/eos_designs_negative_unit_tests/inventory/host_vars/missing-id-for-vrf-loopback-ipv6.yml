@@ -1,6 +1,4 @@
 ---
-fabric_name: FABRIC_MISSING_ID_VRF_LOOPBACK_IPV6
-
 underlay_routing_protocol: none
 overlay_routing_protocol: none
 
