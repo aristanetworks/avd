@@ -33,7 +33,7 @@ dev = [
     "netaddr>=0.7.19",
     "PyYAML>=6.0.0",
     "python-socks[asyncio]>=2.7.2",
-    "# dev requirements",
+    # dev requirements"
     "ansible-core>=2.16.0,<2.20.0",
     "ansible-doc-extractor>=0.1.10",
     "ansible-lint>=25.1.3",
