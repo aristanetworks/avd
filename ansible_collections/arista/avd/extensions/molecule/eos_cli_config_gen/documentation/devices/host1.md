@@ -4407,12 +4407,12 @@ interface Dps1
 
 ##### Transceiver Settings
 
-| Interface | Transceiver Frequency | Media Override | Application Override |
-| --------- | --------------------- | -------------- | -------------------- |
-| Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 |
-| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 |
-| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd |
-| Ethernet73 | - | 100gbase-ar4 | 5 |
+| Interface | Transceiver Frequency | Media Override | Application Override | Power Ignore |
+| --------- | --------------------- | -------------- | -------------------- | ------------ |
+| Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 | - |
+| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 | True |
+| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd | - |
+| Ethernet73 | - | 100gbase-ar4 | 5 | - |
 
 ##### Link Tracking Groups
 
@@ -5476,6 +5476,7 @@ interface Ethernet67
    transceiver application override 5 lanes start 1 end 1
    transceiver application override 5 lanes start 2 end 3
    transceiver frequency 190050.000
+   transceiver power ignore
 !
 interface Ethernet67.1
    description Test_encapsulation_dot1q
