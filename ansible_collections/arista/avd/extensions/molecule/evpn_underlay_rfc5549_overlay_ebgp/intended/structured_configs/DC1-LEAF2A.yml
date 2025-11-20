@@ -627,6 +627,8 @@ router_bgp:
     - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
       description: DC1-LEAF2B_Vlan2
+      metadata:
+        validate_state: true
     redistribute:
       connected:
         enabled: true
