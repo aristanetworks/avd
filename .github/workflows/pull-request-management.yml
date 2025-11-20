@@ -214,6 +214,10 @@ jobs:
         with:
           name: pyavd
           path: /tmp/pyavd/
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
       - name: Install pyavd and Ansible requirements
         run: |
           python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule
@@ -282,6 +286,10 @@ jobs:
         with:
           name: pyavd
           path: /tmp/pyavd/
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
       - name: Install pyavd and Ansible requirements
         run: |
           python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule
@@ -315,10 +323,12 @@ jobs:
         # Installing molecule and requirements in different pip command because of jsonschema>=3.2.0 in AVD is incompatible
         # with jsonschema>=4.9.1 in molecule when using pip compile with lowest
         # Need to delete min_requirements afterwards otherwise git status is sad
+        # pip upgrade to get dependency groups
         run: |
           pip install uv
           uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution=lowest-direct > /tmp/pyavd/min_requirements.txt
           cat /tmp/pyavd/min_requirements.txt
+          pip install pip --upgrade
           python -m pip install --group molecule
           python -m pip install "ansible-core==2.16.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r /tmp/pyavd/min_requirements.txt
       - name: Run molecule test
