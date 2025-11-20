@@ -23,10 +23,10 @@
 {%         set no_passive_interfaces.list = '' %}
 {%         if process_id.no_passive_interfaces is arista.avd.defined %}
 {%             for interface in process_id.no_passive_interfaces %}
-{%                 set no_passive_interfaces.list = no_passive_interfaces.list ~ ' ' ~ interface ~ ' <br>' %}
+{%                 set no_passive_interfaces.list = no_passive_interfaces.list ~ interface ~ ' <br>' %}
 {%             endfor %}
 {%         else %}
-{%             set no_passive_interfaces.list = ' -' %}
+{%             set no_passive_interfaces.list = '-' %}
 {%         endif %}
 {%         if process_id.bfd_enable is arista.avd.defined(true) %}
 {%             set bfd_enable = 'enabled' %}
@@ -59,7 +59,7 @@
 {%         else %}
 {%             set distribute_list_in = '-' %}
 {%         endif %}
-| {{ process_id.id }} | {{ router_id }} | {{ passive_interface_default }} |{{ no_passive_interfaces.list }} | {{ bfd_enable }} | {{ max_lsa }} | {{ default_information_originate }} | {{ log_adjacency_changes_detail }} | {{ auto_cost_reference_bandwidth }} | {{ maximum_paths }} | {{ mpls_ldp_sync_default }} | {{ distribute_list_in }} |
+| {{ process_id.id }} | {{ router_id }} | {{ passive_interface_default }} | {{ no_passive_interfaces.list }} | {{ bfd_enable }} | {{ max_lsa }} | {{ default_information_originate }} | {{ log_adjacency_changes_detail }} | {{ auto_cost_reference_bandwidth }} | {{ maximum_paths }} | {{ mpls_ldp_sync_default }} | {{ distribute_list_in }} |
 {%     endfor %}
 {# OSPF Distance #}
 {%     set ospf_distance_process_ids = [] %}

@@ -8062,7 +8062,7 @@ router traffic-engineering
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 100 | 192.168.255.3 | enabled | Ethernet1 <br> Ethernet2 <br> Vlan4093 <br> | enabled<br>(any state) | 12000 | disabled | disabled | 100 | 10 | True | route-map RM-OSPF-DIST-IN |
+| 100 | 192.168.255.3 | enabled | Ethernet1 <br>Ethernet2 <br>Vlan4093 <br> | enabled<br>(any state) | 12000 | disabled | disabled | 100 | 10 | True | route-map RM-OSPF-DIST-IN |
 | 101 | 1.0.1.1 | enabled | Ethernet2.101 <br> | disabled | default | disabled | enabled | - | - | - | - |
 | 200 | 192.168.254.1 | disabled | - | disabled | 5 | Always | enabled | - | - | - | - |
 | 300 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
