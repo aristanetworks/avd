@@ -5236,36 +5236,36 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 """
 
                     _fields: ClassVar[dict] = {
+                        "apply_alternate": {"type": bool},
+                        "traffic_allow_vlan": {"type": int},
                         "apply_cached_results": {"type": bool},
                         "cached_results_timeout": {"type": CachedResultsTimeout},
-                        "apply_alternate": {"type": bool},
                         "traffic_allow": {"type": bool},
-                        "traffic_allow_vlan": {"type": int},
                     }
-                    apply_cached_results: bool | None
-                    """Use results from a previous AAA response."""
-                    cached_results_timeout: CachedResultsTimeout
-                    """Subclass of AvdModel."""
                     apply_alternate: bool | None
                     """
                     Apply alternate action if primary action fails.
                     eg. aaa unresponsive action apply cached-results
                     else traffic allow
                     """
+                    traffic_allow_vlan: int | None
+                    apply_cached_results: bool | None
+                    """Use results from a previous AAA response."""
+                    cached_results_timeout: CachedResultsTimeout
+                    """Subclass of AvdModel."""
                     traffic_allow: bool | None
                     """Set action for supplicant traffic when AAA times out."""
-                    traffic_allow_vlan: int | None
 
                     if TYPE_CHECKING:
 
                         def __init__(
                             self,
                             *,
+                            apply_alternate: bool | None | UndefinedType = Undefined,
+                            traffic_allow_vlan: int | None | UndefinedType = Undefined,
                             apply_cached_results: bool | None | UndefinedType = Undefined,
                             cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
-                            apply_alternate: bool | None | UndefinedType = Undefined,
                             traffic_allow: bool | None | UndefinedType = Undefined,
-                            traffic_allow_vlan: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Action.
@@ -5274,14 +5274,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                apply_cached_results: Use results from a previous AAA response.
-                                cached_results_timeout: Subclass of AvdModel.
                                 apply_alternate:
                                    Apply alternate action if primary action fails.
                                    eg. aaa unresponsive action apply cached-results
                                    else traffic allow
-                                traffic_allow: Set action for supplicant traffic when AAA times out.
                                 traffic_allow_vlan: traffic_allow_vlan
+                                apply_cached_results: Use results from a previous AAA response.
+                                cached_results_timeout: Subclass of AvdModel.
+                                traffic_allow: Set action for supplicant traffic when AAA times out.
 
                             """
 
@@ -9163,27 +9163,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         _fields: ClassVar[dict] = {
                             "traffic_allow_access_list": {"type": str},
+                            "apply_alternate": {"type": bool},
+                            "traffic_allow_vlan": {"type": int},
                             "apply_cached_results": {"type": bool},
                             "cached_results_timeout": {"type": CachedResultsTimeout},
-                            "apply_alternate": {"type": bool},
                             "traffic_allow": {"type": bool},
-                            "traffic_allow_vlan": {"type": int},
                         }
                         traffic_allow_access_list: str | None
                         """Name of standard access-list to apply when AAA times out."""
-                        apply_cached_results: bool | None
-                        """Use results from a previous AAA response."""
-                        cached_results_timeout: CachedResultsTimeout
-                        """Subclass of AvdModel."""
                         apply_alternate: bool | None
                         """
                         Apply alternate action if primary action fails.
                         eg. aaa unresponsive action apply cached-results
                         else traffic allow
                         """
+                        traffic_allow_vlan: int | None
+                        apply_cached_results: bool | None
+                        """Use results from a previous AAA response."""
+                        cached_results_timeout: CachedResultsTimeout
+                        """Subclass of AvdModel."""
                         traffic_allow: bool | None
                         """Set action for supplicant traffic when AAA times out."""
-                        traffic_allow_vlan: int | None
 
                         if TYPE_CHECKING:
 
@@ -9191,11 +9191,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 traffic_allow_access_list: str | None | UndefinedType = Undefined,
+                                apply_alternate: bool | None | UndefinedType = Undefined,
+                                traffic_allow_vlan: int | None | UndefinedType = Undefined,
                                 apply_cached_results: bool | None | UndefinedType = Undefined,
                                 cached_results_timeout: CachedResultsTimeout | UndefinedType = Undefined,
-                                apply_alternate: bool | None | UndefinedType = Undefined,
                                 traffic_allow: bool | None | UndefinedType = Undefined,
-                                traffic_allow_vlan: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Action.
@@ -9205,14 +9205,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
-                                    apply_cached_results: Use results from a previous AAA response.
-                                    cached_results_timeout: Subclass of AvdModel.
                                     apply_alternate:
                                        Apply alternate action if primary action fails.
                                        eg. aaa unresponsive action apply cached-results
                                        else traffic allow
-                                    traffic_allow: Set action for supplicant traffic when AAA times out.
                                     traffic_allow_vlan: traffic_allow_vlan
+                                    apply_cached_results: Use results from a previous AAA response.
+                                    cached_results_timeout: Subclass of AvdModel.
+                                    traffic_allow: Set action for supplicant traffic when AAA times out.
 
                                 """
 

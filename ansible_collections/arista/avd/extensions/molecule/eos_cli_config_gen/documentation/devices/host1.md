@@ -12729,6 +12729,8 @@ IP DHCP Snooping is enabled
 
 IP DHCP Snooping Bridging is enabled
 
+IP DHCP Snooping Insertion of Option 82 is enabled
+
 IP DHCP Snooping Circuit-ID Suboption: 10
 
 IP DHCP Snooping Circuit-ID Format: %h:%p
@@ -12740,6 +12742,7 @@ IP DHCP Snooping enabled VLAN: 10,20,500,1000-2000
 ```eos
 !
 ip dhcp snooping bridging
+ip dhcp snooping information option
 ip dhcp snooping information option circuit-id type 10 format %h:%p
 ip dhcp snooping vlan 10,20,500,1000-2000
 ```
