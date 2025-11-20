@@ -19,10 +19,14 @@ nodes:
     node_type: veos
     ip_addr: 10.10.10.100/24
     version: 4.33.1.1F
+    ports:
+    - Ethernet3
 - digital-twin-default-interfaces-original-platform:
     node_type: veos
     ip_addr: 10.10.10.101/24
     version: 4.33.1.1F
+    ports:
+    - Ethernet2
 - digital-twin-enforce-eapi-1:
     node_type: veos
     ip_addr: 192.168.0.1/32
@@ -46,9 +50,15 @@ nodes:
     ports:
     - Ethernet1
     - Ethernet2
+    - Ethernet3
+    - Ethernet4
+    - Ethernet5
+    - Ethernet6
     - Ethernet9
     - Ethernet10
+    - Ethernet11
     - Ethernet13
+    - Ethernet14
     - Ethernet15
     - Ethernet16
     - Ethernet17
@@ -69,9 +79,14 @@ nodes:
     ports:
     - Ethernet1
     - Ethernet2
+    - Ethernet3
+    - Ethernet4
+    - Ethernet5
     - Ethernet9
     - Ethernet10
+    - Ethernet11
     - Ethernet13
+    - Ethernet14
     - Ethernet15
     - Ethernet16
     - Ethernet17

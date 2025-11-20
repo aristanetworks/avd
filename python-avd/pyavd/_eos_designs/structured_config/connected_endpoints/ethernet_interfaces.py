@@ -192,17 +192,16 @@ class EthernetInterfacesMixin(Protocol):
             dot1x=adapter.dot1x,
             poe=adapter.poe if self.shared_utils.platform_settings.feature_support.poe else Undefined,
             eos_cli=adapter.raw_eos_cli,
-        )
-        ethernet_interface.metadata._update(
-            peer=peer,
-            peer_interface=peer_interface,
-            peer_type=connected_endpoint.type,
-            port_profile=adapter.profile,
-            peer_key=connected_endpoint._internal_data.context,
-            # Set validate_state to `False` in Digital Twin mode
-            # TODO: Make logic conditional once functionality allows to include (some) connected endpoints into the ACT topology definition file
-            validate_state=False if (self.shared_utils.digital_twin or adapter.validate_state is False) else None,
-            validate_lldp=False if adapter.validate_lldp is False else None,
+            metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
+                peer=peer,
+                peer_interface=peer_interface,
+                peer_type=connected_endpoint.type,
+                port_profile=adapter.profile,
+                peer_key=connected_endpoint._internal_data.context,
+                # TODO: Make logic conditional once functionality allows to include (some) connected endpoints into the ACT topology definition file
+                validate_state=self.shared_utils.get_interface_validate_state(adapter.validate_state),
+                validate_lldp=False if adapter.validate_lldp is False else None,
+            ),
         )
 
         # Port-channel member

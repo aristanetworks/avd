@@ -210,15 +210,6 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
             and topology_link["peer_interface"]
         )
     ]
-    # Set of (<FABRIC_NODE>, <FABRIC_NODE_INTERFACE>) tuples to identify fabric ports vs all others
-    fabric_ports: set[tuple[str, str]] = set()
-    for verified_topology_link in verified_topology_links:
-        fabric_ports.update(
-            {
-                (verified_topology_link["node"], verified_topology_link["node_interface"]),
-                (verified_topology_link["peer"], verified_topology_link["peer_interface"]),
-            }
-        )
     for device in sorted(device_list):
         if (
             digital_twin_node_type := get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..node_type", separator="..")
@@ -251,7 +242,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                                 for ethernet_interface in get(
                                     fabric_documentation_facts.structured_configs, f"{device}..ethernet_interfaces", [], separator=".."
                                 )
-                                if ("." not in ethernet_interface["name"] and (device, ethernet_interface["name"]) not in fabric_ports)
+                                if "." not in ethernet_interface["name"]
                             ),
                             # Extract digits from the interface names and use them to sort interfaces using the natural order
                             # Can not use natural_sort utility here directly due to the triggered CI deps import failure

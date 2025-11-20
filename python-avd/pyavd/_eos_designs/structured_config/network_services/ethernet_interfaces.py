@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import Undefined, get_ip_from_ip_prefix
+from pyavd._utils import get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -89,8 +89,7 @@ class EthernetInterfacesMixin(Protocol):
                         peer_interface=member_intf.peer_interface or None,
                         peer_type="l3_port_channel_member",
                         peer=peer or None,
-                        # Set validate_state to `False` in Digital Twin mode
-                        validate_state=False if self.shared_utils.digital_twin else Undefined,
+                        validate_state=self.shared_utils.get_interface_validate_state(None),
                     ),
                 )
 
@@ -144,8 +143,7 @@ class EthernetInterfacesMixin(Protocol):
                     flow_tracker=self.shared_utils.get_flow_tracker(l3_interface.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                     metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
                         peer_type="l3_interface",
-                        # Set validate_state to `False` in Digital Twin mode
-                        validate_state=False if self.shared_utils.digital_twin else Undefined,
+                        validate_state=self.shared_utils.get_interface_validate_state(None),
                     ),
                 )
 
@@ -321,8 +319,7 @@ class EthernetInterfacesMixin(Protocol):
                 shutdown=False,
                 metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
                     peer_type="l3_interface",
-                    # Set validate_state to `False` in Digital Twin mode
-                    validate_state=False if self.shared_utils.digital_twin else Undefined,
+                    validate_state=self.shared_utils.get_interface_validate_state(None),
                 ),
             )
 
