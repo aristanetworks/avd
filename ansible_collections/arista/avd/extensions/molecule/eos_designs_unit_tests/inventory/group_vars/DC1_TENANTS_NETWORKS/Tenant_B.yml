@@ -1,3 +1,4 @@
+---
 tenant_b:
   - name: Tenant_B
     mac_vrf_vni_base: 20000
