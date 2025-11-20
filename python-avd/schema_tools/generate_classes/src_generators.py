@@ -392,7 +392,7 @@ class FileSrc:
     Use str() on the instance to render the source code.
     """
 
-    classes: list[ModelSrc]
+    classes: list[ModelSrc | ListSrc | None]
 
     def __str__(self) -> str:
         """Returns Python source code for this file."""
