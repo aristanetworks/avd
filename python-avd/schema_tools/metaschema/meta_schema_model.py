@@ -592,7 +592,7 @@ class AristaAvdSchema(AvdSchemaDict):
     # Type of class source generator to use for this schema field.
     _class_src_generator = SrcGenRootDict
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
 
     # Internal attributes used by schema docs generators

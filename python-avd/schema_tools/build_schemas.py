@@ -20,6 +20,7 @@ from .store import create_store
 
 try:
     import jsonschema_rs
+
     JSON_SCHEMA_VALIDATOR = jsonschema_rs.Draft7Validator
     HAS_JSONSCHEMA_RS = True
 except ImportError:

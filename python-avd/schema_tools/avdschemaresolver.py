@@ -66,7 +66,7 @@ class AvdSchemaResolver:
         In place update of supplied resolved_schema
         """
         try:
-            resolved = self.resolver.lookup(resolved_schema["$ref"]) # type: ignore
+            resolved = self.resolver.lookup(resolved_schema["$ref"])  # pyright: ignore[reportAttributeAccessIssue]
         except PointerToNowhere:
             msg = (
                 f"Unable to resolve $ref: '{resolved_schema['$ref']}'."
