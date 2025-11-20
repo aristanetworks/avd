@@ -43,7 +43,7 @@ jobs:
       - ansible_lint
       - test_pyavd
       - cargo_build_and_test
-      - pyavd_utils_build_and_test_cross_platform
+      - pyavd_utils_test_cross_platform
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -141,7 +141,7 @@ jobs:
   # ------------------------------------------------------------ #
   # Build cross platform pyavd-utils wheels and upload artifacts
   # ------------------------------------------------------------ #
-  pyavd_utils_build_wheels:
+  build_pyavd_utils_wheels:
     name: Build pyavd-utils wheel on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: [file-changes]
@@ -415,7 +415,7 @@ jobs:
   ansible_test_sanity:
     name: Run ansible-test sanity validation
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes]
+    needs: [build_pyavd, file-changes, build_pyavd_utils_wheels]
     strategy:
       fail-fast: true
       matrix:
@@ -436,6 +436,11 @@ jobs:
             3.11
             3.12
             3.13
+      - name: Download pyavd-utils wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-ubuntu-latest
+          path: /tmp/pyavd/
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
         with:
@@ -443,7 +448,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install pyavd and Ansible requirements
         run: |
-          pip install  ${{ matrix.pip_installation }} "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
+          pip install  ${{ matrix.pip_installation }} "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection] --find-links /tmp/pyavd"
       - name: Run ansible-test sanity
         working-directory: ansible_collections/arista/avd
         # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version
@@ -453,7 +458,7 @@ jobs:
   ansible_test_units:
     name: Run ansible-test units test cases
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes]
+    needs: [build_pyavd, file-changes, build_pyavd_utils_wheels]
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python 3
@@ -461,6 +466,11 @@ jobs:
         with:
           python-version: |
             3.12
+      - name: Download pyavd-utils wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-ubuntu-latest
+          path: /tmp/pyavd/
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
         with:
@@ -468,7 +478,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install pyavd and ansible requirements
         run: |
-          pip install "ansible-core<2.20.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
+          pip install "ansible-core<2.20.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection] --find-links /tmp/pyavd"
       - name: Run ansible-test units
         working-directory: ansible_collections/arista/avd
         run: |
@@ -484,7 +494,7 @@ jobs:
   ansible_test_integration:
     name: Run ansible-test integration test cases
     runs-on: ubuntu-latest
-    needs: [file-changes]
+    needs: [file-changes, build_pyavd_utils_wheels]
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python 3
@@ -495,9 +505,14 @@ jobs:
             3.10
             3.12
             3.13
+      - name: Download pyavd-utils wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-ubuntu-latest
+          path: /tmp/pyavd/
       - name: Install Python requirements
         run: |
-          pip install "ansible-core<2.20.0" -r .github/requirements-ci-dev.txt --upgrade
+          pip install "ansible-core<2.20.0" ".python-avd[ansible-collection]" --find-links /tmp/pyavd
       - name: Run ansible-test integration test cases
         working-directory: ansible_collections/arista/avd
         run: |
@@ -575,7 +590,7 @@ jobs:
   ansible_lint:
     name: Run ansible-lint test case
     runs-on: ubuntu-latest
-    needs: [build_pyavd, build_collection]
+    needs: [file-changes, build_pyavd_utils_wheels]
     env:
       ANSIBLE_COLLECTIONS_PATH: ${{ github.workspace }}
     steps:
@@ -588,6 +603,11 @@ jobs:
             3.11
             3.12
             3.13
+      - name: Download pyavd-utils wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-ubuntu-latest
+          path: /tmp/pyavd/
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
         with:
@@ -595,7 +615,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install Python & Ansible requirements
         run: |
-          pip install "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r ansible_collections/arista/avd/requirements-dev.txt --find-links /tmp/pyavd --upgrade
       - name: Download collection
         uses: actions/download-artifact@v6
         with:
@@ -786,10 +806,10 @@ jobs:
   # ------------------------------------------- #
   # pyavd-utils test on platforms using wheels
   # ------------------------------------------- #
-  pyavd_utils_build_and_test_cross_platform:
+  pyavd_utils_and_test_cross_platform:
     name: pyavd-utils ${{ matrix.python }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    needs: [pyavd_utils_build_wheels]
+    needs: [build_pyavd_utils_wheels]
     if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
     strategy:
       fail-fast: false
