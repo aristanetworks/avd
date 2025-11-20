@@ -10,6 +10,53 @@ pytest = [
 coverage = [
     "coverage[toml]==7.11.3",
 ]
+doc = [
+    "mkdocs",
+    "mkdocs-material<10",
+    "mkdocs-material-extensions",
+    "mkdocs-same-dir",
+    "pymdown-extensions",
+    "mdx_truly_sane_lists",
+    "mike==1.1.2",
+    "mkdocs-git-revision-date-localized-plugin",
+    "mkdocs-git-revision-date-plugin",
+    "mkdocs-exclude",
+    "mkdocs-include-dir-to-nav",
+    "mkdocstrings[python]",
+]
+# pyavd minimal requirements when running from source
+# anta is set to latest version to make sure developers run with the latest version
+# when generating molecule artifacts.
+dev = [
+    "anta==1.6.0",
+    "cryptography>=43.0.0",
+    "netaddr>=0.7.19",
+    "PyYAML>=6.0.0",
+    "python-socks[asyncio]>=2.7.2",
+    "# dev requirements",
+    "ansible-core>=2.16.0,<2.20.0",
+    "ansible-doc-extractor>=0.1.10",
+    "ansible-lint>=25.1.3",
+    "aristaproto[compiler]>=0.1.1",
+    "bump-my-version>=1.2.4",
+    "codespell>=2.2.6",
+    "deepmerge>=1.1.0",
+    "docker>=7.1.0",
+    "identify>=1.4.20",
+    "jsonschema-rs>=0.24",
+    "molecule>=6.0",
+    "molecule-plugins[docker]>=23.4.0",
+    "pydantic>=2.3.0",
+    "pylint>=3.2.6",
+    "pytest>=8.2.0",
+    "pre-commit>=3.2.0",
+    "pre-commit-hooks>=3.3.0",
+    "referencing>=0.35.0",
+    "ruff==0.14.4",
+    "tox",
+    "twine",
+    "yamllint",
+]
 
 [tool.black]
 # Black has been replaced with Ruff.
@@ -249,6 +296,7 @@ replace = 'package.version = "{new_version}"'
 
 ### Bumping version using PEP440 style like x.y.z.dev1
 
+# TODO: this one should go - maybe use this to update the roles?
 [[tool.bumpversion.files]]
 filename = "ansible_collections/arista/avd/requirements.txt"
 search = "pyavd[ansible-collection]=={current_version}"
@@ -325,3 +373,5 @@ serialize = [
     "{major}.{minor}.{patch}.{pre_l}{pre_n}",
     "{major}.{minor}.{patch}",
 ]
+
+# TODO: should add the avd-aap.md file to be upgraded here as well if we are able to test

@@ -1,1 +1,1 @@
-../../requirements-dev.txt
+../../tests/integration/requirements.txt
