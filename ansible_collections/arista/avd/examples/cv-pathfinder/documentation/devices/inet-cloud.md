@@ -213,7 +213,7 @@ aaa authorization exec default local
 
 #### VRF default DHCP Server
 
-##### Subnets
+##### IPv4 Subnets
 
 | Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
 | ------ | ---- | ----------- | --------------- | ---------- | ------ |
