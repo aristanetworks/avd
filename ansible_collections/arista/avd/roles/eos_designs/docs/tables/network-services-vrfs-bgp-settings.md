@@ -235,6 +235,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].shared_secret.profile") | String | Required |  |  | Name of profile defined under `management_security`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].shared_secret.hash_algorithm") | String | Required |  | Valid Values:<br>- <code>aes-128-cmac-96</code><br>- <code>hmac-sha-256</code><br>- <code>hmac-sha1-96</code> | Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_maximum_hops</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].ttl_maximum_hops") | Integer |  |  | Min: 0<br>Max: 254 | Maximum number of hops. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_bgp_peers</samp>](## "<network_services_keys.name>.[].vrfs.[].validate_bgp_peers") | Boolean |  | `False` |  | Enable or disable BGP peer state validation by the `anta_runner` role on a per-VRF basis. |
 
 === "YAML"
 
@@ -790,4 +791,7 @@
 
                 # Maximum number of hops.
                 ttl_maximum_hops: <int; 0-254>
+
+            # Enable or disable BGP peer state validation by the `anta_runner` role on a per-VRF basis.
+            validate_bgp_peers: <bool; default=False>
     ```
