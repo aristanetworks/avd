@@ -13,9 +13,7 @@
 | Group Name | Minimum Links | Recovery Delay |
 | ---------- | ------------- | -------------- |
 {%     for link_tracking_group in link_tracking_groups | arista.avd.natural_sort('name') %}
-{%         if link_tracking_group.name is arista.avd.defined %}
 | {{ link_tracking_group.name }} | {{ link_tracking_group.links_minimum | arista.avd.default("-") }} | {{ link_tracking_group.recovery_delay | arista.avd.default("-") }} |
-{%         endif %}
 {%     endfor %}
 
 #### Link Tracking Groups Device Configuration
