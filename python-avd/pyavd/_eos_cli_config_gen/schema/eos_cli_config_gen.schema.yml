@@ -3891,6 +3891,12 @@ keys:
                     max: 8
                     convert_types:
                     - str
+            power:
+              type: dict
+              keys:
+                ignore:
+                  type: bool
+                  description: Ignore advertised transceiver power consumption
         ip_proxy_arp:
           type: bool
         traffic_policy:

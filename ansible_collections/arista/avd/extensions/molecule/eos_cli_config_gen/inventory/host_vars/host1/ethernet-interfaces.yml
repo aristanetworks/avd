@@ -1611,6 +1611,8 @@ ethernet_interfaces:
         - override: 5
           first_lane: 2
           last_lane: 3
+      power:
+        ignore: true
     mac_timestamp: before-fcs
 
   - name: Ethernet67.1

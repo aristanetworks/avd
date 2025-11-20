@@ -9667,12 +9667,34 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             ApplicationOverrideLanes._item_type = ApplicationOverrideLanesItem
 
+            class Power(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ignore": {"type": bool}}
+                ignore: bool | None
+                """Ignore advertised transceiver power consumption"""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ignore: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        Power.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ignore: Ignore advertised transceiver power consumption
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "frequency": {"type": str},
                 "frequency_unit": {"type": str},
                 "media": {"type": Media},
                 "application_override": {"type": str},
                 "application_override_lanes": {"type": ApplicationOverrideLanes},
+                "power": {"type": Power},
             }
             frequency: str | None
             """Transceiver Laser Frequency in GHz (min 190000, max 200000)."""
@@ -9693,6 +9715,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of
             AvdList with `ApplicationOverrideLanesItem` items.
             """
+            power: Power
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -9704,6 +9728,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     media: Media | UndefinedType = Undefined,
                     application_override: ApplicationOverride | None | UndefinedType = Undefined,
                     application_override_lanes: ApplicationOverrideLanes | UndefinedType = Undefined,
+                    power: Power | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Transceiver.
@@ -9724,6 +9749,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of
                            AvdList with `ApplicationOverrideLanesItem` items.
+                        power: Subclass of AvdModel.
 
                     """
 

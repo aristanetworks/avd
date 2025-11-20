@@ -1168,6 +1168,9 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
    {{ frequency_cli }}
 {%     endif %}
+{%     if ethernet_interface.transceiver.power.ignore is arista.avd.defined %}
+   transceiver power ignore
+{%     endif %}
 {%     if ethernet_interface.dot1x is arista.avd.defined %}
 {%         if ethernet_interface.dot1x.pae.mode is arista.avd.defined("authenticator") %}
    dot1x pae {{ ethernet_interface.dot1x.pae.mode }}

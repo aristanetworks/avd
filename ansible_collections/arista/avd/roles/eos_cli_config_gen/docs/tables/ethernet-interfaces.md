@@ -409,6 +409,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;override</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes.[].override") | Integer | Required |  | Min: 0<br>Max: 15 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_lane</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes.[].first_lane") | Integer | Required |  | Min: 1<br>Max: 8 | Set the start value of host lanes for which overrides should be applied. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_lane</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes.[].last_lane") | Integer |  |  | Min: 1<br>Max: 8 | Set the last value of host lanes for which overrides should be applied. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;power</samp>](## "ethernet_interfaces.[].transceiver.power") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignore</samp>](## "ethernet_interfaces.[].transceiver.power.ignore") | Boolean |  |  |  | Ignore advertised transceiver power consumption |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_proxy_arp</samp>](## "ethernet_interfaces.[].ip_proxy_arp") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy</samp>](## "ethernet_interfaces.[].traffic_policy") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;input</samp>](## "ethernet_interfaces.[].traffic_policy.input") | String |  |  |  | Ingress traffic policy. |
@@ -1429,6 +1431,10 @@
 
               # Set the last value of host lanes for which overrides should be applied.
               last_lane: <int; 1-8>
+          power:
+
+            # Ignore advertised transceiver power consumption
+            ignore: <bool>
         ip_proxy_arp: <bool>
         traffic_policy:
 
