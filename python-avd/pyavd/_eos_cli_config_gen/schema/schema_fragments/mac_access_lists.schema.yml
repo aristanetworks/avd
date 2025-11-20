@@ -29,3 +29,4 @@ keys:
                 - str
               action:
                 type: str
+                required: true

@@ -1978,7 +1978,7 @@ dhcp relay
 
 #### VRF AVRF DHCP Server
 
-##### Subnets
+##### IPv4 Subnets
 
 | Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
 | ------ | ---- | ----------- | --------------- | ---------- | ------ |
@@ -1986,12 +1986,34 @@ dhcp relay
 
 #### VRF default DHCP Server
 
-##### Subnets
+##### IPv4 Subnets
+
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ |
+| 10.0.0.0/24 | TEST1 | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 |
+| 10.2.3.0/24 | - | - | - | - | - |
+| 172.16.254.0/24 | - | - | 172.16.254.1 | - | - |
+| 192.168.0.0/24 | - | - | - | - | - |
+
+###### DHCP Reservations in subnet 10.0.0.0/24
+
+| Mac Address | IPv4 Address | Hostname |
+| ----------- | ------------ | -------- |
+| 0001.0001.0001 | 10.0.0.2 | host3 |
+| 1a1b.1c1d.1e1f | 10.0.0.1 | host1 |
+
+##### IPv6 Subnets
 
 | Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
 | ------ | ---- | ----------- | --------------- | ---------- | ------ |
 | 2a00:2::/64 | - | - | - | - | - |
-| 10.2.3.0/24 | - | - | - | - | - |
+| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | - |
+
+###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
+
+| Mac Address | IPv6 Address | Hostname |
+| ----------- | ------------ | -------- |
+| 0003.0003.003 | 2001:db8:abcd:1234:c000::1 |  - |
 
 ##### IPv4 Vendor Options
 
@@ -2001,25 +2023,30 @@ dhcp relay
 
 #### VRF TEST DHCP Server
 
-##### Subnets
+##### IPv4 Subnets
 
 | Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
 | ------ | ---- | ----------- | --------------- | ---------- | ------ |
 | 10.0.0.0/24 | TEST1 | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 |
-| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | - |
 
 ###### DHCP Reservations in subnet 10.0.0.0/24
 
-| Mac Address | IPv4 Address | IPv6 Address | Hostname |
-| ----------- | ------------ | ------------ | -------- |
-| 0001.0001.0001 | 10.0.0.2 | - |  host3 |
-| 1a1b.1c1d.1e1f | 10.0.0.1 | - |  host1 |
+| Mac Address | IPv4 Address | Hostname |
+| ----------- | ------------ | -------- |
+| 0001.0001.0001 | 10.0.0.2 | host3 |
+| 1a1b.1c1d.1e1f | 10.0.0.1 | host1 |
+
+##### IPv6 Subnets
+
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ |
+| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | - |
 
 ###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
 
-| Mac Address | IPv4 Address | IPv6 Address | Hostname |
-| ----------- | ------------ | ------------ | -------- |
-| 0003.0003.003 | - | 2001:db8:abcd:1234:c000::1 |  - |
+| Mac Address | IPv6 Address | Hostname |
+| ----------- | ------------ | -------- |
+| 0003.0003.003 | 2001:db8:abcd:1234:c000::1 |  - |
 
 ##### IPv4 Vendor Options
 
@@ -2031,7 +2058,7 @@ dhcp relay
 
 #### VRF VRF01 DHCP Server
 
-##### Subnets
+##### IPv4 Subnets
 
 | Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
 | ------ | ---- | ----------- | --------------- | ---------- | ------ |
@@ -2058,9 +2085,37 @@ dhcp server
    tftp server file ipv4 https://www.arista.io/ztp/bootstrap
    tftp server file ipv6 https://2001:0db8:fe/ztp/bootstrap
    !
-   subnet 2a00:2::/64
+   subnet 10.0.0.0/24
+      reservations
+         mac-address 0001.0001.0001
+            ipv4-address 10.0.0.2
+            hostname host3
+         !
+         mac-address 1a1b.1c1d.1e1f
+            ipv4-address 10.0.0.1
+            hostname host1
+      !
+      range 10.0.0.10 10.0.0.100
+      !
+      range 10.0.0.110 10.0.0.120
+      name TEST1
+      dns server 10.1.1.12 10.1.1.13
+      lease time 0 days 0 hours 10 minutes
+      default-gateway 10.0.0.1
    !
    subnet 10.2.3.0/24
+   !
+   subnet 172.16.254.0/24
+      default-gateway 172.16.254.1
+   !
+   subnet 192.168.0.0/24
+   !
+   subnet 2a00:2::/64
+   !
+   subnet 2001:db8:abcd:1234:c000::/66
+      reservations
+         mac-address 0003.0003.003
+            ipv6-address 2001:db8:abcd:1234:c000::1
    !
    vendor-option ipv4 NTP
       sub-option 42 type ipv4-address data 10.1.1.1
@@ -8787,11 +8842,12 @@ ASN Notation: asdot
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | False | - | - | True |
-| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
-| 2.2.1.0/24 | False | False | - | - | False |
+| Prefix | AS Set | Summary Only | Attribute Map | Attribute RCF | Match Map | Advertise Only |
+| ------ | ------ | ------------ | ------------- | ------------- | --------- | -------------- |
+| 1.1.1.0/24 | False | False | - | - | - | True |
+| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | AGG-ADD-RCF() | RM-MATCH | True |
+| 2.2.1.0/24 | False | False | - | - | - | False |
+| 3.3.3.0/24 | False | False | - | AGG-ADD-RCF() | - | False |
 
 #### Router BGP EVPN Address Family
 
@@ -9312,8 +9368,9 @@ router bgp 65101
    neighbor fe80::b%Vl4094 peer group IPV6-UNDERLAY-MLAG
    no bgp redistribute-internal
    aggregate-address 1.1.1.0/24 advertise-only
-   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
+   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE attribute rcf AGG-ADD-RCF() match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24
+   aggregate-address 3.3.3.0/24 attribute rcf AGG-ADD-RCF()
    redistribute connected rcf Router_BGP_Connected()
    redistribute isis level-2 include leaked route-map RM_BGP_EVPN
    redistribute ospf match internal
@@ -9909,6 +9966,7 @@ router bgp 65101
       neighbor 101.0.3.6 bfd interval 2500 min-rx 2000 multiplier 3
       neighbor 101.0.3.7 bfd
       aggregate-address 0.0.0.0/0 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET advertise-only
+      aggregate-address 3.3.3.0/24 attribute rcf AGG-ADD-RCF()
       aggregate-address 193.1.0.0/16 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET match-map VRF-MATCH-MAP
       redistribute ospf include leaked
       redistribute static rcf VRF_STATIC_RCF()
@@ -11255,6 +11313,13 @@ ip as-path access-list mylist2 deny _64517$ igp
 | Profile2 | - | user_id2 | - |
 | Profile3 | - | - | PF2 |
 
+#### 802.1X EAPOL
+
+| Attribute | Value |
+| --------- | ----- |
+| VLAN Change Logoff Disabled | True |
+| Unresponsive Action Traffic Allow VLAN | 20 |
+
 #### 802.1X Interfaces
 
 | Interface | PAE Mode | Supplicant Profile | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
@@ -11309,6 +11374,8 @@ dot1x
    radius av-pair filter-id ipv4 ipv6 required
    radius av-pair framed-mtu 1500
    mac-based-auth radius av-pair user-name delimiter colon lowercase
+   eapol vlan change logoff disabled
+   eapol unresponsive action traffic allow vlan 20
    aaa unresponsive recovery action reauthenticate
    supplicant disconnect cached-results timeout 79 seconds
    captive-portal url http://portal-nacm08/captiveredirect/ ssl profile Profile1

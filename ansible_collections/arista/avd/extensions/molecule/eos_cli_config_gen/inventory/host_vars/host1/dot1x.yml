@@ -77,3 +77,6 @@ dot1x:
       members: 55
     - name: Assignment_1
       members: 400-407
+  eapol:
+    vlan_change_logoff_disabled: true
+    unresponsive_action_traffic_allow_vlan: 20

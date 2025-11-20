@@ -155,7 +155,7 @@ pub(crate) fn get_test_str_schema() -> AnySchema {
             "convert_types": ["int"],
             "convert_to_lower_case": true,
             "format": "mac",
-            "pattern": "^(foo|bar)$",
+            "pattern": "(foo|bar)",
             "deprecation": {
                 "warning": true,
                 "new_key": "new_bool",
