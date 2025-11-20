@@ -647,8 +647,11 @@ class AvdStructuredConfigBaseProtocol(
                     EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
                 )
 
-            server_key = self._get_tacacs_or_radius_server_password(server)
-            self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
+            if server.tls.enabled:
+                self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, tls=server.tls)
+            else:
+                server_key = self._get_tacacs_or_radius_server_password(server)
+                self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
 
             for group in server.groups:
                 radius_group = self.structured_config.aaa_server_groups.obtain(group)
