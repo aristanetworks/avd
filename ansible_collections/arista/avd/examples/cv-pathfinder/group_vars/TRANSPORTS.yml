@@ -83,7 +83,7 @@ spine:
               days: 6
               hours: 23
               minutes: 59
-            subnets:
+            ipv4_subnets:
               - subnet: 100.64.10.0/24
                 name: 10 NET
                 default_gateway: 100.64.10.1

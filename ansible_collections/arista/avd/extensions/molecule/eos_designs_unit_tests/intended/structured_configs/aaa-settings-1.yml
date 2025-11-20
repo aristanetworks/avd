@@ -146,6 +146,8 @@ aaa_server_groups:
     vrf: MGMT
   - server: 11.10.10.2
     vrf: MGMT
+  - server: 11.10.10.5
+    vrf: MGMT
   - server: 11.10.10.3
     vrf: MGMT
   - server: nodomain.co
@@ -219,6 +221,12 @@ radius_server:
   - host: 11.10.10.2
     vrf: MGMT
     key: 071B245F5A
+  - host: 11.10.10.5
+    vrf: MGMT
+    tls:
+      enabled: true
+      ssl_profile: HOST_SSL_PROFILE
+      port: 2080
   - host: 11.10.10.3
     vrf: MGMT
     key: 0112140D481F07
