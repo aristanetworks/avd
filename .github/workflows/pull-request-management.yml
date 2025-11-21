@@ -43,7 +43,7 @@ jobs:
       - ansible_lint
       - test_pyavd
       - cargo_build_and_test
-      - pyavd_utils_build_and_test_cross_platform
+      - pyavd_utils_build_and_test_wheels
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -137,6 +137,15 @@ jobs:
         with:
           name: pyavd
           path: ./python-avd/dist/*.whl
+
+  # ------------------------------------------------------------ #
+  # Build cross platform pyavd-utils wheels and upload artifacts
+  # ------------------------------------------------------------ #
+  pyavd_utils_build_and_test_wheels:
+    needs: [file-changes]
+    if: (needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group') && github.repository == 'aristanetworks/avd'
+    uses: ./.github/workflow/build-pyavd-wheels.yml
+
   # -------------------------------------------- #
   # Python type checking not covered in pre-commit
   # -------------------------------------------- #
@@ -752,13 +761,5 @@ jobs:
         run: |
           cargo install cargo-deny
           cargo deny check
-        if: |
+        if: |-
           matrix.os == 'ubuntu-latest'
-
-  # ------------------------------------------------------------ #
-  # Build cross platform pyavd-utils wheels and upload artifacts
-  # ------------------------------------------------------------ #
-  pyavd_utils_build_and_test_wheels:
-    needs: [file-changes]
-    if: (needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group') && github.repository == 'aristanetworks/avd'
-    uses: ./.github/workflow/build-pyavd-wheels.yml
