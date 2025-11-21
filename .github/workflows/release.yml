@@ -5,15 +5,24 @@ name: "Publish Python package"
     types:
       - published
   # Allow for manual trigger on the selected branch in UI
+  # Reducing it to only execute on devel branch today.
   workflow_dispatch:
+    inputs:
+      TESTPYPI_VERSION:
+        description: "Version string to use for manual push to test pypi"
+        required: true
+        type: string
 
 # For now only pyavd-utils
 jobs:
-  pyavd-utils-pypi:
-    name: Publish pyavd-utils to PyPI
+  pyavd-utils-testpypi:
+    name: Publish pyavd-utils to Test PyPI
     runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'release'
+      || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/devel')
     environment:
-      name: test-pypi
+      name: test
       url: https://test.pypi.org/p/pyavd-utils
     permissions:
       id-token: write
@@ -24,5 +33,7 @@ jobs:
           path: pyavd-utils
           merge-multiple: true
           pattern: pyavd-utils-wheels-*
-      # - name: Publish distribution to PyPI
-      #  uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Publish distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository_url: https://test.pypi.org/legacy/
