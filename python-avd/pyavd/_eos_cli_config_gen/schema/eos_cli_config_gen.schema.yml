@@ -9661,6 +9661,13 @@ keys:
         description: Threshold (in minutes) defining how far back to check the logging
           buffer for error-level logs during the validation performed by the `anta_runner`
           role.
+      exclude_as_extra_fabric_validation_target:
+        type: bool
+        description: 'Exclude this node from being used as a destination target from
+          other fabric devices in the extra fabric validation tests performed by the
+          `anta_runner` role.
+
+          '
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
