@@ -1,1 +1,1 @@
-../../tests/integration/requirements.txt
+pyavd[ansible-test]==6.0.0.dev3

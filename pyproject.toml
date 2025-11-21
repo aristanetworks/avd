@@ -299,7 +299,6 @@ replace = 'package.version = "{new_version}"'
 
 ### Bumping version using PEP440 style like x.y.z.dev1
 
-# TODO: this one should go - maybe use this to update the roles?
 [[tool.bumpversion.files]]
 filename = "ansible_collections/arista/avd/requirements.txt"
 search = "pyavd[ansible-collection]=={current_version}"
@@ -377,4 +376,40 @@ serialize = [
     "{major}.{minor}.{patch}",
 ]
 
-# TODO: should add the avd-aap.md file to be upgraded here as well if we are able to test
+[[tool.bumpversion.files]]
+filename = "ansible_collections/arista/avd/tests/integration/requirements.txt"
+search = "pyavd[ansible-test]=={current_version}"
+replace = "pyavd[ansible-test]=={new_version}"
+parse = """(?x)
+    (?P<major>0|[1-9]\\d*)\\.
+    (?P<minor>0|[1-9]\\d*)\\.
+    (?P<patch>0|[1-9]\\d*)
+    (?:
+        \\.                           # dot separator for pre-release section
+        (?P<pre_l>[a-zA-Z-]+)         # pre-release label
+        (?P<pre_n>0|[1-9]\\d*)        # pre-release version number
+    )?                                # pre-release section is optional
+"""
+serialize = [
+    "{major}.{minor}.{patch}.{pre_l}{pre_n}",
+    "{major}.{minor}.{patch}",
+]
+
+[[tool.bumpversion.files]]
+filename = "ansible_collections/arista/avd/tests/units/requirements.txt"
+search = "pyavd[ansible-test]=={current_version}"
+replace = "pyavd[ansible-test]=={new_version}"
+parse = """(?x)
+    (?P<major>0|[1-9]\\d*)\\.
+    (?P<minor>0|[1-9]\\d*)\\.
+    (?P<patch>0|[1-9]\\d*)
+    (?:
+        \\.                           # dot separator for pre-release section
+        (?P<pre_l>[a-zA-Z-]+)         # pre-release label
+        (?P<pre_n>0|[1-9]\\d*)        # pre-release version number
+    )?                                # pre-release section is optional
+"""
+serialize = [
+    "{major}.{minor}.{patch}.{pre_l}{pre_n}",
+    "{major}.{minor}.{patch}",
+]
