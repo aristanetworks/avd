@@ -120,7 +120,7 @@ ARGUMENT_SPEC = {
                         "choices": ["error", "failure", "skipped", "success", "unset"],
                         "default": ["error", "failure", "skipped", "success", "unset"],
                     },
-                    "sort_by": {
+                    "sort_fields": {
                         "type": "list",
                         "elements": "str",
                         "choices": ["categories", "custom_field", "description", "device", "test"],
@@ -259,7 +259,7 @@ def run_anta(devices: list[str]) -> ResultManager:
 def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[str, Any]) -> dict[str, Any]:
     """Build the ANTA reports from the batch results and return a summary dictionary containing ANTA test statistics."""
     exclude_statuses = get(report_settings, "filters.exclude_statuses")
-    sort_by = get(report_settings, "sorting.sort_by")
+    sort_fields = get(report_settings, "sorting.sort_fields")
     status_priority = get(report_settings, "sorting.status_priority")
     csv_output_path = get(report_settings, "csv_output")
     md_output_path = get(report_settings, "md_output")
@@ -281,7 +281,7 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
         filtered_result_manager = result_manager
 
     # Sort the result manager
-    sort_result_manager(filtered_result_manager, status_priority, sort_by)
+    sort_result_manager(filtered_result_manager, status_priority, sort_fields)
 
     # TODO: Consider using multiprocessing to generate reports in parallel
     if csv_output_path:
@@ -322,33 +322,42 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
     return tests_summary
 
 
-def sort_result_manager(result_manager: ResultManager, status_priority: list[str], sort_by: list[str]) -> ResultManager:
+def sort_result_manager(result_manager: ResultManager, status_priority: list[str], sort_fields: list[str]) -> None:
     """
-    Sort a result manager based on a custom status order and additional sort_by fields.
+    Sort the results within a ResultManager in place.
+
+    Sorting logic:
+    1. **Primary Sort:** Results are grouped by their test status based on the order defined in `status_priority`.
+        Statuses not listed in the priority list are pushed to the bottom and grouped alphabetically.
+    2. **Secondary Sort:** Within each status group, results are sorted lexicographically by the attributes defined in `sort_fields`.
 
     Args:
         result_manager: The ANTA result manager.
-        status_priority: Primary sort by 'result' using a custom status order.
-        sort_by: Secondary sort by additional fields defined.
-
-    Returns:
-        Sorted result manager.
+        status_priority: List of statuses (e.g., ["success", "failure"]) to force to the top.
+        sort_fields: List of attributes to use for secondary sorting (e.g., ["categories", "device"]).
     """
     if not result_manager.results:
-        return result_manager
+        return
 
-    status_index = {status: idx for idx, status in enumerate(status_priority)}
-    sort_by = ["name" if field == "device" else field for field in sort_by]
+    # Create a rank map for the primary sort order.
+    status_rank_map = {status: idx for idx, status in enumerate(status_priority)}
 
-    def sort_key(item: TestResult) -> tuple[int | str | float]:
-        # Start with the status_order
-        key = [status_index.get(item.result, float("inf"))]
-        # Added secondary from sort_by
-        key.extend(value if (value := getattr(item, field)) else "" for field in sort_by)
-        return tuple(key)
+    # Map 'device' to 'name' to match TestResult attribute names.
+    normalized_sort_fields = ["name" if field == "device" else field for field in sort_fields]
 
+    def sort_key(result: TestResult) -> tuple[Any, ...]:
+        """Generate a comparison tuple for sorting."""
+        # Primary sort: Get rank from map. If status is unknown, use Infinity to push it to the end.
+        rank = status_rank_map.get(result.result, float("inf"))
+
+        # Secondary sort: Extract values for the requested field.
+        secondary_values = [getattr(result, field) or "" for field in normalized_sort_fields]
+
+        # Status is also included to group unranked statuses alphabetically.
+        return (rank, str(result.result), *secondary_values)
+
+    # Apply the sort.
     result_manager.results = sorted(result_manager.results, key=sort_key)
-    return result_manager
 
 
 def update_ansible_result(result: dict[str, Any], anta_tests_summary: dict[str, Any], has_errors_ref: list[bool]) -> dict[str, Any]:
