@@ -24781,6 +24781,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
             "validate_no_errors_period": {"type": int},
+            "exclude_as_extra_fabric_validation_target": {"type": bool},
         }
         is_deployed: bool | None
         """Key only used for documentation or validation purposes."""
@@ -24828,6 +24829,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
         the validation performed by the `anta_runner` role.
         """
+        exclude_as_extra_fabric_validation_target: bool | None
+        """
+        Exclude this node from being used as a destination target from other fabric devices in the extra
+        fabric validation tests performed by the `anta_runner` role.
+        """
 
         if TYPE_CHECKING:
 
@@ -24847,6 +24853,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validate_no_errors_period: int | None | UndefinedType = Undefined,
+                exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -24889,6 +24896,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     validate_no_errors_period:
                        Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
                        the validation performed by the `anta_runner` role.
+                    exclude_as_extra_fabric_validation_target:
+                       Exclude this node from being used as a destination target from other fabric devices in the extra
+                       fabric validation tests performed by the `anta_runner` role.
 
                 """
 
