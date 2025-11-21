@@ -3,11 +3,11 @@
 # that can be found in the LICENSE file.
 
 from __future__ import annotations
-from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._schema.models.eos_designs_root_model import EosDesignsRootModel
 from typing import ClassVar
 from pyavd._schema.coerce_type import coerce_type
 from typing import Literal, TypeAlias
-from pyavd._schema.models.eos_designs_root_model import EosDesignsRootModel
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from typing import TYPE_CHECKING
 
 from pyavd._schema.models.avd_indexed_list import AvdIndexedList
