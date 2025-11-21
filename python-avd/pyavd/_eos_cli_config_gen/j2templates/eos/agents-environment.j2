@@ -4,15 +4,14 @@
  that can be found in the LICENSE file.
 #}
 {# eos - agents environment #}
-{% for agent in agents | arista.avd.natural_sort('name') %}
+{% set env_agents = agents | arista.avd.default([]) | selectattr('environment_variables', 'arista.avd.defined') %}
+{% for agent in env_agents %}
 {%     if loop.first %}
 !
 {%     endif %}
-{%     if agent.environment_variables is arista.avd.defined %}
-{%         set env_list = [] %}
-{%         for envvar in agent.environment_variables %}
-{%             do env_list.append(envvar.name ~ "=" ~ envvar.value) %}
-{%         endfor %}
+{%     set env_list = [] %}
+{%     for envvar in agent.environment_variables %}
+{%         do env_list.append(envvar.name ~ "=" ~ envvar.value) %}
+{%     endfor %}
 agent {{ agent.name }} environment {{ env_list | join(":") }}
-{%     endif %}
 {% endfor %}

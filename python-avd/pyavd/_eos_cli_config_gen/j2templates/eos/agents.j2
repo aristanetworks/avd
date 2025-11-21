@@ -4,9 +4,11 @@
  that can be found in the LICENSE file.
 #}
 {# eos - agents without environment #}
-{% for agent in agents | arista.avd.natural_sort('name') %}
-{%     if loop.first %}
+{% set ns = namespace(print_exclamation=false) %}
+{% for agent in agents | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%     if not ns.print_exclamation and (agent.shutdown is arista.avd.defined(true) or agent.shutdown_supervisor_active is arista.avd.defined(true) or agent.shutdown_supervisor_standby is arista.avd.defined(true)) %}
 !
+{%         set ns.print_exclamation = true %}
 {%     endif %}
 {%     if agent.shutdown is arista.avd.defined(true) %}
 agent {{ agent.name }} shutdown
