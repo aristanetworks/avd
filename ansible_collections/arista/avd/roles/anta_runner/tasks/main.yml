@@ -37,6 +37,7 @@
       structured_config_dir: "{{ structured_dir }}"
       structured_config_suffix: "{{ avd_structured_config_file_format }}"
       allow_bgp_vrfs: "{{ avd_catalogs_allow_bgp_vrfs }}"
+      extra_fabric_validation: "{{ avd_catalogs_extra_fabric_validation }}"
       filters: "{{ avd_catalogs_filters | arista.avd.default([]) }}"
     user_catalogs:
       input_dir: "{{ user_catalogs_dir }}"

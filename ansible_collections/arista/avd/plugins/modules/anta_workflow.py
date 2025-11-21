@@ -53,6 +53,10 @@ options:
         description: If `true`, generate tests for BGP peers in VRFs.
         type: bool
         default: false
+      extra_fabric_validation:
+        description: If `true`, generate extra fabric-wide validation tests (e.g., reachability and routing tests).
+        type: bool
+        default: false
       filters:
         description: Filters used to run or skip tests from the AVD-generated test catalogs. These filters do not apply to user-defined catalogs.
         type: list

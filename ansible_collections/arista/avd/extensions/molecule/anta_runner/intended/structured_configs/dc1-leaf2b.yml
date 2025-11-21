@@ -127,10 +127,14 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: false
-  platform: veos_lab_hw_platform_features
+  platform: custom_hardware_test_platform
   dc_name: DC1
   fabric_name: FABRIC
   hardware_requirements:
+    min_power_supplies: 2
+    min_fans: 4
+    min_supervisors: 0
+    min_line_cards: 0
     transceiver_manufacturers:
     - Arista mfg
     - Arista transceivers

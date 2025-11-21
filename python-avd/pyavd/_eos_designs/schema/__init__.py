@@ -270,6 +270,7 @@ class EosDesigns(EosDesignsRootModel):
                     "vrf": {"type": str},
                     "key": {"type": str},
                     "cleartext_key": {"type": str},
+                    "tls": {"type": EosCliConfigGen.RadiusServer.HostsItem.Tls},
                 }
                 host: str
                 """
@@ -307,6 +308,8 @@ class EosDesigns(EosDesignsRootModel):
                 To protect the password at rest it is strongly
                 recommended to make use of a vault or similar.
                 """
+                tls: EosCliConfigGen.RadiusServer.HostsItem.Tls
+                """When TLS is configured, `key` and `cleartext_key` are ignored."""
 
                 if TYPE_CHECKING:
 
@@ -318,6 +321,7 @@ class EosDesigns(EosDesignsRootModel):
                         vrf: str | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         cleartext_key: str | None | UndefinedType = Undefined,
+                        tls: EosCliConfigGen.RadiusServer.HostsItem.Tls | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ServersItem.
@@ -353,6 +357,7 @@ class EosDesigns(EosDesignsRootModel):
                                Encrypted to Type 7 by AVD.
                                To protect the password at rest it is strongly
                                recommended to make use of a vault or similar.
+                            tls: When TLS is configured, `key` and `cleartext_key` are ignored.
 
                         """
 
@@ -25801,9 +25806,14 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
         """
-        Defines the minimum hardware specifications required for the device.
-        Used for validation by the
-        `anta_runner` role.
+        Defines hardware requirements for the device, validated by the `anta_runner` role.
+        For the `min_*`
+        keys:
+        - Undefined (Default): Validate that all available slots are inserted.
+        - Positive Integer:
+        Validate that the number of components inserted is at least the specified minimum.
+        - 0: Skip the
+        validation for this specific component.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -25872,9 +25882,14 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass
                        of AvdModel.
                     validate_hardware_inventory:
-                       Defines the minimum hardware specifications required for the device.
-                       Used for validation by the
-                       `anta_runner` role.
+                       Defines hardware requirements for the device, validated by the `anta_runner` role.
+                       For the `min_*`
+                       keys:
+                       - Undefined (Default): Validate that all available slots are inserted.
+                       - Positive Integer:
+                       Validate that the number of components inserted is at least the specified minimum.
+                       - 0: Skip the
+                       validation for this specific component.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -26576,9 +26591,14 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
         """
-        Defines the minimum hardware specifications required for the device.
-        Used for validation by the
-        `anta_runner` role.
+        Defines hardware requirements for the device, validated by the `anta_runner` role.
+        For the `min_*`
+        keys:
+        - Undefined (Default): Validate that all available slots are inserted.
+        - Positive Integer:
+        Validate that the number of components inserted is at least the specified minimum.
+        - 0: Skip the
+        validation for this specific component.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -26647,9 +26667,14 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass
                        of AvdModel.
                     validate_hardware_inventory:
-                       Defines the minimum hardware specifications required for the device.
-                       Used for validation by the
-                       `anta_runner` role.
+                       Defines hardware requirements for the device, validated by the `anta_runner` role.
+                       For the `min_*`
+                       keys:
+                       - Undefined (Default): Validate that all available slots are inserted.
+                       - Positive Integer:
+                       Validate that the number of components inserted is at least the specified minimum.
+                       - 0: Skip the
+                       validation for this specific component.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -64345,6 +64370,7 @@ class EosDesigns(EosDesignsRootModel):
                         "bgp_peer_groups": {"type": BgpPeerGroups},
                         "additional_route_targets": {"type": AdditionalRouteTargets},
                         "aggregate_addresses": {"type": AggregateAddresses},
+                        "validate_bgp_peers": {"type": bool, "default": False},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen},
                     }
@@ -64599,6 +64625,12 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     aggregate_addresses: AggregateAddresses
                     """Subclass of AvdList with `AggregateAddressesItem` items."""
+                    validate_bgp_peers: bool
+                    """
+                    Enable or disable BGP peer state validation by the `anta_runner` role on a per-VRF basis.
+
+                    Default value: `False`
+                    """
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
@@ -64641,6 +64673,7 @@ class EosDesigns(EosDesignsRootModel):
                             bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
                             additional_route_targets: AdditionalRouteTargets | UndefinedType = Undefined,
                             aggregate_addresses: AggregateAddresses | UndefinedType = Undefined,
+                            validate_bgp_peers: bool | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen | UndefinedType = Undefined,
                         ) -> None:
@@ -64837,6 +64870,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `AdditionalRouteTargetsItem` items.
                                 aggregate_addresses: Subclass of AvdList with `AggregateAddressesItem` items.
+                                validate_bgp_peers: Enable or disable BGP peer state validation by the `anta_runner` role on a per-VRF basis.
                                 raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
                                 structured_config: Custom structured config for eos_cli_config_gen.
 
