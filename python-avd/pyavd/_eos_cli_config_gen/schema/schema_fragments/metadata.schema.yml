@@ -38,31 +38,31 @@ keys:
         type: dict
         description: |-
           Defines hardware requirements for the device, validated by the `anta_runner` role.
-          For `min_power_supplies`, `min_fans`, `min_supervisors`, `min_line_cards`, and `min_fabric_cards`:
-          - If the value is a positive integer, `anta_runner` validates that the number of components is at least the specified minimum.
-          - If the value is 0, `anta_runner` validates that all populated components are in a healthy state.
-          - If not defined, the check for that component is skipped.
+          For the `min_*` keys:
+          - Undefined (Default): Validate that all available slots are inserted.
+          - Positive Integer: Validate that the number of components inserted is at least the specified minimum.
+          - 0: Skip the validation for this specific component.
         keys:
           min_power_supplies:
             type: int
             description: |-
-              Minimum number of power supplies required for the device.
+              Minimum number of power supplies required. Set to 0 to skip validation.
           min_fans:
             type: int
             description: |-
-              Minimum number of fans required for the device.
+              Minimum number of fans required for the device. Set to 0 to skip validation.
           min_supervisors:
             type: int
             description: |-
-              Minimum number of supervisor modules required for the device.
+              Minimum number of supervisor modules required for the device. Set to 0 to skip validation.
           min_line_cards:
             type: int
             description: |-
-              Minimum number of line cards required for the device.
+              Minimum number of line cards required for the device. Set to 0 to skip validation.
           min_fabric_cards:
             type: int
             description: |-
-              Minimum number of fabric cards required for the device.
+              Minimum number of fabric cards required for the device. Set to 0 to skip validation.
           transceiver_manufacturers:
             type: list
             description: |-

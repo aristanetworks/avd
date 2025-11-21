@@ -25807,14 +25807,13 @@ class EosDesigns(EosDesignsRootModel):
         validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
         """
         Defines hardware requirements for the device, validated by the `anta_runner` role.
-        For
-        `min_power_supplies`, `min_fans`, `min_supervisors`, `min_line_cards`, and `min_fabric_cards`:
-        - If
-        the value is a positive integer, `anta_runner` validates that the number of components is at least
-        the specified minimum.
-        - If the value is 0, `anta_runner` validates that all populated components
-        are in a healthy state.
-        - If not defined, the check for that component is skipped.
+        For the `min_*`
+        keys:
+        - Undefined (Default): Validate that all available slots are inserted.
+        - Positive Integer:
+        Validate that the number of components inserted is at least the specified minimum.
+        - 0: Skip the
+        validation for this specific component.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -25884,14 +25883,13 @@ class EosDesigns(EosDesignsRootModel):
                        of AvdModel.
                     validate_hardware_inventory:
                        Defines hardware requirements for the device, validated by the `anta_runner` role.
-                       For
-                       `min_power_supplies`, `min_fans`, `min_supervisors`, `min_line_cards`, and `min_fabric_cards`:
-                       - If
-                       the value is a positive integer, `anta_runner` validates that the number of components is at least
-                       the specified minimum.
-                       - If the value is 0, `anta_runner` validates that all populated components
-                       are in a healthy state.
-                       - If not defined, the check for that component is skipped.
+                       For the `min_*`
+                       keys:
+                       - Undefined (Default): Validate that all available slots are inserted.
+                       - Positive Integer:
+                       Validate that the number of components inserted is at least the specified minimum.
+                       - 0: Skip the
+                       validation for this specific component.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -26594,14 +26592,13 @@ class EosDesigns(EosDesignsRootModel):
         validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
         """
         Defines hardware requirements for the device, validated by the `anta_runner` role.
-        For
-        `min_power_supplies`, `min_fans`, `min_supervisors`, `min_line_cards`, and `min_fabric_cards`:
-        - If
-        the value is a positive integer, `anta_runner` validates that the number of components is at least
-        the specified minimum.
-        - If the value is 0, `anta_runner` validates that all populated components
-        are in a healthy state.
-        - If not defined, the check for that component is skipped.
+        For the `min_*`
+        keys:
+        - Undefined (Default): Validate that all available slots are inserted.
+        - Positive Integer:
+        Validate that the number of components inserted is at least the specified minimum.
+        - 0: Skip the
+        validation for this specific component.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -26671,14 +26668,13 @@ class EosDesigns(EosDesignsRootModel):
                        of AvdModel.
                     validate_hardware_inventory:
                        Defines hardware requirements for the device, validated by the `anta_runner` role.
-                       For
-                       `min_power_supplies`, `min_fans`, `min_supervisors`, `min_line_cards`, and `min_fabric_cards`:
-                       - If
-                       the value is a positive integer, `anta_runner` validates that the number of components is at least
-                       the specified minimum.
-                       - If the value is 0, `anta_runner` validates that all populated components
-                       are in a healthy state.
-                       - If not defined, the check for that component is skipped.
+                       For the `min_*`
+                       keys:
+                       - Undefined (Default): Validate that all available slots are inserted.
+                       - Positive Integer:
+                       Validate that the number of components inserted is at least the specified minimum.
+                       - 0: Skip the
+                       validation for this specific component.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 

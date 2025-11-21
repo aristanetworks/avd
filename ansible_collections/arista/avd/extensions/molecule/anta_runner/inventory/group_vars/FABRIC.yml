@@ -99,8 +99,7 @@ custom_node_type_keys:
       l3: true
     vtep: true
 
-# Creating a new custom platform based on `vEOS-lab` with hardware platform specific features enabled for testing purpose.
-# Creating a new custom platform based on `vEOS-lab` with hardware platform specific features enabled for testing purpose.
+# Creating a new custom hardware platform with specific features enabled for testing purpose.
 custom_platform_settings:
   - platforms: [custom_hardware_test_platform]
     feature_support:

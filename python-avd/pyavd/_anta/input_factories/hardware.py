@@ -45,17 +45,24 @@ class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
     """
     Input factory class for the `VerifyInventory` test.
 
-    Generates test inputs for verifying the following:
-    - If no hardware requirements provided:
-        * By default, this test checks that all slots for the following component types
-    are populated: `power supply`, `fan tray`, `fabric card`, `line card` and `supervisor`.
-    - If specific requirements provided:
-        * If the specified requirement is set to 0, the test skips the check. Otherwise, it strictly verifies that all provided slots are filled.
+    Generates test inputs to verify that the expected quantity of hardware components are installed. Uses the `hardware_requirements.min_<component>` keys
+    from metadata to define the requirements for each component.
+
+    For each component:
+      - Undefined (Default): Validate that all available slots are inserted.
+      - Positive Integer: Validate that the number of components inserted is at least the specified minimum.
+      - 0: Skip the validation for this specific component.
     """
 
     def _get_hardware_requirement(self, requirement: int | None) -> int | Literal["all"] | None:
-        """Helper to determine the hardware requirements."""
-        # Returns "all" if requirement is None, None If requirement == 0. Otherwise, returns the requirement.
+        """
+        Helper to determine the hardware requirements.
+
+        Returns:
+            "all" if the requirement is None.
+            None if the requirement is 0.
+            Otherwise, returns the integer value of the requirement.
+        """
         if requirement is None:
             return "all"
         if requirement == 0:
@@ -64,9 +71,7 @@ class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
 
     def create(self) -> list[VerifyInventory.Input] | None:
         """Create a list of inputs for the `VerifyInventory` test."""
-        if not (hardware_requirements := self.structured_config.metadata.hardware_requirements):
-            return [VerifyInventory.Input()]
-
+        hardware_requirements = self.structured_config.metadata.hardware_requirements
         input_req = HardwareInventory(
             power_supplies=self._get_hardware_requirement(hardware_requirements.min_power_supplies),
             fan_trays=self._get_hardware_requirement(hardware_requirements.min_fans),
