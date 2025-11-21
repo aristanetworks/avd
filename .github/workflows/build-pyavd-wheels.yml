@@ -6,7 +6,7 @@ name: "Build pyvad-utils wheels"
     inputs:
       TESTPYPI_VERSION:
         description: "Version string to use for manual push to test pypi"
-        required: true
+        # required: true
         type: string
 
 env:
