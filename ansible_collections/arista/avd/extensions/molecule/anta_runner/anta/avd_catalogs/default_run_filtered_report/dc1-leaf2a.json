@@ -179,6 +179,13 @@
           "tags": [
             "dc1-leaf2a"
           ]
+        },
+        "requirements": {
+          "power_supplies": 2,
+          "fan_trays": 4,
+          "fabric_cards": "all",
+          "line_cards": null,
+          "supervisors": null
         }
       }
     },

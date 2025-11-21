@@ -69,6 +69,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyInventory,
+        input_factory=VerifyInventoryInputFactory,
     ),
     TestSpec(
         test_class=VerifyPortChannels,
