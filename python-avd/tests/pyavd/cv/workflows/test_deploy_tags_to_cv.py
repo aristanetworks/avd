@@ -17,16 +17,16 @@ from pyavd._cv.workflows.models import CVWorkspace
 LOGGER = getLogger(__name__)
 
 
-@pytest.fixture(scope="module")
-def cv_tags() -> list[CVTag]:
+@pytest.fixture
+def cv_tags_fixture() -> set[CVTag]:
     tags_qty = 20000
-    return [CVTag(element_type="device", label=f"pytest-label-{tag_index}", value=f"pytest-value-{tag_index}") for tag_index in range(1, tags_qty + 1)]
+    return {CVTag(element_type="device", label=f"pytest-label-{tag_index}", value=f"pytest-value-{tag_index}") for tag_index in range(1, tags_qty + 1)}
 
 
-@pytest.fixture(scope="module")
-def cv_tag_assignments(cv_tags: set[CVTag]) -> list[CVTagAssignment]:
+@pytest.fixture
+def cv_tag_assignments_fixture(cv_tags_fixture: set[CVTag]) -> set[CVTagAssignment]:
     device_id = "ABCDEFGHIGKLMNOP"
-    return [CVTagAssignment(element_type=cv_tag.element_type, label=cv_tag.label, value=cv_tag.value, device_id=device_id) for cv_tag in cv_tags]
+    return {CVTagAssignment(element_type=cv_tag.element_type, label=cv_tag.label, value=cv_tag.value, device_id=device_id) for cv_tag in cv_tags_fixture}
 
 
 @pytest.mark.skipif(environ.get("CV_LIVE_TEST") is None, reason="CV_LIVE_TEST env variable is not set. Live cv_deploy tests are skipped.")
@@ -64,8 +64,8 @@ def cv_tag_assignments(cv_tags: set[CVTag]) -> list[CVTagAssignment]:
 async def test_deploy_tags_to_cv_message_splitting(
     targeted_cv: dict[str, str],
     verify_certs: bool,
-    cv_tags: list[CVTag],
-    cv_tag_assignments: list[CVTagAssignment],
+    cv_tags_fixture: set[CVTag],
+    cv_tag_assignments_fixture: set[CVTagAssignment],
 ) -> None:
     """Test ability to gracefully push amount of Tags and Assignments which exceeds the message limit (1837788 vs. 1048576 max)."""
     with does_not_raise():
@@ -74,6 +74,8 @@ async def test_deploy_tags_to_cv_message_splitting(
             token=targeted_cv["cv_access_token"],
             verify_certs=verify_certs,
         ) as cv_client:
+            cv_tags = cv_tags_fixture
+            cv_tag_assignments = cv_tag_assignments_fixture
             workspace = CVWorkspace(name="AVD_CI_PYTEST_TEST_DEPLOY_TAGS_TO_CV_MESSAGE_SPLITTING", requested_state="pending")
             try:
                 # Create Workspace in pending state

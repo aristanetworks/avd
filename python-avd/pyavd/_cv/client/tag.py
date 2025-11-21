@@ -119,11 +119,11 @@ class TagMixin(Protocol):
 
         return tags
 
-    @GRPCRequestHandler(list_field="tags")
+    @GRPCRequestHandler(iter_field="tags")
     async def set_tags(
         self: CVClientProtocol,
         workspace_id: str,
-        tags: list[CVTag],
+        tags: set[CVTag],
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[TagKey]:
         """
@@ -131,7 +131,7 @@ class TagMixin(Protocol):
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
-            tags: List of `CVTag` tag objects to be added.
+            tags: Set of `CVTag` tag objects to be added.
             timeout: Base timeout in seconds. 0.1 second will be added per `CVTag`.
 
         Returns:
@@ -218,11 +218,11 @@ class TagMixin(Protocol):
 
         return tag_assignments
 
-    @GRPCRequestHandler(list_field="tag_assignments")
+    @GRPCRequestHandler(iter_field="tag_assignments")
     async def set_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
-        tag_assignments: list[CVTagAssignment],
+        tag_assignments: set[CVTagAssignment],
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[TagAssignmentKey]:
         """
@@ -230,7 +230,7 @@ class TagMixin(Protocol):
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
-            tag_assignments: List of `CVTagAssignment` tag assignment objects to be added.
+            tag_assignments: Set of `CVTagAssignment` tag assignment objects to be added.
             timeout: Base timeout in seconds. 0.1 second will be added per `CVTagAssignment`.
 
         Returns:
@@ -256,11 +256,11 @@ class TagMixin(Protocol):
 
         return [response.key async for response in responses]
 
-    @GRPCRequestHandler(list_field="tag_assignments")
+    @GRPCRequestHandler(iter_field="tag_assignments")
     async def delete_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
-        tag_assignments: list[CVTagAssignment],
+        tag_assignments: set[CVTagAssignment],
         timeout: float = 30.0,
     ) -> list[TagAssignmentKey]:
         """
@@ -268,7 +268,7 @@ class TagMixin(Protocol):
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
-            tag_assignments: List of `CVTagAssignment` tag assignment objects to be removed.
+            tag_assignments: Set of `CVTagAssignment` tag assignment objects to be removed.
             timeout: Base timeout in seconds. 0.1 second will be added per `CVTagAssignment`.
 
         Returns:

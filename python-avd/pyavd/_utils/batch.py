@@ -3,15 +3,20 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from collections.abc import Callable, Iterable
 from itertools import islice
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeVar
 
 if TYPE_CHECKING:
-    from collections.abc import Generator, Iterable
+    from collections.abc import Generator
 
 
-def batch(iterable: Iterable, size: int) -> Generator[Iterable]:
-    """Returns a Generator of lists containing 'size' items. The final list may be shorter."""
+T = TypeVar("T")
+T_Constructor = Callable[[Iterable[T]], list[T] | set[T] | tuple[T]]
+
+
+def batch(iterable: Iterable[T], size: int, batch_type: T_Constructor[T] = list) -> Generator[list[T] | set[T] | tuple[T]]:
+    """Returns a Generator of lists, sets or tuples containing 'size' items. The final yielded iterator may be shorter."""
     iterator = iter(iterable)
     while batch := list(islice(iterator, size)):
-        yield batch
+        yield batch_type(batch)
