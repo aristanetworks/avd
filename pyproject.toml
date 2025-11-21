@@ -56,6 +56,7 @@ dev = [
     "tox",
     "twine",
     "yamllint",
+]
 molecule = [
     "molecule>=6.0",
     "molecule-plugins[docker]>=23.4.0",
