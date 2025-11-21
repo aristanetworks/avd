@@ -139,6 +139,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
         conditional_keys=[StructuredConfigKey.SERVICE_ROUTING_PROTOCOLS_MODEL],
         input_factory=VerifyRoutingProtocolModelInputFactory,
     ),
+    TestSpec(test_class=VerifyRoutingTableEntry, conditional_keys=[StructuredConfigKey.VXLAN1_INTERFACE], input_factory=VerifyRoutingTableEntryInputFactory),
     TestSpec(
         test_class=VerifySpecificIPSecConn,
         conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION],

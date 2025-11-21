@@ -74,6 +74,7 @@ ARGUMENT_SPEC = {
             "structured_config_dir": {"type": "str"},
             "structured_config_suffix": {"type": "str", "choices": ["yml", "yaml", "json"], "default": "yml"},
             "allow_bgp_vrfs": {"type": "bool", "default": False},
+            "extra_fabric_validation": {"type": "bool", "default": False},
             "filters": {
                 "type": "list",
                 "elements": "dict",
@@ -391,6 +392,7 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
         catalogs.append(USER_CATALOG)
 
     input_factory_settings = InputFactorySettings(allow_bgp_vrfs=get(PLUGIN_ARGS, "avd_catalogs.allow_bgp_vrfs"))
+    extra_fabric_validation = get(PLUGIN_ARGS, "avd_catalogs.extra_fabric_validation")
     output_dir = get(PLUGIN_ARGS, "avd_catalogs.output_dir")
     avd_catalogs_filters = get(PLUGIN_ARGS, "avd_catalogs.filters", default=[])
 
@@ -401,6 +403,7 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
         if STRUCTURED_CONFIGS is not None and FABRIC_DATA is not None:
             settings = AvdCatalogGenerationSettings(
                 input_factory_settings=input_factory_settings,
+                extra_fabric_validation=extra_fabric_validation,
                 output_dir=output_dir,
                 **get_device_catalog_filters(device, avd_catalogs_filters),
             )

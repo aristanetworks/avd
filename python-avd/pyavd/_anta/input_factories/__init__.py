@@ -17,7 +17,7 @@ from .interfaces import VerifyInterfacesStatusInputFactory, VerifyPortChannelsIn
 from .logging import VerifyLoggingErrorsInputFactory
 from .router_path_selection import VerifySpecificPathInputFactory
 from .routing_bgp import VerifyBGPPeerSessionInputFactory
-from .routing_generic import VerifyRoutingProtocolModelInputFactory
+from .routing_generic import VerifyRoutingProtocolModelInputFactory, VerifyRoutingTableEntryInputFactory
 from .security import VerifyAPIHttpsSSLInputFactory, VerifySpecificIPSecConnInputFactory
 from .system import VerifyReloadCauseInputFactory
 
@@ -35,6 +35,7 @@ __all__ = [
     "VerifyReachabilityInputFactory",
     "VerifyReloadCauseInputFactory",
     "VerifyRoutingProtocolModelInputFactory",
+    "VerifyRoutingTableEntryInputFactory",
     "VerifySpecificIPSecConnInputFactory",
     "VerifySpecificPathInputFactory",
     "VerifyStormControlDropsInputFactory",

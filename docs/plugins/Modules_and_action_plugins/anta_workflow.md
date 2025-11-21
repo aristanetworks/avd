@@ -46,6 +46,7 @@ The plugin offers the following capabilities:
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config_dir</samp> | str | optional | None |  | Path to the directory containing the AVD structured configurations per device. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config_suffix</samp> | str | optional | yml | Valid values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | File suffix for AVD structured configuration files. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;allow_bgp_vrfs</samp> | bool | optional | False |  | If `true`, generate tests for BGP peers in VRFs. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;extra_fabric_validation</samp> | bool | optional | False |  | If `true`, generate extra fabric-wide validation tests (e.g., reachability and routing tests). |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;filters</samp> | list | optional | None |  | Filters used to run or skip tests from the AVD-generated test catalogs. These filters do not apply to user-defined catalogs. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;device_list</samp> | list | optional | None |  | List of devices to apply the filters to. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;run_tests</samp> | list | optional | None |  | List of ANTA tests to only include in the AVD-generated catalogs. |

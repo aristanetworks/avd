@@ -360,6 +360,10 @@
             "status": "up"
           },
           {
+            "name": "Loopback66",
+            "status": "up"
+          },
+          {
             "name": "Port-Channel3",
             "status": "up"
           },
