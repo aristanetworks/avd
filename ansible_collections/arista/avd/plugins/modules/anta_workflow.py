@@ -120,11 +120,27 @@ options:
         description: Filters used to hide specific test statuses from the reports.
         type: dict
         suboptions:
-          hide_statuses:
-            description: List of test statuses to hide from the reports.
+          exclude_statuses:
+            description: List of test statuses to exclude from the reports.
             type: list
             elements: str
             choices: ["success", "failure", "error", "skipped", "unset"]
+      sorting:
+        description: Sorting options to apply to test results.
+        type: dict
+        suboptions:
+          status_priority:
+            description: List of test statuses that defines the primary grouping order of the test results.
+            type: list
+            elements: str
+            choices: ["error", "failure", "skipped", "success", "unset"]
+            default: ["error", "failure", "skipped", "success", "unset"]
+          sort_fields:
+            description: List of result attributes used to sort tests within each status group.
+            type: list
+            elements: str
+            choices: ["categories", "custom_field", "description", "device", "test"]
+            default: ["device", "categories", "test", "description", "custom_field"]
 seealso:
   - name: ANTA website
     description: Documentation for the ANTA test framework

@@ -310,7 +310,7 @@ By default, filters apply to all devices targeted by the run. `device_list` can 
 
 #### Report Filtering
 
-`anta_report_hide_statuses`: A list of test result statuses to hide from the generated reports. The available statuses are `success`, `failure`, `error`, `skipped`, and `unset`.
+`anta_report_exclude_statuses`: A list of test result statuses to exclude from the generated reports. The available statuses are `error`, `failure`, `skipped`, `success`, and `unset`.
 
 ```yaml
 # In the playbook
@@ -323,7 +323,41 @@ By default, filters apply to all devices targeted by the run. `device_list` can 
       import_role:
         name: arista.avd.anta_runner
       vars:
-        anta_report_hide_statuses: [ success, skipped ]
+        # Do not show success and skipped tests in the reports.
+        anta_report_exclude_statuses: [ success, skipped ]
+```
+
+#### Report Sorting
+
+`anta_report_status_priority`: A list of test statuses that defines the primary grouping order of the test results. Tests with statuses listed here appear at the top in the specified order. Any status not listed is pushed to the bottom of the reports and grouped alphabetically.
+
+- **Available values:** `error`, `failure`, `skipped`, `success`, `unset`
+- **Default:** `['error', 'failure', 'skipped', 'success', 'unset']`
+
+`anta_report_sort_fields`: A list of result attributes used to sort tests **within** each status group.
+
+- **Available values:** `categories`, `custom_field`, `description`, `device`, `test`
+- **Default:** `['device', 'categories', 'test', 'description', 'custom_field']`
+
+!!! note
+    `anta_report_status_priority` defines the primary grouping order. Within each status group, tests are sub-sorted using the attributes defined in `anta_report_sort_fields`.
+
+```yaml
+# In the playbook
+- name: Run ANTA
+  hosts: FABRIC
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Run ANTA on EOS devices
+      import_role:
+        name: arista.avd.anta_runner
+      vars:
+        # Prioritize success, then skipped tests. Unlisted statuses like 'error' falls to the bottom.
+        anta_report_status_priority: [ success, skipped ]
+
+        # Within each status group, sort by device, then test name.
+        anta_report_sort_fields: [ device, test ]
 ```
 
 ## AVD-generated Catalog Test Index

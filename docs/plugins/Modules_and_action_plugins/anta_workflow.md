@@ -63,7 +63,10 @@ The plugin offers the following capabilities:
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;md_output</samp> | str | optional | None |  | Path to the Markdown report file. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;json_output</samp> | str | optional | None |  | Path to the JSON report file. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;filters</samp> | dict | optional | None |  | Filters used to hide specific test statuses from the reports. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hide_statuses</samp> | list | optional | None | Valid values:<br>- <code>success</code><br>- <code>failure</code><br>- <code>error</code><br>- <code>skipped</code><br>- <code>unset</code> | List of test statuses to hide from the reports. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exclude_statuses</samp> | list | optional | None | Valid values:<br>- <code>success</code><br>- <code>failure</code><br>- <code>error</code><br>- <code>skipped</code><br>- <code>unset</code> | List of test statuses to exclude from the reports. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;sorting</samp> | dict | optional | None |  | Sorting options to apply to test results. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status_priority</samp> | list | optional | ['error', 'failure', 'skipped', 'success', 'unset'] | Valid values:<br>- <code>error</code><br>- <code>failure</code><br>- <code>skipped</code><br>- <code>success</code><br>- <code>unset</code> | List of test statuses that defines the primary grouping order of the test results. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sort_fields</samp> | list | optional | ['device', 'categories', 'test', 'description', 'custom_field'] | Valid values:<br>- <code>categories</code><br>- <code>custom_field</code><br>- <code>description</code><br>- <code>device</code><br>- <code>test</code> | List of result attributes used to sort tests within each status group. |
 
 ## See Also
 

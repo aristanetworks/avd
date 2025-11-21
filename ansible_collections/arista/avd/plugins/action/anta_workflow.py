@@ -27,7 +27,7 @@ if TYPE_CHECKING:
 PLUGIN_NAME = "arista.avd.anta_workflow"
 
 try:
-    from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, anta_runner
+    from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, TestResult, anta_runner
     from pyavd._utils import default, get, strip_empties_from_dict
     from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData, InputFactorySettings
     from pyavd.get_device_test_catalog import get_device_test_catalog
@@ -109,11 +109,22 @@ ARGUMENT_SPEC = {
             "json_output": {"type": "str"},
             "filters": {
                 "type": "dict",
+                "options": {"exclude_statuses": {"type": "list", "elements": "str", "choices": ["error", "failure", "skipped", "success", "unset"]}},
+            },
+            "sorting": {
+                "type": "dict",
                 "options": {
-                    "hide_statuses": {
+                    "status_priority": {
                         "type": "list",
                         "elements": "str",
-                        "choices": ["success", "failure", "error", "skipped", "unset"],
+                        "choices": ["error", "failure", "skipped", "success", "unset"],
+                        "default": ["error", "failure", "skipped", "success", "unset"],
+                    },
+                    "sort_fields": {
+                        "type": "list",
+                        "elements": "str",
+                        "choices": ["categories", "custom_field", "description", "device", "test"],
+                        "default": ["device", "categories", "test", "description", "custom_field"],
                     },
                 },
             },
@@ -247,7 +258,9 @@ def run_anta(devices: list[str]) -> ResultManager:
 
 def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[str, Any]) -> dict[str, Any]:
     """Build the ANTA reports from the batch results and return a summary dictionary containing ANTA test statistics."""
-    hide_statuses = get(report_settings, "filters.hide_statuses")
+    exclude_statuses = get(report_settings, "filters.exclude_statuses")
+    sort_fields = get(report_settings, "sorting.sort_fields")
+    status_priority = get(report_settings, "sorting.status_priority")
     csv_output_path = get(report_settings, "csv_output")
     md_output_path = get(report_settings, "md_output")
     json_output_path = get(report_settings, "json_output")
@@ -258,17 +271,17 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
         for result in manager.results:
             result_manager.add(result)
 
-    # Filter the results based on the hide_statuses if provided
-    if hide_statuses:
-        filtered_result_manager = result_manager.filter(hide=set(hide_statuses))
+    # Filter the results based on the exclude_statuses if provided
+    if exclude_statuses:
+        filtered_result_manager = result_manager.filter(hide=set(exclude_statuses))
         if not filtered_result_manager.results:
-            msg = f"The report is empty because all results were hidden by the provided status filters: {', '.join(hide_statuses)}"
+            msg = f"The report is empty because all results were hidden by the provided status filters: {', '.join(exclude_statuses)}"
             LOGGER.warning(msg)
     else:
         filtered_result_manager = result_manager
 
     # Sort the result manager
-    filtered_result_manager.sort(sort_by=["name", "categories", "test", "description", "result", "custom_field"])
+    sort_result_manager(filtered_result_manager, status_priority, sort_fields)
 
     # TODO: Consider using multiprocessing to generate reports in parallel
     if csv_output_path:
@@ -307,6 +320,54 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
             tests_summary["devices_with_test_errors"].append(device)
 
     return tests_summary
+
+
+def sort_result_manager(result_manager: ResultManager, status_priority: list[str], sort_fields: list[str]) -> None:
+    """
+    Sort the results within a ResultManager in place.
+
+    Sorting logic:
+    1. **Primary Sort:** Results are grouped by their test status based on the order defined in `status_priority`.
+        Statuses not listed in the priority list are pushed to the bottom and grouped alphabetically.
+    2. **Secondary Sort:** Within each status group, results are sorted lexicographically by the attributes defined in `sort_fields`.
+
+    Args:
+        result_manager: The ANTA result manager.
+        status_priority: List of statuses (e.g., ["success", "failure"]) to force to the top.
+        sort_fields: List of attributes to use for secondary sorting (e.g., ["categories", "device"]).
+    """
+    if not result_manager.results:
+        return
+
+    # Define the master list of all possible sort fields (in preferred tie-breaker order).
+    all_sort_fields = ["device", "categories", "test", "description", "custom_field"]
+
+    # Start with the user explicit fields.
+    final_sort_fields = sort_fields.copy()
+
+    # Append missing fields from the master list to serve as automatic tie-breakers.
+    for field in all_sort_fields:
+        if field not in final_sort_fields:
+            final_sort_fields.append(field)
+
+    # Map 'device' to 'name' to match TestResult attribute names.
+    normalized_sort_fields = ["name" if field == "device" else field for field in final_sort_fields]
+
+    # Create a rank map for the primary sort order.
+    status_rank_map = {status: idx for idx, status in enumerate(status_priority)}
+
+    def sort_key(result: TestResult) -> tuple[Any, ...]:
+        """Generate a comparison tuple for sorting."""
+        # Primary sort: Get rank from map. If status is unknown, use Infinity to push it to the end.
+        rank = status_rank_map.get(result.result, float("inf"))
+
+        # Secondary sort: Extract values from the sort_fields.
+        secondary_values = [getattr(result, field) or "" for field in normalized_sort_fields]
+
+        # Test status is also included to group unranked statuses alphabetically.
+        return (rank, str(result.result), *secondary_values)
+
+    result_manager.results = sorted(result_manager.results, key=sort_key)
 
 
 def update_ansible_result(result: dict[str, Any], anta_tests_summary: dict[str, Any], has_errors_ref: list[bool]) -> dict[str, Any]:

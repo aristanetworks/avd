@@ -27,3 +27,10 @@ anta_runner_dry_run: false
 
 # Structured configuration file format. Supported formats: yml, yaml, json.
 avd_structured_config_file_format: "yml"
+
+# ANTA runner reports sorting settings.
+# `anta_report_status_priority` defines the primary grouping order of the results by test status.
+# Unlisted statuses appear at the bottom, grouped alphabetically.
+# Within each status group, tests are sub-sorted using the attributes defined in `anta_report_sort_fields`.
+anta_report_status_priority: ["error", "failure", "skipped", "success", "unset"]
+anta_report_sort_fields: ["device", "categories", "test", "description", "custom_field"]
