@@ -4338,6 +4338,7 @@ interface Dps1
 | Ethernet82 | Switchport_tap_tool | tap-tool | - | - | - | - |
 | Ethernet83 | Test_tap_tool | tap-tool | - | - | - | - |
 | Ethernet84 | - | tap | - | - | - | - |
+| Ethernet86 | All_Transceiver_Commands | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -4410,9 +4411,10 @@ interface Dps1
 | Interface | Transceiver Frequency | Media Override | Application Override | Power Ignore |
 | --------- | --------------------- | -------------- | -------------------- | ------------ |
 | Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 | - |
-| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 | True |
+| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 | - |
 | Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd | - |
 | Ethernet73 | - | 100gbase-ar4 | 5 | - |
+| Ethernet86 | 190050.000 ghz | 100gbase-ar4 | 100gbase-srbd</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 | True |
 
 ##### Link Tracking Groups
 
@@ -5476,7 +5478,6 @@ interface Ethernet67
    transceiver application override 5 lanes start 1 end 1
    transceiver application override 5 lanes start 2 end 3
    transceiver frequency 190050.000
-   transceiver power ignore
 !
 interface Ethernet67.1
    description Test_encapsulation_dot1q
@@ -5724,6 +5725,17 @@ interface Ethernet84
 interface Ethernet85
    description DOT1X Testing - pae mode supplicant
    dot1x pae supplicant test_profile
+!
+interface Ethernet86
+   description All_Transceiver_Commands
+   no shutdown
+   switchport
+   transceiver media override 100gbase-ar4
+   transceiver power ignore
+   transceiver application override 100gbase-srbd
+   transceiver application override 5 lanes start 1 end 1
+   transceiver application override 5 lanes start 2 end 3
+   transceiver frequency 190050.000 ghz
 ```
 
 ### Port-Channel Interfaces
