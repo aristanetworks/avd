@@ -59,7 +59,7 @@ jobs:
   # ------------------------------------------- #
   # pyavd-utils test on platforms using wheels
   # ------------------------------------------- #
-  pyavd_utils_build_and_test_cross_platform:
+  pyavd_utils_test_cross_platform:
     name: pyavd-utils ${{ matrix.python }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: [pyavd_utils_build_wheels]
