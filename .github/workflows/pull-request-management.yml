@@ -819,11 +819,6 @@ jobs:
         # NOTE: Here we don't need tox-gh-action because we tell which environment to run explicitly.
         run: |
           pip install tox --upgrade
-      - name: Get the wheel name
-        shell: bash  # Required for windows-latest
-        run: |-
-          WHEEL_NAME=$(ls pyavd-utils/dist/*.whl | xargs basename)
-          echo "WHEEL_NAME=$WHEEL_NAME" >> $GITHUB_ENV
       - name: Run pytest via tox for the wheel
         # the environment will automatically pick up the downloaded wheel from pyavd-utils/dist
         run: |-
