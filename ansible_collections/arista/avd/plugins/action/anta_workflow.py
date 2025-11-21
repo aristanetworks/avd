@@ -339,24 +339,34 @@ def sort_result_manager(result_manager: ResultManager, status_priority: list[str
     if not result_manager.results:
         return
 
-    # Create a rank map for the primary sort order.
-    status_rank_map = {status: idx for idx, status in enumerate(status_priority)}
+    # Define the master list of all possible sort fields (in preferred tie-breaker order).
+    all_sort_fields = ["device", "categories", "test", "description", "custom_field"]
+
+    # Start with the user explicit fields.
+    final_sort_fields = sort_fields.copy()
+
+    # Append missing fields from the master list to serve as automatic tie-breakers.
+    for field in all_sort_fields:
+        if field not in final_sort_fields:
+            final_sort_fields.append(field)
 
     # Map 'device' to 'name' to match TestResult attribute names.
-    normalized_sort_fields = ["name" if field == "device" else field for field in sort_fields]
+    normalized_sort_fields = ["name" if field == "device" else field for field in final_sort_fields]
+
+    # Create a rank map for the primary sort order.
+    status_rank_map = {status: idx for idx, status in enumerate(status_priority)}
 
     def sort_key(result: TestResult) -> tuple[Any, ...]:
         """Generate a comparison tuple for sorting."""
         # Primary sort: Get rank from map. If status is unknown, use Infinity to push it to the end.
         rank = status_rank_map.get(result.result, float("inf"))
 
-        # Secondary sort: Extract values for the requested field.
+        # Secondary sort: Extract values from the sort_fields.
         secondary_values = [getattr(result, field) or "" for field in normalized_sort_fields]
 
-        # Status is also included to group unranked statuses alphabetically.
+        # Test status is also included to group unranked statuses alphabetically.
         return (rank, str(result.result), *secondary_values)
 
-    # Apply the sort.
     result_manager.results = sorted(result_manager.results, key=sort_key)
 
 
