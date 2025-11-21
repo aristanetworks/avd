@@ -102,7 +102,7 @@ class AvdDeviceData:
 
         # Return early if IPv6-only encapsulation is configured
         if vxlan_encap_ipv6 is True and vxlan_encap_ipv4 is not True:
-            return vtep_ip, mlag_vtep_ip
+            return None, None
 
         # Get the VTEP IP
         vxlan_source_interface = get(structured_config, "vxlan_interface.vxlan1.vxlan.source_interface")
