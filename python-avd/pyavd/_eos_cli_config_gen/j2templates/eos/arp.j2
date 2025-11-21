@@ -17,15 +17,20 @@
 arp aging timeout default {{ arp.aging.timeout_default }}
 {%     endif %}
 {%     if arp.static_entries is arista.avd.defined %}
+{%         set with_vrf_non_default = [] %}
+{%         set without_vrf = [] %}
 {#         Forming the vrf static entries and non vrf sta entries to render same as EOS 4.35.0F #}
-{%         set with_vrf_non_default = arp.static_entries | selectattr('vrf', 'arista.avd.defined') | rejectattr('vrf', 'arista.avd.defined', 'default') | arista.avd.natural_sort('ipv4_address') | arista.avd.natural_sort(sort_key='vrf', ignore_case=false) %}
-{%         set without_vrf = arp.static_entries | rejectattr('vrf', 'arista.avd.defined') %}
-{%         set with_vrf_default = arp.static_entries | selectattr('vrf', 'arista.avd.defined', 'default')  %}
-{%         set without_vrf_arp =  without_vrf | list + with_vrf_default | list %}
-{%         for entry in without_vrf_arp | arista.avd.natural_sort("ipv4_address") %}
+{%         for entry in arp.static_entries %}
+{%             if entry.vrf is not arista.avd.defined or entry.vrf is arista.avd.defined("default") %}
+{%                 do without_vrf.append(entry) %}
+{%             else %}
+{%                 do with_vrf_non_default.append(entry) %}
+{%             endif %}
+{%         endfor %}
+{%         for entry in without_vrf | arista.avd.natural_sort("ipv4_address") %}
 arp {{ entry.ipv4_address }} {{ entry.mac_address }} arpa
 {%         endfor %}
-{%         for entry in with_vrf_non_default | arista.avd.default([]) %}
+{%         for entry in with_vrf_non_default | arista.avd.natural_sort('ipv4_address') | arista.avd.natural_sort(sort_key='vrf', ignore_case=false) %}
 arp vrf {{ entry.vrf }} {{ entry.ipv4_address }} {{ entry.mac_address }} arpa
 {%         endfor %}
 {%     endif %}
