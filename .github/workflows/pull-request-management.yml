@@ -144,7 +144,7 @@ jobs:
   pyavd_utils_build_and_test_wheels:
     needs: [file-changes]
     if: (needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group') && github.repository == 'aristanetworks/avd'
-    uses: ./.github/workflow/build-pyavd-wheels.yml
+    uses: ./.github/workflows/build-pyavd-wheels.yml
 
   # -------------------------------------------- #
   # Python type checking not covered in pre-commit
