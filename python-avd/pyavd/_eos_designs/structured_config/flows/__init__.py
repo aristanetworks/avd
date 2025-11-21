@@ -58,7 +58,8 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                         vrf_name = "use_mgmt_interface_vrf"
                     case "inband":
                         vrf_name = "use_inband_mgmt_vrf"
-                    case "none":
+                    case _:
+                        # Only valid fallback is "none" because all other values are validated earlier.
                         msg = (
                             f"The VRF 'sflow_settings.destinations[destination={destination.destination}].vrf'"
                             " must be set when 'default_mgmt_method' is 'none'. Use 'default' for the default VRF."
