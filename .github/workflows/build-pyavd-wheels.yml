@@ -23,7 +23,6 @@ jobs:
   pyavd_utils_build_wheels:
     name: Build pyavd-utils wheel on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    needs: [file-changes]
     strategy:
       fail-fast: false
       matrix:
