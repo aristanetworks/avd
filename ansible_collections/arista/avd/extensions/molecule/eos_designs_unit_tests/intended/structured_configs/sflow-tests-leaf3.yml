@@ -50,16 +50,6 @@ ethernet_interfaces:
     enable: true
   switchport:
     enabled: false
-- name: Ethernet5
-  description: L2_sflow-settings-3_Ethernet1
-  shutdown: false
-  channel_group:
-    id: 5
-    mode: active
-  metadata:
-    peer: sflow-settings-3
-    peer_interface: Ethernet1
-    peer_type: l2leaf
 - name: Ethernet6
   description: L2_sflow-settings-2_Ethernet1
   shutdown: false
@@ -178,17 +168,6 @@ port_channel_interfaces:
     trunk:
       groups:
       - MLAG
-- name: Port-Channel5
-  description: L2_sflow-settings-3_Port-Channel1
-  shutdown: false
-  mlag: 5
-  sflow:
-    enable: true
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: 11,4092
 - name: Port-Channel6
   description: L2_sflow-settings-2_Port-Channel1
   shutdown: false
