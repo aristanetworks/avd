@@ -1,0 +1,28 @@
+---
+# Testing with default none management
+type: l2leaf
+
+default_mgmt_method: none
+
+sflow_settings:
+  polling_interval: 1
+  sample:
+    rate: 10
+  destinations:
+    - destination: 10.10.10.12
+      vrf: default
+
+l2leaf:
+  defaults:
+    platform: vEOS-lab
+    uplink_interfaces: ['Ethernet1', 'Ethernet2']
+    uplink_switches: ['sflow-tests-leaf3', 'sflow-tests-leaf4']
+    inband_mgmt_subnet: "10.254.254.0/24"
+
+  nodes:
+    - name: sflow-settings-3
+      id: 1
+      mgmt_ip: 192.168.0.201/24
+      uplink_switch_interfaces:
+        - Ethernet5
+        - Ethernet5

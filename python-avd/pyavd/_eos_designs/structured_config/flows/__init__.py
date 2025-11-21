@@ -52,11 +52,20 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
         for destination in natural_sort(destinations, "destination"):
             destination: EosDesigns.SflowSettings.DestinationsItem
             vrf_name = destination.vrf
-            if vrf_name is None:
-                vrf_name = self.shared_utils.default_mgmt_protocol_vrf
-                source_interface = self.shared_utils.default_mgmt_protocol_interface
+            if vrf_name == "use_default_mgmt_method_vrf":
+                match self.inputs.default_mgmt_method:
+                    case "oob":
+                        vrf_name = "use_mgmt_interface_vrf"
+                    case "inband":
+                        vrf_name = "use_inband_mgmt_vrf"
+                    case "none":
+                        msg = (
+                            f"The VRF 'sflow_settings.destinations[destination={destination.destination}].vrf'"
+                            " must be set when 'default_mgmt_method' is 'none'. Use 'default' for the default VRF."
+                        )
+                        raise AristaAvdInvalidInputsError(msg)
 
-            elif vrf_name == "use_mgmt_interface_vrf":
+            if vrf_name == "use_mgmt_interface_vrf":
                 if (self.shared_utils.node_config.mgmt_ip is None) and (self.shared_utils.node_config.ipv6_mgmt_ip is None):
                     msg = "Unable to configure sFlow source-interface with 'use_mgmt_interface_vrf' since 'mgmt_ip' or 'ipv6_mgmt_ip' are not set."
                     raise AristaAvdInvalidInputsError(msg)
@@ -86,7 +95,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
             else:
                 source_interface = None
 
-            if vrf_name is None or vrf_name == "default":
+            if vrf_name == "default":
                 # Add destination without VRF field
                 self.structured_config.sflow.destinations.append_new(destination=destination.destination, port=destination.port)
                 self.structured_config.sflow.source_interface = source_interface
