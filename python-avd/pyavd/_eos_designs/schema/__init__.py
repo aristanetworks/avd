@@ -25806,9 +25806,14 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
         """
-        Defines the minimum hardware specifications required for the device.
-        Used for validation by the
-        `anta_runner` role.
+        Defines hardware requirements for the device, validated by the `anta_runner` role.
+        For the `min_*`
+        keys:
+        - Undefined (Default): Validate that all available slots are inserted.
+        - Positive Integer:
+        Validate that the number of components inserted is at least the specified minimum.
+        - 0: Skip the
+        validation for this specific component.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -25877,9 +25882,14 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass
                        of AvdModel.
                     validate_hardware_inventory:
-                       Defines the minimum hardware specifications required for the device.
-                       Used for validation by the
-                       `anta_runner` role.
+                       Defines hardware requirements for the device, validated by the `anta_runner` role.
+                       For the `min_*`
+                       keys:
+                       - Undefined (Default): Validate that all available slots are inserted.
+                       - Positive Integer:
+                       Validate that the number of components inserted is at least the specified minimum.
+                       - 0: Skip the
+                       validation for this specific component.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -26581,9 +26591,14 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
         """
-        Defines the minimum hardware specifications required for the device.
-        Used for validation by the
-        `anta_runner` role.
+        Defines hardware requirements for the device, validated by the `anta_runner` role.
+        For the `min_*`
+        keys:
+        - Undefined (Default): Validate that all available slots are inserted.
+        - Positive Integer:
+        Validate that the number of components inserted is at least the specified minimum.
+        - 0: Skip the
+        validation for this specific component.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -26652,9 +26667,14 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass
                        of AvdModel.
                     validate_hardware_inventory:
-                       Defines the minimum hardware specifications required for the device.
-                       Used for validation by the
-                       `anta_runner` role.
+                       Defines hardware requirements for the device, validated by the `anta_runner` role.
+                       For the `min_*`
+                       keys:
+                       - Undefined (Default): Validate that all available slots are inserted.
+                       - Positive Integer:
+                       Validate that the number of components inserted is at least the specified minimum.
+                       - 0: Skip the
+                       validation for this specific component.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
