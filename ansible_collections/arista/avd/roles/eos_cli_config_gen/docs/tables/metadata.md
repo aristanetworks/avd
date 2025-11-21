@@ -17,7 +17,7 @@
     | [<samp>&nbsp;&nbsp;fabric_name</samp>](## "metadata.fabric_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;serial_number</samp>](## "metadata.serial_number") | String |  |  |  | Serial Number of the device.<br>Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role. |
     | [<samp>&nbsp;&nbsp;hardware_requirements</samp>](## "metadata.hardware_requirements") | Dictionary |  |  |  | Defines hardware requirements for the device, validated by the `anta_runner` role.<br>For the `min_*` keys:<br>- Undefined (Default): Validate that all available slots are inserted.<br>- Positive Integer: Validate that the number of components inserted is at least the specified minimum.<br>- 0: Skip the validation for this specific component. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "metadata.hardware_requirements.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "metadata.hardware_requirements.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required for the device. Set to 0 to skip validation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_fans</samp>](## "metadata.hardware_requirements.min_fans") | Integer |  |  |  | Minimum number of fans required for the device. Set to 0 to skip validation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "metadata.hardware_requirements.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. Set to 0 to skip validation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_line_cards</samp>](## "metadata.hardware_requirements.min_line_cards") | Integer |  |  |  | Minimum number of line cards required for the device. Set to 0 to skip validation. |
@@ -169,7 +169,7 @@
       # - 0: Skip the validation for this specific component.
       hardware_requirements:
 
-        # Minimum number of power supplies required. Set to 0 to skip validation.
+        # Minimum number of power supplies required for the device. Set to 0 to skip validation.
         min_power_supplies: <int>
 
         # Minimum number of fans required for the device. Set to 0 to skip validation.

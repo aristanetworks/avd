@@ -45,8 +45,8 @@ class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
     """
     Input factory class for the `VerifyInventory` test.
 
-    Generates test inputs to verify that the expected quantity of hardware components are installed. Uses the `hardware_requirements.min_<component>` keys
-    from metadata to define the requirements for each component.
+    Generates test inputs to verify that the expected quantity of hardware components are installed.
+    Uses the `hardware_requirements.min_<component>` keys from metadata to define the requirements for each component.
 
     For each component:
       - Undefined (Default): Validate that all available slots are inserted.
@@ -56,12 +56,14 @@ class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
 
     def _get_hardware_requirement(self, requirement: int | None) -> int | Literal["all"] | None:
         """
-        Helper to determine the hardware requirements.
+        Normalize a hardware requirement value.
+
+        Args:
+            requirement: The raw requirement value from metadata.
 
         Returns:
-            "all" if the requirement is None.
-            None if the requirement is 0.
-            Otherwise, returns the integer value of the requirement.
+            "all" if the input is None (implies validating all available slots), None if the input is 0
+            (implies skipping validation), otherwise the original requirement value.
         """
         if requirement is None:
             return "all"

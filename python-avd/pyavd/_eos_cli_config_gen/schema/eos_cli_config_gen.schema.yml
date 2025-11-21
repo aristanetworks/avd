@@ -9257,8 +9257,8 @@ keys:
         keys:
           min_power_supplies:
             type: int
-            description: Minimum number of power supplies required. Set to 0 to skip
-              validation.
+            description: Minimum number of power supplies required for the device.
+              Set to 0 to skip validation.
           min_fans:
             type: int
             description: Minimum number of fans required for the device. Set to 0

@@ -23539,7 +23539,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 },
             }
             min_power_supplies: int | None
-            """Minimum number of power supplies required. Set to 0 to skip validation."""
+            """Minimum number of power supplies required for the device. Set to 0 to skip validation."""
             min_fans: int | None
             """Minimum number of fans required for the device. Set to 0 to skip validation."""
             min_supervisors: int | None
@@ -23576,7 +23576,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        min_power_supplies: Minimum number of power supplies required. Set to 0 to skip validation.
+                        min_power_supplies: Minimum number of power supplies required for the device. Set to 0 to skip validation.
                         min_fans: Minimum number of fans required for the device. Set to 0 to skip validation.
                         min_supervisors: Minimum number of supervisor modules required for the device. Set to 0 to skip validation.
                         min_line_cards: Minimum number of line cards required for the device. Set to 0 to skip validation.
