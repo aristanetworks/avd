@@ -23519,7 +23519,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class Metadata(AvdModel):
         """Subclass of AvdModel."""
 
-        class HardwareRequirements(AvdModel):
+        class ValidateHardware(AvdModel):
             """Subclass of AvdModel."""
 
             class TransceiverManufacturers(AvdList[str]):
@@ -23528,6 +23528,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             TransceiverManufacturers._item_type = str
 
             _fields: ClassVar[dict] = {
+                "enabled": {"type": bool, "default": True},
                 "min_power_supplies": {"type": int},
                 "min_fans": {"type": int},
                 "min_supervisors": {"type": int},
@@ -23538,6 +23539,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "default": lambda cls: coerce_type(["Arista Networks", "Arastra, Inc."], target_type=cls),
                 },
             }
+            enabled: bool
+            """
+            Enable hardware validation for the device.
+            If `false`, all hardware tests are skipped, therefore the
+            other keys in `validate_hardware` are ignored.
+
+            Default value: `True`
+            """
             min_power_supplies: int | None
             """Minimum number of power supplies required for the device. Set to 0 to skip validation."""
             min_fans: int | None
@@ -23562,6 +23571,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
+                    enabled: bool | UndefinedType = Undefined,
                     min_power_supplies: int | None | UndefinedType = Undefined,
                     min_fans: int | None | UndefinedType = Undefined,
                     min_supervisors: int | None | UndefinedType = Undefined,
@@ -23570,12 +23580,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     transceiver_manufacturers: TransceiverManufacturers | UndefinedType = Undefined,
                 ) -> None:
                     """
-                    HardwareRequirements.
+                    ValidateHardware.
 
 
                     Subclass of AvdModel.
 
                     Args:
+                        enabled:
+                           Enable hardware validation for the device.
+                           If `false`, all hardware tests are skipped, therefore the
+                           other keys in `validate_hardware` are ignored.
                         min_power_supplies: Minimum number of power supplies required for the device. Set to 0 to skip validation.
                         min_fans: Minimum number of fans required for the device. Set to 0 to skip validation.
                         min_supervisors: Minimum number of supervisor modules required for the device. Set to 0 to skip validation.
@@ -24776,7 +24790,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "dc_name": {"type": str},
             "fabric_name": {"type": str},
             "serial_number": {"type": str},
-            "hardware_requirements": {"type": HardwareRequirements},
+            "validate_hardware": {"type": ValidateHardware},
             "cv_tags": {"type": CvTags},
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
@@ -24797,16 +24811,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Used only for documentation and deployment purposes. It is used by the
         'cv_deploy' role.
         """
-        hardware_requirements: HardwareRequirements
+        validate_hardware: ValidateHardware
         """
-        Defines hardware requirements for the device, validated by the `anta_runner` role.
-        For the `min_*`
-        keys:
-        - Undefined (Default): Validate that all available slots are inserted.
-        - Positive Integer:
-        Validate that the number of components inserted is at least the specified minimum.
-        - 0: Skip the
-        validation for this specific component.
+        Settings for hardware validation performed by the `anta_runner` role.
+        If `enabled` is set to
+        `false`, all other keys in this dictionary are ignored.
+
+        For the `min_*` keys:
+        - Undefined
+        (Default): Validate that all available slots are populated.
+        - Positive Integer: Validate that the
+        number of components inserted is at least the specified minimum.
+        - 0: Skip the validation for this
+        specific component.
 
         Subclass of AvdModel.
         """
@@ -24848,7 +24865,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 dc_name: str | None | UndefinedType = Undefined,
                 fabric_name: str | None | UndefinedType = Undefined,
                 serial_number: str | None | UndefinedType = Undefined,
-                hardware_requirements: HardwareRequirements | UndefinedType = Undefined,
+                validate_hardware: ValidateHardware | UndefinedType = Undefined,
                 cv_tags: CvTags | UndefinedType = Undefined,
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
@@ -24873,15 +24890,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Serial Number of the device.
                        Used only for documentation and deployment purposes. It is used by the
                        'cv_deploy' role.
-                    hardware_requirements:
-                       Defines hardware requirements for the device, validated by the `anta_runner` role.
-                       For the `min_*`
-                       keys:
-                       - Undefined (Default): Validate that all available slots are inserted.
-                       - Positive Integer:
-                       Validate that the number of components inserted is at least the specified minimum.
-                       - 0: Skip the
-                       validation for this specific component.
+                    validate_hardware:
+                       Settings for hardware validation performed by the `anta_runner` role.
+                       If `enabled` is set to
+                       `false`, all other keys in this dictionary are ignored.
+
+                       For the `min_*` keys:
+                       - Undefined
+                       (Default): Validate that all available slots are populated.
+                       - Positive Integer: Validate that the
+                       number of components inserted is at least the specified minimum.
+                       - 0: Skip the validation for this
+                       specific component.
 
                        Subclass of AvdModel.
                     cv_tags: Subclass of AvdModel.

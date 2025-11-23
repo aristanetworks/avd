@@ -43,6 +43,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyEnvironmentSystemCooling,
+        input_factory=VerifyEnvironmentSystemCoolingInputFactory,
     ),
     TestSpec(
         test_class=VerifyFileSystemUtilization,
@@ -150,6 +151,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyTemperature,
+        input_factory=VerifyTemperatureInputFactory,
     ),
     TestSpec(
         test_class=VerifyTransceiversManufacturers,
@@ -157,6 +159,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyTransceiversTemperature,
+        input_factory=VerifyTransceiversTemperatureInputFactory,
     ),
     TestSpec(test_class=VerifyVxlanConfigSanity, conditional_keys=[StructuredConfigKey.VXLAN1_INTERFACE]),
     TestSpec(

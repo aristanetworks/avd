@@ -250,14 +250,13 @@ metadata:
   platform: custom_hardware_test_platform
   dc_name: DC1
   fabric_name: FABRIC
-  hardware_requirements:
+  validate_hardware:
     min_power_supplies: 2
     min_fans: 4
     min_supervisors: 0
     min_line_cards: 0
     transceiver_manufacturers:
-    - Arista mfg
-    - Arista transceivers
+    - Third-party vendor
 mlag_configuration:
   domain_id: DC1_L3_LEAF1
   local_interface: Vlan4094
