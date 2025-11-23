@@ -100,10 +100,3 @@ class AntaTestInputFactory(ABC, Generic[Input]):
             self.logger_adapter.debug(LogMessage.PEER_INTERFACE_SHUTDOWN, interface=interface, peer=peer, peer_interface=peer_interface)
 
         return shutdown_status
-
-    def is_hardware_validation_enabled(self) -> bool:
-        """Check if hardware validation is enabled in the metadata."""
-        if not self.structured_config.metadata.validate_hardware.enabled:
-            self.logger_adapter.debug(LogMessage.HARDWARE_VALIDATION_DISABLED)
-            return False
-        return True
