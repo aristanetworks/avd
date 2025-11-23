@@ -17,46 +17,52 @@ from anta.tests.hardware import (
 )
 
 from ._base_classes import AntaTestInputFactory
+from ._decorators import skip_if_hardware_validation_disabled
 
 
 class VerifyEnvironmentCoolingInputFactory(AntaTestInputFactory[VerifyEnvironmentCooling.Input]):
     """Input factory class for the `VerifyEnvironmentCooling` test."""
 
+    @skip_if_hardware_validation_disabled
     def create(self) -> list[VerifyEnvironmentCooling.Input] | None:
         """Create a list of inputs for the `VerifyEnvironmentCooling` test."""
-        return [VerifyEnvironmentCooling.Input(states=["ok"])] if self.is_hardware_validation_enabled() else None
+        return [VerifyEnvironmentCooling.Input(states=["ok"])]
 
 
 class VerifyEnvironmentPowerInputFactory(AntaTestInputFactory[VerifyEnvironmentPower.Input]):
     """Input factory class for the `VerifyEnvironmentPower` test."""
 
+    @skip_if_hardware_validation_disabled
     def create(self) -> list[VerifyEnvironmentPower.Input] | None:
         """Create a list of inputs for the `VerifyEnvironmentPower` test."""
-        return [VerifyEnvironmentPower.Input(states=["ok"])] if self.is_hardware_validation_enabled() else None
+        return [VerifyEnvironmentPower.Input(states=["ok"])]
 
 
 class VerifyEnvironmentSystemCoolingInputFactory(AntaTestInputFactory[VerifyEnvironmentSystemCooling.Input]):
     """Input factory class for the `VerifyEnvironmentSystemCooling` test."""
 
+    @skip_if_hardware_validation_disabled
     def create(self) -> list[VerifyEnvironmentSystemCooling.Input] | None:
         """Create a list of inputs for the `VerifyEnvironmentSystemCooling` test."""
-        return [VerifyEnvironmentSystemCooling.Input()] if self.is_hardware_validation_enabled() else None
+        return [VerifyEnvironmentSystemCooling.Input()]
 
 
 class VerifyTemperatureInputFactory(AntaTestInputFactory[VerifyTemperature.Input]):
     """Input factory class for the `VerifyTemperature` test."""
 
+    @skip_if_hardware_validation_disabled
     def create(self) -> list[VerifyTemperature.Input] | None:
         """Create a list of inputs for the `VerifyTemperature` test."""
-        return [VerifyTemperature.Input()] if self.is_hardware_validation_enabled() else None
+        return [VerifyTemperature.Input()]
 
 
 class VerifyTransceiversTemperatureInputFactory(AntaTestInputFactory[VerifyTransceiversTemperature.Input]):
     """Input factory class for the `VerifyTransceiversTemperature` test."""
 
+    @skip_if_hardware_validation_disabled
     def create(self) -> list[VerifyTransceiversTemperature.Input] | None:
         """Create a list of inputs for the `VerifyTransceiversTemperature` test."""
-        return [VerifyTransceiversTemperature.Input()] if self.is_hardware_validation_enabled() else None
+        return [VerifyTransceiversTemperature.Input()]
 
 
 class VerifyTransceiversManufacturersInputFactory(AntaTestInputFactory[VerifyTransceiversManufacturers.Input]):
@@ -68,13 +74,10 @@ class VerifyTransceiversManufacturersInputFactory(AntaTestInputFactory[VerifyTra
     ['Arista Networks', 'Arastra, Inc.'] if not specified.
     """
 
+    @skip_if_hardware_validation_disabled
     def create(self) -> list[VerifyTransceiversManufacturers.Input] | None:
         """Create a list of inputs for the `VerifyTransceiversManufacturers` test."""
-        return (
-            [VerifyTransceiversManufacturers.Input(manufacturers=list(self.structured_config.metadata.validate_hardware.transceiver_manufacturers))]
-            if self.is_hardware_validation_enabled()
-            else None
-        )
+        return [VerifyTransceiversManufacturers.Input(manufacturers=list(self.structured_config.metadata.validate_hardware.transceiver_manufacturers))]
 
 
 class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
@@ -107,6 +110,7 @@ class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
             return None
         return requirement
 
+    @skip_if_hardware_validation_disabled
     def create(self) -> list[VerifyInventory.Input] | None:
         """Create a list of inputs for the `VerifyInventory` test."""
         validate_hardware = self.structured_config.metadata.validate_hardware
@@ -117,4 +121,4 @@ class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
             line_cards=self._get_hardware_requirement(validate_hardware.min_line_cards),
             supervisors=self._get_hardware_requirement(validate_hardware.min_supervisors),
         )
-        return [VerifyInventory.Input(requirements=input_req)] if self.is_hardware_validation_enabled() else None
+        return [VerifyInventory.Input(requirements=input_req)]
