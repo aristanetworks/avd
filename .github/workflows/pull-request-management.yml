@@ -19,6 +19,8 @@ env:
   # Set -vvv is ACTIONS_STEP_DEBUG is set
   # Apparently it is set in secrets when running with debug
   ANSIBLE_VERBOSITY: ${{ secrets.ACTIONS_STEP_DEBUG && 3 || 0 }}
+  # Do the same for CIBW to be able to troubleshoot errors from CI
+  CIBW_BUILD_VERBOSITY: ${{ secrets.ACTIONS_STEP_DEBUG && 3 || 0 }}
   AVD_NEVER_RUN_FROM_SOURCE: 1
   PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
   ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
@@ -136,6 +138,47 @@ jobs:
           name: pyavd
           path: ./python-avd/dist/*.whl
 
+  # ------------------------------------------------------------ #
+  # Build cross platform pyavd-utils wheels and upload artifacts
+  # ------------------------------------------------------------ #
+  pyavd_utils_build_wheels:
+    name: Build pyavd-utils wheel on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: [file-changes]
+    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
+    strategy:
+      fail-fast: false
+      matrix:
+        # macos-14 covers x64 and macos-latest covers arm
+        # note that at some point x64 won't be available anymore as per
+        # https://github.com/actions/runner-images/issues/13046
+        # the next update will be macos-15-intel
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - windows-latest
+          - macos-14
+          - macos-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install cibuildwheel
+        # See pyproject.toml for config
+        # TODO: could use the action instead but need approval
+        run: |
+          pip install --group build_wheel
+      - name: Build wheels
+        # Not using working-directory because manylinux uses a container
+        # and will not copy the parent Cargo.toml and we will be sad
+        run: |-
+          python -m cibuildwheel --output-dir pyavd-utils/dist pyavd-utils
+      - uses: actions/upload-artifact@v5
+        with:
+          name: pyavd-utils-wheels-${{ matrix.os }}
+          path: pyavd-utils/dist/*.whl
+
   # -------------------------------------------- #
   # Python type checking not covered in pre-commit
   # -------------------------------------------- #
@@ -146,6 +189,7 @@ jobs:
       - uses: actions/checkout@v6
       - name: Install pyavd and Ansible requirements
         # Adding pyavd-utils as editable to force a build of the .so files. The pyavd-utils is already added to the python path in the pyright config.
+        # TODO: Use the built wheel instead if possible
         run: |
           pip install -r ansible_collections/arista/avd/requirements-dev.txt -e pyavd-utils/ --upgrade
       - name: PyRight static type checker
@@ -228,10 +272,6 @@ jobs:
       - name: Check GIT status
         run: |
           sh .github/check-git-status.sh
-      # - uses: actions/upload-artifact@v5
-      #   with:
-      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
-      #     path: ${PWD}/ansible_collections/arista/avd/extensions/molecule/${{ matrix.avd_scenario }}
 
   # ----------------------------------- #
   # EOS Design MOLECULE
@@ -584,7 +624,7 @@ jobs:
           ansible-lint --force-color --strict -v
 
   # ----------------------------------- #
-  # Test of pyavd
+  # Test of pyavd & pyavd-utils
   # ----------------------------------- #
   test_pyavd:
     name: Test pyavd (Python ${{ matrix.python }}, Suite ${{ matrix.suite.name }})
@@ -757,13 +797,13 @@ jobs:
         if: |
           matrix.os == 'ubuntu-latest'
 
-  # -------------------------------------------- #
-  # pyavd-utils build and test on other platforms
-  # -------------------------------------------- #
+  # ------------------------------------------- #
+  # pyavd-utils test on platforms using wheels
+  # ------------------------------------------- #
   pyavd_utils_build_and_test_cross_platform:
     name: pyavd-utils ${{ matrix.python }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    needs: [file-changes]
+    needs: [pyavd_utils_build_wheels]
     if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
     strategy:
       fail-fast: false
@@ -773,24 +813,27 @@ jobs:
         # https://github.com/actions/runner-images/issues/13046
         # the next update will be macos-15-intel
         os:
+          - ubuntu-latest
           - ubuntu-24.04-arm
           - windows-latest
           - macos-14
           - macos-latest
         python: ["3.10", "3.11", "3.12", "3.13"]
     steps:
-      - uses: actions/checkout@v6
-        # This is needed for arm machines since they don't ship with 2024 edition.
-      - name: Upgrade rust and cargo
-        run: rustup update stable
+      - uses: actions/checkout@v5
+      - name: Download {{ matrix.os }} wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-wheels-${{ matrix.os }}
+          path: pyavd-utils/dist
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
       - name: Install tox
+        # NOTE: Here we don't need tox-gh-action because we tell which environment to run explicitly.
         run: |
-          pip install tox tox-gh-actions --upgrade
-      - name: Run pytest via tox
-        # Running tox  which will build the package (including rust).
-        # For most runs without an environment set here. The environment is mapped with the tox gh-action plugin.
+          pip install tox --upgrade
+      - name: Run pytest via tox for the wheel
+        # the environment will automatically pick up the downloaded wheel from pyavd-utils/dist
         run: |-
-          tox -- pyavd-utils/tests
+          tox run -e pyavd-utils
