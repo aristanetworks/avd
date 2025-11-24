@@ -210,7 +210,7 @@ class UtilsMixin(Protocol):
         address_family.activate = True
         if self.inputs.underlay_rfc5549:
             address_family.next_hop.address_family_ipv6._update(enabled=True, originate=True)
-    
+
     def get_vrf_and_source_interface(
         self: SharedUtilsProtocol,
         vrf_input: str | None,
