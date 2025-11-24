@@ -4509,6 +4509,60 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class TftpServer(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Option150Ipv4(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Option150Ipv4._item_type = str
+
+                _fields: ClassVar[dict] = {
+                    "file_ipv4": {"type": str},
+                    "file_ipv6": {"type": str},
+                    "option_66_ipv4": {"type": str},
+                    "option_150_ipv4": {"type": Option150Ipv4},
+                }
+                file_ipv4: str | None
+                """Name of TFTP file for IPv4 clients."""
+                file_ipv6: str | None
+                """Name of TFTP file for IPv6 clients."""
+                option_66_ipv4: str | None
+                """IPv4 address or server FQDN for TFTP option 66."""
+                option_150_ipv4: Option150Ipv4
+                """
+                List of IPv4 addresses for TFTP option 150.
+
+                Subclass of AvdList with `str` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        file_ipv4: str | None | UndefinedType = Undefined,
+                        file_ipv6: str | None | UndefinedType = Undefined,
+                        option_66_ipv4: str | None | UndefinedType = Undefined,
+                        option_150_ipv4: Option150Ipv4 | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        TftpServer.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            file_ipv4: Name of TFTP file for IPv4 clients.
+                            file_ipv6: Name of TFTP file for IPv6 clients.
+                            option_66_ipv4: IPv4 address or server FQDN for TFTP option 66.
+                            option_150_ipv4:
+                               List of IPv4 addresses for TFTP option 150.
+
+                               Subclass of AvdList with `str` items.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "subnet": {"type": str},
                 "reservations": {"type": Reservations},
@@ -4517,6 +4571,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "dns_servers": {"type": DnsServers},
                 "ranges": {"type": Ranges},
                 "lease_time": {"type": LeaseTime},
+                "tftp_server": {"type": TftpServer},
             }
             subnet: str
             """IPv4 subnet."""
@@ -4535,6 +4590,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `RangesItem` items."""
             lease_time: LeaseTime
             """Subclass of AvdModel."""
+            tftp_server: TftpServer
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -4548,6 +4605,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     dns_servers: DnsServers | UndefinedType = Undefined,
                     ranges: Ranges | UndefinedType = Undefined,
                     lease_time: LeaseTime | UndefinedType = Undefined,
+                    tftp_server: TftpServer | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv4SubnetsItem.
@@ -4567,6 +4625,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         dns_servers: Subclass of AvdList with `str` items.
                         ranges: Subclass of AvdList with `RangesItem` items.
                         lease_time: Subclass of AvdModel.
+                        tftp_server: Subclass of AvdModel.
 
                     """
 
@@ -4677,6 +4736,60 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class TftpServer(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Option150Ipv4(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Option150Ipv4._item_type = str
+
+                _fields: ClassVar[dict] = {
+                    "file_ipv4": {"type": str},
+                    "file_ipv6": {"type": str},
+                    "option_66_ipv4": {"type": str},
+                    "option_150_ipv4": {"type": Option150Ipv4},
+                }
+                file_ipv4: str | None
+                """Name of TFTP file for IPv4 clients."""
+                file_ipv6: str | None
+                """Name of TFTP file for IPv6 clients."""
+                option_66_ipv4: str | None
+                """IPv4 address or server FQDN for TFTP option 66."""
+                option_150_ipv4: Option150Ipv4
+                """
+                List of IPv4 addresses for TFTP option 150.
+
+                Subclass of AvdList with `str` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        file_ipv4: str | None | UndefinedType = Undefined,
+                        file_ipv6: str | None | UndefinedType = Undefined,
+                        option_66_ipv4: str | None | UndefinedType = Undefined,
+                        option_150_ipv4: Option150Ipv4 | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        TftpServer.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            file_ipv4: Name of TFTP file for IPv4 clients.
+                            file_ipv6: Name of TFTP file for IPv6 clients.
+                            option_66_ipv4: IPv4 address or server FQDN for TFTP option 66.
+                            option_150_ipv4:
+                               List of IPv4 addresses for TFTP option 150.
+
+                               Subclass of AvdList with `str` items.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "subnet": {"type": str},
                 "reservations": {"type": Reservations},
@@ -4685,6 +4798,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "dns_servers": {"type": DnsServers},
                 "ranges": {"type": Ranges},
                 "lease_time": {"type": LeaseTime},
+                "tftp_server": {"type": TftpServer},
             }
             subnet: str
             """IPv6 subnet."""
@@ -4703,6 +4817,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `RangesItem` items."""
             lease_time: LeaseTime
             """Subclass of AvdModel."""
+            tftp_server: TftpServer
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -4716,6 +4832,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     dns_servers: DnsServers | UndefinedType = Undefined,
                     ranges: Ranges | UndefinedType = Undefined,
                     lease_time: LeaseTime | UndefinedType = Undefined,
+                    tftp_server: TftpServer | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6SubnetsItem.
@@ -4735,6 +4852,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         dns_servers: Subclass of AvdList with `str` items.
                         ranges: Subclass of AvdList with `RangesItem` items.
                         lease_time: Subclass of AvdModel.
+                        tftp_server: Subclass of AvdModel.
 
                     """
 
