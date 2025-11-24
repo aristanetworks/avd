@@ -42,7 +42,7 @@
 {%                 do target_ids.append("Serial-Number") %}
 {%             endif %}
 {%             do target_ids.extend(transport.target.target_ids | arista.avd.default([])) %}
-{%             if target_ids == [] %}
+{%             if target_ids | length == 0 %}
 {%                 set target_id = "-" %}
 {%             else %}
 {%                 set target_id = target_ids | join(' ') %}

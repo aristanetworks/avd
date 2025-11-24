@@ -83,8 +83,8 @@
 {%                     do apps.append( app_details.name ) %}
 {%                 endif %}
 {%             endfor %}
-{%             if apps == [] %}
-{%                 set apps = "-" %}
+{%             if apps | length == 0 %}
+{%                 set apps = ["-"] %}
 {%             endif %}
 | {{ category.name }} | {{ apps | join('<br>') }} |
 {%         endfor %}

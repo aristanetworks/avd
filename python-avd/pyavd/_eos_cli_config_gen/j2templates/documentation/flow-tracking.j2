@@ -61,8 +61,8 @@
 {%                         do applied_on.append(port_channel_interface.name) %}
 {%                     endif %}
 {%                 endfor %}
-{%                 if applied_on == [] %}
-{%                     set applied_on = "-" %}
+{%                 if applied_on | length == 0 %}
+{%                     set applied_on = ["-"] %}
 {%                 endif %}
 | {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ mpls }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} | {{ table_size }} |
 {%             endfor %}
@@ -114,8 +114,8 @@ Software export of IPFIX data records enabled.
 {%                         do applied_on.append(port_channel_interface.name) %}
 {%                     endif %}
 {%                 endfor %}
-{%                 if applied_on == [] %}
-{%                     set applied_on = "-" %}
+{%                 if applied_on | length == 0 %}
+{%                     set applied_on = ["-"] %}
 {%                 endif %}
 | {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} |
 {%             endfor %}

@@ -129,8 +129,8 @@
 {%                     do path_groups_list.append(entry.name ~ " (" ~ priority ~ ")") %}
 {%                 endfor %}
 {%             endfor %}
-{%             if path_groups_list == [] %}
-{%                 set path_groups_list = "-" %}
+{%             if path_groups_list | length == 0 %}
+{%                 set path_groups_list = ["-"] %}
 {%             endif %}
 | {{ load_balance_policy.name }} | {{ jitter }} | {{ latency }} | {{ loss_rate }} | {{ path_groups_list | join("<br>") }} | {{ lowest_hop_count }} |
 {%         endfor %}

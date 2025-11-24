@@ -369,7 +369,7 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 10 | 10.255.1.1 | enabled | Ethernet3.10 <br> | disabled | default | disabled | disabled | - | - | - | - |
+| 10 | 10.255.1.1 | enabled | Ethernet3.10 | disabled | default | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Router Redistribution
 

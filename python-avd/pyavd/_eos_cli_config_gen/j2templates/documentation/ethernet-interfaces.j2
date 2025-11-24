@@ -539,8 +539,8 @@
 {%                 if vrid.ipv4.secondary_addresses is arista.avd.defined %}
 {%                     do row_ipv4_virtual_ips.extend(vrid.ipv4.secondary_addresses) %}
 {%                 endif %}
-{%                 if row_ipv4_virtual_ips == [] %}
-{%                     set row_ipv4_virtual_ips = "-" %}
+{%                 if row_ipv4_virtual_ips | length == 0 %}
+{%                     set row_ipv4_virtual_ips = ["-"] %}
 {%                 endif %}
 {%                 set row_ipv4_version = vrid.ipv4.version | arista.avd.default('2') %}
 {%                 set row_ipv6_virtual_ips = vrid.ipv6.addresses | arista.avd.default('-') | join(', ') %}
