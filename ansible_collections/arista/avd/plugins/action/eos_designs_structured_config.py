@@ -16,16 +16,25 @@ from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import ANSIBLE_ABOVE_2_19, ActionPluginVars, AvdSwitchFactsDefaultDict, get_templar, write_file
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
+    ANSIBLE_ABOVE_2_19,
+    ActionPluginVars,
+    AvdSwitchFactsDefaultDict,
+    build_result_message,
+    get_templar,
+    parse_load_inputs_result,
+    write_file,
+)
 
 PLUGIN_NAME = "arista.avd.eos_designs_structured_config"
 try:
-    from pyavd._eos_designs.structured_config import get_structured_config
+    from pyavd import load_inputs
+    from pyavd._eos_designs.structured_config import get_structured_config_v2
+    from pyavd._schema.avdschema import AvdSchema
     from pyavd._utils import get, merge, strip_null_from_data
     from pyavd._utils import template as templater
 except ImportError as e:
-    get_structured_config = get = merge = RaiseOnUse(
+    load_inputs = get_structured_config_v2 = get = merge = RaiseOnUse(
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
@@ -84,32 +93,31 @@ class ActionModule(ActionBase):
         # Initialise defaultdict that loads facts from json files on demand.
         all_facts = AvdSwitchFactsDefaultDict(avd_switch_facts)
 
-        # Load schema tools for input schema
-        input_schema_tools = AvdSchemaTools(
-            hostname=hostname,
-            ansible_display=display,
-            schema_id="eos_designs",
-            validation_mode=validation_mode,
+        # Load input vars into the EosDesigns data class.
+        load_inputs_result = load_inputs(host_hostvars)
+
+        data_validation_errors = parse_load_inputs_result(
+            load_inputs_result=load_inputs_result, hostname=hostname, ansible_display=display, validation_mode=validation_mode
         )
+
+        if data_validation_errors or load_inputs_result.inputs is None:
+            # Quickly continue if data validation failed
+            result["failed"] = True
+            result["msg"] = build_result_message(data_validation_errors)
+            return result
 
         # Get Structured Config from modules in PyAVD using internal api so we can supply our own templar
         try:
-            structured_config = get_structured_config(
+            structured_config = get_structured_config_v2(
                 hostname=hostname,
+                inputs=load_inputs_result.inputs,
                 all_facts=all_facts,
                 hostvars=host_hostvars,
-                input_schema_tools=input_schema_tools,
-                result=result,
                 templar=self.templar,
                 digital_twin=digital_twin,
             )
         except Exception as error:
             raise AnsibleActionFail(message=str(error)) from error
-
-        if result.get("failed") or not structured_config:
-            # Something failed in schema validation.
-            result["failed"] = True
-            return result
 
         output = structured_config._as_dict()
 
@@ -121,13 +129,8 @@ class ActionModule(ActionBase):
 
         # eos_designs_custom_templates can contain a list of jinja templates to run after PyAVD
         if eos_designs_custom_templates:
-            # Load schema tools for output schema
-            output_schema_tools = AvdSchemaTools(
-                hostname=hostname,
-                ansible_display=display,
-                schema_id="eos_cli_config_gen",
-                validation_mode=validation_mode,
-            )
+            # Load output schema used by merger on output of custom templates
+            output_schema = AvdSchema(schema_id="eos_cli_config_gen")
 
             for template_item in eos_designs_custom_templates:
                 template_options = template_item.get("options", {})
@@ -154,7 +157,7 @@ class ActionModule(ActionBase):
                     template_result_data = [template_result_data]
 
                 try:
-                    merge(output, *template_result_data, list_merge=list_merge, schema=output_schema_tools.avdschema)
+                    merge(output, *template_result_data, list_merge=list_merge, schema=output_schema)
                 except Exception as error:
                     raise AnsibleActionFail(message=str(error)) from error
 

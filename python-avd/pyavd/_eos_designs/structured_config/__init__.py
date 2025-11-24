@@ -103,6 +103,41 @@ def get_structured_config(
     # Load input vars into the EosDesigns data class.
     inputs = EosDesigns._from_dict(hostvars)
 
+    return get_structured_config_v2(hostname=hostname, inputs=inputs, all_facts=all_facts, hostvars=hostvars, templar=templar, digital_twin=digital_twin)
+
+
+def get_structured_config_v2(
+    *,
+    hostname: str,
+    inputs: EosDesigns,
+    all_facts: Mapping[str, EosDesignsFacts],
+    hostvars: Mapping | None = None,
+    templar: Templar | None = None,
+    digital_twin: bool = False,
+) -> EosCliConfigGen:
+    """
+    Generate structured_config for a device.
+
+    Args:
+        hostname:
+            The hostname of the device.
+        inputs:
+            Validated input variables loaded into an EosDesigns instance, as returned from `pyavd.load_inputs()`
+        all_facts:
+            Map of all devices and their facts.
+        hostvars:
+            The variables for the device exposed to the templar.
+        templar:
+            The templar to use for rendering templates.
+        digital_twin:
+            Optional flag to enable avd_digital_twin_mode.
+
+    Returns:
+        The structured config as an EosCliConfigGen instance or None if validation failed.
+    """
+    if hostvars is None:
+        hostvars = {}
+
     # Initialize SharedUtils class to be passed to each python_module below.
     shared_utils = SharedUtils(hostname=hostname, hostvars=hostvars, inputs=inputs, peer_facts=all_facts, templar=templar, digital_twin=digital_twin)
 

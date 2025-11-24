@@ -7,7 +7,9 @@ from collections import ChainMap
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
+    from pyavd._eos_designs.schema import EosDesigns
 
 
 def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict[str, EosDesignsFacts], digital_twin: bool = False) -> dict:
@@ -56,3 +58,27 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict[st
         raise AristaAvdError(msg)
 
     return structured_config._as_dict()
+
+
+def get_device_structured_config_v2(hostname: str, inputs: EosDesigns, avd_facts: dict[str, EosDesignsFacts], digital_twin: bool = False) -> EosCliConfigGen:
+    """
+    Build and return the AVD structured configuration for one device.
+
+    Args:
+        hostname: Hostname of device.
+        inputs: Inputs loaded into the EosDesigns as returned from `pyavd.load_inputs`.
+        avd_facts: Dictionary of avd_facts as returned from `pyavd.get_avd_facts`.
+        digital_twin: PREVIEW: Optional flag to enable digital-twin mode.
+
+    Returns:
+        Device Structured Configuration loaded into the EosCliConfigGen class.
+    """
+    from ._eos_designs.structured_config import get_structured_config_v2  # noqa: PLC0415
+
+    return get_structured_config_v2(
+        hostname=hostname,
+        inputs=inputs,
+        all_facts=avd_facts,
+        templar=None,
+        digital_twin=digital_twin,
+    )

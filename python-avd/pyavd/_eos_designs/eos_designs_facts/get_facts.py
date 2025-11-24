@@ -21,8 +21,8 @@ if TYPE_CHECKING:
 
 
 def get_facts(
-    all_inputs: dict[str, EosDesigns],
-    all_hostvars: Mapping[str, Mapping],
+    all_inputs: Mapping[str, EosDesigns],
+    all_hostvars: Mapping[str, Mapping] | None = None,
     templar: Templar | None = None,
     pool_manager: PoolManager | None = None,
     digital_twin: bool = False,
@@ -31,8 +31,8 @@ def get_facts(
     Generate facts for all devices.
 
     Args:
-        all_inputs: EosDesigns instances for each device.
-        all_hostvars: Dictionaries with validated input vars.
+        all_inputs: Validated input variables loaded into EosDesigns instances for each device.
+        all_hostvars: Dictionaries with variables exposed to custom jinja templates for each device.
         templar: Templater used to render custom jinja templates.
         pool_manager: instance of pool-manager used for dynamic assignments like node ids.
         digital_twin: Optional flag to enable avd_digital_twin_mode.
@@ -48,6 +48,9 @@ def get_facts(
 
     mlag_groups: dict[str, set[str]] = {}
     """Placeholder for map of mlag_group to devices. Used to identify MLAG pairs from the mlag_group variable."""
+
+    if all_hostvars is None:
+        all_hostvars = {}
 
     for hostname, inputs in all_inputs.items():
         hostvars = all_hostvars.get(hostname, {})

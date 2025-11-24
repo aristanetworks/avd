@@ -1,8 +1,16 @@
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from __future__ import annotations
 
-from collections.abc import Sequence
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from typing_extensions import Self
+
+    from pyavd_utils.validation import Deprecation, Violation
 
 
 class AristaAvdError(Exception):
@@ -16,7 +24,7 @@ class AristaAvdError(Exception):
     def _json_path_to_string(self, json_path: Sequence[str | int]) -> str:
         path = ""
         for index, elem in enumerate(json_path):
-            if isinstance(elem, int):
+            if isinstance(elem, int) or elem.isnumeric():
                 path += f"[{elem}]"
             else:
                 if index == 0:
@@ -55,17 +63,24 @@ class AvdSchemaError(AristaAvdError):
 
 
 class AvdValidationError(AristaAvdError):
-    def __init__(self, message: str = "Schema Error", path: Sequence[str | int] | None = None) -> None:
-        if path is not None:
-            self.path = self._json_path_to_string(path)
-            message = f"'Validation Error: {self.path}': {message}"
+    path: str
+    violation: str
+
+    def __init__(self, violation: str, path: Sequence[str | int]) -> None:
+        self.violation = violation
+        self.path = self._json_path_to_string(path)
+        message = f"'Validation Error: {self.path}': {violation}"
         super().__init__(message)
 
+    @classmethod
+    def from_violation(cls, violation: Violation) -> Self:
+        return cls(violation=violation.message, path=violation.path)
 
-class AvdDeprecationWarning(AristaAvdError):  # noqa: N818
+
+class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
     def __init__(
         self,
-        key: list[str | int],
+        key: Sequence[str | int],
         new_key: str | None = None,
         remove_in_version: str | None = None,
         remove_after_date: str | None = None,
@@ -103,7 +118,11 @@ class AvdDeprecationWarning(AristaAvdError):  # noqa: N818
 
     def _as_validation_error(self) -> AvdValidationError:
         """Converting AvdDeprecationWarning to AvdValidationError."""
-        return AvdValidationError(message=self.message, path=self.path.split("."))
+        return AvdValidationError(violation=self.message, path=self.path.split("."))
+
+    @classmethod
+    def from_deprecation(cls, deprecation: Deprecation) -> Self:
+        return cls(key=deprecation.path, new_key=deprecation.replacement, remove_in_version=deprecation.version, url=deprecation.url)
 
 
 class AristaAvdDuplicateDataError(AristaAvdError):
