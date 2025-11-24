@@ -390,9 +390,16 @@ radius-server attribute 32 include-in-access-req format myformat
 
 Authorization for configuration commands is disabled.
 
+#### AAA Authorization Privilege Levels Summary
+
+| Privilege Level | User Stores |
+| --------------- | ----------- |
+| all | group TACACS |
+
 #### AAA Authorization Device Configuration
 
 ```eos
+aaa authorization commands all default group TACACS
 no aaa authorization config-commands
 !
 ```

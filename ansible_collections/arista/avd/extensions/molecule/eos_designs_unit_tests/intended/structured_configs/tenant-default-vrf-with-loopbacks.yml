@@ -128,10 +128,12 @@ vlan_internal_order:
 vlans:
 - id: 1008
   name: SVI_1
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 10
   name: storage_prod
-  tenant: SIT
+  metadata:
+    tenant: SIT
 vrfs:
 - name: MGMT
   ip_routing: false

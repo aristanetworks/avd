@@ -137,16 +137,19 @@ vlan_internal_order:
 vlans:
 - id: 100
   name: VLAN100
-  tenant: DUPLICATE_TENANT1
+  metadata:
+    tenant: DUPLICATE_TENANT1
 - id: 200
   name: VLAN200
-  tenant: DUPLICATE_TENANT1
+  metadata:
+    tenant: DUPLICATE_TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
-  tenant: DUPLICATE_TENANT1
+  metadata:
+    tenant: DUPLICATE_TENANT1
 vxlan_interface:
   vxlan1:
     description: duplicate-vrfs_VTEP

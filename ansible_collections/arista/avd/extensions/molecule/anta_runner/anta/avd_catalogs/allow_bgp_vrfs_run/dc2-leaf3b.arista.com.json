@@ -167,6 +167,13 @@
           "tags": [
             "dc2-leaf3b.arista.com"
           ]
+        },
+        "requirements": {
+          "power_supplies": "all",
+          "fan_trays": "all",
+          "fabric_cards": "all",
+          "line_cards": "all",
+          "supervisors": "all"
         }
       }
     },

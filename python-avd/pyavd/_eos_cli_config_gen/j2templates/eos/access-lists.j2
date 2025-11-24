@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - access lists #}
-{% for access_list in access_lists | arista.avd.natural_sort('name') %}
+{% for access_list in access_lists | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 ip access-list {{ access_list.name }}
 {%     if access_list.counters_per_entry is arista.avd.defined(true) %}
