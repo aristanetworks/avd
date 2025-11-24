@@ -721,6 +721,7 @@ Transceiver dom-threshold file: default
 
 | Name | Interfaces |
 | ---- | ---------- |
+| GLOBAL_SET2 | Ethernet1 |
 | HOST_SET2 | Loopback2-4, Loopback10-12 |
 
 #### Probing Configuration
@@ -736,6 +737,7 @@ Transceiver dom-threshold file: default
 monitor connectivity
    interval 5
    shutdown
+   interface set GLOBAL_SET2 Ethernet1
    interface set HOST_SET2 Loopback2-4, Loopback10-12
    local-interfaces HOST_SET2 default
 ```
