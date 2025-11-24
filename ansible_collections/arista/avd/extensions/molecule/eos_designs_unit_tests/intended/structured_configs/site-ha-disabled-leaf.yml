@@ -323,25 +323,31 @@ vlan_internal_order:
 vlans:
 - id: 100
   name: VLAN100
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - id: 101
   name: VLAN101
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - id: 666
   name: VLAN666
-  tenant: TenantC
+  metadata:
+    tenant: TenantC
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: IT
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: PROD
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: ATTRACTED-VRF-FROM-UPLINK
   ip_routing: true
-  tenant: TenantC
+  metadata:
+    tenant: TenantC
 vxlan_interface:
   vxlan1:
     description: site-ha-disabled-leaf_VTEP

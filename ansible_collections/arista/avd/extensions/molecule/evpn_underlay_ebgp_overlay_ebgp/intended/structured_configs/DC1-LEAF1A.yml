@@ -423,34 +423,43 @@ vlan_internal_order:
 vlans:
 - id: 130
   name: Tenant_A_APP_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 131
   name: Tenant_A_APP_Zone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 120
   name: Tenant_A_WEB_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 121
   name: Tenant_A_WEBZone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 122
   name: Tenant_a_WEB_DHCP_no_source_int_no_vrf
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 123
   name: Tenant_a_WEB_DHCP_source_int_no_vrf
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 124
   name: Tenant_a_WEB_DHCP_vrf_no_source_int
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_A_APP_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_A_WEB_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 vxlan_interface:
   vxlan1:
     description: DC1-LEAF1A_VTEP

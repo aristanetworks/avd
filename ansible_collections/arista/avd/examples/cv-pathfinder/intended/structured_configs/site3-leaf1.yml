@@ -111,10 +111,12 @@ vlan_internal_order:
 vlans:
 - id: 666
   name: BLUE-TEST
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 - id: 42
   name: RED-TEST
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 vrfs:
 - name: MGMT
   ip_routing: false

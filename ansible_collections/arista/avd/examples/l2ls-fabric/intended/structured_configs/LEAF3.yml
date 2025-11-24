@@ -166,13 +166,16 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 10
   name: BLUE-NET
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 30
   name: ORANGE-NET
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 vrfs:
 - name: MGMT
   ip_routing: false
