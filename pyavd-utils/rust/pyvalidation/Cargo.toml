@@ -8,7 +8,7 @@ license.workspace = true
 pyo3-build-config = { workspace = true }
 
 [dev-dependencies]
-criterion = "0.3"
+criterion = "0.7.0"
 
 [dependencies]
 avdschema = { path = "../../../rust/avdschema", features = ["dump_load_files"] }
