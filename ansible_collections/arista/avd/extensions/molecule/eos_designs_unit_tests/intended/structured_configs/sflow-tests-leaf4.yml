@@ -425,29 +425,35 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 11
   name: VLAN11
-  tenant: SFLOW
+  metadata:
+    tenant: SFLOW
 - id: 3000
   name: MLAG_L3_VRF_VRF1
   trunk_groups:
   - MLAG
-  tenant: SFLOW
+  metadata:
+    tenant: SFLOW
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
-  tenant: SFLOW
+  metadata:
+    tenant: SFLOW
 vxlan_interface:
   vxlan1:
     description: sflow-tests-leaf4_VTEP

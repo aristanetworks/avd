@@ -103,7 +103,8 @@ vlan_internal_order:
 vlans:
 - id: 210
   name: Tenant_B_OP_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false

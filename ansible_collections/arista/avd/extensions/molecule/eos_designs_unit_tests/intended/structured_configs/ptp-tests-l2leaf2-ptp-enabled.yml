@@ -86,7 +86,8 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VLAN11
-  tenant: PTP
+  metadata:
+    tenant: PTP
 vrfs:
 - name: MGMT
   ip_routing: false
