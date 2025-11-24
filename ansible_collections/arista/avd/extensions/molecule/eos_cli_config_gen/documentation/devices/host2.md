@@ -390,9 +390,16 @@ radius-server attribute 32 include-in-access-req format myformat
 
 Authorization for configuration commands is disabled.
 
+#### AAA Authorization Privilege Levels Summary
+
+| Privilege Level | User Stores |
+| --------------- | ----------- |
+| all | group TACACS |
+
 #### AAA Authorization Device Configuration
 
 ```eos
+aaa authorization commands all default group TACACS
 no aaa authorization config-commands
 !
 ```
@@ -714,6 +721,7 @@ Transceiver dom-threshold file: default
 
 | Name | Interfaces |
 | ---- | ---------- |
+| GLOBAL_SET2 | Ethernet1 |
 | HOST_SET2 | Loopback2-4, Loopback10-12 |
 
 #### Probing Configuration
@@ -729,6 +737,7 @@ Transceiver dom-threshold file: default
 monitor connectivity
    interval 5
    shutdown
+   interface set GLOBAL_SET2 Ethernet1
    interface set HOST_SET2 Loopback2-4, Loopback10-12
    local-interfaces HOST_SET2 default
 ```
