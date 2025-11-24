@@ -28842,38 +28842,38 @@ class EosDesigns(EosDesignsRootModel):
         class DestinationsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"destination": {"type": str}, "port": {"type": int}, "vrf": {"type": str}}
+            _fields: ClassVar[dict] = {"destination": {"type": str}, "port": {"type": int}, "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"}}
             destination: str
             """sFlow destination name or IP address."""
             port: int | None
             """UDP Port number. The default port number for sFlow is 6343."""
-            vrf: str | None
+            vrf: str
             """
-            If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
-            The
-            value of `vrf` will be interpreted according to these rules:
-            - `use_mgmt_interface_vrf` will
-            configure the sFlow destination under the VRF set with `mgmt_interface_vrf` and set the
-            `mgmt_interface` as sFlow source-interface.
-              An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip`
-            are not configured for the device.
-            - `use_inband_mgmt_vrf` will configure the sFlow destination
-            under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as sFlow source-
-            interface.
-              An error will be raised if inband management is not configured for the device.
+            VRF Name.
+            The value of `vrf` will be interpreted according to these rules:
+            -
+            `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with
+            `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.
+              An error will be
+            raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf`
+            will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the
+            `inband_mgmt_interface` as sFlow source-interface.
+              An error will be raised if inband management is
+            not configured for the device.
+            - `use_default_mgmt_method_vrf` will configure the VRF and source-
+            interface for one of the two options above depending on the value of `default_mgmt_method`.
             - Any
             other string will be used directly as the VRF name. Remember to set the
             `sflow_settings.vrfs[].source_interface` if needed.
+
+            Default value: `"use_default_mgmt_method_vrf"`
             """
 
             if TYPE_CHECKING:
 
                 def __init__(
-                    self,
-                    *,
-                    destination: str | UndefinedType = Undefined,
-                    port: int | None | UndefinedType = Undefined,
-                    vrf: str | None | UndefinedType = Undefined,
+                    self, *, destination: str | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined, vrf: str | UndefinedType = Undefined
                 ) -> None:
                     """
                     DestinationsItem.
@@ -28885,18 +28885,20 @@ class EosDesigns(EosDesignsRootModel):
                         destination: sFlow destination name or IP address.
                         port: UDP Port number. The default port number for sFlow is 6343.
                         vrf:
-                           If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
-                           The
-                           value of `vrf` will be interpreted according to these rules:
-                           - `use_mgmt_interface_vrf` will
-                           configure the sFlow destination under the VRF set with `mgmt_interface_vrf` and set the
-                           `mgmt_interface` as sFlow source-interface.
-                             An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip`
-                           are not configured for the device.
-                           - `use_inband_mgmt_vrf` will configure the sFlow destination
-                           under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as sFlow source-
-                           interface.
-                             An error will be raised if inband management is not configured for the device.
+                           VRF Name.
+                           The value of `vrf` will be interpreted according to these rules:
+                           -
+                           `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with
+                           `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.
+                             An error will be
+                           raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf`
+                           will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the
+                           `inband_mgmt_interface` as sFlow source-interface.
+                             An error will be raised if inband management is
+                           not configured for the device.
+                           - `use_default_mgmt_method_vrf` will configure the VRF and source-
+                           interface for one of the two options above depending on the value of `default_mgmt_method`.
                            - Any
                            other string will be used directly as the VRF name. Remember to set the
                            `sflow_settings.vrfs[].source_interface` if needed.

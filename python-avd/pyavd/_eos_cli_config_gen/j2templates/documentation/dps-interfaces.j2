@@ -33,6 +33,9 @@
 {%         if dps_interface.tcp_mss_ceiling.direction is arista.avd.defined %}
 {%             do tcp_mss_settings.append("Direction: " ~ dps_interface.tcp_mss_ceiling.direction) %}
 {%         endif %}
+{%         if tcp_mss_settings | length == 0 %}
+{%             set tcp_mss_settings = ["-"] %}
+{%         endif %}
 | {{ dps_interface.name }} | {{ ip_address }} | {{ shutdown }} | {{ mtu }} | {{ flow_trackers | join("<br>") }} | {{ tcp_mss_settings | join("<br>") }} |
 {%     endfor %}
 

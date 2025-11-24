@@ -247,7 +247,7 @@ spanning-tree mst 0 priority 16384
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -2474,7 +2474,7 @@ interface Ethernet98/4
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel971 | L2_SPINES_Port-Channel501 | trunk | 10,310,320,330 | - | - | - | - | 971 | - |
 | Port-Channel973 | L2_LEAF3C_Port-Channel971 | trunk | 10,310,320,330 | - | - | - | - | 973 | - |
 | Port-Channel974 | L2_LEAF3D_Port-Channel971 | trunk | 10,310,320,330 | - | - | - | - | 974 | - |
@@ -2529,8 +2529,8 @@ interface Port-Channel983
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan10 | Inband Management | default | 1500 | False |
 | Vlan4094 | MLAG | default | 1500 | False |
 
@@ -2538,8 +2538,8 @@ interface Port-Channel983
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan10 |  default  |  10.10.10.10/24  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  192.168.0.11/31  |  -  |  -  |  -  |  -  |
+| Vlan10 | default | 10.10.10.10/24 | - | - | - | - |
+| Vlan4094 | default | 192.168.0.11/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
