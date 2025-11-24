@@ -10671,16 +10671,20 @@ vlan_internal_order:
 vlans:
 - id: 210
   name: IDF2-Data
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 220
   name: IDF2-Voice
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 230
   name: IDF2-Guest
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 10
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

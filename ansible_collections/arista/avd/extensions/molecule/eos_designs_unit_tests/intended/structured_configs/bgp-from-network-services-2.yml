@@ -199,20 +199,24 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 3099
   name: MLAG_L3_VRF_default
   trunk_groups:
   - MLAG
-  tenant: TEST1
+  metadata:
+    tenant: TEST1
 - id: 3100
   name: MLAG_L3_VRF_validate_bgp_peers
   trunk_groups:
   - MLAG
-  tenant: TEST1
+  metadata:
+    tenant: TEST1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: validate_bgp_peers
   ip_routing: true
-  tenant: TEST1
+  metadata:
+    tenant: TEST1

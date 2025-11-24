@@ -21219,14 +21219,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
 
             _fields: ClassVar[dict] = {"certificate": {"type": str}, "private_key": {"type": str}}
-            certificate: str | None
+            certificate: str
             """Name of certificate; private key must also be specified."""
-            private_key: str | None
+            private_key: str
             """Name of private key; certificate must also be specified."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, certificate: str | None | UndefinedType = Undefined, private_key: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, certificate: str | UndefinedType = Undefined, private_key: str | UndefinedType = Undefined) -> None:
                     """
                     ProtocolHttpsCertificate.
 
@@ -25030,7 +25030,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": str}}
             name: str
-            interfaces: str | None
+            interfaces: str
             """
             Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
             Multiple interface
@@ -25039,7 +25039,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | UndefinedType = Undefined) -> None:
                     """
                     InterfaceSetsItem.
 
@@ -25467,8 +25467,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 PasswordType: TypeAlias = Literal["0", "7", "8a"]
                 _fields: ClassVar[dict] = {"username": {"type": str}, "password": {"type": str}, "password_type": {"type": str, "default": "7"}}
-                username: str | None
-                password: str | None
+                username: str
+                password: str
                 """Encrypted password using the `password_type`."""
                 password_type: PasswordType
                 """Default value: `"7"`"""
@@ -25478,8 +25478,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        username: str | None | UndefinedType = Undefined,
-                        password: str | None | UndefinedType = Undefined,
+                        username: str | UndefinedType = Undefined,
+                        password: str | UndefinedType = Undefined,
                         password_type: PasswordType | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -67513,6 +67513,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Metadata(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"tenant": {"type": str}}
+            tenant: str | None
+            """Key only used for documentation or validation purposes."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, tenant: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    Metadata.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        tenant: Key only used for documentation or validation purposes.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "id": {"type": int},
             "name": {"type": str},
@@ -67521,7 +67542,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "trunk_groups": {"type": TrunkGroups},
             "e_tree": {"type": ETree},
             "private_vlan": {"type": PrivateVlan},
-            "tenant": {"type": str},
+            "metadata": {"type": Metadata},
         }
         id: int
         """VLAN ID."""
@@ -67536,8 +67557,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         private_vlan: PrivateVlan
         """Subclass of AvdModel."""
-        tenant: str | None
-        """Key only used for documentation or validation purposes."""
+        metadata: Metadata
+        """
+        The data under `metadata` is used for documentation, validation or integration purposes.
+        It will not
+        affect the generated EOS configuration.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -67551,7 +67578,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 e_tree: ETree | UndefinedType = Undefined,
                 private_vlan: PrivateVlan | UndefinedType = Undefined,
-                tenant: str | None | UndefinedType = Undefined,
+                metadata: Metadata | UndefinedType = Undefined,
             ) -> None:
                 """
                 VlansItem.
@@ -67567,7 +67594,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     trunk_groups: Subclass of AvdList with `str` items.
                     e_tree: Subclass of AvdModel.
                     private_vlan: Subclass of AvdModel.
-                    tenant: Key only used for documentation or validation purposes.
+                    metadata:
+                       The data under `metadata` is used for documentation, validation or integration purposes.
+                       It will not
+                       affect the generated EOS configuration.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -67640,13 +67672,34 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class VrfsItem(AvdModel):
         """Subclass of AvdModel."""
 
+        class Metadata(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"tenant": {"type": str}}
+            tenant: str | None
+            """Key only used for documentation or validation purposes."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, tenant: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    Metadata.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        tenant: Key only used for documentation or validation purposes.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "description": {"type": str},
             "ip_routing": {"type": bool},
             "ipv6_routing": {"type": bool},
             "ip_routing_ipv6_interfaces": {"type": bool},
-            "tenant": {"type": str},
+            "metadata": {"type": Metadata},
         }
         name: str
         """VRF Name."""
@@ -67654,8 +67707,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ip_routing: bool | None
         ipv6_routing: bool | None
         ip_routing_ipv6_interfaces: bool | None
-        tenant: str | None
-        """Key only used for documentation or validation purposes."""
+        metadata: Metadata
+        """
+        The data under `metadata` is used for documentation, validation or integration purposes.
+        It will not
+        affect the generated EOS configuration.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -67667,7 +67726,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_routing: bool | None | UndefinedType = Undefined,
                 ipv6_routing: bool | None | UndefinedType = Undefined,
                 ip_routing_ipv6_interfaces: bool | None | UndefinedType = Undefined,
-                tenant: str | None | UndefinedType = Undefined,
+                metadata: Metadata | UndefinedType = Undefined,
             ) -> None:
                 """
                 VrfsItem.
@@ -67681,7 +67740,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_routing: ip_routing
                     ipv6_routing: ipv6_routing
                     ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces
-                    tenant: Key only used for documentation or validation purposes.
+                    metadata:
+                       The data under `metadata` is used for documentation, validation or integration purposes.
+                       It will not
+                       affect the generated EOS configuration.
+
+                       Subclass of AvdModel.
 
                 """
 

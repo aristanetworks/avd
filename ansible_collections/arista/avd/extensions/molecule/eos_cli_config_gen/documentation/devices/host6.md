@@ -48,7 +48,7 @@ interface Management1
 #### SNMP Hosts Configuration
 
 | Host | VRF | Community | Username | Authentication level | SNMP Version |
-| ---- |---- | --------- | -------- | -------------------- | ------------ |
+| ---- | --- | --------- | -------- | -------------------- | ------------ |
 | 10.6.75.121 | MGMT | SNMP-COMMUNITY-1 | - | - | 1 |
 | 10.6.75.121 | MGMT | SNMP-COMMUNITY-2 | - | - | 2c |
 
