@@ -386,7 +386,7 @@ jobs:
         # pip upgrade to get dependency groups
         run: |
           pip install uv
-          uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution lowest-direct --index /tmp/pyavd > /tmp/pyavd/min_requirements.txt
+          uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution lowest-direct --find-links /tmp/pyavd > /tmp/pyavd/min_requirements.txt
           cat /tmp/pyavd/min_requirements.txt
           pip install pip --upgrade
           python -m pip install --group molecule
