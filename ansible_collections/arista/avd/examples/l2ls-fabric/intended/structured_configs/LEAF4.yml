@@ -102,6 +102,8 @@ metadata:
   is_deployed: true
   platform: cEOSLab
   fabric_name: DC1
+  validate_hardware:
+    enabled: false
 mlag_configuration:
   domain_id: RACK2
   local_interface: Vlan4094

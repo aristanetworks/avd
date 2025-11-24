@@ -191,6 +191,8 @@ metadata:
   platform: VEOS
   rack: rackA
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
 ntp:
   local_interface:
     name: Management1

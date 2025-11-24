@@ -119,6 +119,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
 mpls:
   ip: true
   ldp:

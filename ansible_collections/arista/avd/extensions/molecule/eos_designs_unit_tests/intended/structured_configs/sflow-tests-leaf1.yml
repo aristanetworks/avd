@@ -98,6 +98,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: SFLOW_TESTS
+  validate_hardware:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

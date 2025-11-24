@@ -82,6 +82,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
 ntp:
   local_interface:
     name: Management1
