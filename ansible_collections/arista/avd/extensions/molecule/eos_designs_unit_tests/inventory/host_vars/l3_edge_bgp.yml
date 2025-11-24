@@ -9,6 +9,11 @@ spine:
       loopback_ipv4_pool: 1.2.3.4/24
       bgp_as: 65000
 
+bgp_peer_groups:
+  ipv4_underlay_peers:
+    structured_config:
+      description: Test_for_bgp_peer_groups
+
 l3_edge:
   p2p_links_profiles:
     - name: profile1

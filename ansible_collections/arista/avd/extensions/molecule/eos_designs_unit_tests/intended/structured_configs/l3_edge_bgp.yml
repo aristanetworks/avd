@@ -247,6 +247,7 @@ router_bgp:
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
+    description: Test_for_bgp_peer_groups
     send_community: all
     maximum_routes: 12000
   neighbors:
