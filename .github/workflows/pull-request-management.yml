@@ -45,7 +45,7 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - run: echo '${{ toJSON(needs) }}' | jq -e 'to_entries | all(.value.result == "success" or .value.result == "skipped")'
 
   file-changes:
@@ -58,7 +58,7 @@ jobs:
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
       rust_src_or_ci_changed: ${{ steps.filter.outputs.rust_src_or_ci_changed }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -117,7 +117,7 @@ jobs:
     outputs:
       wheel_file: ${{ steps.build_step.outputs.wheel_file }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: |
@@ -143,7 +143,7 @@ jobs:
     name: Python Linting not covered in pre-commit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install pyavd and Ansible requirements
         # Adding pyavd-utils as editable to force a build of the .so files. The pyavd-utils is already added to the python path in the pyright config.
         run: |
@@ -169,7 +169,7 @@ jobs:
           - "3.12"
           - "3.13"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python 3
         uses: actions/setup-python@v6
         with:
@@ -208,7 +208,7 @@ jobs:
           - avd_scenario: "eos_cli_config_gen"
             ansible_version: "ansible-core==2.16.0"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
         with:
@@ -280,7 +280,7 @@ jobs:
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.19.0"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
         with:
@@ -308,7 +308,7 @@ jobs:
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true' ||
       github.event_name == 'merge_group'
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
         with:
@@ -362,7 +362,7 @@ jobs:
           - avd_scenario: "anta_runner"
             ansible_version: "ansible-core==2.16.0"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
         with:
@@ -401,7 +401,7 @@ jobs:
             pip_installation: "--user https://github.com/ansible/ansible/archive/devel.tar.gz"
             skip_test: "--skip-test ansible-doc"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python 3
         uses: actions/setup-python@v6
         with:
@@ -429,7 +429,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python 3
         uses: actions/setup-python@v6
         with:
@@ -460,7 +460,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [file-changes]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python 3
         uses: actions/setup-python@v6
         with:
@@ -495,7 +495,7 @@ jobs:
         with:
           python-version: |
             3.12
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install Python & Ansible requirements
         run: |
           # distlib is required when using manifest
@@ -521,7 +521,7 @@ jobs:
         with:
           python-version: |
             3.11
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install Python & Ansible requirements
         run: |
           pip install "ansible-core==2.16.0"
@@ -553,7 +553,7 @@ jobs:
     env:
       ANSIBLE_COLLECTIONS_PATH: ${{ github.workspace }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python 3
         uses: actions/setup-python@v6
         with:
@@ -618,7 +618,7 @@ jobs:
             pytest_args: >-
               python-avd/tests/pyavd/molecule_scenarios/test_negative_eos_designs.py
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python 3
         uses: actions/setup-python@v6
         with:
@@ -657,7 +657,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [test_pyavd]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python 3.11
         uses: actions/setup-python@v6
         with:
@@ -715,7 +715,7 @@ jobs:
           - macos-14
           - macos-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         # This is needed for arm machines since they don't ship with 2024 edition.
       - name: Upgrade rust and cargo
         run: rustup update stable
@@ -779,7 +779,7 @@ jobs:
           - macos-latest
         python: ["3.10", "3.11", "3.12", "3.13"]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         # This is needed for arm machines since they don't ship with 2024 edition.
       - name: Upgrade rust and cargo
         run: rustup update stable
