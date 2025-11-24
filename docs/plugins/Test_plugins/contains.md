@@ -25,8 +25,8 @@ The test accepts either a single test_value or a list of test_values.
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>_input</samp> | list | True | None |  | List of items to test. |
-| <samp>test_value</samp> | any | optional | None |  | Single item or list of items to test for in value. |
+| <samp>_input</samp> | list | True | None | - | List of items to test. |
+| <samp>test_value</samp> | any | optional | None | - | Single item or list of items to test for in value. |
 
 ## Examples
 

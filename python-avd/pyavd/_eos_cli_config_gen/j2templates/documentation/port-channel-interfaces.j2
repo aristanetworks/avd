@@ -13,7 +13,7 @@
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%         if port_channel_interface.switchport.mode is arista.avd.defined or
             port_channel_interface.switchport.access_vlan is arista.avd.defined or
@@ -81,7 +81,7 @@
 ##### Flexible Encapsulation Interfaces
 
 | Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
+| --------- | ----------- | ------- | -------------------- | -------------------------- | ----------- | --------------------- | --------------------- | --------------------- | --------------------------- | ------------ | ---------------------- | ---------------------- |
 {%         for port_channel_interface in flexencap_interfaces %}
 {%             set description = port_channel_interface.description | arista.avd.default("-") %}
 {%             set vlan_id = port_channel_interface.vlan_id | arista.avd.default('-') %}
@@ -117,7 +117,7 @@
 ##### Private VLAN
 
 | Interface | PVLAN Mapping | Secondary Trunk |
-| --------- | ------------- | ----------------|
+| --------- | ------------- | --------------- |
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%             set row_pvlan_mapping = port_channel_interface.switchport.pvlan_mapping | arista.avd.default('-') %}
 {%             set row_trunk_private_vlan_secondary = port_channel_interface.switchport.trunk.private_vlan_secondary | arista.avd.default('-') %}
@@ -139,8 +139,8 @@
 
 ##### VLAN Translations
 
-| Interface |  Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
-| --------- |  --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
+| Interface | Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
+| --------- | --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%             if port_channel_interface.switchport.vlan_translations is arista.avd.defined %}
 {%                 for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_both | arista.avd.natural_sort('from') %}
@@ -289,7 +289,7 @@
 ##### IPv6
 
 | Interface | Description | MLAG ID | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------- | -------------| --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
+| --------- | ----------- | ------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%             if port_channel_interface.ipv6_address is arista.avd.defined %}
 {%                 set description = port_channel_interface.description | arista.avd.default("-") %}
@@ -322,7 +322,7 @@
 ##### VRRP Details
 
 | Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
+| --------- | ------- | -------- | ---------------------- | ------- | ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
 {%         for port_channel_interface in port_channel_interfaces_vrrp_details | arista.avd.natural_sort('name') %}
 {%             for vrid in port_channel_interface.vrrp_ids | arista.avd.natural_sort('id') %}
 {%                 set row_id = vrid.id %}
@@ -353,6 +353,9 @@
 {%                 endif %}
 {%                 if vrid.ipv4.secondary_addresses is arista.avd.defined %}
 {%                     do row_ipv4_virtual_ips.extend(vrid.ipv4.secondary_addresses) %}
+{%                 endif %}
+{%                 if row_ipv4_virtual_ips | length == 0 %}
+{%                     set row_ipv4_virtual_ips = ["-"] %}
 {%                 endif %}
 {%                 set row_ipv4_version = vrid.ipv4.version | arista.avd.default('2') %}
 {%                 set row_ipv6_virtual_ips = vrid.ipv6.addresses | arista.avd.default(vrid.ipv6.address, '-') | join(', ') %}
