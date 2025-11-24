@@ -7,7 +7,7 @@ use crate::base::{
     Base, Deprecation, convert_types::ConvertTypes, documentation_options::DocumentationOptions,
     documentation_options::DocumentationOptionsDict, valid_values::ValidValues,
 };
-use crate::str::Format;
+use crate::str::{Format, Pattern};
 use crate::{any::AnySchema, boolean::Bool, dict::Dict, int::Int, list::List, str::Str};
 use ordermap::OrderMap;
 use serde_json::Value;
@@ -25,7 +25,7 @@ impl InheritableWithClone for OrderMap<String, AnySchema> {}
 impl InheritableWithClone for OrderMap<String, Value> {}
 impl InheritableWithClone for Format {}
 impl InheritableWithClone for Box<AnySchema> {}
-
+impl InheritableWithClone for Pattern {}
 pub trait Inherit {
     /// Inherit schema data from another schema.
     /// Used when resolving $ref by deep-inheriting the schema pointed to by the $ref.

@@ -10,6 +10,7 @@ use crate::{
     context::{Configuration, Context, ValidationResult},
     feedback::Violation,
 };
+use log::debug;
 
 use super::Validation;
 
@@ -53,8 +54,12 @@ impl StoreValidate<Schema> for Store {
         schema_name: Schema,
         configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError> {
+        debug!("Validating JSON");
         let mut value = serde_json::from_str(json)?;
-        Ok(self.validate_value(&mut value, schema_name, configuration))
+
+        let result = self.validate_value(&mut value, schema_name, configuration);
+        debug!("Validating JSON Done");
+        Ok(result)
     }
     fn validate_yaml(
         &self,
@@ -62,10 +67,13 @@ impl StoreValidate<Schema> for Store {
         schema_name: Schema,
         configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError> {
+        debug!("Validating YAML");
         // todo: remove `serde_yaml` once `saphyr` adds `serde` support
         // https://github.com/saphyr-rs/saphyr/issues/1
         let mut value = serde_yaml::from_str::<Value>(yaml)?;
-        Ok(self.validate_value(&mut value, schema_name, configuration))
+        let result = self.validate_value(&mut value, schema_name, configuration);
+        debug!("Validating YAML Done");
+        Ok(result)
     }
     fn validate_value(
         &self,
@@ -73,16 +81,21 @@ impl StoreValidate<Schema> for Store {
         schema_name: Schema,
         configuration: Option<&Configuration>,
     ) -> ValidationResult {
+        debug!("Validating serde_yaml::Value");
         let mut ctx = Context::new(self, configuration);
         let schema = self.get(schema_name);
         schema.coerce(value, &mut ctx);
+        debug!("Validating serde_yaml::Value Coercion Done");
         schema.validate_value(value, &mut ctx);
+        debug!("Validating serde_yaml::Value Done");
         ctx.result
     }
     fn coerce_value(&self, value: &mut Value, schema_name: Schema) -> ValidationResult {
+        debug!("Coercing serde_yaml::Value");
         let mut ctx = Context::new(self, None);
         let schema = self.get(schema_name);
         schema.coerce(value, &mut ctx);
+        debug!("Coercing serde_yaml::Value Done");
         ctx.result
     }
 }

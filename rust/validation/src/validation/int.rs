@@ -9,7 +9,7 @@ use crate::{
     feedback::{Type, Violation},
 };
 
-use avdschema::{any::AnySchema, base::Deprecation, int::Int, resolve_ref};
+use avdschema::{any::AnySchema, int::Int, resolve_ref};
 
 use super::{Validation, valid_values::ValidateValidValues};
 
@@ -33,10 +33,6 @@ impl Validation<i64> for Int {
         }
     }
 
-    fn is_required(&self) -> bool {
-        self.base.required.unwrap_or_default()
-    }
-
     fn validate_ref(&self, value: &i64, ctx: &mut Context) {
         if let Some(ref_) = self.base.schema_ref.as_ref() {
             // Ignoring not being able to resolve the schema.
@@ -46,13 +42,6 @@ impl Validation<i64> for Int {
                 ref_schema.validate(value, ctx);
             }
         }
-    }
-
-    fn default_value(&self) -> Option<i64> {
-        self.base.default
-    }
-    fn deprecation(&self) -> &Option<Deprecation> {
-        &self.base.deprecation
     }
 }
 
@@ -124,7 +113,10 @@ mod tests {
         let schema = Int::default();
         let mut input = "123".into();
         let store = get_test_store();
-        let configuration = Configuration { return_coercion_infos: true, ..Default::default()};
+        let configuration = Configuration {
+            return_coercion_infos: true,
+            ..Default::default()
+        };
         let mut ctx = Context::new(&store, Some(&configuration));
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);

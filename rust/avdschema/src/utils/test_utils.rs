@@ -223,9 +223,14 @@ pub(crate) fn get_test_dict_schema() -> AnySchema {
                 "int_key": {"type": "int"},
                 "str_key": {"type": "str"},
                 "list_key": {"type": "list", "items": {"type": "int"}},
-                "dict_key": {"type": "dict", "keys": {"nested_key": {"type": "str"}}}
+                "dict_key": {"type": "dict", "keys": {"nested_key": {"type": "str"}}},
+                "outer": {
+                    "type": "list",
+                    "items": {"type": "dict", "keys": {"inner": {"type": "str"}}},
+                    "default":[{"inner": "dyn_key1_int"}]
+                }
             },
-            "dynamic_keys": {"some_path": {"type": "int"}},
+            "dynamic_keys": {"outer.inner": {"type": "int"}},
             "$defs": {"def_schema": {"type": "str"}},
             "deprecation": {
                 "warning": true,

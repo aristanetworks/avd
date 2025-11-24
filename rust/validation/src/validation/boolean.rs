@@ -2,7 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use avdschema::{any::AnySchema, base::Deprecation, boolean::Bool, resolve_ref};
+use avdschema::{any::AnySchema, boolean::Bool, resolve_ref};
 use serde_json::Value;
 
 use crate::{
@@ -29,10 +29,6 @@ impl Validation<bool> for Bool {
         }
     }
 
-    fn is_required(&self) -> bool {
-        self.base.required.unwrap_or_default()
-    }
-
     fn validate_ref(&self, value: &bool, ctx: &mut Context) {
         if let Some(ref_) = self.base.schema_ref.as_ref() {
             // Ignoring not being able to resolve the schema.
@@ -42,12 +38,6 @@ impl Validation<bool> for Bool {
                 ref_schema.validate(value, ctx);
             }
         }
-    }
-    fn default_value(&self) -> Option<bool> {
-        self.base.default
-    }
-    fn deprecation(&self) -> &Option<Deprecation> {
-        &self.base.deprecation
     }
 }
 

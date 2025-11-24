@@ -4,7 +4,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::utils::{dump::Dump, load::Load};
+use crate::{base::Deprecation, utils::{dump::Dump, load::Load}};
 
 #[cfg(feature = "dump_load_files")]
 use crate::utils::load::LoadFromFragments;
@@ -49,6 +49,36 @@ impl From<&mut AnySchema> for String {
             AnySchema::Int(_) => "int".to_string(),
             AnySchema::List(_) => "list".to_string(),
             AnySchema::Str(_) => "str".to_string(),
+        }
+    }
+}
+
+pub trait Shortcuts {
+    /// Returns a boolean indicating if the schema field is required.
+    fn is_required(&self) -> bool;
+
+    /// Returns the deprecation information from the schema if set.
+    fn deprecation(&self) -> &Option<Deprecation>;
+}
+
+impl Shortcuts for AnySchema {
+    fn is_required(&self) -> bool {
+        match self {
+            Self::Bool(schema) => schema.is_required(),
+            Self::Int(schema) => schema.is_required(),
+            Self::Str(schema) => schema.is_required(),
+            Self::List(schema) => schema.is_required(),
+            Self::Dict(schema) => schema.is_required(),
+        }
+    }
+
+    fn deprecation(&self) -> &Option<Deprecation> {
+        match self {
+            Self::Bool(schema) => schema.deprecation(),
+            Self::Int(schema) => schema.deprecation(),
+            Self::Str(schema) => schema.deprecation(),
+            Self::List(schema) => schema.deprecation(),
+            Self::Dict(schema) => schema.deprecation(),
         }
     }
 }

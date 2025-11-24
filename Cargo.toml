@@ -10,7 +10,7 @@ members = [
     "rust/passwords",
     "pyavd-utils/rust/pypasswords",
     "pyavd-utils/rust/pyvalidation",
-    ]
+]
 resolver = "2"
 
 [workspace.dependencies]
@@ -18,12 +18,15 @@ derive_more = { version = "2.0.1" }
 log = { version = "0.4.26" }
 ordermap = { version = "0.5.4" }
 pyo3 = { version = "0.26.0" }
-pyo3-build-config = { version = "0.26.0"}
+pyo3-build-config = { version = "0.26.0" }
 pyo3-log = { version = "0.13.1" }
 regex = { version = "1.11.1" }
 serde = { version = "1.0.217" }
 serde_json = { version = "1.0.135" }
 serde_yaml = { version = "0.9.33" }
+
+[profile.release]
+# debug = true
 
 [profile.release-lto]
 inherits = "release"
@@ -78,18 +81,18 @@ print_stderr = "deny"
 print_stdout = "warn"
 pub_without_shorthand = "deny"
 redundant_type_annotations = "warn"
-ref_patterns = "allow"                       # TODO: discuss
+ref_patterns = "allow"                        # TODO: discuss
 renamed_function_params = "deny"
 rest_pat_in_fully_bound_structs = "deny"
 same_name_method = "deny"
 self_named_module_files = "deny"
-semicolon_inside_block = "allow"             # TODO: discuss
-semicolon_outside_block = "allow"            # TODO: discuss
+semicolon_inside_block = "allow"              # TODO: discuss
+semicolon_outside_block = "allow"             # TODO: discuss
 separated_literal_suffix = "allow"            # TODO: discuss
 shadow_reuse = "warn"
 shadow_unrelated = "deny"
 str_to_string = "deny"
-string_add = "allow"            # TODO: discuss
+string_add = "allow"                          # TODO: discuss
 string_lit_chars_any = "warn"
 string_slice = "warn"
 string_to_string = "deny"
@@ -104,10 +107,10 @@ unnecessary_safety_doc = "deny"
 unnecessary_self_imports = "deny"
 unneeded_field_pattern = "warn"
 unreachable = "deny"
-unseparated_literal_suffix = "allow"           # TODO: discuss
+unseparated_literal_suffix = "allow"          # TODO: discuss
 unused_result_ok = "deny"
 unused_trait_names = "deny"
 unwrap_in_result = "warn"
-unwrap_used = "allow"                          # TODO: discuss
+unwrap_used = "allow"                         # TODO: discuss
 use_debug = "warn"
 verbose_file_reads = "deny"

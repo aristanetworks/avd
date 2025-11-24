@@ -5,7 +5,7 @@
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
-use crate::schema::base::Base;
+use crate::{any::Shortcuts, base::Deprecation, schema::base::Base};
 
 use super::{
     any::AnySchema,
@@ -30,7 +30,15 @@ pub struct Int {
     pub valid_values: ValidValues<i64>,
     pub documentation_options: Option<DocumentationOptions>,
 }
+impl Shortcuts for Int {
+    fn is_required(&self) -> bool {
+        self.base.required.unwrap_or_default()
+    }
 
+    fn deprecation(&self) -> &Option<Deprecation> {
+        &self.base.deprecation
+    }
+}
 impl<'x> TryFrom<&'x AnySchema> for &'x Int {
     type Error = &'static str;
 

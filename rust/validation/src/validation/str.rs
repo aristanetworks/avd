@@ -2,13 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use avdschema::{any::AnySchema, base::Deprecation, resolve_ref, str::Str};
-use regex::Regex;
+use avdschema::{any::AnySchema, resolve_ref, str::Str};
 use serde_json::Value;
 
 use crate::{
     context::Context,
-    feedback::{ErrorIssue, Type, Violation},
+    feedback::{Type, Violation},
 };
 
 use super::{Validation, valid_values::ValidateValidValues as _};
@@ -34,10 +33,6 @@ impl Validation<String> for Str {
         }
     }
 
-    fn is_required(&self) -> bool {
-        self.base.required.unwrap_or_default()
-    }
-
     fn validate_ref(&self, value: &String, ctx: &mut Context) {
         if let Some(ref_) = self.base.schema_ref.as_ref() {
             // Ignoring not being able to resolve the schema.
@@ -47,13 +42,6 @@ impl Validation<String> for Str {
                 ref_schema.validate(value, ctx);
             }
         }
-    }
-
-    fn default_value(&self) -> Option<String> {
-        self.base.default.to_owned()
-    }
-    fn deprecation(&self) -> &Option<Deprecation> {
-        &self.base.deprecation
     }
 }
 
@@ -82,19 +70,13 @@ fn validate_max_length(schema: &Str, input: &str, ctx: &mut Context) {
 }
 
 fn validate_pattern(schema: &Str, input: &str, ctx: &mut Context) {
-    if let Some(pattern) = schema.pattern.as_deref() {
-        match Regex::new(&format!("^{pattern}$")) {
-            Ok(regex) => {
-                if !regex.is_match(input) {
-                    ctx.add_error(Violation::NotMatchingPattern {
-                        pattern: pattern.to_string(),
-                        found: input.into(),
-                    });
-                }
-            }
-            Err(e) => ctx.add_error(ErrorIssue::InternalError {
-                message: e.to_string(),
-            }),
+    if let Some(pattern) = &schema.pattern {
+        let regex_pattern = pattern.get_compiled_pattern();
+        if !regex_pattern.is_match(input) {
+            ctx.add_error(Violation::NotMatchingPattern {
+                pattern: pattern.to_string(),
+                found: input.into(),
+            });
         }
     }
 }

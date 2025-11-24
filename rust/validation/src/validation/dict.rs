@@ -2,7 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use avdschema::{any::AnySchema, base::Deprecation, dict::Dict, get_dynamic_keys, resolve_ref};
+use avdschema::{
+    any::{AnySchema, Shortcuts as _},
+    dict::{Dict, },
+    resolve_ref,
+};
 use ordermap::OrderMap;
 use serde_json::{Map, Value};
 
@@ -32,10 +36,6 @@ impl Validation<Map<String, Value>> for Dict {
         }
     }
 
-    fn is_required(&self) -> bool {
-        self.base.required.unwrap_or_default()
-    }
-
     fn validate_ref(&self, value: &Map<String, Value>, ctx: &mut Context) {
         if let Some(ref_) = self.base.schema_ref.as_ref() {
             // Ignoring not being able to resolve the schema.
@@ -52,19 +52,6 @@ impl Validation<Map<String, Value>> for Dict {
             }
         }
     }
-
-    fn default_value(&self) -> Option<Map<String, Value>> {
-        if let Some(value) = &self.base.default {
-            let value = value.to_owned();
-            let map = Map::from_iter(value);
-            Some(map)
-        } else {
-            None
-        }
-    }
-    fn deprecation(&self) -> &Option<Deprecation> {
-        &self.base.deprecation
-    }
 }
 
 fn get_dynamic_keys_schemas<'a>(
@@ -72,14 +59,12 @@ fn get_dynamic_keys_schemas<'a>(
     input: &'a Map<String, Value>,
 ) -> OrderMap<String, &'a AnySchema> {
     schema
-        .dynamic_keys
-        .iter()
+        .get_dynamic_keys(input)
+        .into_iter()
         .flat_map(|dynamic_keys| {
-            dynamic_keys.keys().flat_map(|key_path| {
-                get_dynamic_keys(key_path, input)
-                    .into_iter()
-                    .map(|key| (key, dynamic_keys.get(key_path).unwrap()))
-            })
+            dynamic_keys
+                .into_iter()
+                .map(|(key, dynamic_key_info)| (key, dynamic_key_info.schema))
         })
         .collect()
 }
@@ -154,7 +139,7 @@ mod tests {
     use super::*;
     use crate::coercion::Coercion as _;
     use crate::context::{Configuration, Context};
-    use crate::feedback::{CoercionNote, Feedback, InfoIssue};
+    use crate::feedback::{CoercionNote, Feedback};
     use crate::validation::test_utils::get_test_store;
 
     #[test]
@@ -411,21 +396,11 @@ mod tests {
         };
         let mut input = serde_json::json!({ "dynkey1": 5, "dynkey2": 9 });
         let store = get_test_store();
-        let configuration = Configuration {
-            return_default_value_inserted_infos: true,
-            ..Default::default()
-        };
-        let mut ctx = Context::new(&store, Some(&configuration));
+        let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.result.errors.is_empty());
-        assert_eq!(
-            ctx.result.infos,
-            vec![Feedback {
-                path: vec!["my_dynamic_keys".into()].into(),
-                issue: InfoIssue::DefaultValueInserted()
-            }]
-        );
+        assert!(ctx.result.infos.is_empty());
     }
 
     #[test]
@@ -464,20 +439,10 @@ mod tests {
         let mut input =
             serde_json::json!({ "dynkey1": {"sub_key": 11, "bad_key": true}, "dynkey2": "wrong" });
         let store = get_test_store();
-        let configuration = Configuration {
-            return_default_value_inserted_infos: true,
-            ..Default::default()
-        };
-        let mut ctx = Context::new(&store, Some(&configuration));
+        let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
-        assert_eq!(
-            ctx.result.infos,
-            vec![Feedback {
-                path: vec!["my_dynamic_keys".into()].into(),
-                issue: InfoIssue::DefaultValueInserted()
-            }]
-        );
+        assert!(ctx.result.infos.is_empty());
         assert_eq!(
             ctx.result.errors,
             vec![

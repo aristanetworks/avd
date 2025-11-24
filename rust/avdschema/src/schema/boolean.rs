@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
+use crate::{any::Shortcuts, base::Deprecation};
+
 use super::{
     any::AnySchema,
     base::{Base, documentation_options::DocumentationOptions},
@@ -17,6 +19,15 @@ pub struct Bool {
     #[serde(flatten)]
     pub base: Base<bool>,
     pub documentation_options: Option<DocumentationOptions>,
+}
+
+impl Shortcuts for Bool {
+    fn is_required(&self) -> bool {
+        self.base.required.unwrap_or_default()
+    }
+    fn deprecation(&self) -> &Option<Deprecation> {
+        &self.base.deprecation
+    }
 }
 
 impl<'x> TryFrom<&'x AnySchema> for &'x Bool {

@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use serde_with::skip_serializing_none;
 
-use crate::schema::base::Base;
+use crate::{any::Shortcuts, base::Deprecation, schema::base::Base};
 
 use super::{any::AnySchema, base::documentation_options::DocumentationOptions};
 
@@ -31,6 +31,16 @@ pub struct List {
     #[serde(flatten)]
     pub base: Base<Vec<Value>>,
     pub documentation_options: Option<DocumentationOptions>,
+}
+
+impl Shortcuts for List {
+    fn is_required(&self) -> bool {
+        self.base.required.unwrap_or_default()
+    }
+
+    fn deprecation(&self) -> &Option<Deprecation> {
+        &self.base.deprecation
+    }
 }
 
 impl<'x> TryFrom<&'x AnySchema> for &'x List {

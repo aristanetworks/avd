@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use avdschema::base::Deprecation;
 use ordermap::OrderMap;
 use serde_json::Value;
 
@@ -31,10 +30,6 @@ impl Validation<Vec<Value>> for List {
         }
     }
 
-    fn is_required(&self) -> bool {
-        self.base.required.unwrap_or_default()
-    }
-
     fn validate_ref(&self, value: &Vec<Value>, ctx: &mut Context) {
         if let Some(ref_) = self.base.schema_ref.as_ref() {
             // Ignoring not being able to resolve the schema.
@@ -44,13 +39,6 @@ impl Validation<Vec<Value>> for List {
                 ref_schema.validate(value, ctx);
             }
         }
-    }
-
-    fn default_value(&self) -> Option<Vec<Value>> {
-        self.base.default.to_owned()
-    }
-    fn deprecation(&self) -> &Option<Deprecation> {
-        &self.base.deprecation
     }
 }
 

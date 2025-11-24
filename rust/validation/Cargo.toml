@@ -7,8 +7,8 @@ license.workspace = true
 [dependencies]
 avdschema = { path = "../avdschema" }
 derive_more = { workspace = true, features = ["display", "from"] }
+log = { workspace = true }
 ordermap = { workspace = true, features = ["serde"] }
-regex = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true, features = [
     "arbitrary_precision", # To support very big numbers

@@ -5,7 +5,7 @@
 use serde_json::Value;
 
 use crate::context::Context;
-use avdschema::{any::AnySchema, base::Deprecation};
+use avdschema::any::AnySchema;
 
 use super::Validation;
 
@@ -21,38 +21,6 @@ impl Validation<Value> for AnySchema {
             Self::Str(schema) => schema.validate_value(value, ctx),
             Self::List(schema) => schema.validate_value(value, ctx),
             Self::Dict(schema) => schema.validate_value(value, ctx),
-        }
-    }
-
-    fn is_required(&self) -> bool {
-        match self {
-            Self::Bool(schema) => schema.is_required(),
-            Self::Int(schema) => schema.is_required(),
-            Self::Str(schema) => schema.is_required(),
-            Self::List(schema) => schema.is_required(),
-            Self::Dict(schema) => schema.is_required(),
-        }
-    }
-
-    fn default_value(&self) -> Option<Value> {
-        match self {
-            Self::Bool(schema) => schema.default_value().map(Value::Bool),
-            Self::Int(schema) => schema
-                .default_value()
-                .map(|value| Value::Number(value.into())),
-            Self::Str(schema) => schema.default_value().map(Value::String),
-            Self::List(schema) => schema.default_value().map(Value::Array),
-            Self::Dict(schema) => schema.default_value().map(Value::Object),
-        }
-    }
-
-    fn deprecation(&self) -> &Option<Deprecation> {
-        match self {
-            Self::Bool(schema) => schema.deprecation(),
-            Self::Int(schema) => schema.deprecation(),
-            Self::Str(schema) => schema.deprecation(),
-            Self::List(schema) => schema.deprecation(),
-            Self::Dict(schema) => schema.deprecation(),
         }
     }
 

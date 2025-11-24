@@ -2,8 +2,13 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
+use std::sync::OnceLock;
+
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
+
+use crate::{any::Shortcuts, base::Deprecation};
 
 use super::{
     any::AnySchema,
@@ -42,7 +47,7 @@ pub struct Str {
     /// A regular expression which will be matched on the variable value.
     /// The regular expression should be valid according to the ECMA 262 dialect
     /// Remember to use double escapes
-    pub pattern: Option<String>,
+    pub pattern: Option<Pattern>,
     #[serde(flatten)]
     pub base: Base<String>,
     #[serde(flatten)]
@@ -50,6 +55,16 @@ pub struct Str {
     #[serde(flatten)]
     pub valid_values: ValidValues<String>,
     pub documentation_options: Option<DocumentationOptions>,
+}
+
+impl Shortcuts for Str {
+    fn is_required(&self) -> bool {
+        self.base.required.unwrap_or_default()
+    }
+
+    fn deprecation(&self) -> &Option<Deprecation> {
+        &self.base.deprecation
+    }
 }
 
 impl<'x> TryFrom<&'x AnySchema> for &'x Str {
@@ -60,6 +75,37 @@ impl<'x> TryFrom<&'x AnySchema> for &'x Str {
             AnySchema::Str(str) => Ok(str),
             _ => Err("Unable to convert from AnySchema to Str. Invalid Schema type."),
         }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, derive_more::Display)]
+#[display("{pattern}")]
+#[serde(transparent)]
+pub struct Pattern {
+    pub pattern: String,
+    #[serde(skip)]
+    compiled_pattern: OnceLock<Regex>,
+}
+impl Pattern {
+    fn new(pattern: String) -> Self {
+        Self {
+            pattern,
+            compiled_pattern: Default::default(),
+        }
+    }
+    pub fn get_compiled_pattern(&self) -> &Regex {
+        self.compiled_pattern
+            .get_or_init(|| Regex::new(format!("^{}$",&self.pattern).as_str()).unwrap())
+    }
+}
+impl PartialEq for Pattern {
+    fn eq(&self, other: &Self) -> bool {
+        self.pattern == other.pattern
+    }
+}
+impl From<&str> for Pattern {
+    fn from(value: &str) -> Self {
+        Self::new(value.to_string())
     }
 }
 

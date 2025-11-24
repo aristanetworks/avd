@@ -11,7 +11,6 @@ pub(crate) mod store;
 pub(crate) mod str;
 pub(crate) mod valid_values;
 
-use avdschema::base::Deprecation;
 use serde_json::Value;
 
 use crate::context::Context;
@@ -25,20 +24,10 @@ pub trait Validation<T> {
     /// Validation updates the given Context with any found violations including if the type of Value is wrong.
     fn validate_value(&self, value: &Value, ctx: &mut Context);
 
-    /// Returns a boolean indicating if the schema field is required.
-    fn is_required(&self) -> bool;
-
     /// Validation of ref which will not merge in the schema, so it only works as expected when there are no local variables set.
     /// In practice this is only used for structured_config, where we $ref in the full eos_cli_config_gen schema. All other schemas
     /// will be resolved up-front and stored in the schema store.
     fn validate_ref(&self, value: &T, ctx: &mut Context);
-
-    /// Returns the default value from the schema if set.
-    /// Used by coercion to insert the default values in the data before validation.
-    fn default_value(&self) -> Option<T>;
-
-    /// Returns the deprecation information from the schema if set.
-    fn deprecation(&self) -> &Option<Deprecation>;
 }
 
 #[cfg(test)]

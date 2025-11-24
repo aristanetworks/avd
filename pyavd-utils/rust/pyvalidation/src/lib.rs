@@ -19,11 +19,11 @@ fn get_store() -> &'static Store {
     STORE.get_or_init(get_included_store)
 }
 
-#[pymodule]
+#[pymodule(gil_used = false)]
 pub mod validation {
     use super::{STORE, get_store};
     use avdschema::{LoadFromFragments, Store, any::AnySchema, resolve_schema};
-    use log::info;
+    use log::{debug, info};
     use pyo3::{Bound, PyResult, exceptions::PyRuntimeError, pyclass, pyfunction, types::PyModule};
     use std::path::PathBuf;
     use validation::{Coercion as _, Context, StoreValidate as _, Validation as _};
@@ -101,6 +101,7 @@ pub mod validation {
     #[pymodule_init]
     fn init(_m: &Bound<'_, PyModule>) -> PyResult<()> {
         pyo3_log::init();
+        debug!("initialized python module in pyo3");
         Ok(())
     }
 
@@ -153,25 +154,34 @@ pub mod validation {
 
     #[pyfunction]
     pub fn get_validated_data(
+        py: pyo3::Python<'_>,
         data_as_json: &str,
         schema_name: &str,
     ) -> PyResult<GetValidatedDataResult> {
-        // The Value here will be in-place coerced to the correct data types.
-        let mut data_as_value = serde_json::from_str::<serde_json::Value>(data_as_json)
-            .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?;
+        debug!("pyvalidation::get_validated_data Begin");
+        let result: PyResult<GetValidatedDataResult> = py.detach(|| {
+            // The Value here will be in-place coerced to the correct data types.
+            let mut data_as_value = serde_json::from_str::<serde_json::Value>(data_as_json)
+                .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?;
 
-        let validation_result = get_store().validate_value(&mut data_as_value, schema_name, None);
-        let validated_data = if validation_result.errors.is_empty() {
-            Some(serde_json::to_string(&data_as_value).map_err(|err| {
-                PyRuntimeError::new_err(format!("Invalid JSON in coerced data: {err}"))
-            })?)
-        } else {
-            None
-        };
-        Ok(GetValidatedDataResult {
-            validation_result: validation_result.try_into()?,
-            validated_data,
-        })
+            debug!("pyvalidation::get_validated_data Deserialization Done");
+            let validation_result =
+                get_store().validate_value(&mut data_as_value, schema_name, None);
+            debug!("pyvalidation::get_validated_data Validation Done");
+            let validated_data = if validation_result.errors.is_empty() {
+                Some(serde_json::to_string(&data_as_value).map_err(|err| {
+                    PyRuntimeError::new_err(format!("Invalid JSON in coerced data: {err}"))
+                })?)
+            } else {
+                None
+            };
+            Ok(GetValidatedDataResult {
+                validation_result: validation_result.try_into()?,
+                validated_data,
+            })
+        });
+        debug!("pyvalidation::get_validated_data End");
+        result
     }
 
     #[pyfunction]
@@ -525,24 +535,7 @@ mod tests {
                     .unwrap()
             };
             let validated_data = get_validated_data_result.getattr("validated_data").unwrap();
-            let expected_data = pyo3::types::PyString::new(
-                py,
-                &serde_json::json!(
-                {
-                    "ethernet_interfaces":[
-                        {
-                            "name":"Ethernet1",
-                            "description":"12345",
-                            "ospf_authentication_key_type":"7"
-                        }
-                    ],
-                    // These are defaults inserted by the validation tooling.
-                    "avd_data_validation_mode":"error",
-                    "config_end":false,
-                    "transceiver_qsfp_default_mode_4x10":true
-                })
-                .to_string(),
-            );
+            let expected_data = pyo3::types::PyString::new(py, &serde_json::json!({"ethernet_interfaces": [{"name": "Ethernet1", "description": "12345"}]}).to_string());
             assert!(
                 validated_data.eq(&expected_data).unwrap(),
                 "Different data: {validated_data} vs {expected_data}"

@@ -3,14 +3,13 @@
 // that can be found in the LICENSE file.
 
 use avdschema::{
-    any::AnySchema, boolean::Bool, dict::Dict, get_dynamic_keys, int::Int, list::List, str::Str,
+    any::{AnySchema, Shortcuts as _}, boolean::Bool, dict::{Dict}, int::Int, list::List, str::Str,
 };
 use serde_json::Value;
 
 use crate::{
     context::Context,
-    feedback::{CoercionNote, InfoIssue},
-    validation::Validation,
+    feedback::{CoercionNote},
 };
 
 pub trait Coercion
@@ -40,42 +39,19 @@ impl Coercion for Dict {
                     {
                         continue;
                     }
-                    match dict.get_mut(key) {
-                        Some(value) => {
-                            ctx.state.path.push(key.to_owned());
-                            key_schema.coerce(value, ctx);
-                            ctx.state.path.pop();
-                        }
-                        // Insert default value since dynamic keys and dynamic values may rely on these.
-                        None => {
-                            if let Some(default_value) = key_schema.default_value() {
-                                dict.insert(key.to_owned(), default_value);
-                                if ctx.configuration.return_default_value_inserted_infos {
-                                    ctx.state.path.push(key.to_owned());
-                                    ctx.add_info(InfoIssue::DefaultValueInserted());
-                                    ctx.state.path.pop();
-                                }
-                            }
-                        }
+                    if let Some(value) = dict.get_mut(key) {
+                        ctx.state.path.push(key.to_owned());
+                        key_schema.coerce(value, ctx);
+                        ctx.state.path.pop();
                     }
                 }
             }
-            if let Some(dynamic_keys) = &self.dynamic_keys {
-                for (key_path, key_schema) in dynamic_keys {
-                    // Skip removed keys
-                    if let Some(deprecation) = key_schema.deprecation()
-                        && deprecation.removed.unwrap_or_default()
-                    {
-                        continue;
-                    }
-                    let keys = get_dynamic_keys(key_path, dict);
-                    // validate the computed dynamic keys' corresponding values
-                    for key in keys {
-                        if let Some(value) = dict.get_mut(&key) {
-                            ctx.state.path.push(key);
-                            key_schema.coerce(value, ctx);
-                            ctx.state.path.pop();
-                        }
+            if let Some(dynamic_keys) = self.get_dynamic_keys(dict) {
+                for (key, dynamic_key_info) in dynamic_keys.iter() {
+                    if let Some(value) = dict.get_mut(key) {
+                        ctx.state.path.push(key.to_owned());
+                        dynamic_key_info.schema.coerce(value, ctx);
+                        ctx.state.path.pop();
                     }
                 }
             }
@@ -205,58 +181,5 @@ impl Coercion for AnySchema {
             Self::List(schema) => schema.coerce(input, ctx),
             Self::Dict(schema) => schema.coerce(input, ctx),
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use serde_json::json;
-
-    use avdschema::base::Base;
-    use avdschema::list::List;
-    use avdschema::str::Str;
-    use ordermap::OrderMap;
-
-    use super::*;
-
-    use crate::Configuration;
-    use crate::context::Context;
-    use crate::feedback::Feedback;
-    use crate::validation::test_utils::get_test_store;
-
-    #[test]
-    fn validate_insertion_of_default_value() {
-        let schema = Dict {
-            keys: Some(OrderMap::from_iter([(
-                "my_dynamic_keys".into(),
-                List {
-                    items: Some(Box::new(Str::default().into())),
-                    base: Base {
-                        default: Some(vec!["dynkey1".into(), "dynkey2".into()]),
-                        ..Default::default()
-                    },
-                    ..Default::default()
-                }
-                .into(),
-            )])),
-            ..Default::default()
-        };
-        let mut input = json!({});
-        let store = get_test_store();
-        let configuration = Configuration {
-            return_default_value_inserted_infos: true,
-            ..Default::default()
-        };
-        let mut ctx = Context::new(&store, Some(&configuration));
-        schema.coerce(&mut input, &mut ctx);
-        assert!(ctx.result.errors.is_empty());
-        assert_eq!(
-            ctx.result.infos,
-            vec![Feedback {
-                path: vec!["my_dynamic_keys".into()].into(),
-                issue: InfoIssue::DefaultValueInserted()
-            }]
-        );
-        assert_eq!(input, json!({"my_dynamic_keys": ["dynkey1", "dynkey2"]}));
     }
 }

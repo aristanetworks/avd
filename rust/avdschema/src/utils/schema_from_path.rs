@@ -6,8 +6,9 @@ use ordermap::OrderMap;
 
 use serde_json::Value;
 
+use crate::dict::DynamicKeyInfo;
 use crate::resolve::{errors::SchemaResolverError, resolve_ref::resolve_ref};
-use crate::{Schema, Store, any::AnySchema, dict::Dict, get_dynamic_keys};
+use crate::{Schema, Store, any::AnySchema, dict::Dict};
 
 // Keys that are accepted by the schema from either keys or dynamic keys.
 #[derive(Debug, PartialEq)]
@@ -74,31 +75,25 @@ impl SchemaKeys {
 
         schema_keys.keys.extend(
             dict_schema
-                .dynamic_keys
-                .as_ref()
+                .get_dynamic_keys(dict)
                 .map(|dynamic_keys| {
                     dynamic_keys
-                        .keys()
-                        .flat_map(|dynamic_key_path| {
-                            get_dynamic_keys(dynamic_key_path, dict)
-                                .iter()
-                                .map(|dynamic_key| {
-                                    (
-                                        dynamic_key.to_owned(),
-                                        SchemaKey::DynamicKey {
-                                            dynamic_key_path: dynamic_key_path.to_owned(),
-                                        },
-                                    )
-                                })
-                                .collect::<Vec<_>>()
-                        })
-                        .collect::<Vec<_>>()
-                })
-                .unwrap_or_default(),
+                        .iter()
+                        .map(|(key, dynamic_key_info)| {
+                            (key.to_owned(), SchemaKey::from(dynamic_key_info))
+                        }).collect::<Vec<_>>()
+                }).into_iter().flatten()
+
         );
         Ok(schema_keys)
     }
 }
+impl From<&DynamicKeyInfo<'_>> for SchemaKey {
+    fn from(value: &DynamicKeyInfo) -> Self {
+        Self::DynamicKey { dynamic_key_path: value.dynamic_key_path.to_owned() }
+    }
+}
+
 
 #[derive(Debug)]
 pub enum SchemaKeysError {
