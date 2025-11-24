@@ -24723,6 +24723,10 @@ keys:
               description: Primary VLAN ID.
         metadata:
           type: dict
+          description: 'The data under `metadata` is used for documentation, validation
+            or integration purposes.
+
+            It will not affect the generated EOS configuration.'
           keys:
             tenant:
               type: str
@@ -24773,6 +24777,10 @@ keys:
           type: bool
         metadata:
           type: dict
+          description: 'The data under `metadata` is used for documentation, validation
+            or integration purposes.
+
+            It will not affect the generated EOS configuration.'
           keys:
             tenant:
               type: str

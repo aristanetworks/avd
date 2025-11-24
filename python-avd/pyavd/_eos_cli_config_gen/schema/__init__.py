@@ -67538,7 +67538,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         private_vlan: PrivateVlan
         """Subclass of AvdModel."""
         metadata: Metadata
-        """Subclass of AvdModel."""
+        """
+        The data under `metadata` is used for documentation, validation or integration purposes.
+        It will not
+        affect the generated EOS configuration.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -67568,7 +67574,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     trunk_groups: Subclass of AvdList with `str` items.
                     e_tree: Subclass of AvdModel.
                     private_vlan: Subclass of AvdModel.
-                    metadata: Subclass of AvdModel.
+                    metadata:
+                       The data under `metadata` is used for documentation, validation or integration purposes.
+                       It will not
+                       affect the generated EOS configuration.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -67677,7 +67688,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_routing: bool | None
         ip_routing_ipv6_interfaces: bool | None
         metadata: Metadata
-        """Subclass of AvdModel."""
+        """
+        The data under `metadata` is used for documentation, validation or integration purposes.
+        It will not
+        affect the generated EOS configuration.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -67703,7 +67720,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_routing: ip_routing
                     ipv6_routing: ipv6_routing
                     ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces
-                    metadata: Subclass of AvdModel.
+                    metadata:
+                       The data under `metadata` is used for documentation, validation or integration purposes.
+                       It will not
+                       affect the generated EOS configuration.
+
+                       Subclass of AvdModel.
 
                 """
 
