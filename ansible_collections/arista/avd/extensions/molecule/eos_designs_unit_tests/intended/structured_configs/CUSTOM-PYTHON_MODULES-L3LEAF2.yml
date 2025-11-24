@@ -164,13 +164,15 @@ vlan_internal_order:
 vlans:
 - id: 110
   name: Tenant_A_OP_Zone_1
-  tenant: CUSTOM_PYTHON_MODULES_TENANT
+  metadata:
+    tenant: CUSTOM_PYTHON_MODULES_TENANT
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST_VRF
   ip_routing: true
-  tenant: CUSTOM_PYTHON_MODULES_TENANT
+  metadata:
+    tenant: CUSTOM_PYTHON_MODULES_TENANT
 vxlan_interface:
   vxlan1:
     description: CUSTOM-PYTHON_MODULES-L3LEAF2_VTEP

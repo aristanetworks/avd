@@ -368,37 +368,45 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 666
   name: BLUE-TEST
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 - id: 3099
   name: MLAG_L3_VRF_BLUE
   trunk_groups:
   - MLAG
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 - id: 42
   name: RED-TEST
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 - id: 3100
   name: MLAG_L3_VRF_RED
   trunk_groups:
   - MLAG
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: BLUE
   ip_routing: true
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 - name: RED
   ip_routing: true
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 vxlan_interface:
   vxlan1:
     description: site4-border1_VTEP

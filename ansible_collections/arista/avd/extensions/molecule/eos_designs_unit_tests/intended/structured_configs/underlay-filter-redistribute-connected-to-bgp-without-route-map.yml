@@ -124,7 +124,8 @@ vlan_internal_order:
 vlans:
 - id: 111
   name: svi_with_default_vrf
-  tenant: TEST
+  metadata:
+    tenant: TEST
 vrfs:
 - name: MGMT
   ip_routing: false
