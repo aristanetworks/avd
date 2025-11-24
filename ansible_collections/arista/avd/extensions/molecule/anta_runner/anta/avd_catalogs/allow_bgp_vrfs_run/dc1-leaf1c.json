@@ -410,7 +410,8 @@
         "allowed_causes": [
           "Reload requested by the user.",
           "Reload requested after FPGA upgrade",
-          "System reloaded due to Zero Touch Provisioning"
+          "System reloaded due to Zero Touch Provisioning",
+          "Hitless reload requested by the user."
         ]
       }
     }
