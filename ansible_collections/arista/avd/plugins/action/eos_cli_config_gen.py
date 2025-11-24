@@ -12,8 +12,8 @@ from typing import Any
 import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
-
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
+
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler, YamlLoader, cprofile, get_templar
 
 try:
