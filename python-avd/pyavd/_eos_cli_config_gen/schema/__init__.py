@@ -23539,15 +23539,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 },
             }
             min_power_supplies: int | None
-            """Minimum number of power supplies required for the device."""
+            """Minimum number of power supplies required for the device. Set to 0 to skip validation."""
             min_fans: int | None
-            """Minimum number of fans required for the device."""
+            """Minimum number of fans required for the device. Set to 0 to skip validation."""
             min_supervisors: int | None
-            """Minimum number of supervisor modules required for the device."""
+            """Minimum number of supervisor modules required for the device. Set to 0 to skip validation."""
             min_line_cards: int | None
-            """Minimum number of line cards required for the device."""
+            """Minimum number of line cards required for the device. Set to 0 to skip validation."""
             min_fabric_cards: int | None
-            """Minimum number of fabric cards required for the device."""
+            """Minimum number of fabric cards required for the device. Set to 0 to skip validation."""
             transceiver_manufacturers: TransceiverManufacturers
             """
             List of approved transceiver manufacturers for the device.
@@ -23576,11 +23576,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        min_power_supplies: Minimum number of power supplies required for the device.
-                        min_fans: Minimum number of fans required for the device.
-                        min_supervisors: Minimum number of supervisor modules required for the device.
-                        min_line_cards: Minimum number of line cards required for the device.
-                        min_fabric_cards: Minimum number of fabric cards required for the device.
+                        min_power_supplies: Minimum number of power supplies required for the device. Set to 0 to skip validation.
+                        min_fans: Minimum number of fans required for the device. Set to 0 to skip validation.
+                        min_supervisors: Minimum number of supervisor modules required for the device. Set to 0 to skip validation.
+                        min_line_cards: Minimum number of line cards required for the device. Set to 0 to skip validation.
+                        min_fabric_cards: Minimum number of fabric cards required for the device. Set to 0 to skip validation.
                         transceiver_manufacturers:
                            List of approved transceiver manufacturers for the device.
 
@@ -24781,6 +24781,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
             "validate_no_errors_period": {"type": int},
+            "exclude_as_extra_fabric_validation_target": {"type": bool},
         }
         is_deployed: bool | None
         """Key only used for documentation or validation purposes."""
@@ -24798,9 +24799,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         hardware_requirements: HardwareRequirements
         """
-        Defines the minimum hardware specifications required for the device.
-        Used for validation by the
-        `anta_runner` role.
+        Defines hardware requirements for the device, validated by the `anta_runner` role.
+        For the `min_*`
+        keys:
+        - Undefined (Default): Validate that all available slots are inserted.
+        - Positive Integer:
+        Validate that the number of components inserted is at least the specified minimum.
+        - 0: Skip the
+        validation for this specific component.
 
         Subclass of AvdModel.
         """
@@ -24823,6 +24829,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
         the validation performed by the `anta_runner` role.
         """
+        exclude_as_extra_fabric_validation_target: bool | None
+        """
+        Exclude this node from being used as a destination target from other fabric devices in the extra
+        fabric validation tests performed by the `anta_runner` role.
+        """
 
         if TYPE_CHECKING:
 
@@ -24842,6 +24853,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validate_no_errors_period: int | None | UndefinedType = Undefined,
+                exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -24862,9 +24874,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Used only for documentation and deployment purposes. It is used by the
                        'cv_deploy' role.
                     hardware_requirements:
-                       Defines the minimum hardware specifications required for the device.
-                       Used for validation by the
-                       `anta_runner` role.
+                       Defines hardware requirements for the device, validated by the `anta_runner` role.
+                       For the `min_*`
+                       keys:
+                       - Undefined (Default): Validate that all available slots are inserted.
+                       - Positive Integer:
+                       Validate that the number of components inserted is at least the specified minimum.
+                       - 0: Skip the
+                       validation for this specific component.
 
                        Subclass of AvdModel.
                     cv_tags: Subclass of AvdModel.
@@ -24879,6 +24896,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     validate_no_errors_period:
                        Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
                        the validation performed by the `anta_runner` role.
+                    exclude_as_extra_fabric_validation_target:
+                       Exclude this node from being used as a destination target from other fabric devices in the extra
+                       fabric validation tests performed by the `anta_runner` role.
 
                 """
 
