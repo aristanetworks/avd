@@ -129,13 +129,16 @@ vlan_internal_order:
 vlans:
 - id: 310
   name: Tenant_X_OP_Zone_1
-  tenant: Tenant_X
+  metadata:
+    tenant: Tenant_X
 - id: 315
   name: Tenant_network_vrf_1
-  tenant: Tenant_X
+  metadata:
+    tenant: Tenant_X
 - id: 316
   name: Tenant_network_vrf_2
-  tenant: Tenant_X
+  metadata:
+    tenant: Tenant_X
 vrfs:
 - name: MGMT
   ip_routing: false

@@ -14,12 +14,14 @@ from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData, InputFa
 from tests.models import MoleculeHost, MoleculeScenario
 
 SETTINGS_WITH_BGP_VRFS = AvdCatalogGenerationSettings(input_factory_settings=InputFactorySettings(allow_bgp_vrfs=True))
+SETTINGS_WITH_EXTRA_FABRIC_VALIDATION = AvdCatalogGenerationSettings(extra_fabric_validation=True)
 SETTINGS_FILTERED_DEFAULT = AvdCatalogGenerationSettings(skip_tests=["VerifyNTP"])
 SETTINGS_FILTERED_SVC_LEAF = AvdCatalogGenerationSettings(skip_tests=["VerifyNTP"], run_tests=["VerifyReachability"])
 SETTINGS_FILTERED_SPINE = AvdCatalogGenerationSettings(run_tests=["VerifyLLDPNeighbors"], skip_tests=["VerifyLLDPNeighbors"])
 TEST_SETTINGS_MAP: dict[str, Any] = {
     "default_run": {"default": None},
     "allow_bgp_vrfs_run": {"default": SETTINGS_WITH_BGP_VRFS},
+    "default_run_filtered_report": {"default": SETTINGS_WITH_EXTRA_FABRIC_VALIDATION},
     "filtered_run": {
         "default": SETTINGS_FILTERED_DEFAULT,
         # Host-specific overrides
@@ -28,9 +30,10 @@ TEST_SETTINGS_MAP: dict[str, Any] = {
         "dc2-spine1": SETTINGS_FILTERED_SPINE,
         "dc2-spine2": SETTINGS_FILTERED_SPINE,
     },
+    "default_run_sorted_report": {"default": None},
 }
 
-RunName = Literal["default_run", "allow_bgp_vrfs_run", "filtered_run"]
+RunName = Literal["default_run", "allow_bgp_vrfs_run", "default_run_filtered_report", "filtered_run", "default_run_sorted_report"]
 
 
 @pytest.mark.molecule_scenarios("anta_runner")

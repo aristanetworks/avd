@@ -420,61 +420,79 @@ vlan_internal_order:
 vlans:
 - id: 150
   name: L2_MULTI_DOMAIN_NEUTRAL
-  tenant: L2_MULTI_DOMAIN_DISABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_DISABLED
 - id: 160
   name: L2_MULTI_DOMAIN_NEUTRAL
-  tenant: L2_MULTI_DOMAIN_DISABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_DISABLED
 - id: 170
   name: L2_MULTI_DOMAIN_DISABLED
-  tenant: L2_MULTI_DOMAIN_DISABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_DISABLED
 - id: 110
   name: L2_MULTI_DOMAIN_NEUTRAL
-  tenant: L2_MULTI_DOMAIN_DISABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_DISABLED
 - id: 111
   name: L2_MULTI_DOMAIN_ENABLED
-  tenant: L2_MULTI_DOMAIN_DISABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_DISABLED
 - id: 180
   name: L2_MULTI_DOMAIN_NEUTRAL
-  tenant: L2_MULTI_DOMAIN_DISABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_DISABLED
 - id: 190
   name: L2_MULTI_DOMAIN_ENABLED
-  tenant: L2_MULTI_DOMAIN_DISABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_DISABLED
 - id: 250
   name: L2_MULTI_DOMAIN_NEUTRAL
-  tenant: L2_MULTI_DOMAIN_ENABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_ENABLED
 - id: 260
   name: L2_MULTI_DOMAIN_NEUTRAL
-  tenant: L2_MULTI_DOMAIN_ENABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_ENABLED
 - id: 270
   name: L2_MULTI_DOMAIN_ENABLED
-  tenant: L2_MULTI_DOMAIN_ENABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_ENABLED
 - id: 210
   name: L2_MULTI_DOMAIN_NEUTRAL
-  tenant: L2_MULTI_DOMAIN_ENABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_ENABLED
 - id: 211
   name: L2_MULTI_DOMAIN_DISABLED
-  tenant: L2_MULTI_DOMAIN_ENABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_ENABLED
 - id: 280
   name: L2_MULTI_DOMAIN_NEUTRAL
-  tenant: L2_MULTI_DOMAIN_ENABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_ENABLED
 - id: 290
   name: L2_MULTI_DOMAIN_DISABLED
-  tenant: L2_MULTI_DOMAIN_ENABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_ENABLED
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: L2_MULTI_DOMAIN_ENABLED
   ip_routing: true
-  tenant: L2_MULTI_DOMAIN_DISABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_DISABLED
 - name: L2_MULTI_DOMAIN_NEUTRAL_1
   ip_routing: true
-  tenant: L2_MULTI_DOMAIN_DISABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_DISABLED
 - name: L2_MULTI_DOMAIN_DISBLED
   ip_routing: true
-  tenant: L2_MULTI_DOMAIN_ENABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_ENABLED
 - name: L2_MULTI_DOMAIN_NEUTRAL_2
   ip_routing: true
-  tenant: L2_MULTI_DOMAIN_ENABLED
+  metadata:
+    tenant: L2_MULTI_DOMAIN_ENABLED
 vxlan_interface:
   vxlan1:
     description: evpn_l2_multi_domain_VTEP

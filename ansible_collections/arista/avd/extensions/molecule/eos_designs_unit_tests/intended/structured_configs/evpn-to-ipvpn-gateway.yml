@@ -155,13 +155,15 @@ vlan_internal_order:
 vlans:
 - id: 10
   name: TEST_SVI_VLAN_10
-  tenant: mytenant
+  metadata:
+    tenant: mytenant
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: testvrf
   ip_routing: true
-  tenant: mytenant
+  metadata:
+    tenant: mytenant
 vxlan_interface:
   vxlan1:
     description: evpn-to-ipvpn-gateway_VTEP

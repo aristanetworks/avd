@@ -81,12 +81,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "custom_platform_settings.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Digital Twin settings applied when `avd_digital_twin_mode` is `true`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "custom_platform_settings.[].digital_twin.platform") | String |  |  |  | Name of an alternate `platform_settings` platform used when running in Digital Twin mode.<br>The `platform_settings` for the regular `platform` is used if this is not set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_node_type</samp>](## "custom_platform_settings.[].digital_twin.act_node_type") | String |  |  | Valid Values:<br>- <code>cloudeos</code><br>- <code>cvp</code><br>- <code>generic</code><br>- <code>third-party</code><br>- <code>tools-server</code><br>- <code>veos</code> | ACT node type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_hardware_inventory</samp>](## "custom_platform_settings.[].validate_hardware_inventory") | Dictionary |  |  |  | Defines the minimum hardware specifications required for the device.<br>Used for validation by the `anta_runner` role. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required for the device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fans</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_fans") | Integer |  |  |  | Minimum number of fans required for the device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_line_cards</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_line_cards") | Integer |  |  |  | Minimum number of line cards required for the device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_hardware_inventory</samp>](## "custom_platform_settings.[].validate_hardware_inventory") | Dictionary |  |  |  | Defines hardware requirements for the device, validated by the `anta_runner` role.<br>For the `min_*` keys:<br>- Undefined (Default): Validate that all available slots are inserted.<br>- Positive Integer: Validate that the number of components inserted is at least the specified minimum.<br>- 0: Skip the validation for this specific component. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fans</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_fans") | Integer |  |  |  | Minimum number of fans required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_line_cards</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_line_cards") | Integer |  |  |  | Minimum number of line cards required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "custom_platform_settings.[].validate_hardware_inventory.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. Set to 0 to skip validation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "custom_platform_settings.[].validate_hardware_inventory.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "custom_platform_settings.[].validate_hardware_inventory.transceiver_manufacturers.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "custom_platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
@@ -165,12 +165,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "platform_settings.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Digital Twin settings applied when `avd_digital_twin_mode` is `true`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "platform_settings.[].digital_twin.platform") | String |  |  |  | Name of an alternate `platform_settings` platform used when running in Digital Twin mode.<br>The `platform_settings` for the regular `platform` is used if this is not set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_node_type</samp>](## "platform_settings.[].digital_twin.act_node_type") | String |  |  | Valid Values:<br>- <code>cloudeos</code><br>- <code>cvp</code><br>- <code>generic</code><br>- <code>third-party</code><br>- <code>tools-server</code><br>- <code>veos</code> | ACT node type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_hardware_inventory</samp>](## "platform_settings.[].validate_hardware_inventory") | Dictionary |  |  |  | Defines the minimum hardware specifications required for the device.<br>Used for validation by the `anta_runner` role. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "platform_settings.[].validate_hardware_inventory.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required for the device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fans</samp>](## "platform_settings.[].validate_hardware_inventory.min_fans") | Integer |  |  |  | Minimum number of fans required for the device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "platform_settings.[].validate_hardware_inventory.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_line_cards</samp>](## "platform_settings.[].validate_hardware_inventory.min_line_cards") | Integer |  |  |  | Minimum number of line cards required for the device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "platform_settings.[].validate_hardware_inventory.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_hardware_inventory</samp>](## "platform_settings.[].validate_hardware_inventory") | Dictionary |  |  |  | Defines hardware requirements for the device, validated by the `anta_runner` role.<br>For the `min_*` keys:<br>- Undefined (Default): Validate that all available slots are inserted.<br>- Positive Integer: Validate that the number of components inserted is at least the specified minimum.<br>- 0: Skip the validation for this specific component. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "platform_settings.[].validate_hardware_inventory.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fans</samp>](## "platform_settings.[].validate_hardware_inventory.min_fans") | Integer |  |  |  | Minimum number of fans required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "platform_settings.[].validate_hardware_inventory.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_line_cards</samp>](## "platform_settings.[].validate_hardware_inventory.min_line_cards") | Integer |  |  |  | Minimum number of line cards required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "platform_settings.[].validate_hardware_inventory.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. Set to 0 to skip validation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "platform_settings.[].validate_hardware_inventory.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "platform_settings.[].validate_hardware_inventory.transceiver_manufacturers.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
@@ -365,23 +365,26 @@
           # ACT node type.
           act_node_type: <str; "cloudeos" | "cvp" | "generic" | "third-party" | "tools-server" | "veos">
 
-        # Defines the minimum hardware specifications required for the device.
-        # Used for validation by the `anta_runner` role.
+        # Defines hardware requirements for the device, validated by the `anta_runner` role.
+        # For the `min_*` keys:
+        # - Undefined (Default): Validate that all available slots are inserted.
+        # - Positive Integer: Validate that the number of components inserted is at least the specified minimum.
+        # - 0: Skip the validation for this specific component.
         validate_hardware_inventory:
 
-          # Minimum number of power supplies required for the device.
+          # Minimum number of power supplies required for the device. Set to 0 to skip validation.
           min_power_supplies: <int>
 
-          # Minimum number of fans required for the device.
+          # Minimum number of fans required for the device. Set to 0 to skip validation.
           min_fans: <int>
 
-          # Minimum number of supervisor modules required for the device.
+          # Minimum number of supervisor modules required for the device. Set to 0 to skip validation.
           min_supervisors: <int>
 
-          # Minimum number of line cards required for the device.
+          # Minimum number of line cards required for the device. Set to 0 to skip validation.
           min_line_cards: <int>
 
-          # Minimum number of fabric cards required for the device.
+          # Minimum number of fabric cards required for the device. Set to 0 to skip validation.
           min_fabric_cards: <int>
 
           # List of approved transceiver manufacturers for the device.
@@ -574,23 +577,26 @@
           # ACT node type.
           act_node_type: <str; "cloudeos" | "cvp" | "generic" | "third-party" | "tools-server" | "veos">
 
-        # Defines the minimum hardware specifications required for the device.
-        # Used for validation by the `anta_runner` role.
+        # Defines hardware requirements for the device, validated by the `anta_runner` role.
+        # For the `min_*` keys:
+        # - Undefined (Default): Validate that all available slots are inserted.
+        # - Positive Integer: Validate that the number of components inserted is at least the specified minimum.
+        # - 0: Skip the validation for this specific component.
         validate_hardware_inventory:
 
-          # Minimum number of power supplies required for the device.
+          # Minimum number of power supplies required for the device. Set to 0 to skip validation.
           min_power_supplies: <int>
 
-          # Minimum number of fans required for the device.
+          # Minimum number of fans required for the device. Set to 0 to skip validation.
           min_fans: <int>
 
-          # Minimum number of supervisor modules required for the device.
+          # Minimum number of supervisor modules required for the device. Set to 0 to skip validation.
           min_supervisors: <int>
 
-          # Minimum number of line cards required for the device.
+          # Minimum number of line cards required for the device. Set to 0 to skip validation.
           min_line_cards: <int>
 
-          # Minimum number of fabric cards required for the device.
+          # Minimum number of fabric cards required for the device. Set to 0 to skip validation.
           min_fabric_cards: <int>
 
           # List of approved transceiver manufacturers for the device.

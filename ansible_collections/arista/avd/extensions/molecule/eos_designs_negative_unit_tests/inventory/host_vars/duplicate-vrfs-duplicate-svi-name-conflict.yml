@@ -45,4 +45,5 @@ tenants:
 
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for Vlans.
-  {'id': 100, 'name': 'VLAN100', 'tenant': 'TENANT1'} conflicts with {'id': 100, 'name': 'VLAN100_CONFLICTING_NAME', 'tenant': 'DUPLICATE_TENANT1'}.
+  {'id': 100, 'name': 'VLAN100', 'metadata': {'tenant': 'TENANT1'}} conflicts with
+  {'id': 100, 'name': 'VLAN100_CONFLICTING_NAME', 'metadata': {'tenant': 'DUPLICATE_TENANT1'}}.

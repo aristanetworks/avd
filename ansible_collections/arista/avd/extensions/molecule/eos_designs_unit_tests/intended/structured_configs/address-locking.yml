@@ -144,19 +144,22 @@ vlans:
   address_locking:
     address_family:
       ipv4: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 102
   name: test-address-locking-2
   address_locking:
     address_family:
       ipv6: true
-  tenant: TENANT2
+  metadata:
+    tenant: TENANT2
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST_ADDRESS_LOCKING
   ip_routing: true
-  tenant: TENANT2
+  metadata:
+    tenant: TENANT2
 vxlan_interface:
   vxlan1:
     description: address-locking_VTEP
