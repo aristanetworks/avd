@@ -139,11 +139,19 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
         # Validate and configure trackers
         for tracker_name in natural_sort(trackers):
             config = self._get_tracker_input_config(tracker_name)
-            self.structured_config.flow_tracking.hardware.trackers.append_new(
+            flow_tracking_hardware_trackers = self.structured_config.flow_tracking.hardware.trackers.append_new(
                 name=config.name,
                 record_export=config.record_export._cast_as(EosCliConfigGen.FlowTracking.Hardware.TrackersItem.RecordExport),
-                exporters=config.exporters._cast_as(EosCliConfigGen.FlowTracking.Hardware.TrackersItem.Exporters),
             )
+            for exporter in config.exporters:
+                local_interface = self._get_local_interface(exporter.local_interface)
+                flow_tracking_hardware_trackers.exporters.append_new(
+                    name=exporter.name,
+                    collectors=exporter.collectors._cast_as(EosCliConfigGen.FlowTracking.Hardware.TrackersItem.ExportersItem.Collectors),
+                    format=exporter.format._cast_as(EosCliConfigGen.FlowTracking.Hardware.TrackersItem.ExportersItem.Format),
+                    local_interface=local_interface,
+                    template_interval=exporter.template_interval,
+                )
 
     def _set_sampled_flow_tracking(self) -> None:
         """Set the structured configuration for sampled flow tracking if any interface is configured."""
@@ -177,12 +185,20 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
             record_export = config.record_export._cast_as(EosCliConfigGen.FlowTracking.Sampled.TrackersItem.RecordExport)
             record_export.mpls = config.sampled.record_export.mpls
 
-            self.structured_config.flow_tracking.sampled.trackers.append_new(
+            flow_tracking_sampled_trackers = self.structured_config.flow_tracking.sampled.trackers.append_new(
                 name=config.name,
                 record_export=record_export,
-                exporters=config.exporters._cast_as(EosCliConfigGen.FlowTracking.Sampled.TrackersItem.Exporters),
                 table_size=config.sampled.table_size,
             )
+            for exporter in config.exporters:
+                local_interface = self._get_local_interface(exporter.local_interface)
+                flow_tracking_sampled_trackers.exporters.append_new(
+                    name=exporter.name,
+                    collectors=exporter.collectors._cast_as(EosCliConfigGen.FlowTracking.Sampled.TrackersItem.ExportersItem.Collectors),
+                    format=exporter.format._cast_as(EosCliConfigGen.FlowTracking.Sampled.TrackersItem.ExportersItem.Format),
+                    local_interface=local_interface,
+                    template_interval=exporter.template_interval,
+                )
 
     def _get_tracker_input_config(self, tracker_name: str) -> EosDesigns.FlowTrackingSettings.TrackersItem:
         """
@@ -202,3 +218,21 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
 
         msg = f"The flow tracker '{tracker_name}' is being used for at least one interface, but is not configured in 'self.inputs.flow_tracking_settings'."
         raise AristaAvdInvalidInputsError(msg)
+
+    def _get_local_interface(self, input_interface: str | None) -> str | None:
+        """
+        Resolve and return the appropriate local interface.
+
+        Given an `input_interface`, this function determines the corresponding local interface.
+        If the input is None, empty, or one of the predefined keywords, it returns the relevant
+        management or inband interface from `self.shared_utils`.
+        Otherwise, the provided interface name is returned as-is.
+        """
+        match input_interface:
+            case None | "" | "use_default_mgmt_method_interface":
+                return self.shared_utils.default_mgmt_protocol_interface
+            case "use_mgmt_interface":
+                return self.shared_utils.mgmt_interface
+            case "use_inband_mgmt_interface":
+                return self.shared_utils.inband_mgmt_interface
+        return input_interface
