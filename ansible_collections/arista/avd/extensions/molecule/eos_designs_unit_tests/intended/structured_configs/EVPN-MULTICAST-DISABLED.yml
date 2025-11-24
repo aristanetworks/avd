@@ -1011,178 +1011,230 @@ vlan_internal_order:
 vlans:
 - id: 310
   name: MULTICAST_DISABLED_310
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 311
   name: MULTICAST_DISABLED_311
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 110
   name: MULTICAST_ENABLED_110
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 111
   name: MULTICAST_ENABLED_111
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 210
   name: MULTICAST_ENABLED_210
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 211
   name: MULTICAST_DISABLED_211
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 256
   name: MULTICAST_DISABLED_256
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 257
   name: MULTICAST_ENABLED_257
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 4092
   name: MULTICAST_ENABLED_4092
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 5
   name: MULTICAST_DISABLED_5
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 6
   name: MULTICAST_DISABLED_6
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 1
   name: MULTICAST_ENABLED_1
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 2
   name: MULTICAST_ENABLED_2
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 3
   name: MULTICAST_ENABLED_3
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 4
   name: MULTICAST_DISABLED_4
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 7
   name: MULTICAST_DISABLED_7
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 8
   name: MULTICAST_ENABLED_8
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 9
   name: MULTICAST_ENABLED_9
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 10
   name: MULTICAST_VXLAN_FLOOD_ENABLED_WITH_UNDERLAY_MULTICAST_GROUP
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 330
   name: L3_MULTICAST_DISABLED_330
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 331
   name: L3_MULTICAST_DISABLED_331
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 130
   name: L3_MULTICAST_ENABLED_130
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 131
   name: L3_MULTICAST_ENABLED_131
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 136
   name: L3_L2_MULTICAST_ENABLED_136
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 137
   name: L3_L2_MULTICAST_ENABLED_137
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 230
   name: L3_MULTICAST_ENABLED_230
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 231
   name: L3_MULTICAST_DISABLED_231
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 240
   name: L3_MULTICAST_DISABLED_240
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 - id: 241
   name: L3_MULTICAST_DISABLED_241
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 - id: 140
   name: L3_MULTICAST_ENABLED_140
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 - id: 141
   name: L3_MULTICAST_DISABLED_141
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 - id: 550
   name: L3_MULTICAST_ENABLED_550
-  tenant: Tenant_E
+  metadata:
+    tenant: Tenant_E
 - id: 260
   name: L3_MULTICAST_ENABLED_260
-  tenant: Tenant_E
+  metadata:
+    tenant: Tenant_E
 - id: 250
   name: L3_MULTICAST_ENABLED_250
-  tenant: Tenant_E
+  metadata:
+    tenant: Tenant_E
 - id: 150
   name: L3_MULTICAST_ENABLED_150
-  tenant: Tenant_E
+  metadata:
+    tenant: Tenant_E
 - id: 251
   name: MULTICAST_DISABLED_251
-  tenant: Tenant_F
+  metadata:
+    tenant: Tenant_F
 - id: 252
   name: MULTICAST_ENABLED_252
-  tenant: Tenant_F
+  metadata:
+    tenant: Tenant_F
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: MULTICAST_DISABLED_310_311
   description: MULTICAST_DISABLED_310_311
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: MULTICAST_ENABLED_110_111
   description: MULTICAST_ENABLED_110_111
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: MULTICAST_ENABLED_210_DISABLED_211
   description: MULTICAST_ENABLED_210_DISABLED_211
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: MULTICAST_DISABLED_5_6
   description: MULTICAST_DISABLED_5_6
   ip_routing: true
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - name: MULTICAST_ENABLED_1_2
   description: MULTICAST_ENABLED_1_2
   ip_routing: true
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - name: MULTICAST_ENABLED_3_DISABLED_4
   description: MULTICAST_ENABLED_3_DISABLED_4
   ip_routing: true
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - name: TEN_C_L3_MULTICAST_DISABLED_330_331
   description: L3_MULTICAST_DISABLED_330_331
   ip_routing: true
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - name: TEN_C_L3_MULTICAST_ENABLED_130_131
   description: L3_MULTICAST_ENABLED_130_131
   ip_routing: true
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
   description: L3_MULTICAST_ENABLED_230_DISABLED_231
   ip_routing: true
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - name: TEN_D_L3_MULTICAST_DISABLED_240_241
   description: L3_MULTICAST_DISABLED_240_241
   ip_routing: true
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
   description: L3_MULTICAST_ENABLED_140_DISABLED_141
   ip_routing: true
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
   description: L3_MULTICAST_ENABLED_PEG_OVERRIDE
   ip_routing: true
-  tenant: Tenant_E
+  metadata:
+    tenant: Tenant_E
 - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
   description: L3_MULTICAST_TRANSIT
   ip_routing: true
-  tenant: Tenant_E
+  metadata:
+    tenant: Tenant_E
 - name: TEN_E_L3_MULTICAST_TRANSIT
   description: L3_MULTICAST_TRANSIT
   ip_routing: true
-  tenant: Tenant_E
+  metadata:
+    tenant: Tenant_E
 - name: TEN_E_PEG_L3_MULTICAST_ENABLED
   description: PEG_L3_MULTICAST_ENABLED in Tenant E
   ip_routing: true
-  tenant: Tenant_E
+  metadata:
+    tenant: Tenant_E
 vxlan_interface:
   vxlan1:
     description: EVPN-MULTICAST-DISABLED_VTEP
