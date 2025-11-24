@@ -28,6 +28,9 @@ bgp_peer_groups:
   ipv4_underlay_peers:
     name: IPv6-UNDERLAY-PEERS
     password: F0bdF6JLcJtagc6PCN8W0Q==
+    bfd: true
+    structured_config:
+      description: Test_for_ipv4_underlay_peers
   mlag_ipv4_underlay_peer:
     name: MLAG-IPv6-UNDERLAY-PEER
     password: GNtuK+/vTwZwSZiwj1FK/Q==

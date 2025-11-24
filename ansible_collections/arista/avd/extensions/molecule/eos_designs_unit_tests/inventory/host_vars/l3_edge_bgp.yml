@@ -12,7 +12,7 @@ spine:
 bgp_peer_groups:
   ipv4_underlay_peers:
     structured_config:
-      description: Test_for_bgp_peer_groups
+      description: Test_for_ipv4_underlay_peers
 
 l3_edge:
   p2p_links_profiles:
