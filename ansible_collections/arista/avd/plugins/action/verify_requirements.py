@@ -15,6 +15,7 @@ from typing import Any
 import yaml
 from ansible import constants as C  # noqa: N812
 from ansible.utils.collection_loader._collection_finder import _get_collection_metadata
+from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins import PYTHON_AVD_PATH, RUNNING_FROM_SOURCE
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
@@ -31,6 +32,7 @@ except ImportError:
     Requirement = object
 
 LOGGER = getLogger("ansible_collections.arista.avd")
+DISPLAY = Display()
 
 MIN_PYTHON_SUPPORTED_VERSION = (3, 10)
 DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION = False
@@ -379,15 +381,16 @@ def check_running_from_source() -> bool:
     from schema_tools.check_schemas import check_schemas, rebuild_schemas  # noqa: PLC0415
     from schema_tools.compile_templates import check_templates, recompile_templates  # noqa: PLC0415
 
+    # We always want Ansible to display the following messages in color, regardless of the verbosity level
     if schemas_recompiled := check_schemas():
-        LOGGER.info("Schemas have changed, rebuilding...", extra={"color": C.COLOR_CHANGED})
+        DISPLAY.display(msg="Schemas have changed, rebuilding...", color=C.COLOR_CHANGED)
         rebuild_schemas()
-        LOGGER.info("Done.", extra={"color": C.COLOR_CHANGED})
+        DISPLAY.display(msg="Done.", color=C.COLOR_CHANGED)
 
     if templates_recompiled := check_templates():
-        LOGGER.info("Templates have changed, recompiling...", extra={"color": C.COLOR_CHANGED})
+        DISPLAY.display(msg="Templates have changed, recompiling...", color=C.COLOR_CHANGED)
         recompile_templates()
-        LOGGER.info("Done.", extra={"color": C.COLOR_CHANGED})
+        DISPLAY.display(msg="Done.", color=C.COLOR_CHANGED)
 
     return schemas_recompiled or templates_recompiled
 
@@ -429,9 +432,10 @@ class ActionModule(AvdActionPlugin):
         if check_running_from_source():
             self.result["changed"] = True
 
-        self.logger.info("AVD version %s", info["ansible"]["collection"]["version"], extra={"color": C.COLOR_OK})
+        # We always want Ansible to display the following messages in color, regardless of the verbosity level
+        DISPLAY.display(msg=f"AVD version {info['ansible']['collection']['version']}", color=C.COLOR_OK)
         if RUNNING_FROM_SOURCE:
-            self.logger.info("AVD is running from source using PyAVD at '%s'", PYTHON_AVD_PATH, extra={"color": C.COLOR_OK})
+            DISPLAY.display(msg=f"AVD is running from source using PyAVD at '{PYTHON_AVD_PATH}'", color=C.COLOR_OK)
 
         if not _validate_python_version(info["python"]):
             self.result["failed"] = True

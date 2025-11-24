@@ -10,20 +10,18 @@
 
 #### MAC Access-lists Summary
 {%     for mac_access_list in mac_access_lists | arista.avd.natural_sort('name') %}
-{%         if mac_access_list.name is arista.avd.defined and mac_access_list.entries is arista.avd.defined %}
 
 ##### {{ mac_access_list.name }}
-{%             if mac_access_list.counters_per_entry is arista.avd.defined(true) %}
+{%         if mac_access_list.counters_per_entry is arista.avd.defined(true) %}
 
 - ACL has counting mode `counters per-entry` enabled!
-{%             endif %}
+{%         endif %}
 
 | Sequence | Action |
 | -------- | ------ |
-{%             for acl_entry in mac_access_list.entries %}
+{%         for acl_entry in mac_access_list.entries %}
 | {{ acl_entry.sequence | arista.avd.default('-') }} | {{ acl_entry.action }} |
-{%             endfor %}
-{%         endif %}
+{%         endfor %}
 {%     endfor %}
 
 #### MAC Access-lists Device Configuration

@@ -10,6 +10,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     StructuredConfigGeneratorProtocol,
     structured_config_contributor,
 )
+from pyavd._utils import default
 
 from .cv_pathfinder import CvPathfinderMixin
 from .cv_tags import CvTagsMixin
@@ -32,6 +33,12 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
             serial_number=self.shared_utils.serial_number,
             validate_no_errors_period=self.inputs.logging_settings.validate_no_errors_period,
         )
+        exclude_as_extra_fabric_validation_target = default(
+            self.shared_utils.node_config.exclude_as_extra_fabric_validation_target,
+            self.shared_utils.node_type_key_data.exclude_as_extra_fabric_validation_target,
+        )
+        if exclude_as_extra_fabric_validation_target:
+            self.structured_config.metadata.exclude_as_extra_fabric_validation_target = exclude_as_extra_fabric_validation_target
         self._set_cv_tags()
         self._set_cv_pathfinder()
         if self.shared_utils.digital_twin:

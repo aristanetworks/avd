@@ -259,9 +259,9 @@ l3leaf:
           uplink_switches:
             - HARDWARE_FEATURES_VEOS_LAB
           uplink_interfaces:
-            - Ethernet1.1
+            - Ethernet10
           uplink_switch_interfaces:
-            - Ethernet2.2
+            - Ethernet10
 
 # Test `queue-monitor`
 queue_monitor_length:

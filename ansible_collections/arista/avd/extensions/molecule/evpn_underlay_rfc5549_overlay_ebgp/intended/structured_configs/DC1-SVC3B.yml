@@ -800,6 +800,8 @@ router_bgp:
       remote_as: '65103'
       peer_group: MLAG_VRFS_PEER
       description: DC1-SVC3A_Vlan2
+      metadata:
+        validate_state: true
     redistribute:
       connected:
         enabled: true

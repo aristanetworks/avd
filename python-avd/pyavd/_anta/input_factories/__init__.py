@@ -7,12 +7,17 @@ from __future__ import annotations
 
 from .avt import VerifyAVTSpecificPathInputFactory
 from .connectivity import VerifyLLDPNeighborsInputFactory, VerifyReachabilityInputFactory
-from .hardware import VerifyEnvironmentCoolingInputFactory, VerifyEnvironmentPowerInputFactory
+from .hardware import (
+    VerifyEnvironmentCoolingInputFactory,
+    VerifyEnvironmentPowerInputFactory,
+    VerifyInventoryInputFactory,
+    VerifyTransceiversManufacturersInputFactory,
+)
 from .interfaces import VerifyInterfacesStatusInputFactory, VerifyPortChannelsInputFactory, VerifyStormControlDropsInputFactory
 from .logging import VerifyLoggingErrorsInputFactory
 from .router_path_selection import VerifySpecificPathInputFactory
 from .routing_bgp import VerifyBGPPeerSessionInputFactory
-from .routing_generic import VerifyRoutingProtocolModelInputFactory
+from .routing_generic import VerifyRoutingProtocolModelInputFactory, VerifyRoutingTableEntryInputFactory
 from .security import VerifyAPIHttpsSSLInputFactory, VerifySpecificIPSecConnInputFactory
 from .system import VerifyReloadCauseInputFactory
 
@@ -23,13 +28,16 @@ __all__ = [
     "VerifyEnvironmentCoolingInputFactory",
     "VerifyEnvironmentPowerInputFactory",
     "VerifyInterfacesStatusInputFactory",
+    "VerifyInventoryInputFactory",
     "VerifyLLDPNeighborsInputFactory",
     "VerifyLoggingErrorsInputFactory",
     "VerifyPortChannelsInputFactory",
     "VerifyReachabilityInputFactory",
     "VerifyReloadCauseInputFactory",
     "VerifyRoutingProtocolModelInputFactory",
+    "VerifyRoutingTableEntryInputFactory",
     "VerifySpecificIPSecConnInputFactory",
     "VerifySpecificPathInputFactory",
     "VerifyStormControlDropsInputFactory",
+    "VerifyTransceiversManufacturersInputFactory",
 ]
