@@ -63,6 +63,9 @@ pub struct Configuration {
     pub ignore_required_keys_on_root_dict: bool,
     pub return_default_value_inserted_infos: bool,
     pub return_coercion_infos: bool,
+    /// By default Null/None values are ignored no matter which data type is expected.
+    /// Setting this will instead emit type errors for Null values.
+    pub restrict_null_values: bool,
 }
 
 #[derive(Clone, Debug, Default)]

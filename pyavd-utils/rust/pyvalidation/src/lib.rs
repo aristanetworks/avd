@@ -20,7 +20,7 @@ fn get_store() -> &'static Store {
 }
 
 #[pymodule]
-mod validation {
+pub mod validation {
     use super::{STORE, get_store};
     use avdschema::{LoadFromFragments, Store, any::AnySchema, resolve_schema};
     use log::info;

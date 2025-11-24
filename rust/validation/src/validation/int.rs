@@ -24,6 +24,7 @@ impl Validation<i64> for Int {
     fn validate_value(&self, value: &Value, ctx: &mut Context) {
         if let Some(v) = value.as_i64() {
             self.validate(&v, ctx)
+        } else if value.is_null() && !ctx.configuration.restrict_null_values {
         } else {
             ctx.add_error(Violation::InvalidType {
                 expected: Type::Int,

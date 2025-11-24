@@ -3,6 +3,7 @@
 // that can be found in the LICENSE file.
 
 use avdschema::{any::AnySchema, base::Deprecation, dict::Dict, get_dynamic_keys, resolve_ref};
+use ordermap::OrderMap;
 use serde_json::{Map, Value};
 
 use crate::{
@@ -15,14 +16,14 @@ use super::Validation;
 impl Validation<Map<String, Value>> for Dict {
     fn validate(&self, value: &Map<String, Value>, ctx: &mut Context) {
         validate_keys(self, value, ctx);
-        validate_allowed_keys(self, value, ctx);
-        validate_dynamic_keys(self, value, ctx);
+        validate_required_keys(self, value, ctx);
         self.validate_ref(value, ctx);
     }
 
     fn validate_value(&self, value: &Value, ctx: &mut Context) {
         if let Some(v) = value.as_object() {
             self.validate(v, ctx)
+        } else if value.is_null() && !ctx.configuration.restrict_null_values {
         } else {
             ctx.add_error(Violation::InvalidType {
                 expected: Type::Dict,
@@ -66,67 +67,56 @@ impl Validation<Map<String, Value>> for Dict {
     }
 }
 
-fn validate_allowed_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
-    if !schema.allow_other_keys.unwrap_or_default()
-        && let Some(keys) = &schema.keys
-    {
-        input
-            .keys()
-            // keys starting with "_" are passed over to allow for custom usage
-            .filter(|key| !key.starts_with('_'))
-            .filter(|key| !keys.contains_key(key.as_str()))
-            .for_each(|key| {
-                ctx.state.path.push(key.to_owned());
-                ctx.add_error(Violation::UnexpectedKey());
-                ctx.state.path.pop();
-            });
-    }
+fn get_dynamic_keys_schemas<'a>(
+    schema: &'a Dict,
+    input: &'a Map<String, Value>,
+) -> OrderMap<String, &'a AnySchema> {
+    schema
+        .dynamic_keys
+        .iter()
+        .flat_map(|dynamic_keys| {
+            dynamic_keys.keys().flat_map(|key_path| {
+                get_dynamic_keys(key_path, input)
+                    .into_iter()
+                    .map(|key| (key, dynamic_keys.get(key_path).unwrap()))
+            })
+        })
+        .collect()
 }
 
 fn validate_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
     if let Some(keys) = &schema.keys {
-        for (key, key_schema) in keys {
-            match input.get(key) {
-                Some(Value::Null) | None => {
-                    // nullish values don't need to be validated beyond a requiredness check
-
-                    // Don't validate required keys if we are below a dict with relaxed validation or if we are at the root level.
-                    if ctx.state.relaxed_validation
-                        || (ctx.configuration.ignore_required_keys_on_root_dict
-                            && ctx.state.path.is_empty())
-                    {
-                        continue;
-                    }
-
-                    if key_schema.is_required() {
-                        ctx.add_error(Violation::MissingRequiredKey {
-                            key: key.to_string(),
-                        });
-                    }
-                }
-                Some(value) => {
-                    ctx.state.path.push(key.to_owned());
-                    check_deprecation(key, key_schema, input, ctx);
-                    key_schema.validate(value, ctx);
-                    ctx.state.path.pop();
-                }
+        let dynamic_keys_schemas = get_dynamic_keys_schemas(schema, input);
+        input.iter().for_each(|(input_key, input_value)| {
+            ctx.state.path.push(input_key.to_owned());
+            if let Some(key_schema) = keys.get(input_key) {
+                check_deprecation(input_key, key_schema, input, ctx);
+                key_schema.validate(input_value, ctx);
+            } else if let Some(key_schema) = dynamic_keys_schemas.get(input_key) {
+                check_deprecation(input_key, key_schema, input, ctx);
+                key_schema.validate(input_value, ctx);
+            } else if !schema.allow_other_keys.unwrap_or_default() && !input_key.starts_with("_") {
+                // Key is not part of the schema and does not start with underscore
+                ctx.add_error(Violation::UnexpectedKey());
             }
-        }
+            ctx.state.path.pop();
+        });
     }
 }
 
-fn validate_dynamic_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
-    if let Some(dynamic_keys) = &schema.dynamic_keys {
-        for (key_path, key_schema) in dynamic_keys {
-            let keys = get_dynamic_keys(key_path, input);
-            // validate the computed dynamic keys' corresponding values
-            for key in keys {
-                if let Some(value) = input.get(&key) {
-                    ctx.state.path.push(key.to_owned());
-                    check_deprecation(&key, key_schema, input, ctx);
-                    key_schema.validate(value, ctx);
-                    ctx.state.path.pop();
-                }
+fn validate_required_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
+    // Don't validate required keys if we are below a dict with relaxed validation or if we are at the root level.
+    if ctx.state.relaxed_validation
+        || (ctx.configuration.ignore_required_keys_on_root_dict && ctx.state.path.is_empty())
+    {
+        return;
+    }
+    if let Some(keys) = &schema.keys {
+        for (key, key_schema) in keys {
+            if key_schema.is_required() && !input.contains_key(key) {
+                ctx.add_error(Violation::MissingRequiredKey {
+                    key: key.to_string(),
+                });
             }
         }
     }
@@ -142,7 +132,10 @@ fn check_deprecation(
         && deprecation.warning
     {
         if deprecation.removed.unwrap_or_default() {
-            ctx.add_error(Violation::DeprecatedRemoved(Removed::from_schema(&ctx.state.path, deprecation)));
+            ctx.add_error(Violation::DeprecatedRemoved(Removed::from_schema(
+                &ctx.state.path,
+                deprecation,
+            )));
         } else {
             // TODO: Catch conflict.
             ctx.add_warning(Deprecated::from_schema(&ctx.state.path, deprecation));

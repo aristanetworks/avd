@@ -20,6 +20,7 @@ impl Validation<bool> for Bool {
     fn validate_value(&self, value: &Value, ctx: &mut Context) {
         if let Some(v) = value.as_bool() {
             self.validate(&v, ctx)
+        } else if value.is_null() && !ctx.configuration.restrict_null_values {
         } else {
             ctx.add_error(Violation::InvalidType {
                 expected: Type::Bool,
