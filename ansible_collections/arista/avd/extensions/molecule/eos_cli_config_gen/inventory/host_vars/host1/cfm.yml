@@ -83,7 +83,7 @@ cfm:
           synthetic:
             tx_interval:
               interval: 10
-    
+
     # Test for sort with ignore_case: false
     - name: PROFILE_Z
       measurement:
