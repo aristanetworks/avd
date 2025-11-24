@@ -53,26 +53,26 @@ The drawing below shows the physical topology used in this example. The interfac
 
 ### IP ranges used
 
-| Out-of-band management IP allocation for WAN1        | 172.16.1.0/24               |
-|-----------------------------------------------------|-----------------------------|
-| Default gateway                                     | 172.16.1.1                  |
-| p1                                                  | 172.16.1.11                 |
-| p2                                                  | 172.16.1.12                 |
-| p3                                                  | 172.16.1.13                 |
-| p4                                                  | 172.16.1.14                 |
-| pe1                                                 | 172.16.1.101                |
-| pe2                                                 | 172.16.1.102                |
-| pe3                                                 | 172.16.1.103                |
-| rr1                                                 | 172.16.1.151                |
-| rr2                                                 | 172.16.1.152                |
-| **Point-to-point links between network nodes**      | **(Underlay)**              |
-| WAN1                                                | 10.255.3.0/24              |
-| **Loopback0 interfaces for router ID (p)**          | 10.255.0.0/27               |
-| **Loopback0 interfaces for overlay peering (pe)**   | 10.255.1.0/27               |
-| **Loopback0 interfaces for overlay peering (rr)**   | 10.255.2.0/27               |
-| **L3 Interfaces**                                   | **10.0-1.1.0/24**           |
-| For example pe1 `Ethernet3.10` has the IP address:  | 10.0.1.1                    |
-| For example pe3 `Ethernet4` has the IP address:     | 10.1.1.9                    |
+| Out-of-band management IP allocation for WAN1 | 172.16.1.0/24 |
+| --------------------------------------------- | ------------- |
+| Default gateway | 172.16.1.1 |
+| p1 | 172.16.1.11 |
+| p2 | 172.16.1.12 |
+| p3 | 172.16.1.13 |
+| p4 | 172.16.1.14 |
+| pe1 | 172.16.1.101 |
+| pe2 | 172.16.1.102 |
+| pe3 | 172.16.1.103 |
+| rr1 | 172.16.1.151 |
+| rr2 | 172.16.1.152 |
+| **Point-to-point links between network nodes** | **(Underlay)** |
+| WAN1 | 10.255.3.0/24 |
+| **Loopback0 interfaces for router ID (p)** | 10.255.0.0/27 |
+| **Loopback0 interfaces for overlay peering (pe)** | 10.255.1.0/27 |
+| **Loopback0 interfaces for overlay peering (rr)** | 10.255.2.0/27 |
+| **L3 Interfaces** | **10.0-1.1.0/24** |
+| For example pe1 `Ethernet3.10` has the IP address: | 10.0.1.1 |
+| For example pe3 `Ethernet4` has the IP address: | 10.1.1.9 |
 
 ### ISIS-LDP design
 
