@@ -66,7 +66,7 @@ def validate_json(data_as_json: str, schema_name: Literal["eos_cli_config_gen", 
         schema_name: The name of the schema to validate against.
 
     Returns:
-        ValidationResult holding lists of errors, warnings and infos as Feedback objects.
+        ValidationResult holding lists of violations and deprecations.
     """
 
 def get_validated_data(data_as_json: str, schema_name: Literal["eos_cli_config_gen", "eos_designs"]) -> GetValidatedDataResult:
@@ -80,7 +80,7 @@ def get_validated_data(data_as_json: str, schema_name: Literal["eos_cli_config_g
         schema_name: The name of the schema to validate against.
 
     Returns:
-        CoercionAndValidationResult holding the validated data and the ValidationResult with lists of errors, warnings and infos as Feedback objects.
+        GetValidatedDataResult holding the validated data and the ValidationResult with lists of violations and deprecations.
     """
 
 def validate_json_with_adhoc_schema(data_as_json: str, schema_as_json: str) -> ValidationResult:
@@ -92,5 +92,5 @@ def validate_json_with_adhoc_schema(data_as_json: str, schema_as_json: str) -> V
         schema_as_json: A fully resolved schema dumped as JSON.
 
     Returns:
-        ValidationResult holding lists of errors, warnings and infos as Feedback objects.
+        ValidationResult holding lists of violations and deprecations.
     """
