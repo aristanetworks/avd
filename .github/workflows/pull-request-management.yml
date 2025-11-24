@@ -226,7 +226,7 @@ jobs:
       - name: Download pyavd-utils wheel
         uses: actions/download-artifact@v6
         with:
-          name: pyavd-utils-wheel-ubuntu-latest
+          name: pyavd-utils-wheels-ubuntu-latest
           path: /tmp/pyavd/
       - name: "Install Python requirements"
         run: |
@@ -266,7 +266,7 @@ jobs:
       - name: Download pyavd-utils wheel
         uses: actions/download-artifact@v6
         with:
-          name: pyavd-utils-wheel-ubuntu-latest
+          name: pyavd-utils-wheels-ubuntu-latest
           path: /tmp/pyavd/
       - name: Set up Python 3.11
         uses: actions/setup-python@v6
@@ -339,7 +339,7 @@ jobs:
       - name: Download pyavd-utils wheel
         uses: actions/download-artifact@v6
         with:
-          name: pyavd-utils-wheel-ubuntu-latest
+          name: pyavd-utils-wheels-ubuntu-latest
           path: /tmp/pyavd/
       - name: Set up Python 3.11
         uses: actions/setup-python@v6
@@ -372,7 +372,7 @@ jobs:
       - name: Download pyavd-utils wheel
         uses: actions/download-artifact@v6
         with:
-          name: pyavd-utils-wheel-ubuntu-latest
+          name: pyavd-utils-wheels-ubuntu-latest
           path: /tmp/pyavd/
       - name: Use Python 3.10 for minimum requirements
         uses: actions/setup-python@v6
@@ -431,7 +431,7 @@ jobs:
       - name: Download pyavd-utils wheel
         uses: actions/download-artifact@v6
         with:
-          name: pyavd-utils-wheel-ubuntu-latest
+          name: pyavd-utils-wheels-ubuntu-latest
           path: /tmp/pyavd/
       - name: Set up Python 3.11
         uses: actions/setup-python@v6
@@ -478,7 +478,7 @@ jobs:
       - name: Download pyavd-utils wheel
         uses: actions/download-artifact@v6
         with:
-          name: pyavd-utils-wheel-ubuntu-latest
+          name: pyavd-utils-wheels-ubuntu-latest
           path: /tmp/pyavd/
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
@@ -508,7 +508,7 @@ jobs:
       - name: Download pyavd-utils wheel
         uses: actions/download-artifact@v6
         with:
-          name: pyavd-utils-wheel-ubuntu-latest
+          name: pyavd-utils-wheels-ubuntu-latest
           path: /tmp/pyavd/
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
@@ -547,7 +547,7 @@ jobs:
       - name: Download pyavd-utils wheel
         uses: actions/download-artifact@v6
         with:
-          name: pyavd-utils-wheel-ubuntu-latest
+          name: pyavd-utils-wheels-ubuntu-latest
           path: /tmp/pyavd/
       - name: Install Python requirements
         run: |
@@ -645,7 +645,7 @@ jobs:
       - name: Download pyavd-utils wheel
         uses: actions/download-artifact@v6
         with:
-          name: pyavd-utils-wheel-ubuntu-latest
+          name: pyavd-utils-wheels-ubuntu-latest
           path: /tmp/pyavd/
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
