@@ -386,7 +386,7 @@ jobs:
         # pip upgrade to get dependency groups
         run: |
           pip install uv
-          uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution=lowest-direct > /tmp/pyavd/min_requirements.txt
+          uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution=lowest-direct --index=/tmp/pyavd > /tmp/pyavd/min_requirements.txt
           cat /tmp/pyavd/min_requirements.txt
           pip install pip --upgrade
           python -m pip install --group molecule
@@ -497,7 +497,7 @@ jobs:
   ansible_test_units:
     name: Run ansible-test units test cases
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes, build_pyavd_utils_wheels]
+    needs: [file-changes, build_pyavd, build_pyavd_utils_wheels]
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python 3
@@ -551,7 +551,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install Python requirements
         run: |
-          pip install "ansible-core<2.20.0" ".python-avd[ansible-collection]" --find-links /tmp/pyavd
+          pip install "ansible-core<2.20.0" "./python-avd[ansible-collection]" --find-links /tmp/pyavd
       - name: Run ansible-test integration test cases
         working-directory: ansible_collections/arista/avd
         run: |
@@ -629,7 +629,7 @@ jobs:
   ansible_lint:
     name: Run ansible-lint test case
     runs-on: ubuntu-latest
-    needs: [file-changes, build_pyavd_utils_wheels]
+    needs: [file-changes, build_pyavd, build_pyavd_utils_wheels]
     env:
       ANSIBLE_COLLECTIONS_PATH: ${{ github.workspace }}
     steps:
