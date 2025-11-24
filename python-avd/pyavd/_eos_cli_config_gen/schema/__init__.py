@@ -21219,14 +21219,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
 
             _fields: ClassVar[dict] = {"certificate": {"type": str}, "private_key": {"type": str}}
-            certificate: str | None
+            certificate: str
             """Name of certificate; private key must also be specified."""
-            private_key: str | None
+            private_key: str
             """Name of private key; certificate must also be specified."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, certificate: str | None | UndefinedType = Undefined, private_key: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, certificate: str | UndefinedType = Undefined, private_key: str | UndefinedType = Undefined) -> None:
                     """
                     ProtocolHttpsCertificate.
 
@@ -25010,7 +25010,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": str}}
             name: str
-            interfaces: str | None
+            interfaces: str
             """
             Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
             Multiple interface
@@ -25019,7 +25019,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | UndefinedType = Undefined) -> None:
                     """
                     InterfaceSetsItem.
 
@@ -25447,8 +25447,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 PasswordType: TypeAlias = Literal["0", "7", "8a"]
                 _fields: ClassVar[dict] = {"username": {"type": str}, "password": {"type": str}, "password_type": {"type": str, "default": "7"}}
-                username: str | None
-                password: str | None
+                username: str
+                password: str
                 """Encrypted password using the `password_type`."""
                 password_type: PasswordType
                 """Default value: `"7"`"""
@@ -25458,8 +25458,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        username: str | None | UndefinedType = Undefined,
-                        password: str | None | UndefinedType = Undefined,
+                        username: str | UndefinedType = Undefined,
+                        password: str | UndefinedType = Undefined,
                         password_type: PasswordType | UndefinedType = Undefined,
                     ) -> None:
                         """

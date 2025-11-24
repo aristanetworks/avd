@@ -356,7 +356,7 @@ spanning-tree mode none
 ### IPSec profiles
 
 | Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode | Flow Parallelization |
-| ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
+| ------------ | ---------- | --------- | ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
 | CP-PROFILE | CP-IKE-POLICY | CP-SA-POLICY | start | - | - | - | transport | - |
 
 ### IP Security Device Configuration
@@ -388,7 +388,7 @@ ip security
 
 | Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
 | --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.2/32 | - | 9194 | Hardware: FLOW-TRACKER |  |
+| Dps1 | 192.168.42.2/32 | - | 9194 | Hardware: FLOW-TRACKER | - |
 
 #### DPS Interfaces Device Configuration
 
@@ -414,8 +414,8 @@ interface Dps1
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | ACME-MPLS-INC_mpls-pf2_mpls-cloud_Ethernet2 | - | 172.18.200.2/24 | default | - | False | - | - |
 | Ethernet2 | GLOBAL-INTERNET-LIMITED_inet-pf2_inet-cloud_Ethernet2 | - | 100.64.200.2/24 | default | - | False | ACL-PF-INTERNET-IN_Ethernet2 | - |
 
@@ -1155,7 +1155,7 @@ application traffic recognition
 #### Router Path-selection Summary
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Dynamic peers source | STUN |
 
 #### TCP MSS Ceiling Configuration
@@ -1169,7 +1169,7 @@ application traffic recognition
 ##### Path Group INTERNET
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Path Group ID | 102 |
 | IPSec profile | CP-PROFILE |
 
@@ -1177,7 +1177,7 @@ application traffic recognition
 
 | Interface name | Public address | STUN server profile(s) |
 | -------------- | -------------- | ---------------------- |
-| Ethernet2 | - |  |
+| Ethernet2 | - | - |
 
 ###### Static Peers
 
@@ -1188,14 +1188,14 @@ application traffic recognition
 ##### Path Group LAN_HA
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Path Group ID | 65535 |
 | Flow assignment | LAN |
 
 ##### Path Group MPLS
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Path Group ID | 101 |
 | IPSec profile | CP-PROFILE |
 
@@ -1203,7 +1203,7 @@ application traffic recognition
 
 | Interface name | Public address | STUN server profile(s) |
 | -------------- | -------------- | ---------------------- |
-| Ethernet1 | - |  |
+| Ethernet1 | - | - |
 
 ###### Static Peers
 

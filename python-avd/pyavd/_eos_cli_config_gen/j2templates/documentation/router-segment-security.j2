@@ -41,7 +41,7 @@ MSS-G is disabled.
 ##### Segment {{ segment.name }} Definitions
 
 | Interface | Match-List Name | Covered Prefix-List Name | Address Family |
-| --------- |---------------- | ------------------------ | -------------- |
+| --------- | --------------- | ------------------------ | -------------- |
 {%                 if segment.definition.interfaces is arista.avd.defined %}
 {%                     for interface in segment.definition.interfaces | arista.avd.natural_sort %}
 | {{ interface }} | - | - | - |

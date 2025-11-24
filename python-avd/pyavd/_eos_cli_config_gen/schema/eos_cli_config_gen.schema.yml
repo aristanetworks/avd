@@ -8249,6 +8249,7 @@ keys:
               keys:
                 bgp_groups:
                   type: list
+                  min_length: 1
                   items:
                     type: str
                     description: 'Name of BGP Group.
@@ -8256,6 +8257,7 @@ keys:
                       '
                 interface_groups:
                   type: list
+                  min_length: 1
                   items:
                     type: str
                     description: 'Name of Interface Group.
@@ -8432,9 +8434,11 @@ keys:
         keys:
           certificate:
             type: str
+            required: true
             description: Name of certificate; private key must also be specified.
           private_key:
             type: str
+            required: true
             description: Name of private key; certificate must also be specified.
   management_api_models:
     type: dict
@@ -8448,6 +8452,7 @@ keys:
             keys:
               disabled_paths:
                 type: list
+                min_length: 1
                 description: List of disabled Sysdb paths for Octa.
                 items:
                   type: str
@@ -8500,6 +8505,7 @@ keys:
         type: bool
       server_hosts:
         type: list
+        min_length: 1
         items:
           type: str
           description: IP or hostname.
@@ -9749,6 +9755,7 @@ keys:
               type: str
             interfaces:
               type: str
+              required: true
               description: 'Interface range(s) should be of same type, Ethernet, Loopback,
                 Management etc.
 
@@ -9934,8 +9941,10 @@ keys:
             keys:
               username:
                 type: str
+                required: true
               password:
                 type: str
+                required: true
                 description: Encrypted password using the `password_type`.
               password_type:
                 type: str
