@@ -137,6 +137,7 @@ router_bgp:
       remote_as: 65000
       local_as: 65000
       password: "mWV4B6WpLCfOTyKATLWuBg=="
+      password_type: 8a
       send_community: all
       maximum_routes: 0
     - name: IPv4-UNDERLAY-PEERS
@@ -1310,6 +1311,8 @@ router_bgp:
       shutdown: true
     - ip_address: 192.168.251.2
     - ip_address: 192.168.255.11
+      password: viDjZCwoPIoXECb3hxWioA==
+      password_type: 8a
     - ip_address: 172.31.255.0
       peer_group: IPv4-UNDERLAY-PEERS
       password: viDjZCwoPIoXECb3hxWioA==
@@ -1965,6 +1968,8 @@ router_bgp:
       neighbors:
         - ip_address: 11.11.11.0
           next_hop_peer: true
+          password: CRWZZy7NjZF5vUQbiZLrzw==
+          password_type: 8a
     - name: BLUE-C1
       rd: 1.0.1.1:101
       bgp:
