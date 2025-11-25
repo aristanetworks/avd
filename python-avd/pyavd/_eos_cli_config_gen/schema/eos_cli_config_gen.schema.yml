@@ -2035,7 +2035,7 @@ keys:
                     type: bool
                     description: 'Apply alternate action if primary action fails.
 
-                      eg. aaa unresponsive action apply cached-results else traffic
+                      e.g. aaa unresponsive action apply cached-results else traffic
                       allow'
                   traffic_allow_vlan:
                     type: int
@@ -2080,7 +2080,7 @@ keys:
                     type: bool
                     description: 'Apply alternate action if primary action fails.
 
-                      eg. aaa unresponsive phone action apply cached-results else
+                      e.g. aaa unresponsive phone action apply cached-results else
                       traffic allow'
                   traffic_allow:
                     description: Set action for supplicant traffic when AAA times

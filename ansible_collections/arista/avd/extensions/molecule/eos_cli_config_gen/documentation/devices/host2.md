@@ -1609,6 +1609,8 @@ ipv6 dhcp relay option remote-id format %m:%p
 
 ## IP DHCP Snooping
 
+IP DHCP Snooping is enabled
+
 IP DHCP Snooping Circuit-ID Suboption: 10
 
 IP DHCP Snooping Circuit-ID Format: %h:%p
@@ -1616,6 +1618,9 @@ IP DHCP Snooping Circuit-ID Format: %h:%p
 ### IP DHCP Snooping Device Configuration
 
 ```eos
+!
+ip dhcp snooping
+ip dhcp snooping information option circuit-id type 10 format %h:%p
 ```
 
 ## IP NAT

@@ -5245,7 +5245,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     apply_alternate: bool | None
                     """
                     Apply alternate action if primary action fails.
-                    eg. aaa unresponsive action apply cached-results
+                    e.g. aaa unresponsive action apply cached-results
                     else traffic allow
                     """
                     traffic_allow_vlan: int | None
@@ -5276,7 +5276,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 apply_alternate:
                                    Apply alternate action if primary action fails.
-                                   eg. aaa unresponsive action apply cached-results
+                                   e.g. aaa unresponsive action apply cached-results
                                    else traffic allow
                                 traffic_allow_vlan: traffic_allow_vlan
                                 apply_cached_results: Use results from a previous AAA response.
@@ -5340,7 +5340,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     apply_alternate: bool | None
                     """
                     Apply alternate action if primary action fails.
-                    eg. aaa unresponsive phone action apply cached-
+                    e.g. aaa unresponsive phone action apply cached-
                     results else traffic allow
                     """
                     traffic_allow: bool | None
@@ -5367,7 +5367,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 cached_results_timeout: Subclass of AvdModel.
                                 apply_alternate:
                                    Apply alternate action if primary action fails.
-                                   eg. aaa unresponsive phone action apply cached-
+                                   e.g. aaa unresponsive phone action apply cached-
                                    results else traffic allow
                                 traffic_allow: Set action for supplicant traffic when AAA times out.
 
@@ -9174,7 +9174,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         apply_alternate: bool | None
                         """
                         Apply alternate action if primary action fails.
-                        eg. aaa unresponsive action apply cached-results
+                        e.g. aaa unresponsive action apply cached-results
                         else traffic allow
                         """
                         traffic_allow_vlan: int | None
@@ -9207,7 +9207,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     traffic_allow_access_list: Name of standard access-list to apply when AAA times out.
                                     apply_alternate:
                                        Apply alternate action if primary action fails.
-                                       eg. aaa unresponsive action apply cached-results
+                                       e.g. aaa unresponsive action apply cached-results
                                        else traffic allow
                                     traffic_allow_vlan: traffic_allow_vlan
                                     apply_cached_results: Use results from a previous AAA response.
@@ -9271,7 +9271,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         apply_alternate: bool | None
                         """
                         Apply alternate action if primary action fails.
-                        eg. aaa unresponsive phone action apply cached-
+                        e.g. aaa unresponsive phone action apply cached-
                         results else traffic allow
                         """
                         traffic_allow: bool | None
@@ -9298,7 +9298,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     cached_results_timeout: Subclass of AvdModel.
                                     apply_alternate:
                                        Apply alternate action if primary action fails.
-                                       eg. aaa unresponsive phone action apply cached-
+                                       e.g. aaa unresponsive phone action apply cached-
                                        results else traffic allow
                                     traffic_allow: Set action for supplicant traffic when AAA times out.
 
