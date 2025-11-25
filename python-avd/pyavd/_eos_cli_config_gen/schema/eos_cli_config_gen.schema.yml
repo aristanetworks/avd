@@ -9247,20 +9247,30 @@ keys:
         type: str
         convert_types:
         - int
-      hardware_requirements:
+      validate_hardware:
         type: dict
-        description: 'Defines hardware requirements for the device, validated by the
-          `anta_runner` role.
+        description: 'Settings for hardware validation performed by the `anta_runner`
+          role.
+
+          If `enabled` is set to `false`, all other keys in this dictionary are ignored.
+
 
           For the `min_*` keys:
 
-          - Undefined (Default): Validate that all available slots are inserted.
+          - Undefined (Default): Validate that all available slots are populated.
 
           - Positive Integer: Validate that the number of components inserted is at
           least the specified minimum.
 
           - 0: Skip the validation for this specific component.'
         keys:
+          enabled:
+            type: bool
+            description: 'Enable hardware validation for the device.
+
+              If `false`, all hardware tests are skipped, therefore the other keys
+              in `validate_hardware` are ignored.'
+            default: true
           min_power_supplies:
             type: int
             description: Minimum number of power supplies required for the device.

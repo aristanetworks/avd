@@ -112,6 +112,7 @@ class LogMessage(Enum):
     INPUT_NO_DATA_MODELS = "skipped - Data models {data_models} not found"
     INPUT_MISSING_FIELDS = "{identity} skipped - Missing required fields: {fields}"
     EXTRA_FABRIC_VALIDATION_DISABLED = "skipped - Extra fabric-wide validation tests disabled"
+    HARDWARE_VALIDATION_DISABLED = "skipped - Hardware validation tests disabled"
 
     # Device role message
     DEVICE_IS_WAN_ROUTER = "skipped - Device is a WAN router"

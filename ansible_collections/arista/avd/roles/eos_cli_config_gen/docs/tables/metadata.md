@@ -16,14 +16,15 @@
     | [<samp>&nbsp;&nbsp;dc_name</samp>](## "metadata.dc_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;fabric_name</samp>](## "metadata.fabric_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;serial_number</samp>](## "metadata.serial_number") | String |  |  |  | Serial Number of the device.<br>Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role. |
-    | [<samp>&nbsp;&nbsp;hardware_requirements</samp>](## "metadata.hardware_requirements") | Dictionary |  |  |  | Defines hardware requirements for the device, validated by the `anta_runner` role.<br>For the `min_*` keys:<br>- Undefined (Default): Validate that all available slots are inserted.<br>- Positive Integer: Validate that the number of components inserted is at least the specified minimum.<br>- 0: Skip the validation for this specific component. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "metadata.hardware_requirements.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required for the device. Set to 0 to skip validation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_fans</samp>](## "metadata.hardware_requirements.min_fans") | Integer |  |  |  | Minimum number of fans required for the device. Set to 0 to skip validation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "metadata.hardware_requirements.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. Set to 0 to skip validation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_line_cards</samp>](## "metadata.hardware_requirements.min_line_cards") | Integer |  |  |  | Minimum number of line cards required for the device. Set to 0 to skip validation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "metadata.hardware_requirements.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. Set to 0 to skip validation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "metadata.hardware_requirements.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "metadata.hardware_requirements.transceiver_manufacturers.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;validate_hardware</samp>](## "metadata.validate_hardware") | Dictionary |  |  |  | Settings for hardware validation performed by the `anta_runner` role.<br>If `enabled` is set to `false`, all other keys in this dictionary are ignored.<br><br>For the `min_*` keys:<br>- Undefined (Default): Validate that all available slots are populated.<br>- Positive Integer: Validate that the number of components inserted is at least the specified minimum.<br>- 0: Skip the validation for this specific component. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "metadata.validate_hardware.enabled") | Boolean |  | `True` |  | Enable hardware validation for the device.<br>If `false`, all hardware tests are skipped, therefore the other keys in `validate_hardware` are ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "metadata.validate_hardware.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_fans</samp>](## "metadata.validate_hardware.min_fans") | Integer |  |  |  | Minimum number of fans required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "metadata.validate_hardware.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_line_cards</samp>](## "metadata.validate_hardware.min_line_cards") | Integer |  |  |  | Minimum number of line cards required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "metadata.validate_hardware.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "metadata.validate_hardware.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "metadata.validate_hardware.transceiver_manufacturers.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;cv_tags</samp>](## "metadata.cv_tags") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;device_tags</samp>](## "metadata.cv_tags.device_tags") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_tags.device_tags.[].name") | String | Required |  |  |  |
@@ -163,12 +164,18 @@
       # Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role.
       serial_number: <str>
 
-      # Defines hardware requirements for the device, validated by the `anta_runner` role.
+      # Settings for hardware validation performed by the `anta_runner` role.
+      # If `enabled` is set to `false`, all other keys in this dictionary are ignored.
+      #
       # For the `min_*` keys:
-      # - Undefined (Default): Validate that all available slots are inserted.
+      # - Undefined (Default): Validate that all available slots are populated.
       # - Positive Integer: Validate that the number of components inserted is at least the specified minimum.
       # - 0: Skip the validation for this specific component.
-      hardware_requirements:
+      validate_hardware:
+
+        # Enable hardware validation for the device.
+        # If `false`, all hardware tests are skipped, therefore the other keys in `validate_hardware` are ignored.
+        enabled: <bool; default=True>
 
         # Minimum number of power supplies required for the device. Set to 0 to skip validation.
         min_power_supplies: <int>

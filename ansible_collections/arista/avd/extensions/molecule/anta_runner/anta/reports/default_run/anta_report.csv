@@ -79,13 +79,6 @@ dc1-leaf1b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-san
 dc1-leaf1c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-leaf1c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf1c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
-dc1-leaf1c,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc1-leaf1c,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc1-leaf1c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc1-leaf1c,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc1-leaf1c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc1-leaf1c,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc1-leaf1c,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-leaf1c,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc1-leaf1c,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-leaf1c,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -155,13 +148,6 @@ dc1-leaf2a,VerifyVxlanVtep,unset,,Verifies Vxlan1 VTEP peers.,VXLAN
 dc1-leaf2c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-leaf2c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf2c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
-dc1-leaf2c,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc1-leaf2c,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc1-leaf2c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc1-leaf2c,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc1-leaf2c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc1-leaf2c,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc1-leaf2c,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-leaf2c,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc1-leaf2c,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-leaf2c,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -189,13 +175,6 @@ dc1-spine1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-spine1,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-spine1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-spine1,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
-dc1-spine1,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc1-spine1,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc1-spine1,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc1-spine1,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc1-spine1,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc1-spine1,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc1-spine1,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-spine1,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-spine1,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc1-spine1,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
@@ -221,13 +200,6 @@ dc1-spine2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-spine2,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-spine2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-spine2,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
-dc1-spine2,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc1-spine2,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc1-spine2,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc1-spine2,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc1-spine2,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc1-spine2,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc1-spine2,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-spine2,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-spine2,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc1-spine2,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
@@ -253,13 +225,6 @@ dc1-svc-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configurat
 dc1-svc-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-svc-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-svc-leaf1a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
-dc1-svc-leaf1a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc1-svc-leaf1a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc1-svc-leaf1a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc1-svc-leaf1a,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc1-svc-leaf1a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc1-svc-leaf1a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc1-svc-leaf1a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-svc-leaf1a,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc1-svc-leaf1a,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-svc-leaf1a,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -291,13 +256,6 @@ dc1-svc-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configurat
 dc1-svc-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-svc-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-svc-leaf1b,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
-dc1-svc-leaf1b,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc1-svc-leaf1b,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc1-svc-leaf1b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc1-svc-leaf1b,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc1-svc-leaf1b,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc1-svc-leaf1b,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc1-svc-leaf1b,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-svc-leaf1b,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc1-svc-leaf1b,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-svc-leaf1b,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -403,13 +361,6 @@ dc2-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-leaf1a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
-dc2-leaf1a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf1a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf1a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf1a,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf1a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf1a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf1a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf1a,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf1a,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf1a,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -443,13 +394,6 @@ dc2-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-leaf1b,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
-dc2-leaf1b,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf1b,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf1b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf1b,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf1b,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf1b,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf1b,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf1b,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf1b,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf1b,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -480,13 +424,6 @@ dc2-leaf1b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-san
 dc2-leaf1c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf1c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
-dc2-leaf1c,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf1c,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf1c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf1c,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf1c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf1c,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf1c,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf1c,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf1c,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf1c,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -514,13 +451,6 @@ dc2-leaf2a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf2a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf2a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-leaf2a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
-dc2-leaf2a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf2a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf2a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf2a,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf2a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf2a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf2a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf2a,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf2a,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf2a,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -559,13 +489,6 @@ dc2-leaf2b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf2b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf2b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-leaf2b,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
-dc2-leaf2b,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf2b,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf2b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf2b,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf2b,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf2b,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf2b,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf2b,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf2b,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf2b,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -601,13 +524,6 @@ dc2-leaf2b,VerifyVxlanVtep,unset,,Verifies Vxlan1 VTEP peers.,VXLAN
 dc2-leaf2c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf2c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf2c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
-dc2-leaf2c,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf2c,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf2c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf2c,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf2c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf2c,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf2c,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf2c,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf2c,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf2c,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -635,13 +551,6 @@ dc2-leaf3a.arista.com,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Con
 dc2-leaf3a.arista.com,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf3a.arista.com,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-leaf3a.arista.com,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
-dc2-leaf3a.arista.com,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf3a.arista.com,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf3a.arista.com,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf3a.arista.com,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf3a.arista.com,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf3a.arista.com,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf3a.arista.com,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf3a.arista.com,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf3a.arista.com,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf3a.arista.com,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -675,13 +584,6 @@ dc2-leaf3b.arista.com,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Con
 dc2-leaf3b.arista.com,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf3b.arista.com,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-leaf3b.arista.com,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
-dc2-leaf3b.arista.com,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf3b.arista.com,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf3b.arista.com,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf3b.arista.com,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf3b.arista.com,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf3b.arista.com,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf3b.arista.com,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-leaf3b.arista.com,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf3b.arista.com,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf3b.arista.com,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -715,13 +617,6 @@ dc2-spine1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-spine1,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-spine1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-spine1,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
-dc2-spine1,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-spine1,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-spine1,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-spine1,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-spine1,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-spine1,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-spine1,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-spine1,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-spine1,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc2-spine1,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
@@ -749,13 +644,6 @@ dc2-spine2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-spine2,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-spine2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-spine2,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
-dc2-spine2,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-spine2,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-spine2,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-spine2,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-spine2,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-spine2,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-spine2,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc2-spine2,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-spine2,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc2-spine2,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces

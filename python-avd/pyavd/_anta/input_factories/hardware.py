@@ -6,14 +6,24 @@ from __future__ import annotations
 from typing import Literal
 
 from anta.input_models.hardware import HardwareInventory
-from anta.tests.hardware import VerifyEnvironmentCooling, VerifyEnvironmentPower, VerifyInventory, VerifyTransceiversManufacturers
+from anta.tests.hardware import (
+    VerifyEnvironmentCooling,
+    VerifyEnvironmentPower,
+    VerifyEnvironmentSystemCooling,
+    VerifyInventory,
+    VerifyTemperature,
+    VerifyTransceiversManufacturers,
+    VerifyTransceiversTemperature,
+)
 
 from ._base_classes import AntaTestInputFactory
+from ._decorators import skip_if_hardware_validation_disabled
 
 
 class VerifyEnvironmentCoolingInputFactory(AntaTestInputFactory[VerifyEnvironmentCooling.Input]):
     """Input factory class for the `VerifyEnvironmentCooling` test."""
 
+    @skip_if_hardware_validation_disabled
     def create(self) -> list[VerifyEnvironmentCooling.Input] | None:
         """Create a list of inputs for the `VerifyEnvironmentCooling` test."""
         return [VerifyEnvironmentCooling.Input(states=["ok"])]
@@ -22,9 +32,37 @@ class VerifyEnvironmentCoolingInputFactory(AntaTestInputFactory[VerifyEnvironmen
 class VerifyEnvironmentPowerInputFactory(AntaTestInputFactory[VerifyEnvironmentPower.Input]):
     """Input factory class for the `VerifyEnvironmentPower` test."""
 
+    @skip_if_hardware_validation_disabled
     def create(self) -> list[VerifyEnvironmentPower.Input] | None:
         """Create a list of inputs for the `VerifyEnvironmentPower` test."""
         return [VerifyEnvironmentPower.Input(states=["ok"])]
+
+
+class VerifyEnvironmentSystemCoolingInputFactory(AntaTestInputFactory[VerifyEnvironmentSystemCooling.Input]):
+    """Input factory class for the `VerifyEnvironmentSystemCooling` test."""
+
+    @skip_if_hardware_validation_disabled
+    def create(self) -> list[VerifyEnvironmentSystemCooling.Input] | None:
+        """Create a list of inputs for the `VerifyEnvironmentSystemCooling` test."""
+        return [VerifyEnvironmentSystemCooling.Input()]
+
+
+class VerifyTemperatureInputFactory(AntaTestInputFactory[VerifyTemperature.Input]):
+    """Input factory class for the `VerifyTemperature` test."""
+
+    @skip_if_hardware_validation_disabled
+    def create(self) -> list[VerifyTemperature.Input] | None:
+        """Create a list of inputs for the `VerifyTemperature` test."""
+        return [VerifyTemperature.Input()]
+
+
+class VerifyTransceiversTemperatureInputFactory(AntaTestInputFactory[VerifyTransceiversTemperature.Input]):
+    """Input factory class for the `VerifyTransceiversTemperature` test."""
+
+    @skip_if_hardware_validation_disabled
+    def create(self) -> list[VerifyTransceiversTemperature.Input] | None:
+        """Create a list of inputs for the `VerifyTransceiversTemperature` test."""
+        return [VerifyTransceiversTemperature.Input()]
 
 
 class VerifyTransceiversManufacturersInputFactory(AntaTestInputFactory[VerifyTransceiversManufacturers.Input]):
@@ -32,13 +70,14 @@ class VerifyTransceiversManufacturersInputFactory(AntaTestInputFactory[VerifyTra
     Input factory class for the `VerifyTransceiversManufacturers` test.
 
     Generates test inputs to verify transceivers are from approved manufacturers. Uses
-    `hardware_requirements.transceiver_manufacturers` from metadata, defaulting to
+    `validate_hardware.transceiver_manufacturers` from metadata, defaulting to
     ['Arista Networks', 'Arastra, Inc.'] if not specified.
     """
 
+    @skip_if_hardware_validation_disabled
     def create(self) -> list[VerifyTransceiversManufacturers.Input] | None:
         """Create a list of inputs for the `VerifyTransceiversManufacturers` test."""
-        return [VerifyTransceiversManufacturers.Input(manufacturers=list(self.structured_config.metadata.hardware_requirements.transceiver_manufacturers))]
+        return [VerifyTransceiversManufacturers.Input(manufacturers=list(self.structured_config.metadata.validate_hardware.transceiver_manufacturers))]
 
 
 class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
@@ -46,7 +85,7 @@ class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
     Input factory class for the `VerifyInventory` test.
 
     Generates test inputs to verify that the expected quantity of hardware components are installed.
-    Uses the `hardware_requirements.min_<component>` keys from metadata to define the requirements for each component.
+    Uses the `validate_hardware.min_<component>` keys from metadata to define the requirements for each component.
 
     For each component:
       - Undefined (Default): Validate that all available slots are inserted.
@@ -71,14 +110,15 @@ class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
             return None
         return requirement
 
+    @skip_if_hardware_validation_disabled
     def create(self) -> list[VerifyInventory.Input] | None:
         """Create a list of inputs for the `VerifyInventory` test."""
-        hardware_requirements = self.structured_config.metadata.hardware_requirements
+        validate_hardware = self.structured_config.metadata.validate_hardware
         input_req = HardwareInventory(
-            power_supplies=self._get_hardware_requirement(hardware_requirements.min_power_supplies),
-            fan_trays=self._get_hardware_requirement(hardware_requirements.min_fans),
-            fabric_cards=self._get_hardware_requirement(hardware_requirements.min_fabric_cards),
-            line_cards=self._get_hardware_requirement(hardware_requirements.min_line_cards),
-            supervisors=self._get_hardware_requirement(hardware_requirements.min_supervisors),
+            power_supplies=self._get_hardware_requirement(validate_hardware.min_power_supplies),
+            fan_trays=self._get_hardware_requirement(validate_hardware.min_fans),
+            fabric_cards=self._get_hardware_requirement(validate_hardware.min_fabric_cards),
+            line_cards=self._get_hardware_requirement(validate_hardware.min_line_cards),
+            supervisors=self._get_hardware_requirement(validate_hardware.min_supervisors),
         )
         return [VerifyInventory.Input(requirements=input_req)]
