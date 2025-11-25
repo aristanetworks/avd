@@ -10,8 +10,8 @@
 
 #### AAA Server Groups Summary
 
-| Server Group Name | Type  | VRF | IP address |
-| ------------------| ----- | --- | ---------- |
+| Server Group Name | Type | VRF | IP address |
+| ----------------- | ---- | --- | ---------- |
 {%     for aaa_server_group in aaa_server_groups %}
 {%         if aaa_server_group.type is arista.avd.defined %}
 {%             if aaa_server_group.servers is arista.avd.defined %}

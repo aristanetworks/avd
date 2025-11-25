@@ -50,6 +50,26 @@ ethernet_interfaces:
     enable: true
   switchport:
     enabled: false
+- name: Ethernet6
+  description: L2_sflow-settings-2_Ethernet2
+  shutdown: false
+  channel_group:
+    id: 6
+    mode: active
+  metadata:
+    peer: sflow-settings-2
+    peer_interface: Ethernet2
+    peer_type: l2leaf
+- name: Ethernet7
+  description: L2_sflow-settings-1_Ethernet2
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  metadata:
+    peer: sflow-settings-1
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet16
   description: L2_sflow-tests-l2-leaf1_Ethernet2
   shutdown: false
@@ -148,6 +168,28 @@ port_channel_interfaces:
     trunk:
       groups:
       - MLAG
+- name: Port-Channel6
+  description: L2_sflow-settings-2_Port-Channel1
+  shutdown: false
+  mlag: 6
+  sflow:
+    enable: true
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
+- name: Port-Channel7
+  description: L2_sflow-settings-1_Port-Channel1
+  shutdown: false
+  mlag: 7
+  sflow:
+    enable: true
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
 - name: Port-Channel16
   description: L2_sflow-tests-l2-leaf1_Port-Channel1
   shutdown: false
@@ -425,29 +467,35 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 11
   name: VLAN11
-  tenant: SFLOW
+  metadata:
+    tenant: SFLOW
 - id: 3000
   name: MLAG_L3_VRF_VRF1
   trunk_groups:
   - MLAG
-  tenant: SFLOW
+  metadata:
+    tenant: SFLOW
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
-  tenant: SFLOW
+  metadata:
+    tenant: SFLOW
 vxlan_interface:
   vxlan1:
     description: sflow-tests-leaf4_VTEP

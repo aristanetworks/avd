@@ -38,7 +38,7 @@
 ## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
-| ---- | ---- | -------------- | --------- | ----------| -------------- |
+| ---- | ---- | -------------- | --------- | --------- | -------------- |
 | l2leaf | BGP-LEAF1 | Ethernet1 | l3spine | BGP-SPINE1 | Ethernet1 |
 | l2leaf | BGP-LEAF1 | Ethernet2 | l3spine | BGP-SPINE2 | Ethernet1 |
 | l2leaf | BGP-LEAF1 | Ethernet3 | l2leaf | BGP-LEAF3 | Ethernet1 |

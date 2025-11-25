@@ -241,7 +241,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -291,8 +291,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_DC1-SPINE1_Ethernet2 | - | 172.31.255.9/31 | default | 1500 | False | - | - |
 | Ethernet2 | P2P_DC1-SPINE2_Ethernet2 | - | 172.31.255.11/31 | default | 1500 | False | - | - |
 | Ethernet3 | P2P_DC1-SPINE3_Ethernet2 | - | 172.31.255.13/31 | default | 1500 | False | - | - |
@@ -382,7 +382,7 @@ interface Ethernet7
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_DC1-LEAF2B_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel7 | L2_DC1-L2LEAF1A_Port-Channel1 | trunk | none | - | - | - | - | 7 | - |
 
@@ -454,8 +454,8 @@ interface Loopback10
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan4093 | MLAG_L3 | default | 1500 | False |
 | Vlan4094 | MLAG | default | 1500 | False |
 
@@ -463,8 +463,8 @@ interface Loopback10
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan4093 |  default  |  10.255.251.2/31  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.252.2/31  |  -  |  -  |  -  |  -  |
+| Vlan4093 | default | 10.255.251.2/31 | - | - | - | - |
+| Vlan4094 | default | 10.255.252.2/31 | - | - | - | - |
 
 ##### ISIS
 

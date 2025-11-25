@@ -144,7 +144,7 @@ spanning-tree mode none
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -221,8 +221,8 @@ vlan 2601
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_DC1-POD2-SPINE1_Ethernet3 | - | 172.17.120.1/31 | default | - | False | - | - |
 | Ethernet2 | P2P_DC1-POD2-SPINE2_Ethernet3 | - | 172.17.120.3/31 | default | - | False | - | - |
 | Ethernet3 | P2P_DC1-RS2_Ethernet3 | - | 172.17.10.12/31 | default | - | False | - | - |
@@ -310,8 +310,8 @@ interface Loopback101
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan110 | set from structured_config on svi (was Tenant_A_OP_Zone_1) | Common_VRF | - | False |
 | Vlan111 | Tenant_A_OP_Zone_2 | Common_VRF | - | True |
 | Vlan112 | Tenant_A_OP_Zone_3 | Common_VRF | - | False |
@@ -324,13 +324,13 @@ interface Loopback101
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan110 |  Common_VRF  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |
-| Vlan111 |  Common_VRF  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |
-| Vlan112 |  Common_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |
-| Vlan113 |  Common_VRF  |  -  |  10.10.13.1/24  |  -  |  -  |  -  |
-| Vlan1100 |  vrf_with_loopbacks_from_overlapping_pool  |  -  |  10.100.100.1/24  |  -  |  -  |  -  |
-| Vlan1101 |  vrf_with_loopbacks_from_pod_pools  |  -  |  10.101.100.1/24  |  -  |  -  |  -  |
-| Vlan1102 |  vrf_with_loopbacks_dc1_pod1_only  |  -  |  10.102.100.1/24  |  -  |  -  |  -  |
+| Vlan110 | Common_VRF | - | 10.1.10.1/24 | - | - | - |
+| Vlan111 | Common_VRF | - | 10.1.11.1/24 | - | - | - |
+| Vlan112 | Common_VRF | - | 10.1.12.1/24 | - | - | - |
+| Vlan113 | Common_VRF | - | 10.10.13.1/24 | - | - | - |
+| Vlan1100 | vrf_with_loopbacks_from_overlapping_pool | - | 10.100.100.1/24 | - | - | - |
+| Vlan1101 | vrf_with_loopbacks_from_pod_pools | - | 10.101.100.1/24 | - | - | - |
+| Vlan1102 | vrf_with_loopbacks_dc1_pod1_only | - | 10.102.100.1/24 | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
