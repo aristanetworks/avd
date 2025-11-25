@@ -89,7 +89,7 @@
       tftp server option 150 {{ subnet.tftp_server.option_150_ipv4 | join(" ") }}
 {%             endif %}
 {%             if subnet.tftp_server.file_ipv4 is arista.avd.defined %}
-      tftp server file {{ subnet.tftp_server.file_ipv4 }}
+      tftp server file {{ subnet.tftp_server.file_ipv4 | join(" ") }}
 {%             endif %}
 {%         endfor %}
 {%         for subnet in dhcp_server.ipv6_subnets | arista.avd.natural_sort %}
@@ -129,7 +129,7 @@
       default-gateway {{ subnet.default_gateway }}
 {%             endif %}
 {%             if subnet.tftp_server.file_ipv6 is arista.avd.defined %}
-      tftp server file {{ subnet.tftp_server.file_ipv6 }}
+      tftp server file {{ subnet.tftp_server.file_ipv6 | join(" ") }}
 {%             endif %}
 {%         endfor %}
 {%         if dhcp_server.disabled | arista.avd.default(false) is true %}

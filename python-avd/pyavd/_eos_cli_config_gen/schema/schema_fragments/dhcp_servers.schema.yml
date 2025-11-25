@@ -170,6 +170,25 @@ keys:
                       type: str
                       description: |-
                         Valid IPv4 address from the given subnet.
+              tftp_server:
+                type: dict
+                keys:
+                  file_ipv4:
+                    type: list
+                    min_length: 1
+                    max_length: 254
+                    description: Name of TFTP file for IPv4 clients.
+                    items:
+                      type: str
+                  option_66_ipv4:
+                    type: str
+                    description: IPv4 address or server FQDN for TFTP option 66.
+                  option_150_ipv4:
+                    type: list
+                    min_length: 1
+                    description: List of IPv4 addresses for TFTP option 150.
+                    items:
+                      type: str
         ipv6_subnets:
           type: list
           $ref: "eos_cli_config_gen#/$defs/subnets"
@@ -188,6 +207,16 @@ keys:
                       type: str
                       description: |-
                         Valid IPv6 address from the given subnet.
+              tftp_server:
+                type: dict
+                keys:
+                  file_ipv6:
+                    type: list
+                    min_length: 1
+                    max_length: 254
+                    description: Name of TFTP file for IPv6 clients.
+                    items:
+                      type: str
         subnets:
           type: list
           deprecation:
