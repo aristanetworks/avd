@@ -191,6 +191,8 @@ metadata:
   platform: vEOS-lab
   dc_name: DC2
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
 mlag_configuration:
   domain_id: DC2_L3_LEAF3
   local_interface: Vlan4094

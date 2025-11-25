@@ -48,14 +48,15 @@ metadata:
   is_deployed: true
   platform: 7010TX
   fabric_name: EOS_DESIGNS_UNIT_TESTS
-  hardware_requirements:
+  validate_hardware:
+    enabled: true
     min_power_supplies: 2
     min_fans: 4
     min_supervisors: 2
     min_line_cards: 10
     min_fabric_cards: 5
     transceiver_manufacturers:
-    - Arastra, Inc.
+    - Third-party vendor
 mlag_configuration:
   domain_id: MLAG_PER_MTU_INTERFACE
   local_interface: Vlan4094
