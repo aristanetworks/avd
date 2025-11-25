@@ -65,7 +65,7 @@ def create_test_definitions(test_spec: TestSpec, device_context: DeviceTestConte
         logger_adapter.debug(LogMessage.INPUT_NO_DATA_MODELS, data_models=", ".join(keys))
         return
 
-    # Create the test definitions from the input factory if provided
+    # Generate the test definitions from the input factory if provided
     if test_spec.input_factory is not None:
         factory = test_spec.input_factory(device_context, test_spec.test_class.name)
 
