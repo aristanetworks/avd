@@ -46,7 +46,12 @@ class AntaTestInputFactory(ABC, Generic[T_Input]):
 
     @abstractmethod
     def create(self) -> Iterator[T_Input]:
-        """Yield the `AntaTest.Input` models for the `AntaTest`."""
+        """
+        Yield the `AntaTest.Input` models for the `AntaTest`.
+
+        If no inputs can be generated (e.g., no eligible LLDP neighbors configured),
+        the method should return without yielding any values.
+        """
 
     def is_peer_available(self, peer: str, identity: str) -> bool:
         """Check if a peer is part of the fabric and is deployed."""

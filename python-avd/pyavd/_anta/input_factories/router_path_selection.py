@@ -49,11 +49,11 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory[VerifySpecificPath.Inp
                     interface_ip_address = None
 
                 if interface_ip_address is None:
-                    self.logger_adapter.debug(LogMessage.INTERFACE_NO_IP, interface=interface)
+                    self.logger_adapter.debug(LogMessage.INTERFACE_NO_IP, interface=interface.name)
                     continue
 
                 if interface_ip_address == "dhcp":
-                    self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=interface)
+                    self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=interface.name)
                     continue
 
                 source_address = ip_interface(interface_ip_address).ip
