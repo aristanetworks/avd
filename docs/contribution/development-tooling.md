@@ -96,9 +96,9 @@ When using pyavd, it is required to run pre-commit to achieve the same.
 ## Cargo
 
 - [Cargo](https://doc.rust-lang.org/cargo/) is the Rust package manager. Cargo downloads your Rust packages dependencies and compiles Rust packages amongst other things.
-- It is used to build the `pyavd-utils` package which is a Python package providing Python bindings to Rust code developed for AVD and is a is a dependency of `pyavd`.
-- To be able to install `pyavd` as an editable package you will be required to build `pyavd-utils` and `pyavd` locally on your system and so you need Cargo to do so.
-- The recommended way to install `cargo` is via [`rustup`](https://rustup.rs/) but you can install any other way on your system.
+- It is used to build the `pyavd-utils` package which is a Python package providing Python bindings to Rust code developed for AVD and is a dependency of `pyavd`.
+- Installing `pyavd` as an editable package requires building both `pyavd` and `pyavd-utils` locally. Therefore, you must have Cargo installed.
+- The recommended way to install `cargo` is via [`rustup`](https://rustup.rs/) but you may use any other method supported by your system.
 - There is a target `install-rust` in the Makefile in `pyavd-utils` folder to use `rustup` to install `cargo`.
 
 !!! note
