@@ -3328,6 +3328,8 @@ metadata:
   is_deployed: true
   platform: cEOSLab
   fabric_name: DC1_FABRIC
+  validate_hardware:
+    enabled: false
 ntp:
   local_interface:
     name: Management0

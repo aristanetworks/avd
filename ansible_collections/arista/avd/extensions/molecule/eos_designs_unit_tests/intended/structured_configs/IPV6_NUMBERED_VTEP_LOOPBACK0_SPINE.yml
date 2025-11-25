@@ -50,6 +50,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:

@@ -10,8 +10,11 @@ from .connectivity import VerifyLLDPNeighborsInputFactory, VerifyReachabilityInp
 from .hardware import (
     VerifyEnvironmentCoolingInputFactory,
     VerifyEnvironmentPowerInputFactory,
+    VerifyEnvironmentSystemCoolingInputFactory,
     VerifyInventoryInputFactory,
+    VerifyTemperatureInputFactory,
     VerifyTransceiversManufacturersInputFactory,
+    VerifyTransceiversTemperatureInputFactory,
 )
 from .interfaces import VerifyInterfacesStatusInputFactory, VerifyPortChannelsInputFactory, VerifyStormControlDropsInputFactory
 from .logging import VerifyLoggingErrorsInputFactory
@@ -27,6 +30,7 @@ __all__ = [
     "VerifyBGPPeerSessionInputFactory",
     "VerifyEnvironmentCoolingInputFactory",
     "VerifyEnvironmentPowerInputFactory",
+    "VerifyEnvironmentSystemCoolingInputFactory",
     "VerifyInterfacesStatusInputFactory",
     "VerifyInventoryInputFactory",
     "VerifyLLDPNeighborsInputFactory",
@@ -39,5 +43,7 @@ __all__ = [
     "VerifySpecificIPSecConnInputFactory",
     "VerifySpecificPathInputFactory",
     "VerifyStormControlDropsInputFactory",
+    "VerifyTemperatureInputFactory",
     "VerifyTransceiversManufacturersInputFactory",
+    "VerifyTransceiversTemperatureInputFactory",
 ]
