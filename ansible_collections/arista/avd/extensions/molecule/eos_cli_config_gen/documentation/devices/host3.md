@@ -169,7 +169,7 @@ daemon TerminAttr
 #### Logging Servers and Features Summary
 
 | Type | Level |
-| -----| ----- |
+| ---- | ----- |
 | Synchronous | critical |
 
 | Format Type | Setting |
@@ -259,7 +259,7 @@ spanning-tree mst configuration
 | -------- | ----- |
 | Instance | EVPN_UNDERLAY |
 | SPF Interval | 250 seconds |
-| SPF Interval Wait Time| 30 milliseconds |
+| SPF Interval Wait Time | 30 milliseconds |
 
 #### ISIS Interfaces Summary
 

@@ -52,11 +52,11 @@ class DaemonTerminattrMixin(Protocol):
             self.structured_config.daemon_terminattr._update(
                 cvaddrs=self.get_cv_addrs(cluster),
                 cvauth=self.get_cv_auth(cluster),
-                cvvrf=self.get_vrf(
+                cvvrf=self.shared_utils.get_vrf(
                     cluster.vrf,
                     self.get_cv_cluster_vrf_context(cluster),
                 ),
-                cvsourceintf=self.get_source_interface(cluster.vrf, cluster.source_interface) if cv_settings.set_source_interfaces else None,
+                cvsourceintf=self.shared_utils.get_source_interface(cluster.vrf, cluster.source_interface) if cv_settings.set_source_interfaces else None,
             )
             return
 
@@ -66,11 +66,11 @@ class DaemonTerminattrMixin(Protocol):
                 name=cluster.name,
                 cvaddrs=self.get_cv_addrs(cluster)._cast_as(EosCliConfigGen.DaemonTerminattr.ClustersItem.Cvaddrs),
                 cvauth=self.get_cv_auth(cluster)._cast_as(EosCliConfigGen.DaemonTerminattr.ClustersItem.Cvauth),
-                cvvrf=self.get_vrf(
+                cvvrf=self.shared_utils.get_vrf(
                     cluster.vrf,
                     self.get_cv_cluster_vrf_context(cluster),
                 ),
-                cvsourceintf=self.get_source_interface(cluster.vrf, cluster.source_interface) if cv_settings.set_source_interfaces else None,
+                cvsourceintf=self.shared_utils.get_source_interface(cluster.vrf, cluster.source_interface) if cv_settings.set_source_interfaces else None,
             )
 
     @staticmethod
