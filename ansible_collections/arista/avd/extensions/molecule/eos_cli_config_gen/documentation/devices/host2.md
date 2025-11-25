@@ -390,9 +390,16 @@ radius-server attribute 32 include-in-access-req format myformat
 
 Authorization for configuration commands is disabled.
 
+#### AAA Authorization Privilege Levels Summary
+
+| Privilege Level | User Stores |
+| --------------- | ----------- |
+| all | group TACACS |
+
 #### AAA Authorization Device Configuration
 
 ```eos
+aaa authorization commands all default group TACACS
 no aaa authorization config-commands
 !
 ```
@@ -520,7 +527,7 @@ daemon TerminAttr
 #### Logging Servers and Features Summary
 
 | Type | Level |
-| -----| ----- |
+| ---- | ----- |
 | Console | disabled |
 | Monitor | debugging |
 | Buffer | disabled |
@@ -637,7 +644,7 @@ sflow interface egress enable default
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On | Table Size |
 | ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- | ---------- |
-| T21 | 3666 | 5666 | True | 0 |  | - |
+| T21 | 3666 | 5666 | True | 0 | - | - |
 
 ##### Exporters Summary
 
@@ -715,6 +722,7 @@ Transceiver dom-threshold file: default
 
 | Name | Interfaces |
 | ---- | ---------- |
+| GLOBAL_SET2 | Ethernet1 |
 | HOST_SET2 | Loopback2-4, Loopback10-12 |
 
 #### Probing Configuration
@@ -730,6 +738,7 @@ Transceiver dom-threshold file: default
 monitor connectivity
    interval 5
    shutdown
+   interface set GLOBAL_SET2 Ethernet1
    interface set HOST_SET2 Loopback2-4, Loopback10-12
    local-interfaces HOST_SET2 default
 ```
@@ -896,7 +905,7 @@ interface defaults
 
 | Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
 | --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.42/24 | False | 666 | Sampled: FT-S |  |
+| Dps1 | 192.168.42.42/24 | False | 666 | Sampled: FT-S | - |
 
 #### DPS Interfaces Device Configuration
 
@@ -1465,7 +1474,7 @@ router pim sparse-mode
 #### 802.1X Global
 
 | System Auth Control | Protocol LLDP Bypass | Dynamic Authorization | Dropped Packets Statistics |
-| ------------------- | -------------------- | ----------------------| -------------------------- |
+| ------------------- | -------------------- | --------------------- | -------------------------- |
 | True | True | True | - |
 
 #### 802.1X Radius AV pair
@@ -1630,8 +1639,8 @@ ip nat synchronization
 
 ### Errdisable Summary
 
-|  Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
-| ------ | ----------------- | ---------------- | -------------------------- |
+| Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
+| ----- | ----------------- | ---------------- | --------------------------- |
 | arp-inspection | - | True | - |
 | bpduguard | - | True | - |
 | hitless-reload-down | - | True | - |

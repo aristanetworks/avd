@@ -89,6 +89,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: WAN
+  validate_hardware:
+    enabled: false
 ntp:
   local_interface:
     name: Management1
@@ -111,10 +113,12 @@ vlan_internal_order:
 vlans:
 - id: 666
   name: BLUE-TEST
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 - id: 42
   name: RED-TEST
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 vrfs:
 - name: MGMT
   ip_routing: false

@@ -310,7 +310,7 @@ class AvdStructuredConfigBaseProtocol(
 
         vrfs = self.inputs.dns_settings.vrfs
         for server in self.inputs.dns_settings.servers:
-            server_vrf, source_interface = self._get_vrf_and_source_interface(
+            server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                 vrf_input=server.vrf,
                 vrfs=vrfs,
                 set_source_interfaces=self.inputs.dns_settings.set_source_interfaces,
@@ -355,7 +355,7 @@ class AvdStructuredConfigBaseProtocol(
 
         for host in settings.hosts:
             # Determine the correct VRF and source interface for the host
-            host_vrf, source_interface = self._get_vrf_and_source_interface(
+            host_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                 vrf_input=host.vrf,
                 vrfs=settings.vrfs,
                 set_source_interfaces=True,
@@ -506,7 +506,7 @@ class AvdStructuredConfigBaseProtocol(
 
             for vrf in self.inputs.management_eapi.vrfs:
                 if vrf.enabled:
-                    vrf_name = self.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
+                    vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
                     self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name, access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl)
 
         # Enforce eAPI management access in default VRF for ACT Digital Twin if required
@@ -636,7 +636,7 @@ class AvdStructuredConfigBaseProtocol(
             return
 
         for server in self.inputs.aaa_settings.radius.servers:
-            server_vrf, source_interface = self._get_vrf_and_source_interface(
+            server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                 vrf_input=server.vrf,
                 vrfs=self.inputs.aaa_settings.radius.vrfs,
                 set_source_interfaces=True,
@@ -665,7 +665,7 @@ class AvdStructuredConfigBaseProtocol(
             return
         all_tacacs_servers = EosCliConfigGen.TacacsServers.Hosts()
         for server in self.inputs.aaa_settings.tacacs.servers:
-            server_vrf, source_interface = self._get_vrf_and_source_interface(
+            server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                 vrf_input=server.vrf,
                 vrfs=self.inputs.aaa_settings.tacacs.vrfs,
                 set_source_interfaces=True,

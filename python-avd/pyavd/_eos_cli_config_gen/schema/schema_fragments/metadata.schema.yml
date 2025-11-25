@@ -34,32 +34,43 @@ keys:
         type: str
         convert_types:
           - int
-      hardware_requirements:
+      validate_hardware:
         type: dict
         description: |-
-          Defines the minimum hardware specifications required for the device.
-          Used for validation by the `anta_runner` role.
+          Settings for hardware validation performed by the `anta_runner` role.
+          If `enabled` is set to `false`, all other keys in this dictionary are ignored.
+
+          For the `min_*` keys:
+          - Undefined (Default): Validate that all available slots are populated.
+          - Positive Integer: Validate that the number of components inserted is at least the specified minimum.
+          - 0: Skip the validation for this specific component.
         keys:
+          enabled:
+            type: bool
+            description: |-
+              Enable hardware validation for the device.
+              If `false`, all hardware tests are skipped, therefore the other keys in `validate_hardware` are ignored.
+            default: true
           min_power_supplies:
             type: int
             description: |-
-              Minimum number of power supplies required for the device.
+              Minimum number of power supplies required for the device. Set to 0 to skip validation.
           min_fans:
             type: int
             description: |-
-              Minimum number of fans required for the device.
+              Minimum number of fans required for the device. Set to 0 to skip validation.
           min_supervisors:
             type: int
             description: |-
-              Minimum number of supervisor modules required for the device.
+              Minimum number of supervisor modules required for the device. Set to 0 to skip validation.
           min_line_cards:
             type: int
             description: |-
-              Minimum number of line cards required for the device.
+              Minimum number of line cards required for the device. Set to 0 to skip validation.
           min_fabric_cards:
             type: int
             description: |-
-              Minimum number of fabric cards required for the device.
+              Minimum number of fabric cards required for the device. Set to 0 to skip validation.
           transceiver_manufacturers:
             type: list
             description: |-
@@ -437,3 +448,7 @@ keys:
         convert_types:
           - str
         description: Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role.
+      exclude_as_extra_fabric_validation_target:
+        type: bool
+        description: |
+          Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.
