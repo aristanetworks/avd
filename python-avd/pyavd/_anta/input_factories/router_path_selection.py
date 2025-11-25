@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from ipaddress import IPv4Address, ip_address, ip_interface
+from typing import TYPE_CHECKING
 
 from anta.input_models.path_selection import DpsPath
 from anta.tests.path_selection import VerifySpecificPath
@@ -12,6 +13,9 @@ from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 class VerifySpecificPathInputFactory(AntaTestInputFactory[VerifySpecificPath.Input]):
@@ -23,8 +27,8 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory[VerifySpecificPath.Inp
     It collects the peer and destination address from static peers, source address for local interfaces and path name from path groups.
     """
 
-    def create(self) -> list[VerifySpecificPath.Input] | None:
-        """Create a list of inputs for the `VerifySpecificPath` test."""
+    def create(self) -> Iterator[VerifySpecificPath.Input]:
+        """Generate the inputs for the `VerifySpecificPath` test."""
         all_dps_paths: list[DpsPath] = []
 
         for path_group in self.structured_config.router_path_selection.path_groups:
@@ -69,4 +73,7 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory[VerifySpecificPath.Inp
                     else:
                         self.logger_adapter.debug(LogMessage.PATH_GROUP_IPV6_STATIC_PEER, peer=static_peer.router_ip, path_group=path_group.name)
 
-        return [VerifySpecificPath.Input(paths=natural_sort(all_dps_paths, sort_key="peer"))] if all_dps_paths else None
+        if not all_dps_paths:
+            return
+
+        yield VerifySpecificPath.Input(paths=natural_sort(all_dps_paths, sort_key="peer"))

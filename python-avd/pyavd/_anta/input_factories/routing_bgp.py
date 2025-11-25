@@ -3,12 +3,17 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from anta.input_models.routing.bgp import BgpPeer
 from anta.tests.routing.bgp import VerifyBGPPeerSession
 
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory[VerifyBGPPeerSession.Input]):
@@ -25,8 +30,8 @@ class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory[VerifyBGPPeerSession
     that the peer is available (`is_deployed: true`) before including it in the test inputs.
     """
 
-    def create(self) -> list[VerifyBGPPeerSession.Input] | None:
-        """Create a list of inputs for the `VerifyBGPPeerSession` test."""
+    def create(self) -> Iterator[VerifyBGPPeerSession.Input]:
+        """Generate the inputs for the `VerifyBGPPeerSession` test."""
         bgp_peers = natural_sort(
             [
                 BgpPeer(
@@ -52,4 +57,7 @@ class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory[VerifyBGPPeerSession
             )
         )
 
-        return [VerifyBGPPeerSession.Input(bgp_peers=bgp_peers)] if bgp_peers else None
+        if not bgp_peers:
+            return
+
+        yield VerifyBGPPeerSession.Input(bgp_peers=bgp_peers)
