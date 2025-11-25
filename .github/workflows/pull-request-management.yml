@@ -141,6 +141,9 @@ jobs:
   # ------------------------------------------------------------ #
   # Build cross platform pyavd-utils wheels and upload artifacts
   # ------------------------------------------------------------ #
+  # Separating ubuntu-latest from the others in order to save some
+  # time in CI.
+  # Later, this can be re-unified.
   build_pyavd_utils_wheels:
     name: Build pyavd-utils wheel on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -154,11 +157,40 @@ jobs:
         # https://github.com/actions/runner-images/issues/13046
         # the next update will be macos-15-intel
         os:
-          - ubuntu-latest
+          # - ubuntu-latest
           - ubuntu-24.04-arm
           - windows-latest
           - macos-14
           - macos-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install cibuildwheel
+        # See pyproject.toml for config
+        # TODO: could use the action instead but need approval
+        run: |
+          pip install --group build_wheel
+      - name: Build wheels
+        # Not using working-directory because manylinux uses a container
+        # and will not copy the parent Cargo.toml and we will be sad
+        run: |-
+          python -m cibuildwheel --output-dir pyavd-utils/dist pyavd-utils
+      - uses: actions/upload-artifact@v5
+        with:
+          name: pyavd-utils-wheels-${{ matrix.os }}
+          path: pyavd-utils/dist/*.whl
+
+  build_ubuntu_pyavd_utils_wheels:
+    name: Build pyavd-utils wheel on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: [file-changes]
+    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -202,7 +234,7 @@ jobs:
   python_requirements:
     name: Test Python requirements installation
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes, build_pyavd_utils_wheels]
+    needs: [build_pyavd, file-changes, build_ubuntu_pyavd_utils_wheels]
     if: needs.file-changes.outputs.requirements == 'true'
     strategy:
       fail-fast: true
@@ -238,7 +270,7 @@ jobs:
   molecule_eos_cli_config_gen:
     name: Validate eos_cli_config_gen
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes, build_pyavd_utils_wheels]
+    needs: [build_pyavd, file-changes, build_ubuntu_pyavd_utils_wheels]
     if: |
       needs.file-changes.outputs.config_gen == 'true' ||
       needs.file-changes.outputs.requirements == 'true' ||
@@ -289,7 +321,7 @@ jobs:
   molecule_eos_designs:
     name: Validate eos_designs
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes, build_pyavd_utils_wheels]
+    needs: [build_pyavd, file-changes, build_ubuntu_pyavd_utils_wheels]
     if: |
       needs.file-changes.outputs.eos_design == 'true' ||
       needs.file-changes.outputs.config_gen == 'true' ||
@@ -359,7 +391,7 @@ jobs:
   molecule_eos_designs_minimum_requirements:
     name: Validate eos_designs with minimum requirements
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes, build_pyavd_utils_wheels]
+    needs: [build_pyavd, file-changes, build_ubuntu_pyavd_utils_wheels]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true' ||
       github.event_name == 'merge_group'
     steps:
@@ -405,7 +437,7 @@ jobs:
   molecule_anta_runner:
     name: Validate anta_runner
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes, build_pyavd_utils_wheels]
+    needs: [build_pyavd, file-changes, build_ubuntu_pyavd_utils_wheels]
     if: |
       needs.file-changes.outputs.eos_design == 'true' ||
       needs.file-changes.outputs.anta_runner == 'true' ||
@@ -454,7 +486,7 @@ jobs:
   ansible_test_sanity:
     name: Run ansible-test sanity validation
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes, build_pyavd_utils_wheels]
+    needs: [build_pyavd, file-changes, build_ubuntu_pyavd_utils_wheels]
     strategy:
       fail-fast: true
       matrix:
@@ -497,7 +529,7 @@ jobs:
   ansible_test_units:
     name: Run ansible-test units test cases
     runs-on: ubuntu-latest
-    needs: [file-changes, build_pyavd, build_pyavd_utils_wheels]
+    needs: [file-changes, build_pyavd, build_ubuntu_pyavd_utils_wheels]
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python 3
@@ -533,7 +565,7 @@ jobs:
   ansible_test_integration:
     name: Run ansible-test integration test cases
     runs-on: ubuntu-latest
-    needs: [file-changes, build_pyavd_utils_wheels]
+    needs: [file-changes, build_ubuntu_pyavd_utils_wheels]
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python 3
@@ -629,7 +661,7 @@ jobs:
   ansible_lint:
     name: Run ansible-lint test case
     runs-on: ubuntu-latest
-    needs: [file-changes, build_pyavd, build_pyavd_utils_wheels]
+    needs: [file-changes, build_pyavd, build_ubuntu_pyavd_utils_wheels]
     env:
       ANSIBLE_COLLECTIONS_PATH: ${{ github.workspace }}
     steps:
@@ -848,7 +880,7 @@ jobs:
   pyavd_utils_test_cross_platform:
     name: pyavd-utils ${{ matrix.python }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    needs: [build_pyavd_utils_wheels]
+    needs: [build_ubuntu_pyavd_utils_wheels, build_pyavd_utils_wheels]
     if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
     strategy:
       fail-fast: false
