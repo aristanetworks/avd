@@ -26,8 +26,12 @@ uv-pyavd-utils-build: ## Build pyavd-utils Python package locally.
 	cd pyavd-utils && $(MAKE) uv-build
 
 .PHONY: pyavd-utils-test
-pyavd-utils-test: ## Test pyavd-utils Python code with tox.
-	cd pyavd-utils && $(MAKE) && tox -r
+pyavd-utils-test: pyavd-utils-build ## Build and test pyavd-utils Python code with tox.
+	tox run -r -e pyavd-utils
+
+.PHONY: uv-pyavd-utils-test
+uv-pyavd-utils-test: uv-pyavd-utils-build ## Build and test pyavd-utils Python code with tox.
+	tox run -r -e pyavd-utils
 
 .PHONY: pyavd-utils-publish
 pyavd-utils-publish: ## Build and publish pyavd-utils Python package.
@@ -68,7 +72,7 @@ uv-pyavd-build: ## Build PyAVD Python package locally.
 
 .PHONY: pyavd-test
 pyavd-test: ## Test PyAVD Python code with tox.
-	cd python-avd && $(MAKE) && tox -r
+	tox run -r
 
 .PHONY: pyavd-publish
 pyavd-publish: ## Build and publish PyAVD Python package.
