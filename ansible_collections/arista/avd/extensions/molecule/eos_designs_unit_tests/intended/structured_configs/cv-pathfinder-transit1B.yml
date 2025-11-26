@@ -836,19 +836,24 @@ vrfs:
   ip_routing: false
 - name: IT
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: PROD
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: NOT-WAN-VRF
   ip_routing: true
-  tenant: TenantB
+  metadata:
+    tenant: TenantB
 - name: TRANSIT
   ip_routing: true
-  tenant: TenantB
+  metadata:
+    tenant: TenantB
 - name: ATTRACTED-VRF-FROM-UPLINK
   ip_routing: true
-  tenant: TenantC
+  metadata:
+    tenant: TenantC
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-transit1B_VTEP

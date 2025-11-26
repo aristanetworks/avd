@@ -108,7 +108,8 @@ vlan_internal_order:
 vlans:
 - id: 42
   name: test-1
-  tenant: Tenant-A
+  metadata:
+    tenant: Tenant-A
 vrfs:
 - name: MGMT
   ip_routing: false

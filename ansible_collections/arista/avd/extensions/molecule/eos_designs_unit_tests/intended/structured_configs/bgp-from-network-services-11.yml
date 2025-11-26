@@ -134,12 +134,14 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 3101
   name: MLAG_L3_VRF_default
   trunk_groups:
   - MLAG
-  tenant: TEST2
+  metadata:
+    tenant: TEST2
 vrfs:
 - name: MGMT
   ip_routing: false
