@@ -25,6 +25,7 @@ keys:
               type: str
             interfaces:
               type: str
+              required: true
               description: |
                 Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
                 Multiple interface ranges can be specified separated by ",".

@@ -126,7 +126,7 @@ spanning-tree mst 0 priority 8192
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -183,7 +183,7 @@ interface Ethernet1
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_DC2-POD1-LEAF2A_Port-Channel3 | trunk | 4092 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -203,15 +203,15 @@ interface Port-Channel1
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan4092 | Inband Management | default | - | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan4092 |  default  |  172.21.210.5/24  |  -  |  -  |  -  |  -  |
+| Vlan4092 | default | 172.21.210.5/24 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 

@@ -4,7 +4,8 @@ dynamic = ["version"]
 authors=[{ name = "Arista Networks", email = "avd-dev@arista.com"}]
 description="Arista AVD"
 readme = "README.md"
-license = { file = "pyavd/LICENSE" }
+license = "Apache-2.0"
+license-files = ["pyavd/LICENSE"]
 classifiers = [
     "Operating System :: OS Independent",
     "Development Status :: 5 - Production/Stable",
@@ -60,7 +61,7 @@ requires = [
     "pydantic>=2.3.0",
     "cryptography>=43.0.0",
     "aristaproto>=0.1.1",
-    "ruff==0.14.4",
+    "ruff==0.14.6",
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]

@@ -113,7 +113,7 @@ The `deprecation.new_key` field is used for detecting conflicts with old and new
 ### Schema Options for type `int` (Integer)
 
 | Key | Type | Required | Default | Value Restrictions | Description |
-| ----| ---- | -------- | ------- | ------------------ | ----------- |
+| --- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>type</samp> | String | True | | Valid Values:<br>- `"int"` | Type of variable using the Python short names for each type.<br>`int` for Integer |
 | <samp>convert_types</samp> | List, items: String | | | | List of types to auto-convert from.<br>For type `int`, auto-conversion is supported from `bool` and `str` |
 | <samp>&nbsp;&nbsp;- \<str\></samp> | String | | | Valid Values:<br>- `"bool"`<br>- `"str"` | |
@@ -140,7 +140,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 ### Schema Options for type `bool` (Boolean)
 
 | Key | Type | Required | Default | Value Restrictions | Description |
-| ----| ---- | -------- | ------- | ------------------ | ----------- |
+| --- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>type</samp> | String | True | | Valid Values:<br>- `"bool"` | Type of variable using the Python short names for each type.<br>`bool` for Boolean |
 | <samp>default</samp> | Boolean | | | | Default value |
 | <samp>display_name</samp> | String | | | Regex Pattern: `"^[^\n]+$"` | Free text display name for forms and documentation (single line) |
@@ -160,7 +160,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 ### Schema Options for type `str` (String)
 
 | Key | Type | Required | Default | Value Restrictions | Description |
-| ----| ---- | -------- | ------- | ------------------ | ----------- |
+| --- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>type</samp> | String | True | | Valid Values:<br>- `"str"` | Type of variable using the Python short names for each type.<br>`str` for String |
 | <samp>convert_to_lower_case</samp> | Boolean | | False | | Convert string value to lower case before performing validation |
 | <samp>convert_types</samp> | List, items: String | | | | List of types to auto-convert from.<br>For type `str`, auto-conversion is supported from `bool` and `int` |
@@ -190,7 +190,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 ### Schema Options for type `list` (List)
 
 | Key | Type | Required | Default | Value Restrictions | Description |
-| ----| ---- | -------- | ------- | ------------------ | ----------- |
+| --- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>type</samp> | String | True | | Valid Values:<br>- `"list"` | Type of variable using the Python short names for each type.<br>`list` for List |
 | <samp>default</samp> | List | | | | Default value |
 | <samp>items</samp> | Dict | | | | Dictionary describing the schema of each list item. This is a recursive schema, so the value must conform to AVD Schema |
@@ -215,7 +215,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 ### Schema Options for type `dict` (Dictionary)
 
 | Key | Type | Required | Default | Value Restrictions | Description |
-| ----| ---- | -------- | ------- | ------------------ | ----------- |
+| --- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>type</samp> | String | True | | Valid Values:<br>- `"dict"` | Type of variable using the Python short names for each type.<br>`dict` for Dictionary |
 | <samp>default</samp> | Dict | | | | Default value |
 | <samp>keys</samp> | Dictionary | | | Key Pattern: `^[a-z][a-z0-9_]*$` | Dictionary of dictionary-keys in the format `{<keyname>: {<schema>}}`.<br>`keyname` must use snake_case.<br>`schema` is the schema for each key. This is a recursive schema, so the value must conform to AVD Schema |

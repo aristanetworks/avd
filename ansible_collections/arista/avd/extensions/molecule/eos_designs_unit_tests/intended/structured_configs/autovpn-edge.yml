@@ -337,13 +337,16 @@ vrfs:
   ip_routing: false
 - name: IT
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: PROD
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: WAN-VRF-NO-AF
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 vxlan_interface:
   vxlan1:
     description: autovpn-edge_VTEP

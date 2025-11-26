@@ -146,7 +146,7 @@ no spanning-tree vlan-id 4094
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -232,8 +232,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet5 | P2P_DUMMY-CORE_Ethernet1/4 | - | 192.168.253.6/31 | default | 9214 | False | - | - |
 | Ethernet6 | P2P_DUMMY-CORE_Ethernet1/6 | - | 192.168.253.10/31 | default | 9214 | False | - | - |
 | Ethernet7 | P2P_DUMMY-CORE_Ethernet1/8 | 7 | *192.168.253.14/31 | *default | *9214 | *False | *- | *- |
@@ -356,7 +356,7 @@ interface Ethernet18.101
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_BGP-LEAFS_Port-Channel1 | trunk | 1,100,200,4092 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_BGP-SPINE1_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel12 | - | - | - | - | - | - | - | 12 | - |
@@ -455,8 +455,8 @@ interface Loopback0
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan1 | SVI_1 | default | - | False |
 | Vlan100 | SVI_100 | default | - | False |
 | Vlan200 | SVI_200 | default | - | False |
@@ -469,13 +469,13 @@ interface Loopback0
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan1 |  default  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |
-| Vlan100 |  default  |  -  |  10.1.100.1/24  |  -  |  -  |  -  |
-| Vlan200 |  default  |  -  |  10.1.200.1/24  |  -  |  -  |  -  |
-| Vlan220 |  default  |  -  |  10.1.220.1/24  |  -  |  -  |  -  |
-| Vlan3100 |  New_VRF  |  192.168.254.1/31  |  -  |  -  |  -  |  -  |
-| Vlan4092 |  default  |  172.23.254.3/24  |  -  |  172.23.254.1  |  -  |  -  |
-| Vlan4094 |  default  |  192.168.254.1/31  |  -  |  -  |  -  |  -  |
+| Vlan1 | default | - | 10.1.1.1/24 | - | - | - |
+| Vlan100 | default | - | 10.1.100.1/24 | - | - | - |
+| Vlan200 | default | - | 10.1.200.1/24 | - | - | - |
+| Vlan220 | default | - | 10.1.220.1/24 | - | - | - |
+| Vlan3100 | New_VRF | 192.168.254.1/31 | - | - | - | - |
+| Vlan4092 | default | 172.23.254.3/24 | - | 172.23.254.1 | - | - |
+| Vlan4094 | default | 192.168.254.1/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 

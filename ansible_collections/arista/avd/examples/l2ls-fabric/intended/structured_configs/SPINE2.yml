@@ -120,6 +120,8 @@ metadata:
   is_deployed: true
   platform: cEOSLab
   fabric_name: DC1
+  validate_hardware:
+    enabled: false
 mlag_configuration:
   domain_id: SPINES
   local_interface: Vlan4094
@@ -202,16 +204,20 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 10
   name: BLUE-NET
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 20
   name: GREEN-NET
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 30
   name: ORANGE-NET
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 vrfs:
 - name: MGMT
   ip_routing: false

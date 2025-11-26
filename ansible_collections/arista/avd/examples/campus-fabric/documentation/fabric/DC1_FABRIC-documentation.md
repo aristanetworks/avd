@@ -46,7 +46,7 @@
 ## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
-| ---- | ---- | -------------- | --------- | ----------| -------------- |
+| ---- | ---- | -------------- | --------- | --------- | -------------- |
 | l2leaf | LEAF1A | Ethernet51 | l3spine | SPINE1 | Ethernet1 |
 | l2leaf | LEAF1A | Ethernet53 | mlag_peer | LEAF1B | Ethernet53 |
 | l2leaf | LEAF1A | Ethernet54 | mlag_peer | LEAF1B | Ethernet54 |

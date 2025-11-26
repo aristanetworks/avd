@@ -184,7 +184,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -290,8 +290,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_DC1-POD1-SPINE1_Ethernet5 | - | 172.17.110.17/31 | default | - | False | - | - |
 | Ethernet2 | P2P_DC1-POD1-SPINE2_Ethernet5 | - | 172.17.110.19/31 | default | - | False | - | - |
 | Ethernet7 | P2P_DC2-POD1-LEAF1A_Ethernet7 | - | 11.1.0.38/31 | default | - | False | - | - |
@@ -484,7 +484,7 @@ interface Ethernet28
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | L2_RACK2_MLAG_Port-Channel1 | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 3 | - |
 | Port-Channel5 | MLAG_DC1.POD1.LEAF2A_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel16 | PortChannel | access | 110 | - | - | - | - | 16 | - |
@@ -634,8 +634,8 @@ interface Loopback102
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan110 | set from structured_config on svi (was Tenant_A_OP_Zone_1) | Common_VRF | - | False |
 | Vlan111 | Tenant_A_OP_Zone_2 | Common_VRF | - | True |
 | Vlan112 | Tenant_A_OP_Zone_3 | Common_VRF | - | False |
@@ -650,15 +650,15 @@ interface Loopback102
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan110 |  Common_VRF  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |
-| Vlan111 |  Common_VRF  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |
-| Vlan112 |  Common_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |
-| Vlan113 |  Common_VRF  |  -  |  10.10.13.1/24  |  -  |  -  |  -  |
-| Vlan1100 |  vrf_with_loopbacks_from_overlapping_pool  |  -  |  10.100.100.1/24  |  -  |  -  |  -  |
-| Vlan1101 |  vrf_with_loopbacks_from_pod_pools  |  -  |  10.101.100.1/24  |  -  |  -  |  -  |
-| Vlan1102 |  vrf_with_loopbacks_dc1_pod1_only  |  -  |  10.102.100.1/24  |  -  |  -  |  -  |
-| Vlan4085 |  default  |  172.21.110.3/24  |  -  |  172.21.110.1  |  -  |  -  |
-| Vlan4094 |  default  |  172.20.110.3/31  |  -  |  -  |  -  |  -  |
+| Vlan110 | Common_VRF | - | 10.1.10.1/24 | - | - | - |
+| Vlan111 | Common_VRF | - | 10.1.11.1/24 | - | - | - |
+| Vlan112 | Common_VRF | - | 10.1.12.1/24 | - | - | - |
+| Vlan113 | Common_VRF | - | 10.10.13.1/24 | - | - | - |
+| Vlan1100 | vrf_with_loopbacks_from_overlapping_pool | - | 10.100.100.1/24 | - | - | - |
+| Vlan1101 | vrf_with_loopbacks_from_pod_pools | - | 10.101.100.1/24 | - | - | - |
+| Vlan1102 | vrf_with_loopbacks_dc1_pod1_only | - | 10.102.100.1/24 | - | - | - |
+| Vlan4085 | default | 172.21.110.3/24 | - | 172.21.110.1 | - | - |
+| Vlan4094 | default | 172.20.110.3/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
