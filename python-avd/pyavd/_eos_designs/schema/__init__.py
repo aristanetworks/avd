@@ -86262,7 +86262,7 @@ class EosDesigns(EosDesignsRootModel):
         "evpn_multicast": {"type": bool, "default": False},
         "evpn_overlay_bgp_rtc": {"type": bool, "default": False},
         "evpn_prevent_readvertise_to_server": {"type": bool, "default": False},
-        "evpn_prevent_readvertise_to_server_mode": {"type": str, "default": "source_peer_asn"},
+        "evpn_prevent_readvertise_to_server_mode": {"type": str, "default": "as_path_acl"},
         "evpn_short_esi_prefix": {"type": str, "default": "0000:0000:"},
         "evpn_vlan_aware_bundles": {"type": bool, "default": False},
         "evpn_vlan_bundles": {"type": EvpnVlanBundles},
@@ -87448,7 +87448,7 @@ class EosDesigns(EosDesignsRootModel):
     `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
     updates with the route-server ASN anywhere in the AS-path.
 
-    Default value: `"source_peer_asn"`
+    Default value: `"as_path_acl"`
     """
     evpn_short_esi_prefix: str
     """
