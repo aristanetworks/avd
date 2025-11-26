@@ -96,7 +96,7 @@ fn validate_unique_keys(schema: &List, items: &[Value], ctx: &mut Context) {
                             ctx.result.errors.extend([
                                 // One violation from the perspective of the already seen item where the duplicate is this item.
                                 Feedback {
-                                    path: ctx.state.path.clone_with_slice(&seen_item_trail),
+                                    path: ctx.state.path.clone_with_slice(seen_item_trail),
                                     issue: Violation::ValueNotUnique {
                                         other_path: ctx.state.path.clone_with_slice(&item_trail),
                                     }

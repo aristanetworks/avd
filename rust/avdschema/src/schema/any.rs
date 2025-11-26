@@ -2,9 +2,14 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
+use crate::delegate_anyshcema_method;
+
 use serde::{Deserialize, Serialize};
 
-use crate::{base::Deprecation, utils::{dump::Dump, load::Load}};
+use crate::{
+    base::Deprecation,
+    utils::{dump::Dump, load::Load},
+};
 
 #[cfg(feature = "dump_load_files")]
 use crate::utils::load::LoadFromFragments;
@@ -63,22 +68,10 @@ pub trait Shortcuts {
 
 impl Shortcuts for AnySchema {
     fn is_required(&self) -> bool {
-        match self {
-            Self::Bool(schema) => schema.is_required(),
-            Self::Int(schema) => schema.is_required(),
-            Self::Str(schema) => schema.is_required(),
-            Self::List(schema) => schema.is_required(),
-            Self::Dict(schema) => schema.is_required(),
-        }
+        delegate_anyshcema_method!(self, is_required,)
     }
 
     fn deprecation(&self) -> &Option<Deprecation> {
-        match self {
-            Self::Bool(schema) => schema.deprecation(),
-            Self::Int(schema) => schema.deprecation(),
-            Self::Str(schema) => schema.deprecation(),
-            Self::List(schema) => schema.deprecation(),
-            Self::Dict(schema) => schema.deprecation(),
-        }
+        delegate_anyshcema_method!(self, deprecation,)
     }
 }

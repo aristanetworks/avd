@@ -6,6 +6,7 @@ use serde_json::Value;
 
 use crate::context::Context;
 use avdschema::any::AnySchema;
+use avdschema::delegate_anyshcema_method;
 
 use super::Validation;
 
@@ -15,13 +16,7 @@ impl Validation<Value> for AnySchema {
     }
 
     fn validate_value(&self, value: &Value, ctx: &mut Context) {
-        match self {
-            Self::Bool(schema) => schema.validate_value(value, ctx),
-            Self::Int(schema) => schema.validate_value(value, ctx),
-            Self::Str(schema) => schema.validate_value(value, ctx),
-            Self::List(schema) => schema.validate_value(value, ctx),
-            Self::Dict(schema) => schema.validate_value(value, ctx),
-        }
+        delegate_anyshcema_method!(self, validate_value, value, ctx)
     }
 
     fn validate_ref(&self, _value: &Value, _ctx: &mut Context) {}

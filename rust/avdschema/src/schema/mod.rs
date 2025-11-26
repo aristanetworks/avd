@@ -3,6 +3,7 @@
 // that can be found in the LICENSE file.
 
 pub mod any;
+pub mod macros;
 pub mod base;
 pub mod boolean;
 pub mod dict;
