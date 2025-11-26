@@ -7,9 +7,9 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._eos_designs.structured_config.constants import CV_REGION_TO_SERVER_MAP
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._errors import AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigBaseProtocol
@@ -33,8 +33,10 @@ class DaemonTerminattrMixin(Protocol):
         sflow_settings = self.inputs.sflow_settings
 
         if not cv_settings and sflow_settings.export_to_cloudvision.enabled:
-            msg = ("CloudVision export is enabled for sFlow, but 'cv_settings' is not defined."
-            " Please configure 'cv_settings' when enabling 'sflow_settings.export_to_cloudvision.enabled'.")
+            msg = (
+                "CloudVision export is enabled for sFlow, but 'cv_settings' is not defined."
+                " Please configure 'cv_settings' when enabling 'sflow_settings.export_to_cloudvision.enabled'."
+            )
             raise AristaAvdInvalidInputsError(msg)
 
         if not cv_settings:
