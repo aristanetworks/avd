@@ -5,8 +5,8 @@
 #}
 {# eos - ip name servers #}
 {% if ip_name_servers is arista.avd.defined %}
-{%     set without_priority_ns = ip_name_servers | rejectattr("priority", "arista.avd.defined") | arista.avd.natural_sort("ip_address") | arista.avd.natural_sort("vrf") %}
-{%     set with_priority_ns = ip_name_servers | selectattr("priority", "arista.avd.defined") | arista.avd.natural_sort("ip_address") | arista.avd.natural_sort("vrf") %}
+{%     set without_priority_ns = ip_name_servers | rejectattr("priority", "arista.avd.defined") | arista.avd.natural_sort("ip_address") | arista.avd.natural_sort(sort_key="vrf", ignore_case=false) %}
+{%     set with_priority_ns = ip_name_servers | selectattr("priority", "arista.avd.defined") | arista.avd.natural_sort("ip_address") | arista.avd.natural_sort(sort_key="vrf", ignore_case=false) | arista.avd.natural_sort("priority") %}
 {%     set final_name_servers = without_priority_ns | list + with_priority_ns | list %}
 {%     for name_server in final_name_servers %}
 {%         set name_server_cli = "ip name-server" %}
