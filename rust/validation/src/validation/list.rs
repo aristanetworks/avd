@@ -2,7 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use ordermap::OrderMap;
+use std::collections::HashMap;
+
 use serde_json::Value;
 
 use crate::feedback::{Feedback, Type, Violation};
@@ -77,28 +78,46 @@ fn validate_unique_keys(schema: &List, items: &[Value], ctx: &mut Context) {
 
     for unique_key in unique_keys {
         let path = unique_key.split('.');
-        let items = items
+        let mut seen_items_trail_map: HashMap<&Value, Vec<Vec<String>>> = HashMap::new();
+        items
             .iter()
             .enumerate()
             .flat_map(|(i, item)| {
                 let mut trail = vec![i.to_string()];
                 item.walk(path.clone(), Some(&mut trail))
             })
-            .collect::<OrderMap<_, _>>();
-
-        for (current_trail, current_item) in &items {
-            for (trail, item) in &items {
-                if current_trail != trail && current_item == item {
-                    ctx.result.errors.push(Feedback {
-                        path: ctx.state.path.clone_with_slice(current_trail),
-                        issue: Violation::ValueNotUnique {
-                            other_path: ctx.state.path.clone_with_slice(trail),
+            .for_each(|(item_trail, item)| {
+                seen_items_trail_map
+                    .entry(item)
+                    .and_modify(|seen_item_trails| {
+                        // We found at least on other item, so we know we have a duplicate
+                        // Add violations for all duplicates in both directions.
+                        for seen_item_trail in seen_item_trails {
+                            ctx.result.errors.extend([
+                                // One violation from the perspective of the already seen item where the duplicate is this item.
+                                Feedback {
+                                    path: ctx.state.path.clone_with_slice(&seen_item_trail),
+                                    issue: Violation::ValueNotUnique {
+                                        other_path: ctx.state.path.clone_with_slice(&item_trail),
+                                    }
+                                    .into(),
+                                },
+                                // One violation from the perspective of this item where the duplicate is the already seen one.
+                                Feedback {
+                                    path: ctx.state.path.clone_with_slice(&item_trail),
+                                    issue: Violation::ValueNotUnique {
+                                        other_path: ctx
+                                            .state
+                                            .path
+                                            .clone_with_slice(seen_item_trail),
+                                    }
+                                    .into(),
+                                },
+                            ]);
                         }
-                        .into(),
-                    });
-                }
-            }
-        }
+                    })
+                    .or_insert(Vec::from_iter([item_trail]));
+            });
     }
 }
 
