@@ -10,44 +10,49 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: BGP-SPINE1
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
+  metadata:
+    peer: BGP-SPINE1
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
 - name: Ethernet4
   description: MLAG_BGP-SPINE1_Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: BGP-SPINE1
-  peer_interface: Ethernet4
-  peer_type: mlag_peer
+  metadata:
+    peer: BGP-SPINE1
+    peer_interface: Ethernet4
+    peer_type: mlag_peer
 - name: Ethernet1
   description: L2_BGP-LEAF1_Ethernet2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: BGP-LEAF1
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: BGP-LEAF1
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet2
   description: L2_BGP-LEAF2_Ethernet2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: BGP-LEAF2
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: BGP-LEAF2
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet5
   description: P2P_DUMMY-CORE_Ethernet1/4
   shutdown: false
   mtu: 9214
   ip_address: 192.168.253.6/31
-  peer: DUMMY-CORE
-  peer_interface: Ethernet1/4
-  peer_type: other
+  metadata:
+    peer: DUMMY-CORE
+    peer_interface: Ethernet1/4
+    peer_type: other
   switchport:
     enabled: false
 - name: Ethernet6
@@ -55,9 +60,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.253.10/31
-  peer: DUMMY-CORE
-  peer_interface: Ethernet1/6
-  peer_type: other
+  metadata:
+    peer: DUMMY-CORE
+    peer_interface: Ethernet1/6
+    peer_type: other
   switchport:
     enabled: false
 - name: Ethernet7
@@ -66,22 +72,25 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  peer: DUMMY-CORE
-  peer_interface: Ethernet1/8
-  peer_type: other
+  metadata:
+    peer: DUMMY-CORE
+    peer_interface: Ethernet1/8
+    peer_type: other
 - name: Ethernet8
   description: P2P_DUMMY-CORE_Ethernet1/10
   shutdown: false
   channel_group:
     id: 8
     mode: active
-  peer: DUMMY-CORE
-  peer_interface: Ethernet1/10
-  peer_type: other
+  metadata:
+    peer: DUMMY-CORE
+    peer_interface: Ethernet1/10
+    peer_type: other
 - name: Ethernet9
   shutdown: false
   ip_address: 10.0.1.2/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet18.100
@@ -89,36 +98,41 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 100
   ip_address: 10.0.1.6/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet18.101
   shutdown: false
   vrf: New_VRF
   encapsulation_dot1q:
     vlan: 101
   ip_address: 10.0.1.10/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet18
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet14
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth1
   shutdown: false
-  peer: CAMPUS_EGRESS_FW_1
-  peer_interface: Eth1
-  peer_type: firewall
-  peer_key: firewalls
+  metadata:
+    peer: CAMPUS_EGRESS_FW_1
+    peer_interface: Eth1
+    peer_type: firewall
+    peer_key: firewalls
   switchport:
     enabled: true
 - name: Ethernet15
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth3
   shutdown: false
-  peer: CAMPUS_EGRESS_FW_1
-  peer_interface: Eth3
-  peer_type: firewall
-  peer_key: firewalls
-  port_profile: no_campus_eggress
+  metadata:
+    peer: CAMPUS_EGRESS_FW_1
+    peer_interface: Eth3
+    peer_type: firewall
+    peer_key: firewalls
+    port_profile: no_campus_eggress
   switchport:
     enabled: true
 - name: Ethernet16
@@ -127,32 +141,36 @@ ethernet_interfaces:
   channel_group:
     id: 16
     mode: active
-  peer: CAMPUS_EGRESS_FW_1
-  peer_interface: Eth5
-  peer_type: firewall
-  peer_key: firewalls
+  metadata:
+    peer: CAMPUS_EGRESS_FW_1
+    peer_interface: Eth5
+    peer_type: firewall
+    peer_key: firewalls
 - name: Ethernet17
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth7
   shutdown: false
   channel_group:
     id: 17
     mode: active
-  peer: CAMPUS_EGRESS_FW_1
-  peer_interface: Eth7
-  peer_type: firewall
-  peer_key: firewalls
-  port_profile: no_campus_eggress
+  metadata:
+    peer: CAMPUS_EGRESS_FW_1
+    peer_interface: Eth7
+    peer_type: firewall
+    peer_key: firewalls
+    port_profile: no_campus_eggress
 - name: Ethernet10
   shutdown: false
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   switchport:
     enabled: true
 - name: Ethernet11
   shutdown: false
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: no_campus_eggress
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: no_campus_eggress
   switchport:
     enabled: true
 - name: Ethernet12
@@ -160,16 +178,18 @@ ethernet_interfaces:
   channel_group:
     id: 12
     mode: active
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
 - name: Ethernet13
   shutdown: false
   channel_group:
     id: 13
     mode: active
-  peer_type: network_port
-  peer_key: network_ports
-  port_profile: no_campus_eggress
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+    port_profile: no_campus_eggress
 hostname: BGP-SPINE2
 ip_igmp_snooping:
   globally_enabled: true
@@ -370,9 +390,10 @@ port_channel_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.253.14/31
-  peer: DUMMY-CORE
-  peer_interface: Port-Channel18
-  peer_type: other
+  metadata:
+    peer: DUMMY-CORE
+    peer_interface: Port-Channel18
+    peer_type: other
   switchport:
     enabled: false
 - name: Port-Channel8
@@ -380,9 +401,10 @@ port_channel_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.253.18/31
-  peer: DUMMY-CORE
-  peer_interface: Port-Channel110
-  peer_type: other
+  metadata:
+    peer: DUMMY-CORE
+    peer_interface: Port-Channel110
+    peer_type: other
   switchport:
     enabled: false
 - name: Port-Channel16
@@ -438,7 +460,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65001'
     description: BGP-SPINE1
     next_hop_self: true
@@ -446,33 +469,39 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   neighbors:
   - ip_address: 192.168.254.0
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: BGP-SPINE1
+    metadata:
+      peer: BGP-SPINE1
     description: BGP-SPINE1_Vlan4094
   - ip_address: 192.168.253.7
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: DUMMY-CORE
+    metadata:
+      peer: DUMMY-CORE
     description: DUMMY-CORE
   - ip_address: 192.168.253.11
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: DUMMY-CORE
+    metadata:
+      peer: DUMMY-CORE
     description: DUMMY-CORE
   - ip_address: 192.168.253.15
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: DUMMY-CORE
+    metadata:
+      peer: DUMMY-CORE
     description: DUMMY-CORE
   - ip_address: 192.168.253.19
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: DUMMY-CORE
+    metadata:
+      peer: DUMMY-CORE
     description: DUMMY-CORE
   redistribute:
     attached_host:
@@ -509,30 +538,35 @@ vlan_interfaces:
   description: SVI_1
   shutdown: false
   ip_address_virtual: 10.1.1.1/24
-  tenant: L2LS_BGP
+  metadata:
+    tenant: L2LS_BGP
 - name: Vlan100
   description: SVI_100
   shutdown: false
   ip_address_virtual: 10.1.100.1/24
-  tenant: L2LS_BGP
+  metadata:
+    tenant: L2LS_BGP
 - name: Vlan200
   description: SVI_200
   shutdown: false
   ip_address_virtual: 10.1.200.1/24
-  tenant: L2LS_BGP
+  metadata:
+    tenant: L2LS_BGP
 - name: Vlan220
   description: SVI_220
   shutdown: false
   ip_address_virtual: 10.1.220.1/24
-  tenant: L2LS_BGP
+  metadata:
+    tenant: L2LS_BGP
 - name: Vlan3100
   description: MLAG_L3_VRF_New_VRF
   shutdown: false
   vrf: New_VRF
   ip_address: 192.168.254.1/31
   mtu: 9214
-  tenant: L2LS_BGP
-  type: underlay_peering
+  metadata:
+    tenant: L2LS_BGP
+    type: underlay_peering
 - name: Vlan4092
   description: Inband Management
   shutdown: false
@@ -553,30 +587,38 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 1
   name: SVI_1
-  tenant: L2LS_BGP
+  metadata:
+    tenant: L2LS_BGP
 - id: 100
   name: SVI_100
-  tenant: L2LS_BGP
+  metadata:
+    tenant: L2LS_BGP
 - id: 200
   name: SVI_200
-  tenant: L2LS_BGP
+  metadata:
+    tenant: L2LS_BGP
 - id: 220
   name: SVI_220
-  tenant: L2LS_BGP
+  metadata:
+    tenant: L2LS_BGP
 - id: 3100
   name: MLAG_L3_VRF_New_VRF
   trunk_groups:
   - MLAG
-  tenant: L2LS_BGP
+  metadata:
+    tenant: L2LS_BGP
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: New_VRF
   ip_routing: true
-  tenant: L2LS_BGP
+  metadata:
+    tenant: L2LS_BGP

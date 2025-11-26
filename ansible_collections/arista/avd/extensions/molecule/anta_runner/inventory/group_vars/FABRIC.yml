@@ -60,7 +60,7 @@ default_interfaces:
     uplink_interfaces: [Ethernet1-2]
     downlink_interfaces: [Ethernet1-8]
   - types: [l3leaf, service_leaf]
-    platforms: [vEOS-lab]
+    platforms: [vEOS-lab, custom_hardware_test_platform]
     uplink_interfaces: [Ethernet1-8]
     mlag_interfaces: [Ethernet3-4]
     downlink_interfaces: [Ethernet8, Ethernet8]
@@ -98,3 +98,25 @@ custom_node_type_keys:
       l2: true
       l3: true
     vtep: true
+
+# Creating a new custom hardware platform with specific features enabled for testing purpose.
+custom_platform_settings:
+  - platforms: [custom_hardware_test_platform]
+    feature_support:
+      bgp_update_wait_for_convergence: false
+      bgp_update_wait_install: false
+      interface_storm_control: true
+      queue_monitor_length_notify: false
+      evpn_gateway_all_active_multihoming: true
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+    digital_twin:
+      act_node_type: veos
+    validate_hardware:
+      min_power_supplies: 2
+      min_fans: 4
+      min_supervisors: 0
+      min_line_cards: 0
+      transceiver_manufacturers:
+        - Third-party vendor

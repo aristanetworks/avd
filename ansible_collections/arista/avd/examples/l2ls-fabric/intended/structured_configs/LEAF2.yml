@@ -17,45 +17,50 @@ ethernet_interfaces:
   channel_group:
     id: 47
     mode: active
-  peer: LEAF1
-  peer_interface: Ethernet47
-  peer_type: mlag_peer
+  metadata:
+    peer: LEAF1
+    peer_interface: Ethernet47
+    peer_type: mlag_peer
 - name: Ethernet48
   description: MLAG_LEAF1_Ethernet48
   shutdown: false
   channel_group:
     id: 47
     mode: active
-  peer: LEAF1
-  peer_interface: Ethernet48
-  peer_type: mlag_peer
+  metadata:
+    peer: LEAF1
+    peer_interface: Ethernet48
+    peer_type: mlag_peer
 - name: Ethernet1
   description: L2_SPINE1_Ethernet2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: SPINE1
-  peer_interface: Ethernet2
-  peer_type: l2spine
+  metadata:
+    peer: SPINE1
+    peer_interface: Ethernet2
+    peer_type: l2spine
 - name: Ethernet2
   description: L2_SPINE2_Ethernet2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: SPINE2
-  peer_interface: Ethernet2
-  peer_type: l2spine
+  metadata:
+    peer: SPINE2
+    peer_interface: Ethernet2
+    peer_type: l2spine
 - name: Ethernet3
   description: SERVER_HostB_Eth1
   shutdown: false
   spanning_tree_portfast: edge
-  peer: HostB
-  peer_interface: Eth1
-  peer_type: server
-  peer_key: servers
-  port_profile: PP-GREEN
+  metadata:
+    peer: HostB
+    peer_interface: Eth1
+    peer_type: server
+    peer_key: servers
+    port_profile: PP-GREEN
   switchport:
     enabled: true
     mode: access
@@ -97,6 +102,8 @@ metadata:
   is_deployed: true
   platform: cEOSLab
   fabric_name: DC1
+  validate_hardware:
+    enabled: false
 mlag_configuration:
   domain_id: RACK1
   local_interface: Vlan4094
@@ -161,13 +168,16 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 10
   name: BLUE-NET
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 20
   name: GREEN-NET
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 vrfs:
 - name: MGMT
   ip_routing: false

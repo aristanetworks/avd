@@ -20,7 +20,7 @@ as_path:
   - name: ASPATH-WAN
     entries:
     - type: permit
-      match: '65101'
+      match: _65101_
 config_end: true
 dns_domain: dc1.local
 dps_interfaces:
@@ -38,9 +38,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.1/31
-  peer: dc1-leaf1a
-  peer_interface: Ethernet6
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf1a
+    peer_interface: Ethernet6
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -48,30 +49,34 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.255.255.3/31
-  peer: dc1-leaf1b
-  peer_interface: Ethernet6
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf1b
+    peer_interface: Ethernet6
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3
   description: mpls-sp-1_DC1-MPLS-3
   shutdown: false
   ip_address: 172.18.3.2/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet4
   description: isp-1_DC1-INET-3
   shutdown: false
   ip_address: 100.64.3.2/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet5
   description: TAC_DC1-INET-3
   shutdown: false
   ip_address: 100.64.3.2/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:
@@ -390,7 +395,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
     maximum_routes: 12000
@@ -400,7 +406,8 @@ router_bgp:
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65101'
     update_source: Dps1
     bfd: true
@@ -416,24 +423,29 @@ router_bgp:
   - ip_address: 10.255.255.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: dc1-leaf1a
+    metadata:
+      peer: dc1-leaf1a
     description: dc1-leaf1a_Ethernet6
   - ip_address: 10.255.255.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: dc1-leaf1b
+    metadata:
+      peer: dc1-leaf1b
     description: dc1-leaf1b_Ethernet6
   - ip_address: 10.255.255.10
     peer_group: WAN-OVERLAY-PEERS
-    peer: dc1-leaf1a
+    metadata:
+      peer: dc1-leaf1a
     description: dc1-leaf1a_Dps1
   - ip_address: 10.255.255.20
     peer_group: WAN-OVERLAY-PEERS
-    peer: dc1-leaf1b
+    metadata:
+      peer: dc1-leaf1b
     description: dc1-leaf1b_Dps1
   - ip_address: 10.255.1.2
     remote_as: '65101'
-    peer: dc1-wan2
+    metadata:
+      peer: dc1-wan2
     description: dc1-wan2
     route_reflector_client: true
     update_source: Dps1
@@ -611,10 +623,12 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: dc1-wan1_VTEP
+    description: dc1-leaf1c_VTEP
     vxlan:
       source_interface: Dps1
       udp_port: 4789
+      encapsulations:
+        ipv6: true
       vrfs:
       - name: default
         vni: 1

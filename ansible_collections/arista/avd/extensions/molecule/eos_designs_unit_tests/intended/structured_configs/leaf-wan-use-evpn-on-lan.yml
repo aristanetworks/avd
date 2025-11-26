@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.18.0.22/31
-  peer: cv-pathfinder-edge-wan-use-evpn-on-lan
-  peer_interface: Ethernet52
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge-wan-use-evpn-on-lan
+    peer_interface: Ethernet52
+    peer_type: wan_router
   switchport:
     enabled: false
 - name: Ethernet2
@@ -19,9 +20,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.18.0.26/31
-  peer: cv-pathfinder-edge-wan-use-evpn-on-lan-no-overlay-on-lan
-  peer_interface: Ethernet52
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge-wan-use-evpn-on-lan-no-overlay-on-lan
+    peer_interface: Ethernet52
+    peer_type: wan_router
   switchport:
     enabled: false
 hostname: leaf-wan-use-evpn-on-lan
@@ -72,11 +74,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -86,12 +90,14 @@ router_bgp:
   - ip_address: 172.18.0.23
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: cv-pathfinder-edge-wan-use-evpn-on-lan
+    metadata:
+      peer: cv-pathfinder-edge-wan-use-evpn-on-lan
     description: cv-pathfinder-edge-wan-use-evpn-on-lan_Ethernet52
   - ip_address: 172.18.0.27
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: cv-pathfinder-edge-wan-use-evpn-on-lan-no-overlay-on-lan
+    metadata:
+      peer: cv-pathfinder-edge-wan-use-evpn-on-lan-no-overlay-on-lan
     description: cv-pathfinder-edge-wan-use-evpn-on-lan-no-overlay-on-lan_Ethernet52
   redistribute:
     connected:
@@ -99,7 +105,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 100
-    tenant: TenantA
+    metadata:
+      tenant: TenantA
     rd: 192.168.45.13:1100
     route_targets:
       both:
@@ -107,7 +114,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 101
-    tenant: TenantA
+    metadata:
+      tenant: TenantA
     rd: 192.168.45.13:1101
     route_targets:
       both:
@@ -115,7 +123,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 666
-    tenant: TenantC
+    metadata:
+      tenant: TenantC
     rd: 192.168.45.13:1666
     route_targets:
       both:
@@ -212,13 +221,15 @@ vlan_interfaces:
   shutdown: true
   vrf: PROD
   ip_address_virtual: 10.0.100.1/24
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: Vlan666
   description: VLAN666
   shutdown: true
   vrf: ATTRACTED-VRF-FROM-UPLINK
   ip_address_virtual: 10.66.66.66/24
-  tenant: TenantC
+  metadata:
+    tenant: TenantC
 vlan_internal_order:
   allocation: ascending
   range:
@@ -227,34 +238,43 @@ vlan_internal_order:
 vlans:
 - id: 100
   name: VLAN100
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - id: 101
   name: VLAN101
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - id: 666
   name: VLAN666
-  tenant: TenantC
+  metadata:
+    tenant: TenantC
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: IT
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: PROD
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: ATTRACTED-VRF-FROM-UPLINK
   ip_routing: true
-  tenant: TenantC
+  metadata:
+    tenant: TenantC
 - name: VRF-NO-WAN
   ip_routing: true
-  tenant: TenantD
+  metadata:
+    tenant: TenantD
 - name: VRF-NO-WAN-NO-AF
   ip_routing: true
-  tenant: TenantD
+  metadata:
+    tenant: TenantD
 - name: WAN-VRF-NO-AF
   ip_routing: true
-  tenant: TenantD
+  metadata:
+    tenant: TenantD
 vxlan_interface:
   vxlan1:
     description: leaf-wan-use-evpn-on-lan_VTEP

@@ -256,6 +256,9 @@ interface {{ port_channel_interface.name }}
 {%     endif %}
 {%     if port_channel_interface.ip_address is arista.avd.defined %}
    ip address {{ port_channel_interface.ip_address }}
+{%         for ip_address_secondary in port_channel_interface.ip_address_secondaries | arista.avd.natural_sort %}
+   ip address {{ ip_address_secondary }} secondary
+{%         endfor %}
 {%     endif %}
 {%     if port_channel_interface.ip_address is arista.avd.defined("dhcp") and port_channel_interface.dhcp_client_accept_default_route is arista.avd.defined(true) %}
    dhcp client accept default-route
@@ -386,6 +389,11 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.lacp_id is arista.avd.defined %}
    lacp system-id {{ port_channel_interface.lacp_id }}
 {%     endif %}
+{%     if port_channel_interface.address_locking.address_family.ipv4 is arista.avd.defined(false) %}
+   !
+   address locking
+      address-family ipv4 disabled
+{%     endif %}
 {%     if port_channel_interface.mpls.ldp.igp_sync is arista.avd.defined(true) %}
    mpls ldp igp sync
 {%     endif %}
@@ -428,14 +436,14 @@ interface {{ port_channel_interface.name }}
    ip ospf authentication message-digest
 {%     endif %}
 {%     if port_channel_interface.ospf_authentication_key is arista.avd.defined %}
-   ip ospf authentication-key 7 {{ port_channel_interface.ospf_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
+   ip ospf authentication-key {{ port_channel_interface.ospf_authentication_key_type | arista.avd.default("7") }} {{ port_channel_interface.ospf_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
 {%     if port_channel_interface.ospf_area is arista.avd.defined %}
    ip ospf area {{ port_channel_interface.ospf_area }}
 {%     endif %}
 {%     for ospf_message_digest_key in port_channel_interface.ospf_message_digest_keys | arista.avd.natural_sort('id') %}
 {%         if ospf_message_digest_key.hash_algorithm is arista.avd.defined and ospf_message_digest_key.key is arista.avd.defined %}
-   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
+   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} {{ ospf_message_digest_key.key_type | arista.avd.default("7") }} {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%     endfor %}
 {%     if port_channel_interface.service_policy.pbr.input is arista.avd.defined %}

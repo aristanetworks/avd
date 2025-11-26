@@ -30,21 +30,24 @@ ethernet_interfaces:
   shutdown: false
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2
   description: Colt_10555
   shutdown: false
   ip_address: 172.15.5.5/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet3
   description: Comcast-5G_AF830
   shutdown: false
   ip_address: 172.20.20.20/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:
@@ -276,7 +279,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     bfd: true
@@ -291,7 +295,8 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder
+    metadata:
+      peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder_Dps1
   redistribute:
     connected:
@@ -447,10 +452,12 @@ vrfs:
   ip_routing: false
 - name: IT
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: PROD
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-edge-no-default-policy_VTEP

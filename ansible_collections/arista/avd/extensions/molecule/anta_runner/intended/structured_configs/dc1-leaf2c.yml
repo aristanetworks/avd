@@ -11,26 +11,29 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: dc1-leaf2a
-  peer_interface: Ethernet8
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf2a
+    peer_interface: Ethernet8
+    peer_type: l3leaf
 - name: Ethernet2
   description: L2_dc1-leaf2b_Ethernet8
   shutdown: true
   channel_group:
     id: 1
     mode: active
-  peer: dc1-leaf2b
-  peer_interface: Ethernet8
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf2b
+    peer_interface: Ethernet8
+    peer_type: l3leaf
 - name: Ethernet5
   description: SERVER_dc1-leaf2-server1_iLO
   shutdown: false
   spanning_tree_portfast: edge
-  peer: dc1-leaf2-server1
-  peer_interface: iLO
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: dc1-leaf2-server1
+    peer_interface: iLO
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -57,6 +60,8 @@ metadata:
   platform: vEOS-lab
   dc_name: DC1
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_DC1_L3_LEAF2_Port-Channel8
@@ -87,7 +92,8 @@ vlan_interfaces:
   vrf: MGMT
   ip_address: 172.21.110.5/24
   mtu: 1500
-  type: inband_mgmt
+  metadata:
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
@@ -96,25 +102,32 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VRF10_VLAN11
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 12
   name: VRF10_VLAN12
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 21
   name: VRF11_VLAN21
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 22
   name: VRF11_VLAN22
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 3401
   name: L2_VLAN3401
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 3402
   name: L2_VLAN3402
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 4085
   name: L2LEAF_INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

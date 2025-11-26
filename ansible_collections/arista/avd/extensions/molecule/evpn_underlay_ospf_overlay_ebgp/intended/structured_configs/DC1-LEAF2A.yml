@@ -20,18 +20,20 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  peer: DC1-LEAF2B
-  peer_interface: Ethernet5
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1-LEAF2B
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
 - name: Ethernet6
   description: MLAG_DC1-LEAF2B_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: DC1-LEAF2B
-  peer_interface: Ethernet6
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1-LEAF2B
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_DC1-SPINE1_Ethernet2
   shutdown: false
@@ -44,9 +46,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: /wCirdje6f59x/1Ev+Oe6xok2+5jD3M/
-  peer: DC1-SPINE1
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -61,9 +64,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
-  peer: DC1-SPINE2
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -78,9 +82,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
-  peer: DC1-SPINE3
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet4
@@ -95,9 +100,10 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha256
     key: QB0XEg/PJV6Y5HtvjDdiafrPx/g+JRKk
-  peer: DC1-SPINE4
-  peer_interface: Ethernet2
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet2
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet7
@@ -106,9 +112,10 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  peer: DC1-L2LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-L2LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 hostname: DC1-LEAF2A
 ip_igmp_snooping:
   globally_enabled: true
@@ -230,7 +237,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -238,7 +246,8 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65102'
     description: DC1-LEAF2B
     next_hop_self: true
@@ -250,22 +259,26 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1_Loopback0
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2_Loopback0
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3_Loopback0
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4_Loopback0
   vlan_aware_bundles:
   - name: Tenant_B_OP_Zone
@@ -362,17 +375,19 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_B_OP_Zone
   ip_address_virtual: 10.2.10.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan3019
   description: MLAG_L3_VRF_Tenant_B_OP_Zone
   shutdown: false
   vrf: Tenant_B_OP_Zone
   ip_address: 10.255.251.2/31
   mtu: 1500
-  tenant: Tenant_A
-  type: underlay_peering
+  metadata:
+    tenant: Tenant_A
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:
@@ -383,26 +398,31 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 210
   name: Tenant_B_OP_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 3019
   name: MLAG_L3_VRF_Tenant_B_OP_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_B_OP_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 vxlan_interface:
   vxlan1:
     description: DC1-LEAF2A_VTEP

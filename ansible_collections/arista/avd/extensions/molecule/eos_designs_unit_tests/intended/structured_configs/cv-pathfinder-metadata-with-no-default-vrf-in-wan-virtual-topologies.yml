@@ -30,7 +30,8 @@ ethernet_interfaces:
   shutdown: false
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:
@@ -266,7 +267,8 @@ router_bgp:
     remote_as: '65000'
   peer_groups:
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     route_reflector_client: true
@@ -397,10 +399,12 @@ vrfs:
   ip_routing: false
 - name: IT
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: PROD
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-metadata-with-no-default-vrf-in-wan-virtual-topologies_VTEP

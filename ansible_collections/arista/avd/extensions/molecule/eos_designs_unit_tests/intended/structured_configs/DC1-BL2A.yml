@@ -22,9 +22,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.225/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet24
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet24
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -33,9 +34,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.227/31
-  peer: DC1-SPINE2
-  peer_interface: Ethernet24
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet24
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -44,9 +46,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.229/31
-  peer: DC1-SPINE3
-  peer_interface: Ethernet24
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet24
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet4
@@ -55,9 +58,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.254.231/31
-  peer: DC1-SPINE4
-  peer_interface: Ethernet24
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet24
+    peer_type: spine
   switchport:
     enabled: false
 hostname: DC1-BL2A
@@ -175,12 +179,14 @@ router_bgp:
       d_path: true
   peer_groups:
   - name: UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -188,7 +194,8 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   - name: IPVPN-INTERWORKING-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     local_as: '65001'
     update_source: Loopback0
     bfd: true
@@ -221,53 +228,63 @@ router_bgp:
   - ip_address: 172.31.254.224
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet24
   - ip_address: 172.31.254.226
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet24
   - ip_address: 172.31.254.228
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet24
   - ip_address: 172.31.254.230
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet24
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4
   - ip_address: 100.70.0.1
     peer_group: IPVPN-INTERWORKING-PEERS
     remote_as: '64512'
-    peer: rr1
+    metadata:
+      peer: rr1
     description: rr1
     ebgp_multihop: 15
   - ip_address: 100.70.0.2
     peer_group: IPVPN-INTERWORKING-PEERS
     remote_as: '64512'
-    peer: rr2
+    metadata:
+      peer: rr2
     description: rr2
     ebgp_multihop: 15
   redistribute:
@@ -496,25 +513,28 @@ vlan_interfaces:
   ospf_cost: 100
   ospf_authentication: simple
   ospf_authentication_key: AQQvKeimxJu+uGQ/yYvv9w==
-  tenant: Tenant_A
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - wan
 - name: Vlan250
   description: Tenant_B_WAN_Zone_1
   shutdown: false
   vrf: Tenant_B_WAN_Zone
   ip_address_virtual: 10.2.50.1/24
-  tenant: Tenant_B
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_B
+    tags:
+    - wan
 - name: Vlan350
   description: Tenant_C_WAN_Zone_1
   shutdown: false
   vrf: Tenant_C_WAN_Zone
   ip_address_virtual: 10.3.50.1/24
-  tenant: Tenant_C
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_C
+    tags:
+    - wan
 - name: Vlan453
   description: Tenant_D_WAN_Zone_1
   shutdown: false
@@ -522,9 +542,10 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 10.0.10.1/24
-  tenant: Tenant_D
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - wan
 vlan_internal_order:
   allocation: ascending
   range:
@@ -533,35 +554,44 @@ vlan_internal_order:
 vlans:
 - id: 150
   name: Tenant_A_WAN_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 250
   name: Tenant_B_WAN_Zone_1
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 350
   name: Tenant_C_WAN_Zone_1
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 453
   name: Tenant_D_WAN_Zone_1
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_A_WAN_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_B_OP_Zone
   ip_routing: true
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - name: Tenant_B_WAN_Zone
   ip_routing: true
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - name: Tenant_C_WAN_Zone
   ip_routing: true
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - name: TENANT_D_WAN_ZONE
   ip_routing: true
   ipv6_routing: true
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 vxlan_interface:
   vxlan1:
     description: DC1-BL2A_VTEP

@@ -205,7 +205,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -230,8 +230,8 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_DC1-SPINE1_Ethernet1 | - | 172.31.255.1/31 | default | 1500 | False | - | - |
 | Ethernet2 | P2P_DC1-SPINE2_Ethernet1 | - | 172.31.255.3/31 | default | 1500 | False | - | - |
 | Ethernet3 | P2P_DC1-SPINE3_Ethernet1 | - | 172.31.255.5/31 | default | 1500 | False | - | - |
@@ -587,7 +587,7 @@ router bfd
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | permit | - | extcommunity soo 192.168.254.5:1 additive | - | - |
+| 10 | permit | - | extcommunity soo 192.168.255.5:1 additive | - | - |
 
 #### Route-maps Device Configuration
 
@@ -599,7 +599,7 @@ route-map RM-EVPN-SOO-IN deny 10
 route-map RM-EVPN-SOO-IN permit 20
 !
 route-map RM-EVPN-SOO-OUT permit 10
-   set extcommunity soo 192.168.254.5:1 additive
+   set extcommunity soo 192.168.255.5:1 additive
 ```
 
 ### IP Extended Community Lists
@@ -608,13 +608,13 @@ route-map RM-EVPN-SOO-OUT permit 10
 
 | List Name | Type | Extended Communities |
 | --------- | ---- | -------------------- |
-| ECL-EVPN-SOO | permit | soo 192.168.254.5:1 |
+| ECL-EVPN-SOO | permit | soo 192.168.255.5:1 |
 
 #### IP Extended Community Lists Device Configuration
 
 ```eos
 !
-ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.254.5:1
+ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.5:1
 ```
 
 ## VRF Instances

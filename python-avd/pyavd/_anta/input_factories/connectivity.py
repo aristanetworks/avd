@@ -24,7 +24,7 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
 
     Peers must be available (`is_deployed: true`).
 
-    The factory respects `validate_state` and `validate_lldp` settings, excludes
+    The factory respects `metadata.validate_state` and `metadata.validate_lldp` settings, excludes
     subinterfaces and shutdown interfaces on local or peer (considering `interface_defaults.ethernet.shutdown`
     when not set), and uses peer FQDN when `dns_domain` is configured to match EOS
     LLDP format.
@@ -34,7 +34,7 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
         """Create a list of inputs for the `VerifyLLDPNeighbors` test."""
         neighbors: list[LLDPNeighbor] = []
         for intf in self.structured_config.ethernet_interfaces:
-            if intf.validate_state is False or intf.validate_lldp is False:
+            if intf.metadata.validate_state is False or intf.metadata.validate_lldp is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
 
@@ -46,24 +46,28 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
                 self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=intf.name)
                 continue
 
-            if not intf.peer or not intf.peer_interface:
-                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="peer, peer_interface")
+            if not intf.metadata.peer or not intf.metadata.peer_interface:
+                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="metadata.peer, metadata.peer_interface")
                 continue
 
-            if not self.is_peer_available(intf.peer, identity=intf.name):
+            if not self.is_peer_available(intf.metadata.peer, identity=intf.name):
                 continue
 
-            if self.is_peer_interface_shutdown(intf.peer, intf.peer_interface, intf.name):
+            if self.is_peer_interface_shutdown(intf.metadata.peer, intf.metadata.peer_interface, intf.name):
                 continue
 
             # LLDP neighbor is the FQDN when dns domain is set in EOS
-            fqdn = f"{intf.peer}.{dns_domain}" if (dns_domain := self.minimal_structured_configs[intf.peer].dns_domain) is not None else intf.peer
+            fqdn = (
+                f"{intf.metadata.peer}.{dns_domain}"
+                if (dns_domain := self.fabric_data.devices[intf.metadata.peer].dns_domain) is not None
+                else intf.metadata.peer
+            )
 
             neighbors.append(
                 LLDPNeighbor(
                     port=intf.name,
                     neighbor_device=fqdn,
-                    neighbor_port=intf.peer_interface,
+                    neighbor_port=intf.metadata.peer_interface,
                 )
             )
 
@@ -118,8 +122,8 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                 self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=intf.name)
                 continue
 
-            if not intf.ip_address or not intf.peer or not intf.peer_interface:
-                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="ip_address, peer, peer_interface")
+            if not intf.ip_address or not intf.metadata.peer or not intf.metadata.peer_interface:
+                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="ip_address, metadata.peer, metadata.peer_interface")
                 continue
 
             if intf.ip_address == "dhcp":
@@ -131,10 +135,10 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                 self.logger_adapter.debug(LogMessage.INTERFACE_UNNUMBERED, interface=intf.name)
                 continue
 
-            if (peer_interface_ip := self.get_interface_ip(intf.peer, intf.peer_interface, intf.name)) is None:
+            if (peer_interface_ip := self.get_peer_interface_ip(intf.metadata.peer, intf.metadata.peer_interface, intf.name)) is None:
                 continue
 
-            if self.is_peer_interface_shutdown(intf.peer, intf.peer_interface, intf.name) is True:
+            if self.is_peer_interface_shutdown(intf.metadata.peer, intf.metadata.peer_interface, intf.name) is True:
                 continue
 
             hosts.append(

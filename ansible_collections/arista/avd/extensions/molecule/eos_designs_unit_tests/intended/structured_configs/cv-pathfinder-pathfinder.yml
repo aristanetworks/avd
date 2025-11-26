@@ -1,10 +1,5 @@
 aaa_root:
   disabled: true
-agents:
-- name: KernelFib
-  environment_variables:
-  - name: KERNELFIB_PROGRAM_ALL_ECMP
-    value: '1'
 application_traffic_recognition:
   categories:
   - name: VIDEO1
@@ -89,21 +84,24 @@ ethernet_interfaces:
   description: Bouygues_Telecom_777
   shutdown: false
   ip_address: 10.7.7.7/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2/2
   description: Colt_10000
   shutdown: false
   ip_address: 172.16.0.1/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet3
   description: Another-ISP_999
   shutdown: false
   ip_address: 10.9.9.9/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:
@@ -147,6 +145,8 @@ ip_security:
       time: 50
       action: clear
     mode: transport
+kernel:
+  software_forwarding_ecmp: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -684,12 +684,14 @@ router_bgp:
     remote_as: '65000'
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     route_reflector_client: true

@@ -257,3 +257,26 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
         items = cast("list[AvdBase]", self._items)
         other_items = cast("list[AvdBase]", other._items)
         return all(item == other_items[index] for index, item in enumerate(items))
+
+    def _combine(self, other: Self) -> None:
+        """
+        Update instance by combining the other instance in.
+
+        Combining is different from merging in the sense that it will raise if there is a conflict
+        between one of our elements and the other elements.
+
+        For AvdList this is simply an append_unique, if any conflict occurs a duplicate error will be raised.
+
+        Args:
+            other: The other instance of the same type to combine into this instance.
+
+        Raises:
+            AristaAvdDuplicateDataError: If any item from other is conflicting with an item from self when appending.
+        """
+        cls = type(self)
+        if not isinstance(other, cls):
+            msg = f"Unable to combine type '{type(other)}' into '{cls}'"
+            raise TypeError(msg)
+
+        for item in other._items:
+            self.append_unique(item)

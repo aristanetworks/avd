@@ -11,26 +11,29 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: dc1-svc-leaf1b
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
+  metadata:
+    peer: dc1-svc-leaf1b
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
 - name: Ethernet4
   description: MLAG_dc1-svc-leaf1b_Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: dc1-svc-leaf1b
-  peer_interface: Ethernet4
-  peer_type: mlag_peer
+  metadata:
+    peer: dc1-svc-leaf1b
+    peer_interface: Ethernet4
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_dc1-spine1_Ethernet5
   shutdown: false
   mtu: 1500
   ip_address: 10.33.255.17/31
-  peer: dc1-spine1
-  peer_interface: Ethernet5
-  peer_type: spine
+  metadata:
+    peer: dc1-spine1
+    peer_interface: Ethernet5
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -38,9 +41,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 10.33.255.19/31
-  peer: dc1-spine2
-  peer_interface: Ethernet5
-  peer_type: spine
+  metadata:
+    peer: dc1-spine2
+    peer_interface: Ethernet5
+    peer_type: spine
   switchport:
     enabled: false
 hostname: dc1-svc-leaf1a
@@ -84,6 +88,8 @@ metadata:
   platform: vEOS-lab
   dc_name: DC1
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
 mlag_configuration:
   domain_id: DC1_SVC_LEAF1
   local_interface: Vlan4094
@@ -141,7 +147,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65133'
     description: dc1-svc-leaf1b
     next_hop_self: true
@@ -150,12 +157,14 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -165,27 +174,32 @@ router_bgp:
   neighbors:
   - ip_address: 10.33.1.105
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: dc1-svc-leaf1b
+    metadata:
+      peer: dc1-svc-leaf1b
     description: dc1-svc-leaf1b_Vlan4093
   - ip_address: 10.33.255.16
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine1
+    metadata:
+      peer: dc1-spine1
     description: dc1-spine1_Ethernet5
   - ip_address: 10.33.255.18
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine2
+    metadata:
+      peer: dc1-spine2
     description: dc1-spine2_Ethernet5
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine1
+    metadata:
+      peer: dc1-spine1
     description: dc1-spine1_Loopback0
   - ip_address: 10.255.0.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
-    peer: dc1-spine2
+    metadata:
+      peer: dc1-spine2
     description: dc1-spine2_Loopback0
   redistribute:
     connected:
@@ -237,12 +251,14 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

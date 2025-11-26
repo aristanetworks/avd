@@ -39,7 +39,8 @@ vlan_interfaces:
   description: Inband Management
   shutdown: false
   ip_address: 192.168.103.22/24
-  type: inband_mgmt
+  metadata:
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
@@ -48,7 +49,8 @@ vlan_internal_order:
 vlans:
 - id: 108
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

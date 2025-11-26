@@ -19,18 +19,20 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: inband-mgmt-parent
-  peer_interface: Ethernet22
-  peer_type: l3leaf
+  metadata:
+    peer: inband-mgmt-parent
+    peer_interface: Ethernet22
+    peer_type: l3leaf
 - name: Ethernet2
   description: INBAND-MGMT-PARENT-VRF_Ethernet22
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: inband-mgmt-parent-vrf
-  peer_interface: Ethernet22
-  peer_type: l3leaf
+  metadata:
+    peer: inband-mgmt-parent-vrf
+    peer_interface: Ethernet22
+    peer_type: l3leaf
 hostname: inband-mgmt-subnet-vrf
 ip_igmp_snooping:
   globally_enabled: true
@@ -73,7 +75,8 @@ vlan_interfaces:
   vrf: INBANDMGMT
   ip_address: 192.168.102.5/24
   mtu: 1500
-  type: inband_mgmt
+  metadata:
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
@@ -82,7 +85,8 @@ vlan_internal_order:
 vlans:
 - id: 102
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

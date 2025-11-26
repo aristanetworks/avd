@@ -10,6 +10,7 @@ mgmt_interface_vrf: MGMT
 mgmt_gateway: 10.10.10.1
 
 ssh_settings:
+  enabled: false
   vrfs:
     - name: VRF20
       enabled: true

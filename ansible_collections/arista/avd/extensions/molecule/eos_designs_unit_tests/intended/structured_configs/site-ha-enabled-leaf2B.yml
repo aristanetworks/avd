@@ -9,9 +9,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.6/31
-  peer: cv-pathfinder-edge2A
-  peer_interface: Ethernet53
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2A
+    peer_interface: Ethernet53
+    peer_type: wan_router
   switchport:
     enabled: false
 - name: Ethernet1.1000
@@ -22,9 +23,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1000
   ip_address: 172.17.0.6/31
-  peer: cv-pathfinder-edge2A
-  peer_interface: Ethernet53.1000
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2A
+    peer_interface: Ethernet53.1000
+    peer_type: wan_router
 - name: Ethernet1.142
   description: P2P_cv-pathfinder-edge2A_Ethernet53.142_VRF_PROD
   shutdown: false
@@ -33,9 +35,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 142
   ip_address: 172.17.0.6/31
-  peer: cv-pathfinder-edge2A
-  peer_interface: Ethernet53.142
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2A
+    peer_interface: Ethernet53.142
+    peer_type: wan_router
 - name: Ethernet1.666
   description: P2P_cv-pathfinder-edge2A_Ethernet53.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
@@ -44,17 +47,19 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 666
   ip_address: 172.17.0.6/31
-  peer: cv-pathfinder-edge2A
-  peer_interface: Ethernet53.666
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2A
+    peer_interface: Ethernet53.666
+    peer_type: wan_router
 - name: Ethernet2
   description: P2P_cv-pathfinder-edge2B_Ethernet53
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.10/31
-  peer: cv-pathfinder-edge2B
-  peer_interface: Ethernet53
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2B
+    peer_interface: Ethernet53
+    peer_type: wan_router
   switchport:
     enabled: false
 - name: Ethernet2.1000
@@ -65,9 +70,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1000
   ip_address: 172.17.0.10/31
-  peer: cv-pathfinder-edge2B
-  peer_interface: Ethernet53.1000
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2B
+    peer_interface: Ethernet53.1000
+    peer_type: wan_router
 - name: Ethernet2.142
   description: P2P_cv-pathfinder-edge2B_Ethernet53.142_VRF_PROD
   shutdown: false
@@ -76,9 +82,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 142
   ip_address: 172.17.0.10/31
-  peer: cv-pathfinder-edge2B
-  peer_interface: Ethernet53.142
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2B
+    peer_interface: Ethernet53.142
+    peer_type: wan_router
 - name: Ethernet2.666
   description: P2P_cv-pathfinder-edge2B_Ethernet53.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
@@ -87,9 +94,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 666
   ip_address: 172.17.0.10/31
-  peer: cv-pathfinder-edge2B
-  peer_interface: Ethernet53.666
-  peer_type: wan_router
+  metadata:
+    peer: cv-pathfinder-edge2B
+    peer_interface: Ethernet53.666
+    peer_type: wan_router
 hostname: site-ha-enabled-leaf2B
 ip_igmp_snooping:
   globally_enabled: true
@@ -138,11 +146,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -152,12 +162,14 @@ router_bgp:
   - ip_address: 172.17.0.7
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: cv-pathfinder-edge2A
+    metadata:
+      peer: cv-pathfinder-edge2A
     description: cv-pathfinder-edge2A_Ethernet53
   - ip_address: 172.17.0.11
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: cv-pathfinder-edge2B
+    metadata:
+      peer: cv-pathfinder-edge2B
     description: cv-pathfinder-edge2B_Ethernet53
   redistribute:
     connected:
@@ -165,7 +177,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 100
-    tenant: TenantA
+    metadata:
+      tenant: TenantA
     rd: 192.168.45.3:1100
     route_targets:
       both:
@@ -173,7 +186,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 101
-    tenant: TenantA
+    metadata:
+      tenant: TenantA
     rd: 192.168.45.3:1101
     route_targets:
       both:
@@ -181,7 +195,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 666
-    tenant: TenantC
+    metadata:
+      tenant: TenantC
     rd: 192.168.45.3:1666
     route_targets:
       both:
@@ -290,13 +305,15 @@ vlan_interfaces:
   shutdown: true
   vrf: PROD
   ip_address_virtual: 10.0.100.1/24
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: Vlan666
   description: VLAN666
   shutdown: true
   vrf: ATTRACTED-VRF-FROM-UPLINK
   ip_address_virtual: 10.66.66.66/24
-  tenant: TenantC
+  metadata:
+    tenant: TenantC
 vlan_internal_order:
   allocation: ascending
   range:
@@ -305,25 +322,31 @@ vlan_internal_order:
 vlans:
 - id: 100
   name: VLAN100
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - id: 101
   name: VLAN101
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - id: 666
   name: VLAN666
-  tenant: TenantC
+  metadata:
+    tenant: TenantC
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: IT
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: PROD
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: ATTRACTED-VRF-FROM-UPLINK
   ip_routing: true
-  tenant: TenantC
+  metadata:
+    tenant: TenantC
 vxlan_interface:
   vxlan1:
     description: site-ha-enabled-leaf2B_VTEP

@@ -18,9 +18,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.16.255.1/31
-  peer: inband-mgmt-spine1-ztp
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: inband-mgmt-spine1-ztp
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -28,9 +29,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.16.255.3/31
-  peer: inband-mgmt-spine2-ztp
-  peer_interface: Ethernet1
-  peer_type: spine
+  metadata:
+    peer: inband-mgmt-spine2-ztp
+    peer_interface: Ethernet1
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet21
@@ -39,9 +41,10 @@ ethernet_interfaces:
   channel_group:
     id: 21
     mode: active
-  peer: inband-mgmt-subnet
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: inband-mgmt-subnet
+    peer_interface: Ethernet1
+    peer_type: l2leaf
   switchport:
     enabled: true
     mode: access
@@ -52,9 +55,10 @@ ethernet_interfaces:
   channel_group:
     id: 22
     mode: active
-  peer: inband-mgmt-subnet-vrf
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: inband-mgmt-subnet-vrf
+    peer_interface: Ethernet1
+    peer_type: l2leaf
   switchport:
     enabled: true
     mode: access
@@ -65,18 +69,20 @@ ethernet_interfaces:
   channel_group:
     id: 23
     mode: active
-  peer: inband-mgmt-ip
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: inband-mgmt-ip
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet101
   description: INBAND-MGMT-MLAG-A_Ethernet1
   shutdown: false
   channel_group:
     id: 101
     mode: active
-  peer: inband-mgmt-mlag-a
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: inband-mgmt-mlag-a
+    peer_interface: Ethernet1
+    peer_type: l2leaf
   switchport:
     enabled: true
     mode: access
@@ -87,9 +93,10 @@ ethernet_interfaces:
   channel_group:
     id: 101
     mode: active
-  peer: inband-mgmt-mlag-b
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: inband-mgmt-mlag-b
+    peer_interface: Ethernet1
+    peer_type: l2leaf
   switchport:
     enabled: true
     mode: access
@@ -212,11 +219,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -226,22 +235,26 @@ router_bgp:
   - ip_address: 172.16.255.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '64999'
-    peer: inband-mgmt-spine1-ztp
+    metadata:
+      peer: inband-mgmt-spine1-ztp
     description: inband-mgmt-spine1-ztp_Ethernet1
   - ip_address: 172.16.255.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '64999'
-    peer: inband-mgmt-spine2-ztp
+    metadata:
+      peer: inband-mgmt-spine2-ztp
     description: inband-mgmt-spine2-ztp_Ethernet1
   - ip_address: 10.0.254.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '64999'
-    peer: inband-mgmt-spine1-ztp
+    metadata:
+      peer: inband-mgmt-spine1-ztp
     description: inband-mgmt-spine1-ztp_Loopback0
   - ip_address: 10.0.254.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '64999'
-    peer: inband-mgmt-spine2-ztp
+    metadata:
+      peer: inband-mgmt-spine2-ztp
     description: inband-mgmt-spine2-ztp_Loopback0
   redistribute:
     attached_host:
@@ -283,7 +296,8 @@ vlan_interfaces:
   shutdown: true
   vrf: INBANDMGMT
   ip_address: 192.168.103.1/24
-  tenant: INBAND_MGMT_TESTS
+  metadata:
+    tenant: INBAND_MGMT_TESTS
 - name: Vlan101
   description: Inband Management
   shutdown: false
@@ -312,19 +326,23 @@ vlan_internal_order:
 vlans:
 - id: 103
   name: Inband management vlan
-  tenant: INBAND_MGMT_TESTS
+  metadata:
+    tenant: INBAND_MGMT_TESTS
 - id: 101
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 - id: 102
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: INBANDMGMT
   ip_routing: true
-  tenant: INBAND_MGMT_TESTS
+  metadata:
+    tenant: INBAND_MGMT_TESTS
 vxlan_interface:
   vxlan1:
     description: inband-mgmt-parent_VTEP

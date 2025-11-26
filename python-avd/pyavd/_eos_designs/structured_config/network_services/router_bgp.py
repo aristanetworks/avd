@@ -120,11 +120,9 @@ class RouterBgpMixin(Protocol):
 
         # router bgp default vrf configuration for evpn
         if self._vrf_default_evpn and (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]):
-            self.structured_config.router_bgp.peer_groups.append_new(
-                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-                type="ipv4",
-                route_map_out="RM-BGP-UNDERLAY-PEERS-OUT",
-            )
+            target_peer_group = self.structured_config.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
+            target_peer_group.metadata.type = "ipv4"
+            target_peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
 
     def _router_bgp_vrfs(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
@@ -237,10 +235,14 @@ class RouterBgpMixin(Protocol):
                         # VRF default is added directly under router_bgp
                         bgp_vrf = cast("EosCliConfigGen.RouterBgp", bgp_vrf)
                         bgp_peer_config = cast("EosCliConfigGen.RouterBgp.NeighborsItem", bgp_peer_config)
+                        if vrf._get_defined_attr("validate_bgp_peers") is False:
+                            bgp_peer_config.metadata.validate_state = False
                         bgp_vrf.neighbors.append(bgp_peer_config)
                     else:
                         bgp_vrf = cast("EosCliConfigGen.RouterBgp.VrfsItem", bgp_vrf)
                         bgp_peer_config = cast("EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem", bgp_peer_config)
+                        if vrf.validate_bgp_peers is True:
+                            bgp_peer_config.metadata.validate_state = True
                         bgp_vrf.neighbors.append(bgp_peer_config)
 
                 if vrf.ospf.enabled and vrf.redistribute_ospf and (not vrf.ospf.nodes or self.shared_utils.hostname in vrf.ospf.nodes):
@@ -260,7 +262,8 @@ class RouterBgpMixin(Protocol):
                 else:
                     bgp_vrf = cast("EosCliConfigGen.RouterBgp.VrfsItem", bgp_vrf)
                     bgp_vrf.name = vrf.name
-                    self.structured_config.router_bgp.vrfs.append(bgp_vrf)
+                    maybe_existing_vrf = self.structured_config.router_bgp.vrfs.obtain(vrf.name)
+                    maybe_existing_vrf._combine(bgp_vrf)
 
     def _update_router_bgp_vrf_evpn_or_mpls_cfg(
         self: AvdStructuredConfigNetworkServicesProtocol,
@@ -324,7 +327,7 @@ class RouterBgpMixin(Protocol):
         interface_name = f"Vlan{vlan_id}"
 
         if self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549:
-            bgp_vrf.neighbor_interfaces.append_new(
+            neighbor_interface = bgp_vrf.neighbor_interfaces.append_new(
                 name=interface_name,
                 peer_group=self.shared_utils.mlag_vrfs_peer_group_name,
                 remote_as=self.shared_utils.formatted_bgp_as,
@@ -336,6 +339,11 @@ class RouterBgpMixin(Protocol):
                 )
                 or None,
             )
+            # it means we are NOT in VRF default as this is handled by the caller
+            if isinstance(bgp_vrf, EosCliConfigGen.RouterBgp.VrfsItem) and vrf.validate_bgp_peers is True:
+                neighbor_interface.metadata.validate_state = True
+            elif isinstance(bgp_vrf, EosCliConfigGen.RouterBgp) and vrf._get_defined_attr("validate_bgp_peers") is False:
+                neighbor_interface.metadata.validate_state = False
         else:
             if not vrf.mlag_ibgp_peering_ipv4_pool:
                 ip_address = self.shared_utils.mlag_peer_ibgp_ip
@@ -344,7 +352,7 @@ class RouterBgpMixin(Protocol):
             else:
                 ip_address = self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(vrf.mlag_ibgp_peering_ipv4_pool)
 
-            bgp_vrf.neighbors.append_new(
+            neighbor = bgp_vrf.neighbors.append_new(
                 ip_address=ip_address,
                 peer_group=self.shared_utils.mlag_vrfs_peer_group_name,
                 description=AvdStringFormatter().format(
@@ -355,6 +363,11 @@ class RouterBgpMixin(Protocol):
                 )
                 or None,
             )
+            # it means we are NOT in VRF default as this is handled by the caller
+            if isinstance(bgp_vrf, EosCliConfigGen.RouterBgp.VrfsItem) and vrf.validate_bgp_peers is True:
+                neighbor.metadata.validate_state = True
+            elif isinstance(bgp_vrf, EosCliConfigGen.RouterBgp) and vrf._get_defined_attr("validate_bgp_peers") is False:
+                neighbor.metadata.validate_state = False
             # In case of only underlay_rfc5549 but not overlay_mlag_rfc5549, we need to remove the ipv6 next-hop per neighbor/vrf
             # This is only needed when we use the same MLAG peer-group for both underlay and overlay.
             if self.inputs.underlay_rfc5549 and not self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
@@ -423,7 +436,7 @@ class RouterBgpMixin(Protocol):
             for vrf in tenant.vrfs:
                 for svi in tenant_svis_l2vlans_dict[tenant.name]["svi_non_bundle"][vrf.name]:
                     if (vlan := self._router_bgp_vlans_vlan(svi, tenant, vrf)) is not None:
-                        self.structured_config.router_bgp.vlans.append(vlan, ignore_fields=("tenant",))
+                        self.structured_config.router_bgp.vlans.append(vlan, ignore_fields=("metadata",))
 
             # L2 Vlans per Tenant
             for l2vlans in tenant_svis_l2vlans_dict[tenant.name]["l2vlan_non_bundle"].values():
@@ -433,7 +446,7 @@ class RouterBgpMixin(Protocol):
                             l2vlan, tenant, vrf=EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem()
                         )
                     ) is not None:
-                        self.structured_config.router_bgp.vlans.append(vlan, ignore_fields=("tenant",))
+                        self.structured_config.router_bgp.vlans.append(vlan, ignore_fields=("metadata",))
 
     def _router_bgp_vlans_vlan(
         self: AvdStructuredConfigNetworkServicesProtocol,
@@ -451,9 +464,9 @@ class RouterBgpMixin(Protocol):
 
         bgp_vlan = EosCliConfigGen.RouterBgp.VlansItem(
             id=vlan.id,
-            tenant=tenant.name,
             rd=vlan_rd,
         )
+        bgp_vlan.metadata.tenant = tenant.name
         bgp_vlan.route_targets.both.append(vlan_rt)
         bgp_vlan.redistribute_routes.append("learned")
 

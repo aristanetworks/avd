@@ -48,11 +48,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -85,8 +87,10 @@ vrfs:
 - name: VRF2
   description: This VRF is attracted by Loopback and will be configured because it is permitted by filter.allow_vrfs
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: VRF5
   description: This VRF will be configured because of always_include_vrfs_in_tenants and it is permitted by filter.allow_vrfs
   ip_routing: true
-  tenant: TENANT2
+  metadata:
+    tenant: TENANT2

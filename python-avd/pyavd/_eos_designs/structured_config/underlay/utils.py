@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol, overload
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import Undefined, default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -89,6 +89,18 @@ class UtilsMixin(Protocol):
                     port_channel_structured_config=uplink.peer_port_channel_structured_config,
                 )
 
+                if self.shared_utils.node_config.link_tracking.downlinks.enabled and self.shared_utils.link_tracking_groups is not None:
+                    if (downlink_group := self.shared_utils.node_config.link_tracking.downlinks.group) is None:
+                        first_group = next(iter(self.shared_utils.link_tracking_groups.values()))
+                        downlink.link_tracking_groups.append_new(name=first_group.name, direction="downstream")
+                    elif downlink_group not in self.shared_utils.link_tracking_groups:
+                        msg = (
+                            f"Link tracking group '{downlink_group}' referenced under node setting 'link_tracking.downlinks.group' "
+                            f"is not defined in 'link_tracking.groups' for device '{self.shared_utils.hostname}'."
+                        )
+                        raise AristaAvdInvalidInputsError(msg)
+                    else:
+                        downlink.link_tracking_groups.append_new(name=downlink_group, direction="downstream")
                 if peer_facts.inband_ztp:
                     # l2 inband ztp
                     downlink.inband_ztp_vlan = peer_facts.inband_ztp_vlan
@@ -158,12 +170,12 @@ class UtilsMixin(Protocol):
         is_subinterface = "." in l3_generic_interface.name
         interface._update(
             name=l3_generic_interface.name,
-            peer=l3_generic_interface.peer,
             ip_address=l3_generic_interface.ip_address,
             shutdown=not l3_generic_interface.enabled,
             service_profile=l3_generic_interface.qos_profile,
             eos_cli=l3_generic_interface.raw_eos_cli,
         )
+        interface.metadata.peer = l3_generic_interface.peer
         interface.switchport.enabled = False if "." not in l3_generic_interface.name else None
 
         if is_subinterface:
@@ -235,20 +247,19 @@ class UtilsMixin(Protocol):
         interface_name = link.interface if is_native else f"{link.interface}.{svi.id}"
         subinterface = EosCliConfigGen.EthernetInterfacesItem(
             name=interface_name,
-            peer=link.peer,
-            peer_interface=f"{link.peer_interface} VLAN {svi.id}",
-            peer_type=link.peer_type,
             description=default(svi.description, svi.name),
             shutdown=not default(svi.enabled, False),  # noqa: FBT003
             switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False) if is_native else Undefined,
             encapsulation_dot1q=EosCliConfigGen.EthernetInterfacesItem.EncapsulationDot1q(vlan=svi.id) if not is_native else Undefined,
             vrf=vrf.name if vrf.name != "default" else None,
             ip_address=svi.ip_address,
+            ip_address_secondaries=EosCliConfigGen.EthernetInterfacesItem.IpAddressSecondaries(svi.ip_address_secondaries),
             ipv6_address=svi.ipv6_address,
             ipv6_enable=svi.ipv6_enable,
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
+        subinterface.metadata._update(peer_interface=f"{link.peer_interface} VLAN {svi.id}", peer=link.peer, peer_type=link.peer_type)
 
         if flow_tracker := self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker):
             subinterface.flow_tracker = flow_tracker

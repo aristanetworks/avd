@@ -10,43 +10,48 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: trunk-group-tests-l2leaf1a
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
+  metadata:
+    peer: trunk-group-tests-l2leaf1a
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
 - name: Ethernet4
   description: MLAG_trunk-group-tests-l2leaf1a_Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: trunk-group-tests-l2leaf1a
-  peer_interface: Ethernet4
-  peer_type: mlag_peer
+  metadata:
+    peer: trunk-group-tests-l2leaf1a
+    peer_interface: Ethernet4
+    peer_type: mlag_peer
 - name: Ethernet1
   description: L2_trunk-group-tests-l3leaf1a_Ethernet2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: trunk-group-tests-l3leaf1a
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: trunk-group-tests-l3leaf1a
+    peer_interface: Ethernet2
+    peer_type: l3leaf
 - name: Ethernet2
   description: L2_trunk-group-tests-l3leaf1b_Ethernet2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: trunk-group-tests-l3leaf1b
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: trunk-group-tests-l3leaf1b
+    peer_interface: Ethernet2
+    peer_type: l3leaf
 - name: Ethernet12
   description: SERVER_server_with_tg_200_Nic1
   shutdown: false
-  peer: server_with_tg_200
-  peer_interface: Nic1
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: server_with_tg_200
+    peer_interface: Nic1
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -60,10 +65,11 @@ ethernet_interfaces:
   channel_group:
     id: 13
     mode: active
-  peer: server_with_tg_300
-  peer_interface: Nic4
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: server_with_tg_300
+    peer_interface: Nic4
+    peer_type: server
+    peer_key: servers
 hostname: trunk-group-tests-l2leaf1b
 ip_igmp_snooping:
   globally_enabled: true
@@ -134,59 +140,68 @@ vlans:
   name: MLAG
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
-  tenant: system
+  metadata:
+    tenant: system
 - id: 100
   name: svi100_with_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
 - id: 200
   name: svi200_with_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
   - TG_200
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
 - id: 300
   name: svi300_with_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
   - TG_300
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
 - id: 398
   name: svi398_without_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
 - id: 110
   name: l2vlan110_with_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
 - id: 210
   name: l2vlan210_with_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
   - TG_200
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
 - id: 310
   name: l2vlan310_with_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
   - TG_300
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
 - id: 399
   name: l2vlan399_without_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
 vrfs:
 - name: MGMT
   ip_routing: false

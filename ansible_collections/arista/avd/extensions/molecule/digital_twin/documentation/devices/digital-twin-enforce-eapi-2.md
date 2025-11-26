@@ -86,7 +86,7 @@ Enable password has been disabled
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -113,14 +113,12 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | True |
+| default | False |
 | MGMT | False |
 
 #### IP Routing Device Configuration
 
 ```eos
-!
-ip routing
 no ip routing vrf MGMT
 ```
 

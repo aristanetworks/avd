@@ -20,45 +20,50 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  peer: DC1-SVC3A
-  peer_interface: Ethernet5
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1-SVC3A
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
 - name: Ethernet6
   description: CUSTOM_MLAG_PEER_DC1-SVC3A_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: DC1-SVC3A
-  peer_interface: Ethernet6
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1-SVC3A
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
 - name: Ethernet7
   description: CUSTOM_DC1-L2LEAF2A_Ethernet2
   shutdown: false
   channel_group:
     id: 7
     mode: active
-  peer: DC1-L2LEAF2A
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-L2LEAF2A
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet8
   description: CUSTOM_DC1-L2LEAF2B_Ethernet2
   shutdown: false
   channel_group:
     id: 7
     mode: active
-  peer: DC1-L2LEAF2B
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-L2LEAF2B
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet41
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet5
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.65/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet5
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet5
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet42
@@ -67,9 +72,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.67/31
-  peer: DC1-SPINE2
-  peer_interface: Ethernet5
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet5
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet43
@@ -78,9 +84,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.69/31
-  peer: DC1-SPINE3
-  peer_interface: Ethernet5
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet5
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet44
@@ -89,9 +96,10 @@ ethernet_interfaces:
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.71/31
-  peer: DC1-SPINE4
-  peer_interface: Ethernet5
-  peer_type: spine
+  metadata:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet5
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet10
@@ -100,11 +108,12 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
-  peer: server03_ESI
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_A_B
+  metadata:
+    peer: server03_ESI
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_A_B
 - name: Ethernet11
   description: CUSTOM_server04_inherit_all_from_profile_Eth2
   shutdown: false
@@ -125,11 +134,12 @@ ethernet_interfaces:
   spanning_tree_bpdufilter: 'True'
   spanning_tree_bpduguard: 'False'
   spanning_tree_portfast: edge
-  peer: server04_inherit_all_from_profile
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: ALL_WITH_SECURITY
+  metadata:
+    peer: server04_inherit_all_from_profile
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: ALL_WITH_SECURITY
   switchport:
     enabled: true
     mode: trunk
@@ -154,10 +164,11 @@ ethernet_interfaces:
   spanning_tree_bpdufilter: 'True'
   spanning_tree_bpduguard: 'False'
   spanning_tree_portfast: edge
-  peer: server05_no_profile
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: server05_no_profile
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -183,11 +194,12 @@ ethernet_interfaces:
   spanning_tree_bpdufilter: 'False'
   spanning_tree_bpduguard: 'True'
   spanning_tree_portfast: network
-  peer: server06_override_profile
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: ALL_WITH_SECURITY
+  metadata:
+    peer: server06_override_profile
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: ALL_WITH_SECURITY
   switchport:
     enabled: true
     mode: access
@@ -198,21 +210,23 @@ ethernet_interfaces:
   channel_group:
     id: 14
     mode: active
-  peer: server07_inherit_all_from_profile_port_channel
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
+  metadata:
+    peer: server07_inherit_all_from_profile_port_channel
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
 - name: Ethernet15
   description: CUSTOM_server08_no_profile_port_channel_Eth2
   shutdown: false
   channel_group:
     id: 15
     mode: 'on'
-  peer: server08_no_profile_port_channel
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: server08_no_profile_port_channel
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
 - name: Ethernet16
   description: CUSTOM_server09_override_profile_no_port_channel_Eth2
   shutdown: false
@@ -233,11 +247,12 @@ ethernet_interfaces:
   spanning_tree_bpdufilter: 'False'
   spanning_tree_bpduguard: 'True'
   spanning_tree_portfast: network
-  peer: server09_override_profile_no_port_channel
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
+  metadata:
+    peer: server09_override_profile_no_port_channel
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   switchport:
     enabled: true
     mode: access
@@ -249,10 +264,11 @@ ethernet_interfaces:
     id: 17
     mode: active
   lacp_port_priority: 32768
-  peer: server10_no_profile_port_channel_lacp_fallback
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: server10_no_profile_port_channel_lacp_fallback
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
 - name: Ethernet18
   description: CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_Eth2
   shutdown: false
@@ -260,11 +276,12 @@ ethernet_interfaces:
     id: 18
     mode: active
   lacp_port_priority: 32768
-  peer: server11_inherit_profile_port_channel_lacp_fallback
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
+  metadata:
+    peer: server11_inherit_profile_port_channel_lacp_fallback
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
 - name: Ethernet19
   description: CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2
   shutdown: false
@@ -272,19 +289,21 @@ ethernet_interfaces:
     id: 19
     mode: active
   lacp_port_priority: 32768
-  peer: server12_inherit_nested_profile_port_channel_lacp_fallback
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: NESTED_PORT_PROFILE
+  metadata:
+    peer: server12_inherit_nested_profile_port_channel_lacp_fallback
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: NESTED_PORT_PROFILE
 - name: Ethernet20
   description: CUSTOM_server13_disabled_interfaces_Eth2
   shutdown: true
-  peer: server13_disabled_interfaces
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_A
+  metadata:
+    peer: server13_disabled_interfaces
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_A
   switchport:
     enabled: true
     mode: access
@@ -292,11 +311,12 @@ ethernet_interfaces:
 - name: Ethernet21
   description: CUSTOM_server14_explicitly_enabled_interfaces_Eth2
   shutdown: false
-  peer: server14_explicitly_enabled_interfaces
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_A
+  metadata:
+    peer: server14_explicitly_enabled_interfaces
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_A
   switchport:
     enabled: true
     mode: access
@@ -307,11 +327,12 @@ ethernet_interfaces:
   channel_group:
     id: 22
     mode: active
-  peer: server15_port_channel_disabled_interfaces
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_A
+  metadata:
+    peer: server15_port_channel_disabled_interfaces
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_A
 hostname: DC1-SVC3B
 ip_igmp_snooping:
   globally_enabled: true
@@ -611,7 +632,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65103'
     description: DC1-SVC3A
     next_hop_self: true
@@ -620,12 +642,14 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -635,47 +659,56 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.252.6
     peer_group: MLAG-PEERS
-    peer: DC1-SVC3A
+    metadata:
+      peer: DC1-SVC3A
     description: DC1-SVC3A_Vlan4092
   - ip_address: 172.31.255.64
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet5
   - ip_address: 172.31.255.66
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet5
   - ip_address: 172.31.255.68
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet5
   - ip_address: 172.31.255.70
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet5
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1_Loopback0
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2_Loopback0
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3_Loopback0
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4_Loopback0
   redistribute:
     connected:
@@ -723,7 +756,8 @@ router_bgp:
     - learned
     vlan: 120-124
   - name: Tenant_A_FTP
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.13:10162
     route_targets:
       both:
@@ -732,7 +766,8 @@ router_bgp:
     - learned
     vlan: '162'
   - name: Tenant_A_NFS
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.13:10161
     route_targets:
       both:
@@ -741,7 +776,8 @@ router_bgp:
     - learned
     vlan: '161'
   - name: Tenant_A_VMOTION
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 192.168.255.13:10160
     route_targets:
       both:
@@ -1026,51 +1062,57 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.30.1/24
-  tenant: Tenant_A
-  tags:
-  - app
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - app
+    - erp1
 - name: Vlan131
   description: Tenant_A_APP_Zone_2
   shutdown: false
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.31.1/24
-  tenant: Tenant_A
-  tags:
-  - app
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - app
 - name: Vlan3011
   description: MLAG_L3_VRF_Tenant_A_APP_Zone
   shutdown: false
   vrf: Tenant_A_APP_Zone
   ip_address: 10.255.252.7/31
   mtu: 1500
-  tenant: Tenant_A
-  type: underlay_peering
+  metadata:
+    tenant: Tenant_A
+    type: underlay_peering
 - name: Vlan140
   description: Tenant_A_DB_BZone_1
   shutdown: false
   vrf: Tenant_A_DB_Zone
   ip_address_virtual: 10.1.40.1/24
-  tenant: Tenant_A
-  tags:
-  - db
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - db
+    - erp1
 - name: Vlan141
   description: Tenant_A_DB_Zone_2
   shutdown: false
   vrf: Tenant_A_DB_Zone
   ip_address_virtual: 10.1.41.1/24
-  tenant: Tenant_A
-  tags:
-  - db
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - db
 - name: Vlan3012
   description: MLAG_L3_VRF_Tenant_A_DB_Zone
   shutdown: false
   vrf: Tenant_A_DB_Zone
   ip_address: 10.255.252.7/31
   mtu: 1500
-  tenant: Tenant_A
-  type: underlay_peering
+  metadata:
+    tenant: Tenant_A
+    type: underlay_peering
 - name: Vlan110
   description: SVI 110 CUSTOM DESCRIPTION
   shutdown: false
@@ -1078,9 +1120,10 @@ vlan_interfaces:
   ip_address_virtual: 10.1.10.1/24
   ip_helpers:
   - ip_helper: 1.2.3.4
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan111
   description: SVI 111 CUSTOM DESCRIPTION
   shutdown: false
@@ -1090,33 +1133,37 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     source_interface: lo100
     vrf: MGMT
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan3009
   description: MLAG_L3_VRF_Tenant_A_OP_Zone
   shutdown: false
   vrf: Tenant_A_OP_Zone
   ip_address: 10.255.252.7/31
   mtu: 1500
-  tenant: Tenant_A
-  type: underlay_peering
+  metadata:
+    tenant: Tenant_A
+    type: underlay_peering
 - name: Vlan150
   description: Tenant_A_WAN_Zone_1
   shutdown: false
   vrf: Tenant_A_WAN_Zone
   ip_address_virtual: 10.1.40.1/24
-  tenant: Tenant_A
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - wan
 - name: Vlan3013
   description: MLAG_L3_VRF_Tenant_A_WAN_Zone
   shutdown: false
   vrf: Tenant_A_WAN_Zone
   ip_address: 10.255.252.7/31
   mtu: 1500
-  tenant: Tenant_A
-  type: underlay_peering
+  metadata:
+    tenant: Tenant_A
+    type: underlay_peering
 - name: Vlan120
   description: Tenant_A_WEB_Zone_1
   shutdown: false
@@ -1126,19 +1173,21 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     source_interface: lo100
     vrf: TEST
-  tenant: Tenant_A
-  tags:
-  - web
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
+    - erp1
 - name: Vlan121
   description: Tenant_A_WEBZone_2
   shutdown: true
   vrf: Tenant_A_WEB_Zone
   ip_address_virtual: 10.1.10.254/24
   mtu: 1560
-  tenant: Tenant_A
-  tags:
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
 - name: Vlan122
   description: Tenant_a_WEB_DHCP_no_source_int_no_vrf
   shutdown: false
@@ -1146,9 +1195,10 @@ vlan_interfaces:
   ip_address_virtual: 10.1.22.1/24
   ip_helpers:
   - ip_helper: 1.1.1.1
-  tenant: Tenant_A
-  tags:
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
 - name: Vlan123
   description: Tenant_a_WEB_DHCP_source_int_no_vrf
   shutdown: false
@@ -1157,9 +1207,10 @@ vlan_interfaces:
   ip_helpers:
   - ip_helper: 1.1.1.1
     source_interface: lo100
-  tenant: Tenant_A
-  tags:
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
 - name: Vlan124
   description: Tenant_a_WEB_DHCP_vrf_no_source_int
   shutdown: false
@@ -1168,97 +1219,109 @@ vlan_interfaces:
   ip_helpers:
   - ip_helper: 1.1.1.1
     vrf: TEST
-  tenant: Tenant_A
-  tags:
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
 - name: Vlan3010
   description: MLAG_L3_VRF_Tenant_A_WEB_Zone
   shutdown: false
   vrf: Tenant_A_WEB_Zone
   ip_address: 10.255.252.7/31
   mtu: 1500
-  tenant: Tenant_A
-  type: underlay_peering
+  metadata:
+    tenant: Tenant_A
+    type: underlay_peering
 - name: Vlan210
   description: Tenant_B_OP_Zone_1
   shutdown: false
   vrf: Tenant_B_OP_Zone
   ip_address_virtual: 10.2.10.1/24
-  tenant: Tenant_B
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_B
+    tags:
+    - opzone
 - name: Vlan211
   description: Tenant_B_OP_Zone_2
   shutdown: false
   vrf: Tenant_B_OP_Zone
   ip_address_virtual: 10.2.11.1/24
-  tenant: Tenant_B
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_B
+    tags:
+    - opzone
 - name: Vlan3019
   description: MLAG_L3_VRF_Tenant_B_OP_Zone
   shutdown: false
   vrf: Tenant_B_OP_Zone
   ip_address: 10.255.252.7/31
   mtu: 1500
-  tenant: Tenant_B
-  type: underlay_peering
+  metadata:
+    tenant: Tenant_B
+    type: underlay_peering
 - name: Vlan250
   description: Tenant_B_WAN_Zone_1
   shutdown: false
   vrf: Tenant_B_WAN_Zone
   ip_address_virtual: 10.2.50.1/24
-  tenant: Tenant_B
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_B
+    tags:
+    - wan
 - name: Vlan3020
   description: MLAG_L3_VRF_Tenant_B_WAN_Zone
   shutdown: false
   vrf: Tenant_B_WAN_Zone
   ip_address: 10.255.252.7/31
   mtu: 1500
-  tenant: Tenant_B
-  type: underlay_peering
+  metadata:
+    tenant: Tenant_B
+    type: underlay_peering
 - name: Vlan310
   description: Tenant_C_OP_Zone_1
   shutdown: false
   vrf: Tenant_C_OP_Zone
   ip_address_virtual: 10.3.10.1/24
-  tenant: Tenant_C
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_C
+    tags:
+    - opzone
 - name: Vlan311
   description: Tenant_C_OP_Zone_2
   shutdown: false
   vrf: Tenant_C_OP_Zone
   ip_address_virtual: 10.3.11.1/24
-  tenant: Tenant_C
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_C
+    tags:
+    - opzone
 - name: Vlan2
   description: MLAG_L3_VRF_Tenant_C_OP_Zone
   shutdown: false
   vrf: Tenant_C_OP_Zone
   ip_address: 10.255.252.7/31
   mtu: 1500
-  tenant: Tenant_C
-  type: underlay_peering
+  metadata:
+    tenant: Tenant_C
+    type: underlay_peering
 - name: Vlan350
   description: Tenant_C_WAN_Zone_1
   shutdown: false
   vrf: Tenant_C_WAN_Zone
   ip_address_virtual: 10.3.50.1/24
-  tenant: Tenant_C
-  tags:
-  - wan
+  metadata:
+    tenant: Tenant_C
+    tags:
+    - wan
 - name: Vlan3030
   description: MLAG_L3_VRF_Tenant_C_WAN_Zone
   shutdown: false
   vrf: Tenant_C_WAN_Zone
   ip_address: 10.255.252.7/31
   mtu: 1500
-  tenant: Tenant_C
-  type: underlay_peering
+  metadata:
+    tenant: Tenant_C
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:
@@ -1269,145 +1332,185 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 130
   name: Tenant_A_APP_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 131
   name: Tenant_A_APP_Zone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 3011
   name: MLAG_L3_VRF_Tenant_A_APP_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 140
   name: Tenant_A_DB_BZone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 141
   name: Tenant_A_DB_Zone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 3012
   name: MLAG_L3_VRF_Tenant_A_DB_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 110
   name: Tenant_A_OP_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 111
   name: Tenant_A_OP_Zone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 3009
   name: MLAG_L3_VRF_Tenant_A_OP_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 150
   name: Tenant_A_WAN_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 3013
   name: MLAG_L3_VRF_Tenant_A_WAN_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 120
   name: Tenant_A_WEB_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 121
   name: Tenant_A_WEBZone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 122
   name: Tenant_a_WEB_DHCP_no_source_int_no_vrf
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 123
   name: Tenant_a_WEB_DHCP_source_int_no_vrf
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 124
   name: Tenant_a_WEB_DHCP_vrf_no_source_int
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 3010
   name: MLAG_L3_VRF_Tenant_A_WEB_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 160
   name: Tenant_A_VMOTION
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 161
   name: Tenant_A_NFS
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 162
   name: Tenant_A_FTP
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 210
   name: Tenant_B_OP_Zone_1
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 211
   name: Tenant_B_OP_Zone_2
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 3019
   name: MLAG_L3_VRF_Tenant_B_OP_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 250
   name: Tenant_B_WAN_Zone_1
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 3020
   name: MLAG_L3_VRF_Tenant_B_WAN_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 310
   name: Tenant_C_OP_Zone_1
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 311
   name: Tenant_C_OP_Zone_2
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 2
   name: MLAG_L3_VRF_Tenant_C_OP_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 350
   name: Tenant_C_WAN_Zone_1
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 3030
   name: MLAG_L3_VRF_Tenant_C_WAN_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_A_APP_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_A_DB_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_A_OP_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_A_WAN_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_A_WEB_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_B_OP_Zone
   ip_routing: true
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - name: Tenant_B_WAN_Zone
   ip_routing: true
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - name: Tenant_C_OP_Zone
   ip_routing: true
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - name: Tenant_C_WAN_Zone
   ip_routing: true
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 vxlan_interface:
   vxlan1:
     description: DC1-SVC3B_VTEP

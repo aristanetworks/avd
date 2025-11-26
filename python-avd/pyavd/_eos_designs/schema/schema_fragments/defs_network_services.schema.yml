@@ -1056,6 +1056,11 @@ $defs:
                     ip_address:
                       type: str
                       description: IPv4 address/Mask.
+                    ip_address_secondaries:
+                      type: list
+                      items:
+                        type: str
+                        description: IPv4 address/Mask.
                     encapsulation_dot1q_vlan:
                       description: For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
                       type: int
@@ -1589,6 +1594,12 @@ $defs:
                       items:
                         type: str
                         description: Node name or regex pattern matching the full hostname.
+              validate_bgp_peers:
+                documentation_options:
+                  table: network-services-vrfs-bgp-settings
+                type: bool
+                description: Enable or disable BGP peer state validation by the `anta_runner` role on a per-VRF basis.
+                default: false
               raw_eos_cli:
                 type: str
                 description: EOS CLI rendered directly on the root level of the final EOS configuration.

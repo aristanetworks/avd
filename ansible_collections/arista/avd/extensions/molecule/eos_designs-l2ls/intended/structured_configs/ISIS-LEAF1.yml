@@ -10,9 +10,10 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: ISIS-SPINE1
-  peer_interface: Ethernet1
-  peer_type: l3spine
+  metadata:
+    peer: ISIS-SPINE1
+    peer_interface: Ethernet1
+    peer_type: l3spine
 hostname: ISIS-LEAF1
 ip_igmp_snooping:
   globally_enabled: true
@@ -56,7 +57,8 @@ vlan_interfaces:
   shutdown: false
   ip_address: 172.23.254.4/24
   mtu: 1500
-  type: inband_mgmt
+  metadata:
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
@@ -65,10 +67,12 @@ vlan_internal_order:
 vlans:
 - id: 110
   name: SVI_110
-  tenant: L2LS_ISIS
+  metadata:
+    tenant: L2LS_ISIS
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

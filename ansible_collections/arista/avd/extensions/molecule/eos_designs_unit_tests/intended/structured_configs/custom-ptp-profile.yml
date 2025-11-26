@@ -17,9 +17,10 @@ ethernet_interfaces:
     sync_message:
       interval: -7
     transport: ipv4
-  peer: not-in-this-fabric
-  peer_interface: Ethernet8
-  peer_type: other
+  metadata:
+    peer: not-in-this-fabric
+    peer_interface: Ethernet8
+    peer_type: other
   switchport:
     enabled: false
 hostname: custom-ptp-profile
@@ -87,11 +88,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -103,7 +106,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 11
-    tenant: PTP
+    metadata:
+      tenant: PTP
     rd: 10.42.42.42:10011
     route_targets:
       both:
@@ -144,7 +148,8 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF1
   ip_address: 172.16.11.1/24
-  tenant: PTP
+  metadata:
+    tenant: PTP
 vlan_internal_order:
   allocation: ascending
   range:
@@ -153,13 +158,15 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VLAN11
-  tenant: PTP
+  metadata:
+    tenant: PTP
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
-  tenant: PTP
+  metadata:
+    tenant: PTP
 vxlan_interface:
   vxlan1:
     description: custom-ptp-profile_VTEP

@@ -20,9 +20,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack1
-  peer_interface: Ethernet11
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack1
+    peer_interface: Ethernet11
+    peer_type: mlag_peer
 - name: Ethernet12
   description: MLAG_inband-mgmt-parent-dualstack1_Ethernet12
   shutdown: false
@@ -30,9 +31,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack1
-  peer_interface: Ethernet12
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack1
+    peer_interface: Ethernet12
+    peer_type: mlag_peer
 - name: Ethernet13
   description: MLAG_inband-mgmt-parent-dualstack1_Ethernet13
   shutdown: false
@@ -40,9 +42,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack1
-  peer_interface: Ethernet13
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack1
+    peer_interface: Ethernet13
+    peer_type: mlag_peer
 - name: Ethernet14
   description: MLAG_inband-mgmt-parent-dualstack1_Ethernet14
   shutdown: false
@@ -50,9 +53,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack1
-  peer_interface: Ethernet14
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack1
+    peer_interface: Ethernet14
+    peer_type: mlag_peer
 - name: Ethernet15
   description: MLAG_inband-mgmt-parent-dualstack1_Ethernet15
   shutdown: false
@@ -60,9 +64,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack1
-  peer_interface: Ethernet15
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack1
+    peer_interface: Ethernet15
+    peer_type: mlag_peer
 - name: Ethernet16
   description: MLAG_inband-mgmt-parent-dualstack1_Ethernet16
   shutdown: false
@@ -70,9 +75,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack1
-  peer_interface: Ethernet16
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack1
+    peer_interface: Ethernet16
+    peer_type: mlag_peer
 - name: Ethernet17
   description: MLAG_inband-mgmt-parent-dualstack1_Ethernet17
   shutdown: false
@@ -80,9 +86,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack1
-  peer_interface: Ethernet17
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack1
+    peer_interface: Ethernet17
+    peer_type: mlag_peer
 - name: Ethernet18
   description: MLAG_inband-mgmt-parent-dualstack1_Ethernet18
   shutdown: false
@@ -90,9 +97,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack1
-  peer_interface: Ethernet18
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack1
+    peer_interface: Ethernet18
+    peer_type: mlag_peer
 - name: Ethernet19
   description: MLAG_inband-mgmt-parent-dualstack1_Ethernet19
   shutdown: false
@@ -100,9 +108,10 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack1
-  peer_interface: Ethernet19
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack1
+    peer_interface: Ethernet19
+    peer_type: mlag_peer
 - name: Ethernet20
   description: MLAG_inband-mgmt-parent-dualstack1_Ethernet20
   shutdown: false
@@ -110,18 +119,20 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  peer: inband-mgmt-parent-dualstack1
-  peer_interface: Ethernet20
-  peer_type: mlag_peer
+  metadata:
+    peer: inband-mgmt-parent-dualstack1
+    peer_interface: Ethernet20
+    peer_type: mlag_peer
 - name: Ethernet24
   description: INBAND-MGMT-DUALSTACK-SUBNETS_Ethernet2
   shutdown: false
   channel_group:
     id: 24
     mode: active
-  peer: inband-mgmt-dualstack-subnets
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: inband-mgmt-dualstack-subnets
+    peer_interface: Ethernet2
+    peer_type: l2leaf
   switchport:
     enabled: true
     mode: access
@@ -132,9 +143,10 @@ ethernet_interfaces:
   channel_group:
     id: 25
     mode: active
-  peer: inband-mgmt-dualstack-ips
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: inband-mgmt-dualstack-ips
+    peer_interface: Ethernet2
+    peer_type: l2leaf
   switchport:
     enabled: true
     mode: access
@@ -283,7 +295,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65002'
     description: inband-mgmt-parent-dualstack1
     next_hop_self: true
@@ -291,11 +304,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -304,7 +319,8 @@ router_bgp:
   neighbors:
   - ip_address: 100.64.1.4
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: inband-mgmt-parent-dualstack1
+    metadata:
+      peer: inband-mgmt-parent-dualstack1
     description: inband-mgmt-parent-dualstack1_Vlan4093
   redistribute:
     attached_host:
@@ -374,15 +390,17 @@ vlan_interfaces:
   ipv6_address: 2a00:105::3/64
   ipv6_virtual_router_addresses:
   - 2a00:105::1
-  tenant: INBAND_MGMT_TESTS
+  metadata:
+    tenant: INBAND_MGMT_TESTS
 - name: Vlan3000
   description: MLAG_L3_VRF_INBANDMGMT
   shutdown: false
   vrf: INBANDMGMT
   ip_address: 100.64.1.5/31
   mtu: 9214
-  tenant: INBAND_MGMT_TESTS
-  type: underlay_peering
+  metadata:
+    tenant: INBAND_MGMT_TESTS
+    type: underlay_peering
 - name: Vlan104
   description: Inband Management
   shutdown: false
@@ -410,30 +428,36 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 105
   name: Inband_management_vlan_ipv6
-  tenant: INBAND_MGMT_TESTS
+  metadata:
+    tenant: INBAND_MGMT_TESTS
 - id: 3000
   name: MLAG_L3_VRF_INBANDMGMT
   trunk_groups:
   - MLAG
-  tenant: INBAND_MGMT_TESTS
+  metadata:
+    tenant: INBAND_MGMT_TESTS
 - id: 104
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: INBANDMGMT
   ip_routing: true
   ipv6_routing: true
-  tenant: INBAND_MGMT_TESTS
+  metadata:
+    tenant: INBAND_MGMT_TESTS
 vxlan_interface:
   vxlan1:
     description: inband-mgmt-parent-dualstack2_VTEP

@@ -10,50 +10,56 @@ ethernet_interfaces:
   channel_group:
     id: 4
     mode: active
-  peer: BGP-LEAF1
-  peer_interface: Ethernet4
-  peer_type: mlag_peer
+  metadata:
+    peer: BGP-LEAF1
+    peer_interface: Ethernet4
+    peer_type: mlag_peer
 - name: Ethernet5
   description: MLAG_BGP-LEAF1_Ethernet5
   shutdown: false
   channel_group:
     id: 4
     mode: active
-  peer: BGP-LEAF1
-  peer_interface: Ethernet5
-  peer_type: mlag_peer
+  metadata:
+    peer: BGP-LEAF1
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
 - name: Ethernet1
   description: L2_BGP-SPINE1_Ethernet2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: BGP-SPINE1
-  peer_interface: Ethernet2
-  peer_type: l3spine
+  metadata:
+    peer: BGP-SPINE1
+    peer_interface: Ethernet2
+    peer_type: l3spine
 - name: Ethernet2
   description: L2_BGP-SPINE2_Ethernet2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: BGP-SPINE2
-  peer_interface: Ethernet2
-  peer_type: l3spine
+  metadata:
+    peer: BGP-SPINE2
+    peer_interface: Ethernet2
+    peer_type: l3spine
 - name: Ethernet3
   description: L2_BGP-LEAF3_Ethernet2
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: BGP-LEAF3
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: BGP-LEAF3
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet10
   description: Endpoint
   shutdown: false
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -61,8 +67,9 @@ ethernet_interfaces:
 - name: Ethernet11
   description: Endpoint
   shutdown: false
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -212,7 +219,8 @@ vlan_interfaces:
   shutdown: false
   ip_address: 172.23.254.5/24
   mtu: 1500
-  type: inband_mgmt
+  metadata:
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
@@ -223,19 +231,24 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 1
   name: SVI_1
-  tenant: L2LS_BGP
+  metadata:
+    tenant: L2LS_BGP
 - id: 100
   name: SVI_100
-  tenant: L2LS_BGP
+  metadata:
+    tenant: L2LS_BGP
 - id: 200
   name: SVI_200
-  tenant: L2LS_BGP
+  metadata:
+    tenant: L2LS_BGP
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

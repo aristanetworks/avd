@@ -10,16 +10,18 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: DC1-POD1-LEAF1A
-  peer_interface: Ethernet3
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF1A
+    peer_interface: Ethernet3
+    peer_type: l3leaf
 - name: Ethernet2
   description: SERVER_server-1_Eth9
   shutdown: false
-  peer: server-1
-  peer_interface: Eth9
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: server-1
+    peer_interface: Eth9
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
 hostname: DC1-POD1-L2LEAF1A
@@ -84,7 +86,8 @@ vlan_interfaces:
   shutdown: false
   ip_address: 172.21.110.4/24
   mtu: 1500
-  type: inband_mgmt
+  metadata:
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
@@ -93,7 +96,8 @@ vlan_internal_order:
 vlans:
 - id: 4085
   name: L2LEAF_INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

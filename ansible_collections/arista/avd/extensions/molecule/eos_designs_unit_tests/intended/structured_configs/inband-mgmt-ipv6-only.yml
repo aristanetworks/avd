@@ -19,18 +19,20 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: inband-mgmt-parent-ipv6-1
-  peer_interface: Ethernet26
-  peer_type: l3leaf
+  metadata:
+    peer: inband-mgmt-parent-ipv6-1
+    peer_interface: Ethernet26
+    peer_type: l3leaf
 - name: Ethernet2
   description: INBAND-MGMT-PARENT-IPV6-2_Ethernet26
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: inband-mgmt-parent-ipv6-2
-  peer_interface: Ethernet26
-  peer_type: l3leaf
+  metadata:
+    peer: inband-mgmt-parent-ipv6-2
+    peer_interface: Ethernet26
+    peer_type: l3leaf
 hostname: inband-mgmt-ipv6-only
 ip_igmp_snooping:
   globally_enabled: true
@@ -72,7 +74,8 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address: 2a00:106::9/64
   mtu: 1500
-  type: inband_mgmt
+  metadata:
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
@@ -81,7 +84,8 @@ vlan_internal_order:
 vlans:
 - id: 106
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

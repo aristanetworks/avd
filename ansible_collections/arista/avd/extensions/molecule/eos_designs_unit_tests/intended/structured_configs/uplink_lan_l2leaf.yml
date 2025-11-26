@@ -10,9 +10,10 @@ ethernet_interfaces:
   flow_tracker:
     sampled: FLOW-TRACKER
   spanning_tree_portfast: edge
-  peer: uplink_lan_wan_router1
-  peer_interface: Ethernet2
-  peer_type: wan_router
+  metadata:
+    peer: uplink_lan_wan_router1
+    peer_interface: Ethernet2
+    peer_type: wan_router
   switchport:
     enabled: true
     mode: trunk
@@ -25,9 +26,10 @@ ethernet_interfaces:
   flow_tracker:
     sampled: FLOW-TRACKER
   spanning_tree_portfast: edge
-  peer: uplink_lan_wan_router2
-  peer_interface: Ethernet2
-  peer_type: wan_router
+  metadata:
+    peer: uplink_lan_wan_router2
+    peer_interface: Ethernet2
+    peer_type: wan_router
   switchport:
     enabled: true
     mode: trunk
@@ -64,13 +66,16 @@ vlan_internal_order:
 vlans:
 - id: 10
   name: VLAN10_NATIVE
-  tenant: TEST
+  metadata:
+    tenant: TEST
 - id: 100
   name: VLAN100
-  tenant: TEST
+  metadata:
+    tenant: TEST
 - id: 102
   name: VLAN102
-  tenant: TEST
+  metadata:
+    tenant: TEST
 vrfs:
 - name: MGMT
   ip_routing: false

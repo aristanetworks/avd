@@ -1,10 +1,5 @@
 aaa_root:
   disabled: true
-agents:
-- name: KernelFib
-  environment_variables:
-  - name: KERNELFIB_PROGRAM_ALL_ECMP
-    value: '1'
 application_traffic_recognition:
   categories:
   - name: VIDEO1
@@ -79,7 +74,7 @@ as_path:
   - name: ASPATH-WAN
     entries:
     - type: permit
-      match: '65000'
+      match: _65000_
 config_end: true
 dps_interfaces:
 - name: Dps1
@@ -96,9 +91,10 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.3/31
-  peer: site-ha-enabled-leaf1
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-enabled-leaf1
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet52.1000
@@ -109,9 +105,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1000
   ip_address: 172.17.0.3/31
-  peer: site-ha-enabled-leaf1
-  peer_interface: Ethernet2.1000
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-enabled-leaf1
+    peer_interface: Ethernet2.1000
+    peer_type: l3leaf
 - name: Ethernet52.142
   description: P2P_site-ha-enabled-leaf1_Ethernet2.142_VRF_PROD
   shutdown: false
@@ -120,9 +117,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 142
   ip_address: 172.17.0.3/31
-  peer: site-ha-enabled-leaf1
-  peer_interface: Ethernet2.142
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-enabled-leaf1
+    peer_interface: Ethernet2.142
+    peer_type: l3leaf
 - name: Ethernet52.666
   description: P2P_site-ha-enabled-leaf1_Ethernet2.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
@@ -131,9 +129,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 666
   ip_address: 172.17.0.3/31
-  peer: site-ha-enabled-leaf1
-  peer_interface: Ethernet2.666
-  peer_type: l3leaf
+  metadata:
+    peer: site-ha-enabled-leaf1
+    peer_interface: Ethernet2.666
+    peer_type: l3leaf
 - name: Ethernet1.42
   description: Comcast
   shutdown: false
@@ -141,22 +140,26 @@ ethernet_interfaces:
     vlan: 42
   ip_address: dhcp
   dhcp_client_accept_default_route: true
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet2.42
   description: Colt_10666
   shutdown: false
   encapsulation_dot1q:
     vlan: 666
   ip_address: 172.16.6.6/31
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
 - name: Ethernet1
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2
   shutdown: false
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:
@@ -215,6 +218,8 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+kernel:
+  software_forwarding_ecmp: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -519,7 +524,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     allowas_in:
@@ -528,7 +534,8 @@ router_bgp:
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     bfd: true
@@ -544,15 +551,18 @@ router_bgp:
   - ip_address: 172.17.0.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65199'
-    peer: site-ha-enabled-leaf1
+    metadata:
+      peer: site-ha-enabled-leaf1
     description: site-ha-enabled-leaf1_Ethernet2
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder
+    metadata:
+      peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder_Dps1
   - ip_address: 192.168.143.1
     remote_as: '65000'
-    peer: cv-pathfinder-transit1A
+    metadata:
+      peer: cv-pathfinder-transit1A
     description: cv-pathfinder-transit1A
     route_reflector_client: true
     update_source: Dps1
@@ -826,19 +836,24 @@ vrfs:
   ip_routing: false
 - name: IT
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: PROD
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: NOT-WAN-VRF
   ip_routing: true
-  tenant: TenantB
+  metadata:
+    tenant: TenantB
 - name: TRANSIT
   ip_routing: true
-  tenant: TenantB
+  metadata:
+    tenant: TenantB
 - name: ATTRACTED-VRF-FROM-UPLINK
   ip_routing: true
-  tenant: TenantC
+  metadata:
+    tenant: TenantC
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-transit1B_VTEP

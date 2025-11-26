@@ -10,14 +10,16 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: ISIS-LEAF1
-  peer_interface: Ethernet1
-  peer_type: l2leaf
+  metadata:
+    peer: ISIS-LEAF1
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet10
   description: Endpoint
   shutdown: false
-  peer_type: network_port
-  peer_key: network_ports
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
   switchport:
     enabled: true
     mode: access
@@ -86,7 +88,8 @@ vlan_interfaces:
   description: SVI_110
   shutdown: false
   ip_address_virtual: 10.0.110.1/24
-  tenant: L2LS_ISIS
+  metadata:
+    tenant: L2LS_ISIS
 - name: Vlan4092
   description: Inband Management
   shutdown: false
@@ -102,10 +105,12 @@ vlan_internal_order:
 vlans:
 - id: 110
   name: SVI_110
-  tenant: L2LS_ISIS
+  metadata:
+    tenant: L2LS_ISIS
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

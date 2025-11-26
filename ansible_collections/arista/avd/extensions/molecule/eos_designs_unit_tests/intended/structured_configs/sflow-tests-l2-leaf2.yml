@@ -10,18 +10,20 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: sflow-tests-leaf3
-  peer_interface: Ethernet17
-  peer_type: l3leaf
+  metadata:
+    peer: sflow-tests-leaf3
+    peer_interface: Ethernet17
+    peer_type: l3leaf
 - name: Ethernet2
   description: L2_sflow-tests-leaf4_Ethernet17
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: sflow-tests-leaf4
-  peer_interface: Ethernet17
-  peer_type: l3leaf
+  metadata:
+    peer: sflow-tests-leaf4
+    peer_interface: Ethernet17
+    peer_type: l3leaf
 hostname: sflow-tests-l2-leaf2
 ip_igmp_snooping:
   globally_enabled: true
@@ -37,6 +39,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: SFLOW_TESTS
+  validate_hardware:
+    enabled: false
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_sflow-tests-leaf-mlag_Port-Channel17
@@ -75,7 +79,8 @@ vlan_interfaces:
   shutdown: false
   ip_address: 10.254.254.5/24
   mtu: 1500
-  type: inband_mgmt
+  metadata:
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
@@ -84,10 +89,12 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VLAN11
-  tenant: SFLOW
+  metadata:
+    tenant: SFLOW
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

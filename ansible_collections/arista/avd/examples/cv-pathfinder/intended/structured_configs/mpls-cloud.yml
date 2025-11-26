@@ -22,42 +22,48 @@ ethernet_interfaces:
   description: pf1-Ethernet1
   shutdown: false
   ip_address: 172.18.100.1/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2
   description: pf2-Ethernet1
   shutdown: false
   ip_address: 172.18.200.1/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet5
   description: site1-wan1-Ethernet3
   shutdown: false
   ip_address: 172.18.10.1/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet6
   description: site1-wan2-Ethernet3
   shutdown: false
   ip_address: 172.18.11.1/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet7
   description: site2-wan1-Ethernet3
   shutdown: false
   ip_address: 172.18.20.1/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet8
   description: site4-wan1-Ethernet3
   shutdown: false
   ip_address: 172.18.40.1/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 hostname: mpls-cloud
@@ -106,6 +112,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: WAN
+  validate_hardware:
+    enabled: false
 ntp:
   local_interface:
     name: Management1
@@ -141,11 +149,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     next_hop_unchanged: true
     update_source: Loopback0
     bfd: true

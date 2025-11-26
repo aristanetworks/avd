@@ -1,5 +1,19 @@
 aaa_root:
   disabled: true
+as_path:
+  access_lists:
+  - name: AS65101
+    entries:
+    - type: permit
+      match: _65101_
+  - name: AS65110.100
+    entries:
+    - type: permit
+      match: _65110\.100_
+  - name: AS65111.100
+    entries:
+    - type: permit
+      match: _65111\.100_
 config_end: true
 domain_list:
 - structured-config.set.under.vrf.common-vrf
@@ -15,18 +29,20 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  peer: DC1.POD1.LEAF2A
-  peer_interface: Ethernet5
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1.POD1.LEAF2A
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
 - name: Ethernet6
   description: MLAG_DC1.POD1.LEAF2A_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: DC1.POD1.LEAF2A
-  peer_interface: Ethernet6
-  peer_type: mlag_peer
+  metadata:
+    peer: DC1.POD1.LEAF2A
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
 - name: Ethernet1
   description: P2P_DC1-POD1-SPINE1_Ethernet5
   shutdown: false
@@ -36,9 +52,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC1-POD1-SPINE1
-  peer_interface: Ethernet5
-  peer_type: spine
+  metadata:
+    peer: DC1-POD1-SPINE1
+    peer_interface: Ethernet5
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
@@ -50,9 +67,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC1-POD1-SPINE2
-  peer_interface: Ethernet5
-  peer_type: spine
+  metadata:
+    peer: DC1-POD1-SPINE2
+    peer_interface: Ethernet5
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet3
@@ -61,18 +79,20 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  peer: DC1-POD1-L2LEAF2A
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-POD1-L2LEAF2A
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet4
   description: L2_DC1-POD1-L2LEAF2B_Ethernet2
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: DC1-POD1-L2LEAF2B
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: DC1-POD1-L2LEAF2B
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet11
   description: P2P_DC1-POD1-SPINE1_Ethernet8
   shutdown: false
@@ -82,9 +102,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC1-POD1-SPINE1
-  peer_interface: Ethernet8
-  peer_type: spine
+  metadata:
+    peer: DC1-POD1-SPINE1
+    peer_interface: Ethernet8
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet12
@@ -96,9 +117,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC1-POD1-SPINE2
-  peer_interface: Ethernet8
-  peer_type: spine
+  metadata:
+    peer: DC1-POD1-SPINE2
+    peer_interface: Ethernet8
+    peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet13
@@ -110,9 +132,10 @@ ethernet_interfaces:
   ptp:
     enable: true
   service_profile: QOS-PROFILE
-  peer: DC1-POD1-LEAF1B
-  peer_interface: Ethernet2
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF1B
+    peer_interface: Ethernet2
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet13.1025
@@ -122,9 +145,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1025
   ip_address: 172.17.110.14/31
-  peer: DC1-POD1-LEAF1B
-  peer_interface: Ethernet2.1025
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF1B
+    peer_interface: Ethernet2.1025
+    peer_type: l3leaf
 - name: Ethernet13.1102
   description: P2P_DC1-POD1-LEAF1B_Ethernet2.1102_VRF_vrf_with_loopbacks_dc1_pod1_only
   shutdown: false
@@ -132,9 +156,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1102
   ip_address: 172.17.110.14/31
-  peer: DC1-POD1-LEAF1B
-  peer_interface: Ethernet2.1102
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF1B
+    peer_interface: Ethernet2.1102
+    peer_type: l3leaf
 - name: Ethernet13.1100
   description: P2P_DC1-POD1-LEAF1B_Ethernet2.1100_VRF_vrf_with_loopbacks_from_overlapping_pool
   shutdown: false
@@ -142,9 +167,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1100
   ip_address: 172.17.110.14/31
-  peer: DC1-POD1-LEAF1B
-  peer_interface: Ethernet2.1100
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF1B
+    peer_interface: Ethernet2.1100
+    peer_type: l3leaf
 - name: Ethernet13.1101
   description: P2P_DC1-POD1-LEAF1B_Ethernet2.1101_VRF_vrf_with_loopbacks_from_pod_pools
   shutdown: false
@@ -152,28 +178,31 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 1101
   ip_address: 172.17.110.14/31
-  peer: DC1-POD1-LEAF1B
-  peer_interface: Ethernet2.1101
-  peer_type: l3leaf
+  metadata:
+    peer: DC1-POD1-LEAF1B
+    peer_interface: Ethernet2.1101
+    peer_type: l3leaf
 - name: Ethernet7
   description: P2P_DC2-POD1-LEAF1A_Ethernet7
   shutdown: false
   ip_address: 11.1.0.38/31
   ptp:
     enable: true
-  peer: DC2-POD1-LEAF1A
-  peer_interface: Ethernet7
-  peer_type: l3leaf
+  metadata:
+    peer: DC2-POD1-LEAF1A
+    peer_interface: Ethernet7
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet27
   description: server-3_Eth2
   shutdown: false
   service_profile: foo
-  peer: server-3
-  peer_interface: Eth2
-  peer_key: connected_endpoints
-  port_profile: TENANT_A
+  metadata:
+    peer: server-3
+    peer_interface: Eth2
+    peer_key: connected_endpoints
+    port_profile: TENANT_A
   switchport:
     enabled: true
     mode: access
@@ -191,11 +220,12 @@ ethernet_interfaces:
   channel_group:
     id: 28
     mode: active
-  peer: server-4
-  peer_interface: Eth6
-  peer_type: SpecialEndpoint
-  peer_key: connected_endpoints
-  port_profile: NESTED_TENANT_A
+  metadata:
+    peer: server-4
+    peer_interface: Eth6
+    peer_type: SpecialEndpoint
+    peer_key: connected_endpoints
+    port_profile: NESTED_TENANT_A
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
@@ -209,11 +239,12 @@ ethernet_interfaces:
   channel_group:
     id: 16
     mode: active
-  peer: server-1
-  peer_interface: Eth2
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_A
+  metadata:
+    peer: server-1
+    peer_interface: Eth2
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_A
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile TENANT_A
@@ -227,11 +258,12 @@ ethernet_interfaces:
   channel_group:
     id: 17
     mode: active
-  peer: server-1
-  peer_interface: Eth4
-  peer_type: server
-  peer_key: servers
-  port_profile: TENANT_A
+  metadata:
+    peer: server-1
+    peer_interface: Eth4
+    peer_type: server
+    peer_key: servers
+    port_profile: TENANT_A
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under adapter for switch Eth17
@@ -245,11 +277,12 @@ ethernet_interfaces:
   channel_group:
     id: 18
     mode: active
-  peer: server-1
-  peer_interface: Eth6
-  peer_type: server
-  peer_key: servers
-  port_profile: NESTED_TENANT_A
+  metadata:
+    peer: server-1
+    peer_interface: Eth6
+    peer_type: server
+    peer_key: servers
+    port_profile: NESTED_TENANT_A
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
@@ -263,11 +296,12 @@ ethernet_interfaces:
   channel_group:
     id: 19
     mode: active
-  peer: server-1
-  peer_interface: Eth8
-  peer_type: server
-  peer_key: servers
-  port_profile: NESTED_TENANT_A
+  metadata:
+    peer: server-1
+    peer_interface: Eth8
+    peer_type: server
+    peer_key: servers
+    port_profile: NESTED_TENANT_A
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
@@ -279,11 +313,12 @@ ethernet_interfaces:
   description: SPECIALSERVER_server-2_Eth2
   shutdown: false
   service_profile: foo
-  peer: server-2
-  peer_interface: Eth2
-  peer_type: SpecialServer
-  peer_key: servers
-  port_profile: TENANT_A
+  metadata:
+    peer: server-2
+    peer_interface: Eth2
+    peer_type: SpecialServer
+    peer_key: servers
+    port_profile: TENANT_A
   switchport:
     enabled: true
     mode: access
@@ -456,7 +491,7 @@ route_maps:
   - sequence: 10
     type: deny
     match:
-    - as 65101
+    - as-path AS65101
   - sequence: 20
     type: permit
 - name: RM-EVPN-FILTER-AS65110.100
@@ -464,7 +499,7 @@ route_maps:
   - sequence: 10
     type: deny
     match:
-    - as 65110.100
+    - as-path AS65110.100
   - sequence: 20
     type: permit
 - name: RM-EVPN-FILTER-AS65111.100
@@ -472,7 +507,7 @@ route_maps:
   - sequence: 10
     type: deny
     match:
-    - as 65111.100
+    - as-path AS65111.100
   - sequence: 20
     type: permit
 router_bfd:
@@ -495,7 +530,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65112.100'
     description: DC1.POD1.LEAF2A
     next_hop_self: true
@@ -504,12 +540,14 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 5
@@ -517,7 +555,8 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   - name: EVPN-OVERLAY-CORE
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 15
@@ -526,61 +565,72 @@ router_bgp:
   neighbors:
   - ip_address: 172.20.110.2
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: DC1.POD1.LEAF2A
+    metadata:
+      peer: DC1.POD1.LEAF2A
     description: DC1.POD1.LEAF2A_Vlan4094
   - ip_address: 172.17.110.16
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
-    peer: DC1-POD1-SPINE1
+    metadata:
+      peer: DC1-POD1-SPINE1
     description: DC1-POD1-SPINE1_Ethernet5
   - ip_address: 172.17.110.18
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
-    peer: DC1-POD1-SPINE2
+    metadata:
+      peer: DC1-POD1-SPINE2
     description: DC1-POD1-SPINE2_Ethernet5
   - ip_address: 172.17.110.20
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
-    peer: DC1-POD1-SPINE1
+    metadata:
+      peer: DC1-POD1-SPINE1
     description: DC1-POD1-SPINE1_Ethernet8
   - ip_address: 172.17.110.22
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
-    peer: DC1-POD1-SPINE2
+    metadata:
+      peer: DC1-POD1-SPINE2
     description: DC1-POD1-SPINE2_Ethernet8
   - ip_address: 172.17.110.15
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65111.100'
-    peer: DC1-POD1-LEAF1B
+    metadata:
+      peer: DC1-POD1-LEAF1B
     description: DC1-POD1-LEAF1B_Ethernet2
   - ip_address: 172.16.110.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65111.100'
-    peer: DC1-POD1-LEAF1A
+    metadata:
+      peer: DC1-POD1-LEAF1A
     description: DC1-POD1-LEAF1A_Loopback0
     route_map_out: RM-EVPN-FILTER-AS65111.100
   - ip_address: 172.16.110.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65110.100'
-    peer: DC1-POD1-SPINE1
+    metadata:
+      peer: DC1-POD1-SPINE1
     description: DC1-POD1-SPINE1_Loopback0
     route_map_out: RM-EVPN-FILTER-AS65110.100
   - ip_address: 172.16.10.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
-    peer: DC1-RS1
+    metadata:
+      peer: DC1-RS1
     description: DC1-RS1_Loopback0
     route_map_out: RM-EVPN-FILTER-AS65101
   - ip_address: 1.1.1.1
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '1111'
-    peer: HOSTNAME_NOT_IN_ANSIBLE
+    metadata:
+      peer: HOSTNAME_NOT_IN_ANSIBLE
     description: HOSTNAME_NOT_IN_ANSIBLE
   - ip_address: 11.1.0.39
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65211'
     local_as: '65120'
-    peer: DC2-POD1-LEAF1A
+    metadata:
+      peer: DC2-POD1-LEAF1A
     description: DC2-POD1-LEAF1A
     bfd: true
   redistribute:
@@ -590,7 +640,8 @@ router_bgp:
       enabled: true
   vlans:
   - id: 110
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 172.16.110.5:99110
     rd_evpn_domain:
       domain: remote
@@ -612,7 +663,8 @@ router_bgp:
 
       '
   - id: 111
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 172.16.110.5:50111
     rd_evpn_domain:
       domain: remote
@@ -634,7 +686,8 @@ router_bgp:
 
       '
   - id: 112
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 172.16.110.5:20112
     rd_evpn_domain:
       domain: remote
@@ -656,7 +709,8 @@ router_bgp:
 
       '
   - id: 2500
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 172.16.110.5:2500
     rd_evpn_domain:
       domain: remote
@@ -670,7 +724,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 2600
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 172.16.110.5:32600
     rd_evpn_domain:
       domain: remote
@@ -841,25 +896,28 @@ vlan_interfaces:
   shutdown: false
   vrf: Common_VRF
   ip_address_virtual: 10.1.10.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan111
   description: Tenant_A_OP_Zone_2
   shutdown: true
   vrf: Common_VRF
   ip_address_virtual: 10.1.11.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan112
   description: Tenant_A_OP_Zone_3
   shutdown: false
   vrf: Common_VRF
   ip_address_virtual: 10.1.12.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
@@ -872,36 +930,40 @@ vlan_interfaces:
   shutdown: false
   vrf: Common_VRF
   ip_address_virtual: 10.10.13.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan1102
   description: test_svi
   shutdown: false
   vrf: vrf_with_loopbacks_dc1_pod1_only
   ip_address_virtual: 10.102.100.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    - web
 - name: Vlan1100
   description: test_svi
   shutdown: false
   vrf: vrf_with_loopbacks_from_overlapping_pool
   ip_address_virtual: 10.100.100.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    - web
 - name: Vlan1101
   description: test_svi
   shutdown: false
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address_virtual: 10.101.100.1/24
-  tenant: Tenant_A
-  tags:
-  - opzone
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    - web
 - name: Vlan4085
   description: L2LEAF_INBAND_MGMT
   shutdown: false
@@ -921,55 +983,71 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 110
   name: Tenant_A_OP_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 111
   name: Tenant_A_OP_Zone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 112
   name: Tenant_A_OP_Zone_3
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 113
   name: SVI_with_no_vxlan
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 1102
   name: test_svi
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 1100
   name: test_svi
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 1101
   name: test_svi
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 2500
   name: web-l2-vlan
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 2600
   name: web-l2-vlan-2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 2601
   name: l2vlan_with_no_vxlan
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 4085
   name: L2LEAF_INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Common_VRF
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: vrf_with_loopbacks_dc1_pod1_only
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: vrf_with_loopbacks_from_overlapping_pool
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: vrf_with_loopbacks_from_pod_pools
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 vxlan_interface:
   vxlan1:
     description: DC1-POD1-LEAF2B_VTEP

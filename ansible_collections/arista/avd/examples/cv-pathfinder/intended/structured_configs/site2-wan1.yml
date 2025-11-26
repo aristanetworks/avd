@@ -88,9 +88,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.0.2.13/31
-  peer: site2-leaf1
-  peer_interface: Ethernet3
-  peer_type: l3leaf
+  metadata:
+    peer: site2-leaf1
+    peer_interface: Ethernet3
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet1.100
@@ -103,9 +104,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 100
   ip_address: 10.0.2.13/31
-  peer: site2-leaf1
-  peer_interface: Ethernet3.100
-  peer_type: l3leaf
+  metadata:
+    peer: site2-leaf1
+    peer_interface: Ethernet3.100
+    peer_type: l3leaf
 - name: Ethernet1.101
   description: P2P_site2-leaf1_Ethernet3.101_VRF_RED
   shutdown: false
@@ -116,18 +118,20 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 101
   ip_address: 10.0.2.13/31
-  peer: site2-leaf1
-  peer_interface: Ethernet3.101
-  peer_type: l3leaf
+  metadata:
+    peer: site2-leaf1
+    peer_interface: Ethernet3.101
+    peer_type: l3leaf
 - name: Ethernet3
   description: ACME-MPLS-INC_mpls-site2-wan1_mpls-cloud_Ethernet7
   shutdown: false
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 172.18.20.2/24
-  peer: mpls-cloud
-  peer_interface: Ethernet7
-  peer_type: l3_interface
+  metadata:
+    peer: mpls-cloud
+    peer_interface: Ethernet7
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet5
@@ -135,8 +139,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9194
   ip_address: 10.42.0.0/31
-  peer: site2-wan2
-  peer_type: l3_interface
+  metadata:
+    peer: site2-wan2
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:
@@ -253,6 +258,8 @@ metadata:
   is_deployed: true
   platform: CloudEOS
   fabric_name: WAN
+  validate_hardware:
+    enabled: false
   cv_tags:
     device_tags:
     - name: Role
@@ -478,13 +485,15 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     bfd: true
@@ -500,19 +509,23 @@ router_bgp:
   - ip_address: 10.0.2.12
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
-    peer: site2-leaf1
+    metadata:
+      peer: site2-leaf1
     description: site2-leaf1_Ethernet3
   - ip_address: 192.168.42.1
     peer_group: WAN-OVERLAY-PEERS
-    peer: pf1
+    metadata:
+      peer: pf1
     description: pf1_Dps1
   - ip_address: 192.168.42.2
     peer_group: WAN-OVERLAY-PEERS
-    peer: pf2
+    metadata:
+      peer: pf2
     description: pf2_Dps1
   - ip_address: 192.168.42.8
     remote_as: '65000'
-    peer: site2-wan2
+    metadata:
+      peer: site2-wan2
     description: site2-wan2
     route_reflector_client: true
     update_source: Dps1
@@ -714,10 +727,12 @@ vrfs:
   ip_routing: false
 - name: BLUE
   ip_routing: true
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 - name: RED
   ip_routing: true
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 vxlan_interface:
   vxlan1:
     description: site2-wan1_VTEP

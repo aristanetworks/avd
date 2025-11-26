@@ -12,9 +12,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: EVPN-MULTICAST-L3LEAF1A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: EVPN-MULTICAST-L3LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
@@ -25,9 +26,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: EVPN-MULTICAST-L3LEAF1B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: EVPN-MULTICAST-L3LEAF1B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3
@@ -38,9 +40,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: EVPN-MULTICAST-L3LEAF2A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: EVPN-MULTICAST-L3LEAF2A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4
@@ -51,9 +54,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: EVPN-MULTICAST-L3LEAF3A
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: EVPN-MULTICAST-L3LEAF3A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet5
@@ -64,9 +68,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: EVPN-MULTICAST-L3LEAF3B
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: EVPN-MULTICAST-L3LEAF3B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet6
@@ -77,9 +82,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  peer: EVPN-MULTICAST-DISABLED
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: EVPN-MULTICAST-DISABLED
+    peer_interface: Ethernet1
+    peer_type: l3leaf
   switchport:
     enabled: false
 hostname: EVPN-MULTICAST-SPINE1
@@ -130,11 +136,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
@@ -145,62 +153,74 @@ router_bgp:
   - ip_address: 172.31.255.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: EVPN-MULTICAST-L3LEAF1A
+    metadata:
+      peer: EVPN-MULTICAST-L3LEAF1A
     description: EVPN-MULTICAST-L3LEAF1A_Ethernet1
   - ip_address: 172.31.255.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: EVPN-MULTICAST-L3LEAF1B
+    metadata:
+      peer: EVPN-MULTICAST-L3LEAF1B
     description: EVPN-MULTICAST-L3LEAF1B_Ethernet1
   - ip_address: 172.31.255.5
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65103'
-    peer: EVPN-MULTICAST-L3LEAF2A
+    metadata:
+      peer: EVPN-MULTICAST-L3LEAF2A
     description: EVPN-MULTICAST-L3LEAF2A_Ethernet1
   - ip_address: 172.31.255.7
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65104'
-    peer: EVPN-MULTICAST-L3LEAF3A
+    metadata:
+      peer: EVPN-MULTICAST-L3LEAF3A
     description: EVPN-MULTICAST-L3LEAF3A_Ethernet1
   - ip_address: 172.31.255.9
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65105'
-    peer: EVPN-MULTICAST-L3LEAF3B
+    metadata:
+      peer: EVPN-MULTICAST-L3LEAF3B
     description: EVPN-MULTICAST-L3LEAF3B_Ethernet1
   - ip_address: 172.31.255.11
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65106'
-    peer: EVPN-MULTICAST-DISABLED
+    metadata:
+      peer: EVPN-MULTICAST-DISABLED
     description: EVPN-MULTICAST-DISABLED_Ethernet1
   - ip_address: 192.168.255.8
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65106'
-    peer: EVPN-MULTICAST-DISABLED
+    metadata:
+      peer: EVPN-MULTICAST-DISABLED
     description: EVPN-MULTICAST-DISABLED_Loopback0
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
-    peer: EVPN-MULTICAST-L3LEAF1A
+    metadata:
+      peer: EVPN-MULTICAST-L3LEAF1A
     description: EVPN-MULTICAST-L3LEAF1A_Loopback0
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
-    peer: EVPN-MULTICAST-L3LEAF1B
+    metadata:
+      peer: EVPN-MULTICAST-L3LEAF1B
     description: EVPN-MULTICAST-L3LEAF1B_Loopback0
   - ip_address: 192.168.255.5
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65103'
-    peer: EVPN-MULTICAST-L3LEAF2A
+    metadata:
+      peer: EVPN-MULTICAST-L3LEAF2A
     description: EVPN-MULTICAST-L3LEAF2A_Loopback0
   - ip_address: 192.168.255.6
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65104'
-    peer: EVPN-MULTICAST-L3LEAF3A
+    metadata:
+      peer: EVPN-MULTICAST-L3LEAF3A
     description: EVPN-MULTICAST-L3LEAF3A_Loopback0
   - ip_address: 192.168.255.7
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65105'
-    peer: EVPN-MULTICAST-L3LEAF3B
+    metadata:
+      peer: EVPN-MULTICAST-L3LEAF3B
     description: EVPN-MULTICAST-L3LEAF3B_Loopback0
   redistribute:
     connected:

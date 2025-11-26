@@ -10,25 +10,28 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: trunk-group-tests-l3leaf2a
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: trunk-group-tests-l3leaf2a
+    peer_interface: Ethernet1
+    peer_type: l3leaf
 - name: Ethernet2
   description: L2_trunk-group-tests-l3leaf2b_Ethernet1
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: trunk-group-tests-l3leaf2b
-  peer_interface: Ethernet1
-  peer_type: l3leaf
+  metadata:
+    peer: trunk-group-tests-l3leaf2b
+    peer_interface: Ethernet1
+    peer_type: l3leaf
 - name: Ethernet12
   description: SERVER_server_with_tg_200_Nic3
   shutdown: false
-  peer: server_with_tg_200
-  peer_interface: Nic3
-  peer_type: server
-  peer_key: servers
+  metadata:
+    peer: server_with_tg_200
+    peer_interface: Nic3
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
     mode: trunk
@@ -71,14 +74,16 @@ vlans:
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
   - UPLINK
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
 - id: 210
   name: l2vlan210_with_trunk_groups
   trunk_groups:
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
   - UPLINK
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
 vrfs:
 - name: MGMT
   ip_routing: false

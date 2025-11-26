@@ -38,6 +38,10 @@ except ImportError as e:
         ),
     )
 
+try:
+    from ansible.template import accept_args_markers
+except ImportError:
+    accept_args_markers = None
 
 DOCUMENTATION = r"""
 ---
@@ -96,4 +100,7 @@ _value:
 
 class TestModule:
     def tests(self) -> dict:
-        return {"defined": wrap_test(PLUGIN_NAME)(defined)}
+        wrapped_test = wrap_test(PLUGIN_NAME)(defined)
+        if accept_args_markers is not None:
+            wrapped_test = accept_args_markers(wrapped_test)
+        return {"defined": wrapped_test}

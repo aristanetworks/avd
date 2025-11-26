@@ -4,9 +4,10 @@
 # Deprecated keys: type, mode, vlans, native_vlan, native_vlan_tag, trunk_groups, phone
 custom_structured_configuration_ethernet_interfaces:
   - name: Ethernet11
-    peer: dc2-leaf3-fw1
-    peer_interface: e1
-    peer_type: firewall
+    metadata:
+      peer: dc2-leaf3-fw1
+      peer_interface: e1
+      peer_type: firewall
     description: dc2-leaf3-fw1_e1
     # shutdown: false
     channel_group:
@@ -45,24 +46,28 @@ custom_structured_configuration_ethernet_interfaces:
     switchport:
       enabled: false
     ip_address: 1.1.1.1/24
-    peer: dc2-leaf2b
-    peer_interface: Ethernet2
+    metadata:
+      peer: dc2-leaf2b
+      peer_interface: Ethernet2
     shutdown: false
 
     # Test to skip the VerifyLLDPNeighbors test case via `validate_state` key
   - name: Ethernet3
-    validate_state: false
+    metadata:
+      validate_state: false
 
     # Test to skip the VerifyLLDPNeighbors test case via `validate_lldp` key
   - name: Ethernet4
-    validate_lldp: false
+    metadata:
+      validate_lldp: false
 
     # Test to skip the VerifyReachability test case for DHCP interface
   - name: Ethernet16
     description: Test_dhcp_interface_connectivity
     ip_address: dhcp
-    peer: dc2-leaf3b.arista.com
-    peer_interface: Ethernet16
+    metadata:
+      peer: dc2-leaf3b.arista.com
+      peer_interface: Ethernet16
     switchport:
       enabled: false
 
@@ -70,8 +75,9 @@ custom_structured_configuration_ethernet_interfaces:
   - name: Ethernet17
     description: Test_ip_unnumbered_interface_connectivity
     ip_address: unnumbered Loopback0
-    peer: dc2-leaf3b.arista.com
-    peer_interface: Ethernet17
+    metadata:
+      peer: dc2-leaf3b.arista.com
+      peer_interface: Ethernet17
     switchport:
       enabled: false
 
@@ -79,8 +85,9 @@ custom_structured_configuration_ethernet_interfaces:
   - name: Ethernet18
     description: Test_peer_dhcp_interface_connectivity
     ip_address: 10.18.18.0/31
-    peer: dc2-leaf3b.arista.com
-    peer_interface: Ethernet18
+    metadata:
+      peer: dc2-leaf3b.arista.com
+      peer_interface: Ethernet18
     switchport:
       enabled: false
 
@@ -88,8 +95,9 @@ custom_structured_configuration_ethernet_interfaces:
   - name: Ethernet19
     description: Test_peer_ip_unnumbered_interface_connectivity
     ip_address: 10.19.19.0/31
-    peer: dc2-leaf3b.arista.com
-    peer_interface: Ethernet19
+    metadata:
+      peer: dc2-leaf3b.arista.com
+      peer_interface: Ethernet19
     switchport:
       enabled: false
 
@@ -97,8 +105,9 @@ custom_structured_configuration_ethernet_interfaces:
   - name: Ethernet20
     description: Test_peer_shutdown_interface_connectivity
     ip_address: 10.19.20.0/31
-    peer: dc2-leaf3b.arista.com
-    peer_interface: Ethernet20
+    metadata:
+      peer: dc2-leaf3b.arista.com
+      peer_interface: Ethernet20
     switchport:
       enabled: false
 
@@ -142,7 +151,21 @@ custom_structured_configuration_port_channel_interfaces:
   - name: Port-Channel15
     description: Test_type_routed
     ip_address: 1.1.1.1/24
-    peer: dc2-leaf2b
-    peer_interface: Ethernet2
+    metadata:
+      peer: dc2-leaf2b
+      peer_interface: Ethernet2
     switchport:
       enabled: false
+
+# Custom Loopback and VXLAN configuration to simulate a Multi-VTEP for ANTA tests
+custom_structured_configuration_loopback_interfaces:
+  - name: Loopback66
+    description: MLAG_VTEP_IP
+    shutdown: false
+    ip_address: 10.66.66.66/32
+
+custom_structured_configuration_vxlan_interface:
+  vxlan1:
+    vxlan:
+      source_interface: Loopback0
+      mlag_source_interface: Loopback66
