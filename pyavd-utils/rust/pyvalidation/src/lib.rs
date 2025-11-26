@@ -93,7 +93,7 @@ pub mod validation {
     }
 
     #[pyclass(frozen, get_all)]
-    pub struct GetValidatedDataResult {
+    pub struct ValidatedDataResult {
         pub validation_result: ValidationResult,
         pub validated_data: Option<String>,
     }
@@ -157,9 +157,9 @@ pub mod validation {
         py: pyo3::Python<'_>,
         data_as_json: &str,
         schema_name: &str,
-    ) -> PyResult<GetValidatedDataResult> {
+    ) -> PyResult<ValidatedDataResult> {
         debug!("pyvalidation::get_validated_data Begin");
-        let result: PyResult<GetValidatedDataResult> = py.detach(|| {
+        let result: PyResult<ValidatedDataResult> = py.detach(|| {
             // The Value here will be in-place coerced to the correct data types.
             let mut data_as_value = serde_json::from_str::<serde_json::Value>(data_as_json)
                 .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?;
@@ -175,7 +175,7 @@ pub mod validation {
             } else {
                 None
             };
-            Ok(GetValidatedDataResult {
+            Ok(ValidatedDataResult {
                 validation_result: validation_result.try_into()?,
                 validated_data,
             })
