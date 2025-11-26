@@ -57,6 +57,8 @@ def get_facts(
 
     for generator in peer_facts_generators.values():
         generator.update_mlag_groups()
+
+    for generator in peer_facts_generators.values():
         generator.cross_pollinate()
 
     for hostname, generator in peer_facts_generators.items():
