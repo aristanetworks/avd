@@ -321,7 +321,13 @@ class GRPCRequestHandler:
 
             # For every chunk we call ourselves recursively, so we can catch any further needs of splitting.
             aggregated_results = []
-            for chunk_id, chunk in enumerate(batch(iter_value, chunk_size)):
+            # Identify type of the iterable
+            iter_type = list
+            if isinstance(iter_value, set):
+                iter_type = set
+            if isinstance(iter_value, tuple):
+                iter_type = tuple
+            for chunk_id, chunk in enumerate(batch(iter_value, chunk_size, iter_type)):
                 LOGGER.info(
                     "%s: Processing chunk %s/%s for '%s' with %s item(s) from iter_field '%s'.",
                     self.__class__.__name__,
