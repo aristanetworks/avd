@@ -60,40 +60,31 @@ impl SchemaKeys {
             .map_err(|_err| SchemaKeysError::SchemaNotDict)?;
         let dict = value.as_object().ok_or(SchemaKeysError::ValueNotADict)?;
         let mut schema_keys = SchemaKeys {
-            keys: OrderMap::from_iter(
-                dict_schema
-                    .keys
-                    .as_ref()
-                    .map(|keys| {
-                        keys.keys()
-                            .map(|key| (key.to_owned(), SchemaKey::StaticKey))
-                            .collect::<Vec<_>>()
-                    })
-                    .unwrap_or_default(),
-            ),
+            keys: OrderMap::from_iter(dict_schema.keys.as_ref().into_iter().flat_map(|keys| {
+                keys.keys()
+                    .map(|key| (key.to_owned(), SchemaKey::StaticKey))
+            })),
         };
 
         schema_keys.keys.extend(
             dict_schema
                 .get_dynamic_keys(dict)
-                .map(|dynamic_keys| {
-                    dynamic_keys
-                        .iter()
-                        .map(|(key, dynamic_key_info)| {
-                            (key.to_owned(), SchemaKey::from(dynamic_key_info))
-                        }).collect::<Vec<_>>()
-                }).into_iter().flatten()
-
+                .unwrap_or_default()
+                .into_iter()
+                .map(|(key, dynamic_key_info)| {
+                    (key.to_owned(), SchemaKey::from(&dynamic_key_info))
+                }),
         );
         Ok(schema_keys)
     }
 }
 impl From<&DynamicKeyInfo<'_>> for SchemaKey {
     fn from(value: &DynamicKeyInfo) -> Self {
-        Self::DynamicKey { dynamic_key_path: value.dynamic_key_path.to_owned() }
+        Self::DynamicKey {
+            dynamic_key_path: value.dynamic_key_path.to_owned(),
+        }
     }
 }
-
 
 #[derive(Debug)]
 pub enum SchemaKeysError {

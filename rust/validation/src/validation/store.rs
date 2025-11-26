@@ -56,7 +56,7 @@ impl StoreValidate<Schema> for Store {
     ) -> Result<ValidationResult, StoreValidateError> {
         debug!("Validating JSON");
         let mut value = serde_json::from_str(json)?;
-
+        debug!("Deserialization of JSON Done");
         let result = self.validate_value(&mut value, schema_name, configuration);
         debug!("Validating JSON Done");
         Ok(result)
@@ -71,6 +71,7 @@ impl StoreValidate<Schema> for Store {
         // todo: remove `serde_yaml` once `saphyr` adds `serde` support
         // https://github.com/saphyr-rs/saphyr/issues/1
         let mut value = serde_yaml::from_str::<Value>(yaml)?;
+        debug!("Deserialization of YAML Done");
         let result = self.validate_value(&mut value, schema_name, configuration);
         debug!("Validating YAML Done");
         Ok(result)
@@ -81,21 +82,21 @@ impl StoreValidate<Schema> for Store {
         schema_name: Schema,
         configuration: Option<&Configuration>,
     ) -> ValidationResult {
-        debug!("Validating serde_yaml::Value");
+        debug!("Validating serde_json::Value");
         let mut ctx = Context::new(self, configuration);
         let schema = self.get(schema_name);
         schema.coerce(value, &mut ctx);
-        debug!("Validating serde_yaml::Value Coercion Done");
+        debug!("Validating serde_json::Value Coercion Done");
         schema.validate_value(value, &mut ctx);
-        debug!("Validating serde_yaml::Value Done");
+        debug!("Validating serde_json::Value Done");
         ctx.result
     }
     fn coerce_value(&self, value: &mut Value, schema_name: Schema) -> ValidationResult {
-        debug!("Coercing serde_yaml::Value");
+        debug!("Coercing serde_json::Value");
         let mut ctx = Context::new(self, None);
         let schema = self.get(schema_name);
         schema.coerce(value, &mut ctx);
-        debug!("Coercing serde_yaml::Value Done");
+        debug!("Coercing serde_json::Value Done");
         ctx.result
     }
 }
