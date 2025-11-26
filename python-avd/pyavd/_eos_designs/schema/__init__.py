@@ -28910,6 +28910,66 @@ class EosDesigns(EosDesignsRootModel):
 
         Destinations._item_type = DestinationsItem
 
+        class ExportToCloudvision(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"}}
+            enabled: bool | None
+            vrf: str
+            """
+            VRF Name.
+            The value of `vrf` will be interpreted according to these rules:
+            -
+            `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with
+            `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.
+              An error will be
+            raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf`
+            will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the
+            `inband_mgmt_interface` as sFlow source-interface.
+              An error will be raised if inband management is
+            not configured for the device.
+            - `use_default_mgmt_method_vrf` will configure the VRF and source-
+            interface for one of the two options above depending on the value of `default_mgmt_method`.
+            - Any
+            other string will be used directly as the VRF name. Remember to set the
+            `sflow_settings.vrfs[].source_interface` if needed.
+
+            Default value: `"use_default_mgmt_method_vrf"`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, vrf: str | UndefinedType = Undefined) -> None:
+                    """
+                    ExportToCloudvision.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        vrf:
+                           VRF Name.
+                           The value of `vrf` will be interpreted according to these rules:
+                           -
+                           `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with
+                           `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.
+                             An error will be
+                           raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf`
+                           will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the
+                           `inband_mgmt_interface` as sFlow source-interface.
+                             An error will be raised if inband management is
+                           not configured for the device.
+                           - `use_default_mgmt_method_vrf` will configure the VRF and source-
+                           interface for one of the two options above depending on the value of `default_mgmt_method`.
+                           - Any
+                           other string will be used directly as the VRF name. Remember to set the
+                           `sflow_settings.vrfs[].source_interface` if needed.
+
+                    """
+
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -28952,6 +29012,7 @@ class EosDesigns(EosDesignsRootModel):
             "polling_interval": {"type": int},
             "sample": {"type": Sample},
             "destinations": {"type": Destinations},
+            "export_to_cloudvision": {"type": ExportToCloudvision},
             "vrfs": {"type": Vrfs},
         }
         polling_interval: int | None
@@ -28960,6 +29021,8 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         destinations: Destinations
         """Subclass of AvdList with `DestinationsItem` items."""
+        export_to_cloudvision: ExportToCloudvision
+        """Subclass of AvdModel."""
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
 
@@ -28971,6 +29034,7 @@ class EosDesigns(EosDesignsRootModel):
                 polling_interval: int | None | UndefinedType = Undefined,
                 sample: Sample | UndefinedType = Undefined,
                 destinations: Destinations | UndefinedType = Undefined,
+                export_to_cloudvision: ExportToCloudvision | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -28983,6 +29047,7 @@ class EosDesigns(EosDesignsRootModel):
                     polling_interval: Interval in seconds for sending counter data to the sFlow collector.
                     sample: Subclass of AvdModel.
                     destinations: Subclass of AvdList with `DestinationsItem` items.
+                    export_to_cloudvision: Subclass of AvdModel.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
                 """
