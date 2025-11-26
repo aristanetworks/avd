@@ -30,6 +30,18 @@ $defs:
               default: 31
               min: 8
               max: 31
+            ipv6_pool:
+              type: str
+              description: Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+              format: ipv6_pool
+            ipv6_prefix_size:
+              type: int
+              convert_types:
+                - str
+              description: IPv6 prefix size.
+              default: 127
+              min: 32
+              max: 127
       p2p_links_profiles:
         type: list
         primary_key: name

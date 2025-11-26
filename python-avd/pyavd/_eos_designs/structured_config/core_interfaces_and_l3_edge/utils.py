@@ -51,7 +51,6 @@ class UtilsMixin(Protocol):
 
         # Resolve IPs from subnet or p2p_pools.
         p2p_links = [self._resolve_p2p_ips(p2p_link) for p2p_link in p2p_links]
-
         # Parse P2P data model and create simplified data
         return [(p2p_link, self._get_p2p_data(p2p_link)) for p2p_link in p2p_links]
 
@@ -65,25 +64,44 @@ class UtilsMixin(Protocol):
         return p2p_link._deepinherited(profile_as_p2p_link_item)
 
     def _resolve_p2p_ips(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> T_P2pLinksItem:
-        if p2p_link.ip:
-            # ip already set, so nothing to do
+        if p2p_link.ip and p2p_link.ipv6:
+            # ip and ipv6 address already set, so nothing to do
             return p2p_link
 
-        if p2p_link.subnet:
-            # Resolve IPs from subnet
-            network = ip_network(p2p_link.subnet, strict=False)
-            p2p_link.ip.extend([f"{ip}/{network.prefixlen}" for ip in islice(network.hosts(), 2)])
+        if not p2p_link.ip:
+            if p2p_link.subnet:
+                # Resolve IPs from subnet
+                network = ip_network(p2p_link.subnet, strict=False)
+                p2p_link.ip.extend([f"{ip}/{network.prefixlen}" for ip in islice(network.hosts(), 2)])
 
-        elif p2p_link.ip_pool and p2p_link.id and p2p_link.ip_pool in self.inputs_data.p2p_links_ip_pools:
-            # Subnet not set but we have what we need to resolve IPs from pool.
-            ip_pool = self.inputs_data.p2p_links_ip_pools[p2p_link.ip_pool]
-            if not ip_pool.ipv4_pool:
-                # The pool was missing ipv4_pool so we give up.
-                return p2p_link
+            elif p2p_link.ip_pool and p2p_link.id and p2p_link.ip_pool in self.inputs_data.p2p_links_ip_pools:
+                # Subnet not set but we have what we need to resolve IPs from pool.
+                ip_pool = self.inputs_data.p2p_links_ip_pools[p2p_link.ip_pool]
+                if ip_pool.ipv4_pool:
+                    p2p_link.ip.extend(
+                        [
+                            f"{get_ip_from_pool(ip_pool.ipv4_pool, ip_pool.prefix_size, p2p_link.id - 1, host_offset)}/{ip_pool.prefix_size}"
+                            for host_offset in [0, 1]
+                        ]
+                    )
+        if not p2p_link.ipv6:
+            if p2p_link.ipv6_prefix:
+                # Resolve IPv6 from prefix
+                v6_network = ip_network(p2p_link.ipv6_prefix, strict=False)
+                self.structured_config.ipv6_unicast_routing = True
+                p2p_link.ipv6.extend([f"{ip}/{v6_network.prefixlen}" for ip in islice(v6_network.hosts(), 2)])
 
-            p2p_link.ip.extend(
-                [f"{get_ip_from_pool(ip_pool.ipv4_pool, ip_pool.prefix_size, p2p_link.id - 1, host_offset)}/{ip_pool.prefix_size}" for host_offset in [0, 1]]
-            )
+            elif p2p_link.ip_pool and p2p_link.id and p2p_link.ip_pool in self.inputs_data.p2p_links_ip_pools:
+                # Prefix not set but we have what we need to resolve IPv6 addresses from pool.
+                ip_pool = self.inputs_data.p2p_links_ip_pools[p2p_link.ip_pool]
+                if ip_pool.ipv6_pool:
+                    self.structured_config.ipv6_unicast_routing = True
+                    p2p_link.ipv6.extend(
+                        [
+                            f"{get_ip_from_pool(ip_pool.ipv6_pool, ip_pool.ipv6_prefix_size, p2p_link.id - 1, host_offset)}/{ip_pool.ipv6_prefix_size}"
+                            for host_offset in [0, 1]
+                        ]
+                    )
 
         return p2p_link
 
@@ -115,20 +133,25 @@ class UtilsMixin(Protocol):
 
         # Set ip or fallback to list with None values
         ips = p2p_link.ip or [None, None]
+        ipv6s = p2p_link.ipv6 or [None, None]
         # Set bgp_as or fallback to list with None values
         bgp_as = p2p_link.field_as or [None, None]
         # Set descriptions or fallback to list with None values
         descriptions = p2p_link.descriptions or [None, None]
 
         ip = ips[index]
+        ipv6 = ipv6s[index]
         peer_ip = ips[peer_index]
+        peer_ipv6 = ipv6s[peer_index]
         description = descriptions[index]
 
         data = {
             "peer": peer,
             "peer_type": peer_type,
             "ip": ip,
+            "ipv6": ipv6,
             "peer_ip": peer_ip,
+            "peer_ipv6": peer_ipv6,
             "bgp_as": self.shared_utils.get_asn(str(bgp_as[index])) if index < len(bgp_as) and bgp_as[index] else None,
             "peer_bgp_as": self.shared_utils.get_asn(str(bgp_as[peer_index])) if peer_index < len(bgp_as) and bgp_as[peer_index] else None,
             "description": description,
@@ -246,6 +269,9 @@ class UtilsMixin(Protocol):
 
         if p2p_link_data["ip"]:
             interface.ip_address = p2p_link_data["ip"]
+
+        if p2p_link_data["ipv6"]:
+            interface.ipv6_address = p2p_link_data["ipv6"]
 
         self._update_interface_multicast_config(p2p_link, interface)
 

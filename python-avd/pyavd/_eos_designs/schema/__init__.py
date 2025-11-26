@@ -3447,7 +3447,13 @@ class EosDesigns(EosDesignsRootModel):
         class P2pLinksIpPoolsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "ipv4_pool": {"type": str}, "prefix_size": {"type": int, "default": 31}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "ipv4_pool": {"type": str},
+                "prefix_size": {"type": int, "default": 31},
+                "ipv6_pool": {"type": str},
+                "ipv6_prefix_size": {"type": int, "default": 127},
+            }
             name: str
             """P2P pool name."""
             ipv4_pool: str | None
@@ -3458,6 +3464,14 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `31`
             """
+            ipv6_pool: str | None
+            """Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address)."""
+            ipv6_prefix_size: int
+            """
+            IPv6 prefix size.
+
+            Default value: `127`
+            """
 
             if TYPE_CHECKING:
 
@@ -3467,6 +3481,8 @@ class EosDesigns(EosDesignsRootModel):
                     name: str | UndefinedType = Undefined,
                     ipv4_pool: str | None | UndefinedType = Undefined,
                     prefix_size: int | UndefinedType = Undefined,
+                    ipv6_pool: str | None | UndefinedType = Undefined,
+                    ipv6_prefix_size: int | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksIpPoolsItem.
@@ -3478,6 +3494,8 @@ class EosDesigns(EosDesignsRootModel):
                         name: P2P pool name.
                         ipv4_pool: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                         prefix_size: Subnet mask size.
+                        ipv6_pool: Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                        ipv6_prefix_size: IPv6 prefix size.
 
                     """
 
@@ -3580,6 +3598,11 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdList with `str` items."""
 
             Ip._item_type = str
+
+            class Ipv6(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Ipv6._item_type = str
 
             class Nodes(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
@@ -3871,6 +3894,8 @@ class EosDesigns(EosDesignsRootModel):
                 "subnet": {"type": str},
                 "ip": {"type": Ip},
                 "ipv6_enable": {"type": bool, "default": False},
+                "ipv6_prefix": {"type": str},
+                "ipv6": {"type": Ipv6},
                 "nodes": {"type": Nodes},
                 "interfaces": {"type": Interfaces},
                 "field_as": {"type": As},
@@ -3915,8 +3940,8 @@ class EosDesigns(EosDesignsRootModel):
             """Interface Speed."""
             ip_pool: str | None
             """
-            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-            link.
+            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+            be taken from the pool per P2P link.
             """
             subnet: str | None
             """IPv4 address/Mask. Subnet used on this P2P link."""
@@ -3932,6 +3957,14 @@ class EosDesigns(EosDesignsRootModel):
             include_in_underlay_protocol).
 
             Default value: `False`
+            """
+            ipv6_prefix: str | None
+            """IPv6 address/Mask. Prefix used on this P2P link."""
+            ipv6: Ipv6
+            """
+            Specific IP addresses used on this P2P link.
+
+            Subclass of AvdList with `str` items.
             """
             nodes: Nodes
             """
@@ -4085,6 +4118,8 @@ class EosDesigns(EosDesignsRootModel):
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
                     ipv6_enable: bool | UndefinedType = Undefined,
+                    ipv6_prefix: str | None | UndefinedType = Undefined,
+                    ipv6: Ipv6 | UndefinedType = Undefined,
                     nodes: Nodes | UndefinedType = Undefined,
                     interfaces: Interfaces | UndefinedType = Undefined,
                     field_as: As | UndefinedType = Undefined,
@@ -4129,8 +4164,8 @@ class EosDesigns(EosDesignsRootModel):
                            from 1.
                         speed: Interface Speed.
                         ip_pool:
-                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-                           link.
+                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+                           be taken from the pool per P2P link.
                         subnet: IPv4 address/Mask. Subnet used on this P2P link.
                         ip:
                            Specific IP addresses used on this P2P link.
@@ -4139,6 +4174,11 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_enable:
                            Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and
                            include_in_underlay_protocol).
+                        ipv6_prefix: IPv6 address/Mask. Prefix used on this P2P link.
+                        ipv6:
+                           Specific IP addresses used on this P2P link.
+
+                           Subclass of AvdList with `str` items.
                         nodes:
                            Nodes where this link should be configured.
 
@@ -4342,6 +4382,11 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdList with `str` items."""
 
             Ip._item_type = str
+
+            class Ipv6(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Ipv6._item_type = str
 
             class Interfaces(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
@@ -4629,6 +4674,8 @@ class EosDesigns(EosDesignsRootModel):
                 "subnet": {"type": str},
                 "ip": {"type": Ip},
                 "ipv6_enable": {"type": bool, "default": False},
+                "ipv6_prefix": {"type": str},
+                "ipv6": {"type": Ipv6},
                 "interfaces": {"type": Interfaces},
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
@@ -4678,8 +4725,8 @@ class EosDesigns(EosDesignsRootModel):
             """Interface Speed."""
             ip_pool: str | None
             """
-            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-            link.
+            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+            be taken from the pool per P2P link.
             """
             subnet: str | None
             """IPv4 address/Mask. Subnet used on this P2P link."""
@@ -4695,6 +4742,14 @@ class EosDesigns(EosDesignsRootModel):
             include_in_underlay_protocol).
 
             Default value: `False`
+            """
+            ipv6_prefix: str | None
+            """IPv6 address/Mask. Prefix used on this P2P link."""
+            ipv6: Ipv6
+            """
+            Specific IP addresses used on this P2P link.
+
+            Subclass of AvdList with `str` items.
             """
             interfaces: Interfaces
             """
@@ -4843,6 +4898,8 @@ class EosDesigns(EosDesignsRootModel):
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
                     ipv6_enable: bool | UndefinedType = Undefined,
+                    ipv6_prefix: str | None | UndefinedType = Undefined,
+                    ipv6: Ipv6 | UndefinedType = Undefined,
                     interfaces: Interfaces | UndefinedType = Undefined,
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
@@ -4890,8 +4947,8 @@ class EosDesigns(EosDesignsRootModel):
                            from 1.
                         speed: Interface Speed.
                         ip_pool:
-                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-                           link.
+                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+                           be taken from the pool per P2P link.
                         subnet: IPv4 address/Mask. Subnet used on this P2P link.
                         ip:
                            Specific IP addresses used on this P2P link.
@@ -4900,6 +4957,11 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_enable:
                            Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and
                            include_in_underlay_protocol).
+                        ipv6_prefix: IPv6 address/Mask. Prefix used on this P2P link.
+                        ipv6:
+                           Specific IP addresses used on this P2P link.
+
+                           Subclass of AvdList with `str` items.
                         interfaces:
                            Interfaces where this link should be configured and Required unless using port-channels.
 
@@ -9239,7 +9301,13 @@ class EosDesigns(EosDesignsRootModel):
         class P2pLinksIpPoolsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "ipv4_pool": {"type": str}, "prefix_size": {"type": int, "default": 31}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "ipv4_pool": {"type": str},
+                "prefix_size": {"type": int, "default": 31},
+                "ipv6_pool": {"type": str},
+                "ipv6_prefix_size": {"type": int, "default": 127},
+            }
             name: str
             """P2P pool name."""
             ipv4_pool: str | None
@@ -9250,6 +9318,14 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `31`
             """
+            ipv6_pool: str | None
+            """Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address)."""
+            ipv6_prefix_size: int
+            """
+            IPv6 prefix size.
+
+            Default value: `127`
+            """
 
             if TYPE_CHECKING:
 
@@ -9259,6 +9335,8 @@ class EosDesigns(EosDesignsRootModel):
                     name: str | UndefinedType = Undefined,
                     ipv4_pool: str | None | UndefinedType = Undefined,
                     prefix_size: int | UndefinedType = Undefined,
+                    ipv6_pool: str | None | UndefinedType = Undefined,
+                    ipv6_prefix_size: int | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksIpPoolsItem.
@@ -9270,6 +9348,8 @@ class EosDesigns(EosDesignsRootModel):
                         name: P2P pool name.
                         ipv4_pool: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                         prefix_size: Subnet mask size.
+                        ipv6_pool: Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                        ipv6_prefix_size: IPv6 prefix size.
 
                     """
 
@@ -9372,6 +9452,11 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdList with `str` items."""
 
             Ip._item_type = str
+
+            class Ipv6(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Ipv6._item_type = str
 
             class Nodes(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
@@ -9663,6 +9748,8 @@ class EosDesigns(EosDesignsRootModel):
                 "subnet": {"type": str},
                 "ip": {"type": Ip},
                 "ipv6_enable": {"type": bool, "default": False},
+                "ipv6_prefix": {"type": str},
+                "ipv6": {"type": Ipv6},
                 "nodes": {"type": Nodes},
                 "interfaces": {"type": Interfaces},
                 "field_as": {"type": As},
@@ -9707,8 +9794,8 @@ class EosDesigns(EosDesignsRootModel):
             """Interface Speed."""
             ip_pool: str | None
             """
-            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-            link.
+            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+            be taken from the pool per P2P link.
             """
             subnet: str | None
             """IPv4 address/Mask. Subnet used on this P2P link."""
@@ -9724,6 +9811,14 @@ class EosDesigns(EosDesignsRootModel):
             include_in_underlay_protocol).
 
             Default value: `False`
+            """
+            ipv6_prefix: str | None
+            """IPv6 address/Mask. Prefix used on this P2P link."""
+            ipv6: Ipv6
+            """
+            Specific IP addresses used on this P2P link.
+
+            Subclass of AvdList with `str` items.
             """
             nodes: Nodes
             """
@@ -9877,6 +9972,8 @@ class EosDesigns(EosDesignsRootModel):
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
                     ipv6_enable: bool | UndefinedType = Undefined,
+                    ipv6_prefix: str | None | UndefinedType = Undefined,
+                    ipv6: Ipv6 | UndefinedType = Undefined,
                     nodes: Nodes | UndefinedType = Undefined,
                     interfaces: Interfaces | UndefinedType = Undefined,
                     field_as: As | UndefinedType = Undefined,
@@ -9921,8 +10018,8 @@ class EosDesigns(EosDesignsRootModel):
                            from 1.
                         speed: Interface Speed.
                         ip_pool:
-                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-                           link.
+                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+                           be taken from the pool per P2P link.
                         subnet: IPv4 address/Mask. Subnet used on this P2P link.
                         ip:
                            Specific IP addresses used on this P2P link.
@@ -9931,6 +10028,11 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_enable:
                            Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and
                            include_in_underlay_protocol).
+                        ipv6_prefix: IPv6 address/Mask. Prefix used on this P2P link.
+                        ipv6:
+                           Specific IP addresses used on this P2P link.
+
+                           Subclass of AvdList with `str` items.
                         nodes:
                            Nodes where this link should be configured.
 
@@ -10134,6 +10236,11 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdList with `str` items."""
 
             Ip._item_type = str
+
+            class Ipv6(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Ipv6._item_type = str
 
             class Interfaces(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
@@ -10421,6 +10528,8 @@ class EosDesigns(EosDesignsRootModel):
                 "subnet": {"type": str},
                 "ip": {"type": Ip},
                 "ipv6_enable": {"type": bool, "default": False},
+                "ipv6_prefix": {"type": str},
+                "ipv6": {"type": Ipv6},
                 "interfaces": {"type": Interfaces},
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
@@ -10470,8 +10579,8 @@ class EosDesigns(EosDesignsRootModel):
             """Interface Speed."""
             ip_pool: str | None
             """
-            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-            link.
+            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+            be taken from the pool per P2P link.
             """
             subnet: str | None
             """IPv4 address/Mask. Subnet used on this P2P link."""
@@ -10487,6 +10596,14 @@ class EosDesigns(EosDesignsRootModel):
             include_in_underlay_protocol).
 
             Default value: `False`
+            """
+            ipv6_prefix: str | None
+            """IPv6 address/Mask. Prefix used on this P2P link."""
+            ipv6: Ipv6
+            """
+            Specific IP addresses used on this P2P link.
+
+            Subclass of AvdList with `str` items.
             """
             interfaces: Interfaces
             """
@@ -10635,6 +10752,8 @@ class EosDesigns(EosDesignsRootModel):
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
                     ipv6_enable: bool | UndefinedType = Undefined,
+                    ipv6_prefix: str | None | UndefinedType = Undefined,
+                    ipv6: Ipv6 | UndefinedType = Undefined,
                     interfaces: Interfaces | UndefinedType = Undefined,
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
@@ -10682,8 +10801,8 @@ class EosDesigns(EosDesignsRootModel):
                            from 1.
                         speed: Interface Speed.
                         ip_pool:
-                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-                           link.
+                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+                           be taken from the pool per P2P link.
                         subnet: IPv4 address/Mask. Subnet used on this P2P link.
                         ip:
                            Specific IP addresses used on this P2P link.
@@ -10692,6 +10811,11 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_enable:
                            Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and
                            include_in_underlay_protocol).
+                        ipv6_prefix: IPv6 address/Mask. Prefix used on this P2P link.
+                        ipv6:
+                           Specific IP addresses used on this P2P link.
+
+                           Subclass of AvdList with `str` items.
                         interfaces:
                            Interfaces where this link should be configured and Required unless using port-channels.
 
@@ -77591,10 +77715,11 @@ class EosDesigns(EosDesignsRootModel):
     """
     underlay_ipv6: bool
     """
-    This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4
-    advertisements as VXLAN tunnel endpoints.
-    Requires "underlay_rfc5549: true" and "loopback_ipv6_pool"
-    under the node type settings.
+    This feature turns on IPv6 routing in the underlay.
+    It works with isis underlays and ebgp underlays
+    using "underlay_rfc5549" or "underlay_ipv6_numbered".
+    It requires a "loopback_ipv6_pool" to be
+    defined under the node type settings.
 
     Default value: `False`
     """
@@ -79315,10 +79440,11 @@ class EosDesigns(EosDesignsRootModel):
                    prefix-list assigned to redistribute connected permitting only loopbacks and inband management
                    subnets.
                 underlay_ipv6:
-                   This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4
-                   advertisements as VXLAN tunnel endpoints.
-                   Requires "underlay_rfc5549: true" and "loopback_ipv6_pool"
-                   under the node type settings.
+                   This feature turns on IPv6 routing in the underlay.
+                   It works with isis underlays and ebgp underlays
+                   using "underlay_rfc5549" or "underlay_ipv6_numbered".
+                   It requires a "loopback_ipv6_pool" to be
+                   defined under the node type settings.
                 underlay_ipv6_numbered:
                    This feature allows pure IPv6 underlay routing protocol with numbered addresses.
                    Currently sets both

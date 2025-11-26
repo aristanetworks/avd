@@ -1,3 +1,5 @@
 ---
 underlay_routing_protocol: ospf-ldp
 use_router_general_for_router_id: true
+
+underlay_ipv6: false

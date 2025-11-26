@@ -60,6 +60,12 @@ core_router:
       id: 4
     - name: core-5-isis-sr-ldp
       id: 5
+    - name: core-6-ebgp
+      id: 6
+      bgp_as: 65106
+    - name: core-7-ebgp
+      id: 7
+      bgp_as: 65107
 
 core_interfaces:
   p2p_links_ip_pools:
@@ -274,6 +280,9 @@ l3_edge:
     - name: pool_29_mask
       ipv4_pool: 172.16.1.0/24
       prefix_size: 29
+    - name: dual_stack_pool
+      ipv4_pool: 172.16.2.0/24
+      ipv6_pool: 2001:db8:64:48::/64
   p2p_links:
     # P2P link with mpls_ip and mpls_ldp set to false.
     - nodes: [core-1-isis-sr-ldp, peer2]
@@ -301,3 +310,22 @@ l3_edge:
       include_in_underlay_protocol: false
       ip_pool: pool_29_mask
       id: 2
+    - nodes: [core-6-ebgp, core-7-ebgp]
+      interfaces: [Ethernet1, Ethernet1]
+      id: 1
+      ip_pool: dual_stack_pool
+      as: [65106, 65107]
+    - nodes: [core-6-ebgp, core-7-ebgp]
+      interfaces: [Ethernet2, Ethernet2]
+      id: 1
+      ipv6_prefix: 2001:db8:64:1234::/127
+      as: [65106, 65107]
+      subnet: 172.16.3.0/31
+    - nodes: [core-6-ebgp, core-7-ebgp]
+      interfaces: [Ethernet3, Ethernet3]
+      id: 1
+      ipv6:
+        - 2001:db8:64:1234::2/127
+        - 2001:db8:64:1234::3/127
+      as: [65106, 65107]
+      subnet: 172.16.3.2/31
