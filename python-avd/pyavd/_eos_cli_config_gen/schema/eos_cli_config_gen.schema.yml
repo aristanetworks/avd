@@ -1848,7 +1848,7 @@ keys:
                   file_ipv4:
                     type: list
                     min_length: 1
-                    max_length: 254
+                    max_length: 253
                     description: Name of TFTP file for IPv4 clients.
                     items:
                       type: str
@@ -1884,7 +1884,7 @@ keys:
                   file_ipv6:
                     type: list
                     min_length: 1
-                    max_length: 254
+                    max_length: 253
                     description: Name of TFTP file for IPv6 clients.
                     items:
                       type: str
