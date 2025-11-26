@@ -13,12 +13,16 @@
 {% include 'eos/enable-password.j2' %}
 {# aaa root #}
 {% include 'eos/aaa-root.j2' %}
+{# aaa authentication policy nopassword #}
+{% include 'eos/aaa-authentication-policy-nopassword.j2' %}
+{# aaa authorization policy local default-role #}
+{% include 'eos/aaa-authorization-default-role.j2' %}
 {# users #}
 {% include 'eos/local-users.j2' %}
 {# address locking #}
 {% include 'eos/address-locking.j2' %}
-{# Agents #}
-{% include 'eos/agents.j2' %}
+{# Agents with environment #}
+{% include 'eos/agents-environment.j2' %}
 {# hardware configuration #}
 {% include 'eos/hardware.j2' %}
 {# service routing configuration #}
@@ -81,6 +85,8 @@
 {% include 'eos/lacp.j2' %}
 {# queue monitor length #}
 {% include 'eos/queue-monitor-length.j2' %}
+{# Agents without environment #}
+{% include 'eos/agents.j2' %}
 {# monitor layer1 #}
 {% include 'eos/monitor-layer1.j2' %}
 {# load balance #}

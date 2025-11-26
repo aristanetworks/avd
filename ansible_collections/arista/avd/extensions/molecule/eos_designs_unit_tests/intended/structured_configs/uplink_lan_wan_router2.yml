@@ -372,7 +372,8 @@ vrfs:
 - name: VRF1
   ip_routing: true
   ipv6_routing: true
-  tenant: TEST
+  metadata:
+    tenant: TEST
 vxlan_interface:
   vxlan1:
     description: uplink_lan_wan_router2_VTEP

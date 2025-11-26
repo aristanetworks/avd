@@ -554,35 +554,44 @@ vlan_internal_order:
 vlans:
 - id: 150
   name: Tenant_A_WAN_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 250
   name: Tenant_B_WAN_Zone_1
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 350
   name: Tenant_C_WAN_Zone_1
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 453
   name: Tenant_D_WAN_Zone_1
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_A_WAN_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_B_OP_Zone
   ip_routing: true
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - name: Tenant_B_WAN_Zone
   ip_routing: true
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - name: Tenant_C_WAN_Zone
   ip_routing: true
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - name: TENANT_D_WAN_ZONE
   ip_routing: true
   ipv6_routing: true
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 vxlan_interface:
   vxlan1:
     description: DC1-BL2A_VTEP

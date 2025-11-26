@@ -308,70 +308,91 @@ vlan_internal_order:
 vlans:
 - id: 110
   name: svi_profile_tests_110_description
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 111
   name: svi_profile_tests_111_description
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 112
   name: svi_profile_tests_112_description
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 113
   name: svi_profile_tests_113_description
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 114
   name: svi_profile_tests_114_description
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 115
   name: svi_profile_tests_115_description
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 120
   name: svi_profile_tests_120_description
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 121
   name: svi_profile_tests_121_description
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 210
   name: igmp_snooping_enabled_210
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 211
   name: igmp_snooping_enabled_211
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 212
   name: igmp_snooping_enabled_212
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 310
   name: vxlan_disabled_310
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 311
   name: vxlan_disabled_311
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 312
   name: vxlan_disabled_312
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 410
   name: static_routes_410
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 411
   name: static_routes_411
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 412
   name: static_routes_412
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 510
   name: ospf_enabled_510
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 511
   name: ospf_enabled_511
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 - id: 512
   name: ospf_enabled_512
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: svi_profile_tests_vrf
   ip_routing: true
-  tenant: svi_profile_tests
+  metadata:
+    tenant: svi_profile_tests
 vxlan_interface:
   vxlan1:
     description: SVI_PROFILE_NODE_2_VTEP

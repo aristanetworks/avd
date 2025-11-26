@@ -158,13 +158,15 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VLAN11
-  tenant: PTP
+  metadata:
+    tenant: PTP
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
-  tenant: PTP
+  metadata:
+    tenant: PTP
 vxlan_interface:
   vxlan1:
     description: custom-ptp-profile_VTEP

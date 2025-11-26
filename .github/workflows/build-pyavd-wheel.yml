@@ -1,9 +1,13 @@
 ---
-name: "Build pyvad-utils wheels"
+name: "Build pyvad-utils wheel for a specific runner"
 
 "on":
   workflow_call:
     inputs:
+      runner:
+        description: The runner to use to run the workflow
+        required: true
+        type: string
       TESTPYPI_VERSION:
         description: "Version string to use for manual push to test pypi"
         # required: true
@@ -21,21 +25,8 @@ jobs:
   # Build cross platform pyavd-utils wheels and upload artifacts
   # ------------------------------------------------------------ #
   pyavd_utils_build_wheels:
-    name: Build pyavd-utils wheel on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        # macos-14 covers x64 and macos-latest covers arm
-        # note that at some point x64 won't be available anymore as per
-        # https://github.com/actions/runner-images/issues/13046
-        # the next update will be macos-15-intel
-        os:
-          - ubuntu-latest
-          - ubuntu-24.04-arm
-          - windows-latest
-          - macos-14
-          - macos-latest
+    name: Build pyavd-utils wheel on ${{ inputs.runner }}
+    runs-on: ${{ inputs.runner }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -53,37 +44,26 @@ jobs:
           python -m cibuildwheel --output-dir pyavd-utils/dist pyavd-utils
       - uses: actions/upload-artifact@v5
         with:
-          name: pyavd-utils-wheels-${{ matrix.os }}
+          name: pyavd-utils-wheels-${{ inputs.runner }}
           path: pyavd-utils/dist/*.whl
 
   # ------------------------------------------- #
   # pyavd-utils test on platforms using wheels
   # ------------------------------------------- #
   pyavd_utils_test_cross_platform:
-    name: pyavd-utils ${{ matrix.python }} on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+    name: pyavd-utils ${{ matrix.python }} on ${{ inputs.runner }}
+    runs-on: ${{ inputs.runner }}
     needs: [pyavd_utils_build_wheels]
-    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
     strategy:
       fail-fast: false
       matrix:
-        # macos-14 covers x64 and macos-latest covers arm
-        # note that at some point x64 won't be available anymore as per
-        # https://github.com/actions/runner-images/issues/13046
-        # the next update will be macos-15-intel
-        os:
-          - ubuntu-latest
-          - ubuntu-24.04-arm
-          - windows-latest
-          - macos-14
-          - macos-latest
         python: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v5
       - name: Download {{ matrix.os }} wheel
         uses: actions/download-artifact@v6
         with:
-          name: pyavd-utils-wheels-${{ matrix.os }}
+          name: pyavd-utils-wheels-${{ inputs.runner }}
           path: pyavd-utils/dist
       - uses: actions/setup-python@v6
         with:
