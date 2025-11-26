@@ -2148,9 +2148,9 @@ dhcp server vrf TEST
       sub-option 42 type ipv4-address data 10.1.1.1
 !
 dhcp server vrf VRF01
+   disabled
    !
    subnet 192.168.0.0/24
-   disabled
 !
 dhcp server vrf defauls
 !

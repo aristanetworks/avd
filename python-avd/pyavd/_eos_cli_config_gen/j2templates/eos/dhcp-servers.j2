@@ -12,6 +12,9 @@
 {%         endif %}
 !
 {{ server_cli }}
+{%         if dhcp_server.disabled | arista.avd.default(false) is true %}
+   disabled
+{%         endif %}
 {%         if dhcp_server.lease_time_ipv4.days is arista.avd.defined
             and dhcp_server.lease_time_ipv4.hours is arista.avd.defined
             and dhcp_server.lease_time_ipv4.minutes is arista.avd.defined %}
@@ -120,9 +123,6 @@
       default-gateway {{ subnet.default_gateway }}
 {%             endif %}
 {%         endfor %}
-{%         if dhcp_server.disabled | arista.avd.default(false) is true %}
-   disabled
-{%         endif %}
 {%         for option in dhcp_server.ipv4_vendor_options | arista.avd.natural_sort(sort_key="vendor_id", ignore_case=false) %}
    !
    vendor-option ipv4 {{ option.vendor_id }}
