@@ -82,7 +82,7 @@ def _validate_python_version(info: dict[str, Any]) -> bool:
 
 
 def _parse_requirements(req_str: str) -> tuple[Requirement, list[str]]:
-    """Parse a requirement string and return the parsed object an a list of extras requirements to parse if any."""
+    """Parse a requirement string and return the parsed object and a list of extras requirements to parse if any."""
     try:
         req = Requirement(req_str)
     except InvalidRequirement as exc:
@@ -90,8 +90,9 @@ def _parse_requirements(req_str: str) -> tuple[Requirement, list[str]]:
         raise ValueError(msg) from exc
 
     extras = []
+    print(req.extra)  # noqa: T201
     if req.extras:
-        print(metadata(req.name))  # noqa: T201
+        print(metadata(req.name).__dict__)  # noqa: T201
         print(metadata(req.name).get_all("Requires-Dist"))  # noqa: T201
         for subreq_name in metadata(req.name).get_all("Requires-Dist"):
             subreq = Requirement(subreq_name)
