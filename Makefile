@@ -59,6 +59,14 @@ uv-pyavd-utils-install: pyavd-utils-build ## Build and install pyavd-utils Pytho
 uv-pyavd-utils-editable-install: ## Build and install pyavd-utils as editable
 	uv pip install -e pyavd-utils --config-settings editable_mode=compat --force-reinstall
 
+.PHONY: check-cargo
+check-cargo: ## Checks for the presence of the 'cargo' command.
+	cd pyavd-utils && $(MAKE) check-cargo
+
+.PHONY: install-rust
+intall-rust: ## Provides the standard command to install the Rust toolchain using rustup.
+	cd pyavd-utils && $(MAKE) install-rust
+
 #########################################
 # pyavd actions                         #
 #########################################
