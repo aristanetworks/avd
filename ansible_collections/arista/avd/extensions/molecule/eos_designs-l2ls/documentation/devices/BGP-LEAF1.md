@@ -140,7 +140,7 @@ no spanning-tree vlan-id 4094
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -291,7 +291,7 @@ interface Ethernet14
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_BGP_SPINES_Port-Channel1 | trunk | 1,100,200,4092 | - | - | - | - | 1 | - |
 | Port-Channel3 | L2_BGP-LEAF3_Port-Channel1 | trunk | 100,4092 | - | - | - | - | 3 | - |
 | Port-Channel4 | MLAG_BGP-LEAF2_Port-Channel4 | trunk | - | - | MLAG | - | - | - | - |
@@ -328,8 +328,8 @@ interface Port-Channel4
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan4092 | Inband Management | default | 1500 | False |
 | Vlan4094 | MLAG | default | 9214 | False |
 
@@ -337,8 +337,8 @@ interface Port-Channel4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan4092 |  default  |  172.23.254.4/24  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  192.168.0.0/31  |  -  |  -  |  -  |  -  |
+| Vlan4092 | default | 172.23.254.4/24 | - | - | - | - |
+| Vlan4094 | default | 192.168.0.0/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
