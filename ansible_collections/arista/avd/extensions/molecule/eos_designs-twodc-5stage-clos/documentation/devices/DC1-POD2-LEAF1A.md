@@ -38,6 +38,7 @@
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
+  - [AS Path Lists](#as-path-lists)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -788,7 +789,7 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65120 | - | - | - |
+| 10 | deny | as-path AS65120 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 #### Route-maps Device Configuration
@@ -799,9 +800,24 @@ route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-EVPN-FILTER-AS65120 deny 10
-   match as 65120
+   match as-path AS65120
 !
 route-map RM-EVPN-FILTER-AS65120 permit 20
+```
+
+### AS Path Lists
+
+#### AS Path Lists Summary
+
+| List Name | Type | Match | Origin |
+| --------- | ---- | ----- | ------ |
+| AS65120 | permit | `_65120_` | any |
+
+#### AS Path Lists Device Configuration
+
+```eos
+!
+ip as-path access-list AS65120 permit _65120_ any
 ```
 
 ## VRF Instances

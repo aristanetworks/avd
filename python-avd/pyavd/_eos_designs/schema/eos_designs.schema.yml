@@ -2183,7 +2183,7 @@ keys:
     valid_values:
     - source_peer_asn
     - as_path_acl
-    default: source_peer_asn
+    default: as_path_acl
   evpn_short_esi_prefix:
     documentation_options:
       table: evpn-settings
