@@ -445,49 +445,63 @@ vlan_internal_order:
 vlans:
 - id: 110
   name: Tenant_A_OP_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 111
   name: Tenant_A_OP_Zone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 112
   name: Tenant_A_OP_Zone_3
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 113
   name: SVI_with_no_vxlan
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 1102
   name: test_svi
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 1100
   name: test_svi
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 1101
   name: test_svi
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 2500
   name: web-l2-vlan
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 2600
   name: web-l2-vlan-2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 2601
   name: l2vlan_with_no_vxlan
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Common_VRF
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: vrf_with_loopbacks_dc1_pod1_only
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: vrf_with_loopbacks_from_overlapping_pool
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: vrf_with_loopbacks_from_pod_pools
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 vxlan_interface:
   vxlan1:
     description: DC1-POD2-LEAF1A_VTEP

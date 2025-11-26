@@ -106,7 +106,8 @@ vlan_internal_order:
 vlans:
 - id: 110
   name: SVI-110
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 vrfs:
 - name: MGMT
   ip_routing: false

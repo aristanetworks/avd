@@ -163,37 +163,47 @@ vlan_internal_order:
 vlans:
 - id: 1008
   name: SVI_1
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 1009
   name: SVI_2
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 1010
   name: SVI_3
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 1011
   name: SVI_4
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 10
   name: storage_prod
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 20
   name: storage_prod
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 90
   name: vlan90
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 100
   name: vlan100
-  tenant: SIT
+  metadata:
+    tenant: SIT
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: SIT_VRF
   ip_routing: true
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - name: VRF_ID_VNI_NONE
   ip_routing: true
-  tenant: SIT
+  metadata:
+    tenant: SIT
 vxlan_interface:
   vxlan1:
     description: evpn_vlan_bundle_svi_l2vlan_VTEP

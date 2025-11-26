@@ -1018,7 +1018,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 #### Router BGP VPWS Instances
 
 | Instance | Route-Distinguisher | Both Route-Target | MPLS Control Word | Label Flow | MTU | Pseudowire | Local ID | Remote ID |
-| -------- | ------------------- | ----------------- | ----------------- | -----------| --- | ---------- | -------- | --------- |
+| -------- | ------------------- | ----------------- | ----------------- | ---------- | --- | ---------- | -------- | --------- |
 {%         for vpws_service in router_bgp.vpws %}
 {%             if vpws_service.name is arista.avd.defined and vpws_service.rd is arista.avd.defined and vpws_service.route_targets.import_export is arista.avd.defined %}
 {%                 for pseudowire in vpws_service.pseudowires | arista.avd.natural_sort("name") %}

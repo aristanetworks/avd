@@ -248,7 +248,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -341,8 +341,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet52/1 | P2P_WAN_Ethernet1/1 | - | 10.0.0.5/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
@@ -396,7 +396,7 @@ interface Ethernet56/1
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_IDF1_Port-Channel51 | trunk | 10,110,120,130 | - | - | - | - | 1 | - |
 | Port-Channel491 | L2_LEAF2A_Port-Channel11 | trunk | 10,210,220,230 | - | - | - | - | 491 | - |
 | Port-Channel501 | L2_IDF3_AGG_Port-Channel971 | trunk | 10,310,320,330 | - | - | - | - | 501 | - |
@@ -469,8 +469,8 @@ interface Loopback0
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan10 | Inband Management | default | 1500 | False |
 | Vlan110 | IDF1-Data | default | - | False |
 | Vlan120 | IDF1-Voice | default | - | False |
@@ -488,18 +488,18 @@ interface Loopback0
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan10 |  default  |  10.10.10.3/24  |  -  |  10.10.10.1  |  -  |  -  |
-| Vlan110 |  default  |  10.1.10.3/23  |  -  |  10.1.10.1  |  -  |  -  |
-| Vlan120 |  default  |  10.1.20.3/23  |  -  |  10.1.20.1  |  -  |  -  |
-| Vlan130 |  default  |  10.1.30.3/23  |  -  |  10.1.30.1  |  -  |  -  |
-| Vlan210 |  default  |  10.2.10.3/23  |  -  |  10.2.10.1  |  -  |  -  |
-| Vlan220 |  default  |  10.2.20.3/23  |  -  |  10.2.20.1  |  -  |  -  |
-| Vlan230 |  default  |  10.2.30.3/23  |  -  |  10.2.30.1  |  -  |  -  |
-| Vlan310 |  default  |  10.3.10.3/23  |  -  |  10.3.10.1  |  -  |  -  |
-| Vlan320 |  default  |  10.3.20.3/23  |  -  |  10.3.20.1  |  -  |  -  |
-| Vlan330 |  default  |  10.3.30.3/23  |  -  |  10.3.30.1  |  -  |  -  |
-| Vlan4093 |  default  |  10.1.1.1/31  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  192.168.0.1/31  |  -  |  -  |  -  |  -  |
+| Vlan10 | default | 10.10.10.3/24 | - | 10.10.10.1 | - | - |
+| Vlan110 | default | 10.1.10.3/23 | - | 10.1.10.1 | - | - |
+| Vlan120 | default | 10.1.20.3/23 | - | 10.1.20.1 | - | - |
+| Vlan130 | default | 10.1.30.3/23 | - | 10.1.30.1 | - | - |
+| Vlan210 | default | 10.2.10.3/23 | - | 10.2.10.1 | - | - |
+| Vlan220 | default | 10.2.20.3/23 | - | 10.2.20.1 | - | - |
+| Vlan230 | default | 10.2.30.3/23 | - | 10.2.30.1 | - | - |
+| Vlan310 | default | 10.3.10.3/23 | - | 10.3.10.1 | - | - |
+| Vlan320 | default | 10.3.20.3/23 | - | 10.3.20.1 | - | - |
+| Vlan330 | default | 10.3.30.3/23 | - | 10.3.30.1 | - | - |
+| Vlan4093 | default | 10.1.1.1/31 | - | - | - | - |
+| Vlan4094 | default | 192.168.0.1/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -653,7 +653,7 @@ ip route vrf MGMT 0.0.0.0/0 172.16.100.1
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 100 | 172.16.1.2 | enabled | Vlan4093 <br> Ethernet52/1 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
+| 100 | 172.16.1.2 | enabled | Vlan4093<br>Ethernet52/1 | disabled | 12000 | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Router Redistribution
 
