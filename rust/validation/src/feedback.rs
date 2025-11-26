@@ -77,6 +77,8 @@ impl Path {
         new
     }
 }
+
+/// Display the path as a json path string like outer[1].inner.lst[23]
 impl std::fmt::Display for Path {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut string = String::default();
