@@ -1,5 +1,19 @@
 aaa_root:
   disabled: true
+as_path:
+  access_lists:
+  - name: AS65101
+    entries:
+    - type: permit
+      match: _65101_
+  - name: AS65110.100
+    entries:
+    - type: permit
+      match: _65110\.100_
+  - name: AS65111.100
+    entries:
+    - type: permit
+      match: _65111\.100_
 config_end: true
 domain_list:
 - structured-config.set.under.vrf.common-vrf
@@ -477,7 +491,7 @@ route_maps:
   - sequence: 10
     type: deny
     match:
-    - as 65101
+    - as-path AS65101
   - sequence: 20
     type: permit
 - name: RM-EVPN-FILTER-AS65110.100
@@ -485,7 +499,7 @@ route_maps:
   - sequence: 10
     type: deny
     match:
-    - as 65110.100
+    - as-path AS65110.100
   - sequence: 20
     type: permit
 - name: RM-EVPN-FILTER-AS65111.100
@@ -493,7 +507,7 @@ route_maps:
   - sequence: 10
     type: deny
     match:
-    - as 65111.100
+    - as-path AS65111.100
   - sequence: 20
     type: permit
 router_bfd:
