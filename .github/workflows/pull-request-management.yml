@@ -217,11 +217,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
       - name: Install pyavd and Ansible requirements
         # Adding pyavd-utils as editable to force a build of the .so files. The pyavd-utils is already added to the python path in the pyright config.
         # TODO: Use the built wheel instead if possible
         run: |
-          pip install pip --upgrade
           pip install --group dev -e pyavd-utils/ --upgrade
       - name: PyRight static type checker
         # Specific SHA as allowed by github org admins

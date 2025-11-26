@@ -198,13 +198,16 @@ def _validate_python_requirements(requirements: list[str], info: dict[str, Any])
     requirements = [req.split(" #", maxsplit=1)[0] for req in requirements if req[0] != "#"]
     for raw_req in requirements:
         req, extras = _parse_requirements(raw_req)
+        print(req, extras)  # noqa: T201
         if RUNNING_FROM_SOURCE and req.name == "pyavd":
+            print(RUNNING_FROM_SOURCE, "boo")  # noqa: T201
             LOGGER.debug("AVD is running from source, *not* checking pyavd version nor any extra.")
             requirements_dict["valid"][req.name] = {
                 "installed": "running from source",
                 "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
             }
             continue
+        print("extending with extra")  # noqa: T201
 
         requirements.extend(extras)
 
