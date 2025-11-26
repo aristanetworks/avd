@@ -90,7 +90,7 @@ def _parse_requirements(req_str: str) -> tuple[Requirement, list[str]]:
         raise ValueError(msg) from exc
 
     extras = []
-    print(req.extra)  # noqa: T201
+    print(req.extras)  # noqa: T201
     if req.extras:
         print(metadata(req.name).__dict__)  # noqa: T201
         print(metadata(req.name).get_all("Requires-Dist"))  # noqa: T201
