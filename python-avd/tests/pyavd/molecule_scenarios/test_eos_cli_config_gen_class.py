@@ -14,7 +14,6 @@ SCHEMA = create_store()["eos_cli_config_gen"]
 
 
 @pytest.mark.molecule_scenarios(
-    "digital_twin",
     "eos_designs_unit_tests",
     "eos_designs_deprecated_vars",
     "eos_designs-l2ls",
@@ -48,7 +47,6 @@ def test_eos_cli_config_gen_initialize_dict_with_valid_data(molecule_host: Molec
 
 
 @pytest.mark.molecule_scenarios(
-    "digital_twin",
     "eos_designs_unit_tests",
     "eos_designs_deprecated_vars",
     "eos_designs-l2ls",

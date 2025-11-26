@@ -15,7 +15,7 @@ from pyavd.j2filters import natural_sort
 from ._base_classes import AntaTestInputFactory
 
 
-class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.Input]):
+class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory):
     """
     Input factory class for the `VerifyLLDPNeighbors` test.
 
@@ -25,14 +25,14 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
     Peers must be available (`is_deployed: true`).
 
     The factory respects `validate_state` and `validate_lldp` settings, excludes
-    subinterfaces and shutdown interfaces on local or peer (considering `interface_defaults.ethernet.shutdown`
+    subinterfaces and shutdown interfaces (considering `interface_defaults.ethernet.shutdown`
     when not set), and uses peer FQDN when `dns_domain` is configured to match EOS
     LLDP format.
     """
 
     def create(self) -> list[VerifyLLDPNeighbors.Input] | None:
         """Create a list of inputs for the `VerifyLLDPNeighbors` test."""
-        neighbors: list[LLDPNeighbor] = []
+        neighbors = []
         for intf in self.structured_config.ethernet_interfaces:
             if intf.validate_state is False or intf.validate_lldp is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
@@ -46,35 +46,28 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
                 self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=intf.name)
                 continue
 
-            if not intf.metadata.peer or not intf.metadata.peer_interface:
-                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="metadata.peer, metadata.peer_interface")
+            if not intf.peer or not intf.peer_interface:
+                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="peer, peer_interface")
                 continue
 
-            if not self.is_peer_available(intf.metadata.peer, identity=intf.name):
-                continue
-
-            if self.is_peer_interface_shutdown(intf.metadata.peer, intf.metadata.peer_interface, intf.name):
+            if not self.is_peer_available(intf.peer, identity=intf.name):
                 continue
 
             # LLDP neighbor is the FQDN when dns domain is set in EOS
-            fqdn = (
-                f"{intf.metadata.peer}.{dns_domain}"
-                if (dns_domain := self.fabric_data.devices[intf.metadata.peer].dns_domain) is not None
-                else intf.metadata.peer
-            )
+            fqdn = f"{intf.peer}.{dns_domain}" if (dns_domain := self.minimal_structured_configs[intf.peer].dns_domain) is not None else intf.peer
 
             neighbors.append(
                 LLDPNeighbor(
                     port=intf.name,
                     neighbor_device=fqdn,
-                    neighbor_port=intf.metadata.peer_interface,
+                    neighbor_port=intf.peer_interface,
                 )
             )
 
         return [VerifyLLDPNeighbors.Input(neighbors=natural_sort(neighbors, sort_key="port"))] if neighbors else None
 
 
-class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Input]):
+class VerifyReachabilityInputFactory(AntaTestInputFactory):
     """
     Input factory class for the `VerifyReachability` test.
 
@@ -87,7 +80,6 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
         * Interface is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`
         * `peer` device is deployed - `is_deployed=True`
         * `peer_interface` on the `peer` device has a defined static `ip_address` - *not* 'dhcp' and *not* 'unnumbered'
-        * `peer_interface` is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`
 
     - BGP Neighbors:
         Inputs are generated for BGP neighbors that meet all the following criteria:
@@ -115,15 +107,15 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
     def _get_p2p_inputs(self) -> VerifyReachability.Input:
         """Generate the inputs for the point-to-point reachability test."""
         description = "Verifies point-to-point reachability between Ethernet interfaces."
-        hosts: list[Host] = []
+        hosts = []
 
         for intf in self.structured_config.ethernet_interfaces:
             if intf.shutdown or (intf.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown):
                 self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=intf.name)
                 continue
 
-            if not intf.ip_address or not intf.metadata.peer or not intf.metadata.peer_interface:
-                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="ip_address, metadata.peer, metadata.peer_interface")
+            if not intf.ip_address or not intf.peer or not intf.peer_interface:
+                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="ip_address, peer, peer_interface")
                 continue
 
             if intf.ip_address == "dhcp":
@@ -135,10 +127,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                 self.logger_adapter.debug(LogMessage.INTERFACE_UNNUMBERED, interface=intf.name)
                 continue
 
-            if (peer_interface_ip := self.get_peer_interface_ip(intf.metadata.peer, intf.metadata.peer_interface, intf.name)) is None:
-                continue
-
-            if self.is_peer_interface_shutdown(intf.metadata.peer, intf.metadata.peer_interface, intf.name) is True:
+            if (peer_interface_ip := self.get_interface_ip(intf.peer, intf.peer_interface, intf.name)) is None:
                 continue
 
             hosts.append(

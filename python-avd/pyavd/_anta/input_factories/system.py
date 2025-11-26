@@ -8,7 +8,7 @@ from anta.tests.system import VerifyReloadCause
 from ._base_classes import AntaTestInputFactory
 
 
-class VerifyReloadCauseInputFactory(AntaTestInputFactory[VerifyReloadCause.Input]):
+class VerifyReloadCauseInputFactory(AntaTestInputFactory):
     """
     Input factory class for the `VerifyReloadCause` test.
 

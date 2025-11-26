@@ -3,8 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from ipaddress import IPv4Address, ip_address
-
 from anta.input_models.avt import AVTPath
 from anta.tests.avt import VerifyAVTSpecificPath
 
@@ -14,7 +12,7 @@ from pyavd.j2filters import natural_sort
 from ._base_classes import AntaTestInputFactory
 
 
-class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory[VerifyAVTSpecificPath.Input]):
+class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory):
     """
     Input factory class for the `VerifyAVTSpecificPath` test.
 
@@ -26,18 +24,14 @@ class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory[VerifyAVTSpecificPa
         """Create a list of inputs for the `VerifyAVTSpecificPath` test."""
         avt_vrfs = self.structured_config.router_adaptive_virtual_topology.vrfs
         path_groups = self.structured_config.router_path_selection.path_groups
-        static_peers: set[IPv4Address] = set()
+        static_peers: set[str] = set()
 
         for path_group in path_groups:
             if not path_group.static_peers:
                 self.logger_adapter.debug(LogMessage.PATH_GROUP_NO_STATIC_PEERS, path_group=path_group.name)
                 continue
             for static_peer in path_group.static_peers:
-                static_peer_ip = ip_address(static_peer.router_ip)
-                if isinstance(static_peer_ip, IPv4Address):
-                    static_peers.add(static_peer_ip)
-                else:
-                    self.logger_adapter.debug(LogMessage.PATH_GROUP_IPV6_STATIC_PEER, peer=static_peer.router_ip, path_group=path_group.name)
+                static_peers.add(static_peer.router_ip)
 
         if not static_peers:
             self.logger_adapter.debug(LogMessage.NO_STATIC_PEERS)

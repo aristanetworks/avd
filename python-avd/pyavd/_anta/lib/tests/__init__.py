@@ -10,7 +10,6 @@ from anta.tests.hardware import (
     VerifyEnvironmentCooling,
     VerifyEnvironmentPower,
     VerifyEnvironmentSystemCooling,
-    VerifyInventory,
     VerifyTemperature,
     VerifyTransceiversTemperature,
 )
@@ -33,7 +32,6 @@ from anta.tests.mlag import (
 from anta.tests.path_selection import VerifySpecificPath
 from anta.tests.routing.bgp import VerifyBGPPeerSession
 from anta.tests.routing.generic import VerifyRoutingProtocolModel
-from anta.tests.routing.ospf import VerifyOSPFMaxLSA, VerifyOSPFNeighborState
 from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn
 from anta.tests.stp import VerifySTPCounters
 from anta.tests.system import (
@@ -63,7 +61,6 @@ __all__ = [
     "VerifyInterfaceErrors",
     "VerifyInterfaceUtilization",
     "VerifyInterfacesStatus",
-    "VerifyInventory",
     "VerifyLLDPNeighbors",
     "VerifyLoggingErrors",
     "VerifyMaintenance",
@@ -72,8 +69,6 @@ __all__ = [
     "VerifyMlagInterfaces",
     "VerifyMlagStatus",
     "VerifyNTP",
-    "VerifyOSPFMaxLSA",
-    "VerifyOSPFNeighborState",
     "VerifyPortChannels",
     "VerifyReachability",
     "VerifyReloadCause",
