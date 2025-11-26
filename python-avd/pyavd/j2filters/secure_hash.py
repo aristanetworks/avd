@@ -7,14 +7,14 @@ import re
 from pyavd._errors import AristaAvdError
 
 try:
-    from avdutils.passwords import sha512_crypt
+    from pyavd_utils.passwords import sha512_crypt
 except ImportError as imp_exc:
-    raise AristaAvdError(imp_exc) from imp_exc
+    raise AristaAvdError(str(imp_exc)) from imp_exc
 
 HASH_INPUT_TYPE = ["sha512_password"]
 
 
-def _validate_sha512_salt(salt: str | None) -> None:
+def _validate_sha512_salt(salt: str | None) -> str:
     """
     Validate a given salt value.
 
@@ -26,17 +26,19 @@ def _validate_sha512_salt(salt: str | None) -> None:
         ValueError: If the salt is greater than 16 characters.
         ValueError: If the salt contains a character not matching ./0-9A-Za-z
     """
-    if salt is not None and not isinstance(salt, str):
+    if not isinstance(salt, str):
         msg = f"Salt value MUST be of type 'str' but is of type {type(salt)}"
         raise TypeError(msg)
 
-    if salt is not None and len(salt) > 16:
+    if len(salt) > 16:
         msg = f"Salt value length MUST not be greater than 16 characters but is {len(salt)}"
         raise ValueError(msg)
 
-    if salt is not None and not re.fullmatch(r"[\.\/0-9A-Za-z]{1,16}", salt):
+    if not re.fullmatch(r"[\.\/0-9A-Za-z]{1,16}", salt):
         msg = "Salt value MUST only contain the characters ./0-9A-Za-z"
         raise ValueError(msg)
+
+    return salt
 
 
 def _user_password_hash(clear_password: str, salt: str | None = None) -> str:
@@ -58,7 +60,7 @@ def _user_password_hash(clear_password: str, salt: str | None = None) -> str:
         msg = f"Password MUST be of type 'str' but is of type {type(clear_password)}"
         raise TypeError(msg)
 
-    _validate_sha512_salt(salt)
+    salt = _validate_sha512_salt(salt)
 
     try:
         # setting the rounds parameter to 5000 to omit rounds from the hash string, similar to EOS implementation
@@ -68,7 +70,7 @@ def _user_password_hash(clear_password: str, salt: str | None = None) -> str:
         raise ValueError(msg) from exc
 
 
-def secure_hash(user_input: str, salt: str | None = None, output_type: str | None = None) -> str:
+def secure_hash(user_input: str, salt: str | None = None, output_type: str = "sha512_password") -> str:
     """
     Returns a hash for a given input.
 
@@ -83,7 +85,7 @@ def secure_hash(user_input: str, salt: str | None = None, output_type: str | Non
     Raises:
         ValueError: if the output_type value provided by the user is not supported.
     """
-    if output_type is not None and output_type not in HASH_INPUT_TYPE:
+    if output_type not in HASH_INPUT_TYPE:
         msg = f"The output_type key does not support the value '{output_type}'. The value used with output_type must be in {HASH_INPUT_TYPE}"
         raise ValueError(msg)
 
