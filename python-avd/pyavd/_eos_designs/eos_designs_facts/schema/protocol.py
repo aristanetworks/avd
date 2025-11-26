@@ -3,13 +3,11 @@
 # that can be found in the LICENSE file.
 
 from __future__ import annotations
-from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from typing import Protocol
-from pyavd._eos_designs.schema import EosDesigns
-from typing import Literal, TypeAlias
-from typing import ClassVar
-from typing import TYPE_CHECKING
 
+from typing import TYPE_CHECKING, ClassVar, Literal, Protocol, TypeAlias
+
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._eos_designs.schema import EosDesigns
 from pyavd._schema.models.avd_indexed_list import AvdIndexedList
 from pyavd._schema.models.avd_list import AvdList
 from pyavd._schema.models.avd_model import AvdModel
@@ -20,18 +18,16 @@ if TYPE_CHECKING:
 
 class EosDesignsFactsProtocol(Protocol):
     """Subclass of Protocol."""
+
     class DownlinkPoolsItem(AvdModel):
         """Subclass of AvdModel."""
+
         class DownlinkInterfaces(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
         DownlinkInterfaces._item_type = str
 
-        _fields: ClassVar[dict] = {
-            "ipv4_pool": {"type": str},
-            "ipv6_pool": {"type": str},
-            "downlink_interfaces": {"type": DownlinkInterfaces}
-        }
+        _fields: ClassVar[dict] = {"ipv4_pool": {"type": str}, "ipv6_pool": {"type": str}, "downlink_interfaces": {"type": DownlinkInterfaces}}
         ipv4_pool: str | None
         """
         Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
@@ -55,15 +51,15 @@ class EosDesignsFactsProtocol(Protocol):
         items.
         """
 
-
         if TYPE_CHECKING:
+
             def __init__(
                 self,
                 *,
                 ipv4_pool: str | None | UndefinedType = Undefined,
                 ipv6_pool: str | None | UndefinedType = Undefined,
-                downlink_interfaces: DownlinkInterfaces | UndefinedType = Undefined
-            )-> None:
+                downlink_interfaces: DownlinkInterfaces | UndefinedType = Undefined,
+            ) -> None:
                 """
                 DownlinkPoolsItem.
 
@@ -90,7 +86,6 @@ class EosDesignsFactsProtocol(Protocol):
 
                 """
 
-
     class DownlinkPools(AvdList[DownlinkPoolsItem]):
         """Subclass of AvdList with `DownlinkPoolsItem` items."""
 
@@ -98,26 +93,19 @@ class EosDesignsFactsProtocol(Protocol):
 
     class ConnectedEndpointsKeysItem(AvdModel):
         """Subclass of AvdModel."""
-        _fields: ClassVar[dict] = {
-            "key": {"type": str},
-            "type": {"type": str},
-            "description": {"type": str}
-        }
+
+        _fields: ClassVar[dict] = {"key": {"type": str}, "type": {"type": str}, "description": {"type": str}}
         key: str
         type: str | None
         """Type used for documentation."""
         description: str | None
         """Description used for documentation."""
 
-
         if TYPE_CHECKING:
+
             def __init__(
-                self,
-                *,
-                key: str | UndefinedType = Undefined,
-                type: str | None | UndefinedType = Undefined,
-                description: str | None | UndefinedType = Undefined
-            )-> None:
+                self, *, key: str | UndefinedType = Undefined, type: str | None | UndefinedType = Undefined, description: str | None | UndefinedType = Undefined
+            ) -> None:
                 """
                 ConnectedEndpointsKeysItem.
 
@@ -131,30 +119,23 @@ class EosDesignsFactsProtocol(Protocol):
 
                 """
 
-
     class ConnectedEndpointsKeys(AvdIndexedList[str, ConnectedEndpointsKeysItem]):
         """Subclass of AvdIndexedList with `ConnectedEndpointsKeysItem` items. Primary key is `key` (`str`)."""
+
         _primary_key: ClassVar[str] = "key"
 
     ConnectedEndpointsKeys._item_type = ConnectedEndpointsKeysItem
 
     class PortProfileNamesItem(AvdModel):
         """Subclass of AvdModel."""
-        _fields: ClassVar[dict] = {
-            "profile": {"type": str},
-            "parent_profile": {"type": str}
-        }
+
+        _fields: ClassVar[dict] = {"profile": {"type": str}, "parent_profile": {"type": str}}
         profile: str
         parent_profile: str | None
 
-
         if TYPE_CHECKING:
-            def __init__(
-                self,
-                *,
-                profile: str | UndefinedType = Undefined,
-                parent_profile: str | None | UndefinedType = Undefined
-            )-> None:
+
+            def __init__(self, *, profile: str | UndefinedType = Undefined, parent_profile: str | None | UndefinedType = Undefined) -> None:
                 """
                 PortProfileNamesItem.
 
@@ -166,7 +147,6 @@ class EosDesignsFactsProtocol(Protocol):
                     parent_profile: parent_profile
 
                 """
-
 
     class PortProfileNames(AvdList[PortProfileNamesItem]):
         """Subclass of AvdList with `PortProfileNamesItem` items."""
@@ -180,21 +160,14 @@ class EosDesignsFactsProtocol(Protocol):
 
     class MlagSwitchIds(AvdModel):
         """Subclass of AvdModel."""
-        _fields: ClassVar[dict] = {
-            "primary": {"type": int},
-            "secondary": {"type": int}
-        }
+
+        _fields: ClassVar[dict] = {"primary": {"type": int}, "secondary": {"type": int}}
         primary: int
         secondary: int
 
-
         if TYPE_CHECKING:
-            def __init__(
-                self,
-                *,
-                primary: int | UndefinedType = Undefined,
-                secondary: int | UndefinedType = Undefined
-            )-> None:
+
+            def __init__(self, *, primary: int | UndefinedType = Undefined, secondary: int | UndefinedType = Undefined) -> None:
                 """
                 MlagSwitchIds.
 
@@ -207,24 +180,16 @@ class EosDesignsFactsProtocol(Protocol):
 
                 """
 
-
     class MlagUnderlayMulticast(AvdModel):
         """Subclass of AvdModel."""
-        _fields: ClassVar[dict] = {
-            "pim_sm": {"type": bool},
-            "static": {"type": bool}
-        }
+
+        _fields: ClassVar[dict] = {"pim_sm": {"type": bool}, "static": {"type": bool}}
         pim_sm: bool
         static: bool
 
-
         if TYPE_CHECKING:
-            def __init__(
-                self,
-                *,
-                pim_sm: bool | UndefinedType = Undefined,
-                static: bool | UndefinedType = Undefined
-            )-> None:
+
+            def __init__(self, *, pim_sm: bool | UndefinedType = Undefined, static: bool | UndefinedType = Undefined) -> None:
                 """
                 MlagUnderlayMulticast.
 
@@ -236,7 +201,6 @@ class EosDesignsFactsProtocol(Protocol):
                     static: static
 
                 """
-
 
     class EvpnRouteServers(AvdList[str]):
         """Subclass of AvdList with `str` items."""
@@ -250,21 +214,14 @@ class EosDesignsFactsProtocol(Protocol):
 
     class Overlay(AvdModel):
         """Subclass of AvdModel."""
-        _fields: ClassVar[dict] = {
-            "peering_address": {"type": str},
-            "evpn_mpls": {"type": bool}
-        }
+
+        _fields: ClassVar[dict] = {"peering_address": {"type": str}, "evpn_mpls": {"type": bool}}
         peering_address: str | None
         evpn_mpls: bool
 
-
         if TYPE_CHECKING:
-            def __init__(
-                self,
-                *,
-                peering_address: str | None | UndefinedType = Undefined,
-                evpn_mpls: bool | UndefinedType = Undefined
-            )-> None:
+
+            def __init__(self, *, peering_address: str | None | UndefinedType = Undefined, evpn_mpls: bool | UndefinedType = Undefined) -> None:
                 """
                 Overlay.
 
@@ -277,27 +234,189 @@ class EosDesignsFactsProtocol(Protocol):
 
                 """
 
-
     class UplinksItem(AvdModel):
         """Subclass of AvdModel."""
+
         Type: TypeAlias = Literal["underlay_p2p", "underlay_l2"]
-        Speed: TypeAlias = Literal["100full", "100g", "100g-1", "100g-2", "100g-4", "100half", "10full", "10g", "10half", "1g", "200g", "200g-2", "200g-4", "25g", "400g", "400g-4", "400g-8", "40g", "50g", "50g-1", "50g-2", "800g-8", "sfp-1000baset auto 100full", "1.6t-8", "100mfull", "100mhalf", "10mfull", "10mhalf", "200g-1", "400g-2", "40g-4", "800g-4", "auto", "auto 10000full", "auto 1000full", "auto 100full", "auto 100g-1", "auto 100g-2", "auto 100g-4", "auto 100gfull", "auto 100half", "auto 10full", "auto 10gfull", "auto 10half", "auto 1gfull", "auto 2.5gfull", "auto 200g-2", "auto 200g-4", "auto 25gfull", "auto 400g-4", "auto 400g-8", "auto 40gfull", "auto 50g-1", "auto 50g-2", "auto 50gfull", "auto 5gfull", "auto 800g-8", "auto 1.6t-8", "auto 100mfull", "auto 100mhalf", "auto 10g", "auto 10mfull", "auto 10mhalf", "auto 1g", "auto 2.5g", "auto 200g-1", "auto 25g", "auto 400g-2", "auto 40g-4", "auto 5g", "auto 800g-4", "forced 10000full", "forced 1000full", "forced 1000half", "forced 100full", "forced 100gfull", "forced 100half", "forced 10full", "forced 10half", "forced 25gfull", "forced 40gfull", "forced 50gfull"]
-        PeerSpeed: TypeAlias = Literal["100full", "100g", "100g-1", "100g-2", "100g-4", "100half", "10full", "10g", "10half", "1g", "200g", "200g-2", "200g-4", "25g", "400g", "400g-4", "400g-8", "40g", "50g", "50g-1", "50g-2", "800g-8", "sfp-1000baset auto 100full", "1.6t-8", "100mfull", "100mhalf", "10mfull", "10mhalf", "200g-1", "400g-2", "40g-4", "800g-4", "auto", "auto 10000full", "auto 1000full", "auto 100full", "auto 100g-1", "auto 100g-2", "auto 100g-4", "auto 100gfull", "auto 100half", "auto 10full", "auto 10gfull", "auto 10half", "auto 1gfull", "auto 2.5gfull", "auto 200g-2", "auto 200g-4", "auto 25gfull", "auto 400g-4", "auto 400g-8", "auto 40gfull", "auto 50g-1", "auto 50g-2", "auto 50gfull", "auto 5gfull", "auto 800g-8", "auto 1.6t-8", "auto 100mfull", "auto 100mhalf", "auto 10g", "auto 10mfull", "auto 10mhalf", "auto 1g", "auto 2.5g", "auto 200g-1", "auto 25g", "auto 400g-2", "auto 40g-4", "auto 5g", "auto 800g-4", "forced 10000full", "forced 1000full", "forced 1000half", "forced 100full", "forced 100gfull", "forced 100half", "forced 10full", "forced 10half", "forced 25gfull", "forced 40gfull", "forced 50gfull"]
+        Speed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
+        PeerSpeed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
+
         class Ptp(AvdModel):
             """Subclass of AvdModel."""
-            _fields: ClassVar[dict] = {
-                "enable": {"type": bool, "default": False}
-            }
+
+            _fields: ClassVar[dict] = {"enable": {"type": bool, "default": False}}
             enable: bool
             """Default value: `False`"""
 
-
             if TYPE_CHECKING:
-                def __init__(
-                    self,
-                    *,
-                    enable: bool | UndefinedType = Undefined
-                )-> None:
+
+                def __init__(self, *, enable: bool | UndefinedType = Undefined) -> None:
                     """
                     Ptp.
 
@@ -309,21 +428,15 @@ class EosDesignsFactsProtocol(Protocol):
 
                     """
 
-
         class MacSecurity(AvdModel):
             """Subclass of AvdModel."""
-            _fields: ClassVar[dict] = {
-                "profile": {"type": str}
-            }
+
+            _fields: ClassVar[dict] = {"profile": {"type": str}}
             profile: str
 
-
             if TYPE_CHECKING:
-                def __init__(
-                    self,
-                    *,
-                    profile: str | UndefinedType = Undefined
-                )-> None:
+
+                def __init__(self, *, profile: str | UndefinedType = Undefined) -> None:
                     """
                     MacSecurity.
 
@@ -335,25 +448,17 @@ class EosDesignsFactsProtocol(Protocol):
 
                     """
 
-
         class LinkTrackingGroupsItem(AvdModel):
             """Subclass of AvdModel."""
+
             Direction: TypeAlias = Literal["upstream", "downstream"]
-            _fields: ClassVar[dict] = {
-                "name": {"type": str},
-                "direction": {"type": str}
-            }
+            _fields: ClassVar[dict] = {"name": {"type": str}, "direction": {"type": str}}
             name: str
             direction: Direction
 
-
             if TYPE_CHECKING:
-                def __init__(
-                    self,
-                    *,
-                    name: str | UndefinedType = Undefined,
-                    direction: Direction | UndefinedType = Undefined
-                )-> None:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, direction: Direction | UndefinedType = Undefined) -> None:
                     """
                     LinkTrackingGroupsItem.
 
@@ -366,9 +471,9 @@ class EosDesignsFactsProtocol(Protocol):
 
                     """
 
-
         class LinkTrackingGroups(AvdIndexedList[str, LinkTrackingGroupsItem]):
             """Subclass of AvdIndexedList with `LinkTrackingGroupsItem` items. Primary key is `name` (`str`)."""
+
             _primary_key: ClassVar[str] = "name"
 
         LinkTrackingGroups._item_type = LinkTrackingGroupsItem
@@ -385,8 +490,10 @@ class EosDesignsFactsProtocol(Protocol):
 
         SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
         PeerSpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+
         class SubinterfacesItem(AvdModel):
             """Subclass of AvdModel."""
+
             _fields: ClassVar[dict] = {
                 "interface": {"type": str},
                 "peer_interface": {"type": str},
@@ -399,7 +506,7 @@ class EosDesignsFactsProtocol(Protocol):
                 "ipv6_address": {"type": str},
                 "peer_ip_address": {"type": str},
                 "peer_ipv6_address": {"type": str},
-                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem}
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             }
             interface: str
             peer_interface: str
@@ -415,8 +522,8 @@ class EosDesignsFactsProtocol(Protocol):
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
             """Custom structured config applied to `uplink_interfaces`."""
 
-
             if TYPE_CHECKING:
+
                 def __init__(
                     self,
                     *,
@@ -431,8 +538,8 @@ class EosDesignsFactsProtocol(Protocol):
                     ipv6_address: str | None | UndefinedType = Undefined,
                     peer_ip_address: str | None | UndefinedType = Undefined,
                     peer_ipv6_address: str | None | UndefinedType = Undefined,
-                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined
-                )-> None:
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                ) -> None:
                     """
                     SubinterfacesItem.
 
@@ -455,9 +562,9 @@ class EosDesignsFactsProtocol(Protocol):
 
                     """
 
-
         class Subinterfaces(AvdIndexedList[str, SubinterfacesItem]):
             """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `interface` (`str`)."""
+
             _primary_key: ClassVar[str] = "interface"
 
         Subinterfaces._item_type = SubinterfacesItem
@@ -505,7 +612,7 @@ class EosDesignsFactsProtocol(Protocol):
             "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             "peer_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             "peer_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-            "subinterfaces": {"type": Subinterfaces}
+            "subinterfaces": {"type": Subinterfaces},
         }
         interface: str
         peer: str
@@ -568,8 +675,8 @@ class EosDesignsFactsProtocol(Protocol):
         subinterfaces: Subinterfaces
         """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `interface` (`str`)."""
 
-
         if TYPE_CHECKING:
+
             def __init__(
                 self,
                 *,
@@ -615,8 +722,8 @@ class EosDesignsFactsProtocol(Protocol):
                 port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                subinterfaces: Subinterfaces | UndefinedType = Undefined
-            )-> None:
+                subinterfaces: Subinterfaces | UndefinedType = Undefined,
+            ) -> None:
                 """
                 UplinksItem.
 
@@ -673,7 +780,6 @@ class EosDesignsFactsProtocol(Protocol):
 
                 """
 
-
     class Uplinks(AvdList[UplinksItem]):
         """Subclass of AvdList with `UplinksItem` items."""
 
@@ -701,29 +807,31 @@ class EosDesignsFactsProtocol(Protocol):
 
     class WanPathGroupsItem(AvdModel):
         """Subclass of AvdModel."""
+
         class InterfacesItem(AvdModel):
             """Subclass of AvdModel."""
+
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "public_ip": {"type": str},
                 "connected_to_pathfinder": {"type": bool},
-                "wan_circuit_id": {"type": str}
+                "wan_circuit_id": {"type": str},
             }
             name: str
             public_ip: str | None
             connected_to_pathfinder: bool
             wan_circuit_id: str | None
 
-
             if TYPE_CHECKING:
+
                 def __init__(
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
                     public_ip: str | None | UndefinedType = Undefined,
                     connected_to_pathfinder: bool | UndefinedType = Undefined,
-                    wan_circuit_id: str | None | UndefinedType = Undefined
-                )-> None:
+                    wan_circuit_id: str | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     InterfacesItem.
 
@@ -738,7 +846,6 @@ class EosDesignsFactsProtocol(Protocol):
 
                     """
 
-
         class Interfaces(AvdList[InterfacesItem]):
             """Subclass of AvdList with `InterfacesItem` items."""
 
@@ -746,10 +853,8 @@ class EosDesignsFactsProtocol(Protocol):
 
         class Ipsec(AvdModel):
             """Subclass of AvdModel."""
-            _fields: ClassVar[dict] = {
-                "dynamic_peers": {"type": bool, "default": True},
-                "static_peers": {"type": bool, "default": True}
-            }
+
+            _fields: ClassVar[dict] = {"dynamic_peers": {"type": bool, "default": True}, "static_peers": {"type": bool, "default": True}}
             dynamic_peers: bool
             """
             Enable IPSec for dynamic peers.
@@ -763,14 +868,9 @@ class EosDesignsFactsProtocol(Protocol):
             Default value: `True`
             """
 
-
             if TYPE_CHECKING:
-                def __init__(
-                    self,
-                    *,
-                    dynamic_peers: bool | UndefinedType = Undefined,
-                    static_peers: bool | UndefinedType = Undefined
-                )-> None:
+
+                def __init__(self, *, dynamic_peers: bool | UndefinedType = Undefined, static_peers: bool | UndefinedType = Undefined) -> None:
                     """
                     Ipsec.
 
@@ -783,26 +883,18 @@ class EosDesignsFactsProtocol(Protocol):
 
                     """
 
-
         class ImportPathGroupsItem(AvdModel):
             """Subclass of AvdModel."""
-            _fields: ClassVar[dict] = {
-                "remote": {"type": str},
-                "local": {"type": str}
-            }
+
+            _fields: ClassVar[dict] = {"remote": {"type": str}, "local": {"type": str}}
             remote: str | None
             """Remote path-group to import."""
             local: str | None
             """Optional, if not set, the path-group `name` is used as local."""
 
-
             if TYPE_CHECKING:
-                def __init__(
-                    self,
-                    *,
-                    remote: str | None | UndefinedType = Undefined,
-                    local: str | None | UndefinedType = Undefined
-                )-> None:
+
+                def __init__(self, *, remote: str | None | UndefinedType = Undefined, local: str | None | UndefinedType = Undefined) -> None:
                     """
                     ImportPathGroupsItem.
 
@@ -815,7 +907,6 @@ class EosDesignsFactsProtocol(Protocol):
 
                     """
 
-
         class ImportPathGroups(AvdList[ImportPathGroupsItem]):
             """Subclass of AvdList with `ImportPathGroupsItem` items."""
 
@@ -823,10 +914,8 @@ class EosDesignsFactsProtocol(Protocol):
 
         class DpsKeepalive(AvdModel):
             """Subclass of AvdModel."""
-            _fields: ClassVar[dict] = {
-                "interval": {"type": str},
-                "failure_threshold": {"type": int, "default": 5}
-            }
+
+            _fields: ClassVar[dict] = {"interval": {"type": str}, "failure_threshold": {"type": int, "default": 5}}
             interval: str | None
             """
             Interval in milliseconds. Valid values are 50-60000 | "auto".
@@ -842,14 +931,9 @@ class EosDesignsFactsProtocol(Protocol):
             Default value: `5`
             """
 
-
             if TYPE_CHECKING:
-                def __init__(
-                    self,
-                    *,
-                    interval: str | None | UndefinedType = Undefined,
-                    failure_threshold: int | UndefinedType = Undefined
-                )-> None:
+
+                def __init__(self, *, interval: str | None | UndefinedType = Undefined, failure_threshold: int | UndefinedType = Undefined) -> None:
                     """
                     DpsKeepalive.
 
@@ -867,7 +951,6 @@ class EosDesignsFactsProtocol(Protocol):
 
                     """
 
-
         _fields: ClassVar[dict] = {
             "interfaces": {"type": Interfaces},
             "name": {"type": str},
@@ -877,7 +960,7 @@ class EosDesignsFactsProtocol(Protocol):
             "import_path_groups": {"type": ImportPathGroups},
             "default_preference": {"type": str, "default": "preferred"},
             "excluded_from_default_policy": {"type": bool, "default": False},
-            "dps_keepalive": {"type": DpsKeepalive}
+            "dps_keepalive": {"type": DpsKeepalive},
         }
         interfaces: Interfaces
         """Subclass of AvdList with `InterfacesItem` items."""
@@ -932,8 +1015,8 @@ class EosDesignsFactsProtocol(Protocol):
         of AvdModel.
         """
 
-
         if TYPE_CHECKING:
+
             def __init__(
                 self,
                 *,
@@ -945,8 +1028,8 @@ class EosDesignsFactsProtocol(Protocol):
                 import_path_groups: ImportPathGroups | UndefinedType = Undefined,
                 default_preference: str | UndefinedType = Undefined,
                 excluded_from_default_policy: bool | UndefinedType = Undefined,
-                dps_keepalive: DpsKeepalive | UndefinedType = Undefined
-            )-> None:
+                dps_keepalive: DpsKeepalive | UndefinedType = Undefined,
+            ) -> None:
                 """
                 WanPathGroupsItem.
 
@@ -989,9 +1072,9 @@ class EosDesignsFactsProtocol(Protocol):
 
                 """
 
-
     class WanPathGroups(AvdIndexedList[str, WanPathGroupsItem]):
         """Subclass of AvdIndexedList with `WanPathGroupsItem` items. Primary key is `name` (`str`)."""
+
         _primary_key: ClassVar[str] = "name"
 
     WanPathGroups._item_type = WanPathGroupsItem
@@ -1075,7 +1158,7 @@ class EosDesignsFactsProtocol(Protocol):
         "uplink_switch_interfaces": {"type": UplinkSwitchInterfaces},
         "downlink_switches": {"type": DownlinkSwitches},
         "evpn_route_server_clients": {"type": EvpnRouteServerClients},
-        "mpls_route_reflector_clients": {"type": MplsRouteReflectorClients}
+        "mpls_route_reflector_clients": {"type": MplsRouteReflectorClients},
     }
     id: int | None
     type: str
@@ -1242,8 +1325,8 @@ class EosDesignsFactsProtocol(Protocol):
     mpls_route_reflector_clients: MplsRouteReflectorClients
     """Subclass of AvdList with `str` items."""
 
-
     if TYPE_CHECKING:
+
         def __init__(
             self,
             *,
@@ -1305,8 +1388,8 @@ class EosDesignsFactsProtocol(Protocol):
             uplink_switch_interfaces: UplinkSwitchInterfaces | UndefinedType = Undefined,
             downlink_switches: DownlinkSwitches | UndefinedType = Undefined,
             evpn_route_server_clients: EvpnRouteServerClients | UndefinedType = Undefined,
-            mpls_route_reflector_clients: MplsRouteReflectorClients | UndefinedType = Undefined
-        )-> None:
+            mpls_route_reflector_clients: MplsRouteReflectorClients | UndefinedType = Undefined,
+        ) -> None:
             """
             EosDesignsFactsProtocol.
 
