@@ -9,12 +9,37 @@ name: "Publish Python package"
   workflow_dispatch:
     inputs:
       TESTPYPI_VERSION:
-        description: "Version string to use for manual push to test pypi"
+        description: "Version string to use for manual push to test Pypi"
         required: true
         type: string
 
 # For now only pyavd-utils
 jobs:
+  build-pyavd-utils-wheels:
+    name: Build and test pyavd-utils wheel on ${{ matrix.os }}
+    needs: [file-changes]
+    if: (needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group') && github.repository == 'aristanetworks/avd'
+    permissions:
+      contents: read
+      actions: write  # Needed to trigger workflows
+      pull-requests: write
+    strategy:
+      matrix:
+        # NOTE: macos-14 covers x64 and macos-latest covers arm
+        # note that at some point x64 won't be available anymore as per
+        # https://github.com/actions/runner-images/issues/13046
+        # the next update will be macos-15-intel
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+          - windows-latest
+          - macos-14
+          - macos-latest
+    uses: ./.github/workflows/build-pyavd-wheel.yml
+    with:
+      runner: ${{ matrix.os }}
+      TESTPYPI_VERSION: ${{ TESTPYPI_VERSION }}
+
   pyavd-utils-testpypi:
     name: Publish pyavd-utils to Test PyPI
     runs-on: ubuntu-latest

@@ -10,7 +10,6 @@ name: "Build pyvad-utils wheel for a specific runner"
         type: string
       TESTPYPI_VERSION:
         description: "Version string to use for manual push to test pypi"
-        # required: true
         type: string
 
 env:
@@ -37,6 +36,17 @@ jobs:
         # TODO: Adjust the version in the wheels
         run: |
           pip install --group build_wheel
+      - name: Update version to ${{ inputs.TESTPYPI_VERSION }}
+        if: ${{ inputs.TESTPYPI_VERSION != '' }}
+        working-directory: pyavd-utils
+        run: |-
+          pip install bump-my-version
+          BUMP_VERSION="${{ inputs.TESTPYPI_VERSION }}"
+          bump-my-version replace \
+            --regex \
+            --search "__version__ = .*" \
+            --replace "__version__ = \"$(BUMP_VERSION)\"" \
+            pyavd_utils/__init__.py
       - name: Build wheels
         # Not using working-directory because manylinux uses a container
         # and will not copy the parent Cargo.toml and we will be sad
