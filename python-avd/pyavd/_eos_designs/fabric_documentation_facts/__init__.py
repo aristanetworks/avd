@@ -277,8 +277,22 @@ class FabricDocumentationFacts(AvdFacts):
                 if (channel_group := get(ethernet_interface, "channel_group.id")) is not None:
                     # Port channel member
                     port_channel_interface = get_item(port_channel_interfaces, "name", f"Port-Channel{channel_group}")
+                    description = get(port_channel_interface, "description", default="-")
+                    shutdown = get(port_channel_interface, "shutdown", default="-")
+                    mode = get(port_channel_interface, "switchport.mode", default="-")
+                    access_vlan = get(port_channel_interface, "switchport.access_vlan", default="-")
+                    trunk_allowed_vlan = get(port_channel_interface, "switchport.trunk.allowed_vlan", default="-")
+                    fabric_port = port_channel_interface['name']
+                    if peer_interface:=get(ethernet_interface, "metadata.peer_interface"):
+                        fabric_port = f"{fabric_port}({ethernet_interface['name']})"
                 else:
                     port_channel_interface = {}
+                    description = get(ethernet_interface, "description", default="-")
+                    shutdown = get(ethernet_interface, "shutdown", default="-")
+                    mode = get(ethernet_interface, "switchport.mode", default="-")
+                    access_vlan = get(ethernet_interface, "switchport.access_vlan", default="-")
+                    trunk_allowed_vlan = get(ethernet_interface, "switchport.trunk.allowed_vlan", default="-")
+                    fabric_port = ethernet_interface["name"]
 
                 all_connected_endpoints.setdefault(peer_key, []).append(
                     {
@@ -286,14 +300,12 @@ class FabricDocumentationFacts(AvdFacts):
                         "peer_type": get(ethernet_interface, "metadata.peer_type"),
                         "peer_interface": get(ethernet_interface, "metadata.peer_interface", default="-"),
                         "fabric_switch": hostname,
-                        "fabric_port": get(port_channel_interface, "name") or ethernet_interface["name"],
-                        "description": get(port_channel_interface, "description") or get(ethernet_interface, "description", default="-"),
-                        "shutdown": default(get(port_channel_interface, "shutdown"), get(ethernet_interface, "shutdown"), "-"),
-                        "mode": default(get(port_channel_interface, "switchport.mode"), get(ethernet_interface, "switchport.mode"), "-"),
-                        "access_vlan": default(get(port_channel_interface, "switchport.access_vlan"), get(ethernet_interface, "switchport.access_vlan"), "-"),
-                        "trunk_allowed_vlan": default(
-                            get(port_channel_interface, "switchport.trunk.allowed_vlan"), get(ethernet_interface, "switchport.trunk.allowed_vlan"), "-"
-                        ),
+                        "fabric_port": fabric_port,
+                        "description": description,
+                        "shutdown": shutdown,
+                        "mode": mode,
+                        "access_vlan": access_vlan,
+                        "trunk_allowed_vlan": trunk_allowed_vlan,
                         "profile": default(get(ethernet_interface, "metadata.port_profile"), "-"),
                     }
                 )
