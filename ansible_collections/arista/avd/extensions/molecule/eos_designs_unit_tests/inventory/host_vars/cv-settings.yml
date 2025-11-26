@@ -52,6 +52,7 @@ cv_settings:
     disable_aaa: true
     ingestexclude: this_is_ingest_excluded
     smashexcludes: this_is_smash_excluded
+# Test for export sflow setting vrf to cloudvision
 sflow_settings:
   destinations:
     - destination: 127.0.0.1

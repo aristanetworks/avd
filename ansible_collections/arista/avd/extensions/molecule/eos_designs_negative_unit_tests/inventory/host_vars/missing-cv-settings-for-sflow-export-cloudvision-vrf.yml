@@ -33,11 +33,11 @@ l2leaf:
       id: 1
       mgmt_ip: 192.168.0.201/24
       uplink_switch_interfaces:
-        - Ethernet5
+        - Ethernet15
 l3_edge:
   p2p_links:
     - nodes: [missing-cv-settings-for-sflow-export-cloudvision-vrf, sflow-settings-missing-destinations]
-      interfaces: [Ethernet12, Ethernet12]
+      interfaces: [Ethernet12, Ethernet13]
       include_in_underlay_protocol: false
       sflow: true
 
