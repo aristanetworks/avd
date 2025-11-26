@@ -38,7 +38,7 @@ jobs:
     uses: ./.github/workflows/build-pyavd-wheel.yml
     with:
       runner: ${{ matrix.os }}
-      TESTPYPI_VERSION: ${{ TESTPYPI_VERSION }}
+      TESTPYPI_VERSION: ${{ input.TESTPYPI_VERSION }}
 
   pyavd-utils-testpypi:
     name: Publish pyavd-utils to Test PyPI
