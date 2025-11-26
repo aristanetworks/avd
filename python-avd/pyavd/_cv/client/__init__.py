@@ -49,7 +49,7 @@ class CVClientProtocol(
     _username: str | None
     _password: str | None
     _cv_version: CvVersion | None = None
-    cv_connection_manager: CVConnectionManager
+    _cv_connection_manager: CVConnectionManager
 
     async def __aenter__(self) -> Self:
         """Using asynchronous context manager since grpclib must be initialized inside an asyncio loop."""
@@ -66,7 +66,7 @@ class CVClientProtocol(
         # TODO: Handle multinode clusters
 
         # Ensure that the default ssl context is initialized before doing any requests.
-        ssl_context = self.cv_connection_manager.get_ssl_context(self._verify_certs)
+        ssl_context = self._cv_connection_manager.get_ssl_context(self._verify_certs)
 
         if not self._token:
             self._set_token()
@@ -74,7 +74,7 @@ class CVClientProtocol(
         self._set_version()
 
         if self._channel is None:
-            self._channel = await self.cv_connection_manager.create_proxy_channel(ssl_context)
+            self._channel = await self._cv_connection_manager.create_proxy_channel(ssl_context)
 
         self._metadata = {"authorization": "Bearer " + self._token}
 
@@ -144,12 +144,12 @@ class CVClientProtocol(
             raise CVClientException(msg) from e
 
     @property
-    def use_proxy(self) -> bool:
-        return self.cv_connection_manager.use_proxy
+    def _use_proxy(self) -> bool:
+        return self._cv_connection_manager.use_proxy
 
     @property
     def _requests_proxies(self) -> dict[str, str]:
-        return self.cv_connection_manager.requests_proxies
+        return self._cv_connection_manager.requests_proxies
 
 
 class CVClient(CVClientProtocol):
@@ -198,7 +198,7 @@ class CVClient(CVClientProtocol):
         self._verify_certs = verify_certs
 
         # Initialize connection manager
-        self.cv_connection_manager = CVConnectionManager(
+        self._cv_connection_manager = CVConnectionManager(
             target_host=self._servers[0],
             target_port=self._port,
             proxy_scheme=proxy_scheme,

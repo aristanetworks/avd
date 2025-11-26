@@ -361,15 +361,11 @@ The `arista.avd.cv_deploy` role supports connecting to CloudVision through an [H
 
 There are two ways to enable proxy server for `cv_deploy`: explicitly and via environment variables.
 
-!!! Note
-
-    If proxy-related settings are passed to `cv_deploy` explicitly and execution environment has proxy-related environment variables set (`https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY`/`no_proxy`/`NO_PROXY`), such environment variables will be ignored for all REST and gRPC calls initiated by `cv_deploy`.
-
 ### Configure proxy settings explicitly
 
 To enable proxy server explicitly, set `proxy_host`. Setting `proxy_port` (port `TCP/8080` will be used by default), `proxy_username` and `proxy_password` is optional.
 
-If valid `proxy_host` (must be non-empty string) and `proxy_port` (greater than 0, less than 65536) are set, `cv_deploy` will ignore (for both REST and gRPC calls) any proxy-related environment variables (`https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY`/`no_proxy`/`NO_PROXY`) and will force all REST and gRPC egress connections through this proxy.
+If valid `proxy_host` (must be non-empty string) and `proxy_port` (1-65535) are set, `cv_deploy` will ignore (for both REST and gRPC calls) any proxy-related environment variables (`https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY`/`no_proxy`/`NO_PROXY`) and will force all REST and gRPC egress connections through this proxy.
 
 Below settings allow modifying the default proxy-related behavior as needed. The values below are the default values.
 
@@ -417,7 +413,7 @@ proxy_password: "avd_proxy_password"
 
 ### Configure proxy settings using environment variables
 
-If proxy-related settings are not passed to `cv_deploy` explicitly, `cv_deploy` will try to discover usable proxy server (scheme is `http`, host is a non-empty string, port is greater than 0 and less than 65536) using environment variables in the following order:
+If proxy-related settings are not passed to `cv_deploy` explicitly, `cv_deploy` will try to discover usable proxy server (scheme is `http`, host is a non-empty string, port is in the range 1-65535) using environment variables in the following order:
 
 1. Check if proxy bypass is requested for CloudVision
 
@@ -467,7 +463,7 @@ Table below explains how each of the items in the environment variable above wou
 
 !!! Note
 
-    Convention `<fqdn/ip>:<port>` used in `Matching CloudVision destinations` and `Non-matching CloudVision destinations` columns of the table below means that AVD is instructed to run deployment against CloudVision / CVaaS `<fqnd/ip>` over port `<port>`. Non-standard port assumes usage of an intermediate proxy/load-balancer.
+    Convention `<fqdn/ip>:<port>` used in `Matching CloudVision destinations` and `Non-matching CloudVision destinations` columns of the table below means that AVD is instructed to run deployment against CloudVision / CVaaS `<fqdn/ip>` over port `<port>`. Non-standard port assumes usage of an intermediate proxy/load-balancer.
 
 | Item | Comment | Matching CloudVision destinations | Non-matching CloudVision destinations |
 | ---- | ------- | ----------------- | --------------------- |

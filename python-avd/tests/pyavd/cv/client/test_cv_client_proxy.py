@@ -47,7 +47,7 @@ async def test_cv_client_proxy_socket_error() -> None:
 @pytest.mark.parametrize(
     ("proxy_related_attribute"),
     [
-        pytest.param("use_proxy", id="USE_PROXY"),
+        pytest.param("_use_proxy", id="USE_PROXY"),
         pytest.param("_requests_proxies", id="_REQUESTS_PROXIES"),
     ],
 )
@@ -143,7 +143,7 @@ async def test_cv_client_proxy_explicit(proxy_host: str | None, proxy_username: 
             proxy_username=proxy_username,
             proxy_password=proxy_password,
         ) as cvclient:
-            assert cvclient.cv_connection_manager.cv_proxy_manager.get_proxy_url() == expected_proxy_url
+            assert cvclient._cv_connection_manager.cv_proxy_manager.get_proxy_url() == expected_proxy_url
 
 
 @pytest.mark.asyncio
@@ -249,7 +249,7 @@ async def test_cv_client_proxy_explicit_with_port(
             proxy_username=proxy_username,
             proxy_password=proxy_password,
         ) as cvclient:
-            assert cvclient.cv_connection_manager.cv_proxy_manager.get_proxy_url() == expected_proxy_url
+            assert cvclient._cv_connection_manager.cv_proxy_manager.get_proxy_url() == expected_proxy_url
 
 
 @pytest.mark.asyncio
@@ -337,14 +337,14 @@ async def test_cv_client_proxy_explicit_override(
         ) as cvclient:
             pass
 
-    assert cvclient.cv_connection_manager.cv_proxy_manager.use_proxy
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_scheme == "http"
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_host == proxy_host
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_port == 8080
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_username == proxy_username
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_password == proxy_password
-    assert cvclient.cv_connection_manager.cv_proxy_manager._target_host == servers
-    assert cvclient.cv_connection_manager.cv_proxy_manager._target_port == 443
+    assert cvclient._use_proxy
+    assert cvclient._cv_connection_manager.cv_proxy_manager._proxy_scheme == "http"
+    assert cvclient._cv_connection_manager.cv_proxy_manager._proxy_host == proxy_host
+    assert cvclient._cv_connection_manager.cv_proxy_manager._proxy_port == 8080
+    assert cvclient._cv_connection_manager.cv_proxy_manager._proxy_username == proxy_username
+    assert cvclient._cv_connection_manager.cv_proxy_manager._proxy_password == proxy_password
+    assert cvclient._cv_connection_manager.cv_proxy_manager._target_host == servers
+    assert cvclient._cv_connection_manager.cv_proxy_manager._target_port == 443
 
 
 @pytest.mark.asyncio
@@ -391,7 +391,7 @@ async def test_cv_client_proxy_env_vars(monkeypatch: pytest.MonkeyPatch, proxy_e
             servers=servers,
             token=token,
         ) as cvclient:
-            assert cvclient.cv_connection_manager.cv_proxy_manager.get_proxy_url() == proxy_env_var_value
+            assert cvclient._cv_connection_manager.cv_proxy_manager.get_proxy_url() == proxy_env_var_value
 
 
 @pytest.mark.asyncio
@@ -551,14 +551,14 @@ async def test_cv_client_proxy_env_vars_preference(
         ) as cvclient:
             pass
 
-    assert cvclient.cv_connection_manager.cv_proxy_manager.use_proxy
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_scheme == "http"
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_host == "10.10.10.10"
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_port == 8081
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_username == "new_user1"
-    assert cvclient.cv_connection_manager.cv_proxy_manager._proxy_password == "new_password1"  # noqa: S105
-    assert cvclient.cv_connection_manager.cv_proxy_manager._target_host == servers
-    assert cvclient.cv_connection_manager.cv_proxy_manager._target_port == 443
+    assert cvclient._use_proxy
+    assert cvclient._cv_connection_manager.cv_proxy_manager._proxy_scheme == "http"
+    assert cvclient._cv_connection_manager.cv_proxy_manager._proxy_host == "10.10.10.10"
+    assert cvclient._cv_connection_manager.cv_proxy_manager._proxy_port == 8081
+    assert cvclient._cv_connection_manager.cv_proxy_manager._proxy_username == "new_user1"
+    assert cvclient._cv_connection_manager.cv_proxy_manager._proxy_password == "new_password1"  # noqa: S105
+    assert cvclient._cv_connection_manager.cv_proxy_manager._target_host == servers
+    assert cvclient._cv_connection_manager.cv_proxy_manager._target_port == 443
 
 
 @pytest.mark.asyncio
@@ -609,7 +609,7 @@ async def test_cv_client_proxy_settings_no_proxy_override_fqdn(
         ) as cvclient:
             pass
 
-    assert not cvclient.cv_connection_manager.use_proxy
+    assert not cvclient._use_proxy
 
 
 @pytest.mark.asyncio
@@ -657,7 +657,7 @@ async def test_cv_client_proxy_settings_no_proxy_override_ipv4(
         ) as cvclient:
             pass
 
-    assert not cvclient.cv_connection_manager.use_proxy
+    assert not cvclient._use_proxy
 
 
 @pytest.mark.asyncio
@@ -705,4 +705,4 @@ async def test_cv_client_proxy_settings_no_proxy_override_ipv6(
         ) as cvclient:
             pass
 
-    assert not cvclient.cv_connection_manager.use_proxy
+    assert not cvclient._use_proxy
