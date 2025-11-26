@@ -132,7 +132,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -188,14 +188,14 @@ vlan 2020
 ##### Flexible Encapsulation Interfaces
 
 | Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- |------------ | ---------------------- | ---------------------- |
+| --------- | ----------- | ------- | -------------------- | -------------------------- | ----------- | --------------------- | --------------------- | --------------------- | --------------------------- | ------------ | ---------------------- | ---------------------- |
 | Ethernet9.100 | - | - | dot1q | - | 100 | - | - | client | - | - | - | - |
 | Ethernet9.101 | - | - | dot1q | - | 101 | - | - | client | - | - | - | - |
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_SITE1-LSR1_Ethernet1 | - | 100.64.48.0/31 | default | 9178 | False | - | - |
 | Ethernet2 | P2P_SITE1-LER2_Ethernet2 | - | 100.64.48.4/31 | default | 9178 | False | - | - |
 | Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | - | 10.123.1.0/31 | TENANT_B_INTRA | - | False | - | - |
@@ -203,7 +203,7 @@ vlan 2020
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
 | Ethernet1 | P2P_SITE1-LSR1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - |
 | Ethernet2 | P2P_SITE1-LER2_Ethernet2 | - | - | default | 9178 | False | - | - | - | - |
 
@@ -313,12 +313,12 @@ interface Ethernet9.101
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 
 ##### Flexible Encapsulation Interfaces
 
 | Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
+| --------- | ----------- | ------- | -------------------- | -------------------------- | ----------- | --------------------- | --------------------- | --------------------- | --------------------------- | ------------ | ---------------------- | ---------------------- |
 | Port-Channel3.1000 | - | - | dot1q | - | 1000 | - | - | client | - | - | - | - |
 | Port-Channel3.1001 | - | - | dot1q | - | 1001 | - | - | client | - | - | - | - |
 | Port-Channel3.1002 | - | - | dot1q | - | 1002 | - | - | client | - | - | - | - |
@@ -468,15 +468,15 @@ interface Loopback0
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan2020 | TENANT_B_INSIDE_FW | TENANT_B_INTRA | - | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan2020 |  TENANT_B_INTRA  |  -  |  -  |  -  |  -  |  -  |
+| Vlan2020 | TENANT_B_INTRA | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -569,7 +569,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 19 | 10.123.1.0 | enabled | Ethernet6.10 <br> | disabled | 10000 | disabled | disabled | - | - | - | - |
+| 19 | 10.123.1.0 | enabled | Ethernet6.10 | disabled | 10000 | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Router Redistribution
 
@@ -733,7 +733,7 @@ ASN Notation: asplain
 #### Router BGP VPWS Instances
 
 | Instance | Route-Distinguisher | Both Route-Target | MPLS Control Word | Label Flow | MTU | Pseudowire | Local ID | Remote ID |
-| -------- | ------------------- | ----------------- | ----------------- | -----------| --- | ---------- | -------- | --------- |
+| -------- | ------------------- | ----------------- | ----------------- | ---------- | --- | ---------- | -------- | --------- |
 | TENANT_A | 100.70.0.5:1000 | 65000:1000 | False | False | - | TEN_A_site1_site2_eline_port_based | 16 | 27 |
 | TENANT_A | 100.70.0.5:1000 | 65000:1000 | False | False | - | TEN_A_site1_site2_eline_with_subinterfaces_100 | 119 | 129 |
 | TENANT_A | 100.70.0.5:1000 | 65000:1000 | False | False | - | TEN_A_site1_site2_eline_with_subinterfaces_101 | 120 | 130 |

@@ -131,7 +131,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -186,8 +186,8 @@ vlan 2020
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_SITE1-LSR2_Ethernet1 | - | 100.64.48.2/31 | default | 9214 | False | - | - |
 | Ethernet2 | P2P_SITE1-LER1_Ethernet2 | - | 100.64.48.5/31 | default | 9178 | False | - | - |
 | Ethernet5.100 | TENANT_B_SITE_3 | - | 192.168.48.0/31 | TENANT_B_WAN | - | False | - | - |
@@ -195,7 +195,7 @@ vlan 2020
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
 | Ethernet1 | P2P_SITE1-LSR2_Ethernet1 | - | - | default | 9214 | False | - | - | - | - |
 | Ethernet2 | P2P_SITE1-LER1_Ethernet2 | - | - | default | 9178 | False | - | - | - | - |
 
@@ -284,12 +284,12 @@ interface Ethernet8
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 
 ##### Flexible Encapsulation Interfaces
 
 | Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
+| --------- | ----------- | ------- | -------------------- | -------------------------- | ----------- | --------------------- | --------------------- | --------------------- | --------------------------- | ------------ | ---------------------- | ---------------------- |
 | Port-Channel3.1000 | - | - | dot1q | - | 1000 | - | - | client | - | - | - | - |
 | Port-Channel3.1001 | - | - | dot1q | - | 1001 | - | - | client | - | - | - | - |
 | Port-Channel3.1002 | - | - | dot1q | - | 1002 | - | - | client | - | - | - | - |
@@ -439,15 +439,15 @@ interface Loopback0
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan2020 | TENANT_B_INSIDE_FW | TENANT_B_INTRA | - | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan2020 |  TENANT_B_INTRA  |  -  |  -  |  -  |  -  |  -  |
+| Vlan2020 | TENANT_B_INTRA | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -694,7 +694,7 @@ ASN Notation: asplain
 #### Router BGP VPWS Instances
 
 | Instance | Route-Distinguisher | Both Route-Target | MPLS Control Word | Label Flow | MTU | Pseudowire | Local ID | Remote ID |
-| -------- | ------------------- | ----------------- | ----------------- | -----------| --- | ---------- | -------- | --------- |
+| -------- | ------------------- | ----------------- | ----------------- | ---------- | --- | ---------- | -------- | --------- |
 | TENANT_B | 100.70.0.6:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1000 | 31000 | 51000 |
 | TENANT_B | 100.70.0.6:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1001 | 31001 | 51001 |
 | TENANT_B | 100.70.0.6:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1002 | 31002 | 51002 |

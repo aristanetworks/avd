@@ -104,7 +104,8 @@ vlans:
   address_locking:
     address_family:
       ipv4: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false

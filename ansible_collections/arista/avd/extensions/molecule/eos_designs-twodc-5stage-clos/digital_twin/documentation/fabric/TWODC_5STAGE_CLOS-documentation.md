@@ -64,7 +64,7 @@
 ## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
-| ---- | ---- | -------------- | --------- | ----------| -------------- |
+| ---- | ---- | -------------- | --------- | --------- | -------------- |
 | l2leaf | DC1-POD1-L2LEAF1A | Ethernet1 | l3leaf | DC1-POD1-LEAF1A | Ethernet3 |
 | l2leaf | DC1-POD1-L2LEAF2A | Ethernet1 | l3leaf | DC1.POD1.LEAF2A | Ethernet3 |
 | l2leaf | DC1-POD1-L2LEAF2A | Ethernet2 | l3leaf | DC1-POD1-LEAF2B | Ethernet3 |
@@ -274,7 +274,7 @@
 ### Connected Endpoints
 
 | Name | Type | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
-| ---- | ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ----------- | ------------------- | ------- |
+| ---- | ---- | ---- | ------------- | ----------- | ----------- | -------- | ---- | ----------- | ------------------- | ------- |
 | server-3 | - | Eth1 | DC1.POD1.LEAF2A | Ethernet27 | server-3_Eth1 | False | access | 110 | - | TENANT_A |
 | server-3 | - | Eth2 | DC1-POD1-LEAF2B | Ethernet27 | server-3_Eth2 | False | access | 110 | - | TENANT_A |
 | server-4 | SpecialEndpoint | Eth5 | DC1.POD1.LEAF2A | Port-Channel28(Ethernet28) | PortChannel | False | access | 110 | - | NESTED_TENANT_A |
@@ -283,7 +283,7 @@
 ### Servers
 
 | Name | Type | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
-| ---- | ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ----------- | ------------------- | ------- |
+| ---- | ---- | ---- | ------------- | ----------- | ----------- | -------- | ---- | ----------- | ------------------- | ------- |
 | server-1 | server | Eth1 | DC1.POD1.LEAF2A | Port-Channel16(Ethernet16) | PortChannel | False | access | 110 | - | TENANT_A |
 | server-1 | server | Eth3 | DC1.POD1.LEAF2A | Port-Channel17(Ethernet17) | Set using structured_config on server adapter port-channel | False | access | 110 | - | TENANT_A |
 | server-1 | server | Eth5 | DC1.POD1.LEAF2A | Port-Channel18(Ethernet18) | PortChannel | False | access | 110 | - | NESTED_TENANT_A |

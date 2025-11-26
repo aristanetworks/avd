@@ -82,19 +82,23 @@ vlan_internal_order:
 vlans:
 - id: 3910
   name: SVI_3910
-  tenant: TEST
+  metadata:
+    tenant: TEST
 - id: 2910
   name: L2VLAN_2910
-  tenant: TEST
+  metadata:
+    tenant: TEST
 - id: 2911
   name: L2VLAN_2911
-  tenant: TEST
+  metadata:
+    tenant: TEST
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST
   ip_routing: true
-  tenant: TEST
+  metadata:
+    tenant: TEST
 vxlan_interface:
   vxlan1:
     description: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1_VTEP

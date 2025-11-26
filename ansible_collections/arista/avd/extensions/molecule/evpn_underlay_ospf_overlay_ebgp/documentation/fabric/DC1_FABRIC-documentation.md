@@ -42,7 +42,7 @@
 ## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
-| ---- | ---- | -------------- | --------- | ----------| -------------- |
+| ---- | ---- | -------------- | --------- | --------- | -------------- |
 | l3leaf | DC1-BL1A | Ethernet1 | spine | DC1-SPINE1 | Ethernet6 |
 | l3leaf | DC1-BL1A | Ethernet2 | spine | DC1-SPINE2 | Ethernet6 |
 | l3leaf | DC1-BL1A | Ethernet3 | spine | DC1-SPINE3 | Ethernet6 |

@@ -45,7 +45,7 @@
 ## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
-| ---- | ---- | -------------- | --------- | ----------| -------------- |
+| ---- | ---- | -------------- | --------- | --------- | -------------- |
 | l3leaf | site1-border1 | Ethernet3 | wan_router | site1-wan1 | Ethernet1 |
 | l3leaf | site1-border1 | Ethernet3.100 | wan_router | site1-wan1 | Ethernet1.100 |
 | l3leaf | site1-border1 | Ethernet3.101 | wan_router | site1-wan1 | Ethernet1.101 |

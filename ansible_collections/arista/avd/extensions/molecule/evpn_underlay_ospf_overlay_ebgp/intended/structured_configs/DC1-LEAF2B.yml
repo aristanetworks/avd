@@ -398,26 +398,31 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 210
   name: Tenant_B_OP_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 3019
   name: MLAG_L3_VRF_Tenant_B_OP_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_B_OP_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 vxlan_interface:
   vxlan1:
     description: DC1-LEAF2B_VTEP
