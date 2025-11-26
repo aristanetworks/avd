@@ -282,9 +282,7 @@ class FabricDocumentationFacts(AvdFacts):
                     mode = get(port_channel_interface, "switchport.mode", default="-")
                     access_vlan = get(port_channel_interface, "switchport.access_vlan", default="-")
                     trunk_allowed_vlan = get(port_channel_interface, "switchport.trunk.allowed_vlan", default="-")
-                    fabric_port = port_channel_interface["name"]
-                    if peer_interface := get(ethernet_interface, "metadata.peer_interface"):
-                        fabric_port = f"{fabric_port}({ethernet_interface['name']})"
+                    fabric_port = f"{port_channel_interface['name']}({ethernet_interface['name']})"
                 else:
                     port_channel_interface = {}
                     description = get(ethernet_interface, "description", default="-")
