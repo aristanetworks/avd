@@ -287,25 +287,24 @@ serialize = [
     "{major}.{minor}.{patch}",
 ]
 
-# For later use
-# [[tool.bumpversion.files]]
-# filename = "python-avd/pyproject.toml"
-# search = '"pyavd-utils=={current_version}"'
-# replace = '"pyavd-utils=={new_version}"'
-# parse = """(?x)
-#     (?P<major>0|[1-9]\\d*)\\.
-#     (?P<minor>0|[1-9]\\d*)\\.
-#     (?P<patch>0|[1-9]\\d*)
-#     (?:
-#         \\.                           # dot separator for pre-release section
-#         (?P<pre_l>[a-zA-Z-]+)         # pre-release label
-#         (?P<pre_n>0|[1-9]\\d*)        # pre-release version number
-#     )?                                # pre-release section is optional
-# """
-# serialize = [
-#     "{major}.{minor}.{patch}.{pre_l}{pre_n}",
-#     "{major}.{minor}.{patch}",
-# ]
+[[tool.bumpversion.files]]
+filename = "python-avd/pyproject.toml"
+search = '"pyavd-utils=={current_version}"'
+replace = '"pyavd-utils=={new_version}"'
+parse = """(?x)
+    (?P<major>0|[1-9]\\d*)\\.
+    (?P<minor>0|[1-9]\\d*)\\.
+    (?P<patch>0|[1-9]\\d*)
+    (?:
+        \\.                           # dot separator for pre-release section
+        (?P<pre_l>[a-zA-Z-]+)         # pre-release label
+        (?P<pre_n>0|[1-9]\\d*)        # pre-release version number
+    )?                                # pre-release section is optional
+"""
+serialize = [
+    "{major}.{minor}.{patch}.{pre_l}{pre_n}",
+    "{major}.{minor}.{patch}",
+]
 
 [[tool.bumpversion.files]]
 filename = "pyavd-utils/pyavd_utils/__init__.py"

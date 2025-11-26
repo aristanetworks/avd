@@ -31,6 +31,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: PTP_TESTS
+  validate_hardware:
+    enabled: false
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_ptp-test-leaf_Port-Channel14

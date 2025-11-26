@@ -109,6 +109,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
 mlag_configuration:
   domain_id: DC1_L3_LEAF1
   local_interface: Vlan4094
