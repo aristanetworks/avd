@@ -41,15 +41,25 @@ VALID_VERSION_TESTS = [
 ]
 
 MSG_SIZE_HANDLER_TESTS = [
-    # Format: data, max_len, expected_response (list of ints where each entry is one execution and the int is the number of entries covered)
-    pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5, [5, 5], id="equal_sized_chunks_1"),
-    pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, [3, 3, 3], id="equal_sized_chunks_2"),
-    pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9], 1, [1, 1, 1, 1, 1, 1, 1, 1, 1], id="equal_sized_chunks_3"),
+    # Format: data, max_len, expected_response (sized iterable of ints where each entry is one execution and the int is the number of entries covered)
+    pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5, [5, 5], id="list_equal_sized_chunks_1"),
+    pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, [3, 3, 3], id="list_equal_sized_chunks_2"),
+    pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9], 1, [1, 1, 1, 1, 1, 1, 1, 1, 1], id="list_equal_sized_chunks_3"),
+    pytest.param({1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 5, [5, 5], id="set_equal_sized_chunks_1"),
+    pytest.param({1, 2, 3, 4, 5, 6, 7, 8, 9}, 3, [3, 3, 3], id="set_equal_sized_chunks_2"),
+    pytest.param({1, 2, 3, 4, 5, 6, 7, 8, 9}, 1, [1, 1, 1, 1, 1, 1, 1, 1, 1], id="set_equal_sized_chunks_3"),
+    pytest.param((1, 2, 3, 4, 5, 6, 7, 8, 9, 10), 5, [5, 5], id="tuple_equal_sized_chunks_1"),
+    pytest.param((1, 2, 3, 4, 5, 6, 7, 8, 9), 3, [3, 3, 3], id="tuple_equal_sized_chunks_2"),
+    pytest.param((1, 2, 3, 4, 5, 6, 7, 8, 9), 1, [1, 1, 1, 1, 1, 1, 1, 1, 1], id="tuple_equal_sized_chunks_3"),
     # The items are chunked by calculating a ratio. This ratio rounds up, so the number of items per message is rounded down. So numbers below can look funny.
     # This is on purpose since this is actually variable sized items in bytes fitting into messages of 10MB.
     # We wish to pack many but also avoid many attempts stepping over the boundary.
-    pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9], 4, [3, 3, 3], id="variable_sized_chunks_1"),
-    pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9], 5, [4, 4, 1], id="variable_sized_chunks_2"),
+    pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9], 4, [3, 3, 3], id="list_variable_sized_chunks_1"),
+    pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9], 5, [4, 4, 1], id="list_variable_sized_chunks_2"),
+    pytest.param({1, 2, 3, 4, 5, 6, 7, 8, 9}, 4, [3, 3, 3], id="set_variable_sized_chunks_1"),
+    pytest.param({1, 2, 3, 4, 5, 6, 7, 8, 9}, 5, [4, 4, 1], id="set_variable_sized_chunks_2"),
+    pytest.param((1, 2, 3, 4, 5, 6, 7, 8, 9), 4, [3, 3, 3], id="tuple_variable_sized_chunks_1"),
+    pytest.param((1, 2, 3, 4, 5, 6, 7, 8, 9), 5, [4, 4, 1], id="tuple_variable_sized_chunks_2"),
 ]
 
 
@@ -79,7 +89,7 @@ class CvClass:
         return (CVAAS_VERSION_STRING, CVAAS_VERSION_STRING)
 
     @GRPCRequestHandler(iter_field="field")
-    async def msgsize_limited_method(self, field: list, max_accepted_len: int) -> list[bool]:
+    async def msgsize_limited_method(self, field: list[Any] | set[Any] | tuple[Any, ...], max_accepted_len: int) -> list[int]:
         # Check if the number of entries is higher than the max accepted length and raise.
         if len(field) > max_accepted_len:
             raise GRPCError(status=Status.RESOURCE_EXHAUSTED, message=f"grpc: received message larger than max ({len(field)} vs. {max_accepted_len})")
@@ -170,7 +180,7 @@ async def test_valid_versions(version: str, expected_response: tuple[str, str]) 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(("data", "max_len", "expected_response"), MSG_SIZE_HANDLER_TESTS)
-async def test_msg_size_handler(data: list, max_len: int, expected_response: list[int]) -> None:
+async def test_msg_size_handler(data: list | set | tuple, max_len: int, expected_response: list[int]) -> None:
     resp = await CvClass(CvVersion(CVAAS_VERSION_STRING)).msgsize_limited_method(field=data, max_accepted_len=max_len)
     assert resp == expected_response
 
