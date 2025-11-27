@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from contextlib import nullcontext as does_not_raise
-from logging import getLogger
+from logging import getLogger, INFO
 from os import environ
 
 import pytest
@@ -104,12 +104,16 @@ async def test_verify_devices_in_cloudvision_inventory(
 )
 @pytest.mark.filterwarnings("ignore:Unverified HTTPS request is being made to host")
 async def test_verify_devices_on_cv_message_splitting(
+    caplog: pytest.LogCaptureFixture,
     targeted_cv: dict[str, str],
     verify_certs: bool,
     device_topology_inputs: list[tuple[str, str, str]],
 ) -> None:
     """Test ability to gracefully push amount of device inputs which exceeds the message limit (23230607 vs. 20971520 max)."""
-    with does_not_raise():
+    with (
+        does_not_raise(),
+        caplog.at_level(INFO)
+    ):
         async with CVClient(
             servers=targeted_cv["cv_server"],
             token=targeted_cv["cv_access_token"],
@@ -121,6 +125,8 @@ async def test_verify_devices_on_cv_message_splitting(
                 await create_workspace_on_cv(workspace=workspace, cv_client=cv_client)
                 # Set I&T Studio topology inputs
                 await cv_client.set_topology_studio_inputs(workspace_id=workspace.id, device_inputs=device_topology_inputs)
+                # Confirm MAX message size
+                assert "exceeded the max of 20971520 for" in next(iter(msg.message for msg in caplog.records if "Message size" in msg.message))
             finally:
                 try:
                     # Try to clean Workspace on all CVs to leave no traces
