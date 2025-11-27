@@ -11,7 +11,6 @@ Serial Number: DEADBEEFC0FFEW
   - [Management Interfaces](#management-interfaces)
   - [DNS Domain](#dns-domain)
   - [IP Domain-list](#ip-domain-list)
-  - [IP Name Servers](#ip-name-servers)
   - [IP Name Server Groups](#ip-name-server-groups)
   - [Domain Lookup](#domain-lookup)
   - [Clock Settings](#clock-settings)
@@ -477,34 +476,6 @@ dns domain test.local
 ip domain-list domain1.local
 ip domain-list domain2.local
 !
-```
-
-### IP Name Servers
-
-#### IP Name Servers Summary
-
-| Name Server | VRF | Priority |
-| ----------- | --- | -------- |
-| 10.10.128.10 | default | - |
-| 10.10.129.10 | default | 0 |
-| 10.10.128.10 | mgmt | - |
-| 10.10.128.10 | TEST | 3 |
-| 2001:db8::1 | default | - |
-| 2001:db8::2 | default | 0 |
-| 2001:db8::1 | mgmt | - |
-| 2001:db8::2 | TEST | 3 |
-
-#### IP Name Servers Device Configuration
-
-```eos
-ip name-server vrf default 10.10.128.10
-ip name-server vrf mgmt 10.10.128.10
-ip name-server vrf TEST 10.10.128.10 priority 3
-ip name-server vrf default 10.10.129.10 priority 0
-ip name-server vrf default 2001:db8::1
-ip name-server vrf mgmt 2001:db8::1
-ip name-server vrf default 2001:db8::2 priority 0
-ip name-server vrf TEST 2001:db8::2 priority 3
 ```
 
 ### IP Name Server Groups

@@ -492,7 +492,7 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-http-clie
 ### IP name servers
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-name-servers.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-name-server.md
 --8<--
 
 ### IP name server groups
