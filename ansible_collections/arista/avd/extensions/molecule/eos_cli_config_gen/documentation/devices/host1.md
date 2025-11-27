@@ -9210,7 +9210,7 @@ router bgp 65101
    neighbor MPLS-IBGP-PEERS peer group
    neighbor MPLS-IBGP-PEERS remote-as 65000
    neighbor MPLS-IBGP-PEERS local-as 65000 no-prepend replace-as
-   neighbor MPLS-IBGP-PEERS password 7 <removed>
+   neighbor MPLS-IBGP-PEERS password 8a <removed>
    neighbor MPLS-IBGP-PEERS send-community
    neighbor MPLS-IBGP-PEERS maximum-routes 0
    neighbor MULTIPLE-COMMUNITY peer group
@@ -9356,6 +9356,7 @@ router bgp 65101
    neighbor 192.168.255.3 missing-policy address-family all direction in action deny
    neighbor 192.168.255.4 remote-as 65004
    neighbor 192.168.255.4 send-community
+   neighbor 192.168.255.11 password 8a <removed>
    neighbor 192.168.255.21 peer group EVPN-OVERLAY-PEERS
    no neighbor 192.168.255.21 rib-in pre-policy retain
    neighbor 192.168.255.21 missing-policy address-family all direction out action deny-in-out
@@ -9982,6 +9983,7 @@ router bgp 65101
    !
    vrf NHP-PEER1
       neighbor 11.11.11.0 next-hop-peer
+      neighbor 11.11.11.0 password 8a <removed>
    !
    vrf RED-C1
       rd 1.0.1.1:102

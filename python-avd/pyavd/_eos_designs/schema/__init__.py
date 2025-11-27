@@ -57752,6 +57752,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    PasswordType: TypeAlias = Literal["7", "8a"]
+
                     class DefaultOriginate(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -58025,6 +58027,7 @@ class EosDesigns(EosDesignsRootModel):
                         "ebgp_multihop": {"type": int},
                         "next_hop_peer": {"type": bool},
                         "next_hop_self": {"type": bool},
+                        "password_type": {"type": str, "default": "7"},
                         "passive": {"type": bool},
                         "default_originate": {"type": DefaultOriginate},
                         "send_community": {"type": str},
@@ -58121,6 +58124,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Time-to-live in range of hops."""
                     next_hop_peer: bool | None
                     next_hop_self: bool | None
+                    password_type: PasswordType
+                    """Default value: `"7"`"""
                     passive: bool | None
                     default_originate: DefaultOriginate
                     """Subclass of AvdModel."""
@@ -58191,6 +58196,7 @@ class EosDesigns(EosDesignsRootModel):
                             ebgp_multihop: int | None | UndefinedType = Undefined,
                             next_hop_peer: bool | None | UndefinedType = Undefined,
                             next_hop_self: bool | None | UndefinedType = Undefined,
+                            password_type: PasswordType | UndefinedType = Undefined,
                             passive: bool | None | UndefinedType = Undefined,
                             default_originate: DefaultOriginate | UndefinedType = Undefined,
                             send_community: str | None | UndefinedType = Undefined,
@@ -58270,6 +58276,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ebgp_multihop: Time-to-live in range of hops.
                                 next_hop_peer: next_hop_peer
                                 next_hop_self: next_hop_self
+                                password_type: password_type
                                 passive: passive
                                 default_originate: Subclass of AvdModel.
                                 send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
@@ -63721,6 +63728,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        PasswordType: TypeAlias = Literal["7", "8a"]
+
                         class DefaultOriginate(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -63998,6 +64007,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ebgp_multihop": {"type": int},
                             "next_hop_peer": {"type": bool},
                             "next_hop_self": {"type": bool},
+                            "password_type": {"type": str, "default": "7"},
                             "passive": {"type": bool},
                             "default_originate": {"type": DefaultOriginate},
                             "send_community": {"type": str},
@@ -64094,6 +64104,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Time-to-live in range of hops."""
                         next_hop_peer: bool | None
                         next_hop_self: bool | None
+                        password_type: PasswordType
+                        """Default value: `"7"`"""
                         passive: bool | None
                         default_originate: DefaultOriginate
                         """Subclass of AvdModel."""
@@ -64164,6 +64176,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ebgp_multihop: int | None | UndefinedType = Undefined,
                                 next_hop_peer: bool | None | UndefinedType = Undefined,
                                 next_hop_self: bool | None | UndefinedType = Undefined,
+                                password_type: PasswordType | UndefinedType = Undefined,
                                 passive: bool | None | UndefinedType = Undefined,
                                 default_originate: DefaultOriginate | UndefinedType = Undefined,
                                 send_community: str | None | UndefinedType = Undefined,
@@ -64243,6 +64256,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ebgp_multihop: Time-to-live in range of hops.
                                     next_hop_peer: next_hop_peer
                                     next_hop_self: next_hop_self
+                                    password_type: password_type
                                     passive: passive
                                     default_originate: Subclass of AvdModel.
                                     send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
@@ -86262,7 +86276,7 @@ class EosDesigns(EosDesignsRootModel):
         "evpn_multicast": {"type": bool, "default": False},
         "evpn_overlay_bgp_rtc": {"type": bool, "default": False},
         "evpn_prevent_readvertise_to_server": {"type": bool, "default": False},
-        "evpn_prevent_readvertise_to_server_mode": {"type": str, "default": "source_peer_asn"},
+        "evpn_prevent_readvertise_to_server_mode": {"type": str, "default": "as_path_acl"},
         "evpn_short_esi_prefix": {"type": str, "default": "0000:0000:"},
         "evpn_vlan_aware_bundles": {"type": bool, "default": False},
         "evpn_vlan_bundles": {"type": EvpnVlanBundles},
@@ -87448,7 +87462,7 @@ class EosDesigns(EosDesignsRootModel):
     `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
     updates with the route-server ASN anywhere in the AS-path.
 
-    Default value: `"source_peer_asn"`
+    Default value: `"as_path_acl"`
     """
     evpn_short_esi_prefix: str
     """
