@@ -32,7 +32,7 @@ if TYPE_CHECKING:
 class AvdDataConverter:
     """AvdDataConverter is used to convert AVD Data Types based on schema options."""
 
-    def __init__(self, schema: dict) -> None:
+    def __init__(self, schema: dict[str, Any]) -> None:
         self.schema = schema
 
         # We run through all the regular keys first, to ensure that all data has been converted
