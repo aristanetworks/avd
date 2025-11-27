@@ -43,7 +43,7 @@ jobs:
           pip install bump-my-version
           bump-my-version replace \
             --regex \
-            --search "__version__ = .*" \
+            --search "__version__ = \"[^\n]*\"" \
             --replace "__version__ = \"${{ inputs.TESTPYPI_VERSION }}\"" \
             pyavd_utils/__init__.py
       - name: Build wheels
