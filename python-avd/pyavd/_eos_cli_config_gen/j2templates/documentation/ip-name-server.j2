@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# doc - ip name servers #}
-{% if ip_name_servers is arista.avd.defined %}
+{% if ip_name_server is arista.avd.defined %}
 
 ### IP Name Servers
 
@@ -12,13 +12,15 @@
 
 | Name Server | VRF | Priority |
 | ----------- | --- | -------- |
-{%     for name_server in ip_name_servers | arista.avd.default([]) %}
-| {{ name_server.ip_address }} | {{ name_server.vrf | arista.avd.default('-') }} | {{ name_server.priority | arista.avd.default('-') }} |
+{%     for vrf in ip_name_server.vrfs | arista.avd.default([]) %}
+{%         for name_server in vrf.servers %}
+| {{ name_server.ip_address }} | {{ vrf.name }} | {{ name_server.priority | arista.avd.default('-') }} |
+{%         endfor %}
 {%     endfor %}
 
 #### IP Name Servers Device Configuration
 
 ```eos
-{%     include 'eos/ip-name-servers.j2' %}
+{%     include 'eos/ip-name-server.j2' %}
 ```
 {% endif %}

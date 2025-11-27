@@ -21,7 +21,7 @@ ip_name_server:
     - name: TEST
       servers:
         - ip_address: 4.4.4.4
-        - ip_address: 2001:db8::2
-          priority: 3
         - ip_address: 10.10.128.10
+          priority: 3
+        - ip_address: 2001:db8::2
           priority: 3
