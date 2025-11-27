@@ -250,7 +250,7 @@ class AvdValidator:
                     )
             case "mac":
                 # Matching for format 01:23:45:67:89:AB or 0123.4567.89ab or 0123:4567:89ab
-                if fullmatch(r"([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}|([0-9a-fA-F]{4}[:\.]){2}[0-9a-fA-F]{4}", str(instance)) is None:
+                if fullmatch(r"([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}|([0-9a-fA-F]{4}[:\.]){2}[0-9a-fA-F]{4}", instance) is None:
                     yield AvdValidationError(
                         f"The value '{instance}' is not a valid MAC address (Expecting bytes separated by colons like 01:23:45:67:89:AB).", path=path
                     )
