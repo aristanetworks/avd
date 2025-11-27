@@ -117,6 +117,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: WAN
+  validate_hardware:
+    enabled: false
 mlag_configuration:
   domain_id: SITE4
   local_interface: Vlan4094

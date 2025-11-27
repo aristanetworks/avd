@@ -228,6 +228,8 @@ metadata:
   is_deployed: true
   platform: CloudEOS
   fabric_name: WAN
+  validate_hardware:
+    enabled: false
   cv_tags:
     device_tags:
     - name: Role

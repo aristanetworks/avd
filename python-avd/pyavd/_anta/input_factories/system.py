@@ -15,9 +15,10 @@ class VerifyReloadCauseInputFactory(AntaTestInputFactory[VerifyReloadCause.Input
     The following EOS reload causes are allowed:
     - ZTP: "System reloaded due to Zero Touch Provisioning"
     - USER: "Reload requested by the user."
+    - USER_HITLESS: "Hitless reload requested by the user."
     - FPGA: "Reload requested after FPGA upgrade"
     """
 
     def create(self) -> list[VerifyReloadCause.Input] | None:
         """Create a list of inputs for the `VerifyReloadCause` test."""
-        return [VerifyReloadCause.Input(allowed_causes=["USER", "FPGA", "ZTP"])]
+        return [VerifyReloadCause.Input(allowed_causes=["USER", "FPGA", "ZTP", "USER_HITLESS"])]

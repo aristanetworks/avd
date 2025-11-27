@@ -91,7 +91,7 @@
 #### SNMP Hosts Configuration
 
 | Host | VRF | Community | Username | Authentication level | SNMP Version |
-| ---- |---- | --------- | -------- | -------------------- | ------------ |
+| ---- | --- | --------- | -------- | -------------------- | ------------ |
 {%         for host in snmp_server.hosts %}
 {%             if host.host is arista.avd.defined %}
 {%                 set row_host = host.host %}

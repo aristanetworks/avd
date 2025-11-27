@@ -125,67 +125,19 @@ dc2-spine1,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Softw
 dc2-spine2,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-leaf1a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-leaf1b,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc1-leaf1c,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-leaf2a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc1-leaf2c,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc1-spine1,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc1-spine2,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc1-svc-leaf1a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc1-svc-leaf1b,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-wan1,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-wan2,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf1a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf1b,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf1c,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf2a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf2b,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf2c,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf3a.arista.com,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-leaf3b.arista.com,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-spine1,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
-dc2-spine2,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-leaf1a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
 dc1-leaf1b,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc1-leaf1c,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
 dc1-leaf2a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc1-leaf2c,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc1-spine1,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc1-spine2,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc1-svc-leaf1a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc1-svc-leaf1b,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
 dc1-wan1,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
 dc1-wan2,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf1a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf1b,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf1c,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf2a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf2b,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf2c,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf3a.arista.com,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-leaf3b.arista.com,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-spine1,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
-dc2-spine2,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
 dc1-leaf1a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-leaf1b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc1-leaf1c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-leaf2a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc1-leaf2c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc1-spine1,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc1-spine2,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc1-svc-leaf1a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc1-svc-leaf1b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-wan1,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-wan2,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf1a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf1b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf1c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf2a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf2b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf2c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf3a.arista.com,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-leaf3b.arista.com,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-spine1,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
-dc2-spine2,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-leaf1b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-leaf1c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
@@ -330,25 +282,9 @@ dc2-spine1,VerifyInterfacesStatus,unset,,Verifies the operational states of spec
 dc2-spine2,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-leaf1a,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-leaf1b,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc1-leaf1c,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-leaf2a,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc1-leaf2c,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc1-spine1,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc1-spine2,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc1-svc-leaf1a,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc1-svc-leaf1b,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-wan1,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-wan2,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf1a,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf1b,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf1c,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf2a,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf2b,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf2c,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf3a.arista.com,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-leaf3b.arista.com,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-spine1,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
-dc2-spine2,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-leaf1c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -645,25 +581,9 @@ dc1-leaf1a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-
 dc1-leaf2a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc1-leaf1a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
 dc1-leaf1b,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc1-leaf1c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
 dc1-leaf2a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc1-leaf2c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc1-spine1,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc1-spine2,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc1-svc-leaf1a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc1-svc-leaf1b,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
 dc1-wan1,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
 dc1-wan2,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf1a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf1b,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf1c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf2a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf2b,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf2c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf3a.arista.com,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-leaf3b.arista.com,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-spine1,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc2-spine2,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
 dc1-leaf1a,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
 dc1-leaf1b,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
 dc1-leaf1c,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
@@ -687,46 +607,14 @@ dc2-spine1,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the
 dc2-spine2,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
 dc1-leaf1a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-leaf1b,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc1-leaf1c,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-leaf2a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc1-leaf2c,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc1-spine1,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc1-spine2,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc1-svc-leaf1a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc1-svc-leaf1b,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-wan1,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-wan2,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf1a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf1b,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf1c,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf2a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf2b,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf2c,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf3a.arista.com,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-leaf3b.arista.com,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-spine1,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
-dc2-spine2,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-leaf1a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-leaf1b,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc1-leaf1c,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-leaf2a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc1-leaf2c,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc1-spine1,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc1-spine2,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc1-svc-leaf1a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc1-svc-leaf1b,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-wan1,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-wan2,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc2-leaf1a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc2-leaf1b,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc2-leaf1c,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc2-leaf2a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc2-leaf2b,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc2-leaf2c,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc2-leaf3a.arista.com,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc2-leaf3b.arista.com,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc2-spine1,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc2-spine2,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-leaf2a,VerifyVxlan1ConnSettings,unset,,Verifies Vxlan1 source interface and UDP port.,VXLAN
 dc2-leaf2a,VerifyVxlan1ConnSettings,unset,,Verifies Vxlan1 source interface and UDP port.,VXLAN
 dc2-leaf2b,VerifyVxlan1ConnSettings,unset,,Verifies Vxlan1 source interface and UDP port.,VXLAN

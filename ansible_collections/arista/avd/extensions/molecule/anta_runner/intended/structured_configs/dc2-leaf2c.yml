@@ -67,6 +67,8 @@ metadata:
   platform: vEOS-lab
   dc_name: DC2
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_DC2_L3_LEAF2_Port-Channel8
