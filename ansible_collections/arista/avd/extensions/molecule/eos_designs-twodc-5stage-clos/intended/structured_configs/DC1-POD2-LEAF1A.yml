@@ -1,5 +1,11 @@
 aaa_root:
   disabled: true
+as_path:
+  access_lists:
+  - name: AS65120
+    entries:
+    - type: permit
+      match: _65120_
 config_end: true
 domain_list:
 - structured-config.set.under.vrf.common-vrf
@@ -112,7 +118,7 @@ route_maps:
   - sequence: 10
     type: deny
     match:
-    - as 65120
+    - as-path AS65120
   - sequence: 20
     type: permit
 router_bfd:
