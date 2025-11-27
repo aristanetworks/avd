@@ -8,7 +8,7 @@ import re
 
 import pytest
 
-from pyavd.j2filters import secure_hash
+from pyavd.j2filters.secure_hash import secure_hash
 
 sha512_regex = r"^\$6\$[A-Za-z0-9\.\/]{16}\$[A-Za-z0-9\.\/]{86}"
 
