@@ -6200,6 +6200,7 @@ keys:
               type: str
               convert_types:
               - int
+              - int
             servers:
               type: list
               required: true
@@ -6215,6 +6216,7 @@ keys:
                     description: Priority value (lower is first).
                     type: int
                     convert_types:
+                    - str
                     - str
                     min: 0
                     max: 4

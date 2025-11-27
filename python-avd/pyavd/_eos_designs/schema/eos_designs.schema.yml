@@ -1918,7 +1918,7 @@ keys:
         type: list
         required: true
         min_length: 1
-        $ref: eos_cli_config_gen#/keys/ip_name_servers
+        $ref: eos_cli_config_gen#/keys/ip_name_server/keys/vrfs/items/keys/servers
         items:
           type: dict
           keys:

@@ -16436,6 +16436,75 @@ class EosDesigns(EosDesignsRootModel):
     class DnsSettings(AvdModel):
         """Subclass of AvdModel."""
 
+        class ServersItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"vrf": {"type": str, "default": "use_default_mgmt_method_vrf"}, "ip_address": {"type": str}, "priority": {"type": int}}
+            vrf: str
+            """
+            The value of `vrf` will be interpreted according to these rules:
+            - `use_mgmt_interface_vrf` will
+            configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as
+            DNS lookup source-interface.
+              An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not
+            configured for the device.
+            - `use_inband_mgmt_vrf` will configure the DNS server under the VRF set
+            with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
+              An
+            error will be raised if inband management is not configured for the device.
+            -
+            `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+            above depending on the value of `default_mgmt_method`.
+            - Any other string will be used directly as
+            the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
+
+            Default value: `"use_default_mgmt_method_vrf"`
+            """
+            ip_address: str
+            """IPv4 or IPv6 address for DNS server."""
+            priority: int | None
+            """Priority value (lower is first)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, vrf: str | UndefinedType = Undefined, ip_address: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    ServersItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        vrf:
+                           The value of `vrf` will be interpreted according to these rules:
+                           - `use_mgmt_interface_vrf` will
+                           configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as
+                           DNS lookup source-interface.
+                             An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not
+                           configured for the device.
+                           - `use_inband_mgmt_vrf` will configure the DNS server under the VRF set
+                           with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
+                             An
+                           error will be raised if inband management is not configured for the device.
+                           -
+                           `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+                           above depending on the value of `default_mgmt_method`.
+                           - Any other string will be used directly as
+                           the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
+                        ip_address: IPv4 or IPv6 address for DNS server.
+                        priority: Priority value (lower is first).
+
+                    """
+
+        class Servers(AvdIndexedList[str, ServersItem]):
+            """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `ip_address` (`str`)."""
+
+            _primary_key: ClassVar[str] = "ip_address"
+
+        Servers._item_type = ServersItem
+
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -16474,9 +16543,16 @@ class EosDesigns(EosDesignsRootModel):
 
         Vrfs._item_type = VrfsItem
 
-        _fields: ClassVar[dict] = {"domain": {"type": str}, "vrfs": {"type": Vrfs}, "set_source_interfaces": {"type": bool, "default": True}}
+        _fields: ClassVar[dict] = {
+            "domain": {"type": str},
+            "servers": {"type": Servers},
+            "vrfs": {"type": Vrfs},
+            "set_source_interfaces": {"type": bool, "default": True},
+        }
         domain: str | None
         """DNS domain name like 'fabric.local'"""
+        servers: Servers
+        """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `ip_address` (`str`)."""
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         set_source_interfaces: bool
@@ -16495,6 +16571,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 domain: str | None | UndefinedType = Undefined,
+                servers: Servers | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 set_source_interfaces: bool | UndefinedType = Undefined,
             ) -> None:
@@ -16506,6 +16583,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     domain: DNS domain name like 'fabric.local'
+                    servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `ip_address` (`str`).
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     set_source_interfaces:
                        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
