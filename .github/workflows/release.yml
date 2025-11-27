@@ -43,6 +43,7 @@ jobs:
 
   pyavd-utils-testpypi:
     name: Publish pyavd-utils to Test PyPI
+    needs: [build-pyavd-utils-wheels]
     runs-on: ubuntu-latest
     if: |
       github.event_name == 'release'
