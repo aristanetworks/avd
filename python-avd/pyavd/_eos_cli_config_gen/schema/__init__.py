@@ -21219,14 +21219,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
 
             _fields: ClassVar[dict] = {"certificate": {"type": str}, "private_key": {"type": str}}
-            certificate: str | None
+            certificate: str
             """Name of certificate; private key must also be specified."""
-            private_key: str | None
+            private_key: str
             """Name of private key; certificate must also be specified."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, certificate: str | None | UndefinedType = Undefined, private_key: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, certificate: str | UndefinedType = Undefined, private_key: str | UndefinedType = Undefined) -> None:
                     """
                     ProtocolHttpsCertificate.
 
@@ -23519,7 +23519,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class Metadata(AvdModel):
         """Subclass of AvdModel."""
 
-        class HardwareRequirements(AvdModel):
+        class ValidateHardware(AvdModel):
             """Subclass of AvdModel."""
 
             class TransceiverManufacturers(AvdList[str]):
@@ -23528,6 +23528,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             TransceiverManufacturers._item_type = str
 
             _fields: ClassVar[dict] = {
+                "enabled": {"type": bool, "default": True},
                 "min_power_supplies": {"type": int},
                 "min_fans": {"type": int},
                 "min_supervisors": {"type": int},
@@ -23538,16 +23539,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "default": lambda cls: coerce_type(["Arista Networks", "Arastra, Inc."], target_type=cls),
                 },
             }
+            enabled: bool
+            """
+            Enable hardware validation for the device.
+            If `false`, all hardware tests are skipped, therefore the
+            other keys in `validate_hardware` are ignored.
+
+            Default value: `True`
+            """
             min_power_supplies: int | None
-            """Minimum number of power supplies required for the device."""
+            """Minimum number of power supplies required for the device. Set to 0 to skip validation."""
             min_fans: int | None
-            """Minimum number of fans required for the device."""
+            """Minimum number of fans required for the device. Set to 0 to skip validation."""
             min_supervisors: int | None
-            """Minimum number of supervisor modules required for the device."""
+            """Minimum number of supervisor modules required for the device. Set to 0 to skip validation."""
             min_line_cards: int | None
-            """Minimum number of line cards required for the device."""
+            """Minimum number of line cards required for the device. Set to 0 to skip validation."""
             min_fabric_cards: int | None
-            """Minimum number of fabric cards required for the device."""
+            """Minimum number of fabric cards required for the device. Set to 0 to skip validation."""
             transceiver_manufacturers: TransceiverManufacturers
             """
             List of approved transceiver manufacturers for the device.
@@ -23562,6 +23571,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
+                    enabled: bool | UndefinedType = Undefined,
                     min_power_supplies: int | None | UndefinedType = Undefined,
                     min_fans: int | None | UndefinedType = Undefined,
                     min_supervisors: int | None | UndefinedType = Undefined,
@@ -23570,17 +23580,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     transceiver_manufacturers: TransceiverManufacturers | UndefinedType = Undefined,
                 ) -> None:
                     """
-                    HardwareRequirements.
+                    ValidateHardware.
 
 
                     Subclass of AvdModel.
 
                     Args:
-                        min_power_supplies: Minimum number of power supplies required for the device.
-                        min_fans: Minimum number of fans required for the device.
-                        min_supervisors: Minimum number of supervisor modules required for the device.
-                        min_line_cards: Minimum number of line cards required for the device.
-                        min_fabric_cards: Minimum number of fabric cards required for the device.
+                        enabled:
+                           Enable hardware validation for the device.
+                           If `false`, all hardware tests are skipped, therefore the
+                           other keys in `validate_hardware` are ignored.
+                        min_power_supplies: Minimum number of power supplies required for the device. Set to 0 to skip validation.
+                        min_fans: Minimum number of fans required for the device. Set to 0 to skip validation.
+                        min_supervisors: Minimum number of supervisor modules required for the device. Set to 0 to skip validation.
+                        min_line_cards: Minimum number of line cards required for the device. Set to 0 to skip validation.
+                        min_fabric_cards: Minimum number of fabric cards required for the device. Set to 0 to skip validation.
                         transceiver_manufacturers:
                            List of approved transceiver manufacturers for the device.
 
@@ -24776,11 +24790,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "dc_name": {"type": str},
             "fabric_name": {"type": str},
             "serial_number": {"type": str},
-            "hardware_requirements": {"type": HardwareRequirements},
+            "validate_hardware": {"type": ValidateHardware},
             "cv_tags": {"type": CvTags},
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
             "validate_no_errors_period": {"type": int},
+            "exclude_as_extra_fabric_validation_target": {"type": bool},
         }
         is_deployed: bool | None
         """Key only used for documentation or validation purposes."""
@@ -24796,11 +24811,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Used only for documentation and deployment purposes. It is used by the
         'cv_deploy' role.
         """
-        hardware_requirements: HardwareRequirements
+        validate_hardware: ValidateHardware
         """
-        Defines the minimum hardware specifications required for the device.
-        Used for validation by the
-        `anta_runner` role.
+        Settings for hardware validation performed by the `anta_runner` role.
+        If `enabled` is set to
+        `false`, all other keys in this dictionary are ignored.
+
+        For the `min_*` keys:
+        - Undefined
+        (Default): Validate that all available slots are populated.
+        - Positive Integer: Validate that the
+        number of components inserted is at least the specified minimum.
+        - 0: Skip the validation for this
+        specific component.
 
         Subclass of AvdModel.
         """
@@ -24823,6 +24846,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
         the validation performed by the `anta_runner` role.
         """
+        exclude_as_extra_fabric_validation_target: bool | None
+        """
+        Exclude this node from being used as a destination target from other fabric devices in the extra
+        fabric validation tests performed by the `anta_runner` role.
+        """
 
         if TYPE_CHECKING:
 
@@ -24837,11 +24865,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 dc_name: str | None | UndefinedType = Undefined,
                 fabric_name: str | None | UndefinedType = Undefined,
                 serial_number: str | None | UndefinedType = Undefined,
-                hardware_requirements: HardwareRequirements | UndefinedType = Undefined,
+                validate_hardware: ValidateHardware | UndefinedType = Undefined,
                 cv_tags: CvTags | UndefinedType = Undefined,
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validate_no_errors_period: int | None | UndefinedType = Undefined,
+                exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -24861,10 +24890,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Serial Number of the device.
                        Used only for documentation and deployment purposes. It is used by the
                        'cv_deploy' role.
-                    hardware_requirements:
-                       Defines the minimum hardware specifications required for the device.
-                       Used for validation by the
-                       `anta_runner` role.
+                    validate_hardware:
+                       Settings for hardware validation performed by the `anta_runner` role.
+                       If `enabled` is set to
+                       `false`, all other keys in this dictionary are ignored.
+
+                       For the `min_*` keys:
+                       - Undefined
+                       (Default): Validate that all available slots are populated.
+                       - Positive Integer: Validate that the
+                       number of components inserted is at least the specified minimum.
+                       - 0: Skip the validation for this
+                       specific component.
 
                        Subclass of AvdModel.
                     cv_tags: Subclass of AvdModel.
@@ -24879,6 +24916,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     validate_no_errors_period:
                        Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
                        the validation performed by the `anta_runner` role.
+                    exclude_as_extra_fabric_validation_target:
+                       Exclude this node from being used as a destination target from other fabric devices in the extra
+                       fabric validation tests performed by the `anta_runner` role.
 
                 """
 
@@ -24990,7 +25030,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": str}}
             name: str
-            interfaces: str | None
+            interfaces: str
             """
             Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
             Multiple interface
@@ -24999,7 +25039,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | UndefinedType = Undefined) -> None:
                     """
                     InterfaceSetsItem.
 
@@ -25427,8 +25467,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 PasswordType: TypeAlias = Literal["0", "7", "8a"]
                 _fields: ClassVar[dict] = {"username": {"type": str}, "password": {"type": str}, "password_type": {"type": str, "default": "7"}}
-                username: str | None
-                password: str | None
+                username: str
+                password: str
                 """Encrypted password using the `password_type`."""
                 password_type: PasswordType
                 """Default value: `"7"`"""
@@ -25438,8 +25478,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        username: str | None | UndefinedType = Undefined,
-                        password: str | None | UndefinedType = Undefined,
+                        username: str | UndefinedType = Undefined,
+                        password: str | UndefinedType = Undefined,
                         password_type: PasswordType | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -67473,6 +67513,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Metadata(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"tenant": {"type": str}}
+            tenant: str | None
+            """Key only used for documentation or validation purposes."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, tenant: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    Metadata.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        tenant: Key only used for documentation or validation purposes.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "id": {"type": int},
             "name": {"type": str},
@@ -67481,7 +67542,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "trunk_groups": {"type": TrunkGroups},
             "e_tree": {"type": ETree},
             "private_vlan": {"type": PrivateVlan},
-            "tenant": {"type": str},
+            "metadata": {"type": Metadata},
         }
         id: int
         """VLAN ID."""
@@ -67496,8 +67557,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         private_vlan: PrivateVlan
         """Subclass of AvdModel."""
-        tenant: str | None
-        """Key only used for documentation or validation purposes."""
+        metadata: Metadata
+        """
+        The data under `metadata` is used for documentation, validation or integration purposes.
+        It will not
+        affect the generated EOS configuration.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -67511,7 +67578,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 e_tree: ETree | UndefinedType = Undefined,
                 private_vlan: PrivateVlan | UndefinedType = Undefined,
-                tenant: str | None | UndefinedType = Undefined,
+                metadata: Metadata | UndefinedType = Undefined,
             ) -> None:
                 """
                 VlansItem.
@@ -67527,7 +67594,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     trunk_groups: Subclass of AvdList with `str` items.
                     e_tree: Subclass of AvdModel.
                     private_vlan: Subclass of AvdModel.
-                    tenant: Key only used for documentation or validation purposes.
+                    metadata:
+                       The data under `metadata` is used for documentation, validation or integration purposes.
+                       It will not
+                       affect the generated EOS configuration.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -67600,13 +67672,34 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class VrfsItem(AvdModel):
         """Subclass of AvdModel."""
 
+        class Metadata(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"tenant": {"type": str}}
+            tenant: str | None
+            """Key only used for documentation or validation purposes."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, tenant: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    Metadata.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        tenant: Key only used for documentation or validation purposes.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "description": {"type": str},
             "ip_routing": {"type": bool},
             "ipv6_routing": {"type": bool},
             "ip_routing_ipv6_interfaces": {"type": bool},
-            "tenant": {"type": str},
+            "metadata": {"type": Metadata},
         }
         name: str
         """VRF Name."""
@@ -67614,8 +67707,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ip_routing: bool | None
         ipv6_routing: bool | None
         ip_routing_ipv6_interfaces: bool | None
-        tenant: str | None
-        """Key only used for documentation or validation purposes."""
+        metadata: Metadata
+        """
+        The data under `metadata` is used for documentation, validation or integration purposes.
+        It will not
+        affect the generated EOS configuration.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -67627,7 +67726,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_routing: bool | None | UndefinedType = Undefined,
                 ipv6_routing: bool | None | UndefinedType = Undefined,
                 ip_routing_ipv6_interfaces: bool | None | UndefinedType = Undefined,
-                tenant: str | None | UndefinedType = Undefined,
+                metadata: Metadata | UndefinedType = Undefined,
             ) -> None:
                 """
                 VrfsItem.
@@ -67641,7 +67740,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_routing: ip_routing
                     ipv6_routing: ipv6_routing
                     ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces
-                    tenant: Key only used for documentation or validation purposes.
+                    metadata:
+                       The data under `metadata` is used for documentation, validation or integration purposes.
+                       It will not
+                       affect the generated EOS configuration.
+
+                       Subclass of AvdModel.
 
                 """
 

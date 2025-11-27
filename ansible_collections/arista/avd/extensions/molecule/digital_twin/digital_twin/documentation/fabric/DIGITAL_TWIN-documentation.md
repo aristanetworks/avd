@@ -42,7 +42,7 @@
 ## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
-| ---- | ---- | -------------- | --------- | ----------| -------------- |
+| ---- | ---- | -------------- | --------- | --------- | -------------- |
 | l2spine | digital-twin-default-interfaces-digital-twin-platform | Ethernet3 | l2leaf | digital-twin-default-interfaces-original-platform | Ethernet2 |
 | l3leaf | digital-twin-ethernet-ports-1 | Ethernet3 | l3leaf | digital.twin.ethernet.ports.2 | Ethernet3 |
 | l3leaf | digital-twin-ethernet-ports-1 | Ethernet4 | mlag_peer | digital.twin.ethernet.ports.2 | Ethernet4 |

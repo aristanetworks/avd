@@ -148,28 +148,33 @@ vlan_internal_order:
 vlans:
 - id: 10
   name: primary1
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 90
   name: secondary_isolated
   private_vlan:
     type: isolated
     primary_vlan: 2
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 100
   name: secondary_community
   private_vlan:
     type: community
     primary_vlan: 10
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 2
   name: primary2
-  tenant: TENANT2
+  metadata:
+    tenant: TENANT2
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST_VRF
   ip_routing: true
-  tenant: TENANT2
+  metadata:
+    tenant: TENANT2
 vxlan_interface:
   vxlan1:
     description: network-services-l2vlan-private-vlan_VTEP
