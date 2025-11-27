@@ -5,7 +5,6 @@ name: "Publish Python package"
   release:
     types:
       - published
-  pull_request:
   # Allow for manual trigger on the selected branch in UI
   # Reducing it to only execute on devel branch today.
   workflow_dispatch:
