@@ -43,7 +43,7 @@
 ### IPSec profiles
 
 | Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode | Flow Parallelization |
-| ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
+| ------------ | ---------- | --------- | ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
 {%         for profile in ip_security.profiles | arista.avd.natural_sort('name') %}
 {%             set ike_policy = profile.ike_policy | arista.avd.default("-") %}
 {%             set sa_policy = profile.sa_policy | arista.avd.default("-") %}

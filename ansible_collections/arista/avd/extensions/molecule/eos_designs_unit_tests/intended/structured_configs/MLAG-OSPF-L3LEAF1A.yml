@@ -237,7 +237,8 @@ vlans:
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

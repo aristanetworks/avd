@@ -335,9 +335,9 @@ $defs:
                 - third-party
                 - tools-server
                 - veos
-        validate_hardware_inventory:
+        validate_hardware:
           type: dict
-          $ref: eos_cli_config_gen#/keys/metadata/keys/hardware_requirements
+          $ref: eos_cli_config_gen#/keys/metadata/keys/validate_hardware
         structured_config:
           type: dict
           relaxed_validation: true

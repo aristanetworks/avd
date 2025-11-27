@@ -177,13 +177,16 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 100
   name: SVI_100
-  tenant: L2LS_OSPF
+  metadata:
+    tenant: L2LS_OSPF
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false
