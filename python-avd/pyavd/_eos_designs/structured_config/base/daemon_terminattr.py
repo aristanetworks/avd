@@ -32,14 +32,13 @@ class DaemonTerminattrMixin(Protocol):
         cv_settings = self.inputs.cv_settings
         sflow_settings = self.inputs.sflow_settings
 
-        if not cv_settings and sflow_settings.export_to_cloudvision.enabled:
-            msg = (
-                "CloudVision export is enabled for sFlow, but 'cv_settings' is not defined."
-                " Please configure 'cv_settings' when enabling 'sflow_settings.export_to_cloudvision.enabled'."
-            )
-            raise AristaAvdInvalidInputsError(msg)
-
         if not cv_settings:
+            if sflow_settings.export_to_cloudvision.enabled:
+                msg = (
+                    "CloudVision export is enabled for sFlow, but 'cv_settings' is not defined."
+                    " Please configure 'cv_settings' when enabling 'sflow_settings.export_to_cloudvision.enabled'."
+                )
+                raise AristaAvdInvalidInputsError(msg)
             return
 
         clusters: list[EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem] = (
