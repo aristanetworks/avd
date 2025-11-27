@@ -36,6 +36,9 @@ title: {{ collection | default("arista.avd", true) ~ "." ~ module }}
 {%         if spec.max %}
 {%             set _ = restrictions.append("Max value: <code>" ~ spec.max ~ "</code>") %}
 {%         endif %}
+{%         if restrictions | length == 0 %}
+{%             set restrictions = ["-"] %}
+{%         endif %}
 {%         set description = spec.description | map("e") | join("<br>") | trim | replace("\n", "<br>") %}
 | <samp>{{ "&nbsp;" * 4 * level }}{{ name }}</samp> | {{ typ }} | {{ req }} | {{ def_val }} | {{ restrictions | join("<br>") }} | {{ description }} |
 {%         if spec.suboptions %}

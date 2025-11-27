@@ -4,7 +4,8 @@ dynamic = ["version"]
 authors=[{ name = "Arista Networks", email = "avd-dev@arista.com"}]
 description="Rust based utilities used by PyAVD. Should not be used directly and may not follow semantic versioning."
 readme = "README.md"
-license = { file = "pyavd_utils/LICENSE" }
+license = "Apache-2.0"
+license-files = ["pyavd_utils/LICENSE"]
 classifiers = [
     "Operating System :: OS Independent",
     "Development Status :: 5 - Production/Stable",
@@ -61,3 +62,41 @@ extend = "../pyproject.toml"
 [tool.pyright]
 # Pyright stops at the first parent pyproject.toml it finds so as documented adding base config
 extends = "../pyproject.toml"
+
+# -------------------------------------- #
+# cibuildwheel configuration
+# -------------------------------------- #
+[tool.cibuildwheel]
+skip = [
+    "cp38-*",
+    "cp39-*",
+    "*-win32",
+    "*-musllinux*",
+    "*_i686",
+    "cp3??t-*", # for now building with cp310 which does not work with free threading
+]
+
+before-all = "uname -a"
+
+[tool.cibuildwheel.linux]
+before-build = "curl -sSf https://sh.rustup.rs | sh -s -- -y"
+repair-wheel-command = [
+  "auditwheel repair -w {dest_dir} {wheel}",
+  "pipx run abi3audit --strict --report {wheel}",
+]
+
+[tool.cibuildwheel.linux.environment]
+PATH = "$HOME/.cargo/bin:$PATH"
+
+[tool.cibuildwheel.macos]
+before-build = "rustup target add x86_64-apple-darwin"
+repair-wheel-command = [
+  "delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}",
+  "pipx run abi3audit --strict --report {wheel}",
+]
+
+[tool.cibuildwheel.windows]
+repair-wheel-command = [
+  "copy {wheel} {dest_dir}",
+  "pipx run abi3audit --strict --report {wheel}",
+]

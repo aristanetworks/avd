@@ -241,7 +241,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -300,8 +300,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_DC1-SPINE1_Ethernet2 | - | 172.31.255.9/31 | default | 1500 | False | - | - |
 | Ethernet2 | P2P_DC1-SPINE2_Ethernet2 | - | 172.31.255.11/31 | default | 1500 | False | - | - |
 | Ethernet3 | P2P_DC1-SPINE3_Ethernet2 | - | 172.31.255.13/31 | default | 1500 | False | - | - |
@@ -378,7 +378,7 @@ interface Ethernet7
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_DC1-LEAF2B_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel7 | L2_DC1-L2LEAF1A_Port-Channel1 | trunk | 210 | - | - | - | - | 7 | - |
 
@@ -441,8 +441,8 @@ interface Loopback1
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan210 | Tenant_B_OP_Zone_1 | Tenant_B_OP_Zone | - | False |
 | Vlan3019 | MLAG_L3_VRF_Tenant_B_OP_Zone | Tenant_B_OP_Zone | 1500 | False |
 | Vlan4093 | MLAG_L3 | default | 1500 | False |
@@ -452,10 +452,10 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan210 |  Tenant_B_OP_Zone  |  -  |  10.2.10.1/24  |  -  |  -  |  -  |
-| Vlan3019 |  Tenant_B_OP_Zone  |  10.255.251.2/31  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  10.255.251.2/31  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.252.2/31  |  -  |  -  |  -  |  -  |
+| Vlan210 | Tenant_B_OP_Zone | - | 10.2.10.1/24 | - | - | - |
+| Vlan3019 | Tenant_B_OP_Zone | 10.255.251.2/31 | - | - | - | - |
+| Vlan4093 | default | 10.255.251.2/31 | - | - | - | - |
+| Vlan4094 | default | 10.255.252.2/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -601,7 +601,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 101 | 192.168.255.6 | enabled | Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Vlan4093 <br> | enabled | 12000 | disabled | disabled | - | - | - | - |
+| 101 | 192.168.255.6 | enabled | Ethernet1<br>Ethernet2<br>Ethernet3<br>Ethernet4<br>Vlan4093 | enabled | 12000 | disabled | disabled | - | - | - | - |
 
 #### OSPF Interfaces
 

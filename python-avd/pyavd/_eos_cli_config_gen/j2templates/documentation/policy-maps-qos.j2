@@ -14,7 +14,7 @@
 ##### {{ policy_map.name }}
 
 | Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
-| ---------- | --- | -----| ------------- | --------------- | ----------------------------- |
+| ---------- | --- | ---- | ------------- | --------------- | ----------------------------- |
 {%         for class in policy_map.classes | arista.avd.default([]) %}
 {%             set cos = class.set.cos | arista.avd.default("-") %}
 {%             set dscp = class.set.dscp | arista.avd.default("-") %}
