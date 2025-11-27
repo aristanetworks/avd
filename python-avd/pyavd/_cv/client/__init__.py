@@ -74,7 +74,7 @@ class CVClientProtocol(
         self._set_version()
 
         if self._channel is None:
-            self._channel = await self._cv_connection_manager.create_proxy_channel(ssl_context)
+            self._channel = self._cv_connection_manager.create_proxy_channel(ssl_context)
 
         self._metadata = {"authorization": "Bearer " + self._token}
 

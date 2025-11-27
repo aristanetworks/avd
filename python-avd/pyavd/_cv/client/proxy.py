@@ -86,7 +86,7 @@ class CVConnectionManager:
             proxy_password=proxy_password,
         )
 
-    async def create_proxy_channel(self, ssl_context: ssl.SSLContext | bool) -> Channel:
+    def create_proxy_channel(self, ssl_context: ssl.SSLContext | bool) -> Channel:
         """
         Create a gRPC channel using the CloudVision connection manager.
 
