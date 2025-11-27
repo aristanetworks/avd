@@ -100,7 +100,7 @@ Enable password has been disabled
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -141,8 +141,8 @@ vlan 1
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet6 | P2P_digital-twin-ethernet-ports-1_Ethernet6 | - | 192.168.3.113/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
@@ -194,15 +194,15 @@ interface Loopback1
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan1 | TENANT_A_VRF_A_SVI_A | TENANT_A_VRF_A | - | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan1 |  TENANT_A_VRF_A  |  -  |  -  |  -  |  -  |  -  |
+| Vlan1 | TENANT_A_VRF_A | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 

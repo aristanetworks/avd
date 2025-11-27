@@ -147,7 +147,7 @@ no spanning-tree vlan-id 4093-4094
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -213,8 +213,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet3 | P2P_digital.twin.ethernet.ports.2_Ethernet3 | - | 192.168.3.114/31 | default | 9214 | False | - | - |
 | Ethernet6 | P2P_digital-twin-ethernet-ports-3_Ethernet6 | - | 192.168.3.112/31 | default | 9214 | False | - | - |
 | Ethernet10 | - | - | 192.168.3.168/31 | TENANT_A_VRF_A | - | False | - | - |
@@ -395,7 +395,7 @@ interface Ethernet23
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel4 | MLAG_digital.twin.ethernet.ports.2_Port-Channel4 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel9 | FIREWALL_firewall-1 | - | - | - | - | - | - | 9 | - |
 | Port-Channel16 | - | - | - | - | - | - | - | 16 | - |
@@ -527,8 +527,8 @@ interface Loopback1
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan1 | TENANT_A_VRF_A_SVI_A | TENANT_A_VRF_A | - | False |
 | Vlan4093 | MLAG_L3 | default | 9214 | False |
 | Vlan4094 | MLAG | default | 9214 | False |
@@ -537,9 +537,9 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan1 |  TENANT_A_VRF_A  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  192.168.3.80/31  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  192.168.3.96/31  |  -  |  -  |  -  |  -  |
+| Vlan1 | TENANT_A_VRF_A | - | - | - | - | - |
+| Vlan4093 | default | 192.168.3.80/31 | - | - | - | - |
+| Vlan4094 | default | 192.168.3.96/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 

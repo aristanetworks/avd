@@ -279,6 +279,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: DIGITAL_TWIN
+  validate_hardware:
+    enabled: false
   digital_twin:
     environment: act
     node_type: veos
@@ -567,21 +569,25 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 1
   name: TENANT_A_VRF_A_SVI_A
-  tenant: TENANT_A
+  metadata:
+    tenant: TENANT_A
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TENANT_A_VRF_A
   ip_routing: true
-  tenant: TENANT_A
+  metadata:
+    tenant: TENANT_A
 vxlan_interface:
   vxlan1:
     description: digital.twin.ethernet.ports.2_VTEP
