@@ -38,7 +38,6 @@ jobs:
           pip install --group build_wheel
       - name: Update version to ${{ inputs.TESTPYPI_VERSION }}
         if: ${{ inputs.TESTPYPI_VERSION != '' }}
-        working-directory: pyavd-utils
         run: |-
           pip install bump-my-version
           bump-my-version replace \
@@ -47,7 +46,7 @@ jobs:
             --replace "__version__ = \"${{ inputs.TESTPYPI_VERSION }}\"" \
             --ignore-missing-version \
             -vvvvvv \
-            pyavd_utils/__init__.py
+            pyavd-utils/pyavd_utils/__init__.py
       - name: Build wheels
         # Not using working-directory because manylinux uses a container
         # and will not copy the parent Cargo.toml and we will be sad
