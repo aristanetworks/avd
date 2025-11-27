@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from contextlib import nullcontext as does_not_raise
-from logging import getLogger
+from logging import INFO, getLogger
 from os import environ
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock
@@ -760,13 +760,14 @@ async def test_deploy_tags_to_cv_all_interface_tags(
 )
 @pytest.mark.filterwarnings("ignore:Unverified HTTPS request is being made to host")
 async def test_deploy_tags_to_cv_message_splitting(
+    caplog: pytest.LogCaptureFixture,
     targeted_cv: dict[str, str],
     verify_certs: bool,
     cv_tags_fixture: set[CVTag],
     cv_tag_assignments_fixture: set[CVTagAssignment],
 ) -> None:
     """Test ability to gracefully push amount of Tags and Assignments which exceeds the message limit (1837788 vs. 1048576 max)."""
-    with does_not_raise():
+    with does_not_raise(), caplog.at_level(INFO):
         async with CVClient(
             servers=targeted_cv["cv_server"],
             token=targeted_cv["cv_access_token"],
@@ -780,8 +781,14 @@ async def test_deploy_tags_to_cv_message_splitting(
                 await create_workspace_on_cv(workspace=workspace, cv_client=cv_client)
                 # Set tags
                 await cv_client.set_tags(workspace_id=workspace.id, tags=cv_tags)
+                # Confirm MAX message size
+                assert "exceeded the max of 1048576 for" in next(iter(msg.message for msg in caplog.records if "Message size" in msg.message))
+                # Clear logs before next async call
+                caplog.clear()
                 # Set tags assignments. Without building a Workspace it's OK that assignments reference non-existing device
                 await cv_client.set_tag_assignments(workspace_id=workspace.id, tag_assignments=cv_tag_assignments)
+                # Confirm MAX message size
+                assert "exceeded the max of 1048576 for" in next(iter(msg.message for msg in caplog.records if "Message size" in msg.message))
             finally:
                 try:
                     # Try to clean Workspace on all CVs to leave no traces
