@@ -147,17 +147,13 @@ jobs:
     if: (needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group') && github.repository == 'aristanetworks/avd'
     strategy:
       matrix:
-        # NOTE: macos-14 covers x64 and macos-latest covers arm
-        # note that at some point x64 won't be available anymore as per
-        # https://github.com/actions/runner-images/issues/13046
-        # the next update will be macos-15-intel
         # NOTE: Skipping ubuntu-latest to be able to start molecule and the like as soon as
         # the wheel is ready and tested.
         os:
           # - ubuntu-latest
           - ubuntu-24.04-arm
           - windows-latest
-          - macos-14
+          - macos-15-intel
           - macos-latest
     uses: ./.github/workflows/build-pyavd-wheel.yml
     with:
@@ -785,15 +781,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # macos-14 covers x64 and macos-latest covers arm
-        # note that at some point x64 won't be available anymore as per
-        # https://github.com/actions/runner-images/issues/13046
-        # the next update will be macos-15-intel
         os:
           - ubuntu-latest
           - ubuntu-24.04-arm
           - windows-latest
-          - macos-14
+          - macos-15-intel
           - macos-latest
     steps:
       - uses: actions/checkout@v6
