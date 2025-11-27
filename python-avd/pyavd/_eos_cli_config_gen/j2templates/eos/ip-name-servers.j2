@@ -11,12 +11,11 @@
             )
             + (
             ip_name_servers
-            | selectattr("priority", "arista.avd.defined")
-            | selectattr("priority", "equalto", 0)
+            | selectattr("priority", "arista.avd.defined", 0)
             | list
         ) %}
 {%     set sorted_without_priority_ns = without_priority_ns | arista.avd.natural_sort("ip_address") | arista.avd.natural_sort(sort_key="vrf", ignore_case=false) %}
-{# With priority AND priority != 0 #}
+{# With priority != 0 #}
 {%     set with_priority_ns = (
             ip_name_servers
             | selectattr("priority", "arista.avd.defined")
