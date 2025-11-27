@@ -412,7 +412,7 @@ class StudioMixin(Protocol):
             )
         return topology_inputs
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(iter_field="device_inputs")
     async def set_topology_studio_inputs(
         self: CVClientProtocol,
         workspace_id: str,

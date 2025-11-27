@@ -3,15 +3,23 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from contextlib import nullcontext as does_not_raise
+from logging import getLogger
+from os import environ
 
 import pytest
 
-from pyavd._cv.workflows.models import CVDevice
+from pyavd._cv.client import CVClient
+from pyavd._cv.workflows.create_workspace_on_cv import create_workspace_on_cv
+from pyavd._cv.workflows.models import CVDevice, CVWorkspace
 from pyavd._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory
 
-if TYPE_CHECKING:
-    from pyavd._cv.client import CVClient
+LOGGER = getLogger(__name__)
+
+
+@pytest.fixture(scope="module")
+def device_topology_inputs() -> list[tuple[str, str, str]]:
+    return [(f"l{i}_serial", f"l{i}_hostname", f"l{i}_mac") for i in range(1, 95000)]
 
 
 @pytest.mark.asyncio
@@ -60,3 +68,65 @@ async def test_verify_devices_in_cloudvision_inventory(
             _streaming=True,
         )
     ]
+
+
+## Live tests ##
+@pytest.mark.skipif(environ.get("CV_LIVE_TEST") is None, reason="CV_LIVE_TEST env variable is not set. Live cv_deploy tests are skipped.")
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("targeted_cv", "verify_certs"),
+    [
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_PRD_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_PRD_SERVER", default=""),
+            },
+            True,
+            id="CVAAS_PRD",
+        ),
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_STG_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_STG_SERVER", default=""),
+            },
+            True,
+            id="CVAAS_STG",
+        ),
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_ONPREM_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_ONPREM_SERVER", default=""),
+            },
+            False,
+            id="CV_ONPREM",
+        ),
+    ],
+)
+@pytest.mark.filterwarnings("ignore:Unverified HTTPS request is being made to host")
+async def test_verify_devices_on_cv_message_splitting(
+    targeted_cv: dict[str, str],
+    verify_certs: bool,
+    device_topology_inputs: list[tuple[str, str, str]],
+) -> None:
+    """Test ability to gracefully push amount of device inputs which exceeds the message limit (23230607 vs. 20971520 max)."""
+    with does_not_raise():
+        async with CVClient(
+            servers=targeted_cv["cv_server"],
+            token=targeted_cv["cv_access_token"],
+            verify_certs=verify_certs,
+        ) as cv_client:
+            workspace = CVWorkspace(name="AVD_CI_PYTEST_TEST_VERIFY_DEVICES_ON_CV_MESSAGE_SPLITTING", requested_state="pending")
+            try:
+                # Create Workspace in pending state
+                await create_workspace_on_cv(workspace=workspace, cv_client=cv_client)
+                # Set I&T Studio topology inputs
+                await cv_client.set_topology_studio_inputs(workspace_id=workspace.id, device_inputs=device_topology_inputs)
+            finally:
+                try:
+                    # Try to clean Workspace on all CVs to leave no traces
+                    await cv_client.abandon_workspace(workspace_id=workspace.id)
+                    await cv_client.delete_workspace(workspace_id=workspace.id)
+                except Exception as e:
+                    LOGGER.warning(
+                        "The following exception faced while trying to abandon/clean Workspace %s on %s: %s", workspace.id, targeted_cv["cv_server"], e
+                    )
