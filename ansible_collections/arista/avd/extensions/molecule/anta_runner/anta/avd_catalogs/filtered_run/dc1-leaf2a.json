@@ -499,6 +499,10 @@
             "vrf": "default"
           },
           {
+            "peer_address": "10.255.1.101",
+            "vrf": "VRF10"
+          },
+          {
             "peer_address": "10.255.128.15",
             "vrf": "default"
           },

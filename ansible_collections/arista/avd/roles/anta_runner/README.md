@@ -214,9 +214,6 @@ These settings allow modification of the default behavior as needed. The values 
 # Enable AVD catalogs generation. Can be disabled if only user-defined catalogs are used.
 avd_catalogs_enabled: true
 
-# Generate tests for BGP peers in VRFs.
-avd_catalogs_allow_bgp_vrfs: false
-
 # Generate extra fabric-wide validation tests (e.g., reachability and routing tests).
 # This can generate many additional test inputs in the catalogs, and validation may take longer on large fabrics.
 avd_catalogs_extra_fabric_validation: false

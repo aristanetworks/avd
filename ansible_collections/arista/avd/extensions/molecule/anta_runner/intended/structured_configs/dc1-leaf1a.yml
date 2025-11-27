@@ -471,6 +471,8 @@ router_bgp:
     - ip_address: 10.255.1.97
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: dc1-leaf1b_Vlan3009
+      metadata:
+        validate_state: true
     redistribute:
       connected:
         enabled: true
