@@ -58,11 +58,10 @@ jobs:
       - name: Download pyavd-utils wheels
         uses: actions/download-artifact@v6
         with:
-          path: /tmp/dist
+          path: dist/
           merge-multiple: true
           pattern: pyavd-utils-wheels-*
       - name: Publish distribution to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          repository_url: https://test.pypi.org/legacy/
-          packages-dir: /tmp/dist/
+          repository-url: https://test.pypi.org/legacy/
