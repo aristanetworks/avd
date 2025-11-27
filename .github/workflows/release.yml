@@ -43,8 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event_name == 'release'
-      || (github.event_name == 'workflow_dispatch')
-    #  && github.ref == 'refs/heads/devel')
+      || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/devel')
     environment:
       name: test
       url: https://test.pypi.org/p/pyavd-utils
