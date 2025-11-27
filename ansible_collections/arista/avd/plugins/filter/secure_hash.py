@@ -13,7 +13,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 PLUGIN_NAME = "arista.avd.secure_hash"
 
 try:
-    from pyavd.j2filters.secure_hash import secure_hash
+    from pyavd.j2filters import secure_hash
 except ImportError as e:
     secure_hash = RaiseOnUse(
         AnsibleFilterError(

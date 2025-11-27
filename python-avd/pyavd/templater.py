@@ -81,10 +81,10 @@ class Templar:
             list_compress,
             natural_sort,
             range_expand,
+            secure_hash,
             snmp_hash,
             status_render,
         )
-        from .j2filters.secure_hash import secure_hash  # noqa: PLC0415
         from .j2tests.contains import contains  # noqa: PLC0415
         from .j2tests.defined import defined  # noqa: PLC0415
 
