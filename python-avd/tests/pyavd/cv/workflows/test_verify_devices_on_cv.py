@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from contextlib import nullcontext as does_not_raise
-from logging import getLogger, INFO
+from logging import INFO, getLogger
 from os import environ
 
 import pytest
@@ -110,10 +110,7 @@ async def test_verify_devices_on_cv_message_splitting(
     device_topology_inputs: list[tuple[str, str, str]],
 ) -> None:
     """Test ability to gracefully push amount of device inputs which exceeds the message limit (23230607 vs. 20971520 max)."""
-    with (
-        does_not_raise(),
-        caplog.at_level(INFO)
-    ):
+    with does_not_raise(), caplog.at_level(INFO):
         async with CVClient(
             servers=targeted_cv["cv_server"],
             token=targeted_cv["cv_access_token"],
