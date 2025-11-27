@@ -16,4 +16,5 @@ group interface {{ interface_group.name }}
 {%     for interface_profile in interface_group.interface_maintenance_profiles | arista.avd.natural_sort(ignore_case=false) %}
    maintenance profile interface {{ interface_profile }}
 {%     endfor %}
+   exit
 {% endfor %}
