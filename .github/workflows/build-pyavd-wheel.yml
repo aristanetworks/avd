@@ -45,6 +45,7 @@ jobs:
             --regex \
             --search "__version__ = \"[^\n]*\"" \
             --replace "__version__ = \"${{ inputs.TESTPYPI_VERSION }}\"" \
+            --ignore-missing-version \
             pyavd_utils/__init__.py
       - name: Build wheels
         # Not using working-directory because manylinux uses a container
