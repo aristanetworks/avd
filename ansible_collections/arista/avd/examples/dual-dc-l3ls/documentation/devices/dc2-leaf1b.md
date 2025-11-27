@@ -178,7 +178,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -263,8 +263,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_dc2-spine1_Ethernet2 | - | 10.255.255.109/31 | default | 1500 | False | - | - |
 | Ethernet2 | P2P_dc2-spine2_Ethernet2 | - | 10.255.255.111/31 | default | 1500 | False | - | - |
 
@@ -314,7 +314,7 @@ interface Ethernet8
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_dc2-leaf1a_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel5 | SERVER_dc2-leaf1-server1_Bond1 | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
 | Port-Channel8 | L2_dc2-leaf1c_Port-Channel1 | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
@@ -402,8 +402,8 @@ interface Loopback11
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan11 | VRF10_VLAN11 | VRF10 | - | False |
 | Vlan12 | VRF10_VLAN12 | VRF10 | - | False |
 | Vlan21 | VRF11_VLAN21 | VRF11 | - | False |
@@ -417,14 +417,14 @@ interface Loopback11
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan11 |  VRF10  |  -  |  10.10.11.1/24  |  -  |  -  |  -  |
-| Vlan12 |  VRF10  |  -  |  10.10.12.1/24  |  -  |  -  |  -  |
-| Vlan21 |  VRF11  |  -  |  10.10.21.1/24  |  -  |  -  |  -  |
-| Vlan22 |  VRF11  |  -  |  10.10.22.1/24  |  -  |  -  |  -  |
-| Vlan3009 |  VRF10  |  10.255.129.117/31  |  -  |  -  |  -  |  -  |
-| Vlan3010 |  VRF11  |  10.255.129.117/31  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  10.255.129.117/31  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.129.85/31  |  -  |  -  |  -  |  -  |
+| Vlan11 | VRF10 | - | 10.10.11.1/24 | - | - | - |
+| Vlan12 | VRF10 | - | 10.10.12.1/24 | - | - | - |
+| Vlan21 | VRF11 | - | 10.10.21.1/24 | - | - | - |
+| Vlan22 | VRF11 | - | 10.10.22.1/24 | - | - | - |
+| Vlan3009 | VRF10 | 10.255.129.117/31 | - | - | - | - |
+| Vlan3010 | VRF11 | 10.255.129.117/31 | - | - | - | - |
+| Vlan4093 | default | 10.255.129.117/31 | - | - | - | - |
+| Vlan4094 | default | 10.255.129.85/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 

@@ -247,7 +247,7 @@ spanning-tree mst 0 priority 16384
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -1394,7 +1394,7 @@ interface Ethernet54
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel51 | L2_SPINES_Port-Channel1 | trunk | 10,110,120,130 | - | - | - | - | 51 | - |
 | Port-Channel53 | MLAG_LEAF1B_Port-Channel53 | trunk | - | - | MLAG | - | - | - | - |
 
@@ -1422,8 +1422,8 @@ interface Port-Channel53
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan10 | Inband Management | default | 1500 | False |
 | Vlan4094 | MLAG | default | 1500 | False |
 
@@ -1431,8 +1431,8 @@ interface Port-Channel53
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan10 |  default  |  10.10.10.6/24  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  192.168.0.4/31  |  -  |  -  |  -  |  -  |
+| Vlan10 | default | 10.10.10.6/24 | - | - | - | - |
+| Vlan4094 | default | 192.168.0.4/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 

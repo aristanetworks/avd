@@ -42,7 +42,11 @@
 {%                 do target_ids.append("Serial-Number") %}
 {%             endif %}
 {%             do target_ids.extend(transport.target.target_ids | arista.avd.default([])) %}
-{%             set target_id = target_ids | join(' ') | arista.avd.default('-') %}
+{%             if target_ids | length == 0 %}
+{%                 set target_id = "-" %}
+{%             else %}
+{%                 set target_id = target_ids | join(' ') %}
+{%             endif %}
 | {{ transport_name }} | {{ destination }} | {{ port }} | {{ gnmi_ssl_profile }} | {{ tunnel_ssl_profile }} | {{ vrf }} | {{ local_interface }} | {{ local_port }} | {{ target_id }} |
 {%         endfor %}
 {%     endif %}

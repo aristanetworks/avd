@@ -27,6 +27,13 @@ keys:
           type: bool
         ip_routing_ipv6_interfaces:
           type: bool
-        tenant:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          description: |-
+            The data under `metadata` is used for documentation, validation or integration purposes.
+            It will not affect the generated EOS configuration.
+
+          keys:
+            tenant:
+              type: str
+              description: Key only used for documentation or validation purposes.

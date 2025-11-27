@@ -190,26 +190,32 @@ vlan_internal_order:
 vlans:
 - id: 100
   name: VARPv6_configured_1
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 200
   name: VARPv6_not_configured_1
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 300
   name: VARPv6_configured_2
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 400
   name: VARPv6_not_configured_2
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 500
   name: VARPv6_not_configured_3
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
   ipv6_routing: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vxlan_interface:
   vxlan1:
     description: varpv6_VTEP

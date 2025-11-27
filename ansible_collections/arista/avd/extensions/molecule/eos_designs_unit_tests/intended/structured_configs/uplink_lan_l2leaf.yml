@@ -66,13 +66,16 @@ vlan_internal_order:
 vlans:
 - id: 10
   name: VLAN10_NATIVE
-  tenant: TEST
+  metadata:
+    tenant: TEST
 - id: 100
   name: VLAN100
-  tenant: TEST
+  metadata:
+    tenant: TEST
 - id: 102
   name: VLAN102
-  tenant: TEST
+  metadata:
+    tenant: TEST
 vrfs:
 - name: MGMT
   ip_routing: false

@@ -248,7 +248,8 @@ vrfs:
   ip_routing: false
 - name: VRF10
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vxlan_interface:
   vxlan1:
     description: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_VTEP

@@ -31,28 +31,36 @@ vlan_internal_order:
 vlans:
 - id: 10
   name: DEFAULTPRIORITY
-  tenant: test
+  metadata:
+    tenant: test
 - id: 11
   name: PRIORITY16384
-  tenant: test
+  metadata:
+    tenant: test
 - id: 12
   name: PRIORITY32768
-  tenant: test
+  metadata:
+    tenant: test
 - id: 13
   name: PRIORITY8192
-  tenant: test
+  metadata:
+    tenant: test
 - id: 20
   name: DEFAULTPRIORITY
-  tenant: test
+  metadata:
+    tenant: test
 - id: 21
   name: PRIORITY16384
-  tenant: test
+  metadata:
+    tenant: test
 - id: 22
   name: PRIORITY32768
-  tenant: test
+  metadata:
+    tenant: test
 - id: 23
   name: PRIORITY8192
-  tenant: test
+  metadata:
+    tenant: test
 vrfs:
 - name: MGMT
   ip_routing: false

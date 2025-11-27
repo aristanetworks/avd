@@ -139,17 +139,20 @@ vlan_internal_order:
 vlans:
 - id: 100
   name: Duplicate_SVI_100_LEAF1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 200
   name: Duplicate_L2VLAN_200_LEAF1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST
   description: TEST
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 vxlan_interface:
   vxlan1:
     description: DUP-LEAF1_VTEP

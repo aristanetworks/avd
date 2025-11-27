@@ -51,49 +51,21 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
 
         for destination in natural_sort(destinations, "destination"):
             destination: EosDesigns.SflowSettings.DestinationsItem
-            vrf_name = destination.vrf
-            if vrf_name is None:
-                vrf_name = self.shared_utils.default_mgmt_protocol_vrf
-                source_interface = self.shared_utils.default_mgmt_protocol_interface
+            sflow_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
+                vrf_input=destination.vrf,
+                vrfs=sflow_settings_vrfs,
+                set_source_interfaces=True,
+                context=f"sflow_settings.destinations[destination={destination.destination}].vrf",
+            )
 
-            elif vrf_name == "use_mgmt_interface_vrf":
-                if (self.shared_utils.node_config.mgmt_ip is None) and (self.shared_utils.node_config.ipv6_mgmt_ip is None):
-                    msg = "Unable to configure sFlow source-interface with 'use_mgmt_interface_vrf' since 'mgmt_ip' or 'ipv6_mgmt_ip' are not set."
-                    raise AristaAvdInvalidInputsError(msg)
-
-                vrf_name = self.inputs.mgmt_interface_vrf
-                if vrf_name in sflow_settings_vrfs and sflow_settings_vrfs[vrf_name].source_interface:
-                    source_interface = sflow_settings_vrfs[vrf_name].source_interface
-                else:
-                    source_interface = self.shared_utils.mgmt_interface
-
-            elif vrf_name == "use_inband_mgmt_vrf":
-                # Check for missing interface
-                if self.shared_utils.inband_mgmt_interface is None:
-                    msg = "Unable to configure sFlow source-interface with 'use_inband_mgmt_vrf' since 'inband_mgmt_interface' is not set."
-                    raise AristaAvdInvalidInputsError(msg)
-
-                # self.shared_utils.inband_mgmt_vrf returns None for the default VRF, but here we need "default" to avoid duplicates.
-                vrf_name = self.shared_utils.inband_mgmt_vrf or "default"
-                if vrf_name in sflow_settings_vrfs and sflow_settings_vrfs[vrf_name].source_interface:
-                    source_interface = sflow_settings_vrfs[vrf_name].source_interface
-                else:
-                    source_interface = self.shared_utils.inband_mgmt_interface
-
-            # Default is none, meaning we will not configure a source interface for this VRF.
-            elif vrf_name in sflow_settings_vrfs and sflow_settings_vrfs[vrf_name].source_interface:
-                source_interface = sflow_settings_vrfs[vrf_name].source_interface
-            else:
-                source_interface = None
-
-            if vrf_name is None or vrf_name == "default":
+            if sflow_vrf == "default":
                 # Add destination without VRF field
                 self.structured_config.sflow.destinations.append_new(destination=destination.destination, port=destination.port)
                 self.structured_config.sflow.source_interface = source_interface
 
             else:
                 # Add destination with VRF field.
-                vrf_item = self.structured_config.sflow.vrfs.obtain(vrf_name)
+                vrf_item = self.structured_config.sflow.vrfs.obtain(sflow_vrf)
                 vrf_item.destinations.append_new(destination=destination.destination, port=destination.port)
                 vrf_item.source_interface = source_interface
                 self.structured_config.sflow.vrfs.append(vrf_item)
