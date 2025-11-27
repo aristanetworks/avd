@@ -24,12 +24,13 @@ dependencies = [
     "aristaproto>=0.1.1",
     "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
-    "Jinja2>=3.0",
-    "PyYAML>=6.0.0",
-    "requests>=2.27.0",
-    # Pinned grpclib since we patch the connection code to get proxy support
+    # pinned grpclib since we patch the connection code to get proxy support
     "grpclib==0.4.8",
+    "jinja2>=3.0",
+    "pyavd-utils==6.0.0-dev3",
     "python-socks[asyncio]>=2.7.2",
+    "pyyaml>=6.0.0",
+    "requests>=2.27.0",
 ]
 
 [project.urls]
@@ -50,18 +51,15 @@ ansible-collection = [
 
 [build-system]
 requires = [
-    "setuptools>=66.1",
-    "wheel",
+    "cryptography>=43.0.0",
+    "deepmerge>=1.1.0",
     "jinja2>=3.0",
     "jsonschema-rs>=0.24",
-    "referencing>=0.35.0",
-    "deepmerge>=1.1.0",
-    "pyyaml>=6.0.0",
-    "mkdocstrings[python]",
     "pydantic>=2.3.0",
-    "cryptography>=43.0.0",
-    "aristaproto>=0.1.1",
+    "pyyaml>=6.0.0",
+    "referencing>=0.35.0",
     "ruff==0.14.6",
+    "setuptools>=77.0",
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]
