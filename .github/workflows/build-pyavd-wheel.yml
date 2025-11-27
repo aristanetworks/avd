@@ -41,11 +41,10 @@ jobs:
         working-directory: pyavd-utils
         run: |-
           pip install bump-my-version
-          BUMP_VERSION="${{ inputs.TESTPYPI_VERSION }}"
           bump-my-version replace \
             --regex \
             --search "__version__ = .*" \
-            --replace "__version__ = \"$(BUMP_VERSION)\"" \
+            --replace "__version__ = \"${{ inputs.TESTPYPI_VERSION }}\"" \
             pyavd_utils/__init__.py
       - name: Build wheels
         # Not using working-directory because manylinux uses a container
