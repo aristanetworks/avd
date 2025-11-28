@@ -7,7 +7,7 @@ import re
 HASH_INPUT_TYPE = ["sha512_password"]
 
 
-def _validate_sha512_salt(salt: str | None) -> str:
+def _validate_sha512_salt(salt: str) -> str:
     """
     Validate a given salt value.
 
@@ -34,7 +34,7 @@ def _validate_sha512_salt(salt: str | None) -> str:
     return salt
 
 
-def _user_password_hash(clear_password: str, salt: str | None = None) -> str:
+def _user_password_hash(clear_password: str, salt: str) -> str:
     """
     Generate a SHA-512 password hash from a cleartext password for a local user.
 
@@ -66,13 +66,13 @@ def _user_password_hash(clear_password: str, salt: str | None = None) -> str:
         raise ValueError(msg) from exc
 
 
-def secure_hash(user_input: str, salt: str | None = None, output_type: str = "sha512_password") -> str:
+def secure_hash(user_input: str, salt: str, output_type: str = "sha512_password") -> str:
     """
     Returns a hash for a given input.
 
     Args:
         user_input: the user input cleartext that will be hashed.
-        salt: Salt value to be used when creating password hash. A randomly generated salt will be used unless the user specifies one.
+        salt: Salt value to be used when creating password hash. It must be between 1 and 16 characters.
         output_type: the use case for the cleartext provided by the user.
 
     Returns:

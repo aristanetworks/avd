@@ -10,7 +10,7 @@ import pytest
 
 from pyavd.j2filters import secure_hash
 
-sha512_regex = r"^\$6\$[A-Za-z0-9\.\/]{16}\$[A-Za-z0-9\.\/]{86}"
+sha512_regex = r"^\$6\$[A-Za-z0-9\.\/]{1,16}\$[A-Za-z0-9\.\/]{86}"
 
 
 INVALID_PASSWORDS = [
@@ -75,29 +75,31 @@ INVALID_HASH_OUTPUT_TYPES = [
 
 class TestSecureHashFilter:
     @pytest.mark.parametrize(("cleartext_password", "output_type", "expected_raise", "expected_raise_message"), INVALID_PASSWORDS)
-    def test_secure_hash_invalid_password(self, cleartext_password: str, output_type: str, expected_raise: Exception, expected_raise_message: str) -> None:
+    def test_secure_hash_invalid_password(
+        self, cleartext_password: str, output_type: str, expected_raise: type[Exception], expected_raise_message: str
+    ) -> None:
         """Test secure_hash for invalid password types (non-string)."""
         with pytest.raises(expected_raise, match=expected_raise_message):
             secure_hash(cleartext_password, output_type)
 
     @pytest.mark.parametrize(("cleartext_password", "salt", "output_type", "expected_raise", "expected_raise_message"), INVALID_SALTS)
     def test_secure_hash_invalid_salt(
-        self, cleartext_password: str, salt: str, output_type: str, expected_raise: Exception, expected_raise_message: str
+        self, cleartext_password: str, salt: str, output_type: str, expected_raise: type[Exception], expected_raise_message: str
     ) -> None:
         """Test secure_hash for invalid salt values."""
         with pytest.raises(expected_raise, match=expected_raise_message):
             secure_hash(cleartext_password, salt, output_type)
 
     @pytest.mark.parametrize(("cleartext_password", "output_type", "expected_raise", "expected_raise_message"), INVALID_HASH_OUTPUT_TYPES)
-    def test_secure_hash_invalid_type(self, cleartext_password: str, output_type: str, expected_raise: Exception, expected_raise_message: str) -> None:
+    def test_secure_hash_invalid_type(self, cleartext_password: str, output_type: str, expected_raise: type[Exception], expected_raise_message: str) -> None:
         """Test secure_hash for invalid output_type."""
         with pytest.raises(expected_raise, match=expected_raise_message):
-            secure_hash(cleartext_password, output_type=output_type)
+            secure_hash(cleartext_password, salt="AAAAAAAAA", output_type=output_type)
 
     @pytest.mark.parametrize(("cleartext_password", "output_type", "regex_of_hashed_password"), VALID_PASSWORD_FORMAT)
     def test_secure_hash_password_format(self, cleartext_password: str, output_type: str, regex_of_hashed_password: str) -> None:
         """Test the format of the hash output from secure_hash i.e. $6$<salt-value>$<hashed-password>."""
-        hashed_password = secure_hash(cleartext_password, output_type=output_type)
+        hashed_password = secure_hash(cleartext_password, salt="AAAAAAAAAAAA", output_type=output_type)
         assert re.fullmatch(regex_of_hashed_password, hashed_password)
 
     @pytest.mark.parametrize(("cleartext_password", "salt", "output_type", "expected_hash_password"), VALID_PASSWORDS)

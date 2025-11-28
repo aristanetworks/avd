@@ -745,7 +745,7 @@ jobs:
           pip install tox tox-gh-actions --upgrade
       - name: Run pytest via tox for ${{ matrix.python }}
         run: |
-          tox -- ${{ matrix.suite.pytest_args }}
+          tox run -r -- ${{ matrix.suite.pytest_args }}
       - name: Rename the coverage file
         if: matrix.python == '3.11'
         run: |
