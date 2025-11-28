@@ -45,11 +45,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "dhcp_servers.[].ipv4_subnets.[].reservations.[].mac_address") | String | Required, Unique |  |  | Ethernet address in format - HHHH.HHHH.HHHH |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "dhcp_servers.[].ipv4_subnets.[].reservations.[].hostname") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tftp_server</samp>](## "dhcp_servers.[].ipv4_subnets.[].tftp_server") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file_ipv4</samp>](## "dhcp_servers.[].ipv4_subnets.[].tftp_server.file_ipv4") | List, items: String |  |  | Min Length: 1<br>Max Length: 253 | Name of TFTP file for IPv4 clients. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].ipv4_subnets.[].tftp_server.file_ipv4.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;option_66_ipv4</samp>](## "dhcp_servers.[].ipv4_subnets.[].tftp_server.option_66_ipv4") | String |  |  |  | IPv4 address or server FQDN for TFTP option 66. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;option_150_ipv4</samp>](## "dhcp_servers.[].ipv4_subnets.[].tftp_server.option_150_ipv4") | List, items: String |  |  | Min Length: 1 | List of IPv4 addresses for TFTP option 150. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].ipv4_subnets.[].tftp_server.option_150_ipv4.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file</samp>](## "dhcp_servers.[].ipv4_subnets.[].tftp_server.file") | String |  |  | Min Length: 1<br>Max Length: 253 | Name of TFTP file for IPv4 clients. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;option_66</samp>](## "dhcp_servers.[].ipv4_subnets.[].tftp_server.option_66") | String |  |  |  | IPv4 address or server FQDN for TFTP option 66. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;option_150</samp>](## "dhcp_servers.[].ipv4_subnets.[].tftp_server.option_150") | List, items: String |  |  | Min Length: 1 | List of IPv4 addresses for TFTP option 150. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].ipv4_subnets.[].tftp_server.option_150.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "dhcp_servers.[].ipv4_subnets.[].name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_gateway</samp>](## "dhcp_servers.[].ipv4_subnets.[].default_gateway") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers</samp>](## "dhcp_servers.[].ipv4_subnets.[].dns_servers") | List, items: String |  |  |  |  |
@@ -68,8 +67,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "dhcp_servers.[].ipv6_subnets.[].reservations.[].mac_address") | String | Required, Unique |  |  | Ethernet address in format - HHHH.HHHH.HHHH |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "dhcp_servers.[].ipv6_subnets.[].reservations.[].hostname") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tftp_server</samp>](## "dhcp_servers.[].ipv6_subnets.[].tftp_server") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file_ipv6</samp>](## "dhcp_servers.[].ipv6_subnets.[].tftp_server.file_ipv6") | List, items: String |  |  | Min Length: 1<br>Max Length: 253 | Name of TFTP file for IPv6 clients. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].ipv6_subnets.[].tftp_server.file_ipv6.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file</samp>](## "dhcp_servers.[].ipv6_subnets.[].tftp_server.file") | String |  |  | Min Length: 1<br>Max Length: 253 | Name of TFTP file for IPv6 clients. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "dhcp_servers.[].ipv6_subnets.[].name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_gateway</samp>](## "dhcp_servers.[].ipv6_subnets.[].default_gateway") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers</samp>](## "dhcp_servers.[].ipv6_subnets.[].dns_servers") | List, items: String |  |  |  |  |
@@ -165,14 +163,13 @@
             tftp_server:
 
               # Name of TFTP file for IPv4 clients.
-              file_ipv4: # 1-253 items
-                - <str>
+              file: <str; length 1-253>
 
               # IPv4 address or server FQDN for TFTP option 66.
-              option_66_ipv4: <str>
+              option_66: <str>
 
               # List of IPv4 addresses for TFTP option 150.
-              option_150_ipv4: # >=1 items
+              option_150: # >=1 items
                 - <str>
             name: <str>
             default_gateway: <str>
@@ -202,8 +199,7 @@
             tftp_server:
 
               # Name of TFTP file for IPv6 clients.
-              file_ipv6: # 1-253 items
-                - <str>
+              file: <str; length 1-253>
             name: <str>
             default_gateway: <str>
             dns_servers:
