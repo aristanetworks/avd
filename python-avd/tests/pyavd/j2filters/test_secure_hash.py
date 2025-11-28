@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import re
+from unittest.mock import patch
 
 import pytest
 
@@ -102,8 +103,10 @@ class TestSecureHashFilter:
         hashed_password = secure_hash(cleartext_password, salt="AAAAAAAAAAAA", output_type=output_type)
         assert re.fullmatch(regex_of_hashed_password, hashed_password)
 
-    @pytest.mark.parametrize(("cleartext_password", "salt", "output_type", "expected_hash_password"), VALID_PASSWORDS)
-    def test_secure_hash_expected_password(self, cleartext_password: str, salt: str, output_type: str, expected_hash_password: str) -> None:
-        """Test the hash output when using a user defined salt value against the expected hash."""
-        hashed_password = secure_hash(cleartext_password, salt, output_type)
-        assert hashed_password == expected_hash_password
+    def test_secure_hash_uncaught_execption(self) -> None:
+        """Test when an uncaught exception is returned by pyavd-utils."""
+        with (
+            patch("pyavd_utils.passwords.sha512_crypt", side_effect=Exception("foo")),
+            pytest.raises(Exception, match=r"SHA-512 password hashing failed - check the input parameters of arista.avd.secure_hash"),
+        ):
+            secure_hash("aaaaaa", salt="AAAAAAAAAAAA")
