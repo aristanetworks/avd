@@ -13,15 +13,14 @@ clean: ## Build pyavd-utils package
 	rm -rf $(CURRENT_DIR)/build/ $(CURRENT_DIR)/dist/ $(CURRENT_DIR)/pyavd.egg-info/ $(CURRENT_DIR)/pyavd_utils/*.so
 
 .PHONY: build
-build: clean ## Build pyavd-utils package
+build: clean check-cargo ## Build pyavd-utils package
 	pip3 install build
 	python3 -m build --wheel
 
 .PHONY: uv-build
-uv-build: clean ## Build pyavd-utils package
+uv-build: clean check-cargo ## Build pyavd-utils package
 	uv pip install build
 	python3 -m build --wheel
-
 
 .PHONY: publish
 publish: ## Publish pyavd package to PyPI (build first)
@@ -36,3 +35,34 @@ uv-publish: ## Publish pyavd package to PyPI (build first)
 	twine check dist/* && \
 	twine upload -r testpypi dist/* && \
 	twine upload dist/*
+
+.PHONY: check-cargo
+check-cargo: ## Checks for the presence of the 'cargo' command.
+	@echo "--- Checking for Rust toolchain (cargo)..."
+	@if [ -n "$(CARGO)" ]; then \
+		echo "Found cargo via CARGO environment variable: $(CARGO)"; \
+	elif command -v cargo >/dev/null 2>&1; then \
+		echo "Found cargo in system PATH: $(shell which cargo)"; \
+	else \
+		echo "======================================================================"; \
+		echo "ERROR: Rust Toolchain (cargo) is NOT installed or not found in PATH."; \
+		echo "       The 'cargo' command is required to build this project."; \
+		echo "       Please install the official Rust toolchain via rustup, or set"; \
+		echo "       the CARGO environment variable to the path of your cargo binary."; \
+		echo "       Run 'make install-rust' to get started."; \
+		echo "======================================================================"; \
+		exit 1; \
+	fi
+	@echo "--- Rust toolchain check passed."
+
+.PHONY: install-rust
+install-rust: ## Provides the standard command to install the Rust toolchain using rustup.
+	@echo "--- Installing the official Rust Toolchain via rustup ---"
+	@echo "This script downloads and runs the official installation tool."
+	@echo "Follow the on-screen prompts (usually selecting option 1 for default installation)."
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+	@echo "======================================================================"
+	@echo "Installation complete. You may need to restart your shell or run:"
+	@echo "  source "$$HOME/.cargo/env""
+	@echo "for the 'cargo' command to be immediately available in your current terminal session."
+	@echo "======================================================================"

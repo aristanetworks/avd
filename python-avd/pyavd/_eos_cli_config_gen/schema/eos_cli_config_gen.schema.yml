@@ -15047,6 +15047,14 @@ keys:
               type: bool
             password:
               type: str
+            password_type:
+              type: str
+              valid_values:
+              - '7'
+              - 8a
+              convert_types:
+              - int
+              default: '7'
             passive:
               type: bool
             default_originate:
@@ -15261,6 +15269,14 @@ keys:
               type: bool
             password:
               type: str
+            password_type:
+              type: str
+              valid_values:
+              - '7'
+              - 8a
+              convert_types:
+              - int
+              default: '7'
             passive:
               type: bool
             shutdown:
@@ -18671,6 +18687,14 @@ keys:
                     - int
                   password:
                     type: str
+                  password_type:
+                    type: str
+                    valid_values:
+                    - '7'
+                    - 8a
+                    convert_types:
+                    - int
+                    default: '7'
                   passive:
                     type: bool
                   remove_private_as:
