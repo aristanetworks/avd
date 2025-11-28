@@ -26,8 +26,8 @@
 
 ##### SRTE Policies
 
-| Endpoint | Color | Preference | Name | Description | SBFD Remote Discriminator | Label Stack | Index  | Weight | Explicit Null |
-| -------- | ----- | ---------- | ---- | ----------- | ------------------------- | ----------- | ------ | ------ | ------------- |
+| Endpoint | Color | Preference | Name | Description | SBFD Remote Discriminator | Label Stack | Index | Weight | Explicit Null |
+| -------- | ----- | ---------- | ---- | ----------- | ------------------------- | ----------- | ----- | ------ | ------------- |
 {%             for endpoint in router_traffic_engineering.segment_routing.policy_endpoints | arista.avd.natural_sort('address') %}
 {%                 for color in endpoint.colors | arista.avd.natural_sort('value') %}
 {%                     set name = color.name | arista.avd.default('-') %}

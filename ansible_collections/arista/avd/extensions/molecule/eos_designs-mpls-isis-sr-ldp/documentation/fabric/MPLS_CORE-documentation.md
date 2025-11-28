@@ -40,7 +40,7 @@
 ## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
-| ---- | ---- | -------------- | --------- | ----------| -------------- |
+| ---- | ---- | -------------- | --------- | --------- | -------------- |
 | pe | SITE1-LER1 | Ethernet1 | p | SITE1-LSR1 | Ethernet1 |
 | pe | SITE1-LER1 | Ethernet2 | pe | SITE1-LER2 | Ethernet2 |
 | pe | SITE1-LER2 | Ethernet1 | p | SITE1-LSR2 | Ethernet1 |

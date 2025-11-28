@@ -19,6 +19,8 @@ env:
   # Set -vvv is ACTIONS_STEP_DEBUG is set
   # Apparently it is set in secrets when running with debug
   ANSIBLE_VERBOSITY: ${{ secrets.ACTIONS_STEP_DEBUG && 3 || 0 }}
+  # Do the same for CIBW to be able to troubleshoot errors from CI
+  CIBW_BUILD_VERBOSITY: ${{ secrets.ACTIONS_STEP_DEBUG && 3 || 0 }}
   AVD_NEVER_RUN_FROM_SOURCE: 1
   PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
   ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
@@ -41,11 +43,11 @@ jobs:
       - ansible_lint
       - test_pyavd
       - cargo_build_and_test
-      - pyavd_utils_build_and_test_cross_platform
+      - pyavd_utils_test_cross_platform
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - run: echo '${{ toJSON(needs) }}' | jq -e 'to_entries | all(.value.result == "success" or .value.result == "skipped")'
 
   file-changes:
@@ -58,7 +60,7 @@ jobs:
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
       rust_src_or_ci_changed: ${{ steps.filter.outputs.rust_src_or_ci_changed }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -117,7 +119,7 @@ jobs:
     outputs:
       wheel_file: ${{ steps.build_step.outputs.wheel_file }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: |
@@ -136,6 +138,79 @@ jobs:
           name: pyavd
           path: ./python-avd/dist/*.whl
 
+  # ------------------------------------------------------------ #
+  # Build cross platform pyavd-utils wheels and upload artifacts
+  # ------------------------------------------------------------ #
+  # Separating ubuntu-latest from the others in order to save some
+  # time in CI.
+  # Later, this can be re-unified.
+  build_pyavd_utils_wheels:
+    name: Build pyavd-utils wheel on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: [file-changes]
+    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
+    strategy:
+      fail-fast: false
+      matrix:
+        # macos-14 covers x64 and macos-latest covers arm
+        # note that at some point x64 won't be available anymore as per
+        # https://github.com/actions/runner-images/issues/13046
+        # the next update will be macos-15-intel
+        os:
+          # - ubuntu-latest
+          - ubuntu-24.04-arm
+          - windows-latest
+          - macos-14
+          - macos-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install cibuildwheel
+        # See pyproject.toml for config
+        # TODO: could use the action instead but need approval
+        run: |
+          pip install --group build_wheel
+      - name: Build wheels
+        # Not using working-directory because manylinux uses a container
+        # and will not copy the parent Cargo.toml and we will be sad
+        run: |-
+          python -m cibuildwheel --output-dir pyavd-utils/dist pyavd-utils
+      - uses: actions/upload-artifact@v5
+        with:
+          name: pyavd-utils-wheels-${{ matrix.os }}
+          path: pyavd-utils/dist/*.whl
+
+  build_ubuntu_pyavd_utils_wheels:
+    name: Build pyavd-utils wheel on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: [file-changes]
+    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install cibuildwheel
+        # See pyproject.toml for config
+        # TODO: could use the action instead but need approval
+        run: |
+          pip install --group build_wheel
+      - name: Build wheels
+        # Not using working-directory because manylinux uses a container
+        # and will not copy the parent Cargo.toml and we will be sad
+        run: |-
+          python -m cibuildwheel --output-dir pyavd-utils/dist pyavd-utils
+      - uses: actions/upload-artifact@v5
+        with:
+          name: pyavd-utils-wheels-${{ matrix.os }}
+          path: pyavd-utils/dist/*.whl
+
   # -------------------------------------------- #
   # Python type checking not covered in pre-commit
   # -------------------------------------------- #
@@ -143,9 +218,10 @@ jobs:
     name: Python Linting not covered in pre-commit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install pyavd and Ansible requirements
         # Adding pyavd-utils as editable to force a build of the .so files. The pyavd-utils is already added to the python path in the pyright config.
+        # TODO: Use the built wheel instead if possible
         run: |
           pip install -r ansible_collections/arista/avd/requirements-dev.txt -e pyavd-utils/ --upgrade
       - name: PyRight static type checker
@@ -158,7 +234,7 @@ jobs:
   python_requirements:
     name: Test Python requirements installation
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes]
+    needs: [build_pyavd, file-changes, build_ubuntu_pyavd_utils_wheels]
     if: needs.file-changes.outputs.requirements == 'true'
     strategy:
       fail-fast: true
@@ -169,7 +245,7 @@ jobs:
           - "3.12"
           - "3.13"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python 3
         uses: actions/setup-python@v6
         with:
@@ -179,9 +255,14 @@ jobs:
         with:
           name: pyavd
           path: /tmp/pyavd/
+      - name: Download pyavd-utils wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-wheels-ubuntu-latest
+          path: /tmp/pyavd/
       - name: "Install Python requirements"
         run: |
-          pip install "${{ needs.build_pyavd.outputs.wheel_file }}" -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install "${{ needs.build_pyavd.outputs.wheel_file }}" -r ansible_collections/arista/avd/requirements-dev.txt --upgrade --find-links /tmp/pyavd
 
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
@@ -189,7 +270,7 @@ jobs:
   molecule_eos_cli_config_gen:
     name: Validate eos_cli_config_gen
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes]
+    needs: [build_pyavd, file-changes, build_ubuntu_pyavd_utils_wheels]
     if: |
       needs.file-changes.outputs.config_gen == 'true' ||
       needs.file-changes.outputs.requirements == 'true' ||
@@ -208,11 +289,16 @@ jobs:
           - avd_scenario: "eos_cli_config_gen"
             ansible_version: "ansible-core==2.16.0"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
         with:
           name: pyavd
+          path: /tmp/pyavd/
+      - name: Download pyavd-utils wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-wheels-ubuntu-latest
           path: /tmp/pyavd/
       - name: Set up Python 3.11
         uses: actions/setup-python@v6
@@ -220,7 +306,7 @@ jobs:
           python-version: "3.11"
       - name: Install pyavd and Ansible requirements
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule
+          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule --find-links /tmp/pyavd
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
@@ -228,10 +314,6 @@ jobs:
       - name: Check GIT status
         run: |
           sh .github/check-git-status.sh
-      # - uses: actions/upload-artifact@v5
-      #   with:
-      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
-      #     path: ${PWD}/ansible_collections/arista/avd/extensions/molecule/${{ matrix.avd_scenario }}
 
   # ----------------------------------- #
   # EOS Design MOLECULE
@@ -239,7 +321,7 @@ jobs:
   molecule_eos_designs:
     name: Validate eos_designs
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes]
+    needs: [build_pyavd, file-changes, build_ubuntu_pyavd_utils_wheels]
     if: |
       needs.file-changes.outputs.eos_design == 'true' ||
       needs.file-changes.outputs.config_gen == 'true' ||
@@ -280,11 +362,16 @@ jobs:
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.19.0"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
         with:
           name: pyavd
+          path: /tmp/pyavd/
+      - name: Download pyavd-utils wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-wheels-ubuntu-latest
           path: /tmp/pyavd/
       - name: Set up Python 3.11
         uses: actions/setup-python@v6
@@ -292,7 +379,7 @@ jobs:
           python-version: "3.11"
       - name: Install pyavd and Ansible requirements
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule
+          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule --find-links /tmp/pyavd
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
@@ -304,15 +391,20 @@ jobs:
   molecule_eos_designs_minimum_requirements:
     name: Validate eos_designs with minimum requirements
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes]
+    needs: [build_pyavd, file-changes, build_ubuntu_pyavd_utils_wheels]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true' ||
       github.event_name == 'merge_group'
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
         with:
           name: pyavd
+          path: /tmp/pyavd/
+      - name: Download pyavd-utils wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-wheels-ubuntu-latest
           path: /tmp/pyavd/
       - name: Use Python 3.10 for minimum requirements
         uses: actions/setup-python@v6
@@ -326,11 +418,11 @@ jobs:
         # pip upgrade to get dependency groups
         run: |
           pip install uv
-          uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution=lowest-direct > /tmp/pyavd/min_requirements.txt
+          uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution lowest-direct --find-links /tmp/pyavd > /tmp/pyavd/min_requirements.txt
           cat /tmp/pyavd/min_requirements.txt
           pip install pip --upgrade
           python -m pip install --group molecule
-          python -m pip install "ansible-core==2.16.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r /tmp/pyavd/min_requirements.txt
+          python -m pip install "ansible-core==2.16.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r /tmp/pyavd/min_requirements.txt --find-links /tmp/pyavd
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
@@ -345,7 +437,7 @@ jobs:
   molecule_anta_runner:
     name: Validate anta_runner
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes]
+    needs: [build_pyavd, file-changes, build_ubuntu_pyavd_utils_wheels]
     if: |
       needs.file-changes.outputs.eos_design == 'true' ||
       needs.file-changes.outputs.anta_runner == 'true' ||
@@ -362,11 +454,16 @@ jobs:
           - avd_scenario: "anta_runner"
             ansible_version: "ansible-core==2.16.0"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
         with:
           name: pyavd
+          path: /tmp/pyavd/
+      - name: Download pyavd-utils wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-wheels-ubuntu-latest
           path: /tmp/pyavd/
       - name: Set up Python 3.11
         uses: actions/setup-python@v6
@@ -374,7 +471,7 @@ jobs:
           python-version: "3.11"
       - name: Install pyavd and Ansible requirements
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule
+          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule --find-links /tmp/pyavd
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
@@ -389,7 +486,7 @@ jobs:
   ansible_test_sanity:
     name: Run ansible-test sanity validation
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes]
+    needs: [build_pyavd, file-changes, build_ubuntu_pyavd_utils_wheels]
     strategy:
       fail-fast: true
       matrix:
@@ -401,7 +498,7 @@ jobs:
             pip_installation: "--user https://github.com/ansible/ansible/archive/devel.tar.gz"
             skip_test: "--skip-test ansible-doc"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python 3
         uses: actions/setup-python@v6
         with:
@@ -410,6 +507,11 @@ jobs:
             3.11
             3.12
             3.13
+      - name: Download pyavd-utils wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-wheels-ubuntu-latest
+          path: /tmp/pyavd/
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
         with:
@@ -417,7 +519,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install pyavd and Ansible requirements
         run: |
-          pip install  ${{ matrix.pip_installation }} "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
+          pip install  ${{ matrix.pip_installation }} "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --find-links /tmp/pyavd
       - name: Run ansible-test sanity
         working-directory: ansible_collections/arista/avd
         # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version
@@ -427,14 +529,19 @@ jobs:
   ansible_test_units:
     name: Run ansible-test units test cases
     runs-on: ubuntu-latest
-    needs: [build_pyavd, file-changes]
+    needs: [file-changes, build_pyavd, build_ubuntu_pyavd_utils_wheels]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python 3
         uses: actions/setup-python@v6
         with:
           python-version: |
             3.12
+      - name: Download pyavd-utils wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-wheels-ubuntu-latest
+          path: /tmp/pyavd/
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
         with:
@@ -442,7 +549,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install pyavd and ansible requirements
         run: |
-          pip install "ansible-core<2.20.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
+          pip install "ansible-core<2.20.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --find-links /tmp/pyavd
       - name: Run ansible-test units
         working-directory: ansible_collections/arista/avd
         run: |
@@ -458,9 +565,9 @@ jobs:
   ansible_test_integration:
     name: Run ansible-test integration test cases
     runs-on: ubuntu-latest
-    needs: [file-changes]
+    needs: [file-changes, build_ubuntu_pyavd_utils_wheels]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python 3
         uses: actions/setup-python@v6
         with:
@@ -469,9 +576,14 @@ jobs:
             3.10
             3.12
             3.13
+      - name: Download pyavd-utils wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-wheels-ubuntu-latest
+          path: /tmp/pyavd/
       - name: Install Python requirements
         run: |
-          pip install "ansible-core<2.20.0" -r .github/requirements-ci-dev.txt --upgrade
+          pip install "ansible-core<2.20.0" "./python-avd[ansible-collection]" --find-links /tmp/pyavd
       - name: Run ansible-test integration test cases
         working-directory: ansible_collections/arista/avd
         run: |
@@ -495,7 +607,7 @@ jobs:
         with:
           python-version: |
             3.12
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install Python & Ansible requirements
         run: |
           # distlib is required when using manifest
@@ -521,7 +633,7 @@ jobs:
         with:
           python-version: |
             3.11
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Install Python & Ansible requirements
         run: |
           pip install "ansible-core==2.16.0"
@@ -549,11 +661,11 @@ jobs:
   ansible_lint:
     name: Run ansible-lint test case
     runs-on: ubuntu-latest
-    needs: [build_pyavd, build_collection]
+    needs: [file-changes, build_pyavd, build_ubuntu_pyavd_utils_wheels]
     env:
       ANSIBLE_COLLECTIONS_PATH: ${{ github.workspace }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python 3
         uses: actions/setup-python@v6
         with:
@@ -562,6 +674,11 @@ jobs:
             3.11
             3.12
             3.13
+      - name: Download pyavd-utils wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-wheels-ubuntu-latest
+          path: /tmp/pyavd/
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v6
         with:
@@ -569,7 +686,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install Python & Ansible requirements
         run: |
-          pip install "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r ansible_collections/arista/avd/requirements-dev.txt --find-links /tmp/pyavd --upgrade
       - name: Download collection
         uses: actions/download-artifact@v6
         with:
@@ -584,7 +701,7 @@ jobs:
           ansible-lint --force-color --strict -v
 
   # ----------------------------------- #
-  # Test of pyavd
+  # Test of pyavd & pyavd-utils
   # ----------------------------------- #
   test_pyavd:
     name: Test pyavd (Python ${{ matrix.python }}, Suite ${{ matrix.suite.name }})
@@ -618,7 +735,7 @@ jobs:
             pytest_args: >-
               python-avd/tests/pyavd/molecule_scenarios/test_negative_eos_designs.py
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python 3
         uses: actions/setup-python@v6
         with:
@@ -657,7 +774,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [test_pyavd]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python 3.11
         uses: actions/setup-python@v6
         with:
@@ -715,7 +832,7 @@ jobs:
           - macos-14
           - macos-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         # This is needed for arm machines since they don't ship with 2024 edition.
       - name: Upgrade rust and cargo
         run: rustup update stable
@@ -757,13 +874,13 @@ jobs:
         if: |
           matrix.os == 'ubuntu-latest'
 
-  # -------------------------------------------- #
-  # pyavd-utils build and test on other platforms
-  # -------------------------------------------- #
-  pyavd_utils_build_and_test_cross_platform:
+  # ------------------------------------------- #
+  # pyavd-utils test on platforms using wheels
+  # ------------------------------------------- #
+  pyavd_utils_test_cross_platform:
     name: pyavd-utils ${{ matrix.python }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    needs: [file-changes]
+    needs: [build_ubuntu_pyavd_utils_wheels, build_pyavd_utils_wheels]
     if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
     strategy:
       fail-fast: false
@@ -773,6 +890,7 @@ jobs:
         # https://github.com/actions/runner-images/issues/13046
         # the next update will be macos-15-intel
         os:
+          - ubuntu-latest
           - ubuntu-24.04-arm
           - windows-latest
           - macos-14
@@ -780,17 +898,19 @@ jobs:
         python: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v5
-        # This is needed for arm machines since they don't ship with 2024 edition.
-      - name: Upgrade rust and cargo
-        run: rustup update stable
+      - name: Download {{ matrix.os }} wheel
+        uses: actions/download-artifact@v6
+        with:
+          name: pyavd-utils-wheels-${{ matrix.os }}
+          path: pyavd-utils/dist
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
       - name: Install tox
+        # NOTE: Here we don't need tox-gh-action because we tell which environment to run explicitly.
         run: |
-          pip install tox tox-gh-actions --upgrade
-      - name: Run pytest via tox
-        # Running tox  which will build the package (including rust).
-        # For most runs without an environment set here. The environment is mapped with the tox gh-action plugin.
+          pip install tox --upgrade
+      - name: Run pytest via tox for the wheel
+        # the environment will automatically pick up the downloaded wheel from pyavd-utils/dist
         run: |-
-          tox -- pyavd-utils/tests
+          tox run -e pyavd-utils

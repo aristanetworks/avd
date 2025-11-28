@@ -154,6 +154,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: WAN
+  validate_hardware:
+    enabled: false
 ntp:
   local_interface:
     name: Management1

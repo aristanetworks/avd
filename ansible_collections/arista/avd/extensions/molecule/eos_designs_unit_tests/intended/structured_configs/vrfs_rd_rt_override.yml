@@ -152,19 +152,23 @@ vlan_internal_order:
 vlans:
 - id: 100
   name: VLAN100
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 200
   name: VLAN200
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: VRF2
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vxlan_interface:
   vxlan1:
     description: vrfs_rd_rt_override_VTEP

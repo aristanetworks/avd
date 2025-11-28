@@ -428,30 +428,36 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 105
   name: Inband_management_vlan_ipv6
-  tenant: INBAND_MGMT_TESTS
+  metadata:
+    tenant: INBAND_MGMT_TESTS
 - id: 3000
   name: MLAG_L3_VRF_INBANDMGMT
   trunk_groups:
   - MLAG
-  tenant: INBAND_MGMT_TESTS
+  metadata:
+    tenant: INBAND_MGMT_TESTS
 - id: 104
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: INBANDMGMT
   ip_routing: true
   ipv6_routing: true
-  tenant: INBAND_MGMT_TESTS
+  metadata:
+    tenant: INBAND_MGMT_TESTS
 vxlan_interface:
   vxlan1:
     description: inband-mgmt-parent-dualstack1_VTEP
