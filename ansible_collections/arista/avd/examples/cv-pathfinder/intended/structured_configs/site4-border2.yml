@@ -72,9 +72,11 @@ ip_domain_lookup:
     vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 192.168.17.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.17.1
 ip_routing: true
 local_users:
 - name: admin
