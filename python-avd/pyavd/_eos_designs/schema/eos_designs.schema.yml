@@ -2646,7 +2646,7 @@ keys:
                   local_interface:
                     type: str
                     default: use_default_mgmt_method_interface
-                    description: "Local Source Interface\nThe value will be interpreted
+                    description: "Local Source Interface.\nThe value will be interpreted
                       according to these rules:\n  - `use_mgmt_interface` will configure
                       the `mgmt_interface` as the local interface.\n  - `use_inband_mgmt_interface`
                       will configure the `inband_mgmt_interface` as the local interface.\n

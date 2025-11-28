@@ -67,7 +67,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "flow_tracking_settings.trackers.[].exporters.[].collectors.[].port") | Integer |  |  | Min: 1<br>Max: 65535 | Collector Port Number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;format</samp>](## "flow_tracking_settings.trackers.[].exporters.[].format") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipfix_version</samp>](## "flow_tracking_settings.trackers.[].exporters.[].format.ipfix_version") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "flow_tracking_settings.trackers.[].exporters.[].local_interface") | String |  | `use_default_mgmt_method_interface` |  | Local Source Interface<br>The value will be interpreted according to these rules:<br>  - `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.<br>  - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the local interface.<br>  - `use_default_mgmt_method_interface` will configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value of `default_mgmt_method`.<br>  - Any other string will be used directly as the local interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "flow_tracking_settings.trackers.[].exporters.[].local_interface") | String |  | `use_default_mgmt_method_interface` |  | Local Source Interface.<br>The value will be interpreted according to these rules:<br>  - `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.<br>  - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the local interface.<br>  - `use_default_mgmt_method_interface` will configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value of `default_mgmt_method`.<br>  - Any other string will be used directly as the local interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template_interval</samp>](## "flow_tracking_settings.trackers.[].exporters.[].template_interval") | Integer |  |  | Min: 5000<br>Max: 3600000 | Template interval in milliseconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;collector</samp>](## "flow_tracking_settings.trackers.[].exporters.[].collector") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>collectors</samp> instead.</span> |
 
@@ -211,7 +211,7 @@
               format:
                 ipfix_version: <int>
 
-              # Local Source Interface
+              # Local Source Interface.
               # The value will be interpreted according to these rules:
               #   - `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.
               #   - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the local interface.

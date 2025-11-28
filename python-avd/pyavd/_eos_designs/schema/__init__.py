@@ -17999,7 +17999,7 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
                 local_interface: str
                 """
-                Local Source Interface
+                Local Source Interface.
                 The value will be interpreted according to these rules:
                   -
                 `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.
@@ -18038,7 +18038,7 @@ class EosDesigns(EosDesignsRootModel):
                             collectors: Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`).
                             format: Subclass of AvdModel.
                             local_interface:
-                               Local Source Interface
+                               Local Source Interface.
                                The value will be interpreted according to these rules:
                                  -
                                `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.
