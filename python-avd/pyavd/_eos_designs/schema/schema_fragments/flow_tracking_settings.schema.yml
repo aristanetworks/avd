@@ -128,7 +128,7 @@ keys:
                     type: str
                     default: use_default_mgmt_method_interface
                     description: |-
-                      Local Source Interface
+                      Local Source Interface.
                       The value will be interpreted according to these rules:
                         - `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.
                         - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the local interface.
