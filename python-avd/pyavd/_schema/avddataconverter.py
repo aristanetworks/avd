@@ -45,7 +45,7 @@ class AvdDataConverter:
         }
 
     def convert_data(
-        self, data: Any, schema: dict | None = None, path: list[str | int] | None = None, parent_dict: dict | None = None
+        self, data: Any, schema: dict[str, Any] | None = None, path: list[str | int] | None = None, parent_dict: dict | None = None
     ) -> Generator[AvdDeprecationWarning, None, None]:
         """
         Perform in-place conversion of data according to the provided schema.
@@ -66,7 +66,7 @@ class AvdDataConverter:
             yield from converter(schema[key], data, schema, path, parent_dict)
 
     def convert_keys(
-        self, keys: dict, data: dict, schema: dict, path: list[str | int], _parent_dict: dict | None
+        self, keys: dict[Any, Any], data: dict[str, Any], schema: dict[str, Any], path: list[str | int], _parent_dict: dict | None
     ) -> Generator[AvdDeprecationWarning, None, None]:
         """This function performs conversion on each key with the relevant subschema."""
         if not is_type(data, "dict"):
@@ -105,7 +105,7 @@ class AvdDataConverter:
                 )
 
     def convert_dynamic_keys(
-        self, dynamic_keys: dict, data: dict, schema: dict, path: list[str | int], parent_dict: dict | None
+        self, dynamic_keys: dict[str, Any], data: dict[str, Any], schema: dict[str, Any], path: list[str | int], parent_dict: dict | None
     ) -> Generator[AvdDeprecationWarning, None, None]:
         """
         This function resolves "dynamic_keys" by looking in the actual data.
@@ -116,7 +116,7 @@ class AvdDataConverter:
             return
 
         # Resolve "keys" from schema "dynamic_keys" by looking for the dynamic key in data.
-        keys = {}
+        keys: dict[Any, Any] = {}
         for dynamic_key, childschema in dynamic_keys.items():
             data_with_defaults = get_instance_with_defaults(data, dynamic_key, schema)
             resolved_keys = get_all(data_with_defaults, dynamic_key)
@@ -127,7 +127,7 @@ class AvdDataConverter:
         yield from self.convert_keys(keys, data, schema, path, parent_dict)
 
     def convert_items(
-        self, items: dict, data: list, _schema: dict, path: list[str | int], parent_dict: dict | None
+        self, items: dict[str, Any], data: list[Any], _schema: dict, path: list[str | int], parent_dict: dict | None
     ) -> Generator[AvdDeprecationWarning, None, None]:
         """This function performs conversion on each item with the items subschema."""
         if not is_type(data, "list"):
@@ -145,7 +145,7 @@ class AvdDataConverter:
             # Dive in to child items/schema
             yield from self.convert_data(item, items, [*path, index], parent_dict)
 
-    def convert_types(self, convert_types: list, data: dict | list, index: str | int, schema: dict, _path: list[str | int]) -> None:
+    def convert_types(self, convert_types: list[str], data: dict | list, index: str | int, schema: dict[str, Any], _path: list[str | int]) -> None:
         """
         This function performs type conversion if necessary on a single data instance.
 
@@ -196,7 +196,7 @@ class AvdDataConverter:
                 return
 
     def deprecation(
-        self, deprecation: dict, _data: Any, _schema: dict, path: list[str | int], parent_dict: dict | None
+        self, deprecation: dict[str, Any], _data: Any, _schema: dict, path: list[str | int], parent_dict: dict | None
     ) -> Generator[AvdDeprecationWarning, None, None]:
         """
         Deprecation.
