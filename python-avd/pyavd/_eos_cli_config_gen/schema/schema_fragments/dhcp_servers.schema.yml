@@ -173,17 +173,15 @@ keys:
               tftp_server:
                 type: dict
                 keys:
-                  file_ipv4:
-                    type: list
+                  file:
+                    type: str
                     min_length: 1
                     max_length: 253
                     description: Name of TFTP file for IPv4 clients.
-                    items:
-                      type: str
-                  option_66_ipv4:
+                  option_66:
                     type: str
                     description: IPv4 address or server FQDN for TFTP option 66.
-                  option_150_ipv4:
+                  option_150:
                     type: list
                     min_length: 1
                     description: List of IPv4 addresses for TFTP option 150.
@@ -210,13 +208,11 @@ keys:
               tftp_server:
                 type: dict
                 keys:
-                  file_ipv6:
-                    type: list
+                  file:
+                    type: str
                     min_length: 1
                     max_length: 253
                     description: Name of TFTP file for IPv6 clients.
-                    items:
-                      type: str
         subnets:
           type: list
           deprecation:

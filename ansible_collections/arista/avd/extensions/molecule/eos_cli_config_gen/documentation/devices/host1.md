@@ -1991,7 +1991,7 @@ dhcp relay
 
 | Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) |
 | ------ | ---- | ----------- | --------------- | ---------- | ------ | ------------------------------ | ---------------------------- | ---------------------------- |
-| 10.0.0.0/24 | TEST1 | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 | https://www.arista.io/ztp/bootstrap, https://www.arista.io/ztp/bootstrap2 | 192.168.66.22 | 192.166.66.33, 192.161.66.33 |
+| 10.0.0.0/24 | TEST1 | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 | https://www.arista.io/ztp/bootstrap | 192.168.66.22 | 192.166.66.33, 192.161.66.33 |
 | 10.2.3.0/24 | - | - | - | - | - | - | - | - |
 | 172.16.254.0/24 | - | - | 172.16.254.1 | - | - | - | - | - |
 | 192.168.0.0/24 | - | - | - | - | - | - | - | - |
@@ -2008,7 +2008,7 @@ dhcp relay
 | Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges | IPv6 TFTP Bootfile URL (Option 59) |
 | ------ | ---- | ----------- | --------------- | ---------- | ------ | ---------------------------------- |
 | 2a00:2::/64 | - | - | - | - | - | - |
-| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | - | https://2001:0db8:fe/ztp/bootstrap, https://2001:0db7:fe/ztp/bootstrap |
+| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | - | https://2001:0db8:fe/ztp/bootstrap |
 
 ###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
 
@@ -2105,7 +2105,7 @@ dhcp server
       default-gateway 10.0.0.1
       tftp server option 66 192.168.66.22
       tftp server option 150 192.166.66.33 192.161.66.33
-      tftp server file https://www.arista.io/ztp/bootstrap https://www.arista.io/ztp/bootstrap2
+      tftp server file https://www.arista.io/ztp/bootstrap
    !
    subnet 10.2.3.0/24
    !
@@ -2120,7 +2120,7 @@ dhcp server
       reservations
          mac-address 0003.0003.003
             ipv6-address 2001:db8:abcd:1234:c000::1
-      tftp server file https://2001:0db8:fe/ztp/bootstrap https://2001:0db7:fe/ztp/bootstrap
+      tftp server file https://2001:0db8:fe/ztp/bootstrap
    !
    vendor-option ipv4 NTP
       sub-option 42 type ipv4-address data 10.1.1.1

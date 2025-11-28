@@ -4454,26 +4454,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class TftpServer(AvdModel):
                 """Subclass of AvdModel."""
 
-                class FileIpv4(AvdList[str]):
+                class Option150(AvdList[str]):
                     """Subclass of AvdList with `str` items."""
 
-                FileIpv4._item_type = str
+                Option150._item_type = str
 
-                class Option150Ipv4(AvdList[str]):
-                    """Subclass of AvdList with `str` items."""
-
-                Option150Ipv4._item_type = str
-
-                _fields: ClassVar[dict] = {"file_ipv4": {"type": FileIpv4}, "option_66_ipv4": {"type": str}, "option_150_ipv4": {"type": Option150Ipv4}}
-                file_ipv4: FileIpv4
-                """
-                Name of TFTP file for IPv4 clients.
-
-                Subclass of AvdList with `str` items.
-                """
-                option_66_ipv4: str | None
+                _fields: ClassVar[dict] = {"file": {"type": str}, "option_66": {"type": str}, "option_150": {"type": Option150}}
+                file: str | None
+                """Name of TFTP file for IPv4 clients."""
+                option_66: str | None
                 """IPv4 address or server FQDN for TFTP option 66."""
-                option_150_ipv4: Option150Ipv4
+                option_150: Option150
                 """
                 List of IPv4 addresses for TFTP option 150.
 
@@ -4485,9 +4476,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        file_ipv4: FileIpv4 | UndefinedType = Undefined,
-                        option_66_ipv4: str | None | UndefinedType = Undefined,
-                        option_150_ipv4: Option150Ipv4 | UndefinedType = Undefined,
+                        file: str | None | UndefinedType = Undefined,
+                        option_66: str | None | UndefinedType = Undefined,
+                        option_150: Option150 | UndefinedType = Undefined,
                     ) -> None:
                         """
                         TftpServer.
@@ -4496,12 +4487,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            file_ipv4:
-                               Name of TFTP file for IPv4 clients.
-
-                               Subclass of AvdList with `str` items.
-                            option_66_ipv4: IPv4 address or server FQDN for TFTP option 66.
-                            option_150_ipv4:
+                            file: Name of TFTP file for IPv4 clients.
+                            option_66: IPv4 address or server FQDN for TFTP option 66.
+                            option_150:
                                List of IPv4 addresses for TFTP option 150.
 
                                Subclass of AvdList with `str` items.
@@ -4684,22 +4672,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class TftpServer(AvdModel):
                 """Subclass of AvdModel."""
 
-                class FileIpv6(AvdList[str]):
-                    """Subclass of AvdList with `str` items."""
-
-                FileIpv6._item_type = str
-
-                _fields: ClassVar[dict] = {"file_ipv6": {"type": FileIpv6}}
-                file_ipv6: FileIpv6
-                """
-                Name of TFTP file for IPv6 clients.
-
-                Subclass of AvdList with `str` items.
-                """
+                _fields: ClassVar[dict] = {"file": {"type": str}}
+                file: str | None
+                """Name of TFTP file for IPv6 clients."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, file_ipv6: FileIpv6 | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, file: str | None | UndefinedType = Undefined) -> None:
                         """
                         TftpServer.
 
@@ -4707,10 +4686,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            file_ipv6:
-                               Name of TFTP file for IPv6 clients.
-
-                               Subclass of AvdList with `str` items.
+                            file: Name of TFTP file for IPv6 clients.
 
                         """
 

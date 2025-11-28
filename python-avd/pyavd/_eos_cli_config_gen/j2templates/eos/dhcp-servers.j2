@@ -82,14 +82,14 @@
 {%             if subnet.default_gateway is arista.avd.defined %}
       default-gateway {{ subnet.default_gateway }}
 {%             endif %}
-{%             if subnet.tftp_server.option_66_ipv4 is arista.avd.defined %}
-      tftp server option 66 {{ subnet.tftp_server.option_66_ipv4 }}
+{%             if subnet.tftp_server.option_66 is arista.avd.defined %}
+      tftp server option 66 {{ subnet.tftp_server.option_66 }}
 {%             endif %}
-{%             if subnet.tftp_server.option_150_ipv4 is arista.avd.defined %}
-      tftp server option 150 {{ subnet.tftp_server.option_150_ipv4 | join(" ") }}
+{%             if subnet.tftp_server.option_150 is arista.avd.defined %}
+      tftp server option 150 {{ subnet.tftp_server.option_150 | join(" ") }}
 {%             endif %}
-{%             if subnet.tftp_server.file_ipv4 is arista.avd.defined %}
-      tftp server file {{ subnet.tftp_server.file_ipv4 | join(" ") }}
+{%             if subnet.tftp_server.file is arista.avd.defined %}
+      tftp server file {{ subnet.tftp_server.file }}
 {%             endif %}
 {%         endfor %}
 {%         for subnet in dhcp_server.ipv6_subnets | arista.avd.natural_sort %}
@@ -128,8 +128,8 @@
 {%             if subnet.default_gateway is arista.avd.defined %}
       default-gateway {{ subnet.default_gateway }}
 {%             endif %}
-{%             if subnet.tftp_server.file_ipv6 is arista.avd.defined %}
-      tftp server file {{ subnet.tftp_server.file_ipv6 | join(" ") }}
+{%             if subnet.tftp_server.file is arista.avd.defined %}
+      tftp server file {{ subnet.tftp_server.file }}
 {%             endif %}
 {%         endfor %}
 {%         if dhcp_server.disabled | arista.avd.default(false) is true %}
