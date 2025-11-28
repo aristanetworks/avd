@@ -16461,7 +16461,6 @@ class EosDesigns(EosDesignsRootModel):
             Default value: `"use_default_mgmt_method_vrf"`
             """
             ip_address: str
-            """IPv4 or IPv6 address for DNS server."""
             priority: int | None
             """Priority value (lower is first)."""
 
@@ -16493,15 +16492,13 @@ class EosDesigns(EosDesignsRootModel):
                            above depending on the value of `default_mgmt_method`.
                            - Any other string will be used directly as
                            the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
-                        ip_address: IPv4 or IPv6 address for DNS server.
+                        ip_address: ip_address
                         priority: Priority value (lower is first).
 
                     """
 
-        class Servers(AvdIndexedList[str, ServersItem]):
-            """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `ip_address` (`str`)."""
-
-            _primary_key: ClassVar[str] = "ip_address"
+        class Servers(AvdList[ServersItem]):
+            """Subclass of AvdList with `ServersItem` items."""
 
         Servers._item_type = ServersItem
 
@@ -16552,7 +16549,7 @@ class EosDesigns(EosDesignsRootModel):
         domain: str | None
         """DNS domain name like 'fabric.local'"""
         servers: Servers
-        """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `ip_address` (`str`)."""
+        """Subclass of AvdList with `ServersItem` items."""
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         set_source_interfaces: bool
@@ -16583,7 +16580,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     domain: DNS domain name like 'fabric.local'
-                    servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `ip_address` (`str`).
+                    servers: Subclass of AvdList with `ServersItem` items.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     set_source_interfaces:
                        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,

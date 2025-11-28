@@ -13,25 +13,25 @@ custom_structured_configuration_prefix:
 
 dns_settings:
   servers:
-    - ip_address: 192.168.42.10  # Collides with csc_1_ip_name_servers
-    - ip_address: 192.168.42.40  # Collides with csc_2_ip_name_servers
+    - ip_address: 192.168.42.10  # Collides with csc_1_
+    - ip_address: 192.168.42.40  # Collides with csc_2_ip_name_server
     - ip_address: 192.168.42.50  # Unique value
 
-csc_1_ip_name_servers:
-  - ip_address: 192.168.42.1  # Collides with csc_2_ip_name_servers
-    vrf: VRF1
-  - ip_address: 192.168.42.10  # Collides with eos_designs
-    vrf: VRF1
-  - ip_address: 192.168.42.4  # Unique value
-    vrf: VRF1
+csc_1_ip_name_server:
+  vrfs:
+    - name: VRF1
+      servers:
+        - ip_address: 192.168.42.1  # Collides with csc_2_ip_name_server
+        - ip_address: 192.168.42.10  # Collides with eos_designs
+        - ip_address: 192.168.42.4  # Unique value
 
-csc_2_ip_name_servers:
-  - ip_address: 192.168.42.1  # Collides with csc_1_ip_name_servers
-    vrf: VRF2
-  - ip_address: 192.168.42.40  # Collides with eos_designs
-    vrf: VRF2
-  - ip_address: 192.168.42.8  # Unique value
-    vrf: VRF2
+csc_2_ip_name_server:
+  vrfs:
+    - name: VRF2
+      servers:
+        - ip_address: 192.168.42.1  # Collides with csc_1_ip_name_server
+        - ip_address: 192.168.42.40  # Collides with eos_designs
+        - ip_address: 192.168.42.8  # Unique value
 
 # DATA MODEL WITH PRIMARY KEY
 

@@ -20,7 +20,6 @@ keys:
         type: list
         required: true
         min_length: 1
-        $ref: eos_cli_config_gen#/keys/ip_name_server/keys/vrfs/items/keys/servers
         items:
           type: dict
           keys:
@@ -39,6 +38,16 @@ keys:
                 - Any other string will be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
               convert_types:
                 - int
+            ip_address:
+              type: str
+              required: true
+            priority:
+              description: Priority value (lower is first).
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 4
       vrfs:
         type: list
         primary_key: name

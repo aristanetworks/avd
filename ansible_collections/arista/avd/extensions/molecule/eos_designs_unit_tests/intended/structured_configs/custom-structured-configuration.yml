@@ -10,25 +10,23 @@ ip_domain_lookup:
   - name: Management1
     vrf: MGMT
 ip_igmp_snooping: {}
-ip_name_servers:
-- ip_address: 192.168.42.10
-  vrf: MGMT
-- ip_address: 192.168.42.40
-  vrf: MGMT
-- ip_address: 192.168.42.50
-  vrf: MGMT
-- ip_address: 192.168.42.1
-  vrf: VRF1
-- ip_address: 192.168.42.10
-  vrf: VRF1
-- ip_address: 192.168.42.4
-  vrf: VRF1
-- ip_address: 192.168.42.1
-  vrf: VRF2
-- ip_address: 192.168.42.40
-  vrf: VRF2
-- ip_address: 192.168.42.8
-  vrf: VRF2
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.42.10
+    - ip_address: 192.168.42.40
+    - ip_address: 192.168.42.50
+  - name: VRF1
+    servers:
+    - ip_address: 192.168.42.1
+    - ip_address: 192.168.42.10
+    - ip_address: 192.168.42.4
+  - name: VRF2
+    servers:
+    - ip_address: 192.168.42.1
+    - ip_address: 192.168.42.40
+    - ip_address: 192.168.42.8
 local_users:
 - name: eos-designs-admin
   disabled: false
