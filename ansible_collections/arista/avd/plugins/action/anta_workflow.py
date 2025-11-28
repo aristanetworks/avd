@@ -89,6 +89,7 @@ ARGUMENT_SPEC = {
     "user_catalogs": {
         "type": "dict",
         "options": {
+            "enabled": {"type": "bool", "default": True},
             "input_dir": {"type": "str"},
         },
     },
@@ -184,6 +185,7 @@ class ActionModule(ActionBase):
 
         generate_avd_catalogs = get(PLUGIN_ARGS, "avd_catalogs.enabled")
         structured_config_dir = get(PLUGIN_ARGS, "avd_catalogs.structured_config_dir")
+        user_catalog_enabled = get(PLUGIN_ARGS, "user_catalogs.enabled")
         user_catalog_dir = get(PLUGIN_ARGS, "user_catalogs.input_dir")
 
         if generate_avd_catalogs is False and user_catalog_dir is None:
@@ -201,7 +203,7 @@ class ActionModule(ActionBase):
 
         try:
             # Load the user-defined ANTA catalogs if provided
-            if user_catalog_dir is not None:
+            if user_catalog_enabled and user_catalog_dir is not None:
                 USER_CATALOG = load_user_catalogs(user_catalog_dir)
                 if not generate_avd_catalogs and not USER_CATALOG.tests:
                     LOGGER.warning("No tests found in the user-defined ANTA catalogs, exiting")
