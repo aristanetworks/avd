@@ -29,6 +29,7 @@ class VerifyAPIHttpsSSLInputFactory(AntaTestInputFactory[VerifyAPIHttpsSSL.Input
     def create(self) -> Iterator[VerifyAPIHttpsSSL.Input]:
         """Generate the inputs for the `VerifyAPIHttpsSSL test."""
         if not (profile := self.structured_config.management_api_http.https_ssl_profile):
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
             return
 
         yield VerifyAPIHttpsSSL.Input(profile=profile)
@@ -73,6 +74,7 @@ class VerifySpecificIPSecConnInputFactory(AntaTestInputFactory[VerifySpecificIPS
                         self.logger_adapter.debug(LogMessage.PATH_GROUP_IPV6_STATIC_PEER, peer=peer_ip, path_group=path_group.name)
 
         if not ip_security_connections:
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
             return
 
         yield VerifySpecificIPSecConn.Input(ip_security_connections=natural_sort(ip_security_connections, sort_key="peer"))

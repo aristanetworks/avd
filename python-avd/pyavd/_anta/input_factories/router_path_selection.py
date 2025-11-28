@@ -17,6 +17,8 @@ from ._base_classes import AntaTestInputFactory
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
+    from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+
 
 class VerifySpecificPathInputFactory(AntaTestInputFactory[VerifySpecificPath.Input]):
     """
@@ -41,39 +43,60 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory[VerifySpecificPath.Inp
 
             for interface in path_group.local_interfaces:
                 # Get the source IP address for the local interface
-                if interface.name.startswith("Ethernet") and interface.name in self.structured_config.ethernet_interfaces:
-                    interface_ip_address = self.structured_config.ethernet_interfaces[interface.name].ip_address
-                elif interface.name.startswith("Port-Channel") and interface.name in self.structured_config.port_channel_interfaces:
-                    interface_ip_address = self.structured_config.port_channel_interfaces[interface.name].ip_address
-                else:
-                    interface_ip_address = None
-
-                if interface_ip_address is None:
-                    self.logger_adapter.debug(LogMessage.INTERFACE_NO_IP, interface=interface.name)
+                source_ip = self._get_interface_ip(interface.name)
+                if not source_ip:
                     continue
 
-                if interface_ip_address == "dhcp":
-                    self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=interface.name)
-                    continue
-
-                source_address = ip_interface(interface_ip_address).ip
-                if not isinstance(source_address, IPv4Address):
-                    continue
                 for static_peer in path_group.static_peers:
-                    static_peer_ip = ip_address(static_peer.router_ip)
-                    if isinstance(static_peer_ip, IPv4Address):
-                        for destination_address in static_peer.ipv4_addresses:
-                            dps_path = DpsPath(
-                                peer=static_peer_ip,
-                                path_group=path_group.name,
-                                source_address=IPv4Address(source_address),
-                                destination_address=IPv4Address(destination_address),
-                            )
-                            all_dps_paths.append(dps_path)
-                    else:
-                        self.logger_adapter.debug(LogMessage.PATH_GROUP_IPV6_STATIC_PEER, peer=static_peer.router_ip, path_group=path_group.name)
+                    all_dps_paths.extend(self._create_dps_paths(path_group.name, source_ip, static_peer))
 
         if not all_dps_paths:
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
             return
 
         yield VerifySpecificPath.Input(paths=natural_sort(all_dps_paths, sort_key="peer"))
+
+    def _get_interface_ip(self, interface_name: str) -> IPv4Address | None:
+        """
+        Retrieve and validate the IPv4 address of a path group local interface.
+
+        Return None if the interface is not found, is DHCP, or is not IPv4.
+        """
+        if interface_name.startswith("Ethernet") and interface_name in self.structured_config.ethernet_interfaces:
+            ip_str = self.structured_config.ethernet_interfaces[interface_name].ip_address
+        elif interface_name.startswith("Port-Channel") and interface_name in self.structured_config.port_channel_interfaces:
+            ip_str = self.structured_config.port_channel_interfaces[interface_name].ip_address
+        else:
+            ip_str = None
+
+        if ip_str is None:
+            self.logger_adapter.debug(LogMessage.INTERFACE_NO_IP, interface=interface_name)
+            return None
+
+        if ip_str == "dhcp":
+            self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=interface_name)
+            return None
+
+        ip_obj = ip_interface(ip_str).ip
+        if not isinstance(ip_obj, IPv4Address):
+            return None
+
+        return ip_obj
+
+    def _create_dps_paths(
+        self, path_group_name: str, source_ip: IPv4Address, static_peer: EosCliConfigGen.RouterPathSelection.PathGroupsItem.StaticPeersItem
+    ) -> Iterator[DpsPath]:
+        """Yield DpsPath objects for a specific peer if valid."""
+        peer_ip = ip_address(static_peer.router_ip)
+
+        if not isinstance(peer_ip, IPv4Address):
+            self.logger_adapter.debug(LogMessage.PATH_GROUP_IPV6_STATIC_PEER, peer=static_peer.router_ip, path_group=path_group_name)
+            return
+
+        for destination_address in static_peer.ipv4_addresses:
+            yield DpsPath(
+                peer=peer_ip,
+                path_group=path_group_name,
+                source_address=source_ip,
+                destination_address=IPv4Address(destination_address),
+            )

@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 
 from anta.tests.routing.generic import VerifyRoutingProtocolModel, VerifyRoutingTableEntry
 
+from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
@@ -27,6 +28,7 @@ class VerifyRoutingProtocolModelInputFactory(AntaTestInputFactory[VerifyRoutingP
     def create(self) -> Iterator[VerifyRoutingProtocolModel.Input]:
         """Generate the inputs for the `VerifyRoutingProtocolModel` test."""
         if not (model := self.structured_config.service_routing_protocols_model):
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
             return
 
         yield VerifyRoutingProtocolModel.Input(model=model)
@@ -47,6 +49,7 @@ class VerifyRoutingTableEntryInputFactory(AntaTestInputFactory[VerifyRoutingTabl
     def create(self) -> Iterator[VerifyRoutingTableEntry.Input]:
         """Generate the inputs for the `VerifyRoutingTableEntry` test."""
         if not self.fabric_data.special_ips:
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
             return
 
         yield VerifyRoutingTableEntry.Input(routes=natural_sort(list(self.fabric_data.special_ips)), collect="all")

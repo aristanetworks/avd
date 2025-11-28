@@ -42,8 +42,6 @@ class AntaTestInputFactory(ABC, Generic[T_Input]):
         # Create the logger adapter for the test input factory
         self.logger_adapter = TestLoggerAdapter(logger=getLogger(self.__module__), extra={"device": self.device.hostname, "test": test_name})
 
-        self._skipped_by_decorator = False
-
     @abstractmethod
     def create(self) -> Iterator[T_Input]:
         """

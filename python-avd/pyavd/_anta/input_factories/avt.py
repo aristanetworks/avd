@@ -43,6 +43,10 @@ class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory[VerifyAVTSpecificPa
                 else:
                     self.logger_adapter.debug(LogMessage.PATH_GROUP_IPV6_STATIC_PEER, peer=static_peer.router_ip, path_group=path_group.name)
 
+        if not static_peers:
+            self.logger_adapter.debug(LogMessage.NO_STATIC_PEERS)
+            return
+
         avt_paths: list[AVTPath] = [
             AVTPath(avt_name=avt_profile.name, vrf=vrf.name, destination=dst_address, next_hop=dst_address)
             for vrf in avt_vrfs
@@ -52,6 +56,7 @@ class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory[VerifyAVTSpecificPa
         ]
 
         if not avt_paths:
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
             return
 
         yield VerifyAVTSpecificPath.Input(avt_paths=natural_sort(avt_paths, sort_key="avt_name"))

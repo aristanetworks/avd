@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 from anta.input_models.routing.bgp import BgpPeer
 from anta.tests.routing.bgp import VerifyBGPPeerSession
 
+from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
@@ -58,6 +59,7 @@ class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory[VerifyBGPPeerSession
         )
 
         if not bgp_peers:
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
             return
 
         yield VerifyBGPPeerSession.Input(bgp_peers=bgp_peers)

@@ -46,6 +46,7 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
         )
 
         if not interfaces:
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
             return
 
         yield VerifyInterfacesStatus.Input(interfaces=natural_sort(interfaces, sort_key="name"))
@@ -162,3 +163,6 @@ class VerifyStormControlDropsInputFactory(AntaTestInputFactory[VerifyStormContro
 
         if any(intf.storm_control for intf in all_interfaces):
             yield VerifyStormControlDrops.Input()
+        else:
+            self.logger_adapter.debug(LogMessage.NO_STORM_CONTROL_ENABLED)
+            return

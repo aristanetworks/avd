@@ -22,7 +22,6 @@ def skip_if_hardware_validation_disabled(func: Callable[[F], Iterator[R]]) -> Ca
     def wrapper(self: F) -> Iterator[R]:
         if not self.structured_config.metadata.validate_hardware.enabled:
             self.logger_adapter.debug(LogMessage.HARDWARE_VALIDATION_DISABLED)
-            self._skipped_by_decorator = True
             return
         yield from func(self)
 
@@ -36,7 +35,6 @@ def skip_if_extra_fabric_validation_disabled(func: Callable[[F], Iterator[R]]) -
     def wrapper(self: F) -> Iterator[R]:
         if not self.device.settings.extra_fabric_validation:
             self.logger_adapter.debug(LogMessage.EXTRA_FABRIC_VALIDATION_DISABLED)
-            self._skipped_by_decorator = True
             return
         yield from func(self)
 
@@ -50,7 +48,6 @@ def skip_if_wan_router(func: Callable[[F], Iterator[R]]) -> Callable[[F], Iterat
     def wrapper(self: F) -> Iterator[R]:
         if self.device.is_wan_router:
             self.logger_adapter.debug(LogMessage.DEVICE_IS_WAN_ROUTER)
-            self._skipped_by_decorator = True
             return
         yield from func(self)
 
