@@ -38658,6 +38658,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            PasswordType: TypeAlias = Literal["7", "8a"]
+
             class DefaultOriginate(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -38927,6 +38929,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "next_hop_peer": {"type": bool},
                 "next_hop_self": {"type": bool},
                 "password": {"type": str},
+                "password_type": {"type": str, "default": "7"},
                 "passive": {"type": bool},
                 "default_originate": {"type": DefaultOriginate},
                 "send_community": {"type": str},
@@ -38998,6 +39001,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             next_hop_peer: bool | None
             next_hop_self: bool | None
             password: str | None
+            password_type: PasswordType
+            """Default value: `"7"`"""
             passive: bool | None
             default_originate: DefaultOriginate
             """Subclass of AvdModel."""
@@ -39064,6 +39069,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     next_hop_peer: bool | None | UndefinedType = Undefined,
                     next_hop_self: bool | None | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    password_type: PasswordType | UndefinedType = Undefined,
                     passive: bool | None | UndefinedType = Undefined,
                     default_originate: DefaultOriginate | UndefinedType = Undefined,
                     send_community: str | None | UndefinedType = Undefined,
@@ -39126,6 +39132,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         next_hop_peer: next_hop_peer
                         next_hop_self: next_hop_self
                         password: password
+                        password_type: password_type
                         passive: passive
                         default_originate: Subclass of AvdModel.
                         send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
@@ -39217,6 +39224,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             validate_state: Used for validation by the `anta_runner` role.
 
                         """
+
+            PasswordType: TypeAlias = Literal["7", "8a"]
 
             class BfdTimers(AvdModel):
                 """Subclass of AvdModel."""
@@ -39557,6 +39566,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "description": {"type": str},
                 "route_reflector_client": {"type": bool},
                 "password": {"type": str},
+                "password_type": {"type": str, "default": "7"},
                 "passive": {"type": bool},
                 "shutdown": {"type": bool},
                 "update_source": {"type": str},
@@ -39613,6 +39623,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             description: str | None
             route_reflector_client: bool | None
             password: str | None
+            password_type: PasswordType
+            """Default value: `"7"`"""
             passive: bool | None
             shutdown: bool | None
             update_source: str | None
@@ -39693,6 +39705,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     description: str | None | UndefinedType = Undefined,
                     route_reflector_client: bool | None | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    password_type: PasswordType | UndefinedType = Undefined,
                     passive: bool | None | UndefinedType = Undefined,
                     shutdown: bool | None | UndefinedType = Undefined,
                     update_source: str | None | UndefinedType = Undefined,
@@ -39749,6 +39762,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         description: description
                         route_reflector_client: route_reflector_client
                         password: password
+                        password_type: password_type
                         passive: passive
                         shutdown: shutdown
                         update_source: Source Interface.
@@ -49659,6 +49673,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NeighborsItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                PasswordType: TypeAlias = Literal["7", "8a"]
+
                 class RemovePrivateAs(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -49933,6 +49949,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "peer_group": {"type": str},
                     "remote_as": {"type": str},
                     "password": {"type": str},
+                    "password_type": {"type": str, "default": "7"},
                     "passive": {"type": bool},
                     "remove_private_as": {"type": RemovePrivateAs},
                     "remove_private_as_ingress": {"type": RemovePrivateAsIngress},
@@ -49974,6 +49991,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 number.
                 """
                 password: str | None
+                password_type: PasswordType
+                """Default value: `"7"`"""
                 passive: bool | None
                 remove_private_as: RemovePrivateAs
                 """
@@ -50053,6 +50072,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         peer_group: str | None | UndefinedType = Undefined,
                         remote_as: str | None | UndefinedType = Undefined,
                         password: str | None | UndefinedType = Undefined,
+                        password_type: PasswordType | UndefinedType = Undefined,
                         passive: bool | None | UndefinedType = Undefined,
                         remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                         remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
@@ -50098,6 +50118,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                                number.
                             password: password
+                            password_type: password_type
                             passive: passive
                             remove_private_as:
                                Remove private AS numbers in outbound AS path.
