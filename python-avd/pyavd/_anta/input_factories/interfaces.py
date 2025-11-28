@@ -165,4 +165,3 @@ class VerifyStormControlDropsInputFactory(AntaTestInputFactory[VerifyStormContro
             yield VerifyStormControlDrops.Input()
         else:
             self.logger_adapter.debug(LogMessage.NO_STORM_CONTROL_ENABLED)
-            return
