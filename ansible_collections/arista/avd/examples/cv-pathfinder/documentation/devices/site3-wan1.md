@@ -356,7 +356,7 @@ spanning-tree mode none
 ### IPSec profiles
 
 | Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode | Flow Parallelization |
-| ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
+| ------------ | ---------- | --------- | ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
 | CP-PROFILE | CP-IKE-POLICY | CP-SA-POLICY | start | - | - | - | transport | - |
 | DP-PROFILE | - | DP-SA-POLICY | start | - | - | - | transport | - |
 
@@ -409,7 +409,7 @@ ip security
 
 | Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
 | --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.11/32 | - | 9194 | Hardware: FLOW-TRACKER |  |
+| Dps1 | 192.168.42.11/32 | - | 9194 | Hardware: FLOW-TRACKER | - |
 
 #### DPS Interfaces Device Configuration
 
@@ -442,8 +442,8 @@ interface Dps1
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1.42 | RED-TEST | - | 10.42.3.1/24 | RED | - | False | - | - |
 | Ethernet1.666 | BLUE-TEST | - | 10.66.3.1/24 | BLUE | - | False | - | - |
 | Ethernet4 | inet-cloud_Ethernet8 | 4 | *dhcp | *default | *- | *False | *ACL-INTERNET-IN_Port-Channel4 | *- |
@@ -495,7 +495,7 @@ interface Ethernet5
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 
 ##### IPv4
 
@@ -1209,7 +1209,7 @@ application traffic recognition
 ##### Path Group INTERNET
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Path Group ID | 102 |
 | IPSec profile | CP-PROFILE |
 
@@ -1222,7 +1222,7 @@ application traffic recognition
 ###### Dynamic Peers Settings
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | IP Local | - |
 | IPSec | - |
 

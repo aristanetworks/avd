@@ -156,3 +156,16 @@ custom_structured_configuration_port_channel_interfaces:
       peer_interface: Ethernet2
     switchport:
       enabled: false
+
+# Custom Loopback and VXLAN configuration to simulate a Multi-VTEP for ANTA tests
+custom_structured_configuration_loopback_interfaces:
+  - name: Loopback66
+    description: MLAG_VTEP_IP
+    shutdown: false
+    ip_address: 10.66.66.66/32
+
+custom_structured_configuration_vxlan_interface:
+  vxlan1:
+    vxlan:
+      source_interface: Loopback0
+      mlag_source_interface: Loopback66

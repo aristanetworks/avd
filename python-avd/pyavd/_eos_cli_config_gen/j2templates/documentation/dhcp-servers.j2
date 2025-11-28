@@ -142,7 +142,7 @@
 | Mac Address | IPv6 Address | Hostname |
 | ----------- | ------------ | -------- |
 {%                             for reservation in subnet.reservations | arista.avd.natural_sort("mac_address") %}
-| {{ reservation.mac_address }} | {{ reservation.ipv6_address | arista.avd.default("-") }} |  {{ reservation.hostname | arista.avd.default("-") }} |
+| {{ reservation.mac_address }} | {{ reservation.ipv6_address | arista.avd.default("-") }} | {{ reservation.hostname | arista.avd.default("-") }} |
 {%                             endfor %}
 {%                         endif %}
 {%                     endfor %}
@@ -152,7 +152,7 @@
 ##### IPv4 Vendor Options
 
 | Vendor ID | Sub-option Code | Sub-option Type | Sub-option Data |
-| --------- | ----------------| --------------- | --------------- |
+| --------- | --------------- | --------------- | --------------- |
 {%                     for option in dhcp_vendor_options | arista.avd.natural_sort("vendor_id") %}
 {%                         for sub_option in option.sub_options | arista.avd.natural_sort("code") %}
 {%                             if sub_option.string is arista.avd.defined %}

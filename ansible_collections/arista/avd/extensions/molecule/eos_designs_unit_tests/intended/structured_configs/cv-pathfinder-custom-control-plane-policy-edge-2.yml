@@ -653,10 +653,12 @@ vrfs:
   ip_routing: false
 - name: IT
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: PROD
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-custom-control-plane-policy-edge-2_VTEP

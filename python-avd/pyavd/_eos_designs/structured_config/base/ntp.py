@@ -58,10 +58,10 @@ class NtpMixin(Protocol):
 
         # Get server_vrf from ntp_settings and configure with the relevant VRF.
         # Also set relevant local interface.
-        server_vrf = self.get_vrf(ntp_settings.server_vrf, context="ntp_settings.server_vrf")
+        server_vrf = self.shared_utils.get_vrf(ntp_settings.server_vrf, context="ntp_settings.server_vrf")
         self.structured_config.ntp.vrf = server_vrf
         # Reusing get_source_interface for local-interface settings.
-        if local_interface := self.get_source_interface(ntp_settings.server_vrf, source_interface_override=None):
+        if local_interface := self.shared_utils.get_source_interface(ntp_settings.server_vrf, source_interface_override=None):
             self.structured_config.ntp.local_interface.name = local_interface
             self.structured_config.ntp.local_interface.vrf = server_vrf
 

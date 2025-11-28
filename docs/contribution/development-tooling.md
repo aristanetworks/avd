@@ -8,7 +8,7 @@
 
 - To assist the AVD development community, we provide guidance to develop with two primary methods: VSCode dev containers or local Python environment.
   - You may also choose your own development methodology, however we may not be able to provide assistance in a timely manner.
-- This guide provides additional information about the development tools leveraged in the project: pre-commit, Molecule and ansible-test.
+- This guide provides additional information about the development tools leveraged in the project: cargo, pre-commit, Molecule and ansible-test.
 - Please report any issues and optimization suggestions regarding the development workflow via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
 
 !!! note
@@ -51,6 +51,7 @@ Developing with your local Python environment requires you to configure and inst
 - [Python 3.10](https://docs.python.org/) or later and [Python Virtual Environments](https://docs.python.org/3/tutorial/venv.html).
 - Additional AVD Python package dependencies.
 - [Make](https://www.gnu.org/software/make/manual/make.html): Leveraged for automating software building and test procedures.
+- [Cargo](https://doc.rust-lang.org/cargo/): Used to build `pyavd-utils` a library maintained in the AVD repository providing python bindings for Rust code.
 - [Docker](https://docs.docker.com/engine/install/) (Optional): Some of the tests require docker to be executed locally and useful when troubleshooting failures of the CI pipeline.
 
 Recommended steps with Python virtual environment:
@@ -91,6 +92,17 @@ TODO: Add picture.
 When running from source, the `verify_requirements` action will check if any schema fragment or templates has changed locally and if so, will recompile on the fly either or both as
 required for `eos_cli_config_gen` and `eos_designs`, allowing a seamless development workflow while using Ansible.
 When using pyavd, it is required to run pre-commit to achieve the same.
+
+## Cargo
+
+- [Cargo](https://doc.rust-lang.org/cargo/) is the Rust package manager. Cargo downloads your Rust packages dependencies and compiles Rust packages amongst other things.
+- It is used to build the `pyavd-utils` package which is a Python package providing Python bindings to Rust code developed for AVD and is a dependency of `pyavd`.
+- Installing `pyavd` as an editable package requires building both `pyavd` and `pyavd-utils` locally. Therefore, you must have Cargo installed.
+- The recommended way to install `cargo` is via [`rustup`](https://rustup.rs/) but you may use any other method supported by your system.
+- There is a target `install-rust` in the Makefile in `pyavd-utils` folder to use `rustup` to install `cargo`.
+
+!!! note
+    There is no need to understand the Rust code to be able to develop features in `pyavd` itself.
 
 ## Pre-commit
 

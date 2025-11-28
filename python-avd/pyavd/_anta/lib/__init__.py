@@ -10,6 +10,7 @@ from anta.models import AntaTest
 from anta.reporter.csv_reporter import ReportCsv
 from anta.reporter.md_reporter import MDReportGenerator
 from anta.result_manager import ResultManager
+from anta.result_manager.models import TestResult
 from anta.runner import main as anta_runner
 
 __all__ = [
@@ -21,5 +22,6 @@ __all__ = [
     "MDReportGenerator",
     "ReportCsv",
     "ResultManager",
+    "TestResult",
     "anta_runner",
 ]

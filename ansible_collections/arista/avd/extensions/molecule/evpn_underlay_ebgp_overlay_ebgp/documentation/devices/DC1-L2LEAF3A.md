@@ -219,7 +219,7 @@ spanning-tree mst 0 priority 16384
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -326,7 +326,7 @@ interface Ethernet2
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | CUSTOM_DC1-LEAF2A_Po9 | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration

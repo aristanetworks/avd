@@ -191,7 +191,7 @@ spanning-tree mode none
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -216,8 +216,8 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_DC1-LEAF1A_Ethernet4 | - | 172.31.255.6/31 | default | 1500 | False | - | - |
 | Ethernet2 | P2P_DC1-LEAF2A_Ethernet4 | - | 172.31.255.14/31 | default | 1500 | False | - | - |
 | Ethernet3 | P2P_DC1-LEAF2B_Ethernet4 | - | 172.31.255.22/31 | default | 1500 | False | - | - |
@@ -393,7 +393,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 101 | 192.168.255.4 | enabled | Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> Ethernet6 <br> Ethernet7 <br> | enabled | 12000 | disabled | disabled | - | - | - | - |
+| 101 | 192.168.255.4 | enabled | Ethernet1<br>Ethernet2<br>Ethernet3<br>Ethernet4<br>Ethernet5<br>Ethernet6<br>Ethernet7 | enabled | 12000 | disabled | disabled | - | - | - | - |
 
 #### OSPF Interfaces
 

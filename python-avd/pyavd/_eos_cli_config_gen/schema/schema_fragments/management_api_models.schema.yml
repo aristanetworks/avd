@@ -18,6 +18,7 @@ keys:
             keys:
               disabled_paths:
                 type: list
+                min_length: 1
                 description: List of disabled Sysdb paths for Octa.
                 items:
                   type: str
