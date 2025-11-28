@@ -4,13 +4,6 @@
 
 import re
 
-from pyavd._errors import AristaAvdError
-
-try:
-    from pyavd_utils.passwords import sha512_crypt
-except ImportError as imp_exc:
-    raise AristaAvdError(str(imp_exc)) from imp_exc
-
 HASH_INPUT_TYPE = ["sha512_password"]
 
 
@@ -56,6 +49,9 @@ def _user_password_hash(clear_password: str, salt: str | None = None) -> str:
         TypeError: If the password is not of type 'str'.
         ValueError: If sha512_crypt fails for any reason.
     """
+    # Importing inside the function to avoid neeedind pyavd-utils in the build dependencies.
+    from pyavd_utils.passwords import sha512_crypt  # noqa: PLC0415
+
     if not isinstance(clear_password, str):
         msg = f"Password MUST be of type 'str' but is of type {type(clear_password)}"
         raise TypeError(msg)
