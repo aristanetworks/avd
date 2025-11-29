@@ -105,7 +105,7 @@ class DeviceTestContext:
 
         # Skip neighbor interfaces if `metadata.validate_state` is disabled
         if not neighbor_interface.metadata.validate_state:
-            LOGGER.debug("<%s> Skipped BGP peer %s", self.hostname, identifier)
+            LOGGER.debug("<%s> Skipped BGP peer %s - validate_state disabled", self.hostname, identifier)
             return None
 
         # Skip neighbor interfaces in shutdown peer groups
@@ -144,7 +144,7 @@ class DeviceTestContext:
 
         # Skip neighbors if `metadata.validate_state` is disabled
         if not neighbor.metadata.validate_state:
-            LOGGER.debug("<%s> Skipped BGP peer %s", self.hostname, identifier)
+            LOGGER.debug("<%s> Skipped BGP peer %s - validate_state disabled", self.hostname, identifier)
             return None
 
         # Skip neighbors that are shutdown
