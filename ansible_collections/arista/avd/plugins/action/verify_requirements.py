@@ -96,8 +96,9 @@ def _parse_requirements(req_str: str) -> tuple[Requirement, list[str]]:
         print(metadata(req.name).get_all("Requires-Dist"))  # noqa: T201
         for subreq_name in metadata(req.name).get_all("Requires-Dist"):
             subreq = Requirement(subreq_name)
-            print(subreq.marker, subreq.marker._markers)  # noqa: T201
+            print(subreq.marker)  # noqa: T201
             if subreq.marker:
+                print(subreq.marker._markers, req.extras)  # noqa: T201
                 extras = [subreq_name for marker in subreq.marker._markers if str(marker[0]) == "extra" and str(marker[2]) in req.extras]
 
     print("Extras found", extras)  # noqa: T201
