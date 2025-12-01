@@ -5,6 +5,5 @@ version: 1
 
 dependencies:
   galaxy: requirements.yml
-  # TODO: Need to see if we can replace this...
   python: requirements.txt
   system: bindep.txt
