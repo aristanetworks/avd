@@ -4408,13 +4408,13 @@ interface Dps1
 
 ##### Transceiver Settings
 
-| Interface | Transceiver Frequency | Media Override | Application Override | Power Ignore |
-| --------- | --------------------- | -------------- | -------------------- | ------------ |
-| Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 | - |
-| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 | - |
-| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd | - |
-| Ethernet73 | - | 100gbase-ar4 | 5 | - |
-| Ethernet86 | 190050.000 ghz | 100gbase-ar4 | 100gbase-srbd</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 | True |
+| Interface | Transceiver Frequency | Media Override | Application Override | Power Ignore | Transmitter Signal-Power | Transmitter Disabled |
+| --------- | --------------------- | -------------- | -------------------- | ------------ | ------------------------ | -------------------- |
+| Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 | - | - | - |
+| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 | - | - | - |
+| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd | - | - | - |
+| Ethernet73 | - | 100gbase-ar4 | 5 | - | - | - |
+| Ethernet86 | 190050.000 ghz | 100gbase-ar4 | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 | True | -10.68 | True |
 
 ##### Link Tracking Groups
 
@@ -5732,10 +5732,12 @@ interface Ethernet86
    switchport
    transceiver media override 100gbase-ar4
    transceiver power ignore
-   transceiver application override 100gbase-srbd
+   transceiver application override 5
    transceiver application override 5 lanes start 1 end 1
    transceiver application override 5 lanes start 2 end 3
    transceiver frequency 190050.000 ghz
+   transceiver transmitter signal-power -10.68
+   transceiver transmitter disabled
 ```
 
 ### Port-Channel Interfaces

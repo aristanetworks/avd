@@ -2118,7 +2118,8 @@ ethernet_interfaces:
       frequency_unit: ghz
       media:
         override: 100gbase-ar4
-      application_override: 100gbase-srbd
       power:
         ignore: true
-
+      transmitter:
+        signal_power: -10.675
+        disabled: true

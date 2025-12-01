@@ -1171,6 +1171,12 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
    {{ frequency_cli }}
 {%     endif %}
+{%     if ethernet_interface.transceiver.transmitter.signal_power is arista.avd.defined %}
+   transceiver transmitter signal-power {{ "%.2f" | format(ethernet_interface.transceiver.transmitter.signal_power | float) }}
+{%     endif %}
+{%     if ethernet_interface.transceiver.transmitter.disabled is arista.avd.defined %}
+   transceiver transmitter disabled
+{%     endif %}
 {%     if ethernet_interface.dot1x is arista.avd.defined %}
 {%         if ethernet_interface.dot1x.pae.mode is arista.avd.defined("authenticator") %}
    dot1x pae {{ ethernet_interface.dot1x.pae.mode }}
