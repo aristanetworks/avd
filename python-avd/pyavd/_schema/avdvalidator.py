@@ -56,7 +56,7 @@ class AvdValidator:
                 continue
             yield from validator(schema_value, instance, schema, path)
 
-    def type_validator(self, schema_type: str, instance: Any, _schema: dict[str, Any], path: list[str | int]) -> Generator:
+    def type_validator(self, schema_type: str, instance: Any, _schema: dict[str, Any], path: list[str | int]) -> Generator[AvdValidationError]:
         """Validates the type of `instance` equal to `schema_type`."""
         if not is_type(instance, schema_type):
             yield AvdValidationError(
@@ -98,7 +98,7 @@ class AvdValidator:
             # Reusing the unique keys validator
             yield from self.unique_keys_validator([primary_key], instance, schema, path)
 
-    def keys_validator(self, keys: dict, instance: dict, schema: dict[str, Any], path: list[str | int]) -> Generator:
+    def keys_validator(self, keys: dict[Any, Any], instance: dict[str, Any], schema: dict[str, Any], path: list[str | int]) -> Generator:
         """
         This function validates each key with the relevant subschema.
 
@@ -164,7 +164,7 @@ class AvdValidator:
         # Restore value
         self._relaxed_validation = old_relaxed_validation
 
-    def dynamic_keys_validator(self, _dynamic_keys: dict, instance: dict, schema: dict[str, Any], path: list[str | int]) -> Generator:
+    def dynamic_keys_validator(self, _dynamic_keys: dict, instance: dict[str, Any], schema: dict[str, Any], path: list[str | int]) -> Generator:
         """This function triggers the regular "keys" validator in case only dynamic_keys is set."""
         if "keys" not in schema:
             yield from self.keys_validator({}, instance, schema, path=path)
