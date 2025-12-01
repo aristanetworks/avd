@@ -48,9 +48,9 @@ ansible-collection = [
     # distlib is required to install the collection from source as it is using manifest
     "distlib>=0.3.9",
 ]
-# Special extra to be used for ansible-testing
+# Special extra to be used for ansible-testing - need to be kept in sync with group dev
 ansible-test = [
-  #"anta==1.6.0",
+    "anta==1.6.0",
     "cryptography>=43.0.0",
     "netaddr>=0.7.19",
     "PyYAML>=6.0.0",
@@ -74,7 +74,7 @@ ansible-test = [
     "pre-commit>=3.2.0",
     "pre-commit-hooks>=3.3.0",
     "referencing>=0.35.0",
-    "ruff==0.14.4",
+    "ruff==0.14.7",
     "tox",
     "twine",
     "yamllint",
@@ -89,7 +89,7 @@ requires = [
     "pydantic>=2.3.0",
     "pyyaml>=6.0.0",
     "referencing>=0.35.0",
-    "ruff==0.14.6",
+    "ruff==0.14.7",
     "setuptools>=77.0",
 ]
 build-backend = "custom_build_backend"
