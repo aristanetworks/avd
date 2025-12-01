@@ -90,18 +90,12 @@ def _parse_requirements(req_str: str) -> tuple[Requirement, list[str]]:
         raise ValueError(msg) from exc
 
     extras = []
-    print(req.extras)  # noqa: T201
     if req.extras:
-        print(metadata(req.name).__dict__)  # noqa: T201
-        print(metadata(req.name).get_all("Requires-Dist"))  # noqa: T201
         for subreq_name in metadata(req.name).get_all("Requires-Dist"):
             subreq = Requirement(subreq_name)
-            print(subreq.marker)  # noqa: T201
             if subreq.marker:
-                print(subreq.marker._markers, req.extras)  # noqa: T201
-                extras = [subreq_name for marker in subreq.marker._markers if str(marker[0]) == "extra" and str(marker[2]) in req.extras]
+                extras.extend([subreq_name for marker in subreq.marker._markers if str(marker[0]) == "extra" and str(marker[2]) in req.extras])
 
-    print("Extras found", extras)  # noqa: T201
     return req, extras
 
 
@@ -204,16 +198,13 @@ def _validate_python_requirements(requirements: list[str], info: dict[str, Any])
     requirements = [req.split(" #", maxsplit=1)[0] for req in requirements if req[0] != "#"]
     for raw_req in requirements:
         req, extras = _parse_requirements(raw_req)
-        print(req, extras)  # noqa: T201
         if RUNNING_FROM_SOURCE and req.name == "pyavd":
-            print(RUNNING_FROM_SOURCE, "boo")  # noqa: T201
             LOGGER.debug("AVD is running from source, *not* checking pyavd version nor any extra.")
             requirements_dict["valid"][req.name] = {
                 "installed": "running from source",
                 "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
             }
             continue
-        print("extending with extra")  # noqa: T201
 
         requirements.extend(extras)
 
