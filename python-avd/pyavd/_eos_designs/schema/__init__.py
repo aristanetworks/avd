@@ -25794,7 +25794,7 @@ class EosDesigns(EosDesignsRootModel):
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
             "digital_twin": {"type": DigitalTwin},
-            "validate_hardware_inventory": {"type": EosCliConfigGen.Metadata.HardwareRequirements},
+            "validate_hardware": {"type": EosCliConfigGen.Metadata.ValidateHardware},
             "structured_config": {"type": EosCliConfigGen},
             "raw_eos_cli": {"type": str},
         }
@@ -25848,16 +25848,19 @@ class EosDesigns(EosDesignsRootModel):
         Subclass
         of AvdModel.
         """
-        validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
+        validate_hardware: EosCliConfigGen.Metadata.ValidateHardware
         """
-        Defines hardware requirements for the device, validated by the `anta_runner` role.
-        For the `min_*`
-        keys:
-        - Undefined (Default): Validate that all available slots are inserted.
-        - Positive Integer:
-        Validate that the number of components inserted is at least the specified minimum.
-        - 0: Skip the
-        validation for this specific component.
+        Settings for hardware validation performed by the `anta_runner` role.
+        If `enabled` is set to
+        `false`, all other keys in this dictionary are ignored.
+
+        For the `min_*` keys:
+        - Undefined
+        (Default): Validate that all available slots are populated.
+        - Positive Integer: Validate that the
+        number of components inserted is at least the specified minimum.
+        - 0: Skip the validation for this
+        specific component.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -25881,7 +25884,7 @@ class EosDesigns(EosDesignsRootModel):
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
-                validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements | UndefinedType = Undefined,
+                validate_hardware: EosCliConfigGen.Metadata.ValidateHardware | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -25925,15 +25928,18 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
-                    validate_hardware_inventory:
-                       Defines hardware requirements for the device, validated by the `anta_runner` role.
-                       For the `min_*`
-                       keys:
-                       - Undefined (Default): Validate that all available slots are inserted.
-                       - Positive Integer:
-                       Validate that the number of components inserted is at least the specified minimum.
-                       - 0: Skip the
-                       validation for this specific component.
+                    validate_hardware:
+                       Settings for hardware validation performed by the `anta_runner` role.
+                       If `enabled` is set to
+                       `false`, all other keys in this dictionary are ignored.
+
+                       For the `min_*` keys:
+                       - Undefined
+                       (Default): Validate that all available slots are populated.
+                       - Positive Integer: Validate that the
+                       number of components inserted is at least the specified minimum.
+                       - 0: Skip the validation for this
+                       specific component.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -26579,7 +26585,7 @@ class EosDesigns(EosDesignsRootModel):
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
             "digital_twin": {"type": DigitalTwin},
-            "validate_hardware_inventory": {"type": EosCliConfigGen.Metadata.HardwareRequirements},
+            "validate_hardware": {"type": EosCliConfigGen.Metadata.ValidateHardware},
             "structured_config": {"type": EosCliConfigGen},
             "raw_eos_cli": {"type": str},
         }
@@ -26633,16 +26639,19 @@ class EosDesigns(EosDesignsRootModel):
         Subclass
         of AvdModel.
         """
-        validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
+        validate_hardware: EosCliConfigGen.Metadata.ValidateHardware
         """
-        Defines hardware requirements for the device, validated by the `anta_runner` role.
-        For the `min_*`
-        keys:
-        - Undefined (Default): Validate that all available slots are inserted.
-        - Positive Integer:
-        Validate that the number of components inserted is at least the specified minimum.
-        - 0: Skip the
-        validation for this specific component.
+        Settings for hardware validation performed by the `anta_runner` role.
+        If `enabled` is set to
+        `false`, all other keys in this dictionary are ignored.
+
+        For the `min_*` keys:
+        - Undefined
+        (Default): Validate that all available slots are populated.
+        - Positive Integer: Validate that the
+        number of components inserted is at least the specified minimum.
+        - 0: Skip the validation for this
+        specific component.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -26666,7 +26675,7 @@ class EosDesigns(EosDesignsRootModel):
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
-                validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements | UndefinedType = Undefined,
+                validate_hardware: EosCliConfigGen.Metadata.ValidateHardware | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -26710,15 +26719,18 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
-                    validate_hardware_inventory:
-                       Defines hardware requirements for the device, validated by the `anta_runner` role.
-                       For the `min_*`
-                       keys:
-                       - Undefined (Default): Validate that all available slots are inserted.
-                       - Positive Integer:
-                       Validate that the number of components inserted is at least the specified minimum.
-                       - 0: Skip the
-                       validation for this specific component.
+                    validate_hardware:
+                       Settings for hardware validation performed by the `anta_runner` role.
+                       If `enabled` is set to
+                       `false`, all other keys in this dictionary are ignored.
+
+                       For the `min_*` keys:
+                       - Undefined
+                       (Default): Validate that all available slots are populated.
+                       - Positive Integer: Validate that the
+                       number of components inserted is at least the specified minimum.
+                       - 0: Skip the validation for this
+                       specific component.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -57740,6 +57752,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    PasswordType: TypeAlias = Literal["7", "8a"]
+
                     class DefaultOriginate(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -58013,6 +58027,7 @@ class EosDesigns(EosDesignsRootModel):
                         "ebgp_multihop": {"type": int},
                         "next_hop_peer": {"type": bool},
                         "next_hop_self": {"type": bool},
+                        "password_type": {"type": str, "default": "7"},
                         "passive": {"type": bool},
                         "default_originate": {"type": DefaultOriginate},
                         "send_community": {"type": str},
@@ -58109,6 +58124,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Time-to-live in range of hops."""
                     next_hop_peer: bool | None
                     next_hop_self: bool | None
+                    password_type: PasswordType
+                    """Default value: `"7"`"""
                     passive: bool | None
                     default_originate: DefaultOriginate
                     """Subclass of AvdModel."""
@@ -58179,6 +58196,7 @@ class EosDesigns(EosDesignsRootModel):
                             ebgp_multihop: int | None | UndefinedType = Undefined,
                             next_hop_peer: bool | None | UndefinedType = Undefined,
                             next_hop_self: bool | None | UndefinedType = Undefined,
+                            password_type: PasswordType | UndefinedType = Undefined,
                             passive: bool | None | UndefinedType = Undefined,
                             default_originate: DefaultOriginate | UndefinedType = Undefined,
                             send_community: str | None | UndefinedType = Undefined,
@@ -58258,6 +58276,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ebgp_multihop: Time-to-live in range of hops.
                                 next_hop_peer: next_hop_peer
                                 next_hop_self: next_hop_self
+                                password_type: password_type
                                 passive: passive
                                 default_originate: Subclass of AvdModel.
                                 send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
@@ -63709,6 +63728,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        PasswordType: TypeAlias = Literal["7", "8a"]
+
                         class DefaultOriginate(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -63986,6 +64007,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ebgp_multihop": {"type": int},
                             "next_hop_peer": {"type": bool},
                             "next_hop_self": {"type": bool},
+                            "password_type": {"type": str, "default": "7"},
                             "passive": {"type": bool},
                             "default_originate": {"type": DefaultOriginate},
                             "send_community": {"type": str},
@@ -64082,6 +64104,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Time-to-live in range of hops."""
                         next_hop_peer: bool | None
                         next_hop_self: bool | None
+                        password_type: PasswordType
+                        """Default value: `"7"`"""
                         passive: bool | None
                         default_originate: DefaultOriginate
                         """Subclass of AvdModel."""
@@ -64152,6 +64176,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ebgp_multihop: int | None | UndefinedType = Undefined,
                                 next_hop_peer: bool | None | UndefinedType = Undefined,
                                 next_hop_self: bool | None | UndefinedType = Undefined,
+                                password_type: PasswordType | UndefinedType = Undefined,
                                 passive: bool | None | UndefinedType = Undefined,
                                 default_originate: DefaultOriginate | UndefinedType = Undefined,
                                 send_community: str | None | UndefinedType = Undefined,
@@ -64231,6 +64256,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ebgp_multihop: Time-to-live in range of hops.
                                     next_hop_peer: next_hop_peer
                                     next_hop_self: next_hop_self
+                                    password_type: password_type
                                     passive: passive
                                     default_originate: Subclass of AvdModel.
                                     send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
@@ -86250,7 +86276,7 @@ class EosDesigns(EosDesignsRootModel):
         "evpn_multicast": {"type": bool, "default": False},
         "evpn_overlay_bgp_rtc": {"type": bool, "default": False},
         "evpn_prevent_readvertise_to_server": {"type": bool, "default": False},
-        "evpn_prevent_readvertise_to_server_mode": {"type": str, "default": "source_peer_asn"},
+        "evpn_prevent_readvertise_to_server_mode": {"type": str, "default": "as_path_acl"},
         "evpn_short_esi_prefix": {"type": str, "default": "0000:0000:"},
         "evpn_vlan_aware_bundles": {"type": bool, "default": False},
         "evpn_vlan_bundles": {"type": EvpnVlanBundles},
@@ -86552,6 +86578,7 @@ class EosDesigns(EosDesignsRootModel):
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"act_node_type": "veos"},
+                        "validate_hardware": {"enabled": False},
                     },
                     {
                         "platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"],
@@ -86565,12 +86592,14 @@ class EosDesigns(EosDesignsRootModel):
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"act_node_type": "veos"},
+                        "validate_hardware": {"enabled": False},
                     },
                     {
                         "platforms": ["CloudEOS"],
                         "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False},
                         "p2p_uplinks_mtu": 9194,
                         "digital_twin": {"act_node_type": "cloudeos"},
+                        "validate_hardware": {"enabled": False},
                     },
                     {
                         "platforms": ["AWE-5310", "AWE-7230R"],
@@ -87433,7 +87462,7 @@ class EosDesigns(EosDesignsRootModel):
     `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
     updates with the route-server ASN anywhere in the AS-path.
 
-    Default value: `"source_peer_asn"`
+    Default value: `"as_path_acl"`
     """
     evpn_short_esi_prefix: str
     """
@@ -88156,7 +88185,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}, "validate_hardware": {"enabled": False}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}, "validate_hardware": {"enabled": False}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}, "validate_hardware": {"enabled": False}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """

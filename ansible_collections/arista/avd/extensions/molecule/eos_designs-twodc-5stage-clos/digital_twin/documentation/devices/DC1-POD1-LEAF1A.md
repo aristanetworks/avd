@@ -35,6 +35,7 @@
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
   - [Route-maps](#route-maps)
+  - [AS Path Lists](#as-path-lists)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -522,28 +523,28 @@ router bfd
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65200 | - | - | - |
+| 10 | deny | as-path AS65200 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65201
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65201 | - | - | - |
+| 10 | deny | as-path AS65201 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65210
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65210 | - | - | - |
+| 10 | deny | as-path AS65210 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65211
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65211 | - | - | - |
+| 10 | deny | as-path AS65211 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 #### Route-maps Device Configuration
@@ -551,24 +552,45 @@ router bfd
 ```eos
 !
 route-map RM-EVPN-FILTER-AS65200 deny 10
-   match as 65200
+   match as-path AS65200
 !
 route-map RM-EVPN-FILTER-AS65200 permit 20
 !
 route-map RM-EVPN-FILTER-AS65201 deny 10
-   match as 65201
+   match as-path AS65201
 !
 route-map RM-EVPN-FILTER-AS65201 permit 20
 !
 route-map RM-EVPN-FILTER-AS65210 deny 10
-   match as 65210
+   match as-path AS65210
 !
 route-map RM-EVPN-FILTER-AS65210 permit 20
 !
 route-map RM-EVPN-FILTER-AS65211 deny 10
-   match as 65211
+   match as-path AS65211
 !
 route-map RM-EVPN-FILTER-AS65211 permit 20
+```
+
+### AS Path Lists
+
+#### AS Path Lists Summary
+
+| List Name | Type | Match | Origin |
+| --------- | ---- | ----- | ------ |
+| AS65200 | permit | `_65200_` | any |
+| AS65201 | permit | `_65201_` | any |
+| AS65210 | permit | `_65210_` | any |
+| AS65211 | permit | `_65211_` | any |
+
+#### AS Path Lists Device Configuration
+
+```eos
+!
+ip as-path access-list AS65200 permit _65200_ any
+ip as-path access-list AS65201 permit _65201_ any
+ip as-path access-list AS65210 permit _65210_ any
+ip as-path access-list AS65211 permit _65211_ any
 ```
 
 ## VRF Instances

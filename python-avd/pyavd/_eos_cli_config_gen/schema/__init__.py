@@ -23511,7 +23511,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class Metadata(AvdModel):
         """Subclass of AvdModel."""
 
-        class HardwareRequirements(AvdModel):
+        class ValidateHardware(AvdModel):
             """Subclass of AvdModel."""
 
             class TransceiverManufacturers(AvdList[str]):
@@ -23520,6 +23520,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             TransceiverManufacturers._item_type = str
 
             _fields: ClassVar[dict] = {
+                "enabled": {"type": bool, "default": True},
                 "min_power_supplies": {"type": int},
                 "min_fans": {"type": int},
                 "min_supervisors": {"type": int},
@@ -23530,6 +23531,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "default": lambda cls: coerce_type(["Arista Networks", "Arastra, Inc."], target_type=cls),
                 },
             }
+            enabled: bool
+            """
+            Enable hardware validation for the device.
+            If `false`, all hardware tests are skipped, therefore the
+            other keys in `validate_hardware` are ignored.
+
+            Default value: `True`
+            """
             min_power_supplies: int | None
             """Minimum number of power supplies required for the device. Set to 0 to skip validation."""
             min_fans: int | None
@@ -23554,6 +23563,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
+                    enabled: bool | UndefinedType = Undefined,
                     min_power_supplies: int | None | UndefinedType = Undefined,
                     min_fans: int | None | UndefinedType = Undefined,
                     min_supervisors: int | None | UndefinedType = Undefined,
@@ -23562,12 +23572,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     transceiver_manufacturers: TransceiverManufacturers | UndefinedType = Undefined,
                 ) -> None:
                     """
-                    HardwareRequirements.
+                    ValidateHardware.
 
 
                     Subclass of AvdModel.
 
                     Args:
+                        enabled:
+                           Enable hardware validation for the device.
+                           If `false`, all hardware tests are skipped, therefore the
+                           other keys in `validate_hardware` are ignored.
                         min_power_supplies: Minimum number of power supplies required for the device. Set to 0 to skip validation.
                         min_fans: Minimum number of fans required for the device. Set to 0 to skip validation.
                         min_supervisors: Minimum number of supervisor modules required for the device. Set to 0 to skip validation.
@@ -24768,7 +24782,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "dc_name": {"type": str},
             "fabric_name": {"type": str},
             "serial_number": {"type": str},
-            "hardware_requirements": {"type": HardwareRequirements},
+            "validate_hardware": {"type": ValidateHardware},
             "cv_tags": {"type": CvTags},
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
@@ -24789,16 +24803,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Used only for documentation and deployment purposes. It is used by the
         'cv_deploy' role.
         """
-        hardware_requirements: HardwareRequirements
+        validate_hardware: ValidateHardware
         """
-        Defines hardware requirements for the device, validated by the `anta_runner` role.
-        For the `min_*`
-        keys:
-        - Undefined (Default): Validate that all available slots are inserted.
-        - Positive Integer:
-        Validate that the number of components inserted is at least the specified minimum.
-        - 0: Skip the
-        validation for this specific component.
+        Settings for hardware validation performed by the `anta_runner` role.
+        If `enabled` is set to
+        `false`, all other keys in this dictionary are ignored.
+
+        For the `min_*` keys:
+        - Undefined
+        (Default): Validate that all available slots are populated.
+        - Positive Integer: Validate that the
+        number of components inserted is at least the specified minimum.
+        - 0: Skip the validation for this
+        specific component.
 
         Subclass of AvdModel.
         """
@@ -24840,7 +24857,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 dc_name: str | None | UndefinedType = Undefined,
                 fabric_name: str | None | UndefinedType = Undefined,
                 serial_number: str | None | UndefinedType = Undefined,
-                hardware_requirements: HardwareRequirements | UndefinedType = Undefined,
+                validate_hardware: ValidateHardware | UndefinedType = Undefined,
                 cv_tags: CvTags | UndefinedType = Undefined,
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
@@ -24865,15 +24882,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Serial Number of the device.
                        Used only for documentation and deployment purposes. It is used by the
                        'cv_deploy' role.
-                    hardware_requirements:
-                       Defines hardware requirements for the device, validated by the `anta_runner` role.
-                       For the `min_*`
-                       keys:
-                       - Undefined (Default): Validate that all available slots are inserted.
-                       - Positive Integer:
-                       Validate that the number of components inserted is at least the specified minimum.
-                       - 0: Skip the
-                       validation for this specific component.
+                    validate_hardware:
+                       Settings for hardware validation performed by the `anta_runner` role.
+                       If `enabled` is set to
+                       `false`, all other keys in this dictionary are ignored.
+
+                       For the `min_*` keys:
+                       - Undefined
+                       (Default): Validate that all available slots are populated.
+                       - Positive Integer: Validate that the
+                       number of components inserted is at least the specified minimum.
+                       - 0: Skip the validation for this
+                       specific component.
 
                        Subclass of AvdModel.
                     cv_tags: Subclass of AvdModel.
@@ -38630,6 +38650,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            PasswordType: TypeAlias = Literal["7", "8a"]
+
             class DefaultOriginate(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -38899,6 +38921,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "next_hop_peer": {"type": bool},
                 "next_hop_self": {"type": bool},
                 "password": {"type": str},
+                "password_type": {"type": str, "default": "7"},
                 "passive": {"type": bool},
                 "default_originate": {"type": DefaultOriginate},
                 "send_community": {"type": str},
@@ -38970,6 +38993,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             next_hop_peer: bool | None
             next_hop_self: bool | None
             password: str | None
+            password_type: PasswordType
+            """Default value: `"7"`"""
             passive: bool | None
             default_originate: DefaultOriginate
             """Subclass of AvdModel."""
@@ -39036,6 +39061,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     next_hop_peer: bool | None | UndefinedType = Undefined,
                     next_hop_self: bool | None | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    password_type: PasswordType | UndefinedType = Undefined,
                     passive: bool | None | UndefinedType = Undefined,
                     default_originate: DefaultOriginate | UndefinedType = Undefined,
                     send_community: str | None | UndefinedType = Undefined,
@@ -39098,6 +39124,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         next_hop_peer: next_hop_peer
                         next_hop_self: next_hop_self
                         password: password
+                        password_type: password_type
                         passive: passive
                         default_originate: Subclass of AvdModel.
                         send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
@@ -39189,6 +39216,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             validate_state: Used for validation by the `anta_runner` role.
 
                         """
+
+            PasswordType: TypeAlias = Literal["7", "8a"]
 
             class BfdTimers(AvdModel):
                 """Subclass of AvdModel."""
@@ -39529,6 +39558,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "description": {"type": str},
                 "route_reflector_client": {"type": bool},
                 "password": {"type": str},
+                "password_type": {"type": str, "default": "7"},
                 "passive": {"type": bool},
                 "shutdown": {"type": bool},
                 "update_source": {"type": str},
@@ -39585,6 +39615,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             description: str | None
             route_reflector_client: bool | None
             password: str | None
+            password_type: PasswordType
+            """Default value: `"7"`"""
             passive: bool | None
             shutdown: bool | None
             update_source: str | None
@@ -39665,6 +39697,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     description: str | None | UndefinedType = Undefined,
                     route_reflector_client: bool | None | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    password_type: PasswordType | UndefinedType = Undefined,
                     passive: bool | None | UndefinedType = Undefined,
                     shutdown: bool | None | UndefinedType = Undefined,
                     update_source: str | None | UndefinedType = Undefined,
@@ -39721,6 +39754,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         description: description
                         route_reflector_client: route_reflector_client
                         password: password
+                        password_type: password_type
                         passive: passive
                         shutdown: shutdown
                         update_source: Source Interface.
@@ -49631,6 +49665,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NeighborsItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                PasswordType: TypeAlias = Literal["7", "8a"]
+
                 class RemovePrivateAs(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -49905,6 +49941,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "peer_group": {"type": str},
                     "remote_as": {"type": str},
                     "password": {"type": str},
+                    "password_type": {"type": str, "default": "7"},
                     "passive": {"type": bool},
                     "remove_private_as": {"type": RemovePrivateAs},
                     "remove_private_as_ingress": {"type": RemovePrivateAsIngress},
@@ -49946,6 +49983,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 number.
                 """
                 password: str | None
+                password_type: PasswordType
+                """Default value: `"7"`"""
                 passive: bool | None
                 remove_private_as: RemovePrivateAs
                 """
@@ -50025,6 +50064,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         peer_group: str | None | UndefinedType = Undefined,
                         remote_as: str | None | UndefinedType = Undefined,
                         password: str | None | UndefinedType = Undefined,
+                        password_type: PasswordType | UndefinedType = Undefined,
                         passive: bool | None | UndefinedType = Undefined,
                         remove_private_as: RemovePrivateAs | UndefinedType = Undefined,
                         remove_private_as_ingress: RemovePrivateAsIngress | UndefinedType = Undefined,
@@ -50070,6 +50110,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                                number.
                             password: password
+                            password_type: password_type
                             passive: passive
                             remove_private_as:
                                Remove private AS numbers in outbound AS path.
