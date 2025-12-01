@@ -116,7 +116,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                 record_export=config.record_export._cast_as(EosCliConfigGen.FlowTracking.Hardware.TrackersItem.RecordExport),
             )
             for exporter in config.exporters:
-                local_interface = self._get_local_interface(exporter.local_interface)
+                local_interface = self.shared_utils._get_local_interface(exporter.local_interface)
                 flow_tracking_hardware_trackers.exporters.append_new(
                     name=exporter.name,
                     collectors=exporter.collectors._cast_as(EosCliConfigGen.FlowTracking.Hardware.TrackersItem.ExportersItem.Collectors),
@@ -163,7 +163,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                 table_size=config.sampled.table_size,
             )
             for exporter in config.exporters:
-                local_interface = self._get_local_interface(exporter.local_interface)
+                local_interface = self.shared_utils._get_local_interface(exporter.local_interface)
                 flow_tracking_sampled_trackers.exporters.append_new(
                     name=exporter.name,
                     collectors=exporter.collectors._cast_as(EosCliConfigGen.FlowTracking.Sampled.TrackersItem.ExportersItem.Collectors),
@@ -190,21 +190,3 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
 
         msg = f"The flow tracker '{tracker_name}' is being used for at least one interface, but is not configured in 'self.inputs.flow_tracking_settings'."
         raise AristaAvdInvalidInputsError(msg)
-
-    def _get_local_interface(self, input_interface: str | None) -> str | None:
-        """
-        Resolve and return the appropriate local interface.
-
-        Given an `input_interface`, this function determines the corresponding local interface.
-        If the input is None, empty, or one of the predefined keywords, it returns the relevant
-        management or inband interface from `self.shared_utils`.
-        Otherwise, the provided interface name is returned as-is.
-        """
-        match input_interface:
-            case None | "" | "use_default_mgmt_method_interface":
-                return self.shared_utils.default_mgmt_protocol_interface
-            case "use_mgmt_interface":
-                return self.shared_utils.mgmt_interface
-            case "use_inband_mgmt_interface":
-                return self.shared_utils.inband_mgmt_interface
-        return input_interface
