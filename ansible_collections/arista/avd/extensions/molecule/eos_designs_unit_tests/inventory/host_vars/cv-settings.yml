@@ -55,7 +55,7 @@ cv_settings:
 # Test for export sflow setting vrf to cloudvision
 sflow_settings:
   destinations:
-    - destination: 127.0.0.1
+    - destination: 10.10.10.1
       vrf: use_default_mgmt_method_vrf
   export_to_cloudvision:
     enabled: true

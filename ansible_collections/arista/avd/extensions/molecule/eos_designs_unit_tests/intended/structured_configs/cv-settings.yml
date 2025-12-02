@@ -119,7 +119,7 @@ sflow:
   vrfs:
   - name: INBAND_MGMT_VRF
     destinations:
-    - destination: 127.0.0.1
+    - destination: 10.10.10.1
     source_interface: Vlan4092
   run: true
 transceiver_qsfp_default_mode_4x10: true
