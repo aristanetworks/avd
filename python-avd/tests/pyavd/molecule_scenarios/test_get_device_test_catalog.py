@@ -31,7 +31,7 @@ TEST_SETTINGS_MAP: dict[str, Any] = {
     "default_run_sorted_report": {"default": None},
 }
 
-RunName = Literal["default_run", "allow_bgp_vrfs_run", "default_run_filtered_report", "filtered_run", "default_run_sorted_report"]
+RunName = Literal["default_run", "default_run_filtered_report", "filtered_run", "default_run_sorted_report"]
 
 
 @pytest.mark.molecule_scenarios("anta_runner")
