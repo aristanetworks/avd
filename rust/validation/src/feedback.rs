@@ -77,6 +77,11 @@ impl Path {
         new
     }
 }
+impl From<&str> for Path {
+    fn from(value: &str) -> Self {
+        Self(value.split(".").map(|step| step.to_string()).collect())
+    }
+}
 
 /// Display the path as a json path string like outer[1].inner.lst[23]
 impl std::fmt::Display for Path {
@@ -194,10 +199,12 @@ pub enum Violation {
     #[display("The value is not unique among similar items. Conflicting item: {other_path}")]
     ValueNotUnique { other_path: Path },
     /// The input data model is deprecated and cannot be used in conjunction with the new data model.
-    #[display("The input data model is deprecated and cannot be used in conjunction with the new data model '{other_path}'.{url}")]
+    #[display(
+        "The input data model is deprecated and cannot be used in conjunction with the new data model '{other_path}'.{url}"
+    )]
     DeprecatedConflict { other_path: Path, url: UrlField },
     /// Removed after deprecation of data model.
-    DeprecatedRemoved(Removed),
+    Removed(Removed),
 }
 
 /// Data Type used in Violation.
@@ -286,7 +293,9 @@ impl From<UrlField> for Option<String> {
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, derive_more::Display)]
-#[display("The input data model '{path}' is deprecated and will be removed{version}.{replacement}{url}")]
+#[display(
+    "The input data model '{path}' is deprecated and will be removed{version}.{replacement}{url}"
+)]
 pub struct Deprecated {
     pub path: Path,
     pub replacement: ReplacementField,

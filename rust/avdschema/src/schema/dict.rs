@@ -164,7 +164,7 @@ impl<'a> Dict {
         })
     }
 
-    // Get all values from the given key_path.
+    // Get all string values from the given key_path. Non-string values are ignored.
     // Returns None if the first key was missing. That will tell us if we need to look at the default value instead.
     pub(self) fn get_all(key_path: &str, dict: &Map<String, Value>) -> Option<Vec<String>> {
         let mut path = key_path.split('.');

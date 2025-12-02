@@ -3,8 +3,9 @@
 // that can be found in the LICENSE file.
 
 use avdschema::{
+    Walker as _,
     any::{AnySchema, Shortcuts as _},
-    dict::{Dict, },
+    dict::Dict,
     resolve_ref,
 };
 use ordermap::OrderMap;
@@ -75,11 +76,13 @@ fn validate_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
         input.iter().for_each(|(input_key, input_value)| {
             ctx.state.path.push(input_key.to_owned());
             if let Some(key_schema) = keys.get(input_key) {
-                check_deprecation(input_key, key_schema, input, ctx);
-                key_schema.validate(input_value, ctx);
+                if !check_deprecation(input_key, key_schema, input, ctx) {
+                    key_schema.validate(input_value, ctx);
+                }
             } else if let Some(key_schema) = dynamic_keys_schemas.get(input_key) {
-                check_deprecation(input_key, key_schema, input, ctx);
-                key_schema.validate(input_value, ctx);
+                if !check_deprecation(input_key, key_schema, input, ctx) {
+                    key_schema.validate(input_value, ctx);
+                }
             } else if !schema.allow_other_keys.unwrap_or_default() && !input_key.starts_with("_") {
                 // Key is not part of the schema and does not start with underscore
                 ctx.add_error(Violation::UnexpectedKey());
@@ -107,24 +110,50 @@ fn validate_required_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut C
     }
 }
 
+/// Check for deprecation settings in the given schema and return a bool if there was an error that should stop further validation.
 fn check_deprecation(
     _key: &str,
     key_schema: &AnySchema,
-    _parent_dict_input: &Map<String, Value>,
+    parent_dict_input: &Map<String, Value>,
     ctx: &mut Context,
-) {
+) -> bool {
     if let Some(deprecation) = key_schema.deprecation()
         && deprecation.warning
     {
         if deprecation.removed.unwrap_or_default() {
-            ctx.add_error(Violation::DeprecatedRemoved(Removed::from_schema(
+            ctx.add_error(Violation::Removed(Removed::from_schema(
                 &ctx.state.path,
                 deprecation,
             )));
+            true
         } else {
-            // TODO: Catch conflict.
             ctx.add_warning(Deprecated::from_schema(&ctx.state.path, deprecation));
+            if let Some(schema_new_key) = deprecation.new_key.as_ref() {
+                // Split the new_key on ' or ' in case of multiple new keys.
+                // Then check if any of the new keys are set in the inputs at the same time as the deprecated key,
+                // adding conflict errors if found
+                schema_new_key.split(" or ").for_each(|new_key| {
+                    let mut path = new_key.split('.');
+                    if let Some(root_key) = path.next()
+                        && let Some((key, value)) = parent_dict_input.get_key_value(root_key)
+                        && value
+                            .walk(path, Some(&mut vec![key.to_string()]))
+                            .into_iter()
+                            .next()
+                            .is_some()
+                    {
+                        ctx.add_error(Violation::DeprecatedConflict {
+                            other_path: new_key.into(),
+                            url: deprecation.url.to_owned().into(),
+                        });
+                    }
+                });
+            }
+            // Even with a conflict error we still want to validate everything else.
+            false
         }
+    } else {
+        false
     }
 }
 
@@ -135,11 +164,12 @@ mod tests {
     use avdschema::list::List;
     use avdschema::str::Str;
     use ordermap::OrderMap;
+    use serde::Deserialize as _;
 
     use super::*;
     use crate::coercion::Coercion as _;
     use crate::context::{Configuration, Context};
-    use crate::feedback::{CoercionNote, Feedback};
+    use crate::feedback::{CoercionNote, Feedback, WarningIssue};
     use crate::validation::test_utils::get_test_store;
 
     #[test]
@@ -500,6 +530,89 @@ mod tests {
             vec![Feedback {
                 path: vec!["foo1".into()].into(),
                 issue: Violation::UnexpectedKey().into()
+            }]
+        )
+    }
+
+    // Tests a key that is marked as deprecated returns the proper warning.
+    // Also verifies that regular validation is still done on the field even if it is deprecated.
+    #[test]
+    fn validate_key_deprecated_ok() {
+        let schema: Dict = Dict::deserialize(serde_json::json!({
+            "keys": {
+                "foo": {
+                    "type": "str",
+                    "deprecation": {
+                        "warning": true,
+                        "remove_in_version": "1.2.3",
+                    }
+                }
+            }
+        }))
+        .unwrap();
+        let input = serde_json::json!({"foo": 123});
+        let store = get_test_store();
+        let mut ctx = Context::new(&store, None);
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.result.infos.is_empty());
+        assert_eq!(
+            ctx.result.warnings,
+            vec![Feedback {
+                path: vec!["foo".into()].into(),
+                issue: WarningIssue::Deprecated(Deprecated {
+                    path: vec!["foo".into()].into(),
+                    replacement: None.into(),
+                    version: Some("1.2.3".into()).into(),
+                    url: None.into()
+                })
+            }]
+        );
+        assert_eq!(
+            ctx.result.errors,
+            vec![Feedback {
+                path: vec!["foo".into()].into(),
+                issue: Violation::InvalidType {
+                    expected: Type::Str,
+                    found: Type::Int
+                }
+                .into()
+            }]
+        )
+    }
+
+    // Tests a key that is marked as removed returns the proper error.
+    // Also verifies that no other validation is done on the field,
+    // notice the type is wrong in our input but no type error is returned.
+    #[test]
+    fn validate_key_removed_err() {
+        let schema: Dict = Dict::deserialize(serde_json::json!({
+            "keys": {
+                "foo": {
+                    "type": "str",
+                    "deprecation": {
+                        "warning": true,
+                        "removed": true
+                    }
+                }
+            }
+        }))
+        .unwrap();
+        let input = serde_json::json!({"foo": 123});
+        let store = get_test_store();
+        let mut ctx = Context::new(&store, None);
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.result.infos.is_empty());
+        assert_eq!(
+            ctx.result.errors,
+            vec![Feedback {
+                path: vec!["foo".into()].into(),
+                issue: Violation::Removed(Removed {
+                    path: vec!["foo".into()].into(),
+                    replacement: None.into(),
+                    version: None.into(),
+                    url: None.into()
+                })
+                .into()
             }]
         )
     }
