@@ -8,8 +8,6 @@ tenants:
         vtep_diagnostic:
           loopback: 10
           loopback_ip_range: 10.255.10.0/27
-        # Test to validate the BGP peers under non default vrf
-        validate_bgp_peers: true
         svis:
           - id: 11
             name: VRF10_VLAN11

@@ -407,10 +407,6 @@
           {
             "peer_address": "10.255.128.12",
             "vrf": "default"
-          },
-          {
-            "peer_address": "10.255.129.125",
-            "vrf": "VRF10"
           }
         ]
       }

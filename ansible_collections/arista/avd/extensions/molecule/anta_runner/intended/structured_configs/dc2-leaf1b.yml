@@ -312,8 +312,6 @@ router_bgp:
     - ip_address: 10.255.129.116
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: dc2-leaf1a_Vlan3009
-      metadata:
-        validate_state: true
     redistribute:
       connected:
         enabled: true
