@@ -118,7 +118,7 @@ class AvdDeviceData:
 
         # Get the MLAG VTEP IP (for Multi-VTEP MLAG feature)
         vxlan_mlag_source_interface = get(structured_config, "vxlan_interface.vxlan1.vxlan.mlag_source_interface")
-        if vxlan_mlag_source_interface is not None and "Dps" not in vxlan_mlag_source_interface:
+        if vxlan_mlag_source_interface is not None:
             mlag_vtep_ip_str = get(get_item(loopback_interfaces, "name", vxlan_mlag_source_interface, default={}), "ip_address")
             mlag_vtep_ip = mlag_vtep_ip_addr if mlag_vtep_ip_str and isinstance((mlag_vtep_ip_addr := ip_interface(mlag_vtep_ip_str).ip), IPv4Address) else None
 
