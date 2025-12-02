@@ -14,13 +14,13 @@
 ### Summary Totals
 
 | Total Tests | Total Tests Success | Total Tests Skipped | Total Tests Failure | Total Tests Error |
-| ----------- | ------------------- | ------------------- | ------------------- | ----------------- |
+| ----------- | ------------------- | ------------------- | ------------------- | ------------------|
 | 666 | 0 | 0 | 0 | 0 |
 
 ### Summary Totals Device Under Test
 
 | Device Under Test | Total Tests | Tests Success | Tests Skipped | Tests Failure | Tests Error | Categories Skipped | Categories Failed |
-| ----------------- | ----------- | ------------- | ------------- | ------------- | ----------- | ------------------ | ----------------- |
+| ------------------| ----------- | ------------- | ------------- | ------------- | ----------- | -------------------| ------------------|
 | dc1-leaf1a | 39 | 0 | 0 | 0 | 0 | - | - |
 | dc1-leaf1b | 38 | 0 | 0 | 0 | 0 | - | - |
 | dc1-leaf1c | 25 | 0 | 0 | 0 | 0 | - | - |
