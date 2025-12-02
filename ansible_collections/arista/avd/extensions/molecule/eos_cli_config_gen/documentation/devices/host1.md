@@ -12957,51 +12957,43 @@ Errdisable recovery timer interval: 300 seconds
 
 | Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
 | ----- | ----------------- | ---------------- | --------------------------- |
-| acl | True | - | - |
+| acl | True | True | - |
 | arp-inspection | True | True | - |
 | bpduguard | - | True | 400 |
-| dot1x | True | True | 500 |
+| dot1x-coa | True | True | - |
+| dot1x-phone-classification | True | True | - |
+| dot1x-session-replace | True | True | 500 |
 | hitless-reload-down | - | True | - |
-| lacp-rate-limit | - | True | - |
 | link-change | True | - | - |
 | link-flap | - | True | - |
 | no-internal-vlan | - | True | - |
-| portchannelguard | - | True | - |
-| portsec | - | True | - |
-| speed-misconfigured | - | True | - |
+| stp-no-portid  | True | - | - |
+| stp-no-portid | - | True | - |
 | tapagg | True | True | - |
 | uplink-failure-detection | - | True | - |
-| xcvr-misconfigured | True | True | - |
-| xcvr-overheat | True | True | - |
-| xcvr-power-unsupported | True | True | - |
-| xcvr-unsupported | - | True | - |
 
 ```eos
 !
 errdisable detect cause acl
 errdisable detect cause arp-inspection
-errdisable detect cause dot1x
+errdisable detect cause dot1x-coa
+errdisable detect cause dot1x-phone-classification
+errdisable detect cause dot1x-session-replace
 errdisable detect cause link-change
+errdisable detect cause stp-no-portid 
 errdisable detect cause tapagg
-errdisable detect cause xcvr-misconfigured
-errdisable detect cause xcvr-overheat
-errdisable detect cause xcvr-power-unsupported
+errdisable recovery cause acl
 errdisable recovery cause arp-inspection
 errdisable recovery cause bpduguard interval 400
-errdisable recovery cause dot1x interval 500
+errdisable recovery cause dot1x-coa
+errdisable recovery cause dot1x-phone-classification
+errdisable recovery cause dot1x-session-replace interval 500
 errdisable recovery cause hitless-reload-down
-errdisable recovery cause lacp-rate-limit
 errdisable recovery cause link-flap
 errdisable recovery cause no-internal-vlan
-errdisable recovery cause portchannelguard
-errdisable recovery cause portsec
-errdisable recovery cause speed-misconfigured
+errdisable recovery cause stp-no-portid
 errdisable recovery cause tapagg
 errdisable recovery cause uplink-failure-detection
-errdisable recovery cause xcvr-misconfigured
-errdisable recovery cause xcvr-overheat
-errdisable recovery cause xcvr-power-unsupported
-errdisable recovery cause xcvr-unsupported
 errdisable recovery interval 300
 ```
 
