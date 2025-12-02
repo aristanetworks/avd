@@ -108,7 +108,7 @@ class UtilsMixin(Protocol):
         return self.shared_utils.node_config.vtep_loopback_ipv6_address
 
     @cached_property
-    def _vtep_loopback_ipv4_pool(self: AvdIpAddressingProtocol) -> str | None:
+    def _vtep_loopback_ipv4_pool(self: AvdIpAddressingProtocol) -> str:
         return self.shared_utils.vtep_loopback_ipv4_pool
 
     @cached_property

@@ -270,6 +270,7 @@ class EosDesigns(EosDesignsRootModel):
                     "vrf": {"type": str},
                     "key": {"type": str},
                     "cleartext_key": {"type": str},
+                    "tls": {"type": EosCliConfigGen.RadiusServer.HostsItem.Tls},
                 }
                 host: str
                 """
@@ -307,6 +308,8 @@ class EosDesigns(EosDesignsRootModel):
                 To protect the password at rest it is strongly
                 recommended to make use of a vault or similar.
                 """
+                tls: EosCliConfigGen.RadiusServer.HostsItem.Tls
+                """When TLS is configured, `key` and `cleartext_key` are ignored."""
 
                 if TYPE_CHECKING:
 
@@ -318,6 +321,7 @@ class EosDesigns(EosDesignsRootModel):
                         vrf: str | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         cleartext_key: str | None | UndefinedType = Undefined,
+                        tls: EosCliConfigGen.RadiusServer.HostsItem.Tls | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ServersItem.
@@ -353,6 +357,7 @@ class EosDesigns(EosDesignsRootModel):
                                Encrypted to Type 7 by AVD.
                                To protect the password at rest it is strongly
                                recommended to make use of a vault or similar.
+                            tls: When TLS is configured, `key` and `cleartext_key` are ignored.
 
                         """
 
@@ -580,7 +585,6 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "local_interface": {"type": str, "default": "use_default_mgmt_method_interface"},
-            "local_users": {"type": EosCliConfigGen.LocalUsers},
             "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
             "disabled": {"type": bool},
             "leases": {"type": Leases},
@@ -600,7 +604,6 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `"use_default_mgmt_method_interface"`
         """
-        local_users: EosCliConfigGen.LocalUsers
         dhcp_servers_ipv4: DhcpServersIpv4
         """Subclass of AvdList with `str` items."""
         disabled: bool | None
@@ -616,7 +619,6 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 local_interface: str | UndefinedType = Undefined,
-                local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
                 dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
                 disabled: bool | None | UndefinedType = Undefined,
                 leases: Leases | UndefinedType = Undefined,
@@ -639,7 +641,6 @@ class EosDesigns(EosDesignsRootModel):
                        configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
                        of `default_mgmt_method`.
                          - Any other string will be used directly as the local interface.
-                    local_users: local_users
                     dhcp_servers_ipv4: Subclass of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
@@ -6296,6 +6297,37 @@ class EosDesigns(EosDesignsRootModel):
         class LinkTracking(AvdModel):
             """Subclass of AvdModel."""
 
+            class Downlinks(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
+                enabled: bool
+                """Default value: `False`"""
+                group: str | None
+                """
+                Link Tracking Group Name.
+                Group name should be any one of the groups defined under
+                "link_tracking.groups".
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Downlinks.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            group:
+                               Link Tracking Group Name.
+                               Group name should be any one of the groups defined under
+                               "link_tracking.groups".
+
+                        """
+
             class GroupsItem(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -6337,10 +6369,23 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "enabled": {"type": bool, "default": False},
+                "downlinks": {"type": Downlinks},
                 "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
             }
             enabled: bool
             """Default value: `False`"""
+            downlinks: Downlinks
+            """
+            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+            Tracking Group.
+            If enabled and no `group` is specified for downlinks, the downlinks will be linked
+            to the first available tracking group
+            i.e. either the default `LT_GROUP1` or the first from the
+            configured list.
+
+
+            Subclass of AvdModel.
+            """
             groups: Groups
             """
             Link Tracking Groups.
@@ -6356,7 +6401,13 @@ class EosDesigns(EosDesignsRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType = Undefined,
+                    downlinks: Downlinks | UndefinedType = Undefined,
+                    groups: Groups | UndefinedType = Undefined,
+                ) -> None:
                     """
                     LinkTracking.
 
@@ -6365,6 +6416,16 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: enabled
+                        downlinks:
+                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                           Tracking Group.
+                           If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                           to the first available tracking group
+                           i.e. either the default `LT_GROUP1` or the first from the
+                           configured list.
+
+
+                           Subclass of AvdModel.
                         groups:
                            Link Tracking Groups.
                            By default a single group named "LT_GROUP1" is defined with default values.
@@ -9445,6 +9506,7 @@ class EosDesigns(EosDesignsRootModel):
             "uplink_macsec": {"type": UplinkMacsec},
             "uplink_port_channel_id": {"type": int},
             "uplink_switch_port_channel_id": {"type": int},
+            "exclude_as_extra_fabric_validation_target": {"type": bool},
             "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -9766,6 +9828,11 @@ class EosDesigns(EosDesignsRootModel):
         autogenerated Port-channel IDs in the Network Services.
         Note! For MLAG pairs the ID must be between
         1 and 2000 and both MLAG switches must have the same value.
+        """
+        exclude_as_extra_fabric_validation_target: bool | None
+        """
+        Exclude this node from being used as a destination target from other fabric devices in the extra
+        fabric validation tests performed by the `anta_runner` role.
         """
         uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
         """Custom structured config applied to `uplink_interfaces`."""
@@ -10458,6 +10525,7 @@ class EosDesigns(EosDesignsRootModel):
                 uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
+                exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                 uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -10718,6 +10786,9 @@ class EosDesigns(EosDesignsRootModel):
                        autogenerated Port-channel IDs in the Network Services.
                        Note! For MLAG pairs the ID must be between
                        1 and 2000 and both MLAG switches must have the same value.
+                    exclude_as_extra_fabric_validation_target:
+                       Exclude this node from being used as a destination target from other fabric devices in the extra
+                       fabric validation tests performed by the `anta_runner` role.
                     uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                     uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                     uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -11250,6 +11321,37 @@ class EosDesigns(EosDesignsRootModel):
         class LinkTracking(AvdModel):
             """Subclass of AvdModel."""
 
+            class Downlinks(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
+                enabled: bool
+                """Default value: `False`"""
+                group: str | None
+                """
+                Link Tracking Group Name.
+                Group name should be any one of the groups defined under
+                "link_tracking.groups".
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        Downlinks.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            group:
+                               Link Tracking Group Name.
+                               Group name should be any one of the groups defined under
+                               "link_tracking.groups".
+
+                        """
+
             class GroupsItem(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -11291,10 +11393,23 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "enabled": {"type": bool, "default": False},
+                "downlinks": {"type": Downlinks},
                 "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
             }
             enabled: bool
             """Default value: `False`"""
+            downlinks: Downlinks
+            """
+            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+            Tracking Group.
+            If enabled and no `group` is specified for downlinks, the downlinks will be linked
+            to the first available tracking group
+            i.e. either the default `LT_GROUP1` or the first from the
+            configured list.
+
+
+            Subclass of AvdModel.
+            """
             groups: Groups
             """
             Link Tracking Groups.
@@ -11310,7 +11425,13 @@ class EosDesigns(EosDesignsRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType = Undefined,
+                    downlinks: Downlinks | UndefinedType = Undefined,
+                    groups: Groups | UndefinedType = Undefined,
+                ) -> None:
                     """
                     LinkTracking.
 
@@ -11319,6 +11440,16 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: enabled
+                        downlinks:
+                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                           Tracking Group.
+                           If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                           to the first available tracking group
+                           i.e. either the default `LT_GROUP1` or the first from the
+                           configured list.
+
+
+                           Subclass of AvdModel.
                         groups:
                            Link Tracking Groups.
                            By default a single group named "LT_GROUP1" is defined with default values.
@@ -14400,6 +14531,7 @@ class EosDesigns(EosDesignsRootModel):
             "uplink_macsec": {"type": UplinkMacsec},
             "uplink_port_channel_id": {"type": int},
             "uplink_switch_port_channel_id": {"type": int},
+            "exclude_as_extra_fabric_validation_target": {"type": bool},
             "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -14731,6 +14863,11 @@ class EosDesigns(EosDesignsRootModel):
         autogenerated Port-channel IDs in the Network Services.
         Note! For MLAG pairs the ID must be between
         1 and 2000 and both MLAG switches must have the same value.
+        """
+        exclude_as_extra_fabric_validation_target: bool | None
+        """
+        Exclude this node from being used as a destination target from other fabric devices in the extra
+        fabric validation tests performed by the `anta_runner` role.
         """
         uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
         """Custom structured config applied to `uplink_interfaces`."""
@@ -15424,6 +15561,7 @@ class EosDesigns(EosDesignsRootModel):
                 uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
+                exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                 uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -15692,6 +15830,9 @@ class EosDesigns(EosDesignsRootModel):
                        autogenerated Port-channel IDs in the Network Services.
                        Note! For MLAG pairs the ID must be between
                        1 and 2000 and both MLAG switches must have the same value.
+                    exclude_as_extra_fabric_validation_target:
+                       Exclude this node from being used as a destination target from other fabric devices in the extra
+                       fabric validation tests performed by the `anta_runner` role.
                     uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                     uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                     uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -21539,8 +21680,8 @@ class EosDesigns(EosDesignsRootModel):
         """Configure logging severity."""
         validate_no_errors_period: int | None
         """
-        Threshold (in minutes) defining the recent time window during which no error-level logs should have
-        been generated for the validation to pass.
+        Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
+        the validation performed by the `anta_runner` role.
         """
 
         if TYPE_CHECKING:
@@ -21584,8 +21725,8 @@ class EosDesigns(EosDesignsRootModel):
                     event: event
                     level: Configure logging severity.
                     validate_no_errors_period:
-                       Threshold (in minutes) defining the recent time window during which no error-level logs should have
-                       been generated for the validation to pass.
+                       Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
+                       the validation performed by the `anta_runner` role.
 
                 """
 
@@ -23662,6 +23803,7 @@ class EosDesigns(EosDesignsRootModel):
             "default_evpn_encapsulation": {"type": str, "default": "vxlan"},
             "default_wan_role": {"type": str},
             "default_flow_tracker_type": {"type": str, "default": "sampled"},
+            "exclude_as_extra_fabric_validation_target": {"type": bool, "default": False},
             "mlag_support": {"type": bool, "default": False},
             "network_services": {"type": NetworkServices},
             "underlay_router": {"type": bool, "default": True},
@@ -23744,6 +23886,13 @@ class EosDesigns(EosDesignsRootModel):
         Set the default flow tracker type.
 
         Default value: `"sampled"`
+        """
+        exclude_as_extra_fabric_validation_target: bool
+        """
+        Exclude this node from being used as a destination target from other fabric devices in the extra
+        fabric validation tests performed by the `anta_runner` role.
+
+        Default value: `False`
         """
         mlag_support: bool
         """
@@ -23840,6 +23989,7 @@ class EosDesigns(EosDesignsRootModel):
                 default_evpn_encapsulation: DefaultEvpnEncapsulation | UndefinedType = Undefined,
                 default_wan_role: DefaultWanRole | None | UndefinedType = Undefined,
                 default_flow_tracker_type: DefaultFlowTrackerType | UndefinedType = Undefined,
+                exclude_as_extra_fabric_validation_target: bool | UndefinedType = Undefined,
                 mlag_support: bool | UndefinedType = Undefined,
                 network_services: NetworkServices | UndefinedType = Undefined,
                 underlay_router: bool | UndefinedType = Undefined,
@@ -23888,6 +24038,9 @@ class EosDesigns(EosDesignsRootModel):
                        `server` indicates that the router is a
                        route-reflector.
                     default_flow_tracker_type: Set the default flow tracker type.
+                    exclude_as_extra_fabric_validation_target:
+                       Exclude this node from being used as a destination target from other fabric devices in the extra
+                       fabric validation tests performed by the `anta_runner` role.
                     mlag_support: Can this node type support mlag.
                     network_services:
                        Will network services be deployed on this node type.
@@ -24189,6 +24342,7 @@ class EosDesigns(EosDesignsRootModel):
             "default_evpn_encapsulation": {"type": str, "default": "vxlan"},
             "default_wan_role": {"type": str},
             "default_flow_tracker_type": {"type": str, "default": "sampled"},
+            "exclude_as_extra_fabric_validation_target": {"type": bool, "default": False},
             "mlag_support": {"type": bool, "default": False},
             "network_services": {"type": NetworkServices},
             "underlay_router": {"type": bool, "default": True},
@@ -24271,6 +24425,13 @@ class EosDesigns(EosDesignsRootModel):
         Set the default flow tracker type.
 
         Default value: `"sampled"`
+        """
+        exclude_as_extra_fabric_validation_target: bool
+        """
+        Exclude this node from being used as a destination target from other fabric devices in the extra
+        fabric validation tests performed by the `anta_runner` role.
+
+        Default value: `False`
         """
         mlag_support: bool
         """
@@ -24367,6 +24528,7 @@ class EosDesigns(EosDesignsRootModel):
                 default_evpn_encapsulation: DefaultEvpnEncapsulation | UndefinedType = Undefined,
                 default_wan_role: DefaultWanRole | None | UndefinedType = Undefined,
                 default_flow_tracker_type: DefaultFlowTrackerType | UndefinedType = Undefined,
+                exclude_as_extra_fabric_validation_target: bool | UndefinedType = Undefined,
                 mlag_support: bool | UndefinedType = Undefined,
                 network_services: NetworkServices | UndefinedType = Undefined,
                 underlay_router: bool | UndefinedType = Undefined,
@@ -24415,6 +24577,9 @@ class EosDesigns(EosDesignsRootModel):
                        `server` indicates that the router is a
                        route-reflector.
                     default_flow_tracker_type: Set the default flow tracker type.
+                    exclude_as_extra_fabric_validation_target:
+                       Exclude this node from being used as a destination target from other fabric devices in the extra
+                       fabric validation tests performed by the `anta_runner` role.
                     mlag_support: Can this node type support mlag.
                     network_services:
                        Will network services be deployed on this node type.
@@ -25629,7 +25794,7 @@ class EosDesigns(EosDesignsRootModel):
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
             "digital_twin": {"type": DigitalTwin},
-            "validate_hardware_inventory": {"type": EosCliConfigGen.Metadata.HardwareRequirements},
+            "validate_hardware": {"type": EosCliConfigGen.Metadata.ValidateHardware},
             "structured_config": {"type": EosCliConfigGen},
             "raw_eos_cli": {"type": str},
         }
@@ -25683,11 +25848,19 @@ class EosDesigns(EosDesignsRootModel):
         Subclass
         of AvdModel.
         """
-        validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
+        validate_hardware: EosCliConfigGen.Metadata.ValidateHardware
         """
-        Defines the minimum hardware specifications required for the device.
-        Used for validation by the
-        `anta_runner` role.
+        Settings for hardware validation performed by the `anta_runner` role.
+        If `enabled` is set to
+        `false`, all other keys in this dictionary are ignored.
+
+        For the `min_*` keys:
+        - Undefined
+        (Default): Validate that all available slots are populated.
+        - Positive Integer: Validate that the
+        number of components inserted is at least the specified minimum.
+        - 0: Skip the validation for this
+        specific component.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -25711,7 +25884,7 @@ class EosDesigns(EosDesignsRootModel):
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
-                validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements | UndefinedType = Undefined,
+                validate_hardware: EosCliConfigGen.Metadata.ValidateHardware | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -25755,10 +25928,18 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
-                    validate_hardware_inventory:
-                       Defines the minimum hardware specifications required for the device.
-                       Used for validation by the
-                       `anta_runner` role.
+                    validate_hardware:
+                       Settings for hardware validation performed by the `anta_runner` role.
+                       If `enabled` is set to
+                       `false`, all other keys in this dictionary are ignored.
+
+                       For the `min_*` keys:
+                       - Undefined
+                       (Default): Validate that all available slots are populated.
+                       - Positive Integer: Validate that the
+                       number of components inserted is at least the specified minimum.
+                       - 0: Skip the validation for this
+                       specific component.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -26404,7 +26585,7 @@ class EosDesigns(EosDesignsRootModel):
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
             "digital_twin": {"type": DigitalTwin},
-            "validate_hardware_inventory": {"type": EosCliConfigGen.Metadata.HardwareRequirements},
+            "validate_hardware": {"type": EosCliConfigGen.Metadata.ValidateHardware},
             "structured_config": {"type": EosCliConfigGen},
             "raw_eos_cli": {"type": str},
         }
@@ -26458,11 +26639,19 @@ class EosDesigns(EosDesignsRootModel):
         Subclass
         of AvdModel.
         """
-        validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements
+        validate_hardware: EosCliConfigGen.Metadata.ValidateHardware
         """
-        Defines the minimum hardware specifications required for the device.
-        Used for validation by the
-        `anta_runner` role.
+        Settings for hardware validation performed by the `anta_runner` role.
+        If `enabled` is set to
+        `false`, all other keys in this dictionary are ignored.
+
+        For the `min_*` keys:
+        - Undefined
+        (Default): Validate that all available slots are populated.
+        - Positive Integer: Validate that the
+        number of components inserted is at least the specified minimum.
+        - 0: Skip the validation for this
+        specific component.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -26486,7 +26675,7 @@ class EosDesigns(EosDesignsRootModel):
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
-                validate_hardware_inventory: EosCliConfigGen.Metadata.HardwareRequirements | UndefinedType = Undefined,
+                validate_hardware: EosCliConfigGen.Metadata.ValidateHardware | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -26530,10 +26719,18 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
-                    validate_hardware_inventory:
-                       Defines the minimum hardware specifications required for the device.
-                       Used for validation by the
-                       `anta_runner` role.
+                    validate_hardware:
+                       Settings for hardware validation performed by the `anta_runner` role.
+                       If `enabled` is set to
+                       `false`, all other keys in this dictionary are ignored.
+
+                       For the `min_*` keys:
+                       - Undefined
+                       (Default): Validate that all available slots are populated.
+                       - Positive Integer: Validate that the
+                       number of components inserted is at least the specified minimum.
+                       - 0: Skip the validation for this
+                       specific component.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -28657,38 +28854,38 @@ class EosDesigns(EosDesignsRootModel):
         class DestinationsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"destination": {"type": str}, "port": {"type": int}, "vrf": {"type": str}}
+            _fields: ClassVar[dict] = {"destination": {"type": str}, "port": {"type": int}, "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"}}
             destination: str
             """sFlow destination name or IP address."""
             port: int | None
             """UDP Port number. The default port number for sFlow is 6343."""
-            vrf: str | None
+            vrf: str
             """
-            If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
-            The
-            value of `vrf` will be interpreted according to these rules:
-            - `use_mgmt_interface_vrf` will
-            configure the sFlow destination under the VRF set with `mgmt_interface_vrf` and set the
-            `mgmt_interface` as sFlow source-interface.
-              An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip`
-            are not configured for the device.
-            - `use_inband_mgmt_vrf` will configure the sFlow destination
-            under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as sFlow source-
-            interface.
-              An error will be raised if inband management is not configured for the device.
+            VRF Name.
+            The value of `vrf` will be interpreted according to these rules:
+            -
+            `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with
+            `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.
+              An error will be
+            raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf`
+            will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the
+            `inband_mgmt_interface` as sFlow source-interface.
+              An error will be raised if inband management is
+            not configured for the device.
+            - `use_default_mgmt_method_vrf` will configure the VRF and source-
+            interface for one of the two options above depending on the value of `default_mgmt_method`.
             - Any
             other string will be used directly as the VRF name. Remember to set the
             `sflow_settings.vrfs[].source_interface` if needed.
+
+            Default value: `"use_default_mgmt_method_vrf"`
             """
 
             if TYPE_CHECKING:
 
                 def __init__(
-                    self,
-                    *,
-                    destination: str | UndefinedType = Undefined,
-                    port: int | None | UndefinedType = Undefined,
-                    vrf: str | None | UndefinedType = Undefined,
+                    self, *, destination: str | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined, vrf: str | UndefinedType = Undefined
                 ) -> None:
                     """
                     DestinationsItem.
@@ -28700,18 +28897,20 @@ class EosDesigns(EosDesignsRootModel):
                         destination: sFlow destination name or IP address.
                         port: UDP Port number. The default port number for sFlow is 6343.
                         vrf:
-                           If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
-                           The
-                           value of `vrf` will be interpreted according to these rules:
-                           - `use_mgmt_interface_vrf` will
-                           configure the sFlow destination under the VRF set with `mgmt_interface_vrf` and set the
-                           `mgmt_interface` as sFlow source-interface.
-                             An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip`
-                           are not configured for the device.
-                           - `use_inband_mgmt_vrf` will configure the sFlow destination
-                           under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as sFlow source-
-                           interface.
-                             An error will be raised if inband management is not configured for the device.
+                           VRF Name.
+                           The value of `vrf` will be interpreted according to these rules:
+                           -
+                           `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with
+                           `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.
+                             An error will be
+                           raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf`
+                           will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the
+                           `inband_mgmt_interface` as sFlow source-interface.
+                             An error will be raised if inband management is
+                           not configured for the device.
+                           - `use_default_mgmt_method_vrf` will configure the VRF and source-
+                           interface for one of the two options above depending on the value of `default_mgmt_method`.
                            - Any
                            other string will be used directly as the VRF name. Remember to set the
                            `sflow_settings.vrfs[].source_interface` if needed.
@@ -33760,6 +33959,37 @@ class EosDesigns(EosDesignsRootModel):
                     class LinkTracking(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Downlinks(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
+                            enabled: bool
+                            """Default value: `False`"""
+                            group: str | None
+                            """
+                            Link Tracking Group Name.
+                            Group name should be any one of the groups defined under
+                            "link_tracking.groups".
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    Downlinks.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        group:
+                                           Link Tracking Group Name.
+                                           Group name should be any one of the groups defined under
+                                           "link_tracking.groups".
+
+                                    """
+
                         class GroupsItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -33801,10 +34031,23 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool, "default": False},
+                            "downlinks": {"type": Downlinks},
                             "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                         }
                         enabled: bool
                         """Default value: `False`"""
+                        downlinks: Downlinks
+                        """
+                        Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                        Tracking Group.
+                        If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                        to the first available tracking group
+                        i.e. either the default `LT_GROUP1` or the first from the
+                        configured list.
+
+
+                        Subclass of AvdModel.
+                        """
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -33820,7 +34063,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                downlinks: Downlinks | UndefinedType = Undefined,
+                                groups: Groups | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 LinkTracking.
 
@@ -33829,6 +34078,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
+                                    downlinks:
+                                       Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                       Tracking Group.
+                                       If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                       to the first available tracking group
+                                       i.e. either the default `LT_GROUP1` or the first from the
+                                       configured list.
+
+
+                                       Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -36920,6 +37179,7 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
+                        "exclude_as_extra_fabric_validation_target": {"type": bool},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -37220,6 +37480,11 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
+                    """
+                    exclude_as_extra_fabric_validation_target: bool | None
+                    """
+                    Exclude this node from being used as a destination target from other fabric devices in the extra
+                    fabric validation tests performed by the `anta_runner` role.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -37908,6 +38173,7 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
+                            exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -38155,6 +38421,9 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
+                                exclude_as_extra_fabric_validation_target:
+                                   Exclude this node from being used as a destination target from other fabric devices in the extra
+                                   fabric validation tests performed by the `anta_runner` role.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -38687,6 +38956,37 @@ class EosDesigns(EosDesignsRootModel):
                         class LinkTracking(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class Downlinks(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
+                                enabled: bool
+                                """Default value: `False`"""
+                                group: str | None
+                                """
+                                Link Tracking Group Name.
+                                Group name should be any one of the groups defined under
+                                "link_tracking.groups".
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        Downlinks.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            group:
+                                               Link Tracking Group Name.
+                                               Group name should be any one of the groups defined under
+                                               "link_tracking.groups".
+
+                                        """
+
                             class GroupsItem(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -38728,10 +39028,23 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool, "default": False},
+                                "downlinks": {"type": Downlinks},
                                 "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                             }
                             enabled: bool
                             """Default value: `False`"""
+                            downlinks: Downlinks
+                            """
+                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                            Tracking Group.
+                            If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                            to the first available tracking group
+                            i.e. either the default `LT_GROUP1` or the first from the
+                            configured list.
+
+
+                            Subclass of AvdModel.
+                            """
                             groups: Groups
                             """
                             Link Tracking Groups.
@@ -38747,7 +39060,13 @@ class EosDesigns(EosDesignsRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    downlinks: Downlinks | UndefinedType = Undefined,
+                                    groups: Groups | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     LinkTracking.
 
@@ -38756,6 +39075,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
+                                        downlinks:
+                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                           Tracking Group.
+                                           If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                           to the first available tracking group
+                                           i.e. either the default `LT_GROUP1` or the first from the
+                                           configured list.
+
+
+                                           Subclass of AvdModel.
                                         groups:
                                            Link Tracking Groups.
                                            By default a single group named "LT_GROUP1" is defined with default values.
@@ -41866,6 +42195,7 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_macsec": {"type": UplinkMacsec},
                             "uplink_port_channel_id": {"type": int},
                             "uplink_switch_port_channel_id": {"type": int},
+                            "exclude_as_extra_fabric_validation_target": {"type": bool},
                             "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -42176,6 +42506,11 @@ class EosDesigns(EosDesignsRootModel):
                         autogenerated Port-channel IDs in the Network Services.
                         Note! For MLAG pairs the ID must be between
                         1 and 2000 and both MLAG switches must have the same value.
+                        """
+                        exclude_as_extra_fabric_validation_target: bool | None
+                        """
+                        Exclude this node from being used as a destination target from other fabric devices in the extra
+                        fabric validation tests performed by the `anta_runner` role.
                         """
                         uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                         """Custom structured config applied to `uplink_interfaces`."""
@@ -42866,6 +43201,7 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
+                                exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                                 uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -43120,6 +43456,9 @@ class EosDesigns(EosDesignsRootModel):
                                        autogenerated Port-channel IDs in the Network Services.
                                        Note! For MLAG pairs the ID must be between
                                        1 and 2000 and both MLAG switches must have the same value.
+                                    exclude_as_extra_fabric_validation_target:
+                                       Exclude this node from being used as a destination target from other fabric devices in the extra
+                                       fabric validation tests performed by the `anta_runner` role.
                                     uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                     uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                     uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -43577,6 +43916,37 @@ class EosDesigns(EosDesignsRootModel):
                     class LinkTracking(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Downlinks(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
+                            enabled: bool
+                            """Default value: `False`"""
+                            group: str | None
+                            """
+                            Link Tracking Group Name.
+                            Group name should be any one of the groups defined under
+                            "link_tracking.groups".
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    Downlinks.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        group:
+                                           Link Tracking Group Name.
+                                           Group name should be any one of the groups defined under
+                                           "link_tracking.groups".
+
+                                    """
+
                         class GroupsItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -43618,10 +43988,23 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool, "default": False},
+                            "downlinks": {"type": Downlinks},
                             "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                         }
                         enabled: bool
                         """Default value: `False`"""
+                        downlinks: Downlinks
+                        """
+                        Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                        Tracking Group.
+                        If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                        to the first available tracking group
+                        i.e. either the default `LT_GROUP1` or the first from the
+                        configured list.
+
+
+                        Subclass of AvdModel.
+                        """
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -43637,7 +44020,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                downlinks: Downlinks | UndefinedType = Undefined,
+                                groups: Groups | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 LinkTracking.
 
@@ -43646,6 +44035,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
+                                    downlinks:
+                                       Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                       Tracking Group.
+                                       If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                       to the first available tracking group
+                                       i.e. either the default `LT_GROUP1` or the first from the
+                                       configured list.
+
+
+                                       Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -46739,6 +47138,7 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
+                        "exclude_as_extra_fabric_validation_target": {"type": bool},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -47052,6 +47452,11 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
+                    """
+                    exclude_as_extra_fabric_validation_target: bool | None
+                    """
+                    Exclude this node from being used as a destination target from other fabric devices in the extra
+                    fabric validation tests performed by the `anta_runner` role.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -47742,6 +48147,7 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
+                            exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -47998,6 +48404,9 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
+                                exclude_as_extra_fabric_validation_target:
+                                   Exclude this node from being used as a destination target from other fabric devices in the extra
+                                   fabric validation tests performed by the `anta_runner` role.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -48530,6 +48939,37 @@ class EosDesigns(EosDesignsRootModel):
                     class LinkTracking(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Downlinks(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
+                            enabled: bool
+                            """Default value: `False`"""
+                            group: str | None
+                            """
+                            Link Tracking Group Name.
+                            Group name should be any one of the groups defined under
+                            "link_tracking.groups".
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    Downlinks.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        group:
+                                           Link Tracking Group Name.
+                                           Group name should be any one of the groups defined under
+                                           "link_tracking.groups".
+
+                                    """
+
                         class GroupsItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -48571,10 +49011,23 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool, "default": False},
+                            "downlinks": {"type": Downlinks},
                             "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                         }
                         enabled: bool
                         """Default value: `False`"""
+                        downlinks: Downlinks
+                        """
+                        Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                        Tracking Group.
+                        If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                        to the first available tracking group
+                        i.e. either the default `LT_GROUP1` or the first from the
+                        configured list.
+
+
+                        Subclass of AvdModel.
+                        """
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -48590,7 +49043,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                downlinks: Downlinks | UndefinedType = Undefined,
+                                groups: Groups | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 LinkTracking.
 
@@ -48599,6 +49058,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
+                                    downlinks:
+                                       Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                       Tracking Group.
+                                       If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                       to the first available tracking group
+                                       i.e. either the default `LT_GROUP1` or the first from the
+                                       configured list.
+
+
+                                       Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -51692,6 +52161,7 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
+                        "exclude_as_extra_fabric_validation_target": {"type": bool},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -52002,6 +52472,11 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
+                    """
+                    exclude_as_extra_fabric_validation_target: bool | None
+                    """
+                    Exclude this node from being used as a destination target from other fabric devices in the extra
+                    fabric validation tests performed by the `anta_runner` role.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -52692,6 +53167,7 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
+                            exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -52946,6 +53422,9 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
+                                exclude_as_extra_fabric_validation_target:
+                                   Exclude this node from being used as a destination target from other fabric devices in the extra
+                                   fabric validation tests performed by the `anta_runner` role.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -57273,6 +57752,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    PasswordType: TypeAlias = Literal["7", "8a"]
+
                     class DefaultOriginate(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -57546,6 +58027,7 @@ class EosDesigns(EosDesignsRootModel):
                         "ebgp_multihop": {"type": int},
                         "next_hop_peer": {"type": bool},
                         "next_hop_self": {"type": bool},
+                        "password_type": {"type": str, "default": "7"},
                         "passive": {"type": bool},
                         "default_originate": {"type": DefaultOriginate},
                         "send_community": {"type": str},
@@ -57642,6 +58124,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Time-to-live in range of hops."""
                     next_hop_peer: bool | None
                     next_hop_self: bool | None
+                    password_type: PasswordType
+                    """Default value: `"7"`"""
                     passive: bool | None
                     default_originate: DefaultOriginate
                     """Subclass of AvdModel."""
@@ -57712,6 +58196,7 @@ class EosDesigns(EosDesignsRootModel):
                             ebgp_multihop: int | None | UndefinedType = Undefined,
                             next_hop_peer: bool | None | UndefinedType = Undefined,
                             next_hop_self: bool | None | UndefinedType = Undefined,
+                            password_type: PasswordType | UndefinedType = Undefined,
                             passive: bool | None | UndefinedType = Undefined,
                             default_originate: DefaultOriginate | UndefinedType = Undefined,
                             send_community: str | None | UndefinedType = Undefined,
@@ -57791,6 +58276,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ebgp_multihop: Time-to-live in range of hops.
                                 next_hop_peer: next_hop_peer
                                 next_hop_self: next_hop_self
+                                password_type: password_type
                                 passive: passive
                                 default_originate: Subclass of AvdModel.
                                 send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
@@ -63242,6 +63728,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        PasswordType: TypeAlias = Literal["7", "8a"]
+
                         class DefaultOriginate(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -63519,6 +64007,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ebgp_multihop": {"type": int},
                             "next_hop_peer": {"type": bool},
                             "next_hop_self": {"type": bool},
+                            "password_type": {"type": str, "default": "7"},
                             "passive": {"type": bool},
                             "default_originate": {"type": DefaultOriginate},
                             "send_community": {"type": str},
@@ -63615,6 +64104,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Time-to-live in range of hops."""
                         next_hop_peer: bool | None
                         next_hop_self: bool | None
+                        password_type: PasswordType
+                        """Default value: `"7"`"""
                         passive: bool | None
                         default_originate: DefaultOriginate
                         """Subclass of AvdModel."""
@@ -63685,6 +64176,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ebgp_multihop: int | None | UndefinedType = Undefined,
                                 next_hop_peer: bool | None | UndefinedType = Undefined,
                                 next_hop_self: bool | None | UndefinedType = Undefined,
+                                password_type: PasswordType | UndefinedType = Undefined,
                                 passive: bool | None | UndefinedType = Undefined,
                                 default_originate: DefaultOriginate | UndefinedType = Undefined,
                                 send_community: str | None | UndefinedType = Undefined,
@@ -63764,6 +64256,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ebgp_multihop: Time-to-live in range of hops.
                                     next_hop_peer: next_hop_peer
                                     next_hop_self: next_hop_self
+                                    password_type: password_type
                                     passive: passive
                                     default_originate: Subclass of AvdModel.
                                     send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
@@ -63863,6 +64356,27 @@ class EosDesigns(EosDesignsRootModel):
 
                         Nodes._item_type = str
 
+                        class Attribute(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"rcf": {"type": str}}
+                            rcf: str | None
+                            """RCF name with parenthesis. Example "AGG-ADD-RCF()"."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, rcf: str | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    Attribute.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        rcf: RCF name with parenthesis. Example "AGG-ADD-RCF()".
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "nodes": {"type": Nodes},
                             "prefix": {"type": str},
@@ -63871,6 +64385,7 @@ class EosDesigns(EosDesignsRootModel):
                             "summary_only": {"type": bool},
                             "attribute_map": {"type": str},
                             "match_map": {"type": str},
+                            "attribute": {"type": Attribute},
                         }
                         nodes: Nodes
                         """
@@ -63889,6 +64404,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Route-map name."""
                         match_map: str | None
                         """Route-map name."""
+                        attribute: Attribute
+                        """Subclass of AvdModel."""
 
                         if TYPE_CHECKING:
 
@@ -63902,6 +64419,7 @@ class EosDesigns(EosDesignsRootModel):
                                 summary_only: bool | None | UndefinedType = Undefined,
                                 attribute_map: str | None | UndefinedType = Undefined,
                                 match_map: str | None | UndefinedType = Undefined,
+                                attribute: Attribute | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 AggregateAddressesItem.
@@ -63922,6 +64440,7 @@ class EosDesigns(EosDesignsRootModel):
                                     summary_only: summary_only
                                     attribute_map: Route-map name.
                                     match_map: Route-map name.
+                                    attribute: Subclass of AvdModel.
 
                                 """
 
@@ -63963,6 +64482,7 @@ class EosDesigns(EosDesignsRootModel):
                         "bgp_peer_groups": {"type": BgpPeerGroups},
                         "additional_route_targets": {"type": AdditionalRouteTargets},
                         "aggregate_addresses": {"type": AggregateAddresses},
+                        "validate_bgp_peers": {"type": bool, "default": False},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen},
                     }
@@ -64217,6 +64737,12 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     aggregate_addresses: AggregateAddresses
                     """Subclass of AvdList with `AggregateAddressesItem` items."""
+                    validate_bgp_peers: bool
+                    """
+                    Enable or disable BGP peer state validation by the `anta_runner` role on a per-VRF basis.
+
+                    Default value: `False`
+                    """
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
@@ -64259,6 +64785,7 @@ class EosDesigns(EosDesignsRootModel):
                             bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
                             additional_route_targets: AdditionalRouteTargets | UndefinedType = Undefined,
                             aggregate_addresses: AggregateAddresses | UndefinedType = Undefined,
+                            validate_bgp_peers: bool | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen | UndefinedType = Undefined,
                         ) -> None:
@@ -64455,6 +64982,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `AdditionalRouteTargetsItem` items.
                                 aggregate_addresses: Subclass of AvdList with `AggregateAddressesItem` items.
+                                validate_bgp_peers: Enable or disable BGP peer state validation by the `anta_runner` role on a per-VRF basis.
                                 raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
                                 structured_config: Custom structured config for eos_cli_config_gen.
 
@@ -65605,6 +66133,37 @@ class EosDesigns(EosDesignsRootModel):
                     class LinkTracking(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Downlinks(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
+                            enabled: bool
+                            """Default value: `False`"""
+                            group: str | None
+                            """
+                            Link Tracking Group Name.
+                            Group name should be any one of the groups defined under
+                            "link_tracking.groups".
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    Downlinks.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        group:
+                                           Link Tracking Group Name.
+                                           Group name should be any one of the groups defined under
+                                           "link_tracking.groups".
+
+                                    """
+
                         class GroupsItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -65646,10 +66205,23 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool, "default": False},
+                            "downlinks": {"type": Downlinks},
                             "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                         }
                         enabled: bool
                         """Default value: `False`"""
+                        downlinks: Downlinks
+                        """
+                        Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                        Tracking Group.
+                        If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                        to the first available tracking group
+                        i.e. either the default `LT_GROUP1` or the first from the
+                        configured list.
+
+
+                        Subclass of AvdModel.
+                        """
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -65665,7 +66237,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                downlinks: Downlinks | UndefinedType = Undefined,
+                                groups: Groups | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 LinkTracking.
 
@@ -65674,6 +66252,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
+                                    downlinks:
+                                       Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                       Tracking Group.
+                                       If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                       to the first available tracking group
+                                       i.e. either the default `LT_GROUP1` or the first from the
+                                       configured list.
+
+
+                                       Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -68765,6 +69353,7 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
+                        "exclude_as_extra_fabric_validation_target": {"type": bool},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -69065,6 +69654,11 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
+                    """
+                    exclude_as_extra_fabric_validation_target: bool | None
+                    """
+                    Exclude this node from being used as a destination target from other fabric devices in the extra
+                    fabric validation tests performed by the `anta_runner` role.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -69753,6 +70347,7 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
+                            exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -70000,6 +70595,9 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
+                                exclude_as_extra_fabric_validation_target:
+                                   Exclude this node from being used as a destination target from other fabric devices in the extra
+                                   fabric validation tests performed by the `anta_runner` role.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -70532,6 +71130,37 @@ class EosDesigns(EosDesignsRootModel):
                         class LinkTracking(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class Downlinks(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
+                                enabled: bool
+                                """Default value: `False`"""
+                                group: str | None
+                                """
+                                Link Tracking Group Name.
+                                Group name should be any one of the groups defined under
+                                "link_tracking.groups".
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        Downlinks.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            group:
+                                               Link Tracking Group Name.
+                                               Group name should be any one of the groups defined under
+                                               "link_tracking.groups".
+
+                                        """
+
                             class GroupsItem(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -70573,10 +71202,23 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool, "default": False},
+                                "downlinks": {"type": Downlinks},
                                 "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                             }
                             enabled: bool
                             """Default value: `False`"""
+                            downlinks: Downlinks
+                            """
+                            Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                            Tracking Group.
+                            If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                            to the first available tracking group
+                            i.e. either the default `LT_GROUP1` or the first from the
+                            configured list.
+
+
+                            Subclass of AvdModel.
+                            """
                             groups: Groups
                             """
                             Link Tracking Groups.
@@ -70592,7 +71234,13 @@ class EosDesigns(EosDesignsRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    downlinks: Downlinks | UndefinedType = Undefined,
+                                    groups: Groups | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     LinkTracking.
 
@@ -70601,6 +71249,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
+                                        downlinks:
+                                           Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                           Tracking Group.
+                                           If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                           to the first available tracking group
+                                           i.e. either the default `LT_GROUP1` or the first from the
+                                           configured list.
+
+
+                                           Subclass of AvdModel.
                                         groups:
                                            Link Tracking Groups.
                                            By default a single group named "LT_GROUP1" is defined with default values.
@@ -73711,6 +74369,7 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_macsec": {"type": UplinkMacsec},
                             "uplink_port_channel_id": {"type": int},
                             "uplink_switch_port_channel_id": {"type": int},
+                            "exclude_as_extra_fabric_validation_target": {"type": bool},
                             "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -74021,6 +74680,11 @@ class EosDesigns(EosDesignsRootModel):
                         autogenerated Port-channel IDs in the Network Services.
                         Note! For MLAG pairs the ID must be between
                         1 and 2000 and both MLAG switches must have the same value.
+                        """
+                        exclude_as_extra_fabric_validation_target: bool | None
+                        """
+                        Exclude this node from being used as a destination target from other fabric devices in the extra
+                        fabric validation tests performed by the `anta_runner` role.
                         """
                         uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                         """Custom structured config applied to `uplink_interfaces`."""
@@ -74711,6 +75375,7 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
+                                exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                                 uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -74965,6 +75630,9 @@ class EosDesigns(EosDesignsRootModel):
                                        autogenerated Port-channel IDs in the Network Services.
                                        Note! For MLAG pairs the ID must be between
                                        1 and 2000 and both MLAG switches must have the same value.
+                                    exclude_as_extra_fabric_validation_target:
+                                       Exclude this node from being used as a destination target from other fabric devices in the extra
+                                       fabric validation tests performed by the `anta_runner` role.
                                     uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                     uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                     uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -75422,6 +76090,37 @@ class EosDesigns(EosDesignsRootModel):
                     class LinkTracking(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Downlinks(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
+                            enabled: bool
+                            """Default value: `False`"""
+                            group: str | None
+                            """
+                            Link Tracking Group Name.
+                            Group name should be any one of the groups defined under
+                            "link_tracking.groups".
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    Downlinks.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        group:
+                                           Link Tracking Group Name.
+                                           Group name should be any one of the groups defined under
+                                           "link_tracking.groups".
+
+                                    """
+
                         class GroupsItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -75463,10 +76162,23 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool, "default": False},
+                            "downlinks": {"type": Downlinks},
                             "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                         }
                         enabled: bool
                         """Default value: `False`"""
+                        downlinks: Downlinks
+                        """
+                        Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                        Tracking Group.
+                        If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                        to the first available tracking group
+                        i.e. either the default `LT_GROUP1` or the first from the
+                        configured list.
+
+
+                        Subclass of AvdModel.
+                        """
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -75482,7 +76194,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                downlinks: Downlinks | UndefinedType = Undefined,
+                                groups: Groups | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 LinkTracking.
 
@@ -75491,6 +76209,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
+                                    downlinks:
+                                       Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                       Tracking Group.
+                                       If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                       to the first available tracking group
+                                       i.e. either the default `LT_GROUP1` or the first from the
+                                       configured list.
+
+
+                                       Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -78584,6 +79312,7 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
+                        "exclude_as_extra_fabric_validation_target": {"type": bool},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -78897,6 +79626,11 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
+                    """
+                    exclude_as_extra_fabric_validation_target: bool | None
+                    """
+                    Exclude this node from being used as a destination target from other fabric devices in the extra
+                    fabric validation tests performed by the `anta_runner` role.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -79587,6 +80321,7 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
+                            exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -79843,6 +80578,9 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
+                                exclude_as_extra_fabric_validation_target:
+                                   Exclude this node from being used as a destination target from other fabric devices in the extra
+                                   fabric validation tests performed by the `anta_runner` role.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -80375,6 +81113,37 @@ class EosDesigns(EosDesignsRootModel):
                     class LinkTracking(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Downlinks(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "group": {"type": str}}
+                            enabled: bool
+                            """Default value: `False`"""
+                            group: str | None
+                            """
+                            Link Tracking Group Name.
+                            Group name should be any one of the groups defined under
+                            "link_tracking.groups".
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, group: str | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    Downlinks.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        group:
+                                           Link Tracking Group Name.
+                                           Group name should be any one of the groups defined under
+                                           "link_tracking.groups".
+
+                                    """
+
                         class GroupsItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -80416,10 +81185,23 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool, "default": False},
+                            "downlinks": {"type": Downlinks},
                             "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                         }
                         enabled: bool
                         """Default value: `False`"""
+                        downlinks: Downlinks
+                        """
+                        Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                        Tracking Group.
+                        If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                        to the first available tracking group
+                        i.e. either the default `LT_GROUP1` or the first from the
+                        configured list.
+
+
+                        Subclass of AvdModel.
+                        """
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -80435,7 +81217,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                downlinks: Downlinks | UndefinedType = Undefined,
+                                groups: Groups | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 LinkTracking.
 
@@ -80444,6 +81232,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
+                                    downlinks:
+                                       Add all underlay downlinks of the switch as the downstream interfaces of the configured Link
+                                       Tracking Group.
+                                       If enabled and no `group` is specified for downlinks, the downlinks will be linked
+                                       to the first available tracking group
+                                       i.e. either the default `LT_GROUP1` or the first from the
+                                       configured list.
+
+
+                                       Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -83537,6 +84335,7 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
+                        "exclude_as_extra_fabric_validation_target": {"type": bool},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -83847,6 +84646,11 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
+                    """
+                    exclude_as_extra_fabric_validation_target: bool | None
+                    """
+                    Exclude this node from being used as a destination target from other fabric devices in the extra
+                    fabric validation tests performed by the `anta_runner` role.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -84537,6 +85341,7 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
+                            exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -84791,6 +85596,9 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
+                                exclude_as_extra_fabric_validation_target:
+                                   Exclude this node from being used as a destination target from other fabric devices in the extra
+                                   fabric validation tests performed by the `anta_runner` role.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -85468,7 +86276,7 @@ class EosDesigns(EosDesignsRootModel):
         "evpn_multicast": {"type": bool, "default": False},
         "evpn_overlay_bgp_rtc": {"type": bool, "default": False},
         "evpn_prevent_readvertise_to_server": {"type": bool, "default": False},
-        "evpn_prevent_readvertise_to_server_mode": {"type": str, "default": "source_peer_asn"},
+        "evpn_prevent_readvertise_to_server_mode": {"type": str, "default": "as_path_acl"},
         "evpn_short_esi_prefix": {"type": str, "default": "0000:0000:"},
         "evpn_vlan_aware_bundles": {"type": bool, "default": False},
         "evpn_vlan_bundles": {"type": EvpnVlanBundles},
@@ -85770,6 +86578,7 @@ class EosDesigns(EosDesignsRootModel):
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"act_node_type": "veos"},
+                        "validate_hardware": {"enabled": False},
                     },
                     {
                         "platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"],
@@ -85783,12 +86592,14 @@ class EosDesigns(EosDesignsRootModel):
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"act_node_type": "veos"},
+                        "validate_hardware": {"enabled": False},
                     },
                     {
                         "platforms": ["CloudEOS"],
                         "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False},
                         "p2p_uplinks_mtu": 9194,
                         "digital_twin": {"act_node_type": "cloudeos"},
+                        "validate_hardware": {"enabled": False},
                     },
                     {
                         "platforms": ["AWE-5310", "AWE-7230R"],
@@ -86651,7 +87462,7 @@ class EosDesigns(EosDesignsRootModel):
     `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
     updates with the route-server ASN anywhere in the AS-path.
 
-    Default value: `"source_peer_asn"`
+    Default value: `"as_path_acl"`
     """
     evpn_short_esi_prefix: str
     """
@@ -87374,7 +88185,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}, "validate_hardware": {"enabled": False}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}, "validate_hardware": {"enabled": False}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}, "validate_hardware": {"enabled": False}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """

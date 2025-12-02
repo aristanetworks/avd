@@ -61,6 +61,9 @@
 {%                         do applied_on.append(port_channel_interface.name) %}
 {%                     endif %}
 {%                 endfor %}
+{%                 if applied_on | length == 0 %}
+{%                     set applied_on = ["-"] %}
+{%                 endif %}
 | {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ mpls }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} | {{ table_size }} |
 {%             endfor %}
 
@@ -111,6 +114,9 @@ Software export of IPFIX data records enabled.
 {%                         do applied_on.append(port_channel_interface.name) %}
 {%                     endif %}
 {%                 endfor %}
+{%                 if applied_on | length == 0 %}
+{%                     set applied_on = ["-"] %}
+{%                 endif %}
 | {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} |
 {%             endfor %}
 
@@ -164,8 +170,8 @@ Software export of IPFIX data records enabled.
 
 ##### Exporters Summary
 
-| Tracker Name | Exporter Name |  Local Interface | Template Interval | Collector IP/Host/Sflow | Collector Port | DSCP Value | Format |
-| ------------ | ------------- | ---------------- | ------------------| ----------------------- | -------------- | ---------- | ------ |
+| Tracker Name | Exporter Name | Local Interface | Template Interval | Collector IP/Host/Sflow | Collector Port | DSCP Value | Format |
+| ------------ | ------------- | --------------- | ----------------- | ----------------------- | -------------- | ---------- | ------ |
 {%                 for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort('name') %}
 {%                     for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
 {%                         set current_exporter_collector_hosts = exporter.collectors | arista.avd.natural_sort | map(attribute='host') | list %}

@@ -30,18 +30,8 @@ class AnsibleDisplayHandler(logging.Handler):
         self.display = Display()
 
     def emit(self, record: logging.LogRecord) -> None:
-        """
-        Process a log record and delegate it to the appropriate Ansible display method.
-
-        Check for a 'color' attribute in the record to allow for explicit color overrides.
-        """
+        """Process a log record and delegate it to the appropriate Ansible display method."""
         message = self.format(record)
-
-        color = getattr(record, "color", None)
-        if color:
-            # If a color is explicitly provided, use it
-            self.display.display(message, color=color)
-            return
 
         # If no color is specified, map log levels to display methods
         if record.levelno >= logging.ERROR:

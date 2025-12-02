@@ -31,6 +31,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "aaa_settings.radius.servers.[].vrf") | String |  |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the Radius host under the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the Radius host under the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "aaa_settings.radius.servers.[].key") | String |  |  |  | Encrypted type-7 key.<br>Takes precedence over `cleartext_key`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cleartext_key</samp>](## "aaa_settings.radius.servers.[].cleartext_key") | String |  |  |  | Cleartext password.<br>Encrypted to Type 7 by AVD.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tls</samp>](## "aaa_settings.radius.servers.[].tls") | Dictionary |  |  |  | When TLS is configured, `key` and `cleartext_key` are ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "aaa_settings.radius.servers.[].tls.enabled") | Boolean |  |  |  | Enable TLS for radius-server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "aaa_settings.radius.servers.[].tls.ssl_profile") | String |  |  |  | Name of TLS profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "aaa_settings.radius.servers.[].tls.port") | Integer |  |  | Min: 0<br>Max: 65535 | TCP Port used for TLS. EOS default is 2083. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "aaa_settings.radius.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "aaa_settings.radius.vrfs.[].name") | String | Required, Unique |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "aaa_settings.radius.vrfs.[].source_interface") | String |  |  |  | Source interface to use for RADIUS hosts in this VRF.<br>If not set, the source interface may be set automatically when the RADIUS server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.<br>If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence. |
@@ -49,8 +53,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local</samp>](## "aaa_settings.authentication.policies.local") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_nopassword</samp>](## "aaa_settings.authentication.policies.local.allow_nopassword") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lockout</samp>](## "aaa_settings.authentication.policies.lockout") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;failure</samp>](## "aaa_settings.authentication.policies.lockout.failure") | Integer |  |  | Min: 1<br>Max: 255 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;duration</samp>](## "aaa_settings.authentication.policies.lockout.duration") | Integer |  |  | Min: 1<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;failure</samp>](## "aaa_settings.authentication.policies.lockout.failure") | Integer | Required |  | Min: 1<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;duration</samp>](## "aaa_settings.authentication.policies.lockout.duration") | Integer | Required |  | Min: 1<br>Max: 4294967295 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;window</samp>](## "aaa_settings.authentication.policies.lockout.window") | Integer |  |  | Min: 1<br>Max: 4294967295 |  |
     | [<samp>&nbsp;&nbsp;authorization</samp>](## "aaa_settings.authorization") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "aaa_settings.authorization.policy") | Dictionary |  |  |  |  |
@@ -65,8 +69,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;commands</samp>](## "aaa_settings.authorization.commands") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_default</samp>](## "aaa_settings.authorization.commands.all_default") | String |  |  |  | Command authorization method(s) as a string.<br>Examples:<br>- "group tacacs+ local"<br>- "group MYGROUP none"<br>- "group tacacs+ group MYGROUP local<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;privilege</samp>](## "aaa_settings.authorization.commands.privilege") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;level</samp>](## "aaa_settings.authorization.commands.privilege.[].level") | String |  |  |  | Privilege level(s) 0-15. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "aaa_settings.authorization.commands.privilege.[].default") | String |  |  |  | Command authorization method(s) as a string.<br>Examples:<br>- "group tacacs+ local"<br>- "group MYGROUP none"<br>- "group tacacs+ group MYGROUP local"<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;level</samp>](## "aaa_settings.authorization.commands.privilege.[].level") | String | Required |  |  | Privilege level(s) 0-15. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "aaa_settings.authorization.commands.privilege.[].default") | String | Required |  |  | Command authorization method(s) as a string.<br>Examples:<br>- "group tacacs+ local"<br>- "group MYGROUP none"<br>- "group tacacs+ group MYGROUP local"<br> |
     | [<samp>&nbsp;&nbsp;accounting</samp>](## "aaa_settings.accounting") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exec</samp>](## "aaa_settings.accounting.exec") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console</samp>](## "aaa_settings.accounting.exec.console") | Dictionary |  |  |  |  |
@@ -213,7 +217,7 @@
     | [<samp>&nbsp;&nbsp;level</samp>](## "logging_settings.level") | List, items: Dictionary |  |  |  | Configure logging severity. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;facility</samp>](## "logging_settings.level.[].facility") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;severity</samp>](## "logging_settings.level.[].severity") | String |  |  | Valid Values:<br>- <code>alerts</code><br>- <code>critical</code><br>- <code>debugging</code><br>- <code>emergencies</code><br>- <code>errors</code><br>- <code>informational</code><br>- <code>notifications</code><br>- <code>warnings</code><br>- <code>0</code><br>- <code>1</code><br>- <code>2</code><br>- <code>3</code><br>- <code>4</code><br>- <code>5</code><br>- <code>6</code><br>- <code>7</code> | Severity of facility. Below are the supported severities.<br>emergencies    System is unusable                (severity=0)<br>alerts         Immediate action needed           (severity=1)<br>critical       Critical conditions               (severity=2)<br>errors         Error conditions                  (severity=3)<br>warnings       Warning conditions                (severity=4)<br>notifications  Normal but significant conditions (severity=5)<br>informational  Informational messages            (severity=6)<br>debugging      Debugging messages                (severity=7)<br><0-7>          Severity level value |
-    | [<samp>&nbsp;&nbsp;validate_no_errors_period</samp>](## "logging_settings.validate_no_errors_period") | Integer |  |  |  | Threshold (in minutes) defining the recent time window during which no error-level logs should have been generated for the validation to pass. |
+    | [<samp>&nbsp;&nbsp;validate_no_errors_period</samp>](## "logging_settings.validate_no_errors_period") | Integer |  |  |  | Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role. |
     | [<samp>management_eapi</samp>](## "management_eapi") | Dictionary |  |  |  | Default is HTTPS management eAPI enabled.<br> |
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "management_eapi.enabled") | Boolean |  |  |  | Enable/Disable api http-commands. |
     | [<samp>&nbsp;&nbsp;enable_http</samp>](## "management_eapi.enable_http") | Boolean |  |  |  |  |
@@ -330,6 +334,18 @@
             # Encrypted to Type 7 by AVD.
             # To protect the password at rest it is strongly recommended to make use of a vault or similar.
             cleartext_key: <str>
+
+            # When TLS is configured, `key` and `cleartext_key` are ignored.
+            tls:
+
+              # Enable TLS for radius-server.
+              enabled: <bool>
+
+              # Name of TLS profile.
+              ssl_profile: <str>
+
+              # TCP Port used for TLS. EOS default is 2083.
+              port: <int; 0-65535>
         vrfs:
 
             # VRF Name.
@@ -383,8 +399,8 @@
           local:
             allow_nopassword: <bool>
           lockout:
-            failure: <int; 1-255>
-            duration: <int; 1-4294967295>
+            failure: <int; 1-255; required>
+            duration: <int; 1-4294967295; required>
             window: <int; 1-4294967295>
       authorization:
         policy:
@@ -413,14 +429,14 @@
           privilege:
 
               # Privilege level(s) 0-15.
-            - level: <str>
+            - level: <str; required>
 
               # Command authorization method(s) as a string.
               # Examples:
               # - "group tacacs+ local"
               # - "group MYGROUP none"
               # - "group tacacs+ group MYGROUP local"
-              default: <str>
+              default: <str; required>
       accounting:
         exec:
           console:
@@ -754,7 +770,7 @@
           # <0-7>          Severity level value
           severity: <str; "alerts" | "critical" | "debugging" | "emergencies" | "errors" | "informational" | "notifications" | "warnings" | "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7">
 
-      # Threshold (in minutes) defining the recent time window during which no error-level logs should have been generated for the validation to pass.
+      # Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role.
       validate_no_errors_period: <int>
 
     # Default is HTTPS management eAPI enabled.

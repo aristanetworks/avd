@@ -117,19 +117,22 @@ vlans:
   private_vlan:
     type: isolated
     primary_vlan: 120
-  tenant: research
+  metadata:
+    tenant: research
 - id: 120
   name: research2
   private_vlan:
     type: community
     primary_vlan: 110
-  tenant: research
+  metadata:
+    tenant: research
 - id: 130
   name: research3
   private_vlan:
     type: community
     primary_vlan: 120
-  tenant: research
+  metadata:
+    tenant: research
 vrfs:
 - name: MGMT
   ip_routing: false
