@@ -37,17 +37,17 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
         if not self._enable_sflow:
             return
 
-        if not (destinations := self.inputs.sflow_settings.destinations):
+        sflow_settings = self.inputs.sflow_settings
+
+        if not (destinations := sflow_settings.destinations):
             msg = "`sflow_settings.destinations` is required to configure `sflow`."
             raise AristaAvdInvalidInputsError(msg)
 
-        sflow_settings_vrfs = self.inputs.sflow_settings.vrfs
+        sflow_settings_vrfs = sflow_settings.vrfs
 
         # At this point we have at least one interface with sFlow enabled
         # and at least one destination.
-        self.structured_config.sflow._update(
-            run=True, polling_interval=self.inputs.sflow_settings.polling_interval, sample=self.inputs.sflow_settings.sample.rate
-        )
+        self.structured_config.sflow._update(run=True, polling_interval=sflow_settings.polling_interval, sample=sflow_settings.sample.rate)
 
         for destination in natural_sort(destinations, "destination"):
             destination: EosDesigns.SflowSettings.DestinationsItem
@@ -69,6 +69,11 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                 vrf_item.destinations.append_new(destination=destination.destination, port=destination.port)
                 vrf_item.source_interface = source_interface
                 self.structured_config.sflow.vrfs.append(vrf_item)
+
+        if sflow_settings.export_to_cloudvision.enabled:
+            sflow_vrf = self.shared_utils.get_vrf(sflow_settings.export_to_cloudvision.vrf, context="sflow_settings.export_to_cloudvision.vrf")
+            vrf_item = self.structured_config.sflow.vrfs.obtain(sflow_vrf)
+            vrf_item.destinations.append_new(destination="127.0.0.1", port=6343)
 
     @cached_property
     def _enable_sflow(self) -> bool:
