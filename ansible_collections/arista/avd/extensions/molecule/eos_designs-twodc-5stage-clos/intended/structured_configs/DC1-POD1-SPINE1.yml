@@ -1,5 +1,23 @@
 aaa_root:
   disabled: true
+as_path:
+  access_lists:
+  - name: AS65200
+    entries:
+    - type: permit
+      match: _65200_
+  - name: AS65201
+    entries:
+    - type: permit
+      match: _65201_
+  - name: AS65210
+    entries:
+    - type: permit
+      match: _65210_
+  - name: AS65211
+    entries:
+    - type: permit
+      match: _65211_
 config_end: true
 enable_password:
   disabled: true
@@ -146,7 +164,7 @@ route_maps:
   - sequence: 10
     type: deny
     match:
-    - as 65200
+    - as-path AS65200
   - sequence: 20
     type: permit
 - name: RM-EVPN-FILTER-AS65201
@@ -154,7 +172,7 @@ route_maps:
   - sequence: 10
     type: deny
     match:
-    - as 65201
+    - as-path AS65201
   - sequence: 20
     type: permit
 - name: RM-EVPN-FILTER-AS65210
@@ -162,7 +180,7 @@ route_maps:
   - sequence: 10
     type: deny
     match:
-    - as 65210
+    - as-path AS65210
   - sequence: 20
     type: permit
 - name: RM-EVPN-FILTER-AS65211
@@ -170,7 +188,7 @@ route_maps:
   - sequence: 10
     type: deny
     match:
-    - as 65211
+    - as-path AS65211
   - sequence: 20
     type: permit
 router_bfd:

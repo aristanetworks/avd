@@ -96,6 +96,10 @@ class LogMessage(Enum):
     INTERFACE_NO_IP = "{interface} skipped - No IP address configured"
     INTERFACE_UNNUMBERED = "{interface} skipped - IP unnumbered interface"
 
+    # Vxlan interface state messages
+    INTERFACE_VXLAN1_NO_VNI = "Vxlan1 skipped - No VNI configured"
+    INTERFACE_VXLAN1_NOT_OPERATIONAL = "Vxlan1 skipped - Source interface {source_interface} is shutdown or has no IP address"
+
     # WAN-specific messages
     PATH_GROUP_NO_STUN_INTERFACE = "path group {path_group} skipped - No STUN client interfaces found"
     PATH_GROUP_NO_LOCAL_INTERFACES = "path group {path_group} skipped - No local interfaces found"
@@ -107,3 +111,8 @@ class LogMessage(Enum):
     INPUT_NONE_FOUND = "skipped - No inputs available"
     INPUT_NO_DATA_MODELS = "skipped - Data models {data_models} not found"
     INPUT_MISSING_FIELDS = "{identity} skipped - Missing required fields: {fields}"
+    EXTRA_FABRIC_VALIDATION_DISABLED = "skipped - Extra fabric-wide validation tests disabled"
+    HARDWARE_VALIDATION_DISABLED = "skipped - Hardware validation tests disabled"
+
+    # Device role message
+    DEVICE_IS_WAN_ROUTER = "skipped - Device is a WAN router"

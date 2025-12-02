@@ -4,5 +4,7 @@
   ~ that can be found in the LICENSE file.
   -->
 
+Rust based utilities used by PyAVD.
+
 > [!WARNING]
-> This code is work-in-progress and is not currently being used by AVD.
+> Should not be used directly and may not follow semantic versioning.

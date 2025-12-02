@@ -43,6 +43,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyEnvironmentSystemCooling,
+        input_factory=VerifyEnvironmentSystemCoolingInputFactory,
     ),
     TestSpec(
         test_class=VerifyFileSystemUtilization,
@@ -69,6 +70,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyInventory,
+        input_factory=VerifyInventoryInputFactory,
     ),
     TestSpec(
         test_class=VerifyPortChannels,
@@ -89,6 +91,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyLoggingErrors,
+        input_factory=VerifyLoggingErrorsInputFactory,
     ),
     TestSpec(
         test_class=VerifyMaintenance,
@@ -137,6 +140,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
         conditional_keys=[StructuredConfigKey.SERVICE_ROUTING_PROTOCOLS_MODEL],
         input_factory=VerifyRoutingProtocolModelInputFactory,
     ),
+    TestSpec(test_class=VerifyRoutingTableEntry, conditional_keys=[StructuredConfigKey.VXLAN1_INTERFACE], input_factory=VerifyRoutingTableEntryInputFactory),
     TestSpec(
         test_class=VerifySpecificIPSecConn,
         conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION],
@@ -147,9 +151,15 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyTemperature,
+        input_factory=VerifyTemperatureInputFactory,
+    ),
+    TestSpec(
+        test_class=VerifyTransceiversManufacturers,
+        input_factory=VerifyTransceiversManufacturersInputFactory,
     ),
     TestSpec(
         test_class=VerifyTransceiversTemperature,
+        input_factory=VerifyTransceiversTemperatureInputFactory,
     ),
     TestSpec(test_class=VerifyVxlanConfigSanity, conditional_keys=[StructuredConfigKey.VXLAN1_INTERFACE]),
     TestSpec(

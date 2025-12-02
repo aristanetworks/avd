@@ -133,13 +133,12 @@ fn validate_item_schema(schema: &List, item: &Value, ctx: &mut Context) {
 }
 
 fn validate_item_primary_key(schema: &List, item: &Value, ctx: &mut Context) {
-    if let Some(primary_key) = &schema.primary_key {
-        if item.get(primary_key).is_none_or(|value| value.is_null()) {
+    if let Some(primary_key) = &schema.primary_key
+        && item.get(primary_key).is_none_or(|value| value.is_null()) {
             ctx.add_violation(Violation::MissingRequiredKey {
                 key: primary_key.to_owned(),
             });
         }
-    }
 }
 
 #[cfg(test)]
