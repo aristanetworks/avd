@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from ipaddress import ip_interface
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Protocol, TypeGuard
 
 from anta.input_models.connectivity import Host, LLDPNeighbor
 from anta.models import AntaTest
@@ -19,6 +19,18 @@ if TYPE_CHECKING:
     from collections.abc import Iterator
 
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+
+    class CandidateEthernetInterfacesItem(Protocol):
+        """Protocol representing an interface that is a valid candidate for LLDP testing."""
+
+        class Metadata(Protocol):
+            """Required metadata for a candidate interface."""
+
+            peer: str
+            peer_interface: str
+
+        name: str
+        metadata: Metadata
 
 
 class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.Input]):
@@ -43,9 +55,8 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
             if not self._is_interface_candidate(intf):
                 continue
 
-            # At this point we know for sure that peer and peer_interface are not None per the check above
-            peer_name = cast("str", intf.metadata.peer)
-            peer_interface = cast("str", intf.metadata.peer_interface)
+            peer_name = intf.metadata.peer
+            peer_interface = intf.metadata.peer_interface
 
             # LLDP neighbor is the FQDN when dns domain is set in EOS
             fqdn = f"{peer_name}.{dns_domain}" if (dns_domain := self.fabric_data.devices[peer_name].dns_domain) is not None else peer_name
@@ -58,7 +69,7 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
 
         yield VerifyLLDPNeighbors.Input(neighbors=natural_sort(neighbors, sort_key="port"))
 
-    def _is_interface_candidate(self, interface: EosCliConfigGen.EthernetInterfacesItem) -> bool:
+    def _is_interface_candidate(self, interface: EosCliConfigGen.EthernetInterfacesItem) -> TypeGuard[CandidateEthernetInterfacesItem]:
         """Check if an interface is valid for LLDP testing."""
         if interface.metadata.validate_state is False or interface.metadata.validate_lldp is False:
             self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=interface.name)
