@@ -375,9 +375,12 @@ radius-server attribute 32 include-in-access-req format myformat
 | Type | Sub-type | User Stores |
 | ---- | -------- | ---------- |
 
+Policy lockout has been enabled. After **3** failed login attempts within **1440** minutes, you'll be locked out for **300** minutes.
+
 #### AAA Authentication Device Configuration
 
 ```eos
+aaa authentication policy lockout failure 3 duration 300
 !
 ```
 
@@ -1617,11 +1620,16 @@ ipv6 dhcp relay option remote-id format %m:%p
 
 IP DHCP Snooping is enabled
 
+IP DHCP Snooping Circuit-ID Suboption: 10
+
+IP DHCP Snooping Circuit-ID Format: %h:%p
+
 ### IP DHCP Snooping Device Configuration
 
 ```eos
 !
 ip dhcp snooping
+ip dhcp snooping information option circuit-id type 10 format %h:%p
 ```
 
 ## IP NAT
