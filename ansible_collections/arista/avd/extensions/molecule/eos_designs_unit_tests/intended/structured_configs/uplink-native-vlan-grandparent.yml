@@ -40,7 +40,8 @@ vlan_internal_order:
 vlans:
 - id: 100
   name: NETWORK_SERVICES_VLAN
-  tenant: test
+  metadata:
+    tenant: test
 vrfs:
 - name: MGMT
   ip_routing: false

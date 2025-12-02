@@ -260,7 +260,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -400,7 +400,7 @@ vlan 4094
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
 | Ethernet1 | P2P_DC1-SPINE1_Ethernet3 | - | - | default | 1500 | False | - | - | - | - |
 | Ethernet2 | P2P_DC1-SPINE2_Ethernet3 | - | - | default | 1500 | False | - | - | - | - |
 | Ethernet3 | P2P_DC1-SPINE3_Ethernet3 | - | - | default | 1500 | False | - | - | - | - |
@@ -476,7 +476,7 @@ interface Ethernet12
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_DC1-LEAF2A_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel7 | L2_DC1-L2LEAF1A_Port-Channel1 | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | 7 | - |
 | Port-Channel10 | PortChanne1 | trunk | 210-211 | - | - | - | - | 10 | - |
@@ -572,8 +572,8 @@ interface Loopback100
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan2 | MLAG_L3_VRF_Tenant_C_OP_Zone | Tenant_C_OP_Zone | 1500 | False |
 | Vlan110 | Tenant_A_OP_Zone_1 | Tenant_A_OP_Zone | - | False |
 | Vlan111 | Tenant_A_OP_Zone_2 | Tenant_A_OP_Zone | - | False |
@@ -599,26 +599,26 @@ interface Loopback100
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan2 |  Tenant_C_OP_Zone  |  10.255.251.3/31  |  -  |  -  |  -  |  -  |
-| Vlan110 |  Tenant_A_OP_Zone  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |
-| Vlan111 |  Tenant_A_OP_Zone  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |
-| Vlan120 |  Tenant_A_WEB_Zone  |  -  |  10.1.20.1/24  |  -  |  -  |  -  |
-| Vlan121 |  Tenant_A_WEB_Zone  |  -  |  10.1.10.254/24  |  -  |  -  |  -  |
-| Vlan130 |  Tenant_A_APP_Zone  |  -  |  10.1.30.1/24  |  -  |  -  |  -  |
-| Vlan131 |  Tenant_A_APP_Zone  |  -  |  10.1.31.1/24  |  -  |  -  |  -  |
-| Vlan140 |  Tenant_A_DB_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |
-| Vlan141 |  Tenant_A_DB_Zone  |  -  |  10.1.41.1/24  |  -  |  -  |  -  |
-| Vlan210 |  Tenant_B_OP_Zone  |  -  |  10.2.10.1/24  |  -  |  -  |  -  |
-| Vlan211 |  Tenant_B_OP_Zone  |  -  |  10.2.11.1/24  |  -  |  -  |  -  |
-| Vlan310 |  Tenant_C_OP_Zone  |  -  |  10.3.10.1/24  |  -  |  -  |  -  |
-| Vlan311 |  Tenant_C_OP_Zone  |  -  |  10.3.11.1/24  |  -  |  -  |  -  |
-| Vlan3009 |  Tenant_A_OP_Zone  |  10.255.251.3/31  |  -  |  -  |  -  |  -  |
-| Vlan3010 |  Tenant_A_WEB_Zone  |  10.255.251.3/31  |  -  |  -  |  -  |  -  |
-| Vlan3011 |  Tenant_A_APP_Zone  |  10.255.251.3/31  |  -  |  -  |  -  |  -  |
-| Vlan3012 |  Tenant_A_DB_Zone  |  10.255.251.3/31  |  -  |  -  |  -  |  -  |
-| Vlan3019 |  Tenant_B_OP_Zone  |  10.255.251.3/31  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.252.3/31  |  -  |  -  |  -  |  -  |
+| Vlan2 | Tenant_C_OP_Zone | 10.255.251.3/31 | - | - | - | - |
+| Vlan110 | Tenant_A_OP_Zone | - | 10.1.10.1/24 | - | - | - |
+| Vlan111 | Tenant_A_OP_Zone | - | 10.1.11.1/24 | - | - | - |
+| Vlan120 | Tenant_A_WEB_Zone | - | 10.1.20.1/24 | - | - | - |
+| Vlan121 | Tenant_A_WEB_Zone | - | 10.1.10.254/24 | - | - | - |
+| Vlan130 | Tenant_A_APP_Zone | - | 10.1.30.1/24 | - | - | - |
+| Vlan131 | Tenant_A_APP_Zone | - | 10.1.31.1/24 | - | - | - |
+| Vlan140 | Tenant_A_DB_Zone | - | 10.1.40.1/24 | - | - | - |
+| Vlan141 | Tenant_A_DB_Zone | - | 10.1.41.1/24 | - | - | - |
+| Vlan210 | Tenant_B_OP_Zone | - | 10.2.10.1/24 | - | - | - |
+| Vlan211 | Tenant_B_OP_Zone | - | 10.2.11.1/24 | - | - | - |
+| Vlan310 | Tenant_C_OP_Zone | - | 10.3.10.1/24 | - | - | - |
+| Vlan311 | Tenant_C_OP_Zone | - | 10.3.11.1/24 | - | - | - |
+| Vlan3009 | Tenant_A_OP_Zone | 10.255.251.3/31 | - | - | - | - |
+| Vlan3010 | Tenant_A_WEB_Zone | 10.255.251.3/31 | - | - | - | - |
+| Vlan3011 | Tenant_A_APP_Zone | 10.255.251.3/31 | - | - | - | - |
+| Vlan3012 | Tenant_A_DB_Zone | 10.255.251.3/31 | - | - | - | - |
+| Vlan3019 | Tenant_B_OP_Zone | 10.255.251.3/31 | - | - | - | - |
+| Vlan4093 | default | - | - | - | - | - |
+| Vlan4094 | default | 10.255.252.3/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 

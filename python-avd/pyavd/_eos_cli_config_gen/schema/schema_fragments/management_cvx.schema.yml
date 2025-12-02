@@ -13,6 +13,7 @@ keys:
         type: bool
       server_hosts:
         type: list
+        min_length: 1
         items:
           type: str
           description: IP or hostname.

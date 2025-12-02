@@ -39,7 +39,8 @@ class VrfsMixin(Protocol):
                 vrf_name = vrf.name
                 if vrf_name == "default":
                     continue
-                new_vrf = EosCliConfigGen.VrfsItem(name=vrf_name, tenant=tenant.name)
+                new_vrf = EosCliConfigGen.VrfsItem(name=vrf_name)
+                new_vrf.metadata.tenant = tenant.name
 
                 # MLAG IBGP Peering VLANs per VRF
                 if self.inputs.overlay_mlag_rfc5549 and self._mlag_ibgp_peering_enabled(vrf, tenant):
@@ -52,7 +53,7 @@ class VrfsMixin(Protocol):
 
                 if vrf.description:
                     new_vrf.description = vrf.description
-                self.structured_config.vrfs.append(new_vrf, ignore_fields=("tenant",))
+                self.structured_config.vrfs.append(new_vrf, ignore_fields=("metadata",))
 
     def _has_ipv6(
         self: AvdStructuredConfigNetworkServicesProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem

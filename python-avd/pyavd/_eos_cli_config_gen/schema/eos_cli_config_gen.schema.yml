@@ -300,12 +300,14 @@ keys:
                 max: 255
                 convert_types:
                 - str
+                required: true
               duration:
                 type: int
                 min: 1
                 max: 4294967295
                 convert_types:
                 - str
+                required: true
               window:
                 type: int
                 min: 1
@@ -374,8 +376,10 @@ keys:
                   description: Privilege level(s) 0-15.
                   convert_types:
                   - int
+                  required: true
                 default:
                   type: str
+                  required: true
                   description: 'Command authorization method(s) as a string.
 
                     Examples:
@@ -413,6 +417,7 @@ keys:
           - tacacs+
           - radius
           - ldap
+          required: true
         servers:
           type: list
           items:
@@ -421,6 +426,7 @@ keys:
               server:
                 type: str
                 description: Hostname or IP address.
+                required: true
               vrf:
                 type: str
                 description: VRF name.
@@ -664,7 +670,7 @@ keys:
                     convert_types:
                     - int
                     description: DSCP value or range syntax.
-                    pattern: ^(?:cs[1-7]|af[1-4][1-3]|ef|(?:(?:,|,\s|^)(?:\d|[1-5]\d|6[0-3])(?:-(?:\d|[1-5]\d|6[0-3]))?)+)$
+                    pattern: (?:cs[1-7]|af[1-4][1-3]|ef|(?:(?:,|,\s|^)(?:\d|[1-5]\d|6[0-3])(?:-(?:\d|[1-5]\d|6[0-3]))?)+)
           l4_applications:
             type: list
             description: List of user defined L4 applications. The name should be
@@ -807,7 +813,7 @@ keys:
               type: str
               description: ARP entry MAC address.
               required: true
-              pattern: ^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$
+              pattern: '[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}'
   as_path:
     type: dict
     keys:
@@ -835,9 +841,11 @@ keys:
                     valid_values:
                     - permit
                     - deny
+                    required: true
                   match:
                     type: str
                     description: Regex To Match.
+                    required: true
                   origin:
                     type: str
                     valid_values:
@@ -1386,6 +1394,8 @@ keys:
               description: Cluster Name.
             cvaddrs:
               type: list
+              required: true
+              min_length: 1
               description: 'Streaming address(es) for CloudVision cluster.
 
                 - TCP 9910 is used for CV on-prem
@@ -1825,83 +1835,47 @@ keys:
                         defined is `string` -> `ipv4_address` -> `array_ipv4_address`.'
                       items:
                         type: str
-        subnets:
+        ipv4_subnets:
           type: list
-          primary_key: subnet
+          $ref: eos_cli_config_gen#/$defs/subnets
           items:
             type: dict
             keys:
               subnet:
-                description: IPv4/IPv6 subnet.
+                description: IPv4 subnet.
                 type: str
-                required: true
-              name:
-                type: str
-                convert_types:
-                - int
-              default_gateway:
-                type: str
-              dns_servers:
-                type: list
-                items:
-                  type: str
-              ranges:
-                type: list
-                items:
-                  type: dict
-                  keys:
-                    start:
-                      type: str
-                      required: true
-                    end:
-                      type: str
-                      required: true
-              lease_time:
-                type: dict
-                keys:
-                  days:
-                    type: int
-                    required: true
-                    min: 0
-                    max: 2000
-                    convert_types:
-                    - str
-                  hours:
-                    type: int
-                    required: true
-                    min: 0
-                    max: 23
-                    convert_types:
-                    - str
-                  minutes:
-                    type: int
-                    required: true
-                    min: 0
-                    max: 59
-                    convert_types:
-                    - str
               reservations:
-                description: DHCP client reservations.
                 type: list
-                primary_key: mac_address
                 items:
                   type: dict
                   keys:
-                    mac_address:
-                      type: str
-                      description: Ethernet address in format - HHHH.HHHH.HHHH
-                    hostname:
-                      type: str
                     ipv4_address:
                       type: str
-                      description: 'Valid IPv4 address from the given subnet.
-
-                        This should only be used within an IPv4 subnet.'
+                      description: Valid IPv4 address from the given subnet.
+        ipv6_subnets:
+          type: list
+          $ref: eos_cli_config_gen#/$defs/subnets
+          items:
+            type: dict
+            keys:
+              subnet:
+                description: IPv6 subnet.
+                type: str
+              reservations:
+                type: list
+                items:
+                  type: dict
+                  keys:
                     ipv6_address:
                       type: str
-                      description: 'Valid IPv6 address from the given subnet.
-
-                        This should only be used within an IPv6 subnet.'
+                      description: Valid IPv6 address from the given subnet.
+        subnets:
+          type: list
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: ipv4_subnets or ipv6_subnets
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the dhcp server in the
@@ -2055,46 +2029,14 @@ keys:
                 - disabled
               action:
                 type: dict
-                description: Set action for supplicant when AAA times out.
+                $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/phone_action
                 keys:
-                  apply_cached_results:
-                    type: bool
-                    description: Use results from a previous AAA response.
-                  cached_results_timeout:
-                    type: dict
-                    keys:
-                      time_duration:
-                        type: int
-                        convert_types:
-                        - str
-                        min: 1
-                        description: 'Enable caching for a specific duration -
-
-                          <1-10000>      duration in days
-
-                          <1-14400000>   duration in minutes
-
-                          <1-240000>     duration in hours
-
-                          <1-864000000>  duration in seconds'
-                      time_duration_unit:
-                        type: str
-                        required: true
-                        valid_values:
-                        - days
-                        - hours
-                        - minutes
-                        - seconds
                   apply_alternate:
                     type: bool
                     description: 'Apply alternate action if primary action fails.
 
-                      eg. aaa unresponsive action apply cached-results else traffic
+                      e.g. aaa unresponsive action apply cached-results else traffic
                       allow'
-                  traffic_allow:
-                    type: bool
-                    description: Set action for supplicant traffic when AAA times
-                      out.
                   traffic_allow_vlan:
                     type: int
                     convert_types:
@@ -2113,6 +2055,7 @@ keys:
                     keys:
                       time_duration:
                         type: int
+                        required: true
                         convert_types:
                         - str
                         min: 1
@@ -2137,7 +2080,7 @@ keys:
                     type: bool
                     description: 'Apply alternate action if primary action fails.
 
-                      eg. aaa unresponsive phone action apply cached-results else
+                      e.g. aaa unresponsive phone action apply cached-results else
                       traffic allow'
                   traffic_allow:
                     description: Set action for supplicant traffic when AAA times
@@ -2233,6 +2176,17 @@ keys:
               convert_types:
               - int
               description: VLAN value(s) or range(s) of VLAN values.
+      eapol:
+        type: dict
+        keys:
+          vlan_change_logoff_disabled:
+            type: bool
+            description: Disable host log off when there is a VLAN change.
+          unresponsive_action_traffic_allow_vlan:
+            type: int
+            convert_types:
+            - str
+            description: EAPOL unresponsive hosts VLAN ID.
   dps_interfaces:
     type: list
     primary_key: name
@@ -2298,6 +2252,7 @@ keys:
             interface in the final EOS configuration.
   dynamic_prefix_lists:
     type: list
+    primary_key: name
     items:
       type: dict
       keys:
@@ -4001,6 +3956,14 @@ keys:
             port_profile:
               type: str
               description: Key only used for documentation or validation purposes.
+            validate_state:
+              type: bool
+              description: Set to false to disable interface state and LLDP topology
+                validation performed by the `anta_runner` role.
+            validate_lldp:
+              type: bool
+              description: Set to false to disable the LLDP topology validation performed
+                by the `anta_runner` role.
         sflow:
           type: dict
           keys:
@@ -4133,6 +4096,7 @@ keys:
                               values.
                           min:
                             type: int
+                            required: true
                             min: 1
                             max: 256000000
                             convert_types:
@@ -4305,14 +4269,6 @@ keys:
                     - '0'
                     - '7'
                     - 8a
-        validate_state:
-          type: bool
-          description: Set to false to disable interface state and LLDP topology validation
-            performed by the `anta_runner` role.
-        validate_lldp:
-          type: bool
-          description: Set to false to disable the LLDP topology validation performed
-            by the `anta_runner` role.
         switchport:
           type: dict
           description: This should not be combined with `ethernet_interfaces[].type
@@ -4718,11 +4674,11 @@ keys:
                   keys:
                     source:
                       type: str
-                      pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$
+                      pattern: ([0-9a-f]{2}:){5}[0-9a-f]{2}
                       description: MAC address for the source.
                     destination:
                       type: str
-                      pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$
+                      pattern: ([0-9a-f]{2}:){5}[0-9a-f]{2}
                       description: MAC address for the destination.
                 encapsulation:
                   type: dict
@@ -5868,6 +5824,7 @@ keys:
         entries:
           type: list
           required: true
+          min_length: 1
           items:
             type: dict
             keys:
@@ -5879,6 +5836,7 @@ keys:
                 - deny
               communities:
                 type: list
+                min_length: 1
                 items:
                   type: str
                 description: 'If defined, a standard community-list will be configured.
@@ -5988,6 +5946,7 @@ keys:
         entries:
           type: list
           required: true
+          min_length: 1
           items:
             type: dict
             keys:
@@ -6942,7 +6901,7 @@ keys:
               type: str
               required: true
               description: MAC address of neighbor like 'aa:af:12:34:bc:bf'
-              pattern: ^([0-9a-f]{2}:){5}[0-9a-f]{2}$
+              pattern: ([0-9a-f]{2}:){5}[0-9a-f]{2}
       persistent:
         type: dict
         keys:
@@ -7272,9 +7231,11 @@ keys:
             keys:
               begin:
                 type: int
+                required: true
                 description: Minimum LACP port-ID range.
               end:
                 type: int
+                required: true
                 description: Maximum LACP port-ID range.
       rate_limit:
         type: dict
@@ -7992,6 +7953,7 @@ keys:
                 - str
               action:
                 type: str
+                required: true
   mac_address_table:
     type: dict
     keys:
@@ -8035,7 +7997,7 @@ keys:
             mac_address:
               type: str
               required: true
-              pattern: ^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$
+              pattern: '[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}'
               description: 'The static MAC address to configure.
 
                 The combination of ''mac_address'' and ''vlan'' must be unique across
@@ -8106,6 +8068,7 @@ keys:
                     type: str
                   encrypted_key:
                     type: str
+                    required: true
                   fallback:
                     type: bool
             mka:
@@ -8288,6 +8251,7 @@ keys:
               keys:
                 bgp_groups:
                   type: list
+                  min_length: 1
                   items:
                     type: str
                     description: 'Name of BGP Group.
@@ -8295,6 +8259,7 @@ keys:
                       '
                 interface_groups:
                   type: list
+                  min_length: 1
                   items:
                     type: str
                     description: 'Name of Interface Group.
@@ -8471,9 +8436,11 @@ keys:
         keys:
           certificate:
             type: str
+            required: true
             description: Name of certificate; private key must also be specified.
           private_key:
             type: str
+            required: true
             description: Name of private key; certificate must also be specified.
   management_api_models:
     type: dict
@@ -8487,6 +8454,7 @@ keys:
             keys:
               disabled_paths:
                 type: list
+                min_length: 1
                 description: List of disabled Sysdb paths for Octa.
                 items:
                   type: str
@@ -8539,6 +8507,7 @@ keys:
         type: bool
       server_hosts:
         type: list
+        min_length: 1
         items:
           type: str
           description: IP or hostname.
@@ -9280,28 +9249,50 @@ keys:
         type: str
         convert_types:
         - int
-      hardware_requirements:
+      validate_hardware:
         type: dict
-        description: 'Defines the minimum hardware specifications required for the
-          device.
+        description: 'Settings for hardware validation performed by the `anta_runner`
+          role.
 
-          Used for validation by the `anta_runner` role.'
+          If `enabled` is set to `false`, all other keys in this dictionary are ignored.
+
+
+          For the `min_*` keys:
+
+          - Undefined (Default): Validate that all available slots are populated.
+
+          - Positive Integer: Validate that the number of components inserted is at
+          least the specified minimum.
+
+          - 0: Skip the validation for this specific component.'
         keys:
+          enabled:
+            type: bool
+            description: 'Enable hardware validation for the device.
+
+              If `false`, all hardware tests are skipped, therefore the other keys
+              in `validate_hardware` are ignored.'
+            default: true
           min_power_supplies:
             type: int
             description: Minimum number of power supplies required for the device.
+              Set to 0 to skip validation.
           min_fans:
             type: int
-            description: Minimum number of fans required for the device.
+            description: Minimum number of fans required for the device. Set to 0
+              to skip validation.
           min_supervisors:
             type: int
             description: Minimum number of supervisor modules required for the device.
+              Set to 0 to skip validation.
           min_line_cards:
             type: int
-            description: Minimum number of line cards required for the device.
+            description: Minimum number of line cards required for the device. Set
+              to 0 to skip validation.
           min_fabric_cards:
             type: int
-            description: Minimum number of fabric cards required for the device.
+            description: Minimum number of fabric cards required for the device. Set
+              to 0 to skip validation.
           transceiver_manufacturers:
             type: list
             description: List of approved transceiver manufacturers for the device.
@@ -9685,9 +9676,16 @@ keys:
         type: int
         convert_types:
         - str
-        description: Threshold (in minutes) defining the recent time window during
-          which no error-level logs should have been generated for the validation
-          to pass.
+        description: Threshold (in minutes) defining how far back to check the logging
+          buffer for error-level logs during the validation performed by the `anta_runner`
+          role.
+      exclude_as_extra_fabric_validation_target:
+        type: bool
+        description: 'Exclude this node from being used as a destination target from
+          other fabric devices in the extra fabric validation tests performed by the
+          `anta_runner` role.
+
+          '
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -9769,6 +9767,7 @@ keys:
               type: str
             interfaces:
               type: str
+              required: true
               description: 'Interface range(s) should be of same type, Ethernet, Loopback,
                 Management etc.
 
@@ -9954,8 +9953,10 @@ keys:
             keys:
               username:
                 type: str
+                required: true
               password:
                 type: str
+                required: true
                 description: Encrypted password using the `password_type`.
               password_type:
                 type: str
@@ -11705,6 +11706,18 @@ keys:
           description: Accept gratuitous ARP.
         snmp_trap_link_change:
           type: bool
+        address_locking:
+          type: dict
+          keys:
+            address_family:
+              description: 'Configure address locking per address family.
+
+                Introduced in EOS 4.31.0F.'
+              type: dict
+              keys:
+                ipv4:
+                  type: bool
+                  description: Enable/disable address locking for IPv4.
         encapsulation_dot1q:
           type: dict
           keys:
@@ -12564,6 +12577,14 @@ keys:
             peer_key:
               type: str
               description: Key only used for documentation or validation purposes.
+            validate_state:
+              type: bool
+              description: Set to false to disable interface state and LLDP topology
+                validation performed by the `anta_runner` role.
+            validate_lldp:
+              type: bool
+              description: Set to false to disable the LLDP topology validation performed
+                by the `anta_runner` role.
         sflow:
           type: dict
           keys:
@@ -12999,14 +13020,6 @@ keys:
                 removed: true
                 remove_in_version: 6.0.0
                 new_key: srlgs
-        validate_state:
-          type: bool
-          description: Set to false to disable interface state and LLDP topology validation
-            performed by the `anta_runner` role.
-        validate_lldp:
-          type: bool
-          description: Set to false to disable the LLDP topology validation performed
-            by the `anta_runner` role.
         vlans:
           type: str
           deprecation:
@@ -13159,7 +13172,7 @@ keys:
               '
           timeout:
             type: str
-            pattern: ^\d+(\.\d{1,2})?$
+            pattern: \d+(\.\d{1,2})?
             convert_types:
             - int
             - float
@@ -13175,7 +13188,7 @@ keys:
               '
           polling_interval:
             type: str
-            pattern: ^\d+(\.\d{1,3})?$
+            pattern: \d+(\.\d{1,3})?
             convert_types:
             - int
             - float
@@ -13189,7 +13202,7 @@ keys:
               '
           recovery_time:
             type: str
-            pattern: ^\d+(\.\d{1,2})?$
+            pattern: \d+(\.\d{1,2})?
             convert_types:
             - int
             - float
@@ -13893,7 +13906,7 @@ keys:
                     timeout:
                       type: str
                       required: true
-                      pattern: ^\d+(\.\d{1,2})?$
+                      pattern: \d+(\.\d{1,2})?
                       convert_types:
                       - int
                       - float
@@ -13910,7 +13923,7 @@ keys:
                     polling_interval:
                       type: str
                       required: true
-                      pattern: ^auto|\d+(\.\d{1,3})?$
+                      pattern: auto|\d+(\.\d{1,3})?
                       convert_types:
                       - int
                       - float
@@ -13927,7 +13940,7 @@ keys:
                     recovery_time:
                       type: str
                       required: true
-                      pattern: ^\d+(\.\d{1,2})?$
+                      pattern: \d+(\.\d{1,2})?
                       convert_types:
                       - int
                       - float
@@ -14389,7 +14402,7 @@ keys:
           name:
             type: str
             required: true
-            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
+            pattern: '[A-Za-z0-9_.:{}\[\]-]+'
           id:
             type: int
             convert_types:
@@ -14404,7 +14417,7 @@ keys:
           name:
             type: str
             required: true
-            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
+            pattern: '[A-Za-z0-9_.:{}\[\]-]+'
           id:
             type: int
             convert_types:
@@ -14419,7 +14432,7 @@ keys:
           name:
             type: str
             required: true
-            pattern: ^[A-Za-z0-9_.:{}\[\]-]+$
+            pattern: '[A-Za-z0-9_.:{}\[\]-]+'
           id:
             type: int
             convert_types:
@@ -15007,6 +15020,14 @@ keys:
               type: bool
             password:
               type: str
+            password_type:
+              type: str
+              valid_values:
+              - '7'
+              - 8a
+              convert_types:
+              - int
+              default: '7'
             passive:
               type: bool
             default_originate:
@@ -15211,12 +15232,24 @@ keys:
                 peer:
                   type: str
                   description: Key only used for documentation or validation purposes.
+                validate_state:
+                  type: bool
+                  default: true
+                  description: Used for validation by the `anta_runner` role.
             description:
               type: str
             route_reflector_client:
               type: bool
             password:
               type: str
+            password_type:
+              type: str
+              valid_values:
+              - '7'
+              - 8a
+              convert_types:
+              - int
+              default: '7'
             passive:
               type: bool
             shutdown:
@@ -15465,6 +15498,10 @@ keys:
                 peer:
                   type: str
                   description: Key only used for documentation or validation purposes.
+                validate_state:
+                  type: bool
+                  default: true
+                  description: Used for validation by the `anta_runner` role.
             peer_group:
               type: str
               default: Peer-group name
@@ -15494,6 +15531,12 @@ keys:
             match_map:
               type: str
               description: Route-map name.
+            attribute:
+              type: dict
+              keys:
+                rcf:
+                  type: str
+                  description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
       redistribute:
         type: dict
         description: Redistribute routes in to BGP.
@@ -18617,6 +18660,14 @@ keys:
                     - int
                   password:
                     type: str
+                  password_type:
+                    type: str
+                    valid_values:
+                    - '7'
+                    - 8a
+                    convert_types:
+                    - int
+                    default: '7'
                   passive:
                     type: bool
                   remove_private_as:
@@ -18777,6 +18828,13 @@ keys:
                   additional_paths:
                     type: dict
                     $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                  metadata:
+                    type: dict
+                    keys:
+                      validate_state:
+                        type: bool
+                        default: false
+                        description: Used for validation by the `anta_runner` role.
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -18803,6 +18861,13 @@ keys:
                     description: Peer-filter name.
                   description:
                     type: str
+                  metadata:
+                    type: dict
+                    keys:
+                      validate_state:
+                        type: bool
+                        default: false
+                        description: Used for validation by the `anta_runner` role.
             redistribute:
               type: dict
               description: Redistribute routes in to BGP.
@@ -19060,6 +19125,12 @@ keys:
                     type: str
                   match_map:
                     type: str
+                  attribute:
+                    type: dict
+                    keys:
+                      rcf:
+                        type: str
+                        description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
             address_family_ipv4:
               type: dict
               keys:
@@ -21588,7 +21659,7 @@ keys:
                   name:
                     type: str
                     description: Local interface name.
-                    pattern: ^(Port-Channel|Ethernet(\d+/)*)\d+(\.\d+)?$
+                    pattern: (Port-Channel|Ethernet(\d+/)*)\d+(\.\d+)?
                   public_address:
                     type: str
                     description: Public IP assigned by NAT.
@@ -21714,7 +21785,7 @@ keys:
               convert_types:
               - int
               - float
-              pattern: ^\d+(\.\d{1,2})?$
+              pattern: \d+(\.\d{1,2})?
             path_groups:
               type: list
               primary_key: name
@@ -24695,9 +24766,16 @@ keys:
               convert_types:
               - str
               description: Primary VLAN ID.
-        tenant:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          description: 'The data under `metadata` is used for documentation, validation
+            or integration purposes.
+
+            It will not affect the generated EOS configuration.'
+          keys:
+            tenant:
+              type: str
+              description: Key only used for documentation or validation purposes.
   vmtracer_sessions:
     type: list
     primary_key: name
@@ -24742,9 +24820,16 @@ keys:
           type: bool
         ip_routing_ipv6_interfaces:
           type: bool
-        tenant:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          description: 'The data under `metadata` is used for documentation, validation
+            or integration purposes.
+
+            It will not affect the generated EOS configuration.'
+          keys:
+            tenant:
+              type: str
+              description: Key only used for documentation or validation purposes.
   vxlan_interface:
     type: dict
     keys:
@@ -25081,6 +25166,71 @@ $defs:
         - str
         min: 2
         max: 64
+  subnets:
+    type: list
+    primary_key: subnet
+    items:
+      type: dict
+      keys:
+        subnet:
+          type: str
+        name:
+          type: str
+          convert_types:
+          - int
+        default_gateway:
+          type: str
+        dns_servers:
+          type: list
+          items:
+            type: str
+        ranges:
+          type: list
+          items:
+            type: dict
+            keys:
+              start:
+                type: str
+                required: true
+              end:
+                type: str
+                required: true
+        lease_time:
+          type: dict
+          keys:
+            days:
+              type: int
+              required: true
+              min: 0
+              max: 2000
+              convert_types:
+              - str
+            hours:
+              type: int
+              required: true
+              min: 0
+              max: 23
+              convert_types:
+              - str
+            minutes:
+              type: int
+              required: true
+              min: 0
+              max: 59
+              convert_types:
+              - str
+        reservations:
+          description: DHCP client reservations.
+          type: list
+          primary_key: mac_address
+          items:
+            type: dict
+            keys:
+              mac_address:
+                type: str
+                description: Ethernet address in format - HHHH.HHHH.HHHH
+              hostname:
+                type: str
   flow_tracking:
     type: dict
     keys:

@@ -24,8 +24,8 @@ The filter matches if any filter strings are found in the input hostname.
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>_input</samp> | string | True | None |  | One hostname to match with `hostname_filter`. |
-| <samp>hostname_filter</samp> | any | True | None |  | Filter as a list of strings or `None`. |
+| <samp>_input</samp> | string | True | None | - | One hostname to match with `hostname_filter`. |
+| <samp>hostname_filter</samp> | any | True | None | - | Filter as a list of strings or `None`. |
 
 ## Examples
 

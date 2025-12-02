@@ -21,6 +21,7 @@ keys:
         entries:
           type: list
           required: true
+          min_length: 1
           items:
             type: dict
             keys:
@@ -30,6 +31,7 @@ keys:
                 valid_values: ["permit", "deny"]
               communities:
                 type: list
+                min_length: 1
                 items:
                   type: str
                 description: |

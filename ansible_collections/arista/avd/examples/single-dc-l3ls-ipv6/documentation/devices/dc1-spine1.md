@@ -206,7 +206,7 @@ spanning-tree mode none
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -232,7 +232,7 @@ vlan internal order ascending range 1006 1199
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
 | Ethernet1 | P2P_dc1-leaf1a_Ethernet1 | - | 2001:db8:2::1/64 | default | 1500 | False | - | - | - | - |
 | Ethernet2 | P2P_dc1-leaf1b_Ethernet1 | - | 2001:db8:2:2::1/64 | default | 1500 | False | - | - | - | - |
 | Ethernet3 | P2P_dc1-leaf2a_Ethernet1 | - | 2001:db8:2:4::1/64 | default | 1500 | False | - | - | - | - |
