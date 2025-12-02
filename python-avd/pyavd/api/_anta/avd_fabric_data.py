@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from ipaddress import IPv4Address, IPv6Address, ip_interface
+from ipaddress import IPv4Address, ip_interface
 from logging import getLogger
 from typing import Any
 
@@ -61,10 +61,7 @@ class AvdDeviceData:
 
         # Get the Loopback0 IP
         loopback0_ip_str = get(get_item(get(structured_config, "loopback_interfaces", []), "name", "Loopback0", default={}), "ip_address")
-        loopback0_ip = ip_interface(loopback0_ip_str).ip if loopback0_ip_str else None
-        if loopback0_ip and isinstance(loopback0_ip, IPv6Address):
-            msg = "'loopback_interfaces[].ip_address' must be an IPv4 address but found IPv6 address"
-            raise ValueError(msg)
+        loopback0_ip = IPv4Address(loopback0_ip_str) if loopback0_ip_str else None
 
         # Get the VTEP IPs
         vtep_ip, mlag_vtep_ip = cls._get_vtep_ips(structured_config)
