@@ -279,9 +279,6 @@ aaa_settings:
           default: "group tacacs+ local"
         - level: "5"
           default: "group radius"
-        # To handle the not defined cases
-        - level: "6"
-        - default: "group radius"
   root_login:
     enabled: true
     sha512_password: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.
