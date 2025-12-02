@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from ipaddress import IPv4Address, ip_address, ip_interface
+from ipaddress import IPv4Address, IPv4Interface, ip_address
 from typing import TYPE_CHECKING
 
 from anta.input_models.path_selection import DpsPath
@@ -77,11 +77,7 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory[VerifySpecificPath.Inp
             self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=interface_name)
             return None
 
-        ip_obj = ip_interface(ip_str).ip
-        if not isinstance(ip_obj, IPv4Address):
-            return None
-
-        return ip_obj
+        return IPv4Interface(ip_str).ip
 
     def _create_dps_paths(
         self, path_group_name: str, source_ip: IPv4Address, static_peer: EosCliConfigGen.RouterPathSelection.PathGroupsItem.StaticPeersItem
