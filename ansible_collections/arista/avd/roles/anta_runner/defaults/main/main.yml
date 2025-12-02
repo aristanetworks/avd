@@ -10,7 +10,7 @@ anta_devices: "{{ ansible_play_hosts }}"
 avd_catalogs_enabled: true
 
 # Enable USER catalogs execution.
-user_catalogs_enabled: true
+user_catalogs_enabled: false
 
 # Generate tests for BGP peers in VRFs.
 avd_catalogs_allow_bgp_vrfs: false

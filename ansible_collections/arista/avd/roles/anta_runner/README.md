@@ -214,8 +214,8 @@ These settings allow modification of the default behavior as needed. The values 
 # Enable AVD catalogs generation. Can be disabled if only user-defined catalogs are used.
 avd_catalogs_enabled: true
 
-# Enable USER catalogs execution. Can be disabled if only avd generated catalogs are used.
-user_catalogs_enabled: true
+# Disables execution of user-defined catalogs by default. Enable this setting if executing user-defined tests is required.
+user_catalogs_enabled: false
 
 # Generate tests for BGP peers in VRFs.
 avd_catalogs_allow_bgp_vrfs: false

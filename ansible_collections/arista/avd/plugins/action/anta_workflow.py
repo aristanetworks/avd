@@ -89,7 +89,7 @@ ARGUMENT_SPEC = {
     "user_catalogs": {
         "type": "dict",
         "options": {
-            "enabled": {"type": "bool", "default": True},
+            "enabled": {"type": "bool", "default": False},
             "input_dir": {"type": "str"},
         },
     },

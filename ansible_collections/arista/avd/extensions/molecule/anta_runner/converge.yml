@@ -63,6 +63,7 @@
       vars:
         anta_runner_dry_run: true
         avd_catalogs_enabled: false
+        user_catalogs_enabled: true
         anta_reports_dir: "{{ root_dir }}/anta/reports/user_defined_catalogs_run"
       run_once: true
 
@@ -73,6 +74,7 @@
       vars:
         anta_runner_dry_run: true
         avd_catalogs_enabled: false
+        user_catalogs_enabled: true
         anta_reports_dir: "{{ root_dir }}/anta/reports/user_defined_catalogs_with_tags_run"
         anta_runner_tags: ["border_leaf"]
       run_once: true
@@ -101,15 +103,4 @@
         anta_reports_dir: "{{ root_dir }}/anta/reports/default_run_sorted_report"
         # Same test name on same device will be sorted by the custom field or description
         anta_report_sort_fields: ["test", "categories", "device", "custom_field", "description"]
-      run_once: true
-
-    - name: ANTA AVD generated Catalogs Run
-      delegate_to: 127.0.0.1
-      ansible.builtin.import_role:
-        name: arista.avd.anta_runner
-      vars:
-        anta_runner_dry_run: true
-        user_catalogs_enabled: false
-        avd_catalogs_dir: "{{ root_dir }}/anta/avd_catalogs/avd_generated_catalog_run"
-        anta_reports_dir: "{{ root_dir }}/anta/reports/avd_generated_catalog_run"
       run_once: true
