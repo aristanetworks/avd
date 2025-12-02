@@ -12,7 +12,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "daemon_terminattr.cvaddrs.[]") | String |  |  |  | Server address in the format `<ip/fqdn>:<port>`. |
     | [<samp>&nbsp;&nbsp;clusters</samp>](## "daemon_terminattr.clusters") | List, items: Dictionary |  |  |  | Multiple CloudVision clusters.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "daemon_terminattr.clusters.[].name") | String | Required, Unique |  |  | Cluster Name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvaddrs</samp>](## "daemon_terminattr.clusters.[].cvaddrs") | List, items: String |  |  |  | Streaming address(es) for CloudVision cluster.<br>- TCP 9910 is used for CV on-prem<br>- TCP 443 is used for CV as a Service<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvaddrs</samp>](## "daemon_terminattr.clusters.[].cvaddrs") | List, items: String | Required |  | Min Length: 1 | Streaming address(es) for CloudVision cluster.<br>- TCP 9910 is used for CV on-prem<br>- TCP 443 is used for CV as a Service<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "daemon_terminattr.clusters.[].cvaddrs.[]") | String |  |  |  | Server address in the format `<ip/fqdn>:<port>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvauth</samp>](## "daemon_terminattr.clusters.[].cvauth") | Dictionary |  |  |  | Authentication scheme used to connect to CloudVision.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method</samp>](## "daemon_terminattr.clusters.[].cvauth.method") | String |  |  | Valid Values:<br>- <code>token</code><br>- <code>token-secure</code><br>- <code>key</code><br>- <code>certs</code> |  |
@@ -80,7 +80,7 @@
           # Streaming address(es) for CloudVision cluster.
           # - TCP 9910 is used for CV on-prem
           # - TCP 443 is used for CV as a Service
-          cvaddrs:
+          cvaddrs: # >=1 items; required
 
               # Server address in the format `<ip/fqdn>:<port>`.
             - <str>
