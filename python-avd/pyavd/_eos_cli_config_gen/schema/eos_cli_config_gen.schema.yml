@@ -2341,15 +2341,18 @@ keys:
             type: list
             items:
               type: str
+              description: 'Specifies the events that should trigger this action.
+
+                Supported values align with EOS 4.35.0F'
               valid_values:
               - acl
               - arp-inspection
-              - dot1x
+              - dot1x-coa
+              - dot1x-phone-classification
+              - dot1x-session-replace
               - link-change
+              - 'stp-no-portid '
               - tapagg
-              - xcvr-misconfigured
-              - xcvr-overheat
-              - xcvr-power-unsupported
       recovery:
         type: dict
         keys:
@@ -2361,24 +2364,23 @@ keys:
               keys:
                 name:
                   type: str
+                  description: 'Specifies the type of event that can trigger recovery
+                    actions.
+
+                    Supported values align with EOS 4.35.0F'
                   valid_values:
+                  - acl
                   - arp-inspection
                   - bpduguard
-                  - dot1x
+                  - dot1x-coa
+                  - dot1x-phone-classification
+                  - dot1x-session-replace
                   - hitless-reload-down
-                  - lacp-rate-limit
                   - link-flap
                   - no-internal-vlan
-                  - portchannelguard
-                  - portsec
-                  - speed-misconfigured
-                  - tap-port-init
+                  - stp-no-portid
                   - tapagg
                   - uplink-failure-detection
-                  - xcvr-misconfigured
-                  - xcvr-overheat
-                  - xcvr-power-unsupported
-                  - xcvr-unsupported
                 interval:
                   type: int
                   description: Interval for each recovery cause in seconds.
