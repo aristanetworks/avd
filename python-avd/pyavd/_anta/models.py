@@ -14,7 +14,7 @@ from typing import TYPE_CHECKING
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
 if TYPE_CHECKING:
-    from pyavd.api._anta import AvdFabricData, InputFactorySettings
+    from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData
 
 LOGGER = getLogger(__name__)
 
@@ -43,7 +43,7 @@ class DeviceTestContext:
     hostname: str
     structured_config: EosCliConfigGen
     fabric_data: AvdFabricData
-    input_factory_settings: InputFactorySettings
+    settings: AvdCatalogGenerationSettings
 
     @cached_property
     def is_vtep(self) -> bool:
@@ -63,7 +63,7 @@ class DeviceTestContext:
         ]
 
         # Skip VRF processing if disabled
-        if not self.input_factory_settings.allow_bgp_vrfs:
+        if not self.settings.input_factory_settings.allow_bgp_vrfs:
             LOGGER.debug("<%s> Skipped BGP VRF peers - VRF processing disabled", self.hostname)
             return neighbors
 
@@ -87,7 +87,7 @@ class DeviceTestContext:
         ]
 
         # Skip VRF processing if disabled
-        if not self.input_factory_settings.allow_bgp_vrfs:
+        if not self.settings.input_factory_settings.allow_bgp_vrfs:
             LOGGER.debug("<%s> Skipped BGP VRF RFC5549 peers - VRF processing disabled", self.hostname)
             return neighbor_interfaces
 

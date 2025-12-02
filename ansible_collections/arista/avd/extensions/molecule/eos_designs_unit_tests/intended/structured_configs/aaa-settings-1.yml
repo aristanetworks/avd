@@ -130,8 +130,6 @@ aaa_authorization:
       default: group tacacs+ local
     - level: '5'
       default: group radius
-    - level: '6'
-    - default: group radius
 aaa_root:
   disabled: false
   secret:
@@ -145,6 +143,8 @@ aaa_server_groups:
   - server: 11.10.10.1
     vrf: MGMT
   - server: 11.10.10.2
+    vrf: MGMT
+  - server: 11.10.10.5
     vrf: MGMT
   - server: 11.10.10.3
     vrf: MGMT
@@ -219,6 +219,12 @@ radius_server:
   - host: 11.10.10.2
     vrf: MGMT
     key: 071B245F5A
+  - host: 11.10.10.5
+    vrf: MGMT
+    tls:
+      enabled: true
+      ssl_profile: HOST_SSL_PROFILE
+      port: 2080
   - host: 11.10.10.3
     vrf: MGMT
     key: 0112140D481F07

@@ -7,6 +7,9 @@ platform_settings:
           switchport:
             enabled: true
           description: Structured config for platform matching the regex
+    # Test for validate hardware disabled
+    validate_hardware:
+      enabled: false
   - platforms:
       - 7010TX
     feature_support:
@@ -17,15 +20,16 @@ platform_settings:
       non_mlag: 330
     digital_twin:
       platform: vEOS-lab
-    # Test for validate hardware inventory
-    validate_hardware_inventory:
+    # Test for validate hardware enabled with specific requirements
+    validate_hardware:
+      enabled: true  # default
       min_power_supplies: 2
       min_fans: 4
       min_supervisors: 2
       min_line_cards: 10
       min_fabric_cards: 5
       transceiver_manufacturers:
-        - Arastra, Inc.
+        - Third-party vendor
 
 type: l3leaf
 l3leaf:
