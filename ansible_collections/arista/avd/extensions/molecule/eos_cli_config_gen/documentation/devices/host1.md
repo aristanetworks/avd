@@ -4339,6 +4339,7 @@ interface Dps1
 | Ethernet83 | Test_tap_tool | tap-tool | - | - | - | - |
 | Ethernet84 | - | tap | - | - | - | - |
 | Ethernet86 | All_Transceiver_Commands | - | - | - | - | - |
+| Ethernet87 | Transmitter_SP_20 | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -4415,6 +4416,7 @@ interface Dps1
 | Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd | - | - | - |
 | Ethernet73 | - | 100gbase-ar4 | 5 | - | - | - |
 | Ethernet86 | 190050.000 ghz | 100gbase-ar4 | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 | True | -10.68 | True |
+| Ethernet87 | - | - | - | - | -20.00 | - |
 
 ##### Link Tracking Groups
 
@@ -5738,6 +5740,12 @@ interface Ethernet86
    transceiver frequency 190050.000 ghz
    transceiver transmitter signal-power -10.68
    transceiver transmitter disabled
+!
+interface Ethernet87
+   description Transmitter_SP_20
+   no shutdown
+   switchport
+   transceiver transmitter signal-power -20.00
 ```
 
 ### Port-Channel Interfaces

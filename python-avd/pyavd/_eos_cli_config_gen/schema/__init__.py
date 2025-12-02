@@ -9672,7 +9672,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"ignore": {"type": bool}}
                 ignore: bool | None
-                """Ignore advertised transceiver power consumption"""
+                """Ignore advertised transceiver power consumption."""
 
                 if TYPE_CHECKING:
 
@@ -9684,7 +9684,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            ignore: Ignore advertised transceiver power consumption
+                            ignore: Ignore advertised transceiver power consumption.
 
                         """
 
@@ -9693,9 +9693,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"signal_power": {"type": str}, "disabled": {"type": bool}}
                 signal_power: str | None
-                """Optical signal power between < -30 and 10 > (dBm)"""
+                """Optical signal power between < -30 and 10 > (dBm)."""
                 disabled: bool | None
-                """Disable the optical transmitter"""
+                """Disable the optical transmitter."""
 
                 if TYPE_CHECKING:
 
@@ -9707,8 +9707,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            signal_power: Optical signal power between < -30 and 10 > (dBm)
-                            disabled: Disable the optical transmitter
+                            signal_power: Optical signal power between < -30 and 10 > (dBm).
+                            disabled: Disable the optical transmitter.
 
                         """
 
