@@ -1151,7 +1151,7 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.transceiver.media.override is arista.avd.defined %}
    transceiver media override {{ ethernet_interface.transceiver.media.override }}
 {%     endif %}
-{%     if ethernet_interface.transceiver.power.ignore is arista.avd.defined %}
+{%     if ethernet_interface.transceiver.power.ignore is arista.avd.defined(true) %}
    transceiver power ignore
 {%     endif %}
 {%     if ethernet_interface.transceiver.application_override is arista.avd.defined %}
@@ -1174,7 +1174,7 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.transceiver.transmitter.signal_power is arista.avd.defined %}
    transceiver transmitter signal-power {{ "%.2f" | format(ethernet_interface.transceiver.transmitter.signal_power | float) }}
 {%     endif %}
-{%     if ethernet_interface.transceiver.transmitter.disabled is arista.avd.defined %}
+{%     if ethernet_interface.transceiver.transmitter.disabled is arista.avd.defined(true) %}
    transceiver transmitter disabled
 {%     endif %}
 {%     if ethernet_interface.dot1x is arista.avd.defined %}
