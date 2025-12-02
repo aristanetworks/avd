@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from ipaddress import IPv4Address, ip_interface
+from ipaddress import IPv4Address, IPv4Interface, ip_interface
 from logging import getLogger
 from typing import Any
 
@@ -60,7 +60,8 @@ class AvdDeviceData:
         }
 
         # Get the Loopback0 IP
-        loopback0_ip = get(get_item(get(structured_config, "loopback_interfaces", []), "name", "Loopback0", default={}), "ip_address")
+        loopback0_ip_str = get(get_item(get(structured_config, "loopback_interfaces", []), "name", "Loopback0", default={}), "ip_address")
+        loopback0_ip = IPv4Interface(loopback0_ip_str).ip if loopback0_ip_str else None
 
         # Get the VTEP IPs
         vtep_ip, mlag_vtep_ip = cls._get_vtep_ips(structured_config)
@@ -74,7 +75,7 @@ class AvdDeviceData:
             is_deployed=get(structured_config, "metadata.is_deployed", default=False),
             dns_domain=get(structured_config, "dns_domain"),
             ethernet_interfaces=ethernet_interfaces,
-            loopback0_ip=ip_interface(loopback0_ip).ip if loopback0_ip else None,
+            loopback0_ip=loopback0_ip,
             vtep_ip=vtep_ip,
             mlag_vtep_ip=mlag_vtep_ip,
             is_vtep=is_vtep,
@@ -106,12 +107,11 @@ class AvdDeviceData:
 
         # Get the VTEP IP
         vxlan_source_interface = get(structured_config, "vxlan_interface.vxlan1.vxlan.source_interface")
+        loopback_interfaces = get(structured_config, "loopback_interfaces", default=[])
+        dps_interfaces = get(structured_config, "dps_interfaces", default=[])
         if vxlan_source_interface is not None:
-            # Determine which interface model to search based on source interface type
-            if "Dps" in vxlan_source_interface:
-                interface_model = get(structured_config, "dps_interfaces", default=[])
-            else:
-                interface_model = get(structured_config, "loopback_interfaces", default=[])
+            # Determine which interface model to pick based on source interface type
+            interface_model = dps_interfaces if "Dps" in vxlan_source_interface else loopback_interfaces
 
             vtep_ip_str = get(get_item(interface_model, "name", vxlan_source_interface, default={}), "ip_address")
             vtep_ip = vtep_ip_addr if vtep_ip_str and isinstance((vtep_ip_addr := ip_interface(vtep_ip_str).ip), IPv4Address) else None
@@ -119,7 +119,8 @@ class AvdDeviceData:
         # Get the MLAG VTEP IP (for Multi-VTEP MLAG feature)
         vxlan_mlag_source_interface = get(structured_config, "vxlan_interface.vxlan1.vxlan.mlag_source_interface")
         if vxlan_mlag_source_interface is not None:
-            mlag_vtep_ip_str = get(get_item(interface_model, "name", vxlan_mlag_source_interface, default={}), "ip_address")
+            # Only supported with loopback interfaces
+            mlag_vtep_ip_str = get(get_item(loopback_interfaces, "name", vxlan_mlag_source_interface, default={}), "ip_address")
             mlag_vtep_ip = mlag_vtep_ip_addr if mlag_vtep_ip_str and isinstance((mlag_vtep_ip_addr := ip_interface(mlag_vtep_ip_str).ip), IPv4Address) else None
 
         return vtep_ip, mlag_vtep_ip
