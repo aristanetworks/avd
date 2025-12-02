@@ -10,7 +10,7 @@ errdisable:
       - "dot1x-phone-classification"
       - "dot1x-session-replace"
       - "link-change"
-      - "stp-no-portid "
+      - "stp-no-portid"
       - "tapagg"
   recovery:
     causes:

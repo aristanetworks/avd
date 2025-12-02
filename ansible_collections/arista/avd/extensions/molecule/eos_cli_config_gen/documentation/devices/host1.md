@@ -12967,8 +12967,7 @@ Errdisable recovery timer interval: 300 seconds
 | link-change | True | - | - |
 | link-flap | - | True | - |
 | no-internal-vlan | - | True | - |
-| stp-no-portid  | True | - | - |
-| stp-no-portid | - | True | - |
+| stp-no-portid | True | True | - |
 | tapagg | True | True | - |
 | uplink-failure-detection | - | True | - |
 
@@ -12980,7 +12979,7 @@ errdisable detect cause dot1x-coa
 errdisable detect cause dot1x-phone-classification
 errdisable detect cause dot1x-session-replace
 errdisable detect cause link-change
-errdisable detect cause stp-no-portid 
+errdisable detect cause stp-no-portid
 errdisable detect cause tapagg
 errdisable recovery cause acl
 errdisable recovery cause arp-inspection
