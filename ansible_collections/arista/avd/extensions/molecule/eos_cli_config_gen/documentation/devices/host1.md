@@ -12960,39 +12960,84 @@ Errdisable recovery timer interval: 300 seconds
 | acl | True | True | - |
 | arp-inspection | True | True | - |
 | bpduguard | - | True | 400 |
+| dot1x | True | True | 500 |
 | dot1x-coa | True | True | - |
 | dot1x-phone-classification | True | True | - |
-| dot1x-session-replace | True | True | 500 |
+| dot1x-session-replace | True | True | - |
+| error-correction-encoding | True | True | - |
+| hardware-speed-group | True | True | - |
 | hitless-reload-down | - | True | - |
+| interface-speed | True | True | - |
+| internal-error | True | True | - |
+| lacp-rate-limit | - | True | - |
 | link-change | True | - | - |
 | link-flap | - | True | - |
 | no-internal-vlan | - | True | - |
-| stp-no-portid | True | True | - |
+| port-breakout | True | True | - |
+| portchannelguard | - | True | - |
+| portsec | - | True | - |
+| speed-misconfigured | - | True | - |
+| storm-control | True | True | - |
+| stuck-queue | - | True | - |
+| switchcard-unreachable | True | True | - |
 | tapagg | True | True | - |
+| transceiver-adapter | True | True | - |
 | uplink-failure-detection | - | True | - |
+| xcvr-misconfigured | True | True | - |
+| xcvr-overheat | True | True | - |
+| xcvr-power-unsupported | True | True | - |
+| xcvr-unsupported | - | True | - |
 
 ```eos
 !
 errdisable detect cause acl
 errdisable detect cause arp-inspection
+errdisable detect cause dot1x
 errdisable detect cause dot1x-coa
 errdisable detect cause dot1x-phone-classification
 errdisable detect cause dot1x-session-replace
+errdisable detect cause error-correction-encoding
+errdisable detect cause hardware-speed-group
+errdisable detect cause interface-speed
+errdisable detect cause internal-error
 errdisable detect cause link-change
-errdisable detect cause stp-no-portid
+errdisable detect cause port-breakout
+errdisable detect cause storm-control
+errdisable detect cause switchcard-unreachable
 errdisable detect cause tapagg
+errdisable detect cause transceiver-adapter
+errdisable detect cause xcvr-misconfigured
+errdisable detect cause xcvr-overheat
+errdisable detect cause xcvr-power-unsupported
 errdisable recovery cause acl
 errdisable recovery cause arp-inspection
 errdisable recovery cause bpduguard interval 400
+errdisable recovery cause dot1x interval 500
 errdisable recovery cause dot1x-coa
 errdisable recovery cause dot1x-phone-classification
-errdisable recovery cause dot1x-session-replace interval 500
+errdisable recovery cause dot1x-session-replace
+errdisable recovery cause error-correction-encoding
+errdisable recovery cause hardware-speed-group
 errdisable recovery cause hitless-reload-down
+errdisable recovery cause interface-speed
+errdisable recovery cause internal-error
+errdisable recovery cause lacp-rate-limit
 errdisable recovery cause link-flap
 errdisable recovery cause no-internal-vlan
-errdisable recovery cause stp-no-portid
+errdisable recovery cause port-breakout
+errdisable recovery cause portchannelguard
+errdisable recovery cause portsec
+errdisable recovery cause speed-misconfigured
+errdisable recovery cause storm-control
+errdisable recovery cause stuck-queue
+errdisable recovery cause switchcard-unreachable
 errdisable recovery cause tapagg
+errdisable recovery cause transceiver-adapter
 errdisable recovery cause uplink-failure-detection
+errdisable recovery cause xcvr-misconfigured
+errdisable recovery cause xcvr-overheat
+errdisable recovery cause xcvr-power-unsupported
+errdisable recovery cause xcvr-unsupported
 errdisable recovery interval 300
 ```
 

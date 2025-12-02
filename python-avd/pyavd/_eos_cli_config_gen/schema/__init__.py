@@ -6132,22 +6132,43 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "acl",
                     "arp-inspection",
                     "bpduguard",
+                    "dot1x",
                     "dot1x-coa",
                     "dot1x-phone-classification",
                     "dot1x-session-replace",
+                    "error-correction-encoding",
+                    "hardware-speed-group",
                     "hitless-reload-down",
+                    "interface-speed",
+                    "internal-error",
+                    "lacp-rate-limit",
                     "link-flap",
                     "no-internal-vlan",
-                    "stp-no-portid",
+                    "port-breakout",
+                    "portchannelguard",
+                    "portsec",
+                    "speed-misconfigured",
+                    "storm-control",
+                    "stuck-queue",
+                    "switchcard-unreachable",
+                    "tap-port-init",
                     "tapagg",
+                    "transceiver-adapter",
                     "uplink-failure-detection",
+                    "xcvr-misconfigured",
+                    "xcvr-overheat",
+                    "xcvr-power-unsupported",
+                    "xcvr-unsupported",
                 ]
                 _fields: ClassVar[dict] = {"name": {"type": str}, "interval": {"type": int}}
                 name: Name
                 """
                 Specifies the type of event that can trigger recovery actions.
-                Supported values align with EOS
-                4.35.0F
+                Available recovery causes are
+                generated dynamically from Sysdb and
+                vary by EOS version and hardware platform. Your device may not
+                support
+                all causes listed.
                 """
                 interval: int | None
                 """Interval for each recovery cause in seconds."""
@@ -6164,8 +6185,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             name:
                                Specifies the type of event that can trigger recovery actions.
-                               Supported values align with EOS
-                               4.35.0F
+                               Available recovery causes are
+                               generated dynamically from Sysdb and
+                               vary by EOS version and hardware platform. Your device may not
+                               support
+                               all causes listed.
                             interval: Interval for each recovery cause in seconds.
 
                         """

@@ -1651,8 +1651,11 @@ ip nat synchronization
 | arp-inspection | - | True | - |
 | bpduguard | - | True | - |
 | hitless-reload-down | - | True | - |
+| lacp-rate-limit | - | True | - |
 | link-flap | - | True | - |
 | no-internal-vlan | - | True | - |
+| portchannelguard | - | True | - |
+| portsec | - | True | - |
 | tapagg | - | True | - |
 | uplink-failure-detection | - | True | - |
 
@@ -1661,8 +1664,11 @@ ip nat synchronization
 errdisable recovery cause arp-inspection
 errdisable recovery cause bpduguard
 errdisable recovery cause hitless-reload-down
+errdisable recovery cause lacp-rate-limit
 errdisable recovery cause link-flap
 errdisable recovery cause no-internal-vlan
+errdisable recovery cause portchannelguard
+errdisable recovery cause portsec
 errdisable recovery cause tapagg
 errdisable recovery cause uplink-failure-detection
 ```
