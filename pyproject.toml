@@ -15,8 +15,8 @@ build_wheel = [
     "cibuildwheel==3.3.0",
 ]
 molecule = [
-    "molecule>=6.0",
-    "molecule-plugins[docker]>=23.4.0",
+    "molecule>=25.11.0",
+    "molecule-plugins[docker]>=25.8.12",
 ]
 
 [tool.ruff]
