@@ -712,105 +712,133 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 130
   name: Tenant_A_APP_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 131
   name: Tenant_A_APP_Zone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 3011
   name: MLAG_L3_VRF_Tenant_A_APP_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 140
   name: Tenant_A_DB_BZone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 141
   name: Tenant_A_DB_Zone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 3012
   name: MLAG_L3_VRF_Tenant_A_DB_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 110
   name: Tenant_A_OP_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 111
   name: Tenant_A_OP_Zone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 3009
   name: MLAG_L3_VRF_Tenant_A_OP_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 120
   name: Tenant_A_WEB_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 121
   name: Tenant_A_WEBZone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 3010
   name: MLAG_L3_VRF_Tenant_A_WEB_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 160
   name: Tenant_A_VMOTION
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 161
   name: Tenant_A_NFS
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 210
   name: Tenant_B_OP_Zone_1
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 211
   name: Tenant_B_OP_Zone_2
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 3019
   name: MLAG_L3_VRF_Tenant_B_OP_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 310
   name: Tenant_C_OP_Zone_1
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 311
   name: Tenant_C_OP_Zone_2
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 2
   name: MLAG_L3_VRF_Tenant_C_OP_Zone
   trunk_groups:
   - MLAG
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_A_APP_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_A_DB_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_A_OP_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_A_WEB_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_B_OP_Zone
   ip_routing: true
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - name: Tenant_C_OP_Zone
   ip_routing: true
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 vxlan_interface:
   vxlan1:
     description: DC1-LEAF3A_VTEP

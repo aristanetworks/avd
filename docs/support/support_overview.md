@@ -82,7 +82,7 @@ The following table depicts the AVD release support matrix, including the timeli
 
 | Release | Initial Release Date | Maintenance Phase | Support Only Phase | End of Support |
 | ------- | -------------------- | ----------------- | ------------------ | -------------- |
-| 6.x.x |   -      | - | - | - |
+| 6.x.x | - | - | - | - |
 | 5.x.x | Oct-2024 | - | - | - |
 | 4.x.x | Jun-2023 | Oct-2024 | Apr-2025 | Oct-2025 |
 
@@ -91,4 +91,4 @@ The following table depicts the AVD release support matrix, including the timeli
 | Product Number | Product Description |
 | -------------- | ------------------- |
 | SVC-AVD-SWITCH-1M | 1-Month A-Care Ansible AVD support for 1 Arista EOS-based Switch.<br>10G+ Fixed and Modular Platforms. |
-| SVC-AVD-G-SWITCH-1M | 1-Month A-Care Ansible AVD support for 1 Arista EOS-based Switch.<br>1G/mG Fixed and Modular Platforms.|
+| SVC-AVD-G-SWITCH-1M | 1-Month A-Care Ansible AVD support for 1 Arista EOS-based Switch.<br>1G/mG Fixed and Modular Platforms. |

@@ -58,8 +58,10 @@ keys:
                   description: Privilege level(s) 0-15.
                   convert_types:
                     - int
+                  required: true
                 default:
                   type: str
+                  required: true
                   description: |
                     Command authorization method(s) as a string.
                     Examples:
