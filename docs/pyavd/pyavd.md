@@ -6,7 +6,7 @@
 
 # PyAVD
 
-PyAVD is a Python package that serves as the foundation for the Arista AVD project and the `arista.avd` Ansible collection. PyAVD is maintained alongside the `arista.avd` Ansible collection and are co-versioned.
+PyAVD is a Python package that serves as the foundation for the Arista AVD project and the `arista.avd` Ansible collection. PyAVD is maintained alongside the `arista.avd` Ansible collection and they are co-versioned.
 
 PyAVD does not provide inventory or variable management, however it can serve as a component in a larger framework that provides this capability.
 
