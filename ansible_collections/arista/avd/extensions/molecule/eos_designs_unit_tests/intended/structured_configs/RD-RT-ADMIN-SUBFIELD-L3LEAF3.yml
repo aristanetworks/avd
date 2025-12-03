@@ -223,30 +223,37 @@ vlan_internal_order:
 vlans:
 - id: 1
   name: VLAN_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 2
   name: VLAN_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 3
   name: VLAN_3
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 4
   name: VLAN_4
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 5
   name: VLAN_5
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST1
   description: TEST1
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: TEST2
   description: VRF with router-id
   ip_routing: true
-  tenant: TENANT_WITH_VRFS_WITHOUT_SVIS
+  metadata:
+    tenant: TENANT_WITH_VRFS_WITHOUT_SVIS
 vxlan_interface:
   vxlan1:
     description: RD-RT-ADMIN-SUBFIELD-L3LEAF3_VTEP

@@ -529,19 +529,24 @@ vlan_internal_order:
 vlans:
 - id: 10
   name: TENANT_A_L2_SERVICE
-  tenant: TENANT_A
+  metadata:
+    tenant: TENANT_A
 - id: 20
   name: TENANT_A_L2_SERVICE
-  tenant: TENANT_A
+  metadata:
+    tenant: TENANT_A
 - id: 2020
   name: TENANT_B_INSIDE_FW
-  tenant: TENANT_B
+  metadata:
+    tenant: TENANT_B
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TENANT_B_INTRA
   ip_routing: true
-  tenant: TENANT_B
+  metadata:
+    tenant: TENANT_B
 - name: TENANT_B_WAN
   ip_routing: true
-  tenant: TENANT_B
+  metadata:
+    tenant: TENANT_B

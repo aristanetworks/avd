@@ -235,10 +235,14 @@ class RouterBgpMixin(Protocol):
                         # VRF default is added directly under router_bgp
                         bgp_vrf = cast("EosCliConfigGen.RouterBgp", bgp_vrf)
                         bgp_peer_config = cast("EosCliConfigGen.RouterBgp.NeighborsItem", bgp_peer_config)
+                        if vrf._get_defined_attr("validate_bgp_peers") is False:
+                            bgp_peer_config.metadata.validate_state = False
                         bgp_vrf.neighbors.append(bgp_peer_config)
                     else:
                         bgp_vrf = cast("EosCliConfigGen.RouterBgp.VrfsItem", bgp_vrf)
                         bgp_peer_config = cast("EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem", bgp_peer_config)
+                        if vrf.validate_bgp_peers is True:
+                            bgp_peer_config.metadata.validate_state = True
                         bgp_vrf.neighbors.append(bgp_peer_config)
 
                 if vrf.ospf.enabled and vrf.redistribute_ospf and (not vrf.ospf.nodes or self.shared_utils.hostname in vrf.ospf.nodes):
@@ -323,7 +327,7 @@ class RouterBgpMixin(Protocol):
         interface_name = f"Vlan{vlan_id}"
 
         if self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549:
-            bgp_vrf.neighbor_interfaces.append_new(
+            neighbor_interface = bgp_vrf.neighbor_interfaces.append_new(
                 name=interface_name,
                 peer_group=self.shared_utils.mlag_vrfs_peer_group_name,
                 remote_as=self.shared_utils.formatted_bgp_as,
@@ -335,6 +339,11 @@ class RouterBgpMixin(Protocol):
                 )
                 or None,
             )
+            # it means we are NOT in VRF default as this is handled by the caller
+            if isinstance(bgp_vrf, EosCliConfigGen.RouterBgp.VrfsItem) and vrf.validate_bgp_peers is True:
+                neighbor_interface.metadata.validate_state = True
+            elif isinstance(bgp_vrf, EosCliConfigGen.RouterBgp) and vrf._get_defined_attr("validate_bgp_peers") is False:
+                neighbor_interface.metadata.validate_state = False
         else:
             if not vrf.mlag_ibgp_peering_ipv4_pool:
                 ip_address = self.shared_utils.mlag_peer_ibgp_ip
@@ -343,7 +352,7 @@ class RouterBgpMixin(Protocol):
             else:
                 ip_address = self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(vrf.mlag_ibgp_peering_ipv4_pool)
 
-            bgp_vrf.neighbors.append_new(
+            neighbor = bgp_vrf.neighbors.append_new(
                 ip_address=ip_address,
                 peer_group=self.shared_utils.mlag_vrfs_peer_group_name,
                 description=AvdStringFormatter().format(
@@ -354,6 +363,11 @@ class RouterBgpMixin(Protocol):
                 )
                 or None,
             )
+            # it means we are NOT in VRF default as this is handled by the caller
+            if isinstance(bgp_vrf, EosCliConfigGen.RouterBgp.VrfsItem) and vrf.validate_bgp_peers is True:
+                neighbor.metadata.validate_state = True
+            elif isinstance(bgp_vrf, EosCliConfigGen.RouterBgp) and vrf._get_defined_attr("validate_bgp_peers") is False:
+                neighbor.metadata.validate_state = False
             # In case of only underlay_rfc5549 but not overlay_mlag_rfc5549, we need to remove the ipv6 next-hop per neighbor/vrf
             # This is only needed when we use the same MLAG peer-group for both underlay and overlay.
             if self.inputs.underlay_rfc5549 and not self.shared_utils.use_separate_peer_group_for_mlag_vrfs:

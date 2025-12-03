@@ -131,7 +131,7 @@
 ### Password Policies
 
 | Policy Name | Digits | Length | Lowercase letters | Special characters | Uppercase letters | Repetitive characters | Sequential characters |
-|-------------|--------|--------|-------------------|--------------------|-------------------|-----------------------|----------------------|
+| ----------- | ------ | ------ | ----------------- | ------------------ | ----------------- | --------------------- | --------------------- |
 {%         for policy in management_security.password.policies | arista.avd.natural_sort('name') %}
 {%             set min_digits = policy.minimum.digits if policy.minimum.digits is arista.avd.defined else 'N/A' %}
 {%             set min_length = policy.minimum.length if policy.minimum.length is arista.avd.defined else 'N/A' %}

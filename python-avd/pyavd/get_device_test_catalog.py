@@ -94,7 +94,7 @@ def get_device_test_catalog(
     # Add custom test specs, avoiding duplicates
     filtered_test_specs.extend([test for test in settings.custom_test_specs if test not in filtered_test_specs])
 
-    catalog = create_catalog(hostname, structured_config, fabric_data, settings.input_factory_settings, filtered_test_specs)
+    catalog = create_catalog(hostname, structured_config, fabric_data, settings, filtered_test_specs)
 
     if settings.output_dir:
         dump_anta_catalog(hostname, catalog, settings.output_dir)

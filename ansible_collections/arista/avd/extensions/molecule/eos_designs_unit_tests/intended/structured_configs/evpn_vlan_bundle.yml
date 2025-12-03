@@ -306,79 +306,103 @@ vlan_internal_order:
 vlans:
 - id: 50
   name: ipmi
-  tenant: FABRIC
+  metadata:
+    tenant: FABRIC
 - id: 60
   name: ipmi
-  tenant: FABRIC
+  metadata:
+    tenant: FABRIC
 - id: 70
   name: vmotion
-  tenant: FABRIC
+  metadata:
+    tenant: FABRIC
 - id: 80
   name: vstorage
-  tenant: FABRIC
+  metadata:
+    tenant: FABRIC
 - id: 1016
   name: SVI_9
-  tenant: research
+  metadata:
+    tenant: research
 - id: 1017
   name: SVI_10
-  tenant: research
+  metadata:
+    tenant: research
 - id: 110
   name: research1
-  tenant: research
+  metadata:
+    tenant: research
 - id: 120
   name: research2
-  tenant: research
+  metadata:
+    tenant: research
 - id: 1011
   name: SVI_4
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 1012
   name: SVI_5
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 1013
   name: SVI_6
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 1014
   name: SVI_7
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 1015
   name: SVI_8
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 1008
   name: SVI_1
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 1009
   name: SVI_2
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 1010
   name: SVI_3
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 90
   name: vlan90
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 100
   name: vlan100
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - id: 10
   name: storage_prod
-  tenant: StorageProd
+  metadata:
+    tenant: StorageProd
 - id: 20
   name: storage_prod
-  tenant: StorageProd
+  metadata:
+    tenant: StorageProd
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: research1
   ip_routing: true
-  tenant: research
+  metadata:
+    tenant: research
 - name: SIT2
   ip_routing: true
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - name: SIT3
   ip_routing: true
-  tenant: SIT
+  metadata:
+    tenant: SIT
 - name: SIT_VRF
   ip_routing: true
-  tenant: SIT
+  metadata:
+    tenant: SIT
 vxlan_interface:
   vxlan1:
     description: evpn_vlan_bundle_VTEP
