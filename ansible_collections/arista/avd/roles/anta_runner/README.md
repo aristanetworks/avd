@@ -214,9 +214,6 @@ These settings allow modification of the default behavior as needed. The values 
 # Enable AVD catalogs generation. Can be disabled if only user-defined catalogs are used.
 avd_catalogs_enabled: true
 
-# Generate tests for BGP peers in VRFs.
-avd_catalogs_allow_bgp_vrfs: false
-
 # Generate extra fabric-wide validation tests (e.g., reachability and routing tests).
 # This can generate many additional test inputs in the catalogs, and validation may take longer on large fabrics.
 avd_catalogs_extra_fabric_validation: false
@@ -373,7 +370,7 @@ The table below shows which parts of the AVD structured configuration are used t
 | [**VerifyAgentLogs**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyAgentLogs){:target="_blank"} | Verifies that there are no agent crash reports on the device. | *None* |
 | [**VerifyAPIHttpsSSL**](https://anta.arista.com/stable/api/tests/security/#anta.tests.security.VerifyAPIHttpsSSL){:target="_blank"} | Verifies the SSL profile for the eAPI HTTPS server is valid and attached. | `management_api_http.https_ssl_profile` |
 | [**VerifyAVTSpecificPath**](https://anta.arista.com/stable/api/tests/avt/#anta.tests.avt.VerifyAVTSpecificPath){:target="_blank"} | Verifies the status of specific AVT paths in the routing table. | <ul><li>`router_adaptive_virtual_topology.vrfs`</li><li>`router_path_selection.path_groups`</li><li>`static_peers`</li></ul> |
-| [**VerifyBGPPeerSession**](https://anta.arista.com/stable/api/tests/routing.bgp/#anta.tests.routing.bgp.VerifyBGPPeerSession){:target="_blank"} | Verifies that BGP peer sessions are in an 'established' state. | `router_bgp.neighbors` |
+| [**VerifyBGPPeerSession**](https://anta.arista.com/stable/api/tests/routing.bgp/#anta.tests.routing.bgp.VerifyBGPPeerSession){:target="_blank"} | Verifies that BGP peer sessions are in an 'established' state. | **Sources:**<ul><li>`router_bgp.neighbors`</li><li>`router_bgp.neighbor_interfaces`</li><li>`router_bgp.vrfs[].neighbors`</li><li>`router_bgp.vrfs[].neighbor_interfaces`</li></ul>**Filters:**<ul><li>`router_bgp.neighbors[].shutdown == False`</li><li>`peer_group` → `router_bgp.peer_groups[name=peer_group].shutdown == False`</li><li>`metadata.peer` → `is_deployed == True`</li><li>`metadata.validate_state == True`</li></ul> |
 | [**VerifyCoredump**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyCoredump){:target="_blank"} | Verifies that there are no coredump files in `/var/core`. | *None* |
 | [**VerifyEnvironmentCooling**](https://anta.arista.com/stable/api/tests/hardware/#anta.tests.hardware.VerifyEnvironmentCooling){:target="_blank"} | Verifies the status of all fans and the overall environment cooling. | *None*,  default states=["ok"] |
 | [**VerifyEnvironmentPower**](https://anta.arista.com/stable/api/tests/hardware/#anta.tests.hardware.VerifyEnvironmentPower){:target="_blank"} | Verifies the status of all power supply units (PSUs). | *None*,  default states=["ok"] |
