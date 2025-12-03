@@ -15,14 +15,11 @@ class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory[VerifyBGPPeerSession
     """
     Input factory class for the `VerifyBGPPeerSession` test.
 
-    This factory generates test inputs for BGP peer session verification.
+    Generates inputs for BGP peer session verification. For all VRFs, collects BGP neighbors and
+    neighbor interfaces (RFC5549) that are neither directly shutdown nor part of a shutdown peer group.
 
-    It collects BGP neighbors and neighbor interfaces (RFC5549) that are not directly
-    shutdown or not in shutdown peer groups from the default VRF. If `allow_bgp_vrfs`
-    is enabled in the input factory settings, it will also include BGP neighbors in VRFs.
-
-    When a fabric `peer` is provided in the neighbor structured config, the factory verifies
-    that the peer is available (`is_deployed: true`) before including it in the test inputs.
+    It also considers the `metadata.validate_state` knob and when `metadata.peer` is provided,
+    ensures that the peer is available (`is_deployed: true`) before including it in the test inputs.
     """
 
     def create(self) -> list[VerifyBGPPeerSession.Input] | None:
