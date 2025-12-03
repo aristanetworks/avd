@@ -6200,7 +6200,6 @@ keys:
               type: str
               convert_types:
               - int
-              - int
             servers:
               type: list
               required: true
@@ -6216,7 +6215,6 @@ keys:
                     description: Priority value (lower is first).
                     type: int
                     convert_types:
-                    - str
                     - str
                     min: 0
                     max: 4
@@ -6306,6 +6304,8 @@ keys:
       removed: true
       remove_in_version: 6.0.0
       new_key: ip_name_server
+    documentation_options:
+      table: ip-name-server
   ip_nat:
     type: dict
     keys:

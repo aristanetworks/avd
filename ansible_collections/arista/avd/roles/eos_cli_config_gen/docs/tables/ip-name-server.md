@@ -13,6 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "ip_name_server.vrfs.[].servers") | List, items: Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "ip_name_server.vrfs.[].servers.[].ip_address") | String | Required, Unique |  |  | IPv4 or IPv6 address for DNS server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "ip_name_server.vrfs.[].servers.[].priority") | Integer |  |  | Min: 0<br>Max: 4 | Priority value (lower is first). |
+    | [<samp>ip_name_servers</samp>](## "ip_name_servers") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ip_name_server</samp> instead.</span> |
 
 === "YAML"
 
