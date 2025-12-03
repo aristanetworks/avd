@@ -54,9 +54,6 @@ cv_settings:
     smashexcludes: this_is_smash_excluded
 # Test for export sflow setting vrf to cloudvision
 sflow_settings:
-  destinations:
-    - destination: 10.10.10.1
-      vrf: use_default_mgmt_method_vrf
   export_to_cloudvision:
     enabled: true
     vrf: use_default_mgmt_method_vrf

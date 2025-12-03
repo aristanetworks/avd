@@ -19,11 +19,11 @@
     | [<samp>&nbsp;&nbsp;polling_interval</samp>](## "sflow_settings.polling_interval") | Integer |  |  |  | Interval in seconds for sending counter data to the sFlow collector. |
     | [<samp>&nbsp;&nbsp;sample</samp>](## "sflow_settings.sample") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rate</samp>](## "sflow_settings.sample.rate") | Integer |  |  | Min: 1<br>Max: 4294967295 | Packet sampling rate that defines the average number of ingress packets that pass through an interface for every packet that is sampled.<br>A rate of 16384 corresponds to an average sample of one per 16384 packets. |
-    | [<samp>&nbsp;&nbsp;destinations</samp>](## "sflow_settings.destinations") | List, items: Dictionary | Required |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;destinations</samp>](## "sflow_settings.destinations") | List, items: Dictionary |  |  | Min Length: 1 | sFlow will be configured if either `destinations` or `export_to_cloudvision.enabled` is set. One of them is required. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;destination</samp>](## "sflow_settings.destinations.[].destination") | String | Required |  |  | sFlow destination name or IP address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "sflow_settings.destinations.[].port") | Integer |  |  | Min: 1<br>Max: 65535 | UDP Port number. The default port number for sFlow is 6343. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "sflow_settings.destinations.[].vrf") | String |  | `use_default_mgmt_method_vrf` |  | VRF Name.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as sFlow source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. Remember to set the `sflow_settings.vrfs[].source_interface` if needed. |
-    | [<samp>&nbsp;&nbsp;export_to_cloudvision</samp>](## "sflow_settings.export_to_cloudvision") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;export_to_cloudvision</samp>](## "sflow_settings.export_to_cloudvision") | Dictionary |  |  |  | sFlow will be configured if either `destinations` or `export_to_cloudvision.enabled` is set. One of them is required. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "sflow_settings.export_to_cloudvision.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "sflow_settings.export_to_cloudvision.vrf") | String |  | `use_default_mgmt_method_vrf` |  | VRF Name.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as sFlow source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. Remember to set the `sflow_settings.vrfs[].source_interface` if needed. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "sflow_settings.vrfs") | List, items: Dictionary |  |  |  |  |
@@ -71,7 +71,9 @@
         # Packet sampling rate that defines the average number of ingress packets that pass through an interface for every packet that is sampled.
         # A rate of 16384 corresponds to an average sample of one per 16384 packets.
         rate: <int; 1-4294967295>
-      destinations: # >=1 items; required
+
+      # sFlow will be configured if either `destinations` or `export_to_cloudvision.enabled` is set. One of them is required.
+      destinations: # >=1 items
 
           # sFlow destination name or IP address.
         - destination: <str; required>
@@ -88,6 +90,8 @@
           # - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
           # - Any other string will be used directly as the VRF name. Remember to set the `sflow_settings.vrfs[].source_interface` if needed.
           vrf: <str; default="use_default_mgmt_method_vrf">
+
+      # sFlow will be configured if either `destinations` or `export_to_cloudvision.enabled` is set. One of them is required.
       export_to_cloudvision:
         enabled: <bool>
 

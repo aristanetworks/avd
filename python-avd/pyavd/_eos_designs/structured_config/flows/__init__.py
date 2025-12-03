@@ -38,9 +38,11 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
             return
 
         sflow_settings = self.inputs.sflow_settings
+        destinations = sflow_settings.destinations
+        export_to_cloudvision = sflow_settings.export_to_cloudvision
 
-        if not (destinations := sflow_settings.destinations):
-            msg = "`sflow_settings.destinations` is required to configure `sflow`."
+        if not destinations and not export_to_cloudvision.enabled:
+            msg = "`sflow_settings.destinations` or `sflow_settings.export_to_cloudvision.enabled` is required to configure `sflow`."
             raise AristaAvdInvalidInputsError(msg)
 
         sflow_settings_vrfs = sflow_settings.vrfs
@@ -49,26 +51,27 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
         # and at least one destination.
         self.structured_config.sflow._update(run=True, polling_interval=sflow_settings.polling_interval, sample=sflow_settings.sample.rate)
 
-        for destination in natural_sort(destinations, "destination"):
-            destination: EosDesigns.SflowSettings.DestinationsItem
-            sflow_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
-                vrf_input=destination.vrf,
-                vrfs=sflow_settings_vrfs,
-                set_source_interfaces=True,
-                context=f"sflow_settings.destinations[destination={destination.destination}].vrf",
-            )
+        if destinations:
+            for destination in natural_sort(destinations, "destination"):
+                destination: EosDesigns.SflowSettings.DestinationsItem
+                sflow_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
+                    vrf_input=destination.vrf,
+                    vrfs=sflow_settings_vrfs,
+                    set_source_interfaces=True,
+                    context=f"sflow_settings.destinations[destination={destination.destination}].vrf",
+                )
 
-            if sflow_vrf == "default":
-                # Add destination without VRF field
-                self.structured_config.sflow.destinations.append_new(destination=destination.destination, port=destination.port)
-                self.structured_config.sflow.source_interface = source_interface
+                if sflow_vrf == "default":
+                    # Add destination without VRF field
+                    self.structured_config.sflow.destinations.append_new(destination=destination.destination, port=destination.port)
+                    self.structured_config.sflow.source_interface = source_interface
 
-            else:
-                # Add destination with VRF field.
-                vrf_item = self.structured_config.sflow.vrfs.obtain(sflow_vrf)
-                vrf_item.destinations.append_new(destination=destination.destination, port=destination.port)
-                vrf_item.source_interface = source_interface
-                self.structured_config.sflow.vrfs.append(vrf_item)
+                else:
+                    # Add destination with VRF field.
+                    vrf_item = self.structured_config.sflow.vrfs.obtain(sflow_vrf)
+                    vrf_item.destinations.append_new(destination=destination.destination, port=destination.port)
+                    vrf_item.source_interface = source_interface
+                    self.structured_config.sflow.vrfs.append(vrf_item)
 
         if sflow_settings.export_to_cloudvision.enabled:
             sflow_vrf = self.shared_utils.get_vrf(sflow_settings.export_to_cloudvision.vrf, context="sflow_settings.export_to_cloudvision.vrf")

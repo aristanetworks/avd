@@ -29032,9 +29032,19 @@ class EosDesigns(EosDesignsRootModel):
         sample: Sample
         """Subclass of AvdModel."""
         destinations: Destinations
-        """Subclass of AvdList with `DestinationsItem` items."""
+        """
+        sFlow will be configured if either `destinations` or `export_to_cloudvision.enabled` is set. One of
+        them is required.
+
+        Subclass of AvdList with `DestinationsItem` items.
+        """
         export_to_cloudvision: ExportToCloudvision
-        """Subclass of AvdModel."""
+        """
+        sFlow will be configured if either `destinations` or `export_to_cloudvision.enabled` is set. One of
+        them is required.
+
+        Subclass of AvdModel.
+        """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
 
@@ -29058,8 +29068,16 @@ class EosDesigns(EosDesignsRootModel):
                 Args:
                     polling_interval: Interval in seconds for sending counter data to the sFlow collector.
                     sample: Subclass of AvdModel.
-                    destinations: Subclass of AvdList with `DestinationsItem` items.
-                    export_to_cloudvision: Subclass of AvdModel.
+                    destinations:
+                       sFlow will be configured if either `destinations` or `export_to_cloudvision.enabled` is set. One of
+                       them is required.
+
+                       Subclass of AvdList with `DestinationsItem` items.
+                    export_to_cloudvision:
+                       sFlow will be configured if either `destinations` or `export_to_cloudvision.enabled` is set. One of
+                       them is required.
+
+                       Subclass of AvdModel.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
                 """

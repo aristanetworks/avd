@@ -4649,8 +4649,9 @@ keys:
               A rate of 16384 corresponds to an average sample of one per 16384 packets.'
       destinations:
         type: list
-        required: true
         min_length: 1
+        description: sFlow will be configured if either `destinations` or `export_to_cloudvision.enabled`
+          is set. One of them is required.
         items:
           type: dict
           keys:
@@ -4685,6 +4686,8 @@ keys:
               default: use_default_mgmt_method_vrf
       export_to_cloudvision:
         type: dict
+        description: sFlow will be configured if either `destinations` or `export_to_cloudvision.enabled`
+          is set. One of them is required.
         keys:
           enabled:
             type: bool
