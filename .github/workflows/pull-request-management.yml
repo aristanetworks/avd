@@ -186,7 +186,11 @@ jobs:
     name: Build pyavd-utils wheel on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: [file-changes]
-    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true' || github.event_name == 'merge_group'
+    if: |-
+      needs.file-changes.outputs.rust_src_or_ci_changed == 'true' ||
+      needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.requirements == 'true' ||
+      github.event_name == 'merge_group'
     strategy:
       matrix:
         os:
