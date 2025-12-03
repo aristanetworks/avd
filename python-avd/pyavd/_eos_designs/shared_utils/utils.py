@@ -13,7 +13,7 @@ from pyavd._utils import template_var
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable, Sequence
+    from collections.abc import Iterable, MutableMapping, Sequence
     from typing import TypeVar
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
@@ -75,7 +75,7 @@ class UtilsMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
         return self.peer_facts[peer_name]
 
-    def template_var(self: SharedUtilsProtocol, template_file: str, template_vars: dict) -> str:
+    def template_var(self: SharedUtilsProtocol, template_file: str, template_vars: MutableMapping) -> str:
         """Run the simplified templater using the passed Ansible "templar" engine."""
         try:
             return template_var(template_file, template_vars, self.templar)
