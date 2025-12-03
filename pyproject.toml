@@ -10,10 +10,6 @@ pytest = [
 coverage = [
     "coverage[toml]==7.12.0",
 ]
-# group used to build cross platform pyavd-utils wheels
-build_wheel = [
-    "cibuildwheel==3.3.0",
-]
 molecule = [
     "molecule>=6.0",
     "molecule-plugins[docker]>=23.4.0",
@@ -115,7 +111,7 @@ max-returns = 10
 max-statements = 148
 
 [tool.ruff.lint.isort]
-known-first-party = ["pyavd_utils", "pyavd", "schema_tools"]
+known-first-party = ["pyavd", "schema_tools"]
 
 [tool.ruff.format]
 docstring-code-format = true
@@ -144,19 +140,16 @@ pythonVersion = "3.10"
 # This is to direct pyright where to look for schema_tools
 extraPaths = [
   "python-avd",
-  "pyavd-utils"
 ]
 reportMissingImports = "error"
 
 [tool.pytest.ini_options]
 testpaths = [
   "python-avd/tests",
-  "pyavd-utils/tests",
 ]
 pythonpath = [
   ".", # This is needed to import from ansible_collections
   "python-avd",
-  "pyavd-utils"
 ]
 markers = [
     "molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios.",
@@ -170,7 +163,6 @@ parallel = true
 source = [
   "python-avd/pyavd",
   "python-avd/schema_tools",
-  "pyavd-utils/pyavd_utils",
 ]
 omit = [
   "python-avd/pyavd/_cv/api/*"
@@ -269,44 +261,6 @@ serialize = [
 
 [[tool.bumpversion.files]]
 filename = "python-avd/pyavd/__init__.py"
-search = '__version__ = "{current_version}"'
-replace = '__version__ = "{new_version}"'
-parse = """(?x)
-    (?P<major>0|[1-9]\\d*)\\.
-    (?P<minor>0|[1-9]\\d*)\\.
-    (?P<patch>0|[1-9]\\d*)
-    (?:
-        \\.                           # dot separator for pre-release section
-        (?P<pre_l>[a-zA-Z-]+)         # pre-release label
-        (?P<pre_n>0|[1-9]\\d*)        # pre-release version number
-    )?                                # pre-release section is optional
-"""
-serialize = [
-    "{major}.{minor}.{patch}.{pre_l}{pre_n}",
-    "{major}.{minor}.{patch}",
-]
-
-[[tool.bumpversion.files]]
-filename = "python-avd/pyproject.toml"
-search = '"pyavd-utils=={current_version}"'
-replace = '"pyavd-utils=={new_version}"'
-parse = """(?x)
-    (?P<major>0|[1-9]\\d*)\\.
-    (?P<minor>0|[1-9]\\d*)\\.
-    (?P<patch>0|[1-9]\\d*)
-    (?:
-        \\.                           # dot separator for pre-release section
-        (?P<pre_l>[a-zA-Z-]+)         # pre-release label
-        (?P<pre_n>0|[1-9]\\d*)        # pre-release version number
-    )?                                # pre-release section is optional
-"""
-serialize = [
-    "{major}.{minor}.{patch}.{pre_l}{pre_n}",
-    "{major}.{minor}.{patch}",
-]
-
-[[tool.bumpversion.files]]
-filename = "pyavd-utils/pyavd_utils/__init__.py"
 search = '__version__ = "{current_version}"'
 replace = '__version__ = "{new_version}"'
 parse = """(?x)
