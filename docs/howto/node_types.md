@@ -6,7 +6,7 @@
 
 ## What is a Node Type?
 
-A **Node Type** is a data model template that defines the behavior and configuration of a group of devices with a similar function. Instead of configuring every switch from scratch, you assign a `node_type` to it, and AVD applies a pre-defined set of design rules.
+A **Node Type** is a critical component of the AVD input data model that defines the behavior and configuration of a group of devices with a similar function. Instead of configuring every switch from scratch, you assign a `node_type` to it, and AVD applies a pre-defined set of design rules.
 
 Think of node types as blueprints for your network. You have a blueprint for your switches (`spine`). Every switch built from the same blueprint will have the same fundamental design, ensuring consistency.
 
