@@ -13,9 +13,6 @@ flow tracking hardware
    !
 {%         endif %}
    tracker {{ tracker.name }}
-{%         if tracker.table_size is arista.avd.defined %}
-      flow table size {{ tracker.table_size }} entries
-{%         endif %}
 {%         if tracker.record_export.on_inactive_timeout is arista.avd.defined %}
       record export on inactive timeout {{ tracker.record_export.on_inactive_timeout }}
 {%         endif %}
