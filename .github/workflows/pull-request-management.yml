@@ -170,7 +170,7 @@ jobs:
           path: /tmp/pyavd/
       - name: "Install Python requirements"
         run: |
-          pip install "${{ needs.build_pyavd.outputs.wheel_file }}" --group dev --upgrade --find-links /tmp/pyavd
+          pip install "${{ needs.build_pyavd.outputs.wheel_file }}" --group dev --upgrade
 
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
