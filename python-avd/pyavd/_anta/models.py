@@ -61,13 +61,6 @@ class DeviceTestContext:
         neighbors = [
             bgp_neighbor for neighbor in self.structured_config.router_bgp.neighbors if (bgp_neighbor := self._process_bgp_neighbor(neighbor, "default"))
         ]
-
-        # Skip VRF processing if disabled
-        if not self.settings.input_factory_settings.allow_bgp_vrfs:
-            LOGGER.debug("<%s> Skipped BGP VRF peers - VRF processing disabled", self.hostname)
-            return neighbors
-
-        # Add VRF neighbors to the list
         neighbors.extend(
             bgp_neighbor
             for vrf in self.structured_config.router_bgp.vrfs
@@ -85,13 +78,6 @@ class DeviceTestContext:
             for neighbor_intf in self.structured_config.router_bgp.neighbor_interfaces
             if (bgp_neighbor_interface := self._process_bgp_neighbor_interface(neighbor_intf, "default"))
         ]
-
-        # Skip VRF processing if disabled
-        if not self.settings.input_factory_settings.allow_bgp_vrfs:
-            LOGGER.debug("<%s> Skipped BGP VRF RFC5549 peers - VRF processing disabled", self.hostname)
-            return neighbor_interfaces
-
-        # Add VRF neighbor interfaces to the list
         neighbor_interfaces.extend(
             bgp_neighbor_interface
             for vrf in self.structured_config.router_bgp.vrfs
@@ -116,6 +102,11 @@ class DeviceTestContext:
             )
         else:
             identifier = f"{neighbor_interface.name} (VRF {vrf})"
+
+        # Skip neighbor interfaces if `metadata.validate_state` is disabled
+        if not neighbor_interface.metadata.validate_state:
+            LOGGER.debug("<%s> Skipped BGP peer %s - validate_state disabled", self.hostname, identifier)
+            return None
 
         # Skip neighbor interfaces in shutdown peer groups
         if (
@@ -150,6 +141,11 @@ class DeviceTestContext:
             identifier = f"{neighbor.ip_address}" if neighbor.metadata.peer is None else f"{neighbor.metadata.peer} ({neighbor.ip_address})"
         else:
             identifier = f"{neighbor.ip_address} (VRF {vrf})"
+
+        # Skip neighbors if `metadata.validate_state` is disabled
+        if not neighbor.metadata.validate_state:
+            LOGGER.debug("<%s> Skipped BGP peer %s - validate_state disabled", self.hostname, identifier)
+            return None
 
         # Skip neighbors that are shutdown
         if neighbor.shutdown is True:

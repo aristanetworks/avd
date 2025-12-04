@@ -49,10 +49,6 @@ options:
         type: str
         default: "yml"
         choices: ["yml", "yaml", "json"]
-      allow_bgp_vrfs:
-        description: If `true`, generate tests for BGP peers in VRFs.
-        type: bool
-        default: false
       extra_fabric_validation:
         description: If `true`, generate extra fabric-wide validation tests (e.g., reachability and routing tests).
         type: bool
@@ -163,7 +159,6 @@ EXAMPLES = r"""
           output_dir: "{{ inventory_dir }}/anta/avd_catalogs"
           structured_config_dir: "{{ inventory_dir }}/intended/structured_configs"
           # structured_config_suffix: ".yml"
-          allow_bgp_vrfs: true
           # filters:
           #   - device_list: "{{ groups['DC1'] }}"
           #     skip_tests:
