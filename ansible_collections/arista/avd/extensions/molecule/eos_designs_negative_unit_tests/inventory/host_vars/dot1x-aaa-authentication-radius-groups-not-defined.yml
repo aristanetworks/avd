@@ -8,8 +8,9 @@ l2leaf:
 
 dot1x_settings:
   enabled: true
-  radius_groups: [agni-server-group, backup-agni-server-group]
+  authentication:
+    radius_groups: [agni-server-group, backup-agni-server-group]
 
 expected_error_message: >-
-  The RADIUS server groups 'agni-server-group, backup-agni-server-group'
+  The RADIUS authentication server groups 'agni-server-group, backup-agni-server-group'
   are not defined on at least one server under 'aaa_settings.radius.servers'.

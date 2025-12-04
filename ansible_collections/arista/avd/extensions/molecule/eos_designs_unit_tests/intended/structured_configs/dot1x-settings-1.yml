@@ -3,7 +3,8 @@ aaa_accounting:
     default:
       type: start-stop
       methods:
-      - method: group
+      - multicast: false
+        method: group
         group: agni-server-group
 aaa_authentication:
   dot1x:

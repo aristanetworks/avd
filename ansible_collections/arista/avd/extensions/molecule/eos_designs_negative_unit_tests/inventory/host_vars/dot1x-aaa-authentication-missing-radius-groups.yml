@@ -10,4 +10,4 @@ dot1x_settings:
   enabled: true
 
 expected_error_message: >-
-  'dot1x_settings.radius_groups' is required when 802.1X is enabled globally.
+  'dot1x_settings.authentication.radius_groups' is required when 802.1X is enabled globally.

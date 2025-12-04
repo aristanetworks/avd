@@ -1,10 +1,3 @@
-aaa_accounting:
-  dot1x:
-    default:
-      type: start-stop
-      methods:
-      - method: group
-        group: agni-server-group
 aaa_authentication:
   dot1x:
     default: group agni-server-group
@@ -19,9 +12,9 @@ aaa_server_groups:
 config_end: true
 dot1x:
   system_auth_control: true
-  protocol_lldp_bypass: true
-  protocol_bpdu_bypass: true
-  dynamic_authorization: true
+  protocol_lldp_bypass: false
+  protocol_bpdu_bypass: false
+  dynamic_authorization: false
   radius_av_pair_username_format:
     delimiter: none
     mac_string_case: lowercase

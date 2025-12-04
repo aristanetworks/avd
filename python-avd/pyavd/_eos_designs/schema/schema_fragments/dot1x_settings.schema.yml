@@ -18,16 +18,56 @@ keys:
         description: |-
           Globally enable 802.1X port authentication on the switch.
           Must be set for 802.1X to be active on any interface.
-          When set, `dot1x_settings.radius_groups` is required.
-      radius_groups:
-        type: list
-        description: |-
-          List of RADIUS server groups to be used for 802.1X authentication and accounting.
-          Automatically generates `aaa_settings.authentication.dot1x.default` and `aaa_settings.accounting.dot1x.default`, overriding any manual settings.
-          The order of the list defines the server group priority. Each group name must also be defined on at least one server under `aaa_settings.radius.servers`.
-        items:
-          type: str
-          description: RADIUS server group name.
+          When set, `dot1x_settings.authentication.radius_groups` is required.
+      authentication:
+        type: dict
+        keys:
+          radius_groups:
+            type: list
+            min_length: 1
+            description: |-
+              Required list of RADIUS server groups to be used for 802.1X authentication when globally enabled.
+              The order of the list defines the server group priority.
+              Each group name must also be defined on at least one server under `aaa_settings.radius.servers`.
+            items:
+              type: str
+              description: RADIUS server group name.
+      accounting:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            default: true
+            description: |-
+              Enable 802.1X accounting. When set, at least one accounting method must be provided via
+              the `dot1x_settings.accounting.radius_groups` or `dot1x_settings.accounting.syslog` key.
+          mode:
+            type: str
+            valid_values: [start-stop, stop-only]
+            default: start-stop
+            description: |-
+              Determines whether to send accounting records when a session is established and
+              when it ends (`start-stop`), or only when the session ends (`stop-only`).
+          radius_groups:
+            type: list
+            min_length: 1
+            description: |-
+              List of RADIUS server groups to be used for 802.1X accounting.
+              The order of the list defines the server group priority.
+              Each group name must also be defined on at least one server under `aaa_settings.radius.servers`.
+            items:
+              type: str
+              description: RADIUS server group name.
+          multicast:
+            type: bool
+            default: false
+            description: Send Accounting-Request packets to all servers in all specified RADIUS groups at the same time.
+          syslog:
+            type: bool
+            default: false
+            description: |-
+              Log all accounting messages to Syslog.
+              Acts as a fallback if RADIUS groups are configured, or as the primary method if no groups are defined.
       bypass_bpdu:
         type: bool
         default: true
@@ -37,13 +77,21 @@ keys:
         default: true
         $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_lldp_bypass
       dynamic_authorization:
-        # Using a dict to eventually support a non-default port (Cisco ISE uses 1700 by default)
         type: dict
         keys:
           enabled:
             type: bool
             default: true
             $ref: eos_cli_config_gen#/keys/dot1x/keys/dynamic_authorization
+          additional_groups:
+            type: list
+            description: |-
+              List of additional RADIUS server groups for dynamic authorization purposes only.
+              The order of the list defines the server group priority.
+              Each group name must also be defined on at least one server under `aaa_settings.radius.servers`.
+            items:
+              type: str
+              description: RADIUS server group name.
       mac_based_authentication:
         type: dict
         keys:

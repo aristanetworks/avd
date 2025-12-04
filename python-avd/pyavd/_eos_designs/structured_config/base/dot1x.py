@@ -3,12 +3,16 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._errors import AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
     from . import AvdStructuredConfigBaseProtocol
 
 
@@ -22,17 +26,92 @@ class Dot1xMixin(Protocol):
     @structured_config_contributor
     def dot1x(self: AvdStructuredConfigBaseProtocol) -> None:
         """Configure dot1x settings based on the `dot1x_settings` data model."""
-        if not self.inputs.dot1x_settings.enabled:
+        dot1x_settings = self.inputs.dot1x_settings
+        if not dot1x_settings.enabled:
             return
 
+        self._configure_dot1x_aaa_authentication(dot1x_settings.authentication)
+        self._configure_dot1x_dynamic_authorization(dot1x_settings.dynamic_authorization)
+        self._configure_dot1x_aaa_accounting(dot1x_settings.accounting)
+        self._configure_dot1x_global_settings(dot1x_settings)
+
+    def _configure_dot1x_aaa_authentication(self: AvdStructuredConfigBaseProtocol, authentication_settings: EosDesigns.Dot1xSettings.Authentication) -> None:
+        """Configure 802.1X AAA authentication settings."""
+        if not authentication_settings.radius_groups:
+            msg = "'dot1x_settings.authentication.radius_groups' is required when 802.1X is enabled globally."
+            raise AristaAvdInvalidInputsError(msg)
+
+        self._validate_radius_groups(authentication_settings.radius_groups, "authentication server")
+
+        self.structured_config.aaa_authentication.dot1x.default = " ".join(f"group {group}" for group in authentication_settings.radius_groups)
+
+    def _configure_dot1x_dynamic_authorization(
+        self: AvdStructuredConfigBaseProtocol, dyn_authorization_settings: EosDesigns.Dot1xSettings.DynamicAuthorization
+    ) -> None:
+        """Configure 802.1X AAA dynamic authorization settings."""
+        if not (dyn_authorization_settings.enabled and dyn_authorization_settings.additional_groups):
+            return
+
+        self._validate_radius_groups(dyn_authorization_settings.additional_groups, "additional dynamic authorization server")
+
+        self.structured_config.aaa_authorization.dynamic.dot1x_additional_groups = dyn_authorization_settings.additional_groups._cast_as(
+            new_type=EosCliConfigGen.AaaAuthorization.Dynamic.Dot1xAdditionalGroups
+        )
+
+    def _configure_dot1x_aaa_accounting(self: AvdStructuredConfigBaseProtocol, accounting_settings: EosDesigns.Dot1xSettings.Accounting) -> None:
+        """Configure 802.1X AAA accounting settings."""
+        if not accounting_settings.enabled:
+            return
+
+        if not accounting_settings.radius_groups and not accounting_settings.syslog:
+            msg = "'dot1x_settings.accounting.radius_groups' or 'dot1x_settings.accounting.syslog' is required when 802.1X accounting is enabled."
+            raise AristaAvdInvalidInputsError(msg)
+
+        self._validate_radius_groups(accounting_settings.radius_groups, "accounting server")
+
+        # Set record mode (start-stop vs stop-only).
+        self.structured_config.aaa_accounting.dot1x.default.type = accounting_settings.mode
+
+        # Add RADIUS server groups.
+        for group in accounting_settings.radius_groups:
+            self.structured_config.aaa_accounting.dot1x.default.methods.append_unique(
+                EosCliConfigGen.AaaAccounting.Dot1x.Default.MethodsItem(method="group", group=group, multicast=accounting_settings.multicast)
+            )
+
+        # Add Syslog.
+        if accounting_settings.syslog:
+            self.structured_config.aaa_accounting.dot1x.default.methods.append_new(method="logging")
+
+    def _configure_dot1x_global_settings(self: AvdStructuredConfigBaseProtocol, dot1x_settings: EosDesigns.Dot1xSettings) -> None:
+        """Configure 802.1X global settings."""
         self.structured_config.dot1x = EosCliConfigGen.Dot1x(
             system_auth_control=True,
-            protocol_bpdu_bypass=self.inputs.dot1x_settings.bypass_bpdu,
-            protocol_lldp_bypass=self.inputs.dot1x_settings.bypass_lldp,
-            dynamic_authorization=self.inputs.dot1x_settings.dynamic_authorization.enabled,
+            protocol_bpdu_bypass=dot1x_settings.bypass_bpdu,
+            protocol_lldp_bypass=dot1x_settings.bypass_lldp,
+            dynamic_authorization=dot1x_settings.dynamic_authorization.enabled,
             radius_av_pair=EosCliConfigGen.Dot1x.RadiusAvPair(service_type=True),
             radius_av_pair_username_format=EosCliConfigGen.Dot1x.RadiusAvPairUsernameFormat(
-                delimiter=self.inputs.dot1x_settings.mac_based_authentication.username_delimiter,
-                mac_string_case=self.inputs.dot1x_settings.mac_based_authentication.username_letter_case,
+                delimiter=dot1x_settings.mac_based_authentication.username_delimiter,
+                mac_string_case=dot1x_settings.mac_based_authentication.username_letter_case,
             ),
         )
+
+    def _validate_radius_groups(
+        self: AvdStructuredConfigBaseProtocol,
+        groups: EosDesigns.Dot1xSettings.Authentication.RadiusGroups
+        | EosDesigns.Dot1xSettings.DynamicAuthorization.AdditionalGroups
+        | EosDesigns.Dot1xSettings.Accounting.RadiusGroups,
+        context_msg: str,
+    ) -> None:
+        """Validate that the provided groups are defined in `aaa_settings.radius.servers`."""
+        if undefined_groups := set(groups).difference(self._radius_server_groups):
+            msg = (
+                f"The RADIUS {context_msg} groups '{', '.join(sorted(undefined_groups))}' "
+                "are not defined on at least one server under 'aaa_settings.radius.servers'."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+    @cached_property
+    def _radius_server_groups(self: AvdStructuredConfigBaseProtocol) -> set[str]:
+        """Return a set of all RADIUS server group names defined under `aaa_settings.radius.servers`."""
+        return {group for server in self.inputs.aaa_settings.radius.servers for group in server.groups}

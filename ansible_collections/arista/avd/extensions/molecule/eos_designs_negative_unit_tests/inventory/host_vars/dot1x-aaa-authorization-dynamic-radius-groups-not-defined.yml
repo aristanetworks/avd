@@ -1,10 +1,9 @@
 ---
-# Test for global 802.1X enabled with specific features turned off
 type: l2leaf
 l2leaf:
   defaults:
   nodes:
-    - name: dot1x-settings-3
+    - name: dot1x-aaa-authorization-dynamic-radius-groups-not-defined
       mgmt_ip: 192.168.0.2/24
 
 dot1x_settings:
@@ -13,10 +12,8 @@ dot1x_settings:
     radius_groups: [agni-server-group]
   accounting:
     enabled: false
-  bypass_bpdu: false
-  bypass_lldp: false
   dynamic_authorization:
-    enabled: false
+    additional_groups: [coa-server-group]
 
 aaa_settings:
   radius:
@@ -25,3 +22,7 @@ aaa_settings:
         groups:
           - agni-server-group
         cleartext_key: super-secret-key
+
+expected_error_message: >-
+  The RADIUS additional dynamic authorization server groups 'coa-server-group'
+  are not defined on at least one server under 'aaa_settings.radius.servers'.

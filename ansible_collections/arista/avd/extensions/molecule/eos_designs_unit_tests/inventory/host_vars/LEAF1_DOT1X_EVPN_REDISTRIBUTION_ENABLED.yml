@@ -1,7 +1,10 @@
 ---
 dot1x_settings:
   enabled: true
-  radius_groups: [agni-server-group]
+  authentication:
+    radius_groups: [agni-server-group]
+  accounting:
+    enabled: false
   redistribute_in_evpn: true
 
 aaa_settings:

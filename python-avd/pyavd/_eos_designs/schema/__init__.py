@@ -431,6 +431,116 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Authentication(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "login": {"type": EosCliConfigGen.AaaAuthentication.Login},
+                "enable": {"type": EosCliConfigGen.AaaAuthentication.Enable},
+                "policies": {"type": EosCliConfigGen.AaaAuthentication.Policies},
+            }
+            login: EosCliConfigGen.AaaAuthentication.Login
+            enable: EosCliConfigGen.AaaAuthentication.Enable
+            policies: EosCliConfigGen.AaaAuthentication.Policies
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    login: EosCliConfigGen.AaaAuthentication.Login | UndefinedType = Undefined,
+                    enable: EosCliConfigGen.AaaAuthentication.Enable | UndefinedType = Undefined,
+                    policies: EosCliConfigGen.AaaAuthentication.Policies | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Authentication.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        login: login
+                        enable: enable
+                        policies: policies
+
+                    """
+
+        class Authorization(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "policy": {"type": EosCliConfigGen.AaaAuthorization.Policy},
+                "exec": {"type": EosCliConfigGen.AaaAuthorization.Exec},
+                "config_commands": {"type": bool},
+                "serial_console": {"type": bool},
+                "commands": {"type": EosCliConfigGen.AaaAuthorization.Commands},
+            }
+            policy: EosCliConfigGen.AaaAuthorization.Policy
+            exec: EosCliConfigGen.AaaAuthorization.Exec
+            config_commands: bool | None
+            serial_console: bool | None
+            commands: EosCliConfigGen.AaaAuthorization.Commands
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    policy: EosCliConfigGen.AaaAuthorization.Policy | UndefinedType = Undefined,
+                    exec: EosCliConfigGen.AaaAuthorization.Exec | UndefinedType = Undefined,
+                    config_commands: bool | None | UndefinedType = Undefined,
+                    serial_console: bool | None | UndefinedType = Undefined,
+                    commands: EosCliConfigGen.AaaAuthorization.Commands | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Authorization.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        policy: policy
+                        exec: exec
+                        config_commands: config_commands
+                        serial_console: serial_console
+                        commands: commands
+
+                    """
+
+        class Accounting(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "exec": {"type": EosCliConfigGen.AaaAccounting.Exec},
+                "system": {"type": EosCliConfigGen.AaaAccounting.System},
+                "commands": {"type": EosCliConfigGen.AaaAccounting.Commands},
+            }
+            exec: EosCliConfigGen.AaaAccounting.Exec
+            system: EosCliConfigGen.AaaAccounting.System
+            commands: EosCliConfigGen.AaaAccounting.Commands
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    exec: EosCliConfigGen.AaaAccounting.Exec | UndefinedType = Undefined,
+                    system: EosCliConfigGen.AaaAccounting.System | UndefinedType = Undefined,
+                    commands: EosCliConfigGen.AaaAccounting.Commands | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Accounting.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        exec: exec
+                        system: system
+                        commands: commands
+
+                    """
+
         class RootLogin(AvdModel):
             """Subclass of AvdModel."""
 
@@ -458,9 +568,9 @@ class EosDesigns(EosDesignsRootModel):
             "enable_password": {"type": EnablePassword},
             "tacacs": {"type": Tacacs},
             "radius": {"type": Radius},
-            "authentication": {"type": EosCliConfigGen.AaaAuthentication},
-            "authorization": {"type": EosCliConfigGen.AaaAuthorization},
-            "accounting": {"type": EosCliConfigGen.AaaAccounting},
+            "authentication": {"type": Authentication},
+            "authorization": {"type": Authorization},
+            "accounting": {"type": Accounting},
             "root_login": {"type": RootLogin},
             "local_users": {"type": EosCliConfigGen.LocalUsers},
         }
@@ -470,9 +580,12 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         radius: Radius
         """Subclass of AvdModel."""
-        authentication: EosCliConfigGen.AaaAuthentication
-        authorization: EosCliConfigGen.AaaAuthorization
-        accounting: EosCliConfigGen.AaaAccounting
+        authentication: Authentication
+        """Subclass of AvdModel."""
+        authorization: Authorization
+        """Subclass of AvdModel."""
+        accounting: Accounting
+        """Subclass of AvdModel."""
         root_login: RootLogin
         """Subclass of AvdModel."""
         local_users: EosCliConfigGen.LocalUsers
@@ -485,9 +598,9 @@ class EosDesigns(EosDesignsRootModel):
                 enable_password: EnablePassword | UndefinedType = Undefined,
                 tacacs: Tacacs | UndefinedType = Undefined,
                 radius: Radius | UndefinedType = Undefined,
-                authentication: EosCliConfigGen.AaaAuthentication | UndefinedType = Undefined,
-                authorization: EosCliConfigGen.AaaAuthorization | UndefinedType = Undefined,
-                accounting: EosCliConfigGen.AaaAccounting | UndefinedType = Undefined,
+                authentication: Authentication | UndefinedType = Undefined,
+                authorization: Authorization | UndefinedType = Undefined,
+                accounting: Accounting | UndefinedType = Undefined,
                 root_login: RootLogin | UndefinedType = Undefined,
                 local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
             ) -> None:
@@ -501,9 +614,9 @@ class EosDesigns(EosDesignsRootModel):
                     enable_password: Subclass of AvdModel.
                     tacacs: Subclass of AvdModel.
                     radius: Subclass of AvdModel.
-                    authentication: authentication
-                    authorization: authorization
-                    accounting: accounting
+                    authentication: Subclass of AvdModel.
+                    authorization: Subclass of AvdModel.
+                    accounting: Subclass of AvdModel.
                     root_login: Subclass of AvdModel.
                     local_users: local_users
 
@@ -16594,15 +16707,154 @@ class EosDesigns(EosDesignsRootModel):
     class Dot1xSettings(AvdModel):
         """Subclass of AvdModel."""
 
-        class RadiusGroups(AvdList[str]):
-            """Subclass of AvdList with `str` items."""
+        class Authentication(AvdModel):
+            """Subclass of AvdModel."""
 
-        RadiusGroups._item_type = str
+            class RadiusGroups(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            RadiusGroups._item_type = str
+
+            _fields: ClassVar[dict] = {"radius_groups": {"type": RadiusGroups}}
+            radius_groups: RadiusGroups
+            """
+            Required list of RADIUS server groups to be used for 802.1X authentication when globally enabled.
+            The order of the list defines the server group priority.
+            Each group name must also be defined on at
+            least one server under `aaa_settings.radius.servers`.
+
+            Subclass of AvdList with `str` items.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, radius_groups: RadiusGroups | UndefinedType = Undefined) -> None:
+                    """
+                    Authentication.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        radius_groups:
+                           Required list of RADIUS server groups to be used for 802.1X authentication when globally enabled.
+                           The order of the list defines the server group priority.
+                           Each group name must also be defined on at
+                           least one server under `aaa_settings.radius.servers`.
+
+                           Subclass of AvdList with `str` items.
+
+                    """
+
+        class Accounting(AvdModel):
+            """Subclass of AvdModel."""
+
+            Mode: TypeAlias = Literal["start-stop", "stop-only"]
+
+            class RadiusGroups(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            RadiusGroups._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool, "default": True},
+                "mode": {"type": str, "default": "start-stop"},
+                "radius_groups": {"type": RadiusGroups},
+                "multicast": {"type": bool, "default": False},
+                "syslog": {"type": bool, "default": False},
+            }
+            enabled: bool
+            """
+            Enable 802.1X accounting. When set, at least one accounting method must be provided via
+            the
+            `dot1x_settings.accounting.radius_groups` or `dot1x_settings.accounting.syslog` key.
+
+            Default value: `True`
+            """
+            mode: Mode
+            """
+            Determines whether to send accounting records when a session is established and
+            when it ends
+            (`start-stop`), or only when the session ends (`stop-only`).
+
+            Default value: `"start-stop"`
+            """
+            radius_groups: RadiusGroups
+            """
+            List of RADIUS server groups to be used for 802.1X accounting.
+            The order of the list defines the
+            server group priority.
+            Each group name must also be defined on at least one server under
+            `aaa_settings.radius.servers`.
+
+            Subclass of AvdList with `str` items.
+            """
+            multicast: bool
+            """
+            Send Accounting-Request packets to all servers in all specified RADIUS groups at the same time.
+
+            Default value: `False`
+            """
+            syslog: bool
+            """
+            Log all accounting messages to Syslog.
+            Acts as a fallback if RADIUS groups are configured, or as the
+            primary method if no groups are defined.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType = Undefined,
+                    mode: Mode | UndefinedType = Undefined,
+                    radius_groups: RadiusGroups | UndefinedType = Undefined,
+                    multicast: bool | UndefinedType = Undefined,
+                    syslog: bool | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Accounting.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Enable 802.1X accounting. When set, at least one accounting method must be provided via
+                           the
+                           `dot1x_settings.accounting.radius_groups` or `dot1x_settings.accounting.syslog` key.
+                        mode:
+                           Determines whether to send accounting records when a session is established and
+                           when it ends
+                           (`start-stop`), or only when the session ends (`stop-only`).
+                        radius_groups:
+                           List of RADIUS server groups to be used for 802.1X accounting.
+                           The order of the list defines the
+                           server group priority.
+                           Each group name must also be defined on at least one server under
+                           `aaa_settings.radius.servers`.
+
+                           Subclass of AvdList with `str` items.
+                        multicast: Send Accounting-Request packets to all servers in all specified RADIUS groups at the same time.
+                        syslog:
+                           Log all accounting messages to Syslog.
+                           Acts as a fallback if RADIUS groups are configured, or as the
+                           primary method if no groups are defined.
+
+                    """
 
         class DynamicAuthorization(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}}
+            class AdditionalGroups(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            AdditionalGroups._item_type = str
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "additional_groups": {"type": AdditionalGroups}}
             enabled: bool
             """
             Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
@@ -16610,10 +16862,20 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            additional_groups: AdditionalGroups
+            """
+            List of additional RADIUS server groups for dynamic authorization purposes only.
+            The order of the
+            list defines the server group priority.
+            Each group name must also be defined on at least one server
+            under `aaa_settings.radius.servers`.
+
+            Subclass of AvdList with `str` items.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, additional_groups: AdditionalGroups | UndefinedType = Undefined) -> None:
                     """
                     DynamicAuthorization.
 
@@ -16624,6 +16886,14 @@ class EosDesigns(EosDesignsRootModel):
                         enabled:
                            Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
                            adjust an active client session.
+                        additional_groups:
+                           List of additional RADIUS server groups for dynamic authorization purposes only.
+                           The order of the
+                           list defines the server group priority.
+                           Each group name must also be defined on at least one server
+                           under `aaa_settings.radius.servers`.
+
+                           Subclass of AvdList with `str` items.
 
                     """
 
@@ -16668,7 +16938,8 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "enabled": {"type": bool, "default": False},
-            "radius_groups": {"type": RadiusGroups},
+            "authentication": {"type": Authentication},
+            "accounting": {"type": Accounting},
             "bypass_bpdu": {"type": bool, "default": True},
             "bypass_lldp": {"type": bool, "default": True},
             "dynamic_authorization": {"type": DynamicAuthorization},
@@ -16680,22 +16951,14 @@ class EosDesigns(EosDesignsRootModel):
         Globally enable 802.1X port authentication on the switch.
         Must be set for 802.1X to be active on any
         interface.
-        When set, `dot1x_settings.radius_groups` is required.
+        When set, `dot1x_settings.authentication.radius_groups` is required.
 
         Default value: `False`
         """
-        radius_groups: RadiusGroups
-        """
-        List of RADIUS server groups to be used for 802.1X authentication and accounting.
-        Automatically
-        generates `aaa_settings.authentication.dot1x.default` and `aaa_settings.accounting.dot1x.default`,
-        overriding any manual settings.
-        The order of the list defines the server group priority. Each group
-        name must also be defined on at least one server under `aaa_settings.radius.servers`.
-
-        Subclass of
-        AvdList with `str` items.
-        """
+        authentication: Authentication
+        """Subclass of AvdModel."""
+        accounting: Accounting
+        """Subclass of AvdModel."""
         bypass_bpdu: bool
         """
         Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
@@ -16726,7 +16989,8 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 enabled: bool | UndefinedType = Undefined,
-                radius_groups: RadiusGroups | UndefinedType = Undefined,
+                authentication: Authentication | UndefinedType = Undefined,
+                accounting: Accounting | UndefinedType = Undefined,
                 bypass_bpdu: bool | UndefinedType = Undefined,
                 bypass_lldp: bool | UndefinedType = Undefined,
                 dynamic_authorization: DynamicAuthorization | UndefinedType = Undefined,
@@ -16744,17 +17008,9 @@ class EosDesigns(EosDesignsRootModel):
                        Globally enable 802.1X port authentication on the switch.
                        Must be set for 802.1X to be active on any
                        interface.
-                       When set, `dot1x_settings.radius_groups` is required.
-                    radius_groups:
-                       List of RADIUS server groups to be used for 802.1X authentication and accounting.
-                       Automatically
-                       generates `aaa_settings.authentication.dot1x.default` and `aaa_settings.accounting.dot1x.default`,
-                       overriding any manual settings.
-                       The order of the list defines the server group priority. Each group
-                       name must also be defined on at least one server under `aaa_settings.radius.servers`.
-
-                       Subclass of
-                       AvdList with `str` items.
+                       When set, `dot1x_settings.authentication.radius_groups` is required.
+                    authentication: Subclass of AvdModel.
+                    accounting: Subclass of AvdModel.
                     bypass_bpdu: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
                     bypass_lldp: Allow LLDP packets to be processed even if the port is not authenticated.
                     dynamic_authorization: Subclass of AvdModel.
