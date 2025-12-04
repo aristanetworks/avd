@@ -61,7 +61,7 @@ keys:
           multicast:
             type: bool
             default: false
-            description: Send Accounting-Request packets to all servers in all specified RADIUS groups at the same time.
+            description: Send Accounting-Request packets to all servers in a RADIUS group at the same time.
           syslog:
             type: bool
             default: false

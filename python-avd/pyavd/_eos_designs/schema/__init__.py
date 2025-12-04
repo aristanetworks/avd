@@ -16791,7 +16791,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             multicast: bool
             """
-            Send Accounting-Request packets to all servers in all specified RADIUS groups at the same time.
+            Send Accounting-Request packets to all servers in a RADIUS group at the same time.
 
             Default value: `False`
             """
@@ -16838,7 +16838,7 @@ class EosDesigns(EosDesignsRootModel):
                            `aaa_settings.radius.servers`.
 
                            Subclass of AvdList with `str` items.
-                        multicast: Send Accounting-Request packets to all servers in all specified RADIUS groups at the same time.
+                        multicast: Send Accounting-Request packets to all servers in a RADIUS group at the same time.
                         syslog:
                            Log all accounting messages to Syslog.
                            Acts as a fallback if RADIUS groups are configured, or as the
