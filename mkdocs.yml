@@ -99,8 +99,6 @@ plugins:
         - development/*
         - galaxy-importer/*
         - python-avd/*
-        - pyavd-utils/*
-        - rust/*
       regex:
         # Exclude examples common md snippets
         - 'ansible_collections\/arista\/avd\/examples\/common/.*'
