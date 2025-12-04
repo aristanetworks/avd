@@ -62,3 +62,13 @@ l2_protocol:
         - name: stp
           tagged_forward: true
           untagged_forward: true
+    # Test for sort with ignore_case: false
+    - name: aaa
+      protocols:
+        - name: bfd per-link rfc-7130
+          forward: false
+          tagged_forward: true
+        - name: e-lmi
+          forward: true
+        - name: isis
+          untagged_forward: true
