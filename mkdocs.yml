@@ -79,7 +79,6 @@ plugins:
         - ansible_collections/arista/avd/pylintrc
         - ansible_collections/arista/avd/pytest.ini
         - ansible_collections/arista/avd/README.md
-        - ansible_collections/arista/avd/requirements-dev.txt
         - ansible_collections/arista/avd/requirements.txt
         - ansible_collections/arista/avd/meta/*
         - ansible_collections/arista/avd/playbooks/*

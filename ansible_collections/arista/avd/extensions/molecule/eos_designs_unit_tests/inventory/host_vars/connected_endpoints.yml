@@ -18,10 +18,10 @@ custom_connected_endpoints_keys:
     type: monitor
 
 connected_endpoints_keys:
-  - key: Testing_1
+  - key: testing_1
     type: Testing_Type_1
 
-Testing_1:
+testing_1:
   - name: testing
     adapters:
       - endpoint_ports: [Nic1]
