@@ -1,3 +1,4 @@
+---
 # Project information
 site_name: " "
 site_author: Arista AVD Team
@@ -99,8 +100,6 @@ plugins:
         - development/*
         - galaxy-importer/*
         - python-avd/*
-        - pyavd-utils/*
-        - rust/*
       regex:
         # Exclude examples common md snippets
         - 'ansible_collections\/arista\/avd\/examples\/common/.*'
@@ -166,7 +165,6 @@ markdown_extensions:
   - toc:
       separator: "-"
       permalink: true
-
 # TOC
 docs_dir: .
 nav:
@@ -226,7 +224,7 @@ nav:
       - Overview: docs/support/support_overview.md
       - Versioning: docs/versioning/semantic-versioning.md
 # Indicates which files should be added to the build site but not present in nav.
-not_in_nav: |
+not_in_nav: |-
   /ansible_collections/arista/avd/examples/single-dc-l3ls/documentation/*
   /docs/contribution/eos_designs_facts_internal/tables/eos_designs_facts.md
   /docs/warn-eos-cli-config-keys-usage-in-eos-designs.md

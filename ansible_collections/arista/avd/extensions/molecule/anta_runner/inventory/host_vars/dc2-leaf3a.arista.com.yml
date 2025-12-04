@@ -169,3 +169,12 @@ custom_structured_configuration_vxlan_interface:
     vxlan:
       source_interface: Loopback0
       mlag_source_interface: Loopback66
+
+# Custom BGP strucutred_config to validate that RFC5549 interfaces are validated
+custom_structured_configuration_router_bgp:
+  neighbor_interfaces:
+    - name: Vlan4093
+      remote_as: 65133
+      metadata:
+        peer: dc1-svc-leaf1a
+        validate_state: true
