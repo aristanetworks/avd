@@ -2797,6 +2797,8 @@ tap aggregation
 | AAA | - | 10.6.75.62 | 123 |
 | AAA | - | 10.6.75.63 | 333 |
 | AAA | Ethernet2 | - | - |
+| abc | - | 10.6.75.62 | 6343 |
+| abc | 2.2.2.2 | - | - |
 | BBB | - | 10.6.75.62 | 6343 |
 | BBB | 1.1.1.1 | - | - |
 | CCC | - | 10.6.75.62 | 6343 |
@@ -2886,6 +2888,8 @@ sflow vrf MGMT destination 10.6.75.59
 sflow vrf MGMT destination 10.6.75.62 123
 sflow vrf MGMT destination 10.6.75.63 333
 sflow vrf MGMT source-interface Ethernet3
+sflow vrf abc destination 10.6.75.62
+sflow vrf abc source 2.2.2.2
 sflow destination 10.6.75.61
 sflow destination 10.6.75.62 123
 sflow source-interface Management0
@@ -14105,6 +14109,7 @@ priority-flow-control pause watchdog action no-drop
 | -------------- | ---------- | ----------- | ---- |
 | server1 | 1.2.3.4 | pathfinder | 3478 |
 | server2 | 2.3.4.5 | - | 4100 |
+| SERVER3 | 1.2.3.5 | - | 3478 |
 
 ### STUN Server
 
@@ -14118,6 +14123,8 @@ priority-flow-control pause watchdog action no-drop
 !
 stun
    client
+      server-profile SERVER3
+         ip address 1.2.3.5
       server-profile server1
          ip address 1.2.3.4
          ssl profile pathfinder

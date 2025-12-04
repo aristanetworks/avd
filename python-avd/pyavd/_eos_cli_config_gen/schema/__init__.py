@@ -61220,6 +61220,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"name": {"type": str}, "enabled": {"type": bool, "default": True}}
                 name: str
+                """Only Linecard "0" is supported in EOS 4.35.0F-44178984.4350F."""
                 enabled: bool
                 """Default value: `True`"""
 
@@ -61233,7 +61234,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name: name
+                            name: Only Linecard "0" is supported in EOS 4.35.0F-44178984.4350F.
                             enabled: enabled
 
                         """

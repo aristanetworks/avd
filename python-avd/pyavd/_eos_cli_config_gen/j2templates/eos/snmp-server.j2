@@ -35,6 +35,7 @@ snmp-server contact {{ snmp_server.contact }}
 snmp-server location {{ snmp_server.location }}
 {%     endif %}
 {# TODO local interfaces config order is not correct as per EOS #}
+{# TODO model can be changed and moved to vrfs #}
 {%     if snmp_server.local_interfaces is arista.avd.defined %}
 {%         for local_interface in snmp_server.local_interfaces | arista.avd.natural_sort('name') %}
 {%             set interface_snmp_cli = "snmp-server" %}
@@ -202,15 +203,13 @@ no snmp-server enable traps {{ snmp_trap.name }}
 snmp-server enable traps {{ snmp_trap.name }}
 {%         endif %}
 {%     endfor %}
-{%     if snmp_server.vrfs is arista.avd.defined %}
-{%         for vrf in snmp_server.vrfs %}
-{%             if vrf.enable is arista.avd.defined(true) %}
+{%     for vrf in snmp_server.vrfs | arista.avd.natural_sort(sort_key="name") %}
+{%         if vrf.enable is arista.avd.defined(true) %}
 snmp-server vrf {{ vrf.name }}
-{%             else %}
+{%         else %}
 no snmp-server vrf {{ vrf.name }}
-{%             endif %}
-{%         endfor %}
-{%     endif %}
+{%         endif %}
+{%     endfor %}
 {%     if snmp_server.ifmib_ifspeed_shape_rate is arista.avd.defined(true) %}
 snmp-server ifmib ifspeed shape-rate
 {%     endif %}

@@ -97,6 +97,7 @@ keys:
               convert_types:
                 - int
       local_interfaces:
+       # this model can be moved to vrfs
         type: list
         primary_key: name
         items:

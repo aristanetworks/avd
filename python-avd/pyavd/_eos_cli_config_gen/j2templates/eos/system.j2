@@ -23,6 +23,7 @@ system control-plane
    ip access-group ingress default {{ system.control_plane.ipv4_access_group_ingress_default }}
 {%     endif %}
 {%     if system.control_plane.ipv4_access_groups is arista.avd.defined %}
+{# default vrf is not reflected in CLI #}
 {%         set with_vrf_non_default = system.control_plane.ipv4_access_groups | selectattr('vrf', 'arista.avd.defined') | rejectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort | arista.avd.natural_sort('vrf') %}
 {%         set without_vrf = system.control_plane.ipv4_access_groups | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort %}
 {%         set with_vrf_default = system.control_plane.ipv4_access_groups | selectattr('vrf', 'arista.avd.defined') | selectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort %}
