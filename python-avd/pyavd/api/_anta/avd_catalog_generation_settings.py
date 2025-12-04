@@ -10,19 +10,6 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 from .test_spec import TestSpec
 
 
-class InputFactorySettings(BaseModel):
-    """
-    Model defining settings for test input generation.
-
-    Attributes:
-    ----------
-        allow_bgp_vrfs : bool
-            Whether to include BGP neighbors in VRFs.
-    """
-
-    allow_bgp_vrfs: bool = Field(default=False)
-
-
 class AvdCatalogGenerationSettings(BaseModel):
     """
     Model defining settings for the AVD-generated ANTA catalog.
@@ -31,8 +18,6 @@ class AvdCatalogGenerationSettings(BaseModel):
 
     Attributes:
     ----------
-        input_factory_settings : InputFactorySettings
-            Settings for test input generation.
         run_tests : list[str]
             List of ANTA test names to run.
         skip_tests : list[str]
@@ -50,7 +35,6 @@ class AvdCatalogGenerationSettings(BaseModel):
 
     model_config = ConfigDict(extra="forbid", arbitrary_types_allowed=True)
 
-    input_factory_settings: InputFactorySettings = Field(default_factory=InputFactorySettings)
     run_tests: list[str] = Field(default_factory=list)
     skip_tests: list[str] = Field(default_factory=list)
     custom_test_specs: list[TestSpec] = Field(default_factory=list)
