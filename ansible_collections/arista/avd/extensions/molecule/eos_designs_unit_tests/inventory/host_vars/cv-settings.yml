@@ -58,12 +58,7 @@ sflow_settings:
     enabled: true
     vrf: use_default_mgmt_method_vrf
 fabric_sflow:
-  uplinks: true
-  downlinks: true
-  endpoints: true
   l3_edge: true
-  core_interfaces: true
-  mlag_interfaces: true
 
 l3_edge:
   p2p_links:

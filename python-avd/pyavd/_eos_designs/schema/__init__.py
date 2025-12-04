@@ -28927,25 +28927,32 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"}}
             enabled: bool | None
+            """
+            When set to `true`, AVD automatically:
+            - Configures an sFlow destination at `127.0.0.1` port `6343`
+            in the VRF determined by `export_to_cloudvision.vrf`.
+            - Configures the TerminAttr daemon (`daemon
+            terminattr`) to export sFlow to the same `export_to_cloudvision.vrf/127.0.0.1:6343` in the selected
+            VRF.
+            """
             vrf: str
             """
             VRF Name.
             The value of `vrf` will be interpreted according to these rules:
             -
-            `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with
-            `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.
-              An error will be
-            raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-            - `use_inband_mgmt_vrf`
-            will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the
-            `inband_mgmt_interface` as sFlow source-interface.
-              An error will be raised if inband management is
-            not configured for the device.
-            - `use_default_mgmt_method_vrf` will configure the VRF and source-
-            interface for one of the two options above depending on the value of `default_mgmt_method`.
-            - Any
-            other string will be used directly as the VRF name. Remember to set the
-            `sflow_settings.vrfs[].source_interface` if needed.
+            `use_mgmt_interface_vrf` will configure the sFlow destination and daemon terminattr sflow address
+            under the VRF defined by `mgmt_interface_vrf`.
+              An error will be raised if `mgmt_ip` or
+            `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf` will configure the sFlow
+            destination and daemon terminattr sflow address under the VRF defined by `inband_mgmt_vrf`.
+              An
+            error will be raised if inband management is not configured for the device.
+            -
+            `use_default_mgmt_method_vrf` will configure the VRF and daemon terminattr sflow address for one of
+            the two options above depending on the value of `default_mgmt_method`.
+            - Any other string will be
+            used directly as the VRF name.
 
             Default value: `"use_default_mgmt_method_vrf"`
             """
@@ -28960,25 +28967,30 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        enabled: enabled
+                        enabled:
+                           When set to `true`, AVD automatically:
+                           - Configures an sFlow destination at `127.0.0.1` port `6343`
+                           in the VRF determined by `export_to_cloudvision.vrf`.
+                           - Configures the TerminAttr daemon (`daemon
+                           terminattr`) to export sFlow to the same `export_to_cloudvision.vrf/127.0.0.1:6343` in the selected
+                           VRF.
                         vrf:
                            VRF Name.
                            The value of `vrf` will be interpreted according to these rules:
                            -
-                           `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with
-                           `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.
-                             An error will be
-                           raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-                           - `use_inband_mgmt_vrf`
-                           will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the
-                           `inband_mgmt_interface` as sFlow source-interface.
-                             An error will be raised if inband management is
-                           not configured for the device.
-                           - `use_default_mgmt_method_vrf` will configure the VRF and source-
-                           interface for one of the two options above depending on the value of `default_mgmt_method`.
-                           - Any
-                           other string will be used directly as the VRF name. Remember to set the
-                           `sflow_settings.vrfs[].source_interface` if needed.
+                           `use_mgmt_interface_vrf` will configure the sFlow destination and daemon terminattr sflow address
+                           under the VRF defined by `mgmt_interface_vrf`.
+                             An error will be raised if `mgmt_ip` or
+                           `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf` will configure the sFlow
+                           destination and daemon terminattr sflow address under the VRF defined by `inband_mgmt_vrf`.
+                             An
+                           error will be raised if inband management is not configured for the device.
+                           -
+                           `use_default_mgmt_method_vrf` will configure the VRF and daemon terminattr sflow address for one of
+                           the two options above depending on the value of `default_mgmt_method`.
+                           - Any other string will be
+                           used directly as the VRF name.
 
                     """
 
@@ -29033,16 +29045,19 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         destinations: Destinations
         """
-        sFlow will be configured if either `destinations` or `export_to_cloudvision.enabled` is set. One of
-        them is required.
+        sFlow will be configured if at least one destination is set in `destinations` or if
+        `export_to_cloudvision.enabled: true`.
+        One of them is required.
 
-        Subclass of AvdList with `DestinationsItem` items.
+        Subclass of AvdList with
+        `DestinationsItem` items.
         """
         export_to_cloudvision: ExportToCloudvision
         """
-        sFlow will be configured if either `destinations` or `export_to_cloudvision.enabled` is set. One of
-        them is required.
-
+        Enables automatic sFlow export to CloudVision.
+        sFlow will be configured if at least one destination
+        is set in `destinations` or if `export_to_cloudvision.enabled: true`.
+        One of them is required.
         Subclass of AvdModel.
         """
         vrfs: Vrfs
@@ -29069,14 +29084,17 @@ class EosDesigns(EosDesignsRootModel):
                     polling_interval: Interval in seconds for sending counter data to the sFlow collector.
                     sample: Subclass of AvdModel.
                     destinations:
-                       sFlow will be configured if either `destinations` or `export_to_cloudvision.enabled` is set. One of
-                       them is required.
+                       sFlow will be configured if at least one destination is set in `destinations` or if
+                       `export_to_cloudvision.enabled: true`.
+                       One of them is required.
 
-                       Subclass of AvdList with `DestinationsItem` items.
+                       Subclass of AvdList with
+                       `DestinationsItem` items.
                     export_to_cloudvision:
-                       sFlow will be configured if either `destinations` or `export_to_cloudvision.enabled` is set. One of
-                       them is required.
-
+                       Enables automatic sFlow export to CloudVision.
+                       sFlow will be configured if at least one destination
+                       is set in `destinations` or if `export_to_cloudvision.enabled: true`.
+                       One of them is required.
                        Subclass of AvdModel.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
