@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from logging import getLogger
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Literal
 
 from pyavd._cv.client.exceptions import CVResourceNotFound
 from pyavd._utils import get, get_v2, guaranteed_not_none
@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 LOGGER = getLogger(__name__)
 
 CV_PATHFINDER_METADATA_STUDIO_ID = "studio-avd-pathfinder-metadata"
-CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {
+CV_PATHFINDER_DEFAULT_STUDIO_INPUTS: dict[str, list[Any]] = {
     "pathfinders": [],
     "pathgroups": [],
     "regions": [],
@@ -78,19 +78,19 @@ async def get_metadata_studio_schema(result: DeployToCvResult, cv_client: CVClie
         return None
 
     studio_schema: InputSchema = studio.input_schema
-    studio_version = get_v2(studio_schema, "fields.values.studioVersion.string_props.default_value")
+    studio_version: str | None = get_v2(studio_schema, "fields.values.studioVersion.string_props.default_value")
     LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Found metadata studio version: %s", studio_version)
     return studio_schema
 
 
-def update_general_metadata(metadata: dict, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
+def update_general_metadata(metadata: dict[Any, Any], studio_inputs: dict[Any, Any], studio_schema: InputSchema) -> list[str]:
     """In-place update general metadata in studio_inputs."""
-    warnings = []
+    warnings: list[str] = []
 
     # Temporary fix for default values in metadata studio
     for vrf in get(metadata, "vrfs", default=[]):
         for avt in get(vrf, "avts", default=[]):
-            constraints: dict = avt.setdefault("constraints", {})
+            constraints: dict[Any, Any] = avt.setdefault("constraints", {})
             constraints.setdefault("latency", 4294967295)
             constraints.setdefault("jitter", 4294967295)
             constraints["lossrate"] = float(constraints.get("lossrate", 99.0))
@@ -136,7 +136,7 @@ def update_general_metadata(metadata: dict, studio_inputs: dict, studio_schema: 
     return warnings
 
 
-def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
+def upsert_pathfinder(metadata: dict[Any, Any], device: CVDevice, studio_inputs: dict[Any, Any], studio_schema: InputSchema) -> list[str]:
     """
     In-place insert / update metadata for one pathfinder device in studio_inputs.
 
@@ -144,9 +144,9 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, stu
     """
     LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_pathfinder %s", device.hostname)
 
-    warnings = []
+    warnings: list[str] = []
 
-    pathfinder_metadata = {
+    pathfinder_metadata: dict[str, Any] = {
         "inputs": {
             "value": {
                 "sslProfileName": metadata.get("ssl_profile", ""),
@@ -170,7 +170,7 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, stu
         "tags": {"query": f"device:{device.serial_number}"},
     }
 
-    pathfinder_location = {key: metadata.get(key) for key in ("region", "site", "address")}
+    pathfinder_location: dict[Literal["region", "site", "address"], Any] = {key: metadata.get(key) for key in ("region", "site", "address")}
     if any(pathfinder_location):
         if is_pathfinder_location_supported(studio_schema):
             pathfinder_metadata["inputs"]["value"].update(pathfinder_location)
@@ -203,7 +203,7 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, stu
     return warnings
 
 
-def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
+def upsert_edge(metadata: dict[Any, Any], device: CVDevice, studio_inputs: dict[Any, Any], studio_schema: InputSchema) -> list[str]:
     """
     In-place insert / update metadata for one edge device in studio_inputs.
 
@@ -211,8 +211,8 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict, studio_sc
     """
     LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_edge %s", device.hostname)
 
-    warnings = []
-    edge_metadata = {
+    warnings: list[str] = []
+    edge_metadata: dict[str, Any] = {
         "inputs": {
             "router": {
                 "sslProfileName": metadata.get("ssl_profile", ""),
@@ -420,7 +420,9 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     result.deployed_cv_pathfinder_metadata.extend(pathfinders + edges)
 
 
-def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_schema: InputSchema) -> tuple[dict, list[str]]:
+def generate_internet_exit_metadata(
+    metadata: dict[Any, Any], device: CVDevice, studio_schema: InputSchema
+) -> tuple[dict[str, dict[str, list[dict[str, Any]]]], list[str]]:
     """
     Generate internet-exit related metadata for one device.
 
@@ -434,8 +436,8 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_sch
 
     LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Found %s 'internet_exit_policies' for device: %s", len(internet_exit_policies), device.hostname)
 
-    services_dict = {}
-    warnings = []
+    services_dict: dict[str, dict[str, list[dict[str, Any]]]] = {}
+    warnings: list[str] = []
 
     for internet_exit_policy in internet_exit_policies:
         # We currently only support "zscaler" and ignore "direct".
@@ -506,7 +508,7 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_sch
     return services_dict, warnings
 
 
-def generate_applications_metadata(metadata: dict) -> dict:
+def generate_applications_metadata(metadata: dict[Any, Any]) -> dict[str, list[dict[Any, Any]] | dict[str, list[dict[Any, Any]]]]:
     """
     Generate application traffic recognition related metadata for one patfinder.
 

@@ -13,17 +13,23 @@ from pyavd._cv.api.arista.tag.v2 import (
     TagAssignmentConfig,
     TagAssignmentConfigServiceStub,
     TagAssignmentConfigSetSomeRequest,
+    TagAssignmentConfigSetSomeResponse,
     TagAssignmentConfigStreamRequest,
+    TagAssignmentConfigStreamResponse,
     TagAssignmentKey,
     TagAssignmentServiceStub,
     TagAssignmentStreamRequest,
+    TagAssignmentStreamResponse,
     TagConfig,
     TagConfigServiceStub,
     TagConfigSetSomeRequest,
+    TagConfigSetSomeResponse,
     TagConfigStreamRequest,
+    TagConfigStreamResponse,
     TagKey,
     TagServiceStub,
     TagStreamRequest,
+    TagStreamResponse,
 )
 from pyavd._cv.api.arista.time import TimeBounds
 
@@ -31,6 +37,7 @@ from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
 
 if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
     from datetime import datetime
 
     from . import CVClientProtocol
@@ -66,7 +73,7 @@ class TagMixin(Protocol):
         timeout: float = 30.0,
     ) -> list[Tag]:
         """
-        Get Tags using arista.tag.v2.TagServiceStub.GetAll arista.tag.v2.TagConfigServiceStub.GetAll APIs.
+        Get Tags using arista.tag.v2.TagService.GetAll and arista.tag.v2.TagConfigService.GetAll APIs.
 
         The Tags GetAll API for the workspace does not return anything from mainline and does not return deletions in the workspace.
         So to produce the workspace tags we need to fetch mainline and then "play back" each config change from the workspace.
@@ -94,8 +101,8 @@ class TagMixin(Protocol):
             time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = TagServiceStub(self.channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-        tags = [response.value async for response in responses]
+        tag_responses: AsyncIterator[TagStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        tags = [tag_response.value async for tag_response in tag_responses]
 
         # Now tags contain all mainline tags.
         if workspace_id == "" or creator_type in ["system", "external"]:
@@ -112,9 +119,9 @@ class TagMixin(Protocol):
             time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = TagConfigServiceStub(self.channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-        async for response in responses:
-            tag_config = response.value
+        tag_config_responses: AsyncIterator[TagConfigStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        async for tag_config_response in tag_config_responses:
+            tag_config = tag_config_response.value
 
             # Recreating a full tag object. Since this was in the workspace, it *must* be a user created tag.
             tag = Tag(key=tag_config.key, creator_type=CreatorType.USER)
@@ -133,7 +140,7 @@ class TagMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[TagKey]:
         """
-        Set Tags using arista.tag.v2.TagConfigServiceStub.SetSome API.
+        Set Tags using arista.tag.v2.TagConfigService.SetSome API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
@@ -141,7 +148,7 @@ class TagMixin(Protocol):
             timeout: Base timeout in seconds. 0.1 second will be added per `CVTag`.
 
         Returns:
-            List of Tag objects after being set including any server-generated values.
+            List of TagKey objects after being set including any server-generated values.
         """
         request = TagConfigSetSomeRequest(values=[])
         for tag in tags:
@@ -157,7 +164,7 @@ class TagMixin(Protocol):
             )
 
         client = TagConfigServiceStub(self.channel)
-        responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
+        responses: AsyncIterator[TagConfigSetSomeResponse] = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)  # pyright: ignore[reportAssignmentType]
 
         return [response.key async for response in responses]
 
@@ -171,7 +178,7 @@ class TagMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[TagAssignment]:
         """
-        Get Tags using arista.tag.v2.TagAssignmentServiceStub.GetAll arista.tag.v2.TagAssignmentConfigServiceStub.GetAll APIs.
+        Get Tags using arista.tag.v2.TagAssignmentService.GetAll arista.tag.v2.TagAssignmentConfigService.GetAll APIs.
 
         The TagAssignment GetAll API for the workspace does not return anything from mainline and does not return deletions in the workspace.
         So to produce the workspace tag assignments we need to fetch mainline and then "play back" each config change from the workspace.
@@ -184,7 +191,7 @@ class TagMixin(Protocol):
             timeout: Timeout in seconds.
 
         Returns:
-            Workspace object matching the workspace_id
+            List of TagAssignment objects.
         """
         # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
         # Note that changing this will also impact the recorded calls hash
@@ -199,8 +206,8 @@ class TagMixin(Protocol):
             time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = TagAssignmentServiceStub(self.channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-        tag_assignments = [response.value async for response in responses]
+        tag_assignment_responses: AsyncIterator[TagAssignmentStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        tag_assignments = [tag_assignment_response.value async for tag_assignment_response in tag_assignment_responses]
 
         # Now tags contain all mainline tags.
         if workspace_id == "" or creator_type in ["system", "external"]:
@@ -218,9 +225,9 @@ class TagMixin(Protocol):
             time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = TagAssignmentConfigServiceStub(self.channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-        async for response in responses:
-            tag_assignment_config = response.value
+        tag_assignment_config_responses: AsyncIterator[TagAssignmentConfigStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        async for tag_assignment_config_response in tag_assignment_config_responses:
+            tag_assignment_config = tag_assignment_config_response.value
 
             # Recreating a full tag object. Since this was in the workspace, it *must* be a user created tag assignment.
             tag_assignment = TagAssignment(key=tag_assignment_config.key, tag_creator_type=CreatorType.USER)
@@ -239,7 +246,7 @@ class TagMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[TagAssignmentKey]:
         """
-        Set Tags using arista.tag.v2.TagAssignmentConfigServiceStub.SetSome API.
+        Set Tags using arista.tag.v2.TagAssignmentConfigService.SetSome API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
@@ -265,7 +272,9 @@ class TagMixin(Protocol):
             )
 
         client = TagAssignmentConfigServiceStub(self.channel)
-        responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
+        responses: AsyncIterator[TagAssignmentConfigSetSomeResponse] = client.set_some(
+            request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1
+        )  # pyright: ignore[reportAssignmentType]
 
         return [response.key async for response in responses]
 
@@ -277,7 +286,7 @@ class TagMixin(Protocol):
         timeout: float = 30.0,
     ) -> list[TagAssignmentKey]:
         """
-        Set Tags using arista.tag.v2.TagAssignmentConfigServiceStub.SetSome API.
+        Set Tags using arista.tag.v2.TagAssignmentConfigService.SetSome API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
@@ -285,8 +294,7 @@ class TagMixin(Protocol):
             timeout: Base timeout in seconds. 0.1 second will be added per `CVTagAssignment`.
 
         Returns:
-            List of TagAssignmentKey objects after being deleted including any server-generated values.
-            TODO: this is probably the list of what failed rather than this.
+            List of TagAssignmentKey objects after being set including any server-generated values.
         """
         request = TagAssignmentConfigSetSomeRequest(values=[])
         for tag_assignment in tag_assignments:
@@ -305,7 +313,9 @@ class TagMixin(Protocol):
             )
 
         client = TagAssignmentConfigServiceStub(self.channel)
-        responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
+        responses: AsyncIterator[TagAssignmentConfigSetSomeResponse] = client.set_some(
+            request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1
+        )  # pyright: ignore[reportAssignmentType]
 
         return [response.key async for response in responses]
 

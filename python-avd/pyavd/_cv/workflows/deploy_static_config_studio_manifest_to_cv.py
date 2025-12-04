@@ -5,7 +5,9 @@ from __future__ import annotations
 
 from asyncio import gather
 from logging import getLogger
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING
+
+from pyavd._utils import guaranteed_not_none
 
 from .models import AVD_ENTITY_PREFIX, CVManifest
 
@@ -62,7 +64,7 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
 
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Fetching all existing configlet containers from CloudVision...")
     existing_containers = await cv_client.get_configlet_containers(workspace_id=workspace_id)
-    existing_containers_by_id = {cast("str", container.key.configlet_assignment_id): container for container in existing_containers}
+    existing_containers_by_id = {guaranteed_not_none(container.key.configlet_assignment_id): container for container in existing_containers}
 
     containers_to_push: list[CVContainer] = []
     for desired_container in cv_manifest.containers:
@@ -96,7 +98,7 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Applying changes for %d configlets (create/update)...", len(cv_manifest.configlets))
         deployment_result.deployed_static_config_configlets.extend(configlet.avd_configlet for configlet in cv_manifest.configlets)
         configlet_tuples = [configlet.api_tuple for configlet in cv_manifest.configlets]
-        await cv_client.set_configlets_from_files(workspace_id=workspace_id, configlets=configlet_tuples)
+        _ = await cv_client.set_configlets_from_files(workspace_id=workspace_id, configlets=configlet_tuples)
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No configlet creations or updates are needed.")
 
@@ -104,15 +106,15 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
     existing_configlets = await cv_client.get_configlets(workspace_id=workspace_id)
     desired_configlet_ids = {configlet.id for configlet in cv_manifest.configlets}
     configlets_to_delete = {
-        configlet_id: cast("str", configlet.display_name)
+        configlet_id: configlet.display_name or ""
         for configlet in existing_configlets
-        if (configlet_id := cast("str", configlet.key.configlet_id)).startswith(AVD_ENTITY_PREFIX) and configlet_id not in desired_configlet_ids
+        if (configlet_id := guaranteed_not_none(configlet.key.configlet_id)).startswith(AVD_ENTITY_PREFIX) and configlet_id not in desired_configlet_ids
     }
 
     if configlets_to_delete:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d AVD-managed configlets which are no longer used.", len(configlets_to_delete))
         deployment_result.removed_static_config_configlets.extend(configlets_to_delete.values())
-        await cv_client.delete_configlets(workspace_id=workspace_id, configlet_ids=list(configlets_to_delete.keys()))
+        _ = await cv_client.delete_configlets(workspace_id=workspace_id, configlet_ids=list(configlets_to_delete.keys()))
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No AVD-managed configlet deletions are needed.")
 
@@ -140,8 +142,10 @@ async def _sync_studio_roots(
     )
 
     if not isinstance(existing_root_ids, list):
-        # TODO: correct error message to state CV did not return the correct type
-        msg = "Booh"
+        msg = (
+            "'configlet_assignment_roots' of the 'studio-static-configlet' Studio was expected to be of a type 'list' but is instead of a type '%s'",
+            type(existing_root_ids).__name__,
+        )
         raise TypeError(msg)
 
     # Calculate which desired roots are missing and which existing AVD-managed roots are stale.
@@ -159,7 +163,7 @@ async def _sync_studio_roots(
         manual_ids = [container_id for container_id in existing_root_ids if not container_id.startswith(AVD_ENTITY_PREFIX)]
         new_ordered_ids = desired_root_ids + manual_ids
 
-        await cv_client.set_studio_inputs(
+        _ = await cv_client.set_studio_inputs(
             studio_id=STATIC_CONFIGURATION_STUDIO_ID,
             workspace_id=workspace_id,
             input_path=["configletAssignmentRoots"],
@@ -173,13 +177,13 @@ async def _sync_studio_roots(
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d stale AVD-managed root containers...", len(stale_avd_ids))
         deployment_result.removed_static_config_root_containers.extend(
             [
-                cast("str", existing_container.display_name)
+                existing_container.display_name or ""
                 for container_id in stale_avd_ids
                 if (existing_container := existing_containers_by_id.get(container_id)) is not None
             ]
         )
 
         # TODO: Build a 'delete_configlet_containers' gRPC API
-        await gather(*[cv_client.delete_configlet_container(workspace_id=workspace_id, assignment_id=container_id) for container_id in stale_avd_ids])
+        _ = await gather(*[cv_client.delete_configlet_container(workspace_id=workspace_id, assignment_id=container_id) for container_id in stale_avd_ids])
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No AVD-managed root container deletions are needed.")

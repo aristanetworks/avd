@@ -10,7 +10,7 @@ from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 from hashlib import sha256
 from itertools import pairwise
-from typing import Any
+from typing import Any, TypeVar
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -20,8 +20,11 @@ from grpclib.exceptions import GRPCError
 from pyavd._cv.client.async_decorators import GRPCRequestHandler, LimitCvVersion
 from pyavd._cv.client.exceptions import CVClientException, CVGRPCStatusUnavailable, CVMessageSizeExceeded, CVResourceNotFound, CVTimeoutError
 from pyavd._cv.client.versioning import CVAAS_VERSION_STRING, CvVersion
+from pyavd._utils import guaranteed_not_none
 
 LOGGER = logging.getLogger(__name__)
+
+T = TypeVar("T")
 
 ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
 
@@ -63,15 +66,15 @@ class CvClass:
         self._grpc_msgsize_limited_call_count = defaultdict(lambda: defaultdict(int))
 
     @LimitCvVersion(min_ver="2024.1.0", max_ver="2024.1.99")
-    async def version_limited_method(self) -> tuple[str, str]:
+    async def version_limited_method(self) -> tuple[str, str]:  # pyright: ignore[reportRedeclaration]
         return ("2024.1.0", "2024.1.99")
 
     @LimitCvVersion(min_ver="2024.2.0", max_ver="2024.99.99")
-    async def version_limited_method(self) -> tuple[str, str]:  # noqa: F811
+    async def version_limited_method(self) -> tuple[str, str]:  # pyright: ignore[reportRedeclaration] # noqa: F811
         return ("2024.2.0", "2024.99.99")
 
     @LimitCvVersion(min_ver="2025.1.0", max_ver="2025.99.99")
-    async def version_limited_method(self) -> tuple[str, str]:  # noqa: F811
+    async def version_limited_method(self) -> tuple[str, str]:  # pyright: ignore[reportRedeclaration] # noqa: F811
         return ("2025.1.0", "2025.99.99")
 
     @LimitCvVersion(min_ver=CVAAS_VERSION_STRING, max_ver=CVAAS_VERSION_STRING)
@@ -109,7 +112,7 @@ class CvClass:
         return sha256(joined.encode("utf-8")).hexdigest()
 
     @GRPCRequestHandler(list_field="field")
-    async def msgsize_limited_grpc_method_success(self, field: list[int] | None = None, max_accepted_size: int = 0) -> list:
+    async def msgsize_limited_grpc_method_success(self, field: list[int], max_accepted_size: int = 0) -> list[int]:
         self._grpc_msgsize_limited_call_count[self.msgsize_limited_grpc_method_success.__name__][self._calculate_list_hash(field)] += 1
         if (field_sum := sum(field)) > max_accepted_size:
             raise GRPCError(status=Status.RESOURCE_EXHAUSTED, message=f"grpc: received message larger than max ({field_sum} vs. {max_accepted_size})")
@@ -117,12 +120,13 @@ class CvClass:
         return [len(field)]
 
     @GRPCRequestHandler(list_field="field")
-    async def msgsize_limited_grpc_method_exception(self, inner_exception: Exception, field: list[int] | None = None) -> list:
+    async def msgsize_limited_grpc_method_exception(self, inner_exception: Exception, field: list[int]) -> list[int]:
         self._grpc_msgsize_limited_call_count[self.msgsize_limited_grpc_method_exception.__name__][self._calculate_list_hash(field)] += 1
         raise inner_exception
 
     @GRPCRequestHandler(list_field="field")
-    async def msgsize_limited_grpc_method_failure(self, failures: int = 0, field: list[int] | None = None, max_accepted_size: int = 0) -> list:
+    async def msgsize_limited_grpc_method_failure(self, failures: int = 0, field: list[int] | None = None, max_accepted_size: int = 0) -> list[int]:
+        field = guaranteed_not_none(field)
         self._grpc_msgsize_limited_call_count[self.msgsize_limited_grpc_method_failure.__name__][self._calculate_list_hash(field)] += 1
         if self._grpc_msgsize_limited_call_count[self.msgsize_limited_grpc_method_failure.__name__][self._calculate_list_hash(field)] > failures:
             if (field_sum := sum(field)) > max_accepted_size:
@@ -153,7 +157,7 @@ async def test_invalid_versions_overlapping() -> None:
     with pytest.raises(ValueError, match=r"Overlapping min and max versions.*2024\.1\.0\-2024\.1\.99 overlaps with 2024\.1\.0\-2024\.1\.99\."):  # noqa: PT012
 
         @LimitCvVersion(min_ver="2024.1.0", max_ver="2024.1.99")
-        async def version_limited_method() -> None:
+        async def version_limited_method() -> None:  # pyright: ignore[reportRedeclaration]
             pass
 
         @LimitCvVersion(min_ver="2024.1.10", max_ver="2024.1.88")
@@ -177,7 +181,7 @@ async def test_msg_size_handler(data: list[Any], max_len: int, expected_response
 
 @pytest.mark.asyncio
 async def test_msg_size_handler_invalid_function_return_type() -> None:
-    def function_not_returning_list(_field: list) -> str:
+    async def function_not_returning_list(_field: list[Any]) -> str:
         return "foo"
 
     with pytest.raises(TypeError, match=r"GRPCRequestHandler decorator is unable to bind to the function .+"):
@@ -186,7 +190,7 @@ async def test_msg_size_handler_invalid_function_return_type() -> None:
 
 @pytest.mark.asyncio
 async def test_msg_size_handler_invalid_function_return_type_union() -> None:
-    async def function_returning_union_of_list_and_string(_field: list) -> list | str:
+    async def function_returning_union_of_list_and_string(_field: list[T]) -> list[T] | str:
         if len(_field) > 1:
             return _field
         return "foo"
@@ -197,7 +201,7 @@ async def test_msg_size_handler_invalid_function_return_type_union() -> None:
 
 @pytest.mark.asyncio
 async def test_msg_size_handler_invalid_function_list_field() -> None:
-    def function_with_wrong_arg(_wrong_field: list) -> list:
+    async def function_with_wrong_arg(_wrong_field: list) -> list:
         return ["foo"]
 
     with pytest.raises(KeyError, match=r"GRPCRequestHandler decorator is unable to find the list_field .+"):
@@ -206,20 +210,20 @@ async def test_msg_size_handler_invalid_function_list_field() -> None:
 
 @pytest.mark.asyncio
 async def test_msg_size_handler_invalid_function_list_field_annotation_type() -> None:
-    def function_with_wrong_arg_type(_field: str) -> list:
+    async def function_with_wrong_arg_type(_field: str) -> list:
         return ["foo"]
 
     with pytest.raises(TypeError, match=r"GRPCRequestHandler decorator expected the type of the list_field.*to be defined as a list. Got"):
-        await GRPCRequestHandler(list_field="_field")(function_with_wrong_arg_type)(["foo", "bar"])
+        await GRPCRequestHandler(list_field="_field")(function_with_wrong_arg_type)(["foo", "bar"])  # pyright: ignore[reportArgumentType]
 
 
 @pytest.mark.asyncio
 async def test_msg_size_handler_invalid_function_list_field_value_type() -> None:
-    def function_with_wrong_value_type_of_field(_field: list) -> list:
+    async def function_with_wrong_value_type_of_field(_field: list) -> list:
         return ["foo"]
 
     with pytest.raises(TypeError, match=r"GRPCRequestHandler decorator expected the value of the list_field.*to be a list. Got"):
-        await GRPCRequestHandler(list_field="_field")(function_with_wrong_value_type_of_field)("foo")
+        await GRPCRequestHandler(list_field="_field")(function_with_wrong_value_type_of_field)("foo")  # pyright: ignore[reportArgumentType]
 
 
 @pytest.mark.asyncio
@@ -366,8 +370,8 @@ async def test_grpc_request_handler_limited_success(
     function_calls: int,
     log_patterns: list[str],
     expected_response: Any,
-    data: list | None,
-    max_len: int | None,
+    data: list[int],
+    max_len: int,
 ) -> None:
     mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
     with caplog.at_level(logging.DEBUG):
@@ -490,8 +494,8 @@ async def test_grpc_request_handler_limited_failure_and_success(
     async_sleep_calls: int,
     log_patterns: list[str],
     expected_response: Any,
-    data: list | None,
-    max_len: int | None,
+    data: list,
+    max_len: int,
 ) -> None:
     with patch("pyavd._cv.client.async_decorators.asyncio_sleep", new_callable=AsyncMock) as sleep_mock:
         mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
@@ -607,8 +611,8 @@ async def test_grpc_request_handler_exceptions(
 
 @pytest.mark.asyncio
 async def test_grpc_request_handler_negative_max_retries() -> None:
-    def basic_function() -> None:
+    async def basic_function() -> None:
         return
 
-    result = await GRPCRequestHandler(max_retries=-1)(basic_function)()
-    assert result is None
+    with pytest.raises(CVClientException):
+        await GRPCRequestHandler(max_retries=-1)(basic_function)()

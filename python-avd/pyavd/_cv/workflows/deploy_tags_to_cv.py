@@ -93,7 +93,7 @@ async def deploy_tags_to_cv(
     tags_to_add = desired_tags.difference(existing_tags)
     if tags_to_add:
         LOGGER.info("deploy_tags_to_cv: Creating %s tags", len(tags_to_add))
-        await cv_client.set_tags(workspace_id=workspace.id, tags=tags_to_add)
+        _ = await cv_client.set_tags(workspace_id=workspace.id, tags=tags_to_add)
 
     # Remove entries with no assignment from todo tags and add to deployed.
     deployed_tags.extend(tag for tag in todo_tags if tag.device is None)
@@ -110,7 +110,7 @@ async def deploy_tags_to_cv(
     assignments_to_add = desired_assignments.difference(existing_assignments)
     if assignments_to_add:
         LOGGER.info("deploy_tags_to_cv: Creating %s tag assignments", len(assignments_to_add))
-        await cv_client.set_tag_assignments(workspace_id=workspace.id, tag_assignments=assignments_to_add)
+        _ = await cv_client.set_tag_assignments(workspace_id=workspace.id, tag_assignments=assignments_to_add)
 
     # Move all todo assignments to deployed.
     deployed_tags.extend(todo_assignments)
@@ -139,7 +139,7 @@ async def deploy_tags_to_cv(
 
     if assignments_to_unassign:
         LOGGER.info("deploy_tags_to_cv: Deleting %s tag assignments", len(assignments_to_unassign))
-        await cv_client.delete_tag_assignments(workspace_id=workspace.id, tag_assignments=assignments_to_unassign)
+        _ = await cv_client.delete_tag_assignments(workspace_id=workspace.id, tag_assignments=assignments_to_unassign)
 
         # Sort the assignments for deterministic output for testing.
         sorted_assignments_to_unassign = sorted(
@@ -150,7 +150,7 @@ async def deploy_tags_to_cv(
         if tag_type == "interface":
             # Helping the type checker as value type narrowing is hard
             output_list = cast("list[CVInterfaceTag]", removed_tags)
-            for assignment in assignments_to_unassign:
+            for assignment in sorted_assignments_to_unassign:
                 output_list.append(
                     CVInterfaceTag(
                         label=assignment.label, value=assignment.value, device=devices_by_serial_number[assignment.device_id], interface=assignment.interface_id

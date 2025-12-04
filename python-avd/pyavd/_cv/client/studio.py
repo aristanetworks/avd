@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import json
 from logging import getLogger
-from typing import TYPE_CHECKING, Any, Literal, Protocol
+from typing import TYPE_CHECKING, Any, Literal, Protocol, TypeVar, overload
 
 from grpclib import GRPCError, Status
 
@@ -15,15 +15,19 @@ from pyavd._cv.api.arista.studio.v1 import (
     InputsConfigServiceStub,
     InputsConfigSetRequest,
     InputsConfigSetSomeRequest,
+    InputsConfigSetSomeResponse,
     InputsConfigStreamRequest,
+    InputsConfigStreamResponse,
     InputsKey,
     InputsRequest,
     InputsServiceStub,
     InputsStreamRequest,
+    InputsStreamResponse,
     Studio,
     StudioConfig,
     StudioConfigServiceStub,
     StudioConfigStreamRequest,
+    StudioConfigStreamResponse,
     StudioKey,
     StudioRequest,
     StudioServiceStub,
@@ -36,10 +40,13 @@ from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
 
 if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
     from datetime import datetime
 
     from . import CVClientProtocol
 
+
+T = TypeVar("T")
 
 LOGGER = getLogger(__name__)
 
@@ -60,7 +67,7 @@ class StudioMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> Studio:
         """
-        Get Studio definition using arista.studio.v1.StudioService.GetOne.
+        Get Studio definition using arista.studio.v1.StudioService.GetOne and arista.studio.v1.StudioConfigService.GetAll APIs.
 
         The Studio GetOne API for the workspace does not return anything from mainline and does not return deletions in the workspace.
         So to produce the Workspace Studio we need to fetch from the workspace, and if we find nothing, we need to check if the studio
@@ -84,8 +91,8 @@ class StudioMixin(Protocol):
         client = StudioServiceStub(self.channel)
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-        except Exception as e:  # pylint: disable=broad-exception-caught
-            if isinstance(e, GRPCError) and e.status == Status.NOT_FOUND:
+        except GRPCError as e:
+            if e.status == Status.NOT_FOUND:
                 # Continue execution if we did not find any state in the workspace.
                 # This simply means the studio itself was not changed in this workspace.
                 pass
@@ -111,7 +118,7 @@ class StudioMixin(Protocol):
             time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = StudioConfigServiceStub(self.channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        responses: AsyncIterator[StudioConfigStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
         async for _response in responses:
             # If we get here it means we got an entry with "removed: True" so no need to look further.
             msg = "The studio was deleted in the workspace."
@@ -128,6 +135,26 @@ class StudioMixin(Protocol):
 
         return response.value
 
+    @overload
+    async def get_studio_inputs(
+        self: CVClientProtocol,
+        studio_id: str,
+        workspace_id: str,
+        default_value: dict[str, Any],
+        time: datetime | None = None,
+        timeout: float = DEFAULT_API_TIMEOUT,
+    ) -> dict[str, Any]: ...
+
+    @overload
+    async def get_studio_inputs(
+        self: CVClientProtocol,
+        studio_id: str,
+        workspace_id: str,
+        default_value: T,
+        time: datetime | None = None,
+        timeout: float = DEFAULT_API_TIMEOUT,
+    ) -> T | dict[str, Any]: ...
+
     @GRPCRequestHandler()
     async def get_studio_inputs(
         self: CVClientProtocol,
@@ -138,7 +165,7 @@ class StudioMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> Any:
         """
-        Get Studio Inputs using arista.studio.v1.InputsService.GetAll and arista.studio.v1.InputsConfigServer.GetAll APIs.
+        Get Studio Inputs using arista.studio.v1.InputsService.GetAll and arista.studio.v1.InputsConfigService.GetAll APIs.
 
         The Studio Inputs GetAll API for the workspace does not return anything from mainline and does not return deletions in the workspace.
         So to produce the Workspace Studio Inputs we need to fetch from the workspace, and if we find nothing, we need to check if inputs
@@ -166,13 +193,13 @@ class StudioMixin(Protocol):
             time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = InputsServiceStub(self.channel)
-        studio_inputs = {}
+        studio_inputs: dict[str, Any] = {}
 
         # We use get_all since inputs can be larger than the maximum message size.
         # The inputs are split up by the server to send the value of each key in the underlying data instead of one big JSON blob.
         # Each response will contain a path on which a value must be set.
         # After all responses have been handled the data built from the paths/values contain the full inputs.
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        responses: AsyncIterator[InputsStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
         async for response in responses:
             if response.value.inputs is None:
                 continue
@@ -199,8 +226,8 @@ class StudioMixin(Protocol):
             time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = InputsConfigServiceStub(self.channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-        async for _response in responses:
+        inputs_config_responses: AsyncIterator[InputsConfigStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        async for _ in inputs_config_responses:
             # If we get here it means we got an entry with "removed: True" so no need to look further.
             return default_value
 
@@ -215,8 +242,8 @@ class StudioMixin(Protocol):
             time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = InputsServiceStub(self.channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-        async for response in responses:
+        responses: AsyncIterator[InputsStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        async for response in responses:  # pyright: ignore[reportGeneralTypeIssues]
             if response.value.inputs is None:
                 continue
 
@@ -239,7 +266,7 @@ class StudioMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> Any:
         """
-        Get Studio Inputs for a specific path using arista.studio.v1.InputsService.GetOne and arista.studio.v1.InputsConfigServer.GetAll APIs.
+        Get Studio Inputs for a specific path using arista.studio.v1.InputsService.GetOne and arista.studio.v1.InputsConfigService.GetAll APIs.
 
         The Studio Inputs GetOne API for the workspace does not return anything from mainline and does not return deletions in the workspace.
         So to produce the Workspace Studio Inputs we need to fetch from the workspace, and if we find nothing, we need to check if inputs
@@ -301,8 +328,8 @@ class StudioMixin(Protocol):
             time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
         )
         client = InputsConfigServiceStub(self.channel)
-        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-        async for _response in responses:
+        responses: AsyncIterator[InputsConfigStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        async for _ in responses:
             # If we get here it means we got an entry with "removed: True" so no need to look further.
             return default_value
 
@@ -376,9 +403,9 @@ class StudioMixin(Protocol):
         device_ids: list[str] | None = None,
         time: datetime | None = None,
         timeout: float = DEFAULT_API_TIMEOUT,
-    ) -> list[dict]:
+    ) -> list[dict[str, Any]]:
         """
-        Get Topology Studio Inputs using arista.studio.v1.InputsService.GetAll and arista.studio.v1.InputsConfigService.GetAll APIs.
+        Get Topology Studio Inputs.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched. Use "" for mainline.
@@ -387,10 +414,10 @@ class StudioMixin(Protocol):
             timeout: Timeout in seconds.
 
         Returns:
-            TopologyInput objects for the requested devices.
+            List of dictionaries representing Topology Studio inputs.
         """
-        topology_inputs: list[dict] = []
-        studio_inputs: dict = await self.get_studio_inputs(
+        topology_inputs: list[dict[str, Any]] = []
+        studio_inputs: dict[str, Any] = await self.get_studio_inputs(
             studio_id=TOPOLOGY_STUDIO_ID,
             workspace_id=workspace_id,
             default_value={},
@@ -406,8 +433,8 @@ class StudioMixin(Protocol):
             if device_ids and device_id not in device_ids:
                 continue
 
-            device_info: dict = device_entry.get("inputs", {}).get("device", {})
-            interfaces: list[dict] = device_info.get("interfaces", [])
+            device_info: dict[Any, Any] = device_entry.get("inputs", {}).get("device", {})
+            interfaces: list[dict[Any, Any]] = device_info.get("interfaces", [])
             topology_inputs.append(
                 {
                     "device_id": device_id,
@@ -440,8 +467,13 @@ class StudioMixin(Protocol):
             workspace_id: Unique identifier of the Workspace for which the information is set.
             device_inputs: List of Tuples with the format (<device_id>, <hostname>, <system_mac>).
             timeout: Base timeout in seconds. 0.1 second will be added per device.
+
+        Returns:
+            List of InputsKey objects.
         """
-        device_inputs_by_id = {device_id: {"hostname": hostname, "macAddress": system_mac} for device_id, hostname, system_mac in device_inputs}
+        device_inputs_by_id: dict[str, dict[str, str]] = {
+            device_id: {"hostname": hostname, "macAddress": system_mac} for device_id, hostname, system_mac in device_inputs
+        }
 
         # We need to get all the devices to make sure we get the correct index of devices.
         studio_inputs: dict[str, Any] = await self.get_studio_inputs(studio_id=TOPOLOGY_STUDIO_ID, workspace_id=workspace_id, default_value={}, timeout=timeout)
@@ -494,6 +526,6 @@ class StudioMixin(Protocol):
             )
 
         client = InputsConfigServiceStub(self.channel)
-        responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
+        responses: AsyncIterator[InputsConfigSetSomeResponse] = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)  # pyright: ignore[reportAssignmentType]
 
         return [response.key async for response in responses]

@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from pyavd._cv.client.configlet import ConfigletApiTuple
 from pyavd._utils import guaranteed_not_none
@@ -34,10 +34,6 @@ async def deploy_configs_to_cv(configs: list[CVEosConfig], result: DeployToCvRes
     LOGGER.info("deploy_configs_to_cv: %s", len(configs))
 
     if not configs:
-        return
-
-    if not result.workspace:
-        # TODO: Consider raising if there is no workspace
         return
 
     # Build todo with CVEosConfig objects that exist on CloudVision. Add the rest to skipped.
@@ -74,7 +70,7 @@ async def deploy_configlets_to_cv(configs: list[CVEosConfig], workspace_id: str,
         for config in configs
     ]
     LOGGER.info("deploy_configs_to_cv: Deploying %s configlets.", len(configlets))
-    await cv_client.set_configlets_from_files(workspace_id=workspace_id, configlets=configlets)
+    _ = await cv_client.set_configlets_from_files(workspace_id=workspace_id, configlets=configlets)
 
 
 async def get_existing_device_container_ids_from_root_container(workspace_id: str, cv_client: CVClient) -> list[str]:
@@ -90,7 +86,7 @@ async def get_existing_device_container_ids_from_root_container(workspace_id: st
 
     # Create the root level container
     LOGGER.info("deploy_configs_to_cv: Creating AVD root container '%s'", CONFIGLET_CONTAINER_ID)
-    await cv_client.set_configlet_container(
+    _ = await cv_client.set_configlet_container(
         workspace_id=workspace_id,
         container_id=CONFIGLET_CONTAINER_ID,
         display_name="AVD Configurations",
@@ -106,8 +102,10 @@ async def get_existing_device_container_ids_from_root_container(workspace_id: st
     )
 
     if not isinstance(root_containers, list):
-        # TODO: correct error message to state CV did not return the correct type
-        msg = "Booh"
+        msg = (
+            "'configlet_assignment_roots' of the 'studio-static-configlet' Studio was expected to be of a type 'list' but is instead of a type '%s'",
+            type(root_containers).__name__,
+        )
         raise TypeError(msg)
 
     LOGGER.info("deploy_configs_to_cv: Found %s root containers.", len(root_containers))
@@ -115,7 +113,7 @@ async def get_existing_device_container_ids_from_root_container(workspace_id: st
         LOGGER.info("deploy_configs_to_cv: AVD root container not assigned as root container in Static Config Studio. Inserting AVD container at the top.")
         # Inserting our container first, to allow reconcile and other static config containers to override the AVD config.
         root_containers.insert(0, CONFIGLET_CONTAINER_ID)
-        await cv_client.set_studio_inputs(
+        _ = await cv_client.set_studio_inputs(
             studio_id=STATIC_CONFIGLET_STUDIO_ID,
             workspace_id=workspace_id,
             input_path=["configletAssignmentRoots"],
@@ -140,7 +138,7 @@ async def deploy_configlet_containers_to_cv(configs: list[CVEosConfig], workspac
         LOGGER.info("deploy_configs_to_cv: %s existing device containers under AVD root container.", len(existing_device_containers))
 
         # Create dict keyed by container id with value of tuple containing key container parameters. Used later to detect changes.
-        existing_device_containers_by_id = {
+        existing_device_containers_by_id: dict[str, tuple[str | None, str | None, str | None, list[str]]] = {
             guaranteed_not_none(cv_container.key.configlet_assignment_id): (
                 cv_container.display_name,
                 cv_container.description,
@@ -150,10 +148,11 @@ async def deploy_configlet_containers_to_cv(configs: list[CVEosConfig], workspac
             for cv_container in existing_device_containers
         }
     else:
-        existing_device_containers = []
         existing_device_containers_by_id = {}
 
-    update_device_containers = []
+    update_device_containers: list[
+        tuple[str, str | None, str | None, list[str] | None, str | None, list[str] | None, Literal["match_first", "match_all"] | None]
+    ] = []
     update_device_container_ids: set[str] = set()
     for config in configs:
         # For now we reuse configlet_id as container_id.
@@ -168,12 +167,12 @@ async def deploy_configlet_containers_to_cv(configs: list[CVEosConfig], workspac
 
     if update_device_containers:
         LOGGER.info("deploy_configs_to_cv: Deploying %s configlet assignments.", len(update_device_containers))
-        await cv_client.set_configlet_containers(workspace_id=workspace_id, containers=update_device_containers)
+        _ = await cv_client.set_configlet_containers(workspace_id=workspace_id, containers=update_device_containers)
 
     # Update any missing update_device_container_ids on the root level container.
     if not update_device_container_ids.issubset(existing_device_containers_by_id):
         LOGGER.info("deploy_configs_to_cv: Updating root container children.")
-        await cv_client.set_configlet_container(
+        _ = await cv_client.set_configlet_container(
             workspace_id=workspace_id,
             container_id=CONFIGLET_CONTAINER_ID,
             child_assignment_ids=list(update_device_container_ids.union(existing_device_containers_by_id)),

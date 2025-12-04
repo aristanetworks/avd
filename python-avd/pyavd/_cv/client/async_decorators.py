@@ -204,7 +204,7 @@ class GRPCRequestHandler:
 
         return _string_based_annotation is list or get_origin(annotation) is list, _string_based_annotation
 
-    async def _execute_single_call_with_retries(self, call_args: tuple[Any, ...], call_kwargs: dict[str, Any]) -> None:
+    async def _execute_single_call_with_retries(self, call_args: tuple[Any, ...], call_kwargs: dict[str, Any]) -> Any:
         """Executes a single call to self.func with retry logic for gRPC UNAVAILABLE."""
         self.func = guaranteed_not_none(self.func)
         func_name = self.func.__name__
@@ -258,8 +258,8 @@ class GRPCRequestHandler:
 
                     case _:
                         raise CVClientException(*e.args, call_args, call_kwargs)
-        # Required by ruff
-        return None
+        # Meeting requirement to return on all paths
+        raise CVClientException
 
     async def _execute_with_splitting(self, original_call_args: tuple[Any, ...], original_call_kwargs: dict[str, Any]) -> Any:
         self.func = guaranteed_not_none(self.func)
@@ -320,7 +320,7 @@ class GRPCRequestHandler:
             )
 
             # For every chunk we call ourselves recursively, so we can catch any further needs of splitting.
-            aggregated_results = []
+            aggregated_results: list[Any] = []
             for chunk_id, chunk in enumerate(batch(list_value, chunk_size)):
                 LOGGER.info(
                     "%s: Processing chunk %s/%s for '%s' with %s item(s) from list_field '%s'.",

@@ -16,7 +16,7 @@ def guaranteed_not_none(value: T | None) -> T:
     Guarantee the value is not None.
 
     Args:
-        value: Optional value to test
+        value: Value to test
 
     Raises:
         ValueError: if the value is None.
@@ -24,5 +24,5 @@ def guaranteed_not_none(value: T | None) -> T:
     """
     if value is None:
         msg = "Value should never be None here."
-        raise RuntimeError(msg)
+        raise ValueError(msg)
     return value

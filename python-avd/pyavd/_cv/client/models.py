@@ -7,6 +7,7 @@ from typing import Literal
 from typing_extensions import Self
 
 from pyavd._cv.api.arista.tag.v2 import ElementType, Tag, TagAssignment
+from pyavd._utils import guaranteed_not_none
 
 STRING_TO_ELEMENT_TYPE_MAP: dict[Literal["device", "interface", "unspecified"], ElementType] = {
     "device": ElementType.DEVICE,
@@ -14,7 +15,7 @@ STRING_TO_ELEMENT_TYPE_MAP: dict[Literal["device", "interface", "unspecified"], 
     "unspecified": ElementType.UNSPECIFIED,
 }
 
-ELEMENT_TYPE_TO_STRING_MAP: dict[int, Literal["device", "interface", "unspecified"]] = {
+ELEMENT_TYPE_TO_STRING_MAP: dict[ElementType, Literal["device", "interface", "unspecified"]] = {
     ElementType.DEVICE: "device",
     ElementType.INTERFACE: "interface",
     ElementType.UNSPECIFIED: "unspecified",
@@ -41,14 +42,10 @@ class CVTag:
         """Create a CVTag from a raw API Tag object."""
         element_type = ELEMENT_TYPE_TO_STRING_MAP.get(tag.key.element_type, "unspecified")
 
-        if tag.key.label is None or tag.key.value is None:
-            msg = "Booh"
-            raise RuntimeError(msg)
-
         return cls(
             element_type=element_type,
-            label=tag.key.label,
-            value=tag.key.value,
+            label=guaranteed_not_none(tag.key.label),
+            value=guaranteed_not_none(tag.key.value),
         )
 
 
@@ -79,14 +76,10 @@ class CVTagAssignment:
 
         element_type = ELEMENT_TYPE_TO_STRING_MAP.get(tag_assignment.key.element_type, "unspecified")
 
-        if tag_assignment.key.label is None or tag_assignment.key.value is None or tag_assignment.key.device_id is None:
-            msg = "Booh"
-            raise RuntimeError(msg)
-
         return cls(
             element_type=element_type,
-            label=tag_assignment.key.label,
-            value=tag_assignment.key.value,
-            device_id=tag_assignment.key.device_id,
+            label=guaranteed_not_none(tag_assignment.key.label),
+            value=guaranteed_not_none(tag_assignment.key.value),
+            device_id=guaranteed_not_none(tag_assignment.key.device_id),
             interface_id=interface_id,
         )

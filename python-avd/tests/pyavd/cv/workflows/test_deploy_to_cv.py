@@ -55,7 +55,7 @@ async def test_deploy_to_cv(
 
     -   description: Fetch I&T Studio inputs
         request: 'InputsStreamRequest(partial_eq_filter=[Inputs(key=InputsKey(studio_id='TOPOLOGY', workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))],
-            time=None)'
+            time=TimeBounds(start=None, end=None))'
         targeted_file: 'arista.studio.v1.InputsService/GetAll/www.cv-prod-us-central1-c.arista.io/0ab698a68a7f9f86eeda70fba362f57cb2f07fc4.json'
 
     -   description: Create configlet

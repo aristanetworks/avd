@@ -21,6 +21,7 @@ from pyavd._cv.api.arista.workspace.v1 import (
     WorkspaceRequest,
     WorkspaceServiceStub,
     WorkspaceStreamRequest,
+    WorkspaceStreamResponse,
 )
 
 from .async_decorators import GRPCRequestHandler
@@ -28,21 +29,13 @@ from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import CVResourceNotFound
 
 if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
     from datetime import datetime
 
     from . import CVClientProtocol
 
 
 LOGGER = getLogger(__name__)
-
-REQUEST_MAP = {
-    "abandon": Request.ABANDON,
-    "cancel_build": Request.CANCEL_BUILD,
-    "rollback": Request.ROLLBACK,
-    "start_build": Request.START_BUILD,
-    "submit": Request.SUBMIT,
-    None: None,
-}
 
 
 class WorkspaceMixin(Protocol):
@@ -61,12 +54,12 @@ class WorkspaceMixin(Protocol):
         Get Workspace using arista.workspace.v1.WorkspaceService.GetOne API.
 
         Parameters:
-            workspace_id: Unique identifier the workspace.
+            workspace_id: Unique identifier of the workspace.
             time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
 
         Returns:
-            Workspace object matching the workspace_id
+            Workspace object matching the workspace_id.
         """
         # TODO: Fix time type error once we settle on the correct type for time in Key
         # Note that changing this will also impact the recorded calls hash and fail tests
@@ -95,7 +88,7 @@ class WorkspaceMixin(Protocol):
         Create Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.
 
         Parameters:
-            workspace_id: Unique identifier the workspace.
+            workspace_id: Unique identifier of the workspace.
             display_name: Workspace Name.
             description: Workspace description.
             timeout: Timeout in seconds.
@@ -124,7 +117,7 @@ class WorkspaceMixin(Protocol):
         Abandon Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.
 
         Parameters:
-            workspace_id: Unique identifier the workspace.
+            workspace_id: Unique identifier of the workspace.
             timeout: Timeout in seconds.
 
         Returns:
@@ -153,7 +146,7 @@ class WorkspaceMixin(Protocol):
         Request a build of the Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.
 
         Parameters:
-            workspace_id: Unique identifier the workspace.
+            workspace_id: Unique identifier of the workspace.
             timeout: Timeout in seconds.
 
         Returns:
@@ -182,7 +175,7 @@ class WorkspaceMixin(Protocol):
         Delete Workspace using arista.workspace.v1.WorkspaceConfigService.Delete API.
 
         Parameters:
-            workspace_id: Unique identifier the workspace.
+            workspace_id: Unique identifier of the workspace.
             timeout: Timeout in seconds.
 
         Returns:
@@ -204,7 +197,7 @@ class WorkspaceMixin(Protocol):
         Request submission of the Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.
 
         Parameters:
-            workspace_id: Unique identifier the Workspace.
+            workspace_id: Unique identifier of the Workspace.
             force: Force submit the Workspace.
             timeout: Timeout in seconds.
 
@@ -252,7 +245,7 @@ class WorkspaceMixin(Protocol):
             ],
         )
         client = WorkspaceServiceStub(self.channel)
-        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+        responses: AsyncIterator[WorkspaceStreamResponse] = client.subscribe(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
         async for response in responses:
             if request_id in response.value.responses.values:
                 LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, response.value.responses.values[request_id])

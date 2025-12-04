@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus, WorkspaceState
 from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed, CVWorkspaceSubmitFailedInactiveDevices
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 LOGGER = getLogger(__name__)
 
-WORKSPACE_STATE_TO_FINAL_STATE_MAP = {
+WORKSPACE_STATE_TO_FINAL_STATE_MAP: dict[WorkspaceState, Literal["abandoned", "build failed", "pending", "submitted"] | None] = {
     WorkspaceState.ABANDONED: "abandoned",
     WorkspaceState.CONFLICTS: "build failed",
     WorkspaceState.PENDING: "pending",
@@ -47,7 +47,7 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
         workspace.state = "build failed"
         LOGGER.info("finalize_workspace_on_cv: %s", workspace)
         if workspace.requested_state == "abandoned":
-            await cv_client.abandon_workspace(workspace_id=workspace.id)
+            _ = await cv_client.abandon_workspace(workspace_id=workspace.id)
             workspace.state = "abandoned"
             LOGGER.info("finalize_workspace_on_cv: Workspace %s has been successfully abandoned.", workspace.id)
         msg = (
@@ -105,13 +105,13 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
 
     # We can abort or delete even if we got some unexpected build state.
     if workspace.requested_state == "abandoned":
-        await cv_client.abandon_workspace(workspace_id=workspace.id)
+        _ = await cv_client.abandon_workspace(workspace_id=workspace.id)
         workspace.state = "abandoned"
         LOGGER.info("finalize_workspace_on_cv: %s", workspace)
         return
 
     if workspace.requested_state == "deleted":
-        await cv_client.delete_workspace(workspace_id=workspace.id)
+        _ = await cv_client.delete_workspace(workspace_id=workspace.id)
         workspace.state = "deleted"
         LOGGER.info("finalize_workspace_on_cv: %s", workspace)
         return

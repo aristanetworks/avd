@@ -146,14 +146,14 @@ async def verify_devices_in_topology_studio(existing_devices: list[CVDevice], wo
 
     # List of tuples holding the info we need to update in I&T Studio
     # [(<device_id>, <hostname>, <system_mac>)]
-    update_topology_inputs = []
+    update_topology_inputs: list[tuple[str, str, str]] = []
 
     for serial_number, hostname, system_mac_address in existing_device_tuples:
         if serial_number not in topology_inputs_dict_by_serial or (
             hostname != topology_inputs_dict_by_serial[serial_number]["hostname"]
             or system_mac_address != topology_inputs_dict_by_serial[serial_number]["mac_address"]
         ):
-            update_topology_inputs.append((serial_number, hostname, system_mac_address))
+            update_topology_inputs.append((guaranteed_not_none(serial_number), guaranteed_not_none(hostname), guaranteed_not_none(system_mac_address)))
 
     if update_topology_inputs:
         LOGGER.info("verify_devices_in_topology_studio: need updates for %s unique devices in I&T Studio.", len(update_topology_inputs))

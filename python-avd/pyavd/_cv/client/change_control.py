@@ -121,7 +121,7 @@ class ChangeControlMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ApproveConfig:
         """
-        Get Change Control using arista.changecontrol.v1.ChangeControlService.GetOne API.
+        Set Change Control using arista.changecontrol.v1.ApproveConfigService.Set API.
 
         Parameters:
             change_control_id: Unique identifier of the Change Control.
@@ -195,7 +195,7 @@ class ChangeControlMixin(Protocol):
             timeout: Timeout in seconds for the Change Control to reach the expected state.
 
         Returns:
-            Full change control object
+            Full ChangeControl object.
         """
         request = ChangeControlStreamRequest(
             partial_eq_filter=[
@@ -206,7 +206,7 @@ class ChangeControlMixin(Protocol):
         )
         client = ChangeControlServiceStub(self.channel)
         responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
-        async for response in responses:
+        async for response in responses:  # pyright: ignore[reportGeneralTypeIssues]
             LOGGER.debug("wait_for_change_control_complete: Response is '%s.'", response)
             if hasattr(response, "value") and response.value.status == CHANGE_CONTROL_STATUS_MAP[state]:
                 LOGGER.info("wait_for_change_control_complete: Got response for request '%s': %s", cc_id, response.value.status)

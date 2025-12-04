@@ -11,6 +11,8 @@ from grpclib.client import Channel
 from requests import JSONDecodeError, get, post
 from requests.exceptions import HTTPError, RequestException
 
+from pyavd._utils import guaranteed_not_none
+
 from .change_control import ChangeControlMixin
 from .configlet import ConfigletMixin
 from .exceptions import CVClientException
@@ -66,10 +68,7 @@ class CVClientProtocol(
 
     @property
     def channel(self) -> Channel:
-        if self._channel is None:
-            msg = "'set_change_control' was called with '_channel' unset."
-            raise RuntimeError(msg)
-        return self._channel
+        return guaranteed_not_none(self._channel)
 
     async def _connect(self) -> None:
         # TODO: Verify connection
@@ -89,9 +88,7 @@ class CVClientProtocol(
             else:
                 self._channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
 
-        if self._token is not None:
-            self._metadata = {"authorization": "Bearer " + self._token}
-            # TODO: Should we raise if not token is given
+        self._metadata = {"authorization": "Bearer " + guaranteed_not_none(self._token)}
 
     async def _create_proxy_channel(self, ssl_context: ssl.SSLContext | bool) -> Channel:
         """
@@ -108,14 +105,11 @@ class CVClientProtocol(
 
         # Create custom connector that uses proxy
         async def proxy_connection() -> H2Protocol:
-            if self._proxy_manager is None:
-                msg = "'proxy_connection' was called with '_proxy_manager' unset."
-                raise RuntimeError(msg)
-
             loop = asyncio.get_running_loop()
 
             try:
                 # Create socket through proxy using python-socks
+                self._proxy_manager = guaranteed_not_none(self._proxy_manager)
                 proxy_sock = await self._proxy_manager.create_socket_for_grpc()
 
                 # Create the gRPC protocol using the proxy socket

@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Literal, cast
 
 from pyavd._cv.api.arista.changecontrol.v1 import ChangeControl, ChangeControlStatus
 from pyavd._cv.client.exceptions import CVChangeControlFailed
+from pyavd._utils import guaranteed_not_none
 
 if TYPE_CHECKING:
     from aristaproto import _DateTime
@@ -18,22 +19,23 @@ if TYPE_CHECKING:
 
 LOGGER = getLogger(__name__)
 
-CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP: dict[int, Literal["completed", "running", "scheduled"] | None] = {
+# TODO: Add coverage for ChangeControlStatus.NOT_STARTED
+CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP: dict[ChangeControlStatus, Literal["completed", "running", "scheduled"] | None] = {
     ChangeControlStatus.COMPLETED: "completed",
     ChangeControlStatus.RUNNING: "running",
     ChangeControlStatus.SCHEDULED: "scheduled",
     ChangeControlStatus.UNSPECIFIED: None,
 }
 
-CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP: dict[bool, Literal["approved"] | None] = {True: "approved", False: None}
+CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP: dict[bool | None, Literal["approved"] | None] = {True: "approved", False: None, None: None}
 
 
 def get_change_control_state(
     cv_change_control: ChangeControl,
 ) -> Literal["pending approval", "approved", "running", "completed", "deleted", "failed", "scheduled"] | None:
     return (
-        CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP[cast("int", cv_change_control.status)]
-        or CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP[cast("bool", cv_change_control.approve.value)]
+        CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP[cv_change_control.status]
+        or CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP[cv_change_control.approve.value]
         or "failed"
         if cv_change_control.error is not None
         else "pending approval"
@@ -49,10 +51,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
     """
     LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
-    if change_control.id is None:
-        msg = "'finalize_change_control_on_cv' was called with a CVChangeControl object with 'id' not set"
-        raise RuntimeError(msg)
-
+    change_control.id = guaranteed_not_none(change_control.id)
     cv_change_control = await cv_client.get_change_control(change_control_id=change_control.id)
 
     # Update missing fields on our local model with data from the CloudVision object.
@@ -66,7 +65,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
 
     # Update the change control with name, description etc from our local object if needed.
     if change_control.name != cv_change_control.change.name or change_control.description != cv_change_control.change.notes:
-        await cv_client.set_change_control(change_control_id=change_control.id, name=change_control.name, description=change_control.description)
+        _ = await cv_client.set_change_control(change_control_id=change_control.id, name=change_control.name, description=change_control.description)
         # Update the local copy to get the exact "last updated" timestamp needed for approval.
         cv_change_control = await cv_client.get_change_control(change_control_id=change_control.id)
         change_control.state = get_change_control_state(cv_change_control=cv_change_control)
@@ -80,7 +79,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
 
     # For all other requested states we first need to approve.
     if change_control.state != "approved":
-        await cv_client.approve_change_control(
+        _ = await cv_client.approve_change_control(
             change_control_id=change_control.id,
             timestamp=cast("_DateTime", cv_change_control.change.time),
             description="Automatic approval by AVD",
@@ -92,7 +91,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
     if change_control.requested_state == "approved":
         return
 
-    await cv_client.start_change_control(change_control_id=change_control.id, description="Automatically started by AVD")
+    _ = await cv_client.start_change_control(change_control_id=change_control.id, description="Automatically started by AVD")
     change_control.state = "running"
     LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 

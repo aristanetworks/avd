@@ -14,6 +14,7 @@ from pyavd._cv.api.arista.swg.v1 import (
     EndpointStatus,
     EndpointStatusServiceStub,
     EndpointStatusStreamRequest,
+    EndpointStatusStreamResponse,
     ServiceName,
     SwgKey,
 )
@@ -23,6 +24,8 @@ from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import CVResourceNotFound
 
 if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+
     from . import CVClientProtocol
 
 LOGGER = getLogger(__name__)
@@ -53,7 +56,6 @@ class SwgMixin(Protocol):
             device_id: Unique identifier of the Device - typically serial number.
             service: SWG service. Currently only supporting "zscaler".
             location: Device location/address. CloudVision will resolve a location from this address.
-            time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
 
         Returns:
@@ -103,7 +105,7 @@ class SwgMixin(Protocol):
         )
         client = EndpointStatusServiceStub(self.channel)
 
-        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+        responses: AsyncIterator[EndpointStatusStreamResponse] = client.subscribe(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
         async for response in responses:
             if response.time < start_time:
                 LOGGER.info("wait_for_swg_endpoint_status: Got stale SWG endpoints from a previous lookup.")
