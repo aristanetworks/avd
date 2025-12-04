@@ -79,12 +79,14 @@ keys:
                 max: 255
                 convert_types:
                 - str
+                required: true
               duration:
                 type: int
                 min: 1
                 max: 4294967295
                 convert_types:
                 - str
+                required: true
               window:
                 type: int
                 min: 1

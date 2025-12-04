@@ -32,7 +32,7 @@ from .utils import UtilsMixin
 from .wan import WanMixin
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
+    from collections.abc import Mapping, MutableMapping
 
     from ansible.template import Templar
 
@@ -70,7 +70,7 @@ class SharedUtilsProtocol(
     """Protocol for the SharedUtils Class with commonly used methods / cached_properties to be shared between all the python modules loaded in eos_designs."""
 
     hostname: str
-    hostvars: Mapping
+    hostvars: MutableMapping
     inputs: EosDesigns
     templar: Templar | None
     peer_facts: Mapping[str, EosDesignsFactsProtocol]
@@ -94,7 +94,7 @@ class SharedUtils(SharedUtilsProtocol):
     def __init__(
         self,
         hostname: str,
-        hostvars: Mapping,
+        hostvars: MutableMapping,
         inputs: EosDesigns,
         templar: Templar | None,
         peer_facts: Mapping[str, EosDesignsFactsProtocol],
