@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from ipaddress import IPv4Address, ip_address
+from typing import TYPE_CHECKING
 
 from anta.input_models.avt import AVTPath
 from anta.tests.avt import VerifyAVTSpecificPath
@@ -12,6 +13,9 @@ from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory[VerifyAVTSpecificPath.Input]):
@@ -22,8 +26,8 @@ class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory[VerifyAVTSpecificPa
     `router_path_selection.path_groups.static_peers`.
     """
 
-    def create(self) -> list[VerifyAVTSpecificPath.Input] | None:
-        """Create a list of inputs for the `VerifyAVTSpecificPath` test."""
+    def create(self) -> Iterator[VerifyAVTSpecificPath.Input]:
+        """Generate the inputs for the `VerifyAVTSpecificPath` test."""
         avt_vrfs = self.structured_config.router_adaptive_virtual_topology.vrfs
         path_groups = self.structured_config.router_path_selection.path_groups
         static_peers: set[IPv4Address] = set()
@@ -41,7 +45,7 @@ class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory[VerifyAVTSpecificPa
 
         if not static_peers:
             self.logger_adapter.debug(LogMessage.NO_STATIC_PEERS)
-            return None
+            return
 
         avt_paths: list[AVTPath] = [
             AVTPath(avt_name=avt_profile.name, vrf=vrf.name, destination=dst_address, next_hop=dst_address)
@@ -51,4 +55,8 @@ class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory[VerifyAVTSpecificPa
             for dst_address in static_peers
         ]
 
-        return [VerifyAVTSpecificPath.Input(avt_paths=natural_sort(avt_paths, sort_key="avt_name"))] if avt_paths else None
+        if not avt_paths:
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
+            return
+
+        yield VerifyAVTSpecificPath.Input(avt_paths=natural_sort(avt_paths, sort_key="avt_name"))
