@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - dynamic prefix lists #}
-{% for dynamic_prefix_list in dynamic_prefix_lists | arista.avd.natural_sort('name') %}
+{% for dynamic_prefix_list in dynamic_prefix_lists | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 dynamic prefix-list {{ dynamic_prefix_list.name }}
 {%     if dynamic_prefix_list.match_map is arista.avd.defined %}
