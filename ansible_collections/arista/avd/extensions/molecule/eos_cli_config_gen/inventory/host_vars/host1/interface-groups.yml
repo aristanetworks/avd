@@ -22,3 +22,14 @@ interface_groups:
   - name: QSFP_Interface_Group1
     interfaces:
       - Ethernet1,5
+
+  # Test for sort with ignore_case: false
+  - name: aaa_group
+    interfaces:
+      - Ethernet1,5
+    interface_maintenance_profiles:
+      - aaa-uplink-interfaces
+      - ZZZ-uplink-interfaces
+    bgp_maintenance_profiles:
+      - aaa-uplink-interfaces
+      - ZZZ-uplink-interfaces
