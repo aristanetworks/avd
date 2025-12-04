@@ -5,7 +5,7 @@
 #}
 {# eos - interface profiles #}
 {% if interface_profiles is arista.avd.defined %}
-{%     for interface_profile in interface_profiles | arista.avd.natural_sort('name') %}
+{%     for interface_profile in interface_profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 interface profile {{ interface_profile.name }}
 {%         if interface_profile.commands is arista.avd.defined %}

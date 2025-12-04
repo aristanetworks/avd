@@ -11,3 +11,8 @@ interface_profiles:
     commands:
       - mtu 9214
       - ptp enable
+  # Test for sort with ignore_case: false
+  - name: aa-profile-3
+    commands:
+      - mtu 9214
+      - ptp enable
