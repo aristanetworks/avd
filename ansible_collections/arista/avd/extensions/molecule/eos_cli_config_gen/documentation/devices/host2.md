@@ -46,6 +46,8 @@
   - [Monitor Connectivity Device Configuration](#monitor-connectivity-device-configuration)
 - [Monitor Layer 1 Logging](#monitor-layer-1-logging)
   - [Monitor Layer 1 Device Configuration](#monitor-layer-1-device-configuration)
+- [Monitor Loop Protestion Options](#monitor-loop-protestion-options)
+  - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Custom TCAM Profiles](#custom-tcam-profiles)
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
@@ -68,6 +70,7 @@
   - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [DPS Interfaces](#dps-interfaces)
+  - [Ethernet Interfaces](#ethernet-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Switchport Port-security](#switchport-port-security)
   - [Switchport Port-security Summary](#switchport-port-security-summary)
@@ -757,6 +760,31 @@ monitor connectivity
 monitor layer1
 ```
 
+## Monitor Loop Protestion Options
+
+| Options           |  Value  |
+| ----------------- | ------- |
+| Enabled           |  False  |
+| disabled-time     | 100 |
+| protect vlan      | 1000-1100 |
+| rate-limit        | 100 |
+| transmit-interval | 10 |
+
+Affected Interfaces:
+Ethernet 4
+
+### Monitor Loop Protection Configuration
+
+```eos ####
+!
+monitor loop-protection
+   shutdown 
+   disabled-time 100
+   protect vlan 1000-1100
+   rate-limit 100
+   transmit-interval 10
+```
+
 ## Hardware TCAM Profile
 
 TCAM profile **`default`** is active
@@ -806,6 +834,13 @@ load-balance cluster
 | Enabled | Management Address | Management VRF | Timer | Hold-Time | Re-initialization Timer | Drop Received Tagged Packets |
 | ------- | ------------------ | -------------- | ----- | --------- | ----------------------- | ---------------------------- |
 | False | - | Default | 30 | 120 | 2 | - |
+
+#### LLDP Interface Settings
+
+LLDP is **disabled** globally. Local interface configs will not apply.
+
+| Interface | Transmit | Receive |
+| --------- | -------- | ------- |
 
 ### LLDP Device Configuration
 
@@ -919,6 +954,25 @@ interface Dps1
    mtu 666
    flow tracker sampled FT-S
    ip address 192.168.42.42/24
+```
+
+### Ethernet Interfaces
+
+#### Ethernet Interfaces Summary
+
+##### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+
+*Inherited from Port-Channel Interface
+
+#### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface Ethernet 4
+   loop-protection
 ```
 
 ### VXLAN Interface
