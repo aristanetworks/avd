@@ -156,7 +156,7 @@ class SrcGenList(SrcGenBase):
             return generate_class_name_from_ref(self.schema.field_ref)
         return self.get_class_name()
 
-    def generate_class_src(self, schema: AvdSchemaList, class_name: str | None = None) -> SrcData:
+    def generate_class_src(self, schema: AvdSchemaList, class_name: str | None = None) -> SrcData:  # pyright: ignore[reportIncompatibleMethodOverride]
         """
         Returns SrcData for the given schema.
 
@@ -312,7 +312,7 @@ class SrcGenDict(SrcGenBase):
         """Return a set of strings with Python imports that are needed for this class or field. Only used for rootdict."""
         return set()
 
-    def get_children_classes_and_fields(self) -> tuple[list[ModelSrc | ListSrc], list[FieldSrc]]:
+    def get_children_classes_and_fields(self) -> tuple[list[ModelSrc | ListSrc], list[FieldSrc | None]]:
         """Return lists of ModelSrc and FieldSrc for any nested fields."""
         classes = []
         fields = []
@@ -383,7 +383,7 @@ class SrcGenRootDict(SrcGenDict):
 
         return imports
 
-    def get_children_classes_and_fields(self) -> tuple[list[ModelSrc | ListSrc], list[FieldSrc]]:
+    def get_children_classes_and_fields(self) -> tuple[list[ModelSrc | ListSrc], list[FieldSrc | None]]:
         """
         Return lists of ModelSrc and FieldSrc for any nested fields.
 
@@ -455,8 +455,9 @@ class SrcGenRootDict(SrcGenDict):
                 _dynamic_key_maps.append({"dynamic_keys_path": dynamic_keys_path, "model_key": dynamic_key_type})
                 fieldsrc = childschema._generate_class_src(class_name=generate_class_name(dynamic_key_type))
                 # Overriding the details from the autocreated field. This way we can reuse the field definition with types and type hints
-                fieldsrc.field.name = "value"
-                fieldsrc.field.description = "Value of dynamic key"
+                if fieldsrc.field is not None:
+                    fieldsrc.field.name = "value"
+                    fieldsrc.field.description = "Value of dynamic key"
                 dyn_classes.extend(
                     [
                         ModelSrc(

@@ -113,7 +113,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     _class_src_generator: type[SrcGenBase]
 
     # Internal attributes used by schema docs generators
-    _key: str | None = None
+    _key: str = ""
     _parent_schema: AvdSchemaField | None = None
     _is_primary_key: bool = False
     """
@@ -131,7 +131,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     # Signal to __init__ if the $ref in the schema should be resolved before initializing the pydantic model.
     _resolve_schema: ClassVar[Literal["eos_designs", "eos_cli_config_gen", "all"] | None] = "all"
 
-    def __init__(self, _resolve_schema: Literal["eos_designs", "eos_cli_config_gen", "all"] | None = None, **data: Any) -> None:
+    def __init__(self, _resolve_schema: str | None = None, **data: Any) -> None:
         """
         Takes a kwarg "_resolve_schema" which controls if $refs are resolved, and if a string, only the given schema will be resolved.
 
@@ -591,6 +591,9 @@ class AristaAvdSchema(AvdSchemaDict):
 
     # Type of class source generator to use for this schema field.
     _class_src_generator = SrcGenRootDict
+
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
 
     # Internal attributes used by schema docs generators
     @cached_property
