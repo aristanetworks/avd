@@ -42,7 +42,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
         export_to_cloudvision = sflow_settings.export_to_cloudvision
 
         if not destinations and not export_to_cloudvision.enabled:
-            msg = "`sflow_settings.destinations` or `sflow_settings.export_to_cloudvision.enabled` is required to configure `sflow`."
+            msg = "Either `sflow_settings.destinations` or `sflow_settings.export_to_cloudvision.enabled` is required to configure `sflow`."
             raise AristaAvdInvalidInputsError(msg)
 
         sflow_settings_vrfs = sflow_settings.vrfs
