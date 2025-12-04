@@ -161,6 +161,8 @@ keys:
               subnet:
                 description: IPv4 subnet.
                 type: str
+              default_gateway:
+                type: str
               reservations:
                 type: list
                 items:

@@ -4507,15 +4507,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "subnet": {"type": str},
+                "default_gateway": {"type": str},
                 "reservations": {"type": Reservations},
                 "name": {"type": str},
-                "default_gateway": {"type": str},
                 "dns_servers": {"type": DnsServers},
                 "ranges": {"type": Ranges},
                 "lease_time": {"type": LeaseTime},
             }
             subnet: str
             """IPv4 subnet."""
+            default_gateway: str | None
             reservations: Reservations
             """
             DHCP client reservations.
@@ -4524,7 +4525,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             `mac_address` (`str`).
             """
             name: str | None
-            default_gateway: str | None
             dns_servers: DnsServers
             """Subclass of AvdList with `str` items."""
             ranges: Ranges
@@ -4538,9 +4538,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     subnet: str | UndefinedType = Undefined,
+                    default_gateway: str | None | UndefinedType = Undefined,
                     reservations: Reservations | UndefinedType = Undefined,
                     name: str | None | UndefinedType = Undefined,
-                    default_gateway: str | None | UndefinedType = Undefined,
                     dns_servers: DnsServers | UndefinedType = Undefined,
                     ranges: Ranges | UndefinedType = Undefined,
                     lease_time: LeaseTime | UndefinedType = Undefined,
@@ -4553,13 +4553,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         subnet: IPv4 subnet.
+                        default_gateway: default_gateway
                         reservations:
                            DHCP client reservations.
 
                            Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
                            `mac_address` (`str`).
                         name: name
-                        default_gateway: default_gateway
                         dns_servers: Subclass of AvdList with `str` items.
                         ranges: Subclass of AvdList with `RangesItem` items.
                         lease_time: Subclass of AvdModel.
@@ -4677,7 +4677,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "subnet": {"type": str},
                 "reservations": {"type": Reservations},
                 "name": {"type": str},
-                "default_gateway": {"type": str},
                 "dns_servers": {"type": DnsServers},
                 "ranges": {"type": Ranges},
                 "lease_time": {"type": LeaseTime},
@@ -4692,7 +4691,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             `mac_address` (`str`).
             """
             name: str | None
-            default_gateway: str | None
             dns_servers: DnsServers
             """Subclass of AvdList with `str` items."""
             ranges: Ranges
@@ -4708,7 +4706,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     subnet: str | UndefinedType = Undefined,
                     reservations: Reservations | UndefinedType = Undefined,
                     name: str | None | UndefinedType = Undefined,
-                    default_gateway: str | None | UndefinedType = Undefined,
                     dns_servers: DnsServers | UndefinedType = Undefined,
                     ranges: Ranges | UndefinedType = Undefined,
                     lease_time: LeaseTime | UndefinedType = Undefined,
@@ -4727,7 +4724,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
                            `mac_address` (`str`).
                         name: name
-                        default_gateway: default_gateway
                         dns_servers: Subclass of AvdList with `str` items.
                         ranges: Subclass of AvdList with `RangesItem` items.
                         lease_time: Subclass of AvdModel.

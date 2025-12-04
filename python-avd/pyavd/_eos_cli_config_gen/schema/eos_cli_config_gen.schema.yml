@@ -1844,6 +1844,8 @@ keys:
               subnet:
                 description: IPv4 subnet.
                 type: str
+              default_gateway:
+                type: str
               reservations:
                 type: list
                 items:
@@ -25160,8 +25162,6 @@ $defs:
           type: str
           convert_types:
           - int
-        default_gateway:
-          type: str
         dns_servers:
           type: list
           items:
