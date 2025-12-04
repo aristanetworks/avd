@@ -23,7 +23,7 @@ from .structured_config_generator import StructCfgs
 from .underlay import AvdStructuredConfigUnderlay
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
+    from collections.abc import Mapping, MutableMapping
 
     from ansible.template import Templar
 
@@ -61,7 +61,7 @@ The order is important, since later modules can overwrite or read config created
 def get_structured_config(
     *,
     hostname: str,
-    hostvars: Mapping,
+    hostvars: MutableMapping,
     input_schema_tools: AvdSchemaTools,
     all_facts: Mapping[str, EosDesignsFacts],
     result: dict,
