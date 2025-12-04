@@ -18,9 +18,7 @@ keys:
               type: str
               description: |-
                 Specifies the events that should trigger this action.
-                The list of supported causes is built dynamically from Sysdb and
-                depends on both the EOS version and the hardware platform. Your device
-                may not support all causes shown here.
+                The list of supported causes depends on both the EOS version and the hardware platform.
               valid_values:
                 - "acl"
                 - "arp-inspection"
@@ -54,9 +52,7 @@ keys:
                   type: str
                   description: |-
                     Specifies the type of event that can trigger recovery actions.
-                    Available recovery causes are generated dynamically from Sysdb and
-                    vary by EOS version and hardware platform. Your device may not support
-                    all causes listed.
+                    The list of supported causes depends on both the EOS version and the hardware platform.
                   valid_values:
                     - "acl"
                     - "arp-inspection"

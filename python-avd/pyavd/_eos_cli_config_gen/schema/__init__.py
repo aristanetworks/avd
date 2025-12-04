@@ -6164,11 +6164,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 name: Name
                 """
                 Specifies the type of event that can trigger recovery actions.
-                Available recovery causes are
-                generated dynamically from Sysdb and
-                vary by EOS version and hardware platform. Your device may not
-                support
-                all causes listed.
+                The list of supported causes depends
+                on both the EOS version and the hardware platform.
                 """
                 interval: int | None
                 """Interval for each recovery cause in seconds."""
@@ -6185,11 +6182,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             name:
                                Specifies the type of event that can trigger recovery actions.
-                               Available recovery causes are
-                               generated dynamically from Sysdb and
-                               vary by EOS version and hardware platform. Your device may not
-                               support
-                               all causes listed.
+                               The list of supported causes depends
+                               on both the EOS version and the hardware platform.
                             interval: Interval for each recovery cause in seconds.
 
                         """
