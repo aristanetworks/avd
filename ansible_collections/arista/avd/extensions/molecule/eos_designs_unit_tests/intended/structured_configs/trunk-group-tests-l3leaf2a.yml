@@ -263,12 +263,14 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 200
   name: svi200_with_trunk_groups
   trunk_groups:
@@ -276,12 +278,14 @@ vlans:
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
   - trunk-group-tests-l2leaf4
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
 - id: 3199
   name: MLAG_L3_VRF_TG_200
   trunk_groups:
   - MLAG
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
 - id: 210
   name: l2vlan210_with_trunk_groups
   trunk_groups:
@@ -289,13 +293,15 @@ vlans:
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
   - trunk-group-tests-l2leaf4
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TG_200
   ip_routing: true
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenant: TRUNK_GROUP_TESTS
 vxlan_interface:
   vxlan1:
     description: trunk-group-tests-l3leaf2a_VTEP

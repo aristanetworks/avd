@@ -10,7 +10,7 @@ from pyavd._eos_designs.shared_utils import SharedUtils
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
+    from collections.abc import MutableMapping
 
     from ansible.template import Templar
 
@@ -21,8 +21,8 @@ if TYPE_CHECKING:
 
 
 def get_facts(
-    all_inputs: Mapping[str, EosDesigns],
-    all_hostvars: Mapping[str, Mapping] | None = None,
+    all_inputs: dict[str, EosDesigns],
+    all_hostvars: MutableMapping[str, MutableMapping] | None = None,
     templar: Templar | None = None,
     pool_manager: PoolManager | None = None,
     digital_twin: bool = False,
@@ -60,6 +60,8 @@ def get_facts(
 
     for generator in peer_facts_generators.values():
         generator.update_mlag_groups()
+
+    for generator in peer_facts_generators.values():
         generator.cross_pollinate()
 
     for hostname, generator in peer_facts_generators.items():
@@ -78,7 +80,7 @@ def get_facts(
 def _create_generator_instance(
     hostname: str,
     inputs: EosDesigns,
-    hostvars: Mapping,
+    hostvars: MutableMapping,
     templar: Templar | None,
     pool_manager: PoolManager | None,
     digital_twin: bool,

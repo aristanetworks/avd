@@ -3328,6 +3328,8 @@ metadata:
   is_deployed: true
   platform: cEOSLab
   fabric_name: DC1_FABRIC
+  validate_hardware:
+    enabled: false
 ntp:
   local_interface:
     name: Management0
@@ -3375,16 +3377,20 @@ vlan_internal_order:
 vlans:
 - id: 310
   name: IDF3-Data
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 320
   name: IDF3-Voice
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 330
   name: IDF3-Guest
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 10
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

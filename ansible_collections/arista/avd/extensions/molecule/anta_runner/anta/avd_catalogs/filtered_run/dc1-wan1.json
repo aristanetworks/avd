@@ -215,6 +215,13 @@
           "tags": [
             "dc1-wan1"
           ]
+        },
+        "requirements": {
+          "power_supplies": "all",
+          "fan_trays": "all",
+          "fabric_cards": "all",
+          "line_cards": "all",
+          "supervisors": "all"
         }
       }
     },
@@ -609,7 +616,8 @@
         "allowed_causes": [
           "Reload requested by the user.",
           "Reload requested after FPGA upgrade",
-          "System reloaded due to Zero Touch Provisioning"
+          "System reloaded due to Zero Touch Provisioning",
+          "Hitless reload requested by the user."
         ]
       }
     }

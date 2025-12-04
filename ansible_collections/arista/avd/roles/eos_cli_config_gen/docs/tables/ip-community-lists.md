@@ -10,9 +10,9 @@
     | [<samp>community_lists</samp>](## "community_lists") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ip_community_lists</samp> instead.</span> |
     | [<samp>ip_community_lists</samp>](## "ip_community_lists") | List, items: Dictionary |  |  |  | Communities and regexp entries MUST not be configured in the same community-list.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_community_lists.[].name") | String | Required, Unique |  |  | IP Community-list Name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ip_community_lists.[].entries") | List, items: Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ip_community_lists.[].entries") | List, items: Dictionary | Required |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;action</samp>](## "ip_community_lists.[].entries.[].action") | String | Required |  | Valid Values:<br>- <code>permit</code><br>- <code>deny</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;communities</samp>](## "ip_community_lists.[].entries.[].communities") | List, items: String |  |  |  | If defined, a standard community-list will be configured.<br>Supported community strings (case insensitive):<br>- GSHUT<br>- internet<br>- local-as<br>- no-advertise<br>- no-export<br>- <1-4294967040><br>- aa:nn<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;communities</samp>](## "ip_community_lists.[].entries.[].communities") | List, items: String |  |  | Min Length: 1 | If defined, a standard community-list will be configured.<br>Supported community strings (case insensitive):<br>- GSHUT<br>- internet<br>- local-as<br>- no-advertise<br>- no-export<br>- <1-4294967040><br>- aa:nn<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ip_community_lists.[].entries.[].communities.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;regexp</samp>](## "ip_community_lists.[].entries.[].regexp") | String |  |  |  | Regular Expression.<br>If defined, a regex community-list will be configured.<br> |
 
@@ -24,7 +24,7 @@
 
         # IP Community-list Name.
       - name: <str; required; unique>
-        entries: # required
+        entries: # >=1 items; required
           - action: <str; "permit" | "deny"; required>
 
             # If defined, a standard community-list will be configured.
@@ -36,7 +36,7 @@
             # - no-export
             # - <1-4294967040>
             # - aa:nn
-            communities:
+            communities: # >=1 items
               - <str>
 
             # Regular Expression.

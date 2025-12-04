@@ -149,7 +149,7 @@ class SnmpServerMixin(Protocol):
             host: EosDesigns.SnmpSettings.HostsItem
             vrfs = set()
             if vrf := host.vrf:
-                host_vrf, source_interface = self._get_vrf_and_source_interface(
+                host_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                     vrf_input=vrf,
                     vrfs=snmp_settings.vrfs,
                     set_source_interfaces=True,
@@ -194,7 +194,7 @@ class SnmpServerMixin(Protocol):
             if vrf.enable is None:
                 continue
 
-            vrf_name = self.get_vrf(vrf.name, context=f"snmp_settings.vrfs[name={vrf.name}]")
+            vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"snmp_settings.vrfs[name={vrf.name}]")
             vrfs.append_new(name=vrf_name, enable=vrf.enable)
 
             if vrf.ipv4_acl is not None:

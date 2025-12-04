@@ -420,10 +420,12 @@ vrfs:
   ip_routing: false
 - name: TESTING
   ip_routing: true
-  tenant: L3PO
+  metadata:
+    tenant: L3PO
 - name: subIntVRF
   ip_routing: true
-  tenant: Subinterface
+  metadata:
+    tenant: Subinterface
 vxlan_interface:
   vxlan1:
     description: network-services-l3-port-channels_VTEP

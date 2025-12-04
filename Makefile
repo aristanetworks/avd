@@ -27,7 +27,7 @@ uv-pyavd-build: ## Build PyAVD Python package locally.
 
 .PHONY: pyavd-test
 pyavd-test: ## Test PyAVD Python code with tox.
-	cd python-avd && $(MAKE) && tox -r
+	tox run -r
 
 .PHONY: pyavd-publish
 pyavd-publish: ## Build and publish PyAVD Python package.
@@ -45,7 +45,6 @@ pyavd-install: pyavd-build ## Build and install PyAVD Python package.
 .PHONY: pyavd-editable-install
 pyavd-editable-install: ## Build and install PyAVD as editable
 	pip install -e python-avd --config-settings editable_mode=compat --force-reinstall
-
 
 .PHONY: uv-pyavd-install
 uv-pyavd-install: pyavd-build ## Build and install PyAVD Python package.

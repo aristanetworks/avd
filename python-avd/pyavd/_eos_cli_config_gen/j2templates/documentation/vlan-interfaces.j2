@@ -10,8 +10,8 @@
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 {%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%         set description = vlan_interface.description | arista.avd.default('-') %}
 {%         set vrf = vlan_interface.vrf | arista.avd.default('default') %}
@@ -52,7 +52,7 @@
 {%         set row_varp = vlan_interface.ip_virtual_router_addresses | arista.avd.default('-') | join(", ") %}
 {%         set row_acl_in = vlan_interface.access_group_in | arista.avd.default('-') %}
 {%         set row_acl_out = vlan_interface.access_group_out | arista.avd.default('-') %}
-| {{ vlan_interface.name }} |  {{ row_vrf }}  |  {{ row_ip_addr }}  |  {{ row_ip_vaddr }}  |  {{ row_varp }}  |  {{ row_acl_in }}  |  {{ row_acl_out }}  |
+| {{ vlan_interface.name }} | {{ row_vrf }} | {{ row_ip_addr }} | {{ row_ip_vaddr }} | {{ row_varp }} | {{ row_acl_in }} | {{ row_acl_out }} |
 {%     endfor %}
 {# IP NAT Documentation #}
 {%     set ip_nat_interfaces = vlan_interfaces %}
@@ -95,7 +95,7 @@
 ##### VRRP Details
 
 | Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
+| --------- | ------- | -------- | ---------------------- | ------- | ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
 {%         for vlan_interface in vlan_interfaces_vrrp_details | arista.avd.natural_sort('name') %}
 {%             for vrid in vlan_interface.vrrp_ids if vrid.id is arista.avd.defined %}
 {%                 set row_id = vrid.id %}
@@ -126,6 +126,9 @@
 {%                 endif %}
 {%                 if vrid.ipv4.secondary_addresses is arista.avd.defined %}
 {%                     do row_ipv4_virtual_ips.extend(vrid.ipv4.secondary_addresses) %}
+{%                 endif %}
+{%                 if row_ipv4_virtual_ips | length == 0 %}
+{%                     set row_ipv4_virtual_ips = ["-"] %}
 {%                 endif %}
 {%                 set row_ipv4_version = vrid.ipv4.version | arista.avd.default('2') %}
 {%                 set row_ipv6_virtual_ips = vrid.ipv6.addresses | arista.avd.default('-') | join(', ') %}

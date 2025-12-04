@@ -314,7 +314,7 @@ no spanning-tree vlan-id 4093-4094
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -381,8 +381,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet3 | P2P_site4-wan1_Ethernet2 | - | 10.0.4.58/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
@@ -415,7 +415,7 @@ interface Ethernet6
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_site4-border1_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -467,8 +467,8 @@ interface Loopback1
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan42 | RED-TEST | RED | - | False |
 | Vlan666 | BLUE-TEST | BLUE | - | False |
 | Vlan3099 | MLAG_L3_VRF_BLUE | BLUE | 9214 | False |
@@ -480,12 +480,12 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan42 |  RED  |  10.42.44.1/24  |  -  |  -  |  -  |  -  |
-| Vlan666 |  BLUE  |  10.66.44.1/24  |  -  |  -  |  -  |  -  |
-| Vlan3099 |  BLUE  |  10.255.251.25/31  |  -  |  -  |  -  |  -  |
-| Vlan3100 |  RED  |  10.255.251.25/31  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  10.255.251.25/31  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.252.25/31  |  -  |  -  |  -  |  -  |
+| Vlan42 | RED | 10.42.44.1/24 | - | - | - | - |
+| Vlan666 | BLUE | 10.66.44.1/24 | - | - | - | - |
+| Vlan3099 | BLUE | 10.255.251.25/31 | - | - | - | - |
+| Vlan3100 | RED | 10.255.251.25/31 | - | - | - | - |
+| Vlan4093 | default | 10.255.251.25/31 | - | - | - | - |
+| Vlan4094 | default | 10.255.252.25/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 

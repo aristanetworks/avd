@@ -84,7 +84,8 @@ vlan_internal_order:
 vlans:
 - id: 106
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false
