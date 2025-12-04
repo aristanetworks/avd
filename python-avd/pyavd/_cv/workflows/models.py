@@ -160,8 +160,8 @@ class CVWorkspace:
 @dataclass
 class DeployChangeControlResult:
     failed: bool = False
-    errors: list[str] = field(default_factory=list)
-    warnings: list[str] = field(default_factory=list)
+    errors: list = field(default_factory=list)
+    warnings: list = field(default_factory=list)
     change_control: CVChangeControl | None = None
     deployed_devices: list[CVDevice] = field(default_factory=list)
     skipped_devices: list[CVDevice] = field(default_factory=list)
@@ -170,8 +170,8 @@ class DeployChangeControlResult:
 @dataclass
 class DeployToCvResult:
     failed: bool = False
-    errors: list[str] = field(default_factory=list)
-    warnings: list[str] = field(default_factory=list)
+    errors: list = field(default_factory=list)
+    warnings: list = field(default_factory=list)
     workspace: CVWorkspace = field(default_factory=CVWorkspace)
     change_control: CVChangeControl | None = None
     deployed_configs: list[CVEosConfig] = field(default_factory=list)
