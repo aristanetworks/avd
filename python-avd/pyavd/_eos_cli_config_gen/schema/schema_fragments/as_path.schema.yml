@@ -29,9 +29,11 @@ keys:
                   type:
                     type: str
                     valid_values: ["permit", "deny"]
+                    required: true
                   match:
                     type: str
                     description: Regex To Match.
+                    required: true
                   origin:
                     type: str
                     valid_values: ["any", "egp", "igp", "incomplete"]

@@ -29,7 +29,7 @@ PLUGIN_NAME = "arista.avd.anta_workflow"
 try:
     from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, TestResult, anta_runner
     from pyavd._utils import default, get, strip_empties_from_dict
-    from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData, InputFactorySettings
+    from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData
     from pyavd.get_device_test_catalog import get_device_test_catalog
 
     HAS_PYAVD = True
@@ -73,7 +73,6 @@ ARGUMENT_SPEC = {
             "output_dir": {"type": "str"},
             "structured_config_dir": {"type": "str"},
             "structured_config_suffix": {"type": "str", "choices": ["yml", "yaml", "json"], "default": "yml"},
-            "allow_bgp_vrfs": {"type": "bool", "default": False},
             "extra_fabric_validation": {"type": "bool", "default": False},
             "filters": {
                 "type": "list",
@@ -452,7 +451,6 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
     if USER_CATALOG is not None:
         catalogs.append(USER_CATALOG)
 
-    input_factory_settings = InputFactorySettings(allow_bgp_vrfs=get(PLUGIN_ARGS, "avd_catalogs.allow_bgp_vrfs"))
     extra_fabric_validation = get(PLUGIN_ARGS, "avd_catalogs.extra_fabric_validation")
     output_dir = get(PLUGIN_ARGS, "avd_catalogs.output_dir")
     avd_catalogs_filters = get(PLUGIN_ARGS, "avd_catalogs.filters", default=[])
@@ -463,7 +461,6 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
         # We generate the device's AVD catalog only if structured configs are loaded
         if STRUCTURED_CONFIGS is not None and FABRIC_DATA is not None:
             settings = AvdCatalogGenerationSettings(
-                input_factory_settings=input_factory_settings,
                 extra_fabric_validation=extra_fabric_validation,
                 output_dir=output_dir,
                 **get_device_catalog_filters(device, avd_catalogs_filters),

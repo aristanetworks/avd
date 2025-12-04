@@ -3,12 +3,18 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from anta.tests.routing.generic import VerifyRoutingProtocolModel, VerifyRoutingTableEntry
 
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
+from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_wan_router
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 class VerifyRoutingProtocolModelInputFactory(AntaTestInputFactory[VerifyRoutingProtocolModel.Input]):
@@ -19,10 +25,13 @@ class VerifyRoutingProtocolModelInputFactory(AntaTestInputFactory[VerifyRoutingP
     of the device structured config.
     """
 
-    def create(self) -> list[VerifyRoutingProtocolModel.Input] | None:
-        """Create a list of inputs for the `VerifyRoutingProtocolModel` test."""
-        model = self.structured_config.service_routing_protocols_model
-        return [VerifyRoutingProtocolModel.Input(model=model)] if model else None
+    def create(self) -> Iterator[VerifyRoutingProtocolModel.Input]:
+        """Generate the inputs for the `VerifyRoutingProtocolModel` test."""
+        if not (model := self.structured_config.service_routing_protocols_model):
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
+            return
+
+        yield VerifyRoutingProtocolModel.Input(model=model)
 
 
 class VerifyRoutingTableEntryInputFactory(AntaTestInputFactory[VerifyRoutingTableEntry.Input]):
@@ -35,14 +44,12 @@ class VerifyRoutingTableEntryInputFactory(AntaTestInputFactory[VerifyRoutingTabl
     No inputs are generated if `extra_fabric_validation` is disabled.
     """
 
-    def create(self) -> list[VerifyRoutingTableEntry.Input] | None:
-        """Create a list of inputs for the `VerifyRoutingTableEntry` test."""
-        if not self.device.settings.extra_fabric_validation:
-            self.logger_adapter.debug(LogMessage.EXTRA_FABRIC_VALIDATION_DISABLED)
-            return None
+    @skip_if_extra_fabric_validation_disabled
+    @skip_if_wan_router
+    def create(self) -> Iterator[VerifyRoutingTableEntry.Input]:
+        """Generate the inputs for the `VerifyRoutingTableEntry` test."""
+        if not self.fabric_data.special_ips:
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
+            return
 
-        if self.device.is_wan_router:
-            self.logger_adapter.debug(LogMessage.DEVICE_IS_WAN_ROUTER)
-            return None
-
-        return [VerifyRoutingTableEntry.Input(routes=natural_sort(list(self.fabric_data.special_ips)), collect="all")] if self.fabric_data.special_ips else None
+        yield VerifyRoutingTableEntry.Input(routes=natural_sort(list(self.fabric_data.special_ips)), collect="all")

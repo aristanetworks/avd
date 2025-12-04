@@ -18,6 +18,7 @@ keys:
         type:
           type: str
           valid_values: ["tacacs+", "radius", "ldap"]
+          required: true
         servers:
           type: list
           items:
@@ -26,6 +27,7 @@ keys:
               server:
                 type: str
                 description: Hostname or IP address.
+                required: true
               vrf:
                 type: str
                 description: VRF name.

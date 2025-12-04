@@ -39,7 +39,7 @@ dot1x
                               dot1x.aaa.unresponsive[action.name].traffic_allow_vlan is arista.avd.defined %}
 {%                             if dot1x.aaa.unresponsive[action.name].apply_cached_results is arista.avd.defined(true) %}
 {%                                 set action_apply_config = "apply cached-results" %}
-{%                                 if dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration is arista.avd.defined and dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration_unit is arista.avd.defined %}
+{%                                 if dot1x.aaa.unresponsive[action.name].cached_results_timeout is arista.avd.defined %}
 {%                                     set action_apply_config = action_apply_config ~ " timeout " ~ dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration ~ " " ~ dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration_unit %}
 {%                                 endif %}
 {%                             endif %}
@@ -90,7 +90,7 @@ dot1x
 {%         if dot1x.radius_av_pair.framed_mtu is arista.avd.defined %}
    radius av-pair framed-mtu {{ dot1x.radius_av_pair.framed_mtu }}
 {%         endif %}
-{%         if dot1x.radius_av_pair_username_format.delimiter is arista.avd.defined and dot1x.radius_av_pair_username_format.mac_string_case is arista.avd.defined %}
+{%         if dot1x.radius_av_pair_username_format is arista.avd.defined %}
    mac-based-auth radius av-pair user-name delimiter {{ dot1x.radius_av_pair_username_format.delimiter }} {{ dot1x.radius_av_pair_username_format.mac_string_case }}
 {%         endif %}
 {%         if dot1x.eapol.vlan_change_logoff_disabled is arista.avd.defined(true) %}
