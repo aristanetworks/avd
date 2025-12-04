@@ -156,12 +156,18 @@ class SrcGenList(SrcGenBase):
             return generate_class_name_from_ref(self.schema.field_ref)
         return self.get_class_name()
 
-    def generate_class_src(self, schema: AvdSchemaList, class_name: str | None = None) -> SrcData:  # pyright: ignore[reportIncompatibleMethodOverride]
+    def generate_class_src(self, schema: AvdSchemaField, class_name: str | None = None) -> SrcData:
         """
         Returns SrcData for the given schema.
 
         Recursively walks child schemas and creates nested classes and fields.
         """
+        # getting circular import error
+        from schema_tools.metaschema.meta_schema_model import AvdSchemaList  # noqa: PLC0415
+
+        if not isinstance(schema, AvdSchemaList):
+            msg = f"SrcGenList.generate_class_src only accepts 'AvdSchemaList' as 'schema' argument but received '{type(schema)}'."
+            raise TypeError(msg)
         self.schema = schema
         self.class_name = class_name
 
