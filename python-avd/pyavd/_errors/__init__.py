@@ -8,9 +8,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
-    from typing_extensions import Self
-
     from pyavd_utils.validation import Deprecation, Violation
+    from typing_extensions import Self
 
 
 class AristaAvdError(Exception):
