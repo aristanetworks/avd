@@ -764,11 +764,6 @@ class AvdStructuredConfigBaseProtocol(
         """Flag indicating if we are in ACT Digital Twin mode and if eAPI access in default VRF is enforced."""
         return self.shared_utils.digital_twin and self.inputs.digital_twin.environment == "act" and self.inputs.digital_twin.fabric.act_ensure_eapi_access
 
-    @cached_property
-    def _radius_server_groups(self) -> set[str]:
-        """Return a set of all RADIUS server group names defined under `aaa_settings.radius.servers`."""
-        return {group for server in self.inputs.aaa_settings.radius.servers for group in server.groups}
-
 
 class AvdStructuredConfigBase(StructuredConfigGenerator, AvdStructuredConfigBaseProtocol):
     """
