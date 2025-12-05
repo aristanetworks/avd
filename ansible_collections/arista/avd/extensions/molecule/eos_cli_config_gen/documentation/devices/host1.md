@@ -7634,6 +7634,7 @@ ipv6 hardware fib optimize prefixes profile internet
 | TENANT_A_PROJECT02 | 10.3.5.0/24 | - | Null0 | 1 | - | - | - |
 | TENANT_A_PROJECT01 | 10.3.6.0/24 | 11.2.1.1 (tracked with BFD) | Ethernet40 | 100 | 1000 | Track-BFD | 300 |
 | TENANT_A_PROJECT01 | 10.3.7.0/24 | - | Ethernet41 | 100 | 1000 | No-Track-BFD | 300 |
+| aaa | 10.3.8.0/24 | - | Null0 | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
@@ -7650,6 +7651,7 @@ ip route vrf TENANT_A_PROJECT01 10.3.6.0/24 Ethernet40 11.2.1.1 track bfd 100 ta
 ip route vrf TENANT_A_PROJECT01 10.3.7.0/24 Ethernet41 100 tag 1000 name No-Track-BFD metric 300
 ip route vrf TENANT_A_PROJECT02 10.3.4.0/24 1.2.3.4
 ip route vrf TENANT_A_PROJECT02 10.3.5.0/24 Null0
+ip route vrf aaa 10.3.8.0/24 Null0
 ```
 
 ### IPv6 Static Routes
