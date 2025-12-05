@@ -8,21 +8,21 @@
 
 ## Monitor Loop Protestion Options
 
-| Options           |  Value  |
-| ----------------- | ------- |
+| Options | Value |
+| ------- | ----- |
 {%     if monitor_loop_protection.enabled is arista.avd.defined(true) %}
-| Enabled           |   True  |
+| Enabled | True |
 {%     elif monitor_loop_protection.enabled is arista.avd.defined(false) %}
-| Enabled           |  False  |
+| Enabled | False |
 {%     endif %}
 {%     if monitor_loop_protection.disabled_time is arista.avd.defined %}
-| disabled-time     | {{ monitor_loop_protection.disabled_time }} |
+| disabled-time | {{ monitor_loop_protection.disabled_time }} |
 {%     endif %}
 {%     if monitor_loop_protection.protect_vlan is arista.avd.defined %}
-| protect vlan      | {{ monitor_loop_protection.protect_vlan }} |
+| protect vlan | {{ monitor_loop_protection.protect_vlan }} |
 {%     endif %}
 {%     if monitor_loop_protection.rate_limit is arista.avd.defined %}
-| rate-limit        | {{ monitor_loop_protection.rate_limit }} |
+| rate-limit | {{ monitor_loop_protection.rate_limit }} |
 {%     endif %}
 {%     if monitor_loop_protection.transmit_interval is arista.avd.defined %}
 | transmit-interval | {{ monitor_loop_protection.transmit_interval }} |
