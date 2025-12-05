@@ -10,10 +10,8 @@
 
 | Options | Value |
 | ------- | ----- |
-{%     if monitor_loop_protection.enabled is arista.avd.defined(true) %}
-| Enabled | True |
-{%     elif monitor_loop_protection.enabled is arista.avd.defined(false) %}
-| Enabled | False |
+{%     if monitor_loop_protection.enabled is arista.avd.defined%}
+| Enabled | {{ monitor_loop_protection.enabled }} |
 {%     endif %}
 {%     if monitor_loop_protection.disabled_time is arista.avd.defined %}
 | disabled-time | {{ monitor_loop_protection.disabled_time }} |
