@@ -46,8 +46,6 @@
   - [Monitor Connectivity Device Configuration](#monitor-connectivity-device-configuration)
 - [Monitor Layer 1 Logging](#monitor-layer-1-logging)
   - [Monitor Layer 1 Device Configuration](#monitor-layer-1-device-configuration)
-- [Monitor Loop Protestion Options](#monitor-loop-protestion-options)
-  - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Custom TCAM Profiles](#custom-tcam-profiles)
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
@@ -86,6 +84,8 @@
   - [PBR Policy Maps](#pbr-policy-maps)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
+- [Monitor Loop Protestion Options](#monitor-loop-protestion-options)
+  - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS RSVP](#mpls-rsvp)
@@ -760,31 +760,6 @@ monitor connectivity
 monitor layer1
 ```
 
-## Monitor Loop Protestion Options
-
-| Options           |  Value  |
-| ----------------- | ------- |
-| Enabled           |  False  |
-| disabled-time     | 100 |
-| protect vlan      | 1000-1100 |
-| rate-limit        | 100 |
-| transmit-interval | 10 |
-
-Affected Interfaces:
-Ethernet 4
-
-### Monitor Loop Protection Configuration
-
-```eos ####
-!
-monitor loop-protection
-   shutdown 
-   disabled-time 100
-   protect vlan 1000-1100
-   rate-limit 100
-   transmit-interval 10
-```
-
 ## Hardware TCAM Profile
 
 TCAM profile **`default`** is active
@@ -972,7 +947,6 @@ interface Dps1
 ```eos
 !
 interface Ethernet 4
-   loop-protection
 ```
 
 ### VXLAN Interface
@@ -1329,6 +1303,30 @@ policy-map type pbr POLICY_DROP_THEN_NEXTHOP
 !
 router bfd
    session stats snapshot interval dangerous 8
+```
+
+## Monitor Loop Protestion Options
+
+| Options | Value |
+| ------- | ----- |
+| Enabled | False |
+| disabled-time | 100 |
+| protect vlan | 1000-1100 |
+| rate-limit | 100 |
+| transmit-interval | 10 |
+
+Disabled Interfaces:
+
+### Monitor Loop Protection Configuration
+
+```eos ####
+!
+monitor loop-protection
+   shutdown
+   disabled-time 100
+   protect vlan 1000-1100
+   rate-limit 100
+   transmit-interval 10
 ```
 
 ## MPLS

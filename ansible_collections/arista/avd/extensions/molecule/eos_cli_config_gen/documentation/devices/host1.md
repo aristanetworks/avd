@@ -99,8 +99,6 @@ Serial Number: DEADBEEFC0FFEW
   - [Monitor Connectivity Device Configuration](#monitor-connectivity-device-configuration)
 - [Monitor Layer 1 Logging](#monitor-layer-1-logging)
   - [Monitor Layer 1 Device Configuration](#monitor-layer-1-device-configuration)
-- [Monitor Loop Protestion Options](#monitor-loop-protestion-options)
-  - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Custom TCAM Profiles](#custom-tcam-profiles)
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
@@ -183,6 +181,8 @@ Serial Number: DEADBEEFC0FFEW
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
   - [BFD Interfaces](#bfd-interfaces)
+- [Monitor Loop Protestion Options](#monitor-loop-protestion-options)
+  - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS Interfaces](#mpls-interfaces)
@@ -3098,15 +3098,9 @@ event-handler without-trigger-key
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On | Table Size |
 | ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- | ---------- |
-<<<<<<< HEAD
 | T1 | 3666 | 5666 | True | 0 | - | - |
-| T2 | - | - | False | 1 | Dps1<br>Ethernet40 | 614400 |
-| T3 | - | - | - | 4 | Ethernet41<br>Ethernet42<br>Port-Channel115 | 100000 |
-=======
-| T1 | 3666 | 5666 | True | 0 |  | - |
 | T2 | - | - | False | 1 | Dps1 | 614400 |
 | T3 | - | - | - | 4 | Port-Channel115 | 100000 |
->>>>>>> f6e329378 (molecule files)
 
 ##### Exporters Summary
 
@@ -3126,15 +3120,9 @@ Software export of IPFIX data records enabled.
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters | Applied On |
 | ------------ | --------------------------------- | ------------------------- | ------------------- | ---------- |
-<<<<<<< HEAD
 | T1 | 3666 | 5666 | 0 | - |
-| T2 | - | - | 1 | Ethernet40 |
-| T3 | - | - | 4 | Dps1<br>Ethernet41<br>Port-Channel115 |
-=======
-| T1 | 3666 | 5666 | 0 |  |
-| T2 | - | - | 1 |  |
+| T2 | - | - | 1 | - |
 | T3 | - | - | 4 | Dps1<br>Port-Channel115 |
->>>>>>> f6e329378 (molecule files)
 
 ##### Exporters Summary
 
@@ -3596,31 +3584,6 @@ monitor layer1
    logging transceiver dom
    logging transceiver communication
    logging mac fault
-```
-
-## Monitor Loop Protestion Options
-
-| Options           |  Value  |
-| ----------------- | ------- |
-| Enabled           |   True  |
-| disabled-time     | 100 |
-| protect vlan      | 1000-1100 |
-| rate-limit        | 100 |
-| transmit-interval | 10 |
-
-Affected Interfaces:
-Ethernet 2
-
-### Monitor Loop Protection Configuration
-
-```eos ####
-!
-monitor loop-protection
-   no schutdown
-   disabled-time 100
-   protect vlan 1000-1100
-   rate-limit 100
-   transmit-interval 10
 ```
 
 ## Hardware TCAM Profile
@@ -4346,90 +4309,6 @@ interface Dps1
 
 *Inherited from Port-Channel Interface
 
-<<<<<<< HEAD
-##### Encapsulation Dot1q Interfaces
-
-| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
-| --------- | ----------- | ------- | -------------- | -------------------- |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 101 | - |
-| Ethernet67.1 | Test_encapsulation_dot1q | - | 4 | 34 |
-
-##### Flexible Encapsulation Interfaces
-
-| Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | -------------------- | -------------------------- | ----------- | --------------------- | --------------------- | --------------------- | --------------------------- | ------------ | ---------------------- | ---------------------- |
-| Ethernet26.1 | TENANT_A pseudowire 1 interface | - | unmatched | - | - | - | - | - | - | - | - | - |
-| Ethernet26.100 | TENANT_A pseudowire 1 interface | 10 | dot1q | - | 100 | - | - | client | - | - | - | - |
-| Ethernet26.200 | TENANT_A pseudowire 2 interface | - | dot1q | - | 200 | - | - | - | - | - | - | - |
-| Ethernet26.300 | TENANT_A pseudowire 3 interface | - | dot1q | - | 300 | - | - | dot1q | - | 400 | - | - |
-| Ethernet26.400 | TENANT_A pseudowire 3 interface | - | dot1q | - | - | 400 | 20 | dot1q | - | - | 401 | 21 |
-| Ethernet26.500 | TENANT_A pseudowire 3 interface | - | dot1q | - | - | 500 | 50 | client | - | - | - | - |
-| Ethernet68.1 | Test_encapsulation_vlan1 | - | dot1q | dot1q | - | 23 | 45 | dot1ad | dot1ad | - | 32 | 54 |
-| Ethernet68.2 | Test_encapsulation_vlan2 | - | dot1q | - | 10 | - | - | dot1q | - | - | 32 | 54 |
-| Ethernet68.3 | Test_encapsulation_vlan3 | - | dot1ad | - | 12 | - | - | dot1q | - | 25 | - | - |
-| Ethernet68.4 | Test_encapsulation_vlan4 | - | dot1ad | dot1q | - | 35 | 60 | dot1q | dot1ad | - | 53 | 6 |
-| Ethernet68.5 | Test_encapsulation_vlan5 | - | dot1ad | - | - | 35 | 60 | dot1ad | - | - | 52 | 62 |
-| Ethernet68.6 | Test_encapsulation_vlan6 | - | dot1ad | - | - | 35 | 60 | client | - | - | - | - |
-| Ethernet68.7 | Test_encapsulation_vlan7 | - | untagged | - | - | - | - | dot1ad | - | - | 35 | 60 |
-| Ethernet68.8 | Test_encapsulation_vlan8 | - | untagged | - | - | - | - | dot1q | - | - | 35 | 60 |
-| Ethernet68.9 | Test_encapsulation_vlan9 | - | untagged | - | - | - | - | untagged | - | - | - | - |
-| Ethernet68.10 | Test_encapsulation_vlan9 | - | dot1q | - | - | 14 | 11 | client inner | - | - | - | - |
-
-##### Private VLAN
-
-| Interface | PVLAN Mapping | Secondary Trunk |
-| --------- | ------------- | --------------- |
-| Ethernet1 | 20-30 | True |
-| Ethernet2 | - | False |
-| Ethernet15 | 111 | - |
-| Ethernet17 | - | True |
-
-##### VLAN Translations
-
-| Interface | Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
-| --------- | --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
-| Ethernet1 | both | 12 | 20 | - | - | - | - |
-| Ethernet1 | both | 24 | 46 | 78 | - | True | - |
-| Ethernet1 | both | 24 | 46 | 78 | - | False | - |
-| Ethernet1 | both | 43 | 30 | - | - | - | True |
-| Ethernet1 | in | 10 | 24 | - | - | - | - |
-| Ethernet1 | in | 23 | 45 | - | - | - | True |
-| Ethernet1 | in | 37 | 49 | 56 | - | - | - |
-| Ethernet1 | out | 10 | 45 | - | 34 | - | - |
-| Ethernet1 | out | 34 | 50 | - | - | - | - |
-| Ethernet1 | out | 45 | all | - | - | - | True |
-| Ethernet1 | out | 55 | - | - | - | - | - |
-| Ethernet3 | out | 23 | 50 | - | - | - | True |
-| Ethernet16 | out | 111-112 | 110 | - | - | - | - |
-
-##### TCP MSS Clamping
-
-| Interface | Ipv4 Segment Size | Ipv6 Segment Size | Direction |
-| --------- | ----------------- | ----------------- | --------- |
-| Ethernet1 | 70 | 75 | egress |
-| Ethernet2 | 70 | - | ingress |
-| Ethernet3 | - | 65 | - |
-| Ethernet4 | 65 | - | - |
-
-##### Transceiver Settings
-
-| Interface | Transceiver Frequency | Media Override | Application Override |
-| --------- | --------------------- | -------------- | -------------------- |
-| Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 |
-| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 |
-| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd |
-| Ethernet73 | - | 100gbase-ar4 | 5 |
-
-##### Link Tracking Groups
-
-| Interface | Group Name | Direction |
-| --------- | ---------- | --------- |
-| Ethernet1 | EVPN_MH_ES1 | upstream |
-| Ethernet1 | EVPN_MH_ES3, EVPN_MH_ES4 | upstream |
-| Ethernet3 | EVPN_MH_ES2 | downstream |
-
-=======
->>>>>>> f6e329378 (molecule files)
 ##### Phone Interfaces
 
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
@@ -4439,122 +4318,18 @@ interface Dps1
 
 ##### IPv4
 
-<<<<<<< HEAD
 | Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | - | 172.31.255.1/31 | default | 1500 | - | - | - |
-| Ethernet2 | SRV-POD02_Eth1 | - | 10.1.255.3/24 | default | - | - | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 172.31.128.1/31 | default | 1500 | - | - | - |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 172.31.128.1/31 | default | - | - | - | - |
-| Ethernet9 | interface_with_mpls_enabled | - | 172.31.128.9/31 | default | - | - | - | - |
-| Ethernet10 | interface_with_mpls_disabled | - | 172.31.128.10/31 | default | - | - | - | - |
-| Ethernet18 | PBR Description | - | 192.0.2.1/31 | default | 1500 | - | - | - |
-| Ethernet47 | IP Helper | - | 172.31.255.1/31 | default | - | - | - | - |
-| Ethernet63 | DHCP client interface | - | dhcp | default | - | - | - | - |
-| Ethernet64 | DHCP server interface | - | 192.168.42.42/24 | default | - | - | - | - |
-| Ethernet65 | Multiple VRIDs | - | 192.0.2.2/25 | default | - | False | - | - |
-| Ethernet66 | Multiple VRIDs and tracking | - | 192.0.2.2/25 | default | - | False | - | - |
-| Ethernet80 | LAG Member | 17 | *192.0.2.3/31 | *default | *- | *- | *- | *- |
-| Ethernet81/2 | LAG Member LACP fallback LLDP ZTP VLAN | 112 | *dhcp | *default | *- | *- | *- | *- |
-| Ethernet81/3 | Traffic Engineering Interface | - | 100.64.127.0/31 | default | - | False | - | - |
-| Ethernet81/4 | Traffic Engineering Interface | - | 100.64.127.0/31 | default | - | False | - | - |
 
 *Inherited from Port-Channel Interface
-
-##### IP NAT: Source Static
-
-| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
-| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
-| Ethernet60 | - | 3.0.0.1 | - | - | 4.0.0.1 | - | - | - | 0 | - |
-| Ethernet60 | - | 3.0.0.2 | 22 | - | 4.0.0.2 | - | - | - | 0 | - |
-| Ethernet60 | - | 3.0.0.3 | 22 | - | 4.0.0.3 | 23 | - | - | 0 | - |
-| Ethernet60 | - | 3.0.0.4 | 22 | - | 4.0.0.4 | 23 | UDP | - | 0 | - |
-| Ethernet60 | - | 3.0.0.5 | 22 | - | 4.0.0.5 | 23 | TCP | 1 | 0 | - |
-| Ethernet60 | - | 3.0.0.6 | 22 | - | 4.0.0.6 | 23 | TCP | 2 | 5 | Comment Test |
-| Ethernet60 | - | 3.0.0.7 | - | ACL21 | 4.0.0.7 | - | - | - | 0 | - |
-| Ethernet60 | ingress | 3.0.0.8 | - | - | 4.0.0.8 | - | - | - | 0 | - |
-
-##### IP NAT: Source Dynamic
-
-| Interface | Access List | NAT Type | Pool Name | Priority | Comment |
-| --------- | ----------- | -------- | --------- | -------- | ------- |
-| Ethernet60 | ACL11 | pool | POOL11 | 0 | - |
-| Ethernet60 | ACL12 | pool | POOL11 | 0 | POOL11 shared with ACL11/12 |
-| Ethernet60 | ACL13 | pool | POOL13 | 10 | - |
-| Ethernet60 | ACL14 | pool | POOL14 | 1 | Priority low end |
-| Ethernet60 | ACL15 | pool | POOL15 | 4294967295 | Priority high end |
-| Ethernet60 | ACL16 | pool | POOL16 | 0 | Priority default |
-| Ethernet60 | ACL17 | overload | - | 10 | Priority_10 |
-| Ethernet60 | ACL18 | pool-address-only | POOL18 | 10 | Priority_10 |
-| Ethernet60 | ACL19 | pool-full-cone | POOL19 | 10 | Priority_10 |
-
-##### IP NAT: Destination Static
-
-| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
-| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
-| Ethernet60 | - | 1.0.0.1 | - | - | 2.0.0.1 | - | - | - | 0 | - |
-| Ethernet60 | - | 1.0.0.2 | 22 | - | 2.0.0.2 | - | - | - | 0 | - |
-| Ethernet60 | - | 1.0.0.3 | 22 | - | 2.0.0.3 | 23 | - | - | 0 | - |
-| Ethernet60 | - | 1.0.0.4 | 22 | - | 2.0.0.4 | 23 | udp | - | 0 | - |
-| Ethernet60 | - | 1.0.0.5 | 22 | - | 2.0.0.5 | 23 | tcp | 1 | 0 | - |
-| Ethernet60 | - | 1.0.0.6 | 22 | - | 2.0.0.6 | 23 | tcp | 2 | 5 | Comment Test |
-| Ethernet60 | - | 1.0.0.7 | - | ACL21 | 2.0.0.7 | - | - | - | 0 | - |
-| Ethernet60 | egress | 239.0.0.1 | - | - | 239.0.0.2 | - | - | - | 0 | - |
-
-##### IP NAT: Destination Dynamic
-
-| Interface | Access List | Pool Name | Priority | Comment |
-| --------- | ----------- | --------- | -------- | ------- |
-| Ethernet60 | ACL1 | POOL1 | 0 | - |
-| Ethernet60 | ACL2 | POOL1 | 0 | POOL1 shared with ACL1/2 |
-| Ethernet60 | ACL3 | POOL3 | 10 | - |
-| Ethernet60 | ACL4 | POOL4 | 1 | Priority low end |
-| Ethernet60 | ACL5 | POOL5 | 4294967295 | Priority high end |
-| Ethernet60 | ACL6 | POOL6 | 0 | Priority default |
-
-##### IP NAT: Interfaces configured via profile
-
-| Interface | Profile |
-| --------- | ------- |
-| Ethernet69 | TEST-NAT-PROFILE |
 
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
-| Ethernet4 | Molecule IPv6 | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
-| Ethernet55 | DHCPv6 Relay Testing | - | a0::1/64 | default | - | False | - | - | - | - |
-| Ethernet65 | Multiple VRIDs | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
-| Ethernet66 | Multiple VRIDs and tracking | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
-##### VRRP Details
-
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | ------- | ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
-| Ethernet65 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
-| Ethernet65 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1, 2002:db8::2 | text |
-| Ethernet66 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - | ietf-md5 |
-| Ethernet66 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8::1 | text |
-| Ethernet66 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
-
-=======
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-
-*Inherited from Port-Channel Interface
-
-##### IPv6
-
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-
-*Inherited from Port-Channel Interface
-
->>>>>>> f6e329378 (molecule files)
 ##### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
@@ -4567,7 +4342,6 @@ interface Dps1
 ```eos
 !
 interface Ethernet 2
-   loop-protection
 ```
 
 ### Port-Channel Interfaces
@@ -9193,6 +8967,30 @@ router bfd
 | --------- | -------- | ---------- | ---------- | ---- |
 | Port-Channel9 | 500 | 500 | 5 | True |
 | Vlan85 | 500 | 500 | 5 | True |
+
+## Monitor Loop Protestion Options
+
+| Options | Value |
+| ------- | ----- |
+| Enabled | True |
+| disabled-time | 100 |
+| protect vlan | 1000-1100 |
+| rate-limit | 100 |
+| transmit-interval | 10 |
+
+Disabled Interfaces:
+
+### Monitor Loop Protection Configuration
+
+```eos ####
+!
+monitor loop-protection
+   no schutdown
+   disabled-time 100
+   protect vlan 1000-1100
+   rate-limit 100
+   transmit-interval 10
+```
 
 ## MPLS
 
