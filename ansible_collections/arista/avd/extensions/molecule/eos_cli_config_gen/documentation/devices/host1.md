@@ -2850,7 +2850,7 @@ sFlow hardware accelerated Sample Rate: 1024
 | bgp | True |
 | router | True |
 | switch | False |
-| tunnel | False |
+| tunnel ipv4 egress | False |
 
 #### SFlow Interfaces
 
@@ -2898,7 +2898,7 @@ sflow sample output subinterface
 sflow extension bgp
 sflow extension router
 no sflow extension switch
-no sflow extension tunnel
+no sflow extension tunnel ipv4 egress
 sflow interface disable default
 sflow interface egress unmodified enable default
 sflow run

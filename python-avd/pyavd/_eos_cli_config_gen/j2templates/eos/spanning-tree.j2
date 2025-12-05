@@ -18,7 +18,6 @@ spanning-tree mst pvst border
 {%     if spanning_tree.edge_port.bpduguard_default is arista.avd.defined(true) %}
 spanning-tree edge-port bpduguard default
 {%     elif spanning_tree.edge_port.bpduguard_default is arista.avd.defined(false) %}
-{# this command does not reflect on CLI #}
 no spanning-tree edge-port bpduguard default
 {%     endif %}
 {%     if spanning_tree.edge_port.bpdufilter_default is arista.avd.defined(true) %}

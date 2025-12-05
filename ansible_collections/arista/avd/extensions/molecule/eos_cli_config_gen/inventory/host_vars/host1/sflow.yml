@@ -56,7 +56,7 @@ sflow:
       enabled: true
     - name: switch
       enabled: false
-    - name: tunnel
+    - name: tunnel ipv4 egress
       enabled: false
   run: true
   interface:

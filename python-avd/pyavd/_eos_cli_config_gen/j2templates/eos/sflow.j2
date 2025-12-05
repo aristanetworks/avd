@@ -55,16 +55,6 @@ sflow sample output subinterface
 {%     if sflow.extensions is arista.avd.defined %}
 {%         for extension in sflow.extensions | arista.avd.natural_sort('name') if extension.name is arista.avd.defined and extension.enabled is arista.avd.defined %}
 {%             if extension.enabled is arista.avd.defined(true) %}
-{# This is showing incomplete command for tunnel #}
-{#
-  wan1-dc1(config)#sflow extension tunnel
-  % Incomplete command
-  wan1-dc1(config)#sflow extension tunnel ?
-    ipv4  Configure IPv4 tunnel extension settings
-
-  wan1-dc1(config)#sflow extension tunnel ipv4 egress ?
-    <cr>
-#}
 sflow extension {{ extension.name }}
 {%             else %}
 no sflow extension {{ extension.name }}
