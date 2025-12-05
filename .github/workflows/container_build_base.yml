@@ -10,6 +10,7 @@ name: Build base container
       - .github/workflows/container_build_template.yml
       - .github/workflows/container_build_base.yml
   workflow_dispatch:
+    # TODO: not fixing in my PR but it seems this property is not valid.
     branches:
       - devel
 
