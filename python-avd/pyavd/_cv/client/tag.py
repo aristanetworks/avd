@@ -13,23 +13,17 @@ from pyavd._cv.api.arista.tag.v2 import (
     TagAssignmentConfig,
     TagAssignmentConfigServiceStub,
     TagAssignmentConfigSetSomeRequest,
-    TagAssignmentConfigSetSomeResponse,
     TagAssignmentConfigStreamRequest,
-    TagAssignmentConfigStreamResponse,
     TagAssignmentKey,
     TagAssignmentServiceStub,
     TagAssignmentStreamRequest,
-    TagAssignmentStreamResponse,
     TagConfig,
     TagConfigServiceStub,
     TagConfigSetSomeRequest,
-    TagConfigSetSomeResponse,
     TagConfigStreamRequest,
-    TagConfigStreamResponse,
     TagKey,
     TagServiceStub,
     TagStreamRequest,
-    TagStreamResponse,
 )
 from pyavd._cv.api.arista.time import TimeBounds
 
@@ -37,7 +31,6 @@ from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator
     from datetime import datetime
 
     from . import CVClientProtocol
@@ -88,8 +81,6 @@ class TagMixin(Protocol):
         Returns:
             List of Tag objects.
         """
-        # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
-        # Note that changing this will also impact the recorded calls hash
         request = TagStreamRequest(
             partial_eq_filter=[
                 Tag(
@@ -98,10 +89,10 @@ class TagMixin(Protocol):
                     creator_type=CREATOR_TYPE_MAP[creator_type],
                 )
             ],
-            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
+            time=TimeBounds() if time is None else TimeBounds(end=time),
         )
         client = TagServiceStub(self.channel)
-        tag_responses: AsyncIterator[TagStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        tag_responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
         tags = [tag_response.value async for tag_response in tag_responses]
 
         # Now tags contain all mainline tags.
@@ -116,10 +107,10 @@ class TagMixin(Protocol):
                     key=TagKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
                 )
             ],
-            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
+            time=TimeBounds() if time is None else TimeBounds(end=time),
         )
         client = TagConfigServiceStub(self.channel)
-        tag_config_responses: AsyncIterator[TagConfigStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        tag_config_responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
         async for tag_config_response in tag_config_responses:
             tag_config = tag_config_response.value
 
@@ -164,7 +155,7 @@ class TagMixin(Protocol):
             )
 
         client = TagConfigServiceStub(self.channel)
-        responses: AsyncIterator[TagConfigSetSomeResponse] = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)  # pyright: ignore[reportAssignmentType]
+        responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
 
         return [response.key async for response in responses]
 
@@ -203,10 +194,10 @@ class TagMixin(Protocol):
                     tag_creator_type=CREATOR_TYPE_MAP[creator_type],
                 )
             ],
-            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
+            time=TimeBounds() if time is None else TimeBounds(end=time),
         )
         client = TagAssignmentServiceStub(self.channel)
-        tag_assignment_responses: AsyncIterator[TagAssignmentStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        tag_assignment_responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
         tag_assignments = [tag_assignment_response.value async for tag_assignment_response in tag_assignment_responses]
 
         # Now tags contain all mainline tags.
@@ -222,10 +213,10 @@ class TagMixin(Protocol):
                     key=TagAssignmentKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
                 )
             ],
-            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
+            time=TimeBounds() if time is None else TimeBounds(end=time),
         )
         client = TagAssignmentConfigServiceStub(self.channel)
-        tag_assignment_config_responses: AsyncIterator[TagAssignmentConfigStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        tag_assignment_config_responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
         async for tag_assignment_config_response in tag_assignment_config_responses:
             tag_assignment_config = tag_assignment_config_response.value
 
@@ -272,9 +263,7 @@ class TagMixin(Protocol):
             )
 
         client = TagAssignmentConfigServiceStub(self.channel)
-        responses: AsyncIterator[TagAssignmentConfigSetSomeResponse] = client.set_some(
-            request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1
-        )  # pyright: ignore[reportAssignmentType]
+        responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
 
         return [response.key async for response in responses]
 
@@ -313,9 +302,7 @@ class TagMixin(Protocol):
             )
 
         client = TagAssignmentConfigServiceStub(self.channel)
-        responses: AsyncIterator[TagAssignmentConfigSetSomeResponse] = client.set_some(
-            request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1
-        )  # pyright: ignore[reportAssignmentType]
+        responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
 
         return [response.key async for response in responses]
 

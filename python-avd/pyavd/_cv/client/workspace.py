@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from datetime import datetime
 from logging import getLogger
 from typing import TYPE_CHECKING, Literal, Protocol
 from uuid import uuid4
@@ -21,7 +22,6 @@ from pyavd._cv.api.arista.workspace.v1 import (
     WorkspaceRequest,
     WorkspaceServiceStub,
     WorkspaceStreamRequest,
-    WorkspaceStreamResponse,
 )
 
 from .async_decorators import GRPCRequestHandler
@@ -29,9 +29,6 @@ from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import CVResourceNotFound
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator
-    from datetime import datetime
-
     from . import CVClientProtocol
 
 
@@ -61,13 +58,11 @@ class WorkspaceMixin(Protocol):
         Returns:
             Workspace object matching the workspace_id.
         """
-        # TODO: Fix time type error once we settle on the correct type for time in Key
-        # Note that changing this will also impact the recorded calls hash and fail tests
         request = WorkspaceRequest(
             key=WorkspaceKey(
                 workspace_id=workspace_id,
             ),
-            time=time,  # pyright: ignore[reportArgumentType]
+            time=datetime.now() if time is None else time,
         )
 
         client = WorkspaceServiceStub(self.channel)
@@ -245,7 +240,7 @@ class WorkspaceMixin(Protocol):
             ],
         )
         client = WorkspaceServiceStub(self.channel)
-        responses: AsyncIterator[WorkspaceStreamResponse] = client.subscribe(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
         async for response in responses:
             if request_id in response.value.responses.values:
                 LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, response.value.responses.values[request_id])

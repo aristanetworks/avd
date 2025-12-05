@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import datetime
 import tempfile
 from contextlib import nullcontext as does_not_raise
 from logging import INFO
@@ -40,8 +41,9 @@ async def test_deploy_to_cv(
 
     Exact test steps:
     -   description: Fethc Workspace status
-        request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'), time=None)'
-        targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/a996cf0f4bc694971e5d4069f481faaba80f68b2.json'
+        request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
+            time=datetime.datetime(2025, 12, 4, 23, 43, 11, 961121, tzinfo=datetime.timezone.utc))'
+        targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/235a7117b44d7fbb3d1cb5c95d860f01101b1734.json'
 
     -   description: Create Workspace
         request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
@@ -50,13 +52,13 @@ async def test_deploy_to_cv(
 
     -   description: Fetch device status
         request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id=None), hostname='avd-ci-leaf2', system_mac_address=None)],
-            time=TimeBounds(start=None, end=None))'
-        targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/effc85b759a4d35ba98ae7c22bcef828c070752d.json'
+            time=TimeBounds())'
+        targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/fe1839637b9bb70fe0a0ec18ecbf310271cf5f99.json'
 
     -   description: Fetch I&T Studio inputs
         request: 'InputsStreamRequest(partial_eq_filter=[Inputs(key=InputsKey(studio_id='TOPOLOGY', workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))],
-            time=TimeBounds(start=None, end=None))'
-        targeted_file: 'arista.studio.v1.InputsService/GetAll/www.cv-prod-us-central1-c.arista.io/0ab698a68a7f9f86eeda70fba362f57cb2f07fc4.json'
+            time=TimeBounds())'
+        targeted_file: 'arista.studio.v1.InputsService/GetAll/www.cv-prod-us-central1-c.arista.io/ddea21ebb60274779a566aa363313a893dc5557e.json'
 
     -   description: Create configlet
         request: 'ConfigletConfigSetSomeRequest(values=[ConfigletConfig(key=ConfigletKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e',
@@ -66,8 +68,8 @@ async def test_deploy_to_cv(
 
     -   description: Fetch Configlet assignments
         request: 'ConfigletAssignmentStreamRequest(partial_eq_filter=[ConfigletAssignment(key=ConfigletAssignmentKey(workspace_id=
-            'ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_assignment_id='avd-configlets'))], time=TimeBounds(start=None, end=None))'
-        targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/0462b04aed494937b07702371f123831a4e81036.json'
+            'ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_assignment_id='avd-configlets'))], time=TimeBounds())'
+        targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/4f362046a608b9c0d365f5b8af3cf2e8dae52d66.json'
 
     -   description: Fetch configlets assignments
         request: Too long. Please consult JSON file for details.
@@ -106,9 +108,12 @@ async def test_deploy_to_cv(
                 MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_SUCCESS["id"].removeprefix("req-"),
             ],
         ),
+        patch("pyavd._cv.client.workspace.datetime") as mocked_datetime,
         patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=cv_client),
         tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", delete=True) as temp_configlet_file,
     ):
+        # Mock datetime.now() so that it always returns the same datetime
+        mocked_datetime.now.return_value = datetime.datetime(2025, 12, 4, 23, 43, 11, 961121, tzinfo=datetime.timezone.utc)
         temp_configlet_file.write("alias test test")
         temp_configlet_file.flush()
 

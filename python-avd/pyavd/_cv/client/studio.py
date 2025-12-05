@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime
 from logging import getLogger
 from typing import TYPE_CHECKING, Any, Literal, Protocol, TypeVar, overload
 
@@ -15,19 +16,15 @@ from pyavd._cv.api.arista.studio.v1 import (
     InputsConfigServiceStub,
     InputsConfigSetRequest,
     InputsConfigSetSomeRequest,
-    InputsConfigSetSomeResponse,
     InputsConfigStreamRequest,
-    InputsConfigStreamResponse,
     InputsKey,
     InputsRequest,
     InputsServiceStub,
     InputsStreamRequest,
-    InputsStreamResponse,
     Studio,
     StudioConfig,
     StudioConfigServiceStub,
     StudioConfigStreamRequest,
-    StudioConfigStreamResponse,
     StudioKey,
     StudioRequest,
     StudioServiceStub,
@@ -40,9 +37,6 @@ from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator
-    from datetime import datetime
-
     from . import CVClientProtocol
 
 
@@ -85,7 +79,7 @@ class StudioMixin(Protocol):
         request = StudioRequest(
             # First attempt to fetch studio from workspace.
             key=StudioKey(studio_id=studio_id, workspace_id=workspace_id),
-            time=time,  # pyright: ignore[reportArgumentType]
+            time=datetime.now() if time is None else time,
         )
 
         client = StudioServiceStub(self.channel)
@@ -105,9 +99,6 @@ class StudioMixin(Protocol):
         # If we get here, it means no studio was returned by the workspace call.
         # So now we fetch the studio config from the workspace to see if the studio was deleted in this workspace.
 
-        # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
-        # Note that changing this will also impact the recorded calls hash
-
         request = StudioConfigStreamRequest(
             partial_eq_filter=[
                 StudioConfig(
@@ -115,11 +106,11 @@ class StudioMixin(Protocol):
                     remove=True,
                 ),
             ],
-            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
+            time=TimeBounds() if time is None else TimeBounds(end=time),
         )
         client = StudioConfigServiceStub(self.channel)
-        responses: AsyncIterator[StudioConfigStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
-        async for _response in responses:
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        async for _ in responses:
             # If we get here it means we got an entry with "removed: True" so no need to look further.
             msg = "The studio was deleted in the workspace."
             raise CVResourceNotFound(msg, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'")
@@ -128,7 +119,7 @@ class StudioMixin(Protocol):
         request = StudioRequest(
             # First attempt to fetch studio from workspace.
             key=StudioKey(studio_id=studio_id, workspace_id=""),
-            time=time,  # pyright: ignore[reportArgumentType]
+            time=datetime.now() if time is None else time,
         )
         client = StudioServiceStub(self.channel)
         response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
@@ -181,8 +172,6 @@ class StudioMixin(Protocol):
         Returns:
             Value of the studio inputs or the default_value if no inputs are found.
         """
-        # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
-        # Note that changing this will also impact the recorded calls hash
         request = InputsStreamRequest(
             # First attempt to fetch inputs from workspace.
             partial_eq_filter=[
@@ -190,7 +179,7 @@ class StudioMixin(Protocol):
                     key=InputsKey(studio_id=studio_id, workspace_id=workspace_id),
                 ),
             ],
-            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
+            time=TimeBounds() if time is None else TimeBounds(end=time),
         )
         client = InputsServiceStub(self.channel)
         studio_inputs: dict[str, Any] = {}
@@ -199,7 +188,7 @@ class StudioMixin(Protocol):
         # The inputs are split up by the server to send the value of each key in the underlying data instead of one big JSON blob.
         # Each response will contain a path on which a value must be set.
         # After all responses have been handled the data built from the paths/values contain the full inputs.
-        responses: AsyncIterator[InputsStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
         async for response in responses:
             if response.value.inputs is None:
                 continue
@@ -223,10 +212,10 @@ class StudioMixin(Protocol):
                     remove=True,
                 ),
             ],
-            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
+            time=TimeBounds() if time is None else TimeBounds(end=time),
         )
         client = InputsConfigServiceStub(self.channel)
-        inputs_config_responses: AsyncIterator[InputsConfigStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        inputs_config_responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
         async for _ in inputs_config_responses:
             # If we get here it means we got an entry with "removed: True" so no need to look further.
             return default_value
@@ -239,11 +228,11 @@ class StudioMixin(Protocol):
                     key=InputsKey(studio_id=studio_id, workspace_id=""),
                 ),
             ],
-            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
+            time=TimeBounds() if time is None else TimeBounds(end=time),
         )
         client = InputsServiceStub(self.channel)
-        responses: AsyncIterator[InputsStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
-        async for response in responses:  # pyright: ignore[reportGeneralTypeIssues]
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        async for response in responses:
             if response.value.inputs is None:
                 continue
 
@@ -290,7 +279,7 @@ class StudioMixin(Protocol):
                 workspace_id=workspace_id,
                 path=RepeatedString(values=input_path),
             ),
-            time=time,  # pyright: ignore[reportArgumentType]
+            time=datetime.now() if time is None else time,
         )
 
         client = InputsServiceStub(self.channel)
@@ -312,8 +301,6 @@ class StudioMixin(Protocol):
         # If we get here, it means no inputs were returned by the workspace call.
         # So now we fetch the inputs config from the workspace to see if the inputs were deleted in this workspace.
 
-        # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
-        # Note that changing this will also impact the recorded calls hash
         request = InputsConfigStreamRequest(
             partial_eq_filter=[
                 InputsConfig(
@@ -325,10 +312,10 @@ class StudioMixin(Protocol):
                     remove=True,
                 )
             ],
-            time=TimeBounds(start=None, end=time),  # pyright: ignore[reportArgumentType]
+            time=TimeBounds() if time is None else TimeBounds(end=time),
         )
         client = InputsConfigServiceStub(self.channel)
-        responses: AsyncIterator[InputsConfigStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
         async for _ in responses:
             # If we get here it means we got an entry with "removed: True" so no need to look further.
             return default_value
@@ -341,7 +328,7 @@ class StudioMixin(Protocol):
                 workspace_id="",
                 path=RepeatedString(values=input_path),
             ),
-            time=time,  # pyright: ignore[reportArgumentType]
+            time=datetime.now() if time is None else time,
         )
 
         client = InputsServiceStub(self.channel)
@@ -526,6 +513,6 @@ class StudioMixin(Protocol):
             )
 
         client = InputsConfigServiceStub(self.channel)
-        responses: AsyncIterator[InputsConfigSetSomeResponse] = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)  # pyright: ignore[reportAssignmentType]
+        responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
 
         return [response.key async for response in responses]

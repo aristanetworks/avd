@@ -14,7 +14,6 @@ from pyavd._cv.api.arista.swg.v1 import (
     EndpointStatus,
     EndpointStatusServiceStub,
     EndpointStatusStreamRequest,
-    EndpointStatusStreamResponse,
     ServiceName,
     SwgKey,
 )
@@ -24,8 +23,6 @@ from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import CVResourceNotFound
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator
-
     from . import CVClientProtocol
 
 LOGGER = getLogger(__name__)
@@ -105,7 +102,7 @@ class SwgMixin(Protocol):
         )
         client = EndpointStatusServiceStub(self.channel)
 
-        responses: AsyncIterator[EndpointStatusStreamResponse] = client.subscribe(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
         async for response in responses:
             if response.time < start_time:
                 LOGGER.info("wait_for_swg_endpoint_status: Got stale SWG endpoints from a previous lookup.")

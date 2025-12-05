@@ -5,14 +5,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal, Protocol
 
-from pyavd._cv.api.arista.inventory.v1 import Device, DeviceKey, DeviceServiceStub, DeviceStreamRequest, DeviceStreamResponse
+from pyavd._cv.api.arista.inventory.v1 import Device, DeviceKey, DeviceServiceStub, DeviceStreamRequest
 from pyavd._cv.api.arista.time import TimeBounds
 
 from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator
     from datetime import datetime
 
     from . import CVClientProtocol
@@ -43,9 +42,7 @@ class InventoryMixin(Protocol):
         Returns:
             List of Device objects.
         """
-        # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
-        # Note that changing this will also impact the recorded calls hash
-        request = DeviceStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time))  # pyright: ignore[reportArgumentType]
+        request = DeviceStreamRequest(partial_eq_filter=[], time=TimeBounds() if time is None else TimeBounds(end=time))
         if devices:
             for serial_number, system_mac_address, hostname in devices:
                 request.partial_eq_filter.append(
@@ -56,6 +53,6 @@ class InventoryMixin(Protocol):
                     ),
                 )
         client = DeviceServiceStub(self.channel)
-        responses: AsyncIterator[DeviceStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
 
         return [response.value async for response in responses]

@@ -15,20 +15,16 @@ from pyavd._cv.api.arista.configlet.v1 import (
     ConfigletAssignmentConfigServiceStub,
     ConfigletAssignmentConfigSetRequest,
     ConfigletAssignmentConfigSetSomeRequest,
-    ConfigletAssignmentConfigSetSomeResponse,
     ConfigletAssignmentKey,
     ConfigletAssignmentServiceStub,
     ConfigletAssignmentStreamRequest,
-    ConfigletAssignmentStreamResponse,
     ConfigletConfig,
     ConfigletConfigServiceStub,
     ConfigletConfigSetRequest,
     ConfigletConfigSetSomeRequest,
-    ConfigletConfigSetSomeResponse,
     ConfigletKey,
     ConfigletServiceStub,
     ConfigletStreamRequest,
-    ConfigletStreamResponse,
     MatchPolicy,
 )
 from pyavd._cv.api.arista.time import TimeBounds
@@ -39,7 +35,6 @@ from .async_decorators import GRPCRequestHandler, LimitCvVersion
 from .constants import DEFAULT_API_TIMEOUT
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator
     from datetime import datetime
 
     from . import CVClientProtocol
@@ -90,9 +85,7 @@ class ConfigletMixin(Protocol):
         Returns:
             List of ConfigletAssignment objects.
         """
-        # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
-        # Note that changing this will also impact the recorded calls hash
-        request = ConfigletAssignmentStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time))  # pyright: ignore[reportArgumentType]
+        request = ConfigletAssignmentStreamRequest(partial_eq_filter=[], time=TimeBounds() if time is None else TimeBounds(end=time))
         if container_ids:
             for container_id in container_ids:
                 request.partial_eq_filter.append(
@@ -102,7 +95,7 @@ class ConfigletMixin(Protocol):
             request.partial_eq_filter.append(ConfigletAssignment(key=ConfigletAssignmentKey(workspace_id=workspace_id)))
 
         client = ConfigletAssignmentServiceStub(self.channel)
-        responses: AsyncIterator[ConfigletAssignmentStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
 
         return [response.value async for response in responses]
 
@@ -187,7 +180,7 @@ class ConfigletMixin(Protocol):
             ],
         )
         client = ConfigletAssignmentConfigServiceStub(self.channel)
-        responses: AsyncIterator[ConfigletAssignmentConfigSetSomeResponse] = client.set_some(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
 
         return [response.key async for response in responses]
 
@@ -291,9 +284,7 @@ class ConfigletMixin(Protocol):
         Returns:
             List of matching Configlet objects.
         """
-        # TODO: Fix TimeBounds type error once we settle on the correct type for start and end
-        # Note that changing this will also impact the recorded calls hash
-        request = ConfigletStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time))  # pyright: ignore[reportArgumentType]
+        request = ConfigletStreamRequest(partial_eq_filter=[], time=TimeBounds() if time is None else TimeBounds(end=time))
         if configlet_ids:
             for configlet_id in configlet_ids:
                 request.partial_eq_filter.append(Configlet(key=ConfigletKey(workspace_id=workspace_id, configlet_id=configlet_id)))
@@ -302,7 +293,7 @@ class ConfigletMixin(Protocol):
 
         client = ConfigletServiceStub(self.channel)
 
-        responses: AsyncIterator[ConfigletStreamResponse] = client.get_all(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
 
         return [response.value async for response in responses]
 
@@ -412,7 +403,7 @@ class ConfigletMixin(Protocol):
             )
         client = ConfigletConfigServiceStub(self.channel)
 
-        responses: AsyncIterator[ConfigletConfigSetSomeResponse] = client.set_some(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
 
         return [response.key async for response in responses]
 
@@ -485,6 +476,6 @@ class ConfigletMixin(Protocol):
             )
         client = ConfigletConfigServiceStub(self.channel)
 
-        responses: AsyncIterator[ConfigletConfigSetSomeResponse] = client.set_some(request, metadata=self._metadata, timeout=timeout)  # pyright: ignore[reportAssignmentType]
+        responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
 
         return [response.key async for response in responses]

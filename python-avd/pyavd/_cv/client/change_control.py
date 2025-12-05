@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from datetime import datetime
 from logging import getLogger
 from typing import TYPE_CHECKING, Literal, Protocol
 
@@ -28,8 +29,6 @@ from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import CVChangeControlFailed
 
 if TYPE_CHECKING:
-    from datetime import datetime
-
     from aristaproto import _DateTime
 
     from . import CVClientProtocol
@@ -70,7 +69,7 @@ class ChangeControlMixin(Protocol):
         """
         request = ChangeControlRequest(
             key=ChangeControlKey(id=change_control_id),
-            time=time,  # pyright: ignore[reportArgumentType]
+            time=datetime.now() if time is None else time,
         )
 
         client = ChangeControlServiceStub(self.channel)
@@ -206,7 +205,7 @@ class ChangeControlMixin(Protocol):
         )
         client = ChangeControlServiceStub(self.channel)
         responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
-        async for response in responses:  # pyright: ignore[reportGeneralTypeIssues]
+        async for response in responses:
             LOGGER.debug("wait_for_change_control_complete: Response is '%s.'", response)
             if hasattr(response, "value") and response.value.status == CHANGE_CONTROL_STATUS_MAP[state]:
                 LOGGER.info("wait_for_change_control_complete: Got response for request '%s': %s", cc_id, response.value.status)
