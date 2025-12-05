@@ -2384,6 +2384,8 @@ mcs client
 | Management1 | MGMT |
 | Loopback0 | default |
 | Loopback12 | Tenant_A_APP_Zone |
+| Ethernet1 | AAA |
+| Ethernet2 | abc |
 
 #### SNMP VRF Status
 
@@ -2452,8 +2454,10 @@ snmp-server engineID local 424242424242424242
 snmp-server contact DC1_OPS
 snmp-server location DC1
 snmp-server local-interface Loopback0
-snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
+snmp-server vrf AAA local-interface Ethernet1
 snmp-server vrf MGMT local-interface Management1
+snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
+snmp-server vrf abc local-interface Ethernet2
 snmp-server view VW-READ iso included
 snmp-server view VW-WRITE iso included
 snmp-server community <removed> ro onur
