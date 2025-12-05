@@ -79,10 +79,8 @@ jobs:
               - 'ansible_collections/arista/avd/plugins/test/**'
             requirements:
               - 'ansible_collections/arista/avd/requirements.txt'
-              - 'ansible_collections/arista/avd/requirements-dev.txt'
               - 'ansible_collections/arista/avd/meta/runtime.yml'
               - 'ansible_collections/arista/avd/requirements.yml'
-              - '.github/requirements-ci-dev.txt'
               - '.github/workflows/pull-request-management.yml'
               - 'sonar-project.properties'
               - '.pre-commit-config.yaml'
@@ -133,9 +131,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
       - name: Install pyavd and Ansible requirements
         run: |
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install --group dev --upgrade
       - name: PyRight static type checker
         # Specific SHA as allowed by github org admins
         uses: jakebailey/pyright-action@6cabc0f01c4994be48fd45cd9dbacdd6e1ee6e5e
@@ -169,7 +170,7 @@ jobs:
           path: /tmp/pyavd/
       - name: "Install Python requirements"
         run: |
-          pip install "${{ needs.build_pyavd.outputs.wheel_file }}" -r ansible_collections/arista/avd/requirements-dev.txt --upgrade --find-links /tmp/pyavd
+          pip install "${{ needs.build_pyavd.outputs.wheel_file }}" --group dev --upgrade
 
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
@@ -208,7 +209,7 @@ jobs:
           python-version: "3.11"
       - name: Install pyavd and Ansible requirements
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule --find-links /tmp/pyavd
+          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
@@ -276,7 +277,7 @@ jobs:
           python-version: "3.11"
       - name: Install pyavd and Ansible requirements
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule --find-links /tmp/pyavd
+          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
@@ -314,7 +315,7 @@ jobs:
           cat /tmp/pyavd/min_requirements.txt
           pip install pip --upgrade
           python -m pip install --group molecule
-          python -m pip install "ansible-core==2.16.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r /tmp/pyavd/min_requirements.txt --find-links /tmp/pyavd
+          python -m pip install "ansible-core==2.16.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r /tmp/pyavd/min_requirements.txt
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
@@ -358,7 +359,7 @@ jobs:
           python-version: "3.11"
       - name: Install pyavd and Ansible requirements
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule --find-links /tmp/pyavd
+          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
@@ -401,7 +402,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install pyavd and Ansible requirements
         run: |
-          pip install  ${{ matrix.pip_installation }} "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --find-links /tmp/pyavd
+          pip install  ${{ matrix.pip_installation }} "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
       - name: Run ansible-test sanity
         working-directory: ansible_collections/arista/avd
         # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version
@@ -426,7 +427,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install pyavd and ansible requirements
         run: |
-          pip install "ansible-core<2.20.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --find-links /tmp/pyavd
+          pip install "ansible-core<2.20.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
       - name: Run ansible-test units
         working-directory: ansible_collections/arista/avd
         run: |
@@ -455,7 +456,7 @@ jobs:
             3.13
       - name: Install Python requirements
         run: |
-          pip install "ansible-core<2.20.0" "./python-avd[ansible-collection]" --find-links /tmp/pyavd
+          pip install "ansible-core<2.20.0" "./python-avd[ansible-collection]" --upgrade
       - name: Run ansible-test integration test cases
         working-directory: ansible_collections/arista/avd
         run: |
@@ -553,7 +554,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install Python & Ansible requirements
         run: |
-          pip install "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group dev --upgrade
       - name: Download collection
         uses: actions/download-artifact@v6
         with:
