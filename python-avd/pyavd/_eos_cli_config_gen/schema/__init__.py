@@ -15513,33 +15513,67 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
-    class IpHttpClientSourceInterfacesItem(AvdModel):
+    class IpHttpClient(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-        name: str | None
-        """Interface Name."""
-        vrf: str | None
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            source_interface: str
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: name
+                        source_interface: source_interface
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"source_interface": {"type": str}, "vrfs": {"type": Vrfs}}
+        source_interface: str | None
+        """Define `source_interface` for VRF default."""
+        vrfs: Vrfs
+        """
+        Define vrfs for any VRF other than default.
+
+        Subclass of AvdIndexedList with `VrfsItem` items.
+        Primary key is `name` (`str`).
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
                 """
-                IpHttpClientSourceInterfacesItem.
+                IpHttpClient.
 
 
                 Subclass of AvdModel.
 
                 Args:
-                    name: Interface Name.
-                    vrf: vrf
+                    source_interface: Define `source_interface` for VRF default.
+                    vrfs:
+                       Define vrfs for any VRF other than default.
+
+                       Subclass of AvdIndexedList with `VrfsItem` items.
+                       Primary key is `name` (`str`).
 
                 """
-
-    class IpHttpClientSourceInterfaces(AvdList[IpHttpClientSourceInterfacesItem]):
-        """Subclass of AvdList with `IpHttpClientSourceInterfacesItem` items."""
-
-    IpHttpClientSourceInterfaces._item_type = IpHttpClientSourceInterfacesItem
 
     class IpIgmpSnooping(AvdModel):
         """Subclass of AvdModel."""
@@ -17221,33 +17255,67 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
-    class IpSshClientSourceInterfacesItem(AvdModel):
+    class IpSshClient(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-        name: str | None
-        """Interface Name."""
-        vrf: str | None
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            source_interface: str
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: name
+                        source_interface: source_interface
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"source_interface": {"type": str}, "vrfs": {"type": Vrfs}}
+        source_interface: str | None
+        """Define `source_interface` for VRF default."""
+        vrfs: Vrfs
+        """
+        Define vrfs for any VRF other than default.
+
+        Subclass of AvdIndexedList with `VrfsItem` items.
+        Primary key is `name` (`str`).
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
                 """
-                IpSshClientSourceInterfacesItem.
+                IpSshClient.
 
 
                 Subclass of AvdModel.
 
                 Args:
-                    name: Interface Name.
-                    vrf: vrf
+                    source_interface: Define `source_interface` for VRF default.
+                    vrfs:
+                       Define vrfs for any VRF other than default.
+
+                       Subclass of AvdIndexedList with `VrfsItem` items.
+                       Primary key is `name` (`str`).
 
                 """
-
-    class IpSshClientSourceInterfaces(AvdList[IpSshClientSourceInterfacesItem]):
-        """Subclass of AvdList with `IpSshClientSourceInterfacesItem` items."""
-
-    IpSshClientSourceInterfaces._item_type = IpSshClientSourceInterfacesItem
 
     class IpTacacsSourceInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
@@ -68414,7 +68482,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_extcommunity_lists_regexp": {"type": IpExtcommunityListsRegexp},
         "ip_ftp_client_source_interfaces": {"type": IpFtpClientSourceInterfaces},
         "ip_hardware": {"type": IpHardware},
-        "ip_http_client_source_interfaces": {"type": IpHttpClientSourceInterfaces},
+        "ip_http_client": {"type": IpHttpClient},
         "ip_icmp_redirect": {"type": bool},
         "ip_igmp_snooping": {"type": IpIgmpSnooping},
         "ip_name_server_groups": {"type": IpNameServerGroups},
@@ -68425,7 +68493,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_routing": {"type": bool},
         "ip_routing_ipv6_interfaces": {"type": bool},
         "ip_security": {"type": IpSecurity},
-        "ip_ssh_client_source_interfaces": {"type": IpSshClientSourceInterfaces},
+        "ip_ssh_client": {"type": IpSshClient},
         "ip_tacacs_source_interfaces": {"type": IpTacacsSourceInterfaces},
         "ip_telnet_client_source_interfaces": {"type": IpTelnetClientSourceInterfaces},
         "ip_tftp_client_source_interfaces": {"type": IpTftpClientSourceInterfaces},
@@ -68775,8 +68843,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdList with `IpFtpClientSourceInterfacesItem` items."""
     ip_hardware: IpHardware
     """Subclass of AvdModel."""
-    ip_http_client_source_interfaces: IpHttpClientSourceInterfaces
-    """Subclass of AvdList with `IpHttpClientSourceInterfacesItem` items."""
+    ip_http_client: IpHttpClient
+    """Subclass of AvdModel."""
     ip_icmp_redirect: bool | None
     ip_igmp_snooping: IpIgmpSnooping
     """Subclass of AvdModel."""
@@ -68794,8 +68862,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ip_routing_ipv6_interfaces: bool | None
     ip_security: IpSecurity
     """Subclass of AvdModel."""
-    ip_ssh_client_source_interfaces: IpSshClientSourceInterfaces
-    """Subclass of AvdList with `IpSshClientSourceInterfacesItem` items."""
+    ip_ssh_client: IpSshClient
+    """Subclass of AvdModel."""
     ip_tacacs_source_interfaces: IpTacacsSourceInterfaces
     """Subclass of AvdList with `IpTacacsSourceInterfacesItem` items."""
     ip_telnet_client_source_interfaces: IpTelnetClientSourceInterfaces
@@ -69170,7 +69238,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_extcommunity_lists_regexp: IpExtcommunityListsRegexp | UndefinedType = Undefined,
             ip_ftp_client_source_interfaces: IpFtpClientSourceInterfaces | UndefinedType = Undefined,
             ip_hardware: IpHardware | UndefinedType = Undefined,
-            ip_http_client_source_interfaces: IpHttpClientSourceInterfaces | UndefinedType = Undefined,
+            ip_http_client: IpHttpClient | UndefinedType = Undefined,
             ip_icmp_redirect: bool | None | UndefinedType = Undefined,
             ip_igmp_snooping: IpIgmpSnooping | UndefinedType = Undefined,
             ip_name_server_groups: IpNameServerGroups | UndefinedType = Undefined,
@@ -69181,7 +69249,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_routing: bool | None | UndefinedType = Undefined,
             ip_routing_ipv6_interfaces: bool | None | UndefinedType = Undefined,
             ip_security: IpSecurity | UndefinedType = Undefined,
-            ip_ssh_client_source_interfaces: IpSshClientSourceInterfaces | UndefinedType = Undefined,
+            ip_ssh_client: IpSshClient | UndefinedType = Undefined,
             ip_tacacs_source_interfaces: IpTacacsSourceInterfaces | UndefinedType = Undefined,
             ip_telnet_client_source_interfaces: IpTelnetClientSourceInterfaces | UndefinedType = Undefined,
             ip_tftp_client_source_interfaces: IpTftpClientSourceInterfaces | UndefinedType = Undefined,
@@ -69461,7 +69529,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    (`str`).
                 ip_ftp_client_source_interfaces: Subclass of AvdList with `IpFtpClientSourceInterfacesItem` items.
                 ip_hardware: Subclass of AvdModel.
-                ip_http_client_source_interfaces: Subclass of AvdList with `IpHttpClientSourceInterfacesItem` items.
+                ip_http_client: Subclass of AvdModel.
                 ip_icmp_redirect: ip_icmp_redirect
                 ip_igmp_snooping: Subclass of AvdModel.
                 ip_name_server_groups: Subclass of AvdIndexedList with `IpNameServerGroupsItem` items. Primary key is `name` (`str`).
@@ -69472,7 +69540,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_routing: ip_routing
                 ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces
                 ip_security: Subclass of AvdModel.
-                ip_ssh_client_source_interfaces: Subclass of AvdList with `IpSshClientSourceInterfacesItem` items.
+                ip_ssh_client: Subclass of AvdModel.
                 ip_tacacs_source_interfaces: Subclass of AvdList with `IpTacacsSourceInterfacesItem` items.
                 ip_telnet_client_source_interfaces: Subclass of AvdList with `IpTelnetClientSourceInterfacesItem` items.
                 ip_tftp_client_source_interfaces: Subclass of AvdList with `IpTftpClientSourceInterfacesItem` items.

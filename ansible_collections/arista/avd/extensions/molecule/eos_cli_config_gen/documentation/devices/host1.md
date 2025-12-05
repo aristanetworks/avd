@@ -885,9 +885,9 @@ management tech-support
 | FTP | default | Ethernet10 |
 | FTP | default | Loopback0 |
 | FTP | MGMT | Management0 |
+| HTTP | default | Ethernet10 |
 | HTTP | default | Loopback0 |
 | HTTP | MGMT | Management0 |
-| HTTP | default | Ethernet10 |
 | SSH | default | Ethernet10 |
 | SSH | default | Loopback0 |
 | SSH | MGMT | Management0 |
@@ -905,9 +905,9 @@ management tech-support
 ip ftp client source-interface Ethernet10
 ip ftp client source-interface Loopback0 vrf default
 ip ftp client source-interface Management0 vrf MGMT
+ip http client local-interface Ethernet10
 ip http client local-interface Loopback0 vrf default
 ip http client local-interface Management0 vrf MGMT
-ip http client local-interface Ethernet10
 ip ssh client source-interface Ethernet10
 ip ssh client source-interface Loopback0 vrf default
 ip ssh client source-interface Management0 vrf MGMT

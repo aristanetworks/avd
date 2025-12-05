@@ -6066,18 +6066,18 @@ keys:
                     max: 7
                     convert_types:
                     - str
+  ip_http_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/ip_client
   ip_http_client_source_interfaces:
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          description: Interface Name.
-          type: str
-        vrf:
-          type: str
-          convert_types:
-          - int
+    documentation_options:
+      table: ip-http-client
+    deprecation:
+      removed: true
+      warning: true
+      new_key: ip_http_client
+      remove_in_version: 6.0.0
   ip_icmp_redirect:
     type: bool
   ip_igmp_snooping:
@@ -6754,18 +6754,18 @@ keys:
       connection_tx_interface_match_source_ip:
         type: bool
         description: Match source interface of the IPsec connection.
+  ip_ssh_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/ip_client
   ip_ssh_client_source_interfaces:
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          description: Interface Name.
-          type: str
-        vrf:
-          type: str
-          convert_types:
-          - int
+    documentation_options:
+      table: ip-ssh-client
+    deprecation:
+      removed: true
+      warning: true
+      new_key: ip_ssh_client
+      remove_in_version: 6.0.0
   ip_tacacs_source_interfaces:
     type: list
     display_name: IP Tacacs Source Interfaces
@@ -25458,3 +25458,21 @@ $defs:
           min: 1
           max: 65535
           description: requires 'original_port'.
+  ip_client:
+    type: dict
+    keys:
+      source_interface:
+        type: str
+        description: Define `source_interface` for VRF default.
+      vrfs:
+        type: list
+        primary_key: name
+        description: Define vrfs for any VRF other than default.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            source_interface:
+              type: str
+              required: true

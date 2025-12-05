@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# doc - ip client source interfaces #}
-{% if ip_ftp_client_source_interfaces is arista.avd.defined or ip_http_client_source_interfaces is arista.avd.defined or ip_ssh_client_source_interfaces is arista.avd.defined or ip_telnet_client_source_interfaces is arista.avd.defined or ip_tftp_client_source_interfaces is arista.avd.defined %}
+{% if ip_ftp_client_source_interfaces is arista.avd.defined or ip_http_client is arista.avd.defined or ip_ssh_client is arista.avd.defined or ip_telnet_client_source_interfaces is arista.avd.defined or ip_tftp_client_source_interfaces is arista.avd.defined %}
 
 ### IP Client Source Interfaces
 
@@ -15,16 +15,20 @@
 | FTP | {{ ip_ftp_client_source_interface.vrf | arista.avd.default('default') }} | {{ ip_ftp_client_source_interface.name }} |
 {%         endfor %}
 {%     endif %}
-{%     if ip_http_client_source_interfaces is arista.avd.defined %}
-{%         for ip_http_client_source_interface in ip_http_client_source_interfaces | arista.avd.natural_sort %}
-| HTTP | {{ ip_http_client_source_interface.vrf | arista.avd.default('default') }} | {{ ip_http_client_source_interface.name }} |
+{%     if ip_http_client is arista.avd.defined %}
+{%         if ip_http_client.source_interface is arista.avd.defined %}
+| HTTP | default | {{ ip_http_client.source_interface }} |
+{%         endif %}
+{%         for vrf in ip_http_client.vrfs | arista.avd.natural_sort("name") %}
+| HTTP | {{ vrf.name }} | {{ vrf.source_interface }} |
 {%         endfor %}
 {%     endif %}
-{%     if ip_ssh_client_source_interfaces is arista.avd.defined %}
-{%         for ip_ssh_client_source_interface in ip_ssh_client_source_interfaces | arista.avd.natural_sort %}
-{%             if ip_ssh_client_source_interface.name is arista.avd.defined %}
-| SSH | {{ ip_ssh_client_source_interface.vrf | arista.avd.default('default') }} | {{ ip_ssh_client_source_interface.name | capitalize }} |
-{%             endif %}
+{%     if ip_ssh_client is arista.avd.defined %}
+{%         if ip_ssh_client.source_interface is arista.avd.defined %}
+| SSH | default | {{ ip_ssh_client.source_interface | capitalize }} |
+{%         endif %}
+{%         for vrf in ip_ssh_client.vrfs | arista.avd.natural_sort("name") %}
+| SSH | {{ vrf.name }} | {{ vrf.source_interface | capitalize }} |
 {%         endfor %}
 {%     endif %}
 {%     if ip_telnet_client_source_interfaces is arista.avd.defined %}
