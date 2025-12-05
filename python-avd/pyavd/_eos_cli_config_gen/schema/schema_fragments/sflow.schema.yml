@@ -138,8 +138,6 @@ keys:
               keys:
                 name:
                   type: str
-                  # the command doesnot reflect in EOS CLI `sflow hardware acceleration module Linecard 0`
-                  description: Only Linecard "0" is supported in EOS 4.35.0F-44178984.4350F.
                 enabled:
                   type: bool
                   default: true

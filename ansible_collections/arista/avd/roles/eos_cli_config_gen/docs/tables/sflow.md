@@ -40,7 +40,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "sflow.hardware_acceleration.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sample</samp>](## "sflow.hardware_acceleration.sample") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;modules</samp>](## "sflow.hardware_acceleration.modules") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "sflow.hardware_acceleration.modules.[].name") | String | Required, Unique |  |  | Only Linecard "0" is supported in EOS 4.35.0F-44178984.4350F. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "sflow.hardware_acceleration.modules.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "sflow.hardware_acceleration.modules.[].enabled") | Boolean |  | `True` |  |  |
 
 === "YAML"
@@ -110,8 +110,6 @@
         enabled: <bool>
         sample: <int>
         modules:
-
-            # Only Linecard "0" is supported in EOS 4.35.0F-44178984.4350F.
           - name: <str; required; unique>
             enabled: <bool; default=True>
     ```
