@@ -12,9 +12,6 @@ monitor loop-protection
 {%     elif monitor_loop_protection.enabled is arista.avd.defined(false) %}
    shutdown
 {%     endif %}
-{%     if monitor_loop_protection.disabled_time is arista.avd.defined %}
-   disabled-time {{ monitor_loop_protection.disabled_time }}
-{%     endif %}
 {%     if monitor_loop_protection.protect_vlan is arista.avd.defined %}
    protect vlan {{ monitor_loop_protection.protect_vlan }}
 {%     endif %}
@@ -23,5 +20,8 @@ monitor loop-protection
 {%     endif %}
 {%     if monitor_loop_protection.transmit_interval is arista.avd.defined %}
    transmit-interval {{ monitor_loop_protection.transmit_interval }}
+{%     endif %}
+{%     if monitor_loop_protection.disabled_time is arista.avd.defined %}
+   disabled-time {{ monitor_loop_protection.disabled_time }}
 {%     endif %}
 {% endif %}
