@@ -82,7 +82,7 @@ def _validate_python_version(info: dict[str, Any]) -> bool:
 
 
 def _parse_requirements(req_str: str) -> tuple[Requirement, list[str]]:
-    """Parse a requirement string and return the parsed object an a list of extras requirements to parse if any."""
+    """Parse a requirement string and return the parsed object and a list of extras requirements to parse if any."""
     try:
         req = Requirement(req_str)
     except InvalidRequirement as exc:
@@ -94,7 +94,7 @@ def _parse_requirements(req_str: str) -> tuple[Requirement, list[str]]:
         for subreq_name in metadata(req.name).get_all("Requires-Dist"):
             subreq = Requirement(subreq_name)
             if subreq.marker:
-                extras = [subreq_name for marker in subreq.marker._markers if str(marker[0]) == "extra" and str(marker[2]) in req.extras]
+                extras.extend([subreq_name for marker in subreq.marker._markers if str(marker[0]) == "extra" and str(marker[2]) in req.extras])
 
     return req, extras
 

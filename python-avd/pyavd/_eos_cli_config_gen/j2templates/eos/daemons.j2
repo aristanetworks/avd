@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - daemons #}
-{% for daemon in daemons | arista.avd.natural_sort('name') %}
+{% for daemon in daemons | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 daemon {{ daemon.name }}
 {%     if daemon.exec is arista.avd.defined %}
