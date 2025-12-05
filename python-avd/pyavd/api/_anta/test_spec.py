@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from pydantic import BaseModel, model_validator
+from pydantic import BaseModel, ConfigDict, model_validator
 
 from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.input_factories._base_classes import AntaTestInputFactory
@@ -33,6 +33,7 @@ class TestSpec(BaseModel):
         Required field if the ANTA test needs inputs.
     """
 
+    model_config = ConfigDict(extra="forbid")
     test_class: type[AntaTest]
     conditional_keys: list[StructuredConfigKey] | None = None
     input_factory: type[AntaTestInputFactory] | None = None

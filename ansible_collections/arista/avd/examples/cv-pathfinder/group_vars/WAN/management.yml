@@ -13,21 +13,22 @@ cv_settings:
     enabled: true
 
 # For each local user in this example, password == username
-local_users:
-  # Username with no password configured
-  - name: admin
-    privilege: 15
-    role: network-admin
-    no_password: true
-  # Username with a password
-  - name: arista
-    privilege: 15
-    role: network-admin
-    sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
-  - name: cvpadmin
-    privilege: 15
-    role: network-admin
-    sha512_password: $6$a7LdQWHxWzYHpvVt$n62q.1mbm4kzQ5oBr0lhXCE9ntnTn.SNa16DovZHahFQLH.iPcPMZa5JUSFtncrDW4EDQ3oSWgP8G0S4FtOFx1
+aaa_settings:
+  local_users:
+    # Username with no password configured
+    - name: admin
+      privilege: 15
+      role: network-admin
+      no_password: true
+    # Username with a password
+    - name: arista
+      privilege: 15
+      role: network-admin
+      sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
+    - name: cvpadmin
+      privilege: 15
+      role: network-admin
+      sha512_password: $6$a7LdQWHxWzYHpvVt$n62q.1mbm4kzQ5oBr0lhXCE9ntnTn.SNa16DovZHahFQLH.iPcPMZa5JUSFtncrDW4EDQ3oSWgP8G0S4FtOFx1
 
 # Internet ACL
 ipv4_acls:

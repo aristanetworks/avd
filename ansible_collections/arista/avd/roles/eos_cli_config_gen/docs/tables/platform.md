@@ -76,6 +76,8 @@
     | [<samp>&nbsp;&nbsp;fap</samp>](## "platform.fap") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;buffering_egress</samp>](## "platform.fap.buffering_egress") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "platform.fap.buffering_egress.profile") | String |  |  | Valid Values:<br>- <code>unicast</code><br>- <code>balanced</code> | Preferred traffic profile for egress fap buffering. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;voq</samp>](## "platform.fap.voq") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;credit_rates_unified</samp>](## "platform.fap.voq.credit_rates_unified") | Boolean |  |  |  | Set Unified credit rates for all port speeds. |
 
 === "YAML"
 
@@ -240,4 +242,8 @@
 
           # Preferred traffic profile for egress fap buffering.
           profile: <str; "unicast" | "balanced">
+        voq:
+
+          # Set Unified credit rates for all port speeds.
+          credit_rates_unified: <bool>
     ```

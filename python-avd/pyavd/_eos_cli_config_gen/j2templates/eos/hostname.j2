@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - hostname #}
-{% if hostname is arista.avd.defined or generate_default_config is arista.avd.defined(true) %}
+{% if hostname is arista.avd.defined %}
 !
 hostname {{ hostname | arista.avd.default(inventory_hostname) }}
 {% endif %}

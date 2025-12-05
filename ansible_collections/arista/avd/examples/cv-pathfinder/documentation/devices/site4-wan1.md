@@ -3,7 +3,6 @@
 ## Table of Contents
 
 - [Management](#management)
-  - [Agents](#agents)
   - [Management Interfaces](#management-interfaces)
   - [DNS Domain](#dns-domain)
   - [IP Name Servers](#ip-name-servers)
@@ -19,6 +18,9 @@
   - [Management Security SSL Profiles](#management-security-ssl-profiles)
   - [SSL profile STUN-DTLS Certificates Summary](#ssl-profile-stun-dtls-certificates-summary)
   - [Management Security Device Configuration](#management-security-device-configuration)
+- [Kernel Settings](#kernel-settings)
+  - [Kernel Device Summary](#kernel-device-summary)
+  - [Kernel Device configuration](#kernel-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Flow Tracking](#flow-tracking)
@@ -66,23 +68,6 @@
   - [STUN Device Configuration](#stun-device-configuration)
 
 ## Management
-
-### Agents
-
-#### Agent KernelFib
-
-##### Environment Variables
-
-| Name | Value |
-| ---- | ----- |
-| KERNELFIB_PROGRAM_ALL_ECMP | 1 |
-
-#### Agents Device Configuration
-
-```eos
-!
-agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=1
-```
 
 ### Management Interfaces
 
@@ -164,9 +149,11 @@ ip domain lookup vrf MGMT source-interface Management1
 
 ##### NTP Servers
 
-| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 0.pool.ntp.org | MGMT | True | - | - | - | - | - | - | - |
+NTP servers VRF: MGMT
+
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 0.pool.ntp.org | True | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
@@ -275,6 +262,19 @@ management security
       certificate STUN-DTLS.crt key STUN-DTLS.key
 ```
 
+## Kernel Settings
+
+### Kernel Device Summary
+
+- Kernel software forwarding ECMP enabled
+
+### Kernel Device configuration
+
+```eos
+!
+kernel software forwarding ecmp
+```
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -308,7 +308,7 @@ daemon TerminAttr
 
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
-| FLOW-TRACKER | CV-TELEMETRY | - | - | Loopback0 |
+| FLOW-TRACKER | CV-TELEMETRY | 127.0.0.1 | - | Loopback0 |
 
 #### Flow Tracking Device Configuration
 
@@ -355,7 +355,7 @@ spanning-tree mode none
 ### IPSec profiles
 
 | Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode | Flow Parallelization |
-| ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
+| ------------ | ---------- | --------- | ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
 | CP-PROFILE | CP-IKE-POLICY | CP-SA-POLICY | start | - | - | - | transport | - |
 | DP-PROFILE | - | DP-SA-POLICY | start | - | - | - | transport | - |
 
@@ -408,7 +408,7 @@ ip security
 
 | Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
 | --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.15/32 | - | 9194 | Hardware: FLOW-TRACKER |  |
+| Dps1 | 192.168.42.15/32 | - | 9194 | Hardware: FLOW-TRACKER | - |
 
 #### DPS Interfaces Device Configuration
 
@@ -434,8 +434,8 @@ interface Dps1
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_site4-border1_Ethernet3 | - | 10.0.4.57/31 | default | 9194 | False | - | - |
 | Ethernet2 | P2P_site4-border2_Ethernet3 | - | 10.0.4.59/31 | default | 9194 | False | - | - |
 | Ethernet3 | ACME-MPLS-INC_mpls-site4-wan1_mpls-cloud_Ethernet8 | - | 172.18.40.2/24 | default | - | False | - | - |
@@ -514,8 +514,8 @@ interface Loopback0
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
 | BLUE | 100 | - |
 | default | 1 | - |
 | RED | 101 | - |
@@ -841,10 +841,10 @@ ASN Notation: asplain
 
 ##### EVPN Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| EVPN-OVERLAY-PEERS | True |  - | - | default | - |
-| WAN-OVERLAY-PEERS | True |  RM-EVPN-SOO-IN | RM-EVPN-SOO-OUT | path-selection | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| EVPN-OVERLAY-PEERS | True | - | - | - | - | default | - |
+| WAN-OVERLAY-PEERS | True | RM-EVPN-SOO-IN | RM-EVPN-SOO-OUT | - | - | path-selection | - |
 
 ##### EVPN DCI Gateway Summary
 
@@ -858,9 +858,9 @@ ASN Notation: asplain
 
 ##### IPv4 SR-TE Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| WAN-OVERLAY-PEERS | True | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ |
+| WAN-OVERLAY-PEERS | True | - | - | - | - |
 
 #### Router BGP Link-State Address Family
 
@@ -1276,7 +1276,7 @@ application traffic recognition
 ##### Path Group INTERNET
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Path Group ID | 102 |
 | IPSec profile | CP-PROFILE |
 
@@ -1289,7 +1289,7 @@ application traffic recognition
 ###### Dynamic Peers Settings
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | IP Local | - |
 | IPSec | - |
 
@@ -1303,7 +1303,7 @@ application traffic recognition
 ##### Path Group MPLS
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Path Group ID | 101 |
 | IPSec profile | CP-PROFILE |
 
@@ -1316,7 +1316,7 @@ application traffic recognition
 ###### Dynamic Peers Settings
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | IP Local | - |
 | IPSec | - |
 

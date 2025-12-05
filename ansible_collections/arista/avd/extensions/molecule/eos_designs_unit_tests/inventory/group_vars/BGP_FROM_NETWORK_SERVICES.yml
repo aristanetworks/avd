@@ -1,0 +1,160 @@
+---
+# bgp-from-network-services-1 should get BGP configured for VRF default since there are BGP peers for the device under the VRF.
+# Notice that the node type l3spine does not have a default overlay or underlay routing protocol, so they will not contribute BGP.
+# bgp-from-network-services-2 will *NOT* get BGP configured because of a bug. See issue # 3804
+
+type: l3spine
+
+l3spine:
+  defaults:
+    bgp_as: 65001
+    spanning_tree_mode: none
+    loopback_ipv4_pool: 192.0.255.0/24
+    uplink_ipv4_pool: 10.255.1.0/24
+    mlag_interfaces: [Ethernet10]
+    mlag_peer_ipv4_pool: "10.10.10.0/24"
+    mlag_peer_l3_ipv4_pool: "10.10.20.0/24"
+  node_groups:
+    - group: GROUP1
+      filter:
+        tenants: ["TEST1"]
+        always_include_vrfs_in_tenants: ["TEST1"]
+      nodes:
+        - name: bgp-from-network-services-1
+          id: 1
+          mgmt_ip: 10.1.1.1/24
+        - name: bgp-from-network-services-2
+          id: 2
+          mgmt_ip: 10.1.1.2/24
+    - group: GROUP2
+      filter:
+        tenants: ["TEST2"]
+        always_include_vrfs_in_tenants: ["TEST2"]
+      nodes:
+        - name: bgp-from-network-services-11
+          id: 11
+          mgmt_ip: 10.1.1.11/24
+        - name: bgp-from-network-services-12
+          id: 12
+          mgmt_ip: 10.1.1.12/24
+    - group: GROUP3
+      filter:
+        tenants: ["TEST3"]
+        always_include_vrfs_in_tenants: ["TEST3"]
+      nodes:
+        - name: bgp-from-network-services-21
+          id: 21
+          mgmt_ip: 10.1.1.21/24
+        - name: bgp-from-network-services-22
+          id: 22
+          mgmt_ip: 10.1.1.22/24
+    - group: BGP_FROM_NETWORK_SERVICES_GROUP4
+      # RFC 5549 is configured in a sub group file
+      filter:
+        tenants: ["TEST4"]
+        always_include_vrfs_in_tenants: ["TEST4"]
+      nodes:
+        - name: bgp-from-network-services-31
+          id: 31
+          mgmt_ip: 10.1.1.31/24
+        - name: bgp-from-network-services-32
+          id: 32
+          mgmt_ip: 10.1.1.32/24
+  nodes:
+    # RFC 5549 is configured in host_vars
+    - name: bgp-from-network-services-41
+      id: 41
+      mgmt_ip: 10.1.1.41/24
+      filter:
+        tenants: ["TEST5"]
+        always_include_vrfs_in_tenants: ["TEST5"]
+
+tenants:
+  - name: TEST1
+    vrfs:
+      - name: default
+        # expect to see metadata in structured config as it is validated by default for VRF default
+        validate_bgp_peers: false
+        vrf_id: 100
+        address_families: []
+        bgp_peers:
+          - ip_address: 10.10.1.2
+            peer_group: MYPEERGROUP
+            nodes: [bgp-from-network-services-1, bgp-from-network-services-2]
+        bgp_peer_groups:
+          - name: MYPEERGROUP
+            remote_as: 65991
+            next_hop_self: true
+            bfd: true
+      # Test to validate the BGP peers under non default vrf
+      - name: validate_bgp_peers
+        vrf_id: 101
+        bgp:
+          # Testing raw_eos_cli and structured_config
+          raw_eos_cli: |-
+            ! Comment for bgp
+          structured_config:
+            timers: 42 42
+        validate_bgp_peers: true
+        address_families: []
+        static_routes:
+          - prefix: 0.0.0.0
+            next_hop: 10.10.2.1
+            nodes: [bgp-from-network-services-2]
+        l3_interfaces:
+          - interfaces:
+              - Ethernet42
+            ip_addresses:
+              - 10.10.2.1/30
+            nodes:
+              - bgp-from-network-services-2
+        bgp_peers:
+          - ip_address: 10.10.2.2
+            peer_group: VALIDATE_BGP_PEERS
+            nodes: [bgp-from-network-services-1, bgp-from-network-services-2]
+        bgp_peer_groups:
+          - name: VALIDATE_BGP_PEERS
+            remote_as: 65991
+            next_hop_self: true
+            bfd: true
+  # Tenant for node 11 and 12 with VRF default
+  - name: TEST2
+    vrfs:
+      - name: default
+        bgp:
+          enabled: true
+        # expect to not see metadata in structured config as it is validated by default for VRF default
+        validate_bgp_peers: true
+        vrf_id: 102
+        address_families: []
+  # Tenant for node 21 and 22 with VRF default
+  - name: TEST3
+    vrfs:
+      - name: default
+        bgp:
+          enabled: true
+        # validate_bgp_peers not configured, does not expect any config
+        vrf_id: 103
+        address_families: []
+  # Tenant for node 31 and 32 with VRF default
+  - name: TEST4
+    vrfs:
+      - name: default
+        bgp:
+          enabled: true
+        # expect to see metadata in structured config as it is validated by default for VRF default
+        validate_bgp_peers: false
+        vrf_id: 104
+        address_families: []
+  # Tenant for node 41
+  - name: TEST5
+    vrfs:
+      - name: default
+        bgp:
+          enabled: true
+        vrf_id: 104
+        address_families: []
+        bgp_peers:
+          - ip_address: 10.10.41.42
+            peer_group: VALIDATE_BGP_PEERS
+            nodes: [bgp-from-network-services-41]

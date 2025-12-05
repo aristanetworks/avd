@@ -12,7 +12,7 @@ title: Input variables for eos_cli_config_gen
 
 This document describes the supported input variables for the role `arista.avd.eos_cli_config_gen`.
 
-Since several data models have changed between AVD versions 4.x and 5.x, it is recommended to study the [Porting Guide for AVD 5.x.x](../../../../../../docs/porting-guides/5.x.x.md) for existing deployments.
+Since several data models have changed between AVD versions 5.x and 6.x, it is recommended to study the [Porting Guide for AVD 6.x.x](../../../../../../docs/porting-guides/6.x.x.md) for existing deployments.
 
 The input variables are documented below in tables and YAML.
 
@@ -74,10 +74,34 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-radius-so
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-tacacs-source-interfaces.md
 --8<--
 
+### IP FTP client source-interfaces
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-ftp-client-source-interfaces.md
+--8<--
+
+### IP Telnet client source-interfaces
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-telnet-client-source-interfaces.md
+--8<--
+
+### IP TFTP client source-interfaces
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-tftp-client-source-interfaces.md
+--8<--
+
 ### Local users
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/local-users.md
+--8<--
+
+### Radius proxy
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/radius-proxy.md
 --8<--
 
 ### Radius server
@@ -196,22 +220,6 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/dynamic-pref
 --8<--
 
 ### IP community lists
-
-AVD currently supports two different data models for community lists:
-
-- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
-- The improved `ip_community_lists` data model.
-
-Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
-Community list names must be unique.
-
-The legacy data model supports simplified community list definition that only allows a single action to be defined as string:
-
---8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/community-lists.md
---8<--
-
-The improved data model has a better design documented below:
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-community-lists.md
@@ -369,10 +377,22 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-d
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-port-security.md
 --8<--
 
+### Sync-e
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/sync-e.md
+--8<--
+
 ### Transceiver QSFP default mode 4x10
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/transceiver-qsfp-default-mode-4x10.md
+--8<--
+
+### Transceiver DOM threshold
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/transceiver.md
 --8<--
 
 ### Tunnel interfaces
@@ -585,12 +605,6 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/cvx.md
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/eos-cli.md
 --8<--
 
-### Is deployed
-
---8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/is-deployed.md
---8<--
-
 ### Management CVX
 
 --8<--
@@ -687,6 +701,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-tele
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-twamp.md
+--8<--
+
+### Connectivity Fault Management
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/cfm.md
 --8<--
 
 ### SFLOW
@@ -845,6 +865,14 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-routing.m
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-virtual-router-mac-address.md
 --8<--
 
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-virtual-router-mac-address-advertisement-interval.md
+--8<--
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-virtual-router-mac-address-mlag-peer.md
+--8<--
+
 ### IPv6 DHCP relay
 
 --8<--
@@ -867,6 +895,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ipv6-static-
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ipv6-unicast-routing.md
+--8<--
+
+### IPv6 Neighbors
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ipv6-neighbor.md
 --8<--
 
 ### MPLS
@@ -921,6 +955,18 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/router-l2-vp
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/router-ospf.md
+--8<--
+
+### Router RIP
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/router-rip.md
+--8<--
+
+### IP OSPF router-id output-format hostnames
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-ospf-router-id-output-format-hostnames.md
 --8<--
 
 ### IPV6 Router OSPF

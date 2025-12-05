@@ -1,0 +1,21 @@
+---
+### IPv4 Prefix-Lists ###
+dynamic_prefix_lists:
+  # Test for sort with ignore_case: false
+  - name: aa_list_1
+    match_map: Test_2
+    prefix_list:
+      ipv4: IPV4_PREFIX_LIST
+  - name: DYNAMIC_PREFIX_LIST_NAME_3
+    match_map: Test_2
+    prefix_list:
+      ipv4: IPV4_PREFIX_LIST
+      ipv6: IPV6_PREFIX_LIST
+  - name: DYNAMIC_PREFIX_LIST_NAME_1
+    match_map: Test_1
+    prefix_list:
+      ipv4: IPV4_PREFIX_LIST
+  - name: DYNAMIC_PREFIX_LIST_NAME_2
+    match_map: Test_2
+    prefix_list:
+      ipv6: IPV6_PREFIX_LIST

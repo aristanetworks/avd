@@ -34,7 +34,7 @@ class PortChannelInterfacesMixin(Protocol):
         - Silently ignore duplicate port-channels if they contain _exactly_ the same configuration
         - Raise a duplicate error for any other duplicate port-channel interface
         """
-        for connected_endpoint in self._filtered_connected_endpoints:
+        for connected_endpoint in self.shared_utils.filtered_connected_endpoints:
             for adapter in connected_endpoint.adapters:
                 if not adapter.port_channel or not adapter.port_channel.mode:
                     continue
@@ -70,12 +70,12 @@ class PortChannelInterfacesMixin(Protocol):
         # Notice this is keyed by the ethernet interface, so we get duplication check between the members.
         # Values are the real structured config and the custom structured config for this interface.
         network_ports_port_channel_interfaces: dict[str, tuple[EosCliConfigGen.PortChannelInterfacesItem, EosCliConfigGen.PortChannelInterfacesItem]] = {}
-        for network_port in self._filtered_network_ports:
+        for network_port in self.shared_utils.filtered_network_ports:
             if not network_port.port_channel.mode:
                 continue
 
             connected_endpoint = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem(name=network_port.endpoint or Undefined)
-            connected_endpoint._internal_data.type = "network_port"
+            connected_endpoint.type = "network_port"
             network_port_as_adapter = network_port._cast_as(
                 EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem, ignore_extra_keys=True
             )
@@ -150,7 +150,7 @@ class PortChannelInterfacesMixin(Protocol):
                     interface=port_channel_interface_name,
                     peer=peer,
                     peer_interface=peer_interface,
-                    peer_type=connected_endpoint._internal_data.type,
+                    peer_type=connected_endpoint.type,
                     description=adapter_description,
                     port_channel_id=channel_group_id,
                     port_channel_description=port_channel_description,
@@ -164,11 +164,15 @@ class PortChannelInterfacesMixin(Protocol):
             link_tracking_groups=self._get_adapter_link_tracking_groups(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.LinkTrackingGroups),
             ptp=self._get_adapter_ptp(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.Ptp),
             flow_tracker=self.shared_utils.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.PortChannelInterfacesItem.FlowTracker),
-            validate_state=None if (adapter.validate_state if adapter.validate_state is not None else True) else False,
-            validate_lldp=None if (adapter.validate_lldp if adapter.validate_lldp is not None else True) else False,
             eos_cli=adapter.port_channel.raw_eos_cli,
         )
-        port_channel_interface.sflow.enable = default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
+        port_channel_interface.metadata._update(
+            validate_state=False if adapter.validate_state is False else None,
+            validate_lldp=False if adapter.validate_lldp is False else None,
+        )
+        port_channel_interface.sflow.enable = self.shared_utils.get_interface_sflow(
+            port_channel_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
+        )
 
         if adapter.port_channel.subinterfaces:
             port_channel_interface.switchport.enabled = False
@@ -249,7 +253,12 @@ class PortChannelInterfacesMixin(Protocol):
 
         # EVPN A/A
         if (
-            short_esi := self._get_short_esi(adapter, channel_group_id, short_esi=subinterface.short_esi, hash_extra_value=str(subinterface.number))
+            short_esi := self._get_short_esi(
+                adapter,
+                channel_group_id,
+                port_channel_subif_short_esi=subinterface.short_esi,
+                hash_extra_value=str(subinterface.number),
+            )
         ) is not None:
             port_channel_interface.evpn_ethernet_segment._update(
                 identifier=f"{self.inputs.evpn_short_esi_prefix}{short_esi}",

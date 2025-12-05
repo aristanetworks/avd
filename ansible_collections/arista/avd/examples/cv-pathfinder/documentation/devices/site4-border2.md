@@ -133,9 +133,11 @@ ip domain lookup vrf MGMT source-interface Management1
 
 ##### NTP Servers
 
-| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 0.pool.ntp.org | MGMT | True | - | - | - | - | - | - | - |
+NTP servers VRF: MGMT
+
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 0.pool.ntp.org | True | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
@@ -250,7 +252,7 @@ daemon TerminAttr
 
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
-| FLOW-TRACKER | CV-TELEMETRY | - | - | Loopback0 |
+| FLOW-TRACKER | CV-TELEMETRY | 127.0.0.1 | - | Loopback0 |
 
 #### Flow Tracking Device Configuration
 
@@ -312,7 +314,7 @@ no spanning-tree vlan-id 4093-4094
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -379,8 +381,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet3 | P2P_site4-wan1_Ethernet2 | - | 10.0.4.58/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
@@ -413,7 +415,7 @@ interface Ethernet6
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_site4-border1_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -465,8 +467,8 @@ interface Loopback1
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan42 | RED-TEST | RED | - | False |
 | Vlan666 | BLUE-TEST | BLUE | - | False |
 | Vlan3099 | MLAG_L3_VRF_BLUE | BLUE | 9214 | False |
@@ -478,12 +480,12 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan42 |  RED  |  10.42.44.1/24  |  -  |  -  |  -  |  -  |
-| Vlan666 |  BLUE  |  10.66.44.1/24  |  -  |  -  |  -  |  -  |
-| Vlan3099 |  BLUE  |  10.255.251.25/31  |  -  |  -  |  -  |  -  |
-| Vlan3100 |  RED  |  10.255.251.25/31  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  10.255.251.25/31  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.252.25/31  |  -  |  -  |  -  |  -  |
+| Vlan42 | RED | 10.42.44.1/24 | - | - | - | - |
+| Vlan666 | BLUE | 10.66.44.1/24 | - | - | - | - |
+| Vlan3099 | BLUE | 10.255.251.25/31 | - | - | - | - |
+| Vlan3100 | RED | 10.255.251.25/31 | - | - | - | - |
+| Vlan4093 | default | 10.255.251.25/31 | - | - | - | - |
+| Vlan4094 | default | 10.255.252.25/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -548,8 +550,8 @@ interface Vlan4094
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
 | BLUE | 100 | - |
 | RED | 101 | - |
 
@@ -639,7 +641,7 @@ ASN Notation: asplain
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -685,9 +687,9 @@ ASN Notation: asplain
 
 ##### EVPN Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| EVPN-OVERLAY-PEERS | True |  - | - | default | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| EVPN-OVERLAY-PEERS | True | - | - | - | - | default | - |
 
 #### Router BGP VLANs
 
@@ -710,7 +712,7 @@ ASN Notation: asplain
 router bgp 65104
    router-id 192.168.255.14
    no bgp default ipv4-unicast
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd

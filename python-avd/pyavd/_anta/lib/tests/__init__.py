@@ -10,7 +10,9 @@ from anta.tests.hardware import (
     VerifyEnvironmentCooling,
     VerifyEnvironmentPower,
     VerifyEnvironmentSystemCooling,
+    VerifyInventory,
     VerifyTemperature,
+    VerifyTransceiversManufacturers,
     VerifyTransceiversTemperature,
 )
 from anta.tests.interfaces import (
@@ -26,16 +28,14 @@ from anta.tests.interfaces import (
 from anta.tests.logging import VerifyLoggingErrors
 from anta.tests.mlag import (
     VerifyMlagConfigSanity,
-    VerifyMlagDualPrimary,
     VerifyMlagInterfaces,
-    VerifyMlagReloadDelay,
     VerifyMlagStatus,
 )
 from anta.tests.path_selection import VerifySpecificPath
 from anta.tests.routing.bgp import VerifyBGPPeerSession
-from anta.tests.routing.generic import VerifyRoutingProtocolModel
+from anta.tests.routing.generic import VerifyRoutingProtocolModel, VerifyRoutingTableEntry
+from anta.tests.routing.ospf import VerifyOSPFMaxLSA, VerifyOSPFNeighborState
 from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn
-from anta.tests.services import VerifyDNSServers
 from anta.tests.stp import VerifySTPCounters
 from anta.tests.system import (
     VerifyAgentLogs,
@@ -46,6 +46,7 @@ from anta.tests.system import (
     VerifyNTP,
     VerifyReloadCause,
 )
+from anta.tests.vxlan import VerifyVxlanConfigSanity
 
 __all__ = [
     "VerifyAPIHttpsSSL",
@@ -53,7 +54,6 @@ __all__ = [
     "VerifyAgentLogs",
     "VerifyBGPPeerSession",
     "VerifyCoredump",
-    "VerifyDNSServers",
     "VerifyEnvironmentCooling",
     "VerifyEnvironmentPower",
     "VerifyEnvironmentSystemCooling",
@@ -64,26 +64,30 @@ __all__ = [
     "VerifyInterfaceErrors",
     "VerifyInterfaceUtilization",
     "VerifyInterfacesStatus",
+    "VerifyInventory",
     "VerifyLLDPNeighbors",
     "VerifyLoggingErrors",
     "VerifyMaintenance",
     "VerifyMemoryUtilization",
     "VerifyMlagConfigSanity",
-    "VerifyMlagDualPrimary",
     "VerifyMlagInterfaces",
-    "VerifyMlagReloadDelay",
     "VerifyMlagStatus",
     "VerifyNTP",
+    "VerifyOSPFMaxLSA",
+    "VerifyOSPFNeighborState",
     "VerifyPortChannels",
     "VerifyReachability",
     "VerifyReloadCause",
     "VerifyRoutingProtocolModel",
+    "VerifyRoutingTableEntry",
     "VerifyRunningConfigDiffs",
     "VerifySTPCounters",
     "VerifySpecificIPSecConn",
     "VerifySpecificPath",
     "VerifyStormControlDrops",
     "VerifyTemperature",
+    "VerifyTransceiversManufacturers",
     "VerifyTransceiversTemperature",
+    "VerifyVxlanConfigSanity",
     "VerifyZeroTouch",
 ]

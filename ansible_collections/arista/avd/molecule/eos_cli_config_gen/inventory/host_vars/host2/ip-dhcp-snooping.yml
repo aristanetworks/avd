@@ -1,5 +1,0 @@
----
-### IP DHCP Snooping ###
-
-ip_dhcp_snooping:
-  enabled: true

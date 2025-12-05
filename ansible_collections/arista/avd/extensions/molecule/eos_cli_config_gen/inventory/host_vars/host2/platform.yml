@@ -1,0 +1,12 @@
+---
+# To test headroom_pool in bytes.
+platform:
+  trident:
+    mmu:
+      headroom_pool:
+        limit: 557
+  fap:
+    buffering_egress:
+      profile: balanced
+    voq:
+      credit_rates_unified: false

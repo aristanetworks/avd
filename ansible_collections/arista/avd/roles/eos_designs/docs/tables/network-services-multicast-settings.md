@@ -88,7 +88,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].igmp_snooping_querier.source_address") | String |  |  |  | IPv4_address<br>If not set, IP address of "Loopback0" will be used.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].igmp_snooping_querier.version") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>3</code> | IGMP Version (By default EOS uses IGMP version 2 for IGMP querier). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].igmp_snooping_querier.fast_leave") | Boolean |  |  |  | Enable IGMP snooping fast-leave feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2vlans</samp>](## "<network_services_keys.name>.[].l2vlans") | List, items: Dictionary |  |  |  | Define L2 network services organized by vlan id. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2vlans</samp>](## "<network_services_keys.name>.[].l2vlans") | List, items: Dictionary |  |  |  | Define L2 network services organized by VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].l2vlans.[].id") | Integer | Required |  | Min: 1<br>Max: 4094 | VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multicast</samp>](## "<network_services_keys.name>.[].l2vlans.[].evpn_l2_multicast") | Dictionary |  |  |  | Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.<br>When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled, overriding those individual settings.<br>Requires `evpn_multicast` to also be set to `true`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].l2vlans.[].evpn_l2_multicast.enabled") | Boolean |  |  |  |  |
@@ -101,6 +101,19 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping_querier.source_address") | String |  |  |  | IPv4_address<br>If not set, IP address of "Loopback0" will be used.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping_querier.version") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>3</code> | IGMP Version (By default EOS uses IGMP version 2 for IGMP querier). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping_querier.fast_leave") | Boolean |  |  |  | Enable IGMP snooping fast-leave feature. |
+    | [<samp>l2vlan_profiles</samp>](## "l2vlan_profiles") | List, items: Dictionary |  |  |  | Profiles to inherit common settings for l2vlans defined under the network_services key. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "l2vlan_profiles.[].profile") | String | Required, Unique |  |  | Profile name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multicast</samp>](## "l2vlan_profiles.[].evpn_l2_multicast") | Dictionary |  |  |  | Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.<br>When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled, overriding those individual settings.<br>Requires `evpn_multicast` to also be set to `true`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l2vlan_profiles.[].evpn_l2_multicast.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vxlan_flood_multicast</samp>](## "l2vlan_profiles.[].vxlan_flood_multicast") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l2vlan_profiles.[].vxlan_flood_multicast.enabled") | Boolean |  |  |  | Explicitly enable or disable vxlan_flood_multicast to override setting of `<network_services_key>.[].vxlan_flood_multicast.enabled`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast_group</samp>](## "l2vlan_profiles.[].vxlan_flood_multicast.underlay_multicast_group") | String |  |  |  | Specific multicast group to use for this VLAN. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping_enabled</samp>](## "l2vlan_profiles.[].igmp_snooping_enabled") | Boolean |  |  |  | Enable or disable IGMP snooping (Enabled by default on EOS). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping_querier</samp>](## "l2vlan_profiles.[].igmp_snooping_querier") | Dictionary |  |  |  | Enable igmp snooping querier, by default using IP address of Loopback 0.<br>When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l2vlan_profiles.[].igmp_snooping_querier.enabled") | Boolean |  |  |  | Will be enabled automatically if evpn_l2_multicast is enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "l2vlan_profiles.[].igmp_snooping_querier.source_address") | String |  |  |  | IPv4_address<br>If not set, IP address of "Loopback0" will be used.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "l2vlan_profiles.[].igmp_snooping_querier.version") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>3</code> | IGMP Version (By default EOS uses IGMP version 2 for IGMP querier). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "l2vlan_profiles.[].igmp_snooping_querier.fast_leave") | Boolean |  |  |  | Enable IGMP snooping fast-leave feature. |
     | [<samp>svi_profiles</samp>](## "svi_profiles") | List, items: Dictionary |  |  |  | Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.<br>Keys are the same used under SVIs. Keys defined under SVIs take precedence.<br>Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:<br>1. svi.nodes[inventory_hostname].structured_config<br>2. svi_profile.nodes[inventory_hostname].structured_config<br>3. svi_parent_profile.nodes[inventory_hostname].structured_config<br>4. svi.structured_config<br>5. svi_profile.structured_config<br>6. svi_parent_profile.structured_config<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "svi_profiles.[].profile") | String | Required, Unique |  |  | Profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "svi_profiles.[].nodes") | List, items: Dictionary |  |  |  | Define node specific configuration, such as unique IP addresses.<br>Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.<br> |
@@ -397,7 +410,7 @@
                   # Enable IGMP snooping fast-leave feature.
                   fast_leave: <bool>
 
-        # Define L2 network services organized by vlan id.
+        # Define L2 network services organized by VLAN ID.
         l2vlans:
 
             # VLAN ID.
@@ -435,6 +448,45 @@
 
               # Enable IGMP snooping fast-leave feature.
               fast_leave: <bool>
+
+    # Profiles to inherit common settings for l2vlans defined under the network_services key.
+    l2vlan_profiles:
+
+        # Profile name.
+      - profile: <str; required; unique>
+
+        # Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
+        # When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled, overriding those individual settings.
+        # Requires `evpn_multicast` to also be set to `true`.
+        evpn_l2_multicast:
+          enabled: <bool>
+        vxlan_flood_multicast:
+
+          # Explicitly enable or disable vxlan_flood_multicast to override setting of `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+          enabled: <bool>
+
+          # Specific multicast group to use for this VLAN.
+          underlay_multicast_group: <str>
+
+        # Enable or disable IGMP snooping (Enabled by default on EOS).
+        igmp_snooping_enabled: <bool>
+
+        # Enable igmp snooping querier, by default using IP address of Loopback 0.
+        # When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.
+        igmp_snooping_querier:
+
+          # Will be enabled automatically if evpn_l2_multicast is enabled.
+          enabled: <bool>
+
+          # IPv4_address
+          # If not set, IP address of "Loopback0" will be used.
+          source_address: <str>
+
+          # IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+          version: <int; 1 | 2 | 3>
+
+          # Enable IGMP snooping fast-leave feature.
+          fast_leave: <bool>
 
     # Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
     # Keys are the same used under SVIs. Keys defined under SVIs take precedence.

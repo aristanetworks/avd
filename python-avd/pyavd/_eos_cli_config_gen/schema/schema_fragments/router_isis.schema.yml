@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -437,17 +437,3 @@ keys:
       eos_cli:
         type: str
         description: Multiline EOS CLI rendered directly on the router isis in the final EOS configuration.
-      address_family:
-        type: list
-        deprecation:
-          removed: true
-          warning: true
-          new_key: address_family_ipv4.enabled or address_family_ipv6.enabled
-          remove_in_version: "5.0.0"
-      isis_af_defaults:
-        type: list
-        deprecation:
-          removed: true
-          warning: true
-          new_key: address_family_ipv4/address_family_ipv6
-          remove_in_version: "5.0.0"

@@ -1,0 +1,59 @@
+---
+### Errdisable ###
+
+errdisable:
+  detect:
+    causes:
+      - arp-inspection
+      - dot1x
+      - link-change
+      - tapagg
+      - xcvr-misconfigured
+      - xcvr-overheat
+      - xcvr-power-unsupported
+      - acl
+      - dot1x-coa
+      - dot1x-phone-classification
+      - dot1x-session-replace
+      - error-correction-encoding
+      - hardware-speed-group
+      - interface-speed
+      - internal-error
+      - port-breakout
+      - storm-control
+      - switchcard-unreachable
+      - transceiver-adapter
+  recovery:
+    causes:
+      - name: bpduguard
+        interval: 400
+      - name: dot1x
+        interval: 500
+      - name: hitless-reload-down
+      - name: lacp-rate-limit
+      - name: link-flap
+      - name: no-internal-vlan
+      - name: portchannelguard
+      - name: portsec
+      - name: speed-misconfigured
+      - name: tapagg
+      - name: uplink-failure-detection
+      - name: xcvr-misconfigured
+      - name: xcvr-overheat
+      - name: xcvr-power-unsupported
+      - name: xcvr-unsupported
+      - name: arp-inspection
+      - name: acl
+      - name: dot1x-coa
+      - name: dot1x-phone-classification
+      - name: dot1x-session-replace
+      - name: error-correction-encoding
+      - name: hardware-speed-group
+      - name: transceiver-adapter
+      - name: switchcard-unreachable
+      - name: stuck-queue
+      - name: storm-control
+      - name: port-breakout
+      - name: internal-error
+      - name: interface-speed
+    interval: 300

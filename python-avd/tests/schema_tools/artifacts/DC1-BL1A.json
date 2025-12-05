@@ -59,15 +59,24 @@
         "location": true
     },
     "mgmt_gateway": "192.168.200.5",
-    "name_servers": [
-        "192.168.200.5",
-        "8.8.8.8",
-        "2001:db8::1",
-        "2001:db8::2"
-    ],
     "management_eapi": {
         "enable_https": true,
         "default_services": false
+    },
+    "dns_settings": {
+        "domain": "testfabric.local",
+        "servers": [
+            {
+                "ip_address": "10.10.10.1",
+                "priority": 1,
+                "vrf": "default"
+            },
+            {
+                "ip_address": "10.10.10.1",
+                "priority": 1,
+                "vrf": "use_mgmt_interface_vrf"
+            }
+        ]
     },
     "ntp_settings": {
         "server_vrf": "use_mgmt_interface_vrf",
@@ -2593,8 +2602,8 @@
                     ],
                     "static_routes": [
                         {
-                            "destination_address_prefix": "10.3.4.0/24",
-                            "gateway": "1.2.3.4",
+                            "prefix": "10.3.4.0/24",
+                            "next_hop": "1.2.3.4",
                             "nodes": [
                                 "DC1-BL1A",
                                 "DC1-BL1B"
@@ -3264,16 +3273,16 @@
                     ],
                     "static_routes": [
                         {
-                            "destination_address_prefix": "0.0.0.0/0",
-                            "gateway": "10.3.11.4",
+                            "prefix": "0.0.0.0/0",
+                            "next_hop": "10.3.11.4",
                             "nodes": [
                                 "DC1-LEAF2A",
                                 "DC1-LEAF2B"
                             ]
                         },
                         {
-                            "destination_address_prefix": "1.1.1.0/24",
-                            "gateway": "10.3.11.4",
+                            "prefix": "1.1.1.0/24",
+                            "next_hop": "10.3.11.4",
                             "nodes": [
                                 "DC1-LEAF2A",
                                 "DC1-LEAF2B"
@@ -3284,8 +3293,8 @@
                     ],
                     "ipv6_static_routes": [
                         {
-                            "destination_address_prefix": "::/0",
-                            "gateway": "2001:db8:311::4",
+                            "prefix": "::/0",
+                            "next_hop": "2001:db8:311::4",
                             "name": "IPv6-test-2",
                             "nodes": [
                                 "DC1-LEAF2A",
@@ -3293,24 +3302,24 @@
                             ]
                         },
                         {
-                            "destination_address_prefix": "2001:db8::/32",
-                            "gateway": "2001:db8:310::1",
+                            "prefix": "2001:db8::/32",
+                            "next_hop": "2001:db8:310::1",
                             "name": "IPv6-test",
                             "nodes": [
                                 "DC1-LEAF1A"
                             ]
                         },
                         {
-                            "destination_address_prefix": "2001:db9::/32",
-                            "gateway": "2001:db8:310::1",
+                            "prefix": "2001:db9::/32",
+                            "next_hop": "2001:db8:310::1",
                             "name": "IPv6-test-1",
                             "nodes": [
                                 "DC1-LEAF1A"
                             ]
                         },
                         {
-                            "destination_address_prefix": "2001:dba::/32",
-                            "gateway": "2001:db8:310::1",
+                            "prefix": "2001:dba::/32",
+                            "next_hop": "2001:db8:310::1",
                             "name": "Track-bfd-network-services",
                             "track_bfd": true,
                             "nodes": [
@@ -3509,9 +3518,11 @@
                 "enabled": false
             },
             "mtu": 1500,
-            "peer": "MY-own-peer",
-            "peer_interface": "Ethernet123",
-            "peer_type": "my_precious"
+            "metadata": {
+                "peer": "MY-own-peer",
+                "peer_interface": "Ethernet123",
+                "peer_type": "my_precious"
+            }
         }
     ],
     "override_ntp": null,
@@ -3528,8 +3539,8 @@
     "overlay_rt_type": {
         "admin_subfield": "bgp_as"
     },
-    "inventory_file": "/home/holbech/avd/ansible_collections/arista/avd/molecule/eos_designs_unit_tests/inventory/hosts.yml",
-    "inventory_dir": "/home/holbech/avd/ansible_collections/arista/avd/molecule/eos_designs_unit_tests/inventory",
+    "inventory_file": "/home/holbech/avd/ansible_collections/arista/avd/extensions/molecule/eos_designs_unit_tests/inventory/hosts.yml",
+    "inventory_dir": "/home/holbech/avd/ansible_collections/arista/avd/extensions/molecule/eos_designs_unit_tests/inventory",
     "ansible_host": "192.168.200.110",
     "inventory_hostname": "DC1-BL1A",
     "inventory_hostname_short": "DC1-BL1A",
@@ -5022,7 +5033,7 @@
     "ansible_diff_mode": false,
     "ansible_forks": 10,
     "ansible_inventory_sources": [
-        "/home/holbech/avd/ansible_collections/arista/avd/molecule/eos_designs_unit_tests/inventory/hosts.yml"
+        "/home/holbech/avd/ansible_collections/arista/avd/extensions/molecule/eos_designs_unit_tests/inventory/hosts.yml"
     ],
     "ansible_skip_tags": [],
     "ansible_run_tags": [

@@ -55,7 +55,7 @@ eos_designs_custom_templates:
       strip_empty_keys: false
 ```
 
-For more details, see [Custom Templates](https://avd.arista.com/stable/roles/eos_designs/docs/role-configuration.html#custom-templates).
+For more details, see [Custom Templates](../role-configuration.md#custom-templates).
 
 ## Adding the Custom Template to the `eos-designs` Role
 

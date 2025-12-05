@@ -14,6 +14,7 @@ SCHEMA = AvdSchemaTools(schema_id="eos_cli_config_gen").avdschema._schema
 
 
 @pytest.mark.molecule_scenarios(
+    "digital_twin",
     "eos_designs_unit_tests",
     "eos_designs_deprecated_vars",
     "eos_designs-l2ls",
@@ -33,7 +34,7 @@ SCHEMA = AvdSchemaTools(schema_id="eos_cli_config_gen").avdschema._schema
     "eos_cli_config_gen",
     "eos_cli_config_gen_deprecated_vars",
 )
-@pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos")
+@pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos", "digital_twin")
 def test_validate_structured_config_with_valid_data(molecule_host: MoleculeHost) -> None:
     """Test validate_structured_config."""
     if molecule_host.scenario.name.startswith("eos_cli_config_gen"):

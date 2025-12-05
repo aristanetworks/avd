@@ -1,0 +1,27 @@
+fabric_name: FABRIC_MISSING_ID_UPLINK_SWITCH_INTERFACES
+
+default_node_types:
+  - node_type: l3leaf
+    match_hostnames: [.*l3leaf]
+  - node_type: l2leaf
+    match_hostnames: [.*l2leaf.*]
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.1.0/24
+    vtep_loopback_ipv4_pool: 192.168.2.0/24
+    bgp_as: 65001
+  nodes:
+    - name: uplink-switch-l3leaf
+      id: 10
+
+l2leaf:
+  defaults:
+    uplink_interfaces: [Ethernet1]
+    uplink_switches: [uplink-switch-l3leaf]
+  nodes:
+    - name: missing-id-on-l2leaf-uplink-switch-interfaces
+      mgmt_ip: 192.168.0.2/24
+
+expected_error_message: >-
+  'id' is not set on 'missing-id-on-l2leaf-uplink-switch-interfaces'.

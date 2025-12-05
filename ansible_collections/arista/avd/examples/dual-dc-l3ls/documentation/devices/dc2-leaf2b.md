@@ -178,7 +178,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -263,8 +263,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_dc2-spine1_Ethernet4 | - | 10.255.255.117/31 | default | 1500 | False | - | - |
 | Ethernet2 | P2P_dc2-spine2_Ethernet4 | - | 10.255.255.119/31 | default | 1500 | False | - | - |
 | Ethernet6 | P2P_dc1-leaf2b_Ethernet6 | - | 172.16.100.3/31 | default | 1500 | False | - | - |
@@ -322,7 +322,7 @@ interface Ethernet8
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_dc2-leaf2a_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel5 | SERVER_dc2-leaf2-server1 | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
 | Port-Channel8 | L2_dc2-leaf2c_Port-Channel1 | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
@@ -410,8 +410,8 @@ interface Loopback11
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan11 | VRF10_VLAN11 | VRF10 | - | False |
 | Vlan12 | VRF10_VLAN12 | VRF10 | - | False |
 | Vlan21 | VRF11_VLAN21 | VRF11 | - | False |
@@ -425,14 +425,14 @@ interface Loopback11
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan11 |  VRF10  |  -  |  10.10.11.1/24  |  -  |  -  |  -  |
-| Vlan12 |  VRF10  |  -  |  10.10.12.1/24  |  -  |  -  |  -  |
-| Vlan21 |  VRF11  |  -  |  10.10.21.1/24  |  -  |  -  |  -  |
-| Vlan22 |  VRF11  |  -  |  10.10.22.1/24  |  -  |  -  |  -  |
-| Vlan3009 |  VRF10  |  10.255.129.121/31  |  -  |  -  |  -  |  -  |
-| Vlan3010 |  VRF11  |  10.255.129.121/31  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  10.255.129.121/31  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.129.89/31  |  -  |  -  |  -  |  -  |
+| Vlan11 | VRF10 | - | 10.10.11.1/24 | - | - | - |
+| Vlan12 | VRF10 | - | 10.10.12.1/24 | - | - | - |
+| Vlan21 | VRF11 | - | 10.10.21.1/24 | - | - | - |
+| Vlan22 | VRF11 | - | 10.10.22.1/24 | - | - | - |
+| Vlan3009 | VRF10 | 10.255.129.121/31 | - | - | - | - |
+| Vlan3010 | VRF11 | 10.255.129.121/31 | - | - | - | - |
+| Vlan4093 | default | 10.255.129.121/31 | - | - | - | - |
+| Vlan4094 | default | 10.255.129.89/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -513,8 +513,8 @@ interface Vlan4094
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
 | VRF10 | 10 | - |
 | VRF11 | 11 | - |
 
@@ -621,7 +621,7 @@ ASN Notation: asplain
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -683,10 +683,10 @@ ASN Notation: asplain
 
 ##### EVPN Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| EVPN-OVERLAY-CORE | True |  - | - | default | - |
-| EVPN-OVERLAY-PEERS | True |  - | - | default | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| EVPN-OVERLAY-CORE | True | - | - | - | - | default | - |
+| EVPN-OVERLAY-PEERS | True | - | - | - | - | default | - |
 
 ##### EVPN DCI Gateway Summary
 
@@ -721,7 +721,7 @@ ASN Notation: asplain
 router bgp 65202
    router-id 10.255.128.16
    no bgp default ipv4-unicast
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    neighbor EVPN-OVERLAY-CORE peer group
    neighbor EVPN-OVERLAY-CORE update-source Loopback0
    neighbor EVPN-OVERLAY-CORE bfd

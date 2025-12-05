@@ -7,24 +7,13 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>&lt;node_type_keys.key&gt;</samp>](## "<node_type_keys.key>") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;defaults</samp>](## "<node_type_keys.key>.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;data_plane_cpu_allocation_max</samp>](## "<node_type_keys.key>.defaults.data_plane_cpu_allocation_max") | Integer |  |  | Min: 1<br>Max: 128 | Set the maximum number of CPU used for the data plane.<br>This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane. |
-    | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data_plane_cpu_allocation_max</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].data_plane_cpu_allocation_max") | Integer |  |  | Min: 1<br>Max: 128 | Set the maximum number of CPU used for the data plane.<br>This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data_plane_cpu_allocation_max</samp>](## "<node_type_keys.key>.node_groups.[].data_plane_cpu_allocation_max") | Integer |  |  | Min: 1<br>Max: 128 | Set the maximum number of CPU used for the data plane.<br>This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane. |
-    | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data_plane_cpu_allocation_max</samp>](## "<node_type_keys.key>.nodes.[].data_plane_cpu_allocation_max") | Integer |  |  | Min: 1<br>Max: 128 | Set the maximum number of CPU used for the data plane.<br>This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane. |
     | [<samp>default_igmp_snooping_enabled</samp>](## "default_igmp_snooping_enabled") | Boolean |  | `True` |  | When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.<br> |
     | [<samp>default_interface_mtu</samp>](## "default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Can be overridden per platform under platform settings.<br> |
     | [<samp>hardware_counters</samp>](## "hardware_counters") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;features</samp>](## "hardware_counters.features") | List, items: Dictionary |  |  |  | This data model allows to configure the list of hardware counters feature<br>available on Arista platforms.<br><br>The `name` key accepts a list of valid_values which MUST be updated to support<br>new feature as they are released in EOS.<br><br>The available values of the different keys like 'direction' or 'address_type'<br>are feature and hardware dependent and this model DOES NOT validate that the<br>combinations are valid. It is the responsibility of the user of this data model<br>to make sure that the rendered CLI is accepted by the targeted device.<br><br>Examples:<br><br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: ip<br>          direction: out<br>          layer3: true<br>          units_packets: true<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature ip out layer3 units packets<br>    ```<br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: route<br>          address_type: ipv4<br>          vrf: test<br>          prefix: 192.168.0.0/24<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature route ipv4 vrf test 192.168.0.0/24<br>    ```<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "hardware_counters.features.[].name") | String | Required |  | Valid Values:<br>- <code>acl</code><br>- <code>decap-group</code><br>- <code>directflow</code><br>- <code>ecn</code><br>- <code>flow-spec</code><br>- <code>gre tunnel interface</code><br>- <code>ip</code><br>- <code>mpls interface</code><br>- <code>mpls lfib</code><br>- <code>mpls tunnel</code><br>- <code>multicast</code><br>- <code>nexthop</code><br>- <code>pbr</code><br>- <code>pdp</code><br>- <code>policing interface</code><br>- <code>qos</code><br>- <code>qos dual-rate-policer</code><br>- <code>route</code><br>- <code>routed-port</code><br>- <code>segment-security</code><br>- <code>subinterface</code><br>- <code>tapagg</code><br>- <code>traffic-class</code><br>- <code>traffic-policy</code><br>- <code>vlan</code><br>- <code>vlan-interface</code><br>- <code>vni decap</code><br>- <code>vni encap</code><br>- <code>vtep decap</code><br>- <code>vtep encap</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "hardware_counters.features.[].name") | String | Required |  | Valid Values:<br>- <code>acl</code><br>- <code>decap-group</code><br>- <code>directflow</code><br>- <code>ecn</code><br>- <code>flow-spec</code><br>- <code>gre tunnel interface</code><br>- <code>ip</code><br>- <code>mpls interface</code><br>- <code>mpls lfib</code><br>- <code>mpls tunnel</code><br>- <code>multicast</code><br>- <code>nexthop</code><br>- <code>pbr</code><br>- <code>pdp</code><br>- <code>policing interface</code><br>- <code>qos</code><br>- <code>qos dual-rate-policer</code><br>- <code>route</code><br>- <code>routed-port</code><br>- <code>segment-security</code><br>- <code>subinterface</code><br>- <code>tapagg</code><br>- <code>traffic-class</code><br>- <code>traffic-policy</code><br>- <code>traffic-policy vlan-interface</code><br>- <code>vlan</code><br>- <code>vlan-interface</code><br>- <code>vni decap</code><br>- <code>vni encap</code><br>- <code>vtep decap</code><br>- <code>vtep encap</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "hardware_counters.features.[].direction") | String |  |  | Valid Values:<br>- <code>in</code><br>- <code>out</code><br>- <code>cpu</code> | Most features support only 'in' and 'out'. Some like traffic-policy support 'cpu'.<br>Some features DO NOT have any direction.<br>This validation IS NOT made by the schemas.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "hardware_counters.features.[].enabled") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_type</samp>](## "hardware_counters.features.[].address_type") | String |  |  | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code><br>- <code>mac</code> | Supported only for the following features:<br>- acl: [ipv4, ipv6, mac] if direction is 'out'<br>- multicast: [ipv4, ipv6]<br>- route: [ipv4, ipv6]<br>This validation IS NOT made by the schemas.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;layer3</samp>](## "hardware_counters.features.[].layer3") | Boolean |  |  |  | Supported only for the 'ip' feature.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "hardware_counters.features.[].vrf") | String |  |  |  | Supported only for the 'route' feature.<br>This validation IS NOT made by the schemas.<br> |
@@ -43,7 +32,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;window</samp>](## "mac_address_table.notification_host_flap.detection.window") | Integer |  |  | Min: 2<br>Max: 300 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;moves</samp>](## "mac_address_table.notification_host_flap.detection.moves") | Integer |  |  | Min: 2<br>Max: 10 |  |
     | [<samp>&nbsp;&nbsp;static_entries</samp>](## "mac_address_table.static_entries") | List, items: Dictionary |  |  |  | Add static MAC address entries. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;mac_address</samp>](## "mac_address_table.static_entries.[].mac_address") | String | Required |  | Pattern: `^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$` | The static MAC address to configure.<br>The combination of 'mac_address' and 'vlan' must be unique across all static entries. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;mac_address</samp>](## "mac_address_table.static_entries.[].mac_address") | String | Required |  | Pattern: `[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}` | The static MAC address to configure.<br>The combination of 'mac_address' and 'vlan' must be unique across all static entries. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "mac_address_table.static_entries.[].vlan") | Integer | Required |  |  | The VLAN ID associated with the MAC address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop</samp>](## "mac_address_table.static_entries.[].drop") | Boolean |  |  |  | If true, traffic destined for this MAC address on the specified VLAN will be dropped.<br>This option is mutually exclusive with 'interface' and takes precedence if both are defined. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "mac_address_table.static_entries.[].interface") | String |  |  |  | The allowed hardware Ethernet interface, LAG interface, or VXLAN tunnel interface associated with this MAC address and VLAN.<br>This option is mutually exclusive with 'drop'. |
@@ -75,52 +64,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.vrf") | String |  |  |  | VRF name of the GRE tunnel. EOS default is "default". |
     | [<samp>redundancy</samp>](## "redundancy") | Dictionary |  |  |  | Redundancy for chassis platforms with dual supervisors | Optional. |
     | [<samp>&nbsp;&nbsp;protocol</samp>](## "redundancy.protocol") | String |  |  | Valid Values:<br>- <code>sso</code><br>- <code>rpr</code> |  |
-    | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  | Serial Number of the device.<br>Used for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.<br>"serial_number" can also be set directly under node type settings.<br>If both are set, the value under node type settings takes precedence.<br> |
+    | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  | Serial Number of the device.<br>Used for documentation purpose in the fabric documentation as can also be used by the 'cv_deploy' role.<br>"serial_number" can also be set directly under node type settings.<br>If both are set, the value under node type settings takes precedence.<br> |
     | [<samp>system_mac_address</samp>](## "system_mac_address") | String |  |  |  | Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set under node type settings.<br>If both are set, the value under node type settings takes precedence.<br> |
 
 === "YAML"
 
     ```yaml
-    <node_type_keys.key>:
-
-      # Define variables for all nodes of this type.
-      defaults:
-
-        # Set the maximum number of CPU used for the data plane.
-        # This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
-        data_plane_cpu_allocation_max: <int; 1-128>
-
-      # Define variables related to all nodes part of this group.
-      node_groups:
-
-          # The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
-          # The Node Group Name is also used for peer description on downstream switches' uplinks.
-        - group: <str; required; unique>
-
-          # Define variables per node.
-          nodes:
-
-              # The Node Name is used as "hostname".
-            - name: <str; required; unique>
-
-              # Set the maximum number of CPU used for the data plane.
-              # This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
-              data_plane_cpu_allocation_max: <int; 1-128>
-
-          # Set the maximum number of CPU used for the data plane.
-          # This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
-          data_plane_cpu_allocation_max: <int; 1-128>
-
-      # Define variables per node.
-      nodes:
-
-          # The Node Name is used as "hostname".
-        - name: <str; required; unique>
-
-          # Set the maximum number of CPU used for the data plane.
-          # This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
-          data_plane_cpu_allocation_max: <int; 1-128>
-
     # When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.
     default_igmp_snooping_enabled: <bool; default=True>
 
@@ -171,12 +120,13 @@
       #     hardware counter feature route ipv4 vrf test 192.168.0.0/24
       #     ```
       features:
-        - name: <str; "acl" | "decap-group" | "directflow" | "ecn" | "flow-spec" | "gre tunnel interface" | "ip" | "mpls interface" | "mpls lfib" | "mpls tunnel" | "multicast" | "nexthop" | "pbr" | "pdp" | "policing interface" | "qos" | "qos dual-rate-policer" | "route" | "routed-port" | "segment-security" | "subinterface" | "tapagg" | "traffic-class" | "traffic-policy" | "vlan" | "vlan-interface" | "vni decap" | "vni encap" | "vtep decap" | "vtep encap"; required>
+        - name: <str; "acl" | "decap-group" | "directflow" | "ecn" | "flow-spec" | "gre tunnel interface" | "ip" | "mpls interface" | "mpls lfib" | "mpls tunnel" | "multicast" | "nexthop" | "pbr" | "pdp" | "policing interface" | "qos" | "qos dual-rate-policer" | "route" | "routed-port" | "segment-security" | "subinterface" | "tapagg" | "traffic-class" | "traffic-policy" | "traffic-policy vlan-interface" | "vlan" | "vlan-interface" | "vni decap" | "vni encap" | "vtep decap" | "vtep encap"; required>
 
           # Most features support only 'in' and 'out'. Some like traffic-policy support 'cpu'.
           # Some features DO NOT have any direction.
           # This validation IS NOT made by the schemas.
           direction: <str; "in" | "out" | "cpu">
+          enabled: <bool; default=True>
 
           # Supported only for the following features:
           # - acl: [ipv4, ipv6, mac] if direction is 'out'
@@ -304,7 +254,7 @@
       protocol: <str; "sso" | "rpr">
 
     # Serial Number of the device.
-    # Used for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.
+    # Used for documentation purpose in the fabric documentation as can also be used by the 'cv_deploy' role.
     # "serial_number" can also be set directly under node type settings.
     # If both are set, the value under node type settings takes precedence.
     serial_number: <str>

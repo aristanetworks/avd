@@ -10,6 +10,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     StructuredConfigGeneratorProtocol,
     structured_config_contributor,
 )
+from pyavd._utils import default
 
 from .cv_pathfinder import CvPathfinderMixin
 from .cv_tags import CvTagsMixin
@@ -19,22 +20,30 @@ from .digital_twin import DigitalTwinMixin
 class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, DigitalTwinMixin, StructuredConfigGeneratorProtocol, Protocol):
     """Protocol for the AvdStructuredConfigMetadata Class."""
 
-    ignore_avd_eos_designs_enforce_duplication_checks_across_all_models = True
-
     @structured_config_contributor
     def metadata(self) -> None:
         self.structured_config.metadata._update(
             platform=self.shared_utils.platform,
+            is_deployed=self.inputs.is_deployed,
             system_mac_address=self.shared_utils.system_mac_address,
             rack=self.shared_utils.node_config.rack,
             pod_name=self.inputs.pod_name,
             dc_name=self.inputs.dc_name,
             fabric_name=self.shared_utils.fabric_name,
+            serial_number=self.shared_utils.serial_number,
+            validate_no_errors_period=self.inputs.logging_settings.validate_no_errors_period,
         )
+        exclude_as_extra_fabric_validation_target = default(
+            self.shared_utils.node_config.exclude_as_extra_fabric_validation_target,
+            self.shared_utils.node_type_key_data.exclude_as_extra_fabric_validation_target,
+        )
+        if exclude_as_extra_fabric_validation_target:
+            self.structured_config.metadata.exclude_as_extra_fabric_validation_target = exclude_as_extra_fabric_validation_target
         self._set_cv_tags()
         self._set_cv_pathfinder()
         if self.shared_utils.digital_twin:
             self._set_digital_twin()
+        self.structured_config.metadata.validate_hardware = self.shared_utils.platform_settings.validate_hardware
 
 
 class AvdStructuredConfigMetadata(StructuredConfigGenerator, AvdStructuredConfigMetadataProtocol):

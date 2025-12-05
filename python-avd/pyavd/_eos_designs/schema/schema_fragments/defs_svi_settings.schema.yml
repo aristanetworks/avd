@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -19,9 +19,17 @@ $defs:
         type: str
         description: |
           SVI description. By default set to VLAN name.
+      arp_gratuitous_accept:
+        type: bool
+        description: Accept gratuitous ARP.
       ip_address:
         type: str
         description: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+      ip_address_secondaries:
+        type: list
+        items:
+          type: str
+          description: IPv4_address/Mask.
       ipv6_address:
         type: str
         description: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
@@ -42,6 +50,22 @@ $defs:
         items:
           type: str
           description: IPv6_address/Mask.
+      ipv6_nd:
+        type: dict
+        keys:
+          advertise_ipv6_address_virtuals:
+            type: bool
+            description: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+          valid_lifetime:
+            type: str
+            description: In seconds <0-4294967295> or infinite.
+            convert_types:
+              - int
+          preferred_lifetime:
+            type: str
+            description: In seconds <0-4294967295> or infinite.
+            convert_types:
+              - int
       ip_address_virtual_secondaries:
         type: list
         description: Secondary IPv4 VXLAN Anycast IP addresses.
@@ -106,6 +130,11 @@ $defs:
         type: list
         $ref: "eos_designs#/$defs/static_routes"
         description: Static routes to be configured on every device where the SVI is configured.
+      ipv6_static_routes:
+        type: list
+        # Reusing the schema from `static_routes` since IPv4 and IPv6 static routes share the same keys.
+        $ref: "eos_designs#/$defs/static_routes"
+        description: IPv6 static routes to be configured on every device where the SVI is configured.
       vni_override:
         type: int
         convert_types:
@@ -274,7 +303,7 @@ $defs:
             max_length: 8
           message_digest_keys:
             type: list
-            # TODO: AVD 6.0.0: Make id primary_key and key required.
+            primary_key: id
             items:
               type: dict
               keys:
@@ -331,16 +360,6 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items"
-      ipv6_address_virtual:
-        type: str
-        description: |
-          IPv6_address/Mask.
-          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional).
-        deprecation:
-          removed: true
-          warning: true
-          remove_in_version: 5.0.0
-          new_key: ipv6_address_virtuals
       evpn_l2_multi_domain:
         type: bool
         description: |

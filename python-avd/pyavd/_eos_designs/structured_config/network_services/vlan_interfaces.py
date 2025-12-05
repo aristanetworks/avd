@@ -37,7 +37,7 @@ class VlanInterfacesMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 for svi in vrf.svis:
-                    self.structured_config.vlan_interfaces.append(self._get_vlan_interface_config_for_svi(svi, vrf, tenant), ignore_fields=("tenant",))
+                    self.structured_config.vlan_interfaces.append(self._get_vlan_interface_config_for_svi(svi, vrf, tenant), ignore_fields=("metadata",))
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Continue to next VRF if mlag vlan_id is not set
@@ -66,16 +66,19 @@ class VlanInterfacesMixin(Protocol):
             interface_ip = get_ip_from_ip_prefix(interface_ip)
         vlan_interface_config = EosCliConfigGen.VlanInterfacesItem(
             name=interface_name,
-            tenant=tenant.name,
-            tags=EosCliConfigGen.VlanInterfacesItem.Tags(svi._get("tags", [])),  # Historic behavior is to not output the default ["all"]
             description=default(svi.description, svi.name),
             shutdown=not default(svi.enabled, False),  # noqa: FBT003
             ip_address=svi.ip_address,
+            ip_address_secondaries=EosCliConfigGen.VlanInterfacesItem.IpAddressSecondaries(svi.ip_address_secondaries),
             ipv6_address=svi.ipv6_address,
             ipv6_enable=svi.ipv6_enable,
+            arp_gratuitous_accept=svi.arp_gratuitous_accept,
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
+        vlan_interface_config.metadata._update(
+            tenant=tenant.name, tags=EosCliConfigGen.VlanInterfacesItem.Metadata.Tags(svi._get("tags", []))
+        )  # Historic behavior is to not output the default ["all"])
 
         if svi.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl(
@@ -148,6 +151,14 @@ class VlanInterfacesMixin(Protocol):
             # If any anycast IPs are set, we also enable link-local IPv6 per best practice, unless specifically disabled with 'ipv6_enable: false'
             vlan_interface_config.ipv6_enable = default(vlan_interface_config.ipv6_enable, True)  # noqa: FBT003
 
+            if svi.ipv6_nd.advertise_ipv6_address_virtuals:
+                for ipv6_address in svi.ipv6_address_virtuals:
+                    vlan_interface_config.ipv6_nd_prefixes.append_new(
+                        ipv6_prefix=ipv6_address,
+                        valid_lifetime=svi.ipv6_nd.valid_lifetime,
+                        preferred_lifetime=svi.ipv6_nd.preferred_lifetime,
+                    )
+
         if vrf.name != "default":
             vlan_interface_config.vrf = vrf.name
 
@@ -165,15 +176,14 @@ class VlanInterfacesMixin(Protocol):
         """Build full config for MLAG peering SVI for the given VRF."""
         vlan_interface_config = EosCliConfigGen.VlanInterfacesItem(
             name=f"Vlan{vlan_id}",
-            tenant=tenant.name,
-            type="underlay_peering",
             shutdown=False,
             description=self.shared_utils.interface_descriptions.mlag_peer_l3_vrf_svi(
                 InterfaceDescriptionData(shared_utils=self.shared_utils, interface=f"Vlan{vlan_id}", vrf=vrf.name, vlan=vlan_id)
             ),
             vrf=vrf.name,
-            mtu=self.shared_utils.p2p_uplinks_mtu,
+            mtu=self.shared_utils.get_interface_mtu(f"Vlan{vlan_id}", self.shared_utils.p2p_uplinks_mtu),
         )
+        vlan_interface_config.metadata._update(tenant=tenant.name, type="underlay_peering")
         vlan_interface_config._update(**self._get_vlan_ip_config_for_mlag_peering(vrf))
         return vlan_interface_config
 

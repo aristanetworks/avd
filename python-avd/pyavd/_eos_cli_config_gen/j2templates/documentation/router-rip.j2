@@ -1,0 +1,27 @@
+{#
+ Copyright (c) 2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - router rip #}
+{% if router_rip is arista.avd.defined %}
+
+### Router RIP
+
+#### Router RIP Summary
+{%     for rip_vrf in router_rip.vrfs | arista.avd.natural_sort(sort_key='vrf', ignore_case=False) %}
+
+##### VRF: {{ rip_vrf.vrf }}
+
+| Enabled | Default Metric | Networks |
+| ------- | -------------- | -------- |
+{%         set networks = rip_vrf.networks | arista.avd.default(["-"]) | join(", ") %}
+| {{ rip_vrf.enabled | arista.avd.default("-") }} | {{ rip_vrf.metric_default | arista.avd.default("-") }} | {{ networks }} |
+{%     endfor %}
+
+#### Router RIP Device Configuration
+
+```eos
+{%     include 'eos/router-rip.j2' %}
+```
+{% endif %}

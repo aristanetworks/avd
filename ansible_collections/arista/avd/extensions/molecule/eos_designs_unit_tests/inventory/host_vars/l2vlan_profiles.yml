@@ -1,0 +1,51 @@
+# Test for l2vlan_profiles
+type: l3leaf
+
+l2vlan_profiles:
+  - profile: research1
+    private_vlan:
+      type: isolated
+      primary_vlan: 120
+  - profile: parent_profile
+    private_vlan:
+      type: community
+      primary_vlan: 120
+  - profile: child_profile
+    parent_profile: parent_profile
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.10.0.0/24
+    vtep_loopback_ipv4_pool: 10.11.0.0/24
+    vtep_loopback: Loopback1
+    evpn_services_l2_only: false
+  nodes:
+    - name: l2vlan_profiles
+      id: 3
+      bgp_as: 65101
+      filter:
+        tags: [research]
+
+tenants:
+  - name: research
+    vlan_aware_bundle_number_base: 400
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      - id: 110
+        name: research1
+        tags: ['research']
+        # Test to apply the profile parameters to l2vlan
+        profile: research1
+      - id: 120
+        name: research2
+        tags: ['research']
+        # Test to not overwrite the existing parameters via profile
+        profile: research1
+        private_vlan:
+          type: community
+          primary_vlan: 110
+      - id: 130
+        name: research3
+        tags: ['research']
+        # Test to apply the parent profile parameters to l2vlan
+        profile: child_profile

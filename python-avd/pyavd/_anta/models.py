@@ -14,7 +14,7 @@ from typing import TYPE_CHECKING
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
 if TYPE_CHECKING:
-    from pyavd.api._anta import InputFactorySettings, MinimalStructuredConfig
+    from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData
 
 LOGGER = getLogger(__name__)
 
@@ -42,18 +42,18 @@ class DeviceTestContext:
 
     hostname: str
     structured_config: EosCliConfigGen
-    minimal_structured_configs: dict[str, MinimalStructuredConfig]
-    input_factory_settings: InputFactorySettings
+    fabric_data: AvdFabricData
+    settings: AvdCatalogGenerationSettings
 
     @cached_property
     def is_vtep(self) -> bool:
         """Check if the device is a VTEP."""
-        return bool(self.structured_config.vxlan_interface.vxlan1.vxlan.source_interface)
+        return bool(self.structured_config.vxlan_interface.vxlan1.vxlan._get("source_interface"))
 
     @cached_property
     def is_wan_router(self) -> bool:
         """Check if the device is a WAN router."""
-        return self.is_vtep and "Dps" in self.structured_config.vxlan_interface.vxlan1.vxlan.source_interface
+        return self.is_vtep and "Dps" in self.structured_config.vxlan_interface.vxlan1.vxlan._get("source_interface")
 
     @cached_property
     def bgp_neighbors(self) -> list[BgpNeighbor]:
@@ -61,13 +61,6 @@ class DeviceTestContext:
         neighbors = [
             bgp_neighbor for neighbor in self.structured_config.router_bgp.neighbors if (bgp_neighbor := self._process_bgp_neighbor(neighbor, "default"))
         ]
-
-        # Skip VRF processing if disabled
-        if not self.input_factory_settings.allow_bgp_vrfs:
-            LOGGER.debug("<%s> Skipped BGP VRF peers - VRF processing disabled", self.hostname)
-            return neighbors
-
-        # Add VRF neighbors to the list
         neighbors.extend(
             bgp_neighbor
             for vrf in self.structured_config.router_bgp.vrfs
@@ -85,13 +78,6 @@ class DeviceTestContext:
             for neighbor_intf in self.structured_config.router_bgp.neighbor_interfaces
             if (bgp_neighbor_interface := self._process_bgp_neighbor_interface(neighbor_intf, "default"))
         ]
-
-        # Skip VRF processing if disabled
-        if not self.input_factory_settings.allow_bgp_vrfs:
-            LOGGER.debug("<%s> Skipped BGP VRF RFC5549 peers - VRF processing disabled", self.hostname)
-            return neighbor_interfaces
-
-        # Add VRF neighbor interfaces to the list
         neighbor_interfaces.extend(
             bgp_neighbor_interface
             for vrf in self.structured_config.router_bgp.vrfs
@@ -111,9 +97,16 @@ class DeviceTestContext:
         """
         from_default_vrf = isinstance(neighbor_interface, EosCliConfigGen.RouterBgp.NeighborInterfacesItem)
         if from_default_vrf:
-            identifier = f"{neighbor_interface.name}" if neighbor_interface.peer is None else f"{neighbor_interface.peer} ({neighbor_interface.name})"
+            identifier = (
+                f"{neighbor_interface.name}" if neighbor_interface.metadata.peer is None else f"{neighbor_interface.metadata.peer} ({neighbor_interface.name})"
+            )
         else:
             identifier = f"{neighbor_interface.name} (VRF {vrf})"
+
+        # Skip neighbor interfaces if `metadata.validate_state` is disabled
+        if not neighbor_interface.metadata.validate_state:
+            LOGGER.debug("<%s> Skipped BGP peer %s - validate_state disabled", self.hostname, identifier)
+            return None
 
         # Skip neighbor interfaces in shutdown peer groups
         if (
@@ -127,8 +120,8 @@ class DeviceTestContext:
         # When peer field is set, check if the peer device is in the fabric and deployed
         if (
             from_default_vrf
-            and neighbor_interface.peer
-            and (neighbor_interface.peer not in self.minimal_structured_configs or not self.minimal_structured_configs[neighbor_interface.peer].is_deployed)
+            and neighbor_interface.metadata.peer
+            and (neighbor_interface.metadata.peer not in self.fabric_data.devices or not self.fabric_data.devices[neighbor_interface.metadata.peer].is_deployed)
         ):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None
@@ -145,9 +138,14 @@ class DeviceTestContext:
         """
         from_default_vrf = isinstance(neighbor, EosCliConfigGen.RouterBgp.NeighborsItem)
         if from_default_vrf:
-            identifier = f"{neighbor.ip_address}" if neighbor.peer is None else f"{neighbor.peer} ({neighbor.ip_address})"
+            identifier = f"{neighbor.ip_address}" if neighbor.metadata.peer is None else f"{neighbor.metadata.peer} ({neighbor.ip_address})"
         else:
             identifier = f"{neighbor.ip_address} (VRF {vrf})"
+
+        # Skip neighbors if `metadata.validate_state` is disabled
+        if not neighbor.metadata.validate_state:
+            LOGGER.debug("<%s> Skipped BGP peer %s - validate_state disabled", self.hostname, identifier)
+            return None
 
         # Skip neighbors that are shutdown
         if neighbor.shutdown is True:
@@ -166,8 +164,8 @@ class DeviceTestContext:
         # When peer field is set, check if the peer device is in the fabric and deployed
         if (
             from_default_vrf
-            and neighbor.peer
-            and (neighbor.peer not in self.minimal_structured_configs or not self.minimal_structured_configs[neighbor.peer].is_deployed)
+            and neighbor.metadata.peer
+            and (neighbor.metadata.peer not in self.fabric_data.devices or not self.fabric_data.devices[neighbor.metadata.peer].is_deployed)
         ):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None

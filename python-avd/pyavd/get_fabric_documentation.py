@@ -85,7 +85,9 @@ def _get_topology_csv(fabric_documentation_facts: FabricDocumentationFacts) -> s
 
     csv_content = StringIO()
     csv_writer = writer(csv_content, lineterminator="\n")
-    csv_writer.writerow(("Node Type", "Node", "Node Interface", "Peer Type", "Peer Node", "Peer Interface", "Node Interface Enabled"))
+    csv_writer.writerow(
+        ("Node Type", "Node", "Serial Number", "Node Interface", "Peer Type", "Peer Node", "Peer Serial Number", "Peer Interface", "Node Interface Enabled")
+    )
     csv_writer.writerows(fabric_documentation_facts.get_physical_links())
     csv_content.seek(0)
     return csv_content.read()
@@ -97,15 +99,30 @@ def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> 
 
     csv_content = StringIO()
     csv_writer = writer(csv_content, lineterminator="\n")
-    csv_writer.writerow(("Type", "Node", "Node Interface", "Leaf IP Address", "Peer Type", "Peer Node", "Peer Interface", "Peer IP Address"))
+    csv_writer.writerow(
+        (
+            "Type",
+            "Node",
+            "Serial Number",
+            "Node Interface",
+            "Leaf IP Address",
+            "Peer Type",
+            "Peer Node",
+            "Peer Serial Number",
+            "Peer Interface",
+            "Peer IP Address",
+        )
+    )
     csv_writer.writerows(
         (
             topology_link["type"],
             topology_link["node"],
+            topology_link["serial_number"],
             topology_link["node_interface"],
             topology_link["node_ip_address"],
             topology_link["peer_type"],
             topology_link["peer"],
+            topology_link["peer_serial_number"],
             topology_link["peer_interface"],
             topology_link["peer_ip_address"],
         )
@@ -188,6 +205,17 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                     node_type=digital_twin_node_type,
                     ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
                     version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
+                    # Set internet_access to None unless it is a cloudeos or veos node and its metadata.digital_twin.internet_access is True
+                    internet_access=internet_access
+                    if (
+                        (
+                            internet_access := get(
+                                fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..internet_access", separator=".."
+                            )
+                        )
+                        and digital_twin_node_type in ["cloudeos", "veos"]
+                    )
+                    else None,
                 )
             }
         )
@@ -204,10 +232,12 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                 isinstance(topology_link["node"], str)
                 and topology_link["node"]
                 and isinstance(topology_link["node_interface"], str)
+                and "." not in topology_link["node_interface"]
                 and topology_link["node_interface"]
                 and isinstance(topology_link["peer"], str)
                 and topology_link["peer"]
                 and isinstance(topology_link["peer_interface"], str)
+                and "." not in topology_link["peer_interface"]
                 and topology_link["peer_interface"]
             )
         ),

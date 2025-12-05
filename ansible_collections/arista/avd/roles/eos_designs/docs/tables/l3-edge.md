@@ -15,26 +15,27 @@
     | [<samp>&nbsp;&nbsp;p2p_links_profiles</samp>](## "l3_edge.p2p_links_profiles") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "l3_edge.p2p_links_profiles.[].name") | String | Required, Unique |  |  | P2P profile name. Any variable supported under `p2p_links` can be inherited from a profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "l3_edge.p2p_links_profiles.[].id") | Integer |  |  |  | Unique id per subnet_summary. Used to calculate ip addresses.<br>Required with ip_pool. ID starting from 1.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.p2p_links_profiles.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.p2p_links_profiles.[].speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Interface Speed. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_pool</samp>](## "l3_edge.p2p_links_profiles.[].ip_pool") | String |  |  |  | P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subnet</samp>](## "l3_edge.p2p_links_profiles.[].subnet") | String |  |  |  | IPv4 address/Mask. Subnet used on this P2P link. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "l3_edge.p2p_links_profiles.[].ip") | List, items: String |  |  |  | Specific IP addresses used on this P2P link. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "l3_edge.p2p_links_profiles.[].ip") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Specific IP addresses used on this P2P link. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].ip.[]") | String |  |  |  | Node IPv4 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "l3_edge.p2p_links_profiles.[].ipv6_enable") | Boolean |  | `False` |  | Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "l3_edge.p2p_links_profiles.[].nodes") | List, items: String |  |  |  | Nodes where this link should be configured. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "l3_edge.p2p_links_profiles.[].nodes") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Nodes where this link should be configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].nodes.[]") | String |  |  |  | The values can be < node_a >, < node_b >.<br>ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links_profiles.[].interfaces") | List, items: String |  |  |  | Interfaces where this link should be configured and Required unless using port-channels. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links_profiles.[].interfaces") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Interfaces where this link should be configured and Required unless using port-channels. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].interfaces.[]") | String |  |  |  | The value can be like < node_a_interface >, < node_b_interface >.<br>ex. - [ Ethernet2, Ethernet2 ].<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as</samp>](## "l3_edge.p2p_links_profiles.[].as") | List, items: String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].as.[]") | String |  |  |  | The values can be like ["node_a_as", "node_b_as"]. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "l3_edge.p2p_links_profiles.[].descriptions") | List, items: String |  |  |  | Interface descriptions. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].descriptions.[]") | String |  |  |  | Description or description template to be used on the ethernet interface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br><br>The default description is set by `default_underlay_p2p_ethernet_description`.<br>By default the description is templated from the name and interface of the peer. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "l3_edge.p2p_links_profiles.[].descriptions") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Interface descriptions. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].descriptions.[]") | String |  |  |  | Description or description template to be used on the ethernet interface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br><br>The default description is set by `default_underlay_p2p_ethernet_description`.<br>By default the description is templated from the name and interface of the peer. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "l3_edge.p2p_links_profiles.[].include_in_underlay_protocol") | Boolean |  | `True` |  | Add this interface to underlay routing protocol. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "l3_edge.p2p_links_profiles.[].isis_hello_padding") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "l3_edge.p2p_links_profiles.[].isis_metric") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "l3_edge.p2p_links_profiles.[].isis_circuit_type") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code><br>- <code>level-1-2</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "l3_edge.p2p_links_profiles.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>text</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "l3_edge.p2p_links_profiles.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "l3_edge.p2p_links_profiles.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password.<br>Takes precedence over 'underlay_isis_authentication_key', 'underlay_isis_authentication_cleartext_key'<br>and `isis_authentication_cleartext_key`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_cleartext_key</samp>](## "l3_edge.p2p_links_profiles.[].isis_authentication_cleartext_key") | String |  |  |  | Cleartext password.<br>Encrypted to Type 7 by AVD.<br>Takes precedence over 'underlay_isis_authentication_key' and 'underlay_isis_authentication_cleartext_key'.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_network_type</samp>](## "l3_edge.p2p_links_profiles.[].isis_network_type") | String |  | `point-to-point` | Valid Values:<br>- <code>point-to-point</code><br>- <code>broadcast</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ip</samp>](## "l3_edge.p2p_links_profiles.[].mpls_ip") | Boolean |  |  |  | MPLS parameters. Default value is true if switch.mpls_lsr is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp</samp>](## "l3_edge.p2p_links_profiles.[].mpls_ldp") | Boolean |  |  |  | MPLS parameters. Default value is true for ldp underlay variants, otherwise false. |
@@ -46,14 +47,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].ptp.roles.[]") | String |  | `dynamic` | Valid Values:<br>- <code>dynamic</code><br>- <code>master</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "l3_edge.p2p_links_profiles.[].ptp.profile") | String |  | `aes67-r16-2016` |  | Default available profiles are:<br>  - "aes67"<br>  - "aes67-r16-2016"<br>  - "smpte2059-2" |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "l3_edge.p2p_links_profiles.[].sflow") | Boolean |  |  |  | Enable sFlow. Overrides `fabric_sflow` setting. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "l3_edge.p2p_links_profiles.[].underlay_multicast") | Boolean |  | `False` |  | Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_pim_sm</samp>](## "l3_edge.p2p_links_profiles.[].multicast_pim_sm") | Boolean |  |  |  | Configure PIM sparse-mode on the P2P links.<br>Requires node setting `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`<br>The default value depends on the value of `include_in_underlay_protocol`:<br>* when `include_in_underlay_protocol: true`, the default value is `true`<br>* when `include_in_underlay_protocol: false`, the default value is `false`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_static</samp>](## "l3_edge.p2p_links_profiles.[].multicast_static") | Boolean |  |  |  | Configure static multicast on the P2P links.<br>Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`<br>The default value depends on the value of `include_in_underlay_protocol`:<br>* when `include_in_underlay_protocol: true`, the default value is `true`<br>* when `include_in_underlay_protocol: false`, the default value is `false`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "l3_edge.p2p_links_profiles.[].flow_tracking") | Dictionary |  |  |  | Enable flow-tracking. Overrides `fabric_flow_tracking` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l3_edge.p2p_links_profiles.[].flow_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "l3_edge.p2p_links_profiles.[].flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_edge.p2p_links_profiles.[].qos_profile") | String |  |  |  | QOS service profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;macsec_profile</samp>](## "l3_edge.p2p_links_profiles.[].macsec_profile") | String |  |  |  | MAC security profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "l3_edge.p2p_links_profiles.[].port_channel") | Dictionary |  |  |  | Port-channel parameters. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.description") | String |  |  |  | Description or description template to be used on the port-channel interface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local port-channel interface name.<br>  - `peer_interface`: The port-channel interface on the peer.<br>  - `port_channel_id`: The local port-channel ID.<br>  - `peer_port_channel_id`: The ID of the port-channel on the peer.<br><br>Falls back to the description on the `p2p_link` if set. Otherwise default description is set by `default_underlay_p2p_port_channel_description`.<br>By default the description is templated from the name and port_channel interface of the peer. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.description") | String |  |  |  | Description or description template to be used on the port-channel interface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local port-channel interface name.<br>  - `peer_interface`: The port-channel interface on the peer.<br>  - `port_channel_id`: The local port-channel ID.<br>  - `peer_port_channel_id`: The ID of the port-channel on the peer.<br><br>Falls back to the description on the `p2p_link` if set. Otherwise default description is set by `default_underlay_p2p_port_channel_description`.<br>By default the description is templated from the name and port_channel interface of the peer. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.mode") | String |  | `active` | Valid Values:<br>- <code>on</code><br>- <code>active</code><br>- <code>passive</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;channel_id_algorithm</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.channel_id_algorithm") | String |  | `first_port` | Valid Values:<br>- <code>first_port</code><br>- <code>p2p_link_id</code> | Configures how to derive the Port-Channel ID when not set.<br>By default the ID is derived from the first switch port in node_child_interfaces[].interfaces.<br>The `p2p_link_id` setting will use the `id` for each link plus the `channel_id_offset` to derive the Port-Channel ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;channel_id_offset</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.channel_id_offset") | Integer |  |  |  | Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and `channel_id` is not set. |
@@ -66,30 +68,34 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].campus_link_type.[]") | String |  |  | Valid Values:<br>- <code>downlink</code><br>- <code>egress</code><br>- <code>fabric</code><br>- <code>mlag</code><br>- <code>uplink</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l3_edge.p2p_links_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the point-to-point interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routing_protocol</samp>](## "l3_edge.p2p_links_profiles.[].routing_protocol") | String |  |  | Valid Values:<br>- <code>ebgp</code> | Enables deviation of the routing protocol used on this link from the fabric underlay default.<br>- ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if configured. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_edge.p2p_links_profiles.[].structured_config") | Dictionary |  |  |  | Custom structured config for interfaces.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethernet_structured_config</samp>](## "l3_edge.p2p_links_profiles.[].ethernet_structured_config") | Dictionary |  |  |  | Custom structured config for ethernet interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel_structured_config</samp>](## "l3_edge.p2p_links_profiles.[].port_channel_structured_config") | Dictionary |  |  |  | Custom structured config for port-channel links. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "l3_edge.p2p_links_profiles.[].underlay_multicast") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>multicast_pim_sm</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_edge.p2p_links_profiles.[].structured_config") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ethernet_structured_config or port_channel_structured_config</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;p2p_links</samp>](## "l3_edge.p2p_links") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;nodes</samp>](## "l3_edge.p2p_links.[].nodes") | List, items: String | Required |  |  | Nodes where this link should be configured. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;nodes</samp>](## "l3_edge.p2p_links.[].nodes") | List, items: String | Required |  | Min Length: 2<br>Max Length: 2 | Nodes where this link should be configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].nodes.[]") | String |  |  |  | The values can be < node_a >, < node_b >.<br>ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "l3_edge.p2p_links.[].profile") | String |  |  |  | P2P profile name. Profile defined under p2p_profiles. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "l3_edge.p2p_links.[].id") | Integer |  |  |  | Unique id per subnet_summary. Used to calculate ip addresses.<br>Required with ip_pool. ID starting from 1.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.p2p_links.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.p2p_links.[].speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Interface Speed. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_pool</samp>](## "l3_edge.p2p_links.[].ip_pool") | String |  |  |  | P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subnet</samp>](## "l3_edge.p2p_links.[].subnet") | String |  |  |  | IPv4 address/Mask. Subnet used on this P2P link. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "l3_edge.p2p_links.[].ip") | List, items: String |  |  |  | Specific IP addresses used on this P2P link. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "l3_edge.p2p_links.[].ip") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Specific IP addresses used on this P2P link. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].ip.[]") | String |  |  |  | Node IPv4 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "l3_edge.p2p_links.[].ipv6_enable") | Boolean |  | `False` |  | Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links.[].interfaces") | List, items: String |  |  |  | Interfaces where this link should be configured and Required unless using port-channels. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links.[].interfaces") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Interfaces where this link should be configured and Required unless using port-channels. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].interfaces.[]") | String |  |  |  | The value can be like < node_a_interface >, < node_b_interface >.<br>ex. - [ Ethernet2, Ethernet2 ].<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as</samp>](## "l3_edge.p2p_links.[].as") | List, items: String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].as.[]") | String |  |  |  | The values can be like ["node_a_as", "node_b_as"]. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "l3_edge.p2p_links.[].descriptions") | List, items: String |  |  |  | Interface descriptions. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].descriptions.[]") | String |  |  |  | Description or description template to be used on the ethernet interface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br><br>The default description is set by `default_underlay_p2p_ethernet_description`.<br>By default the description is templated from the name and interface of the peer. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "l3_edge.p2p_links.[].descriptions") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Interface descriptions. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].descriptions.[]") | String |  |  |  | Description or description template to be used on the ethernet interface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br><br>The default description is set by `default_underlay_p2p_ethernet_description`.<br>By default the description is templated from the name and interface of the peer. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "l3_edge.p2p_links.[].include_in_underlay_protocol") | Boolean |  | `True` |  | Add this interface to underlay routing protocol. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "l3_edge.p2p_links.[].isis_hello_padding") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "l3_edge.p2p_links.[].isis_metric") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "l3_edge.p2p_links.[].isis_circuit_type") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code><br>- <code>level-1-2</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "l3_edge.p2p_links.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>text</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "l3_edge.p2p_links.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "l3_edge.p2p_links.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password.<br>Takes precedence over 'underlay_isis_authentication_key', 'underlay_isis_authentication_cleartext_key'<br>and `isis_authentication_cleartext_key`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_cleartext_key</samp>](## "l3_edge.p2p_links.[].isis_authentication_cleartext_key") | String |  |  |  | Cleartext password.<br>Encrypted to Type 7 by AVD.<br>Takes precedence over 'underlay_isis_authentication_key' and 'underlay_isis_authentication_cleartext_key'.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_network_type</samp>](## "l3_edge.p2p_links.[].isis_network_type") | String |  | `point-to-point` | Valid Values:<br>- <code>point-to-point</code><br>- <code>broadcast</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ip</samp>](## "l3_edge.p2p_links.[].mpls_ip") | Boolean |  |  |  | MPLS parameters. Default value is true if switch.mpls_lsr is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp</samp>](## "l3_edge.p2p_links.[].mpls_ldp") | Boolean |  |  |  | MPLS parameters. Default value is true for ldp underlay variants, otherwise false. |
@@ -101,14 +107,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].ptp.roles.[]") | String |  | `dynamic` | Valid Values:<br>- <code>dynamic</code><br>- <code>master</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "l3_edge.p2p_links.[].ptp.profile") | String |  | `aes67-r16-2016` |  | Default available profiles are:<br>  - "aes67"<br>  - "aes67-r16-2016"<br>  - "smpte2059-2" |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "l3_edge.p2p_links.[].sflow") | Boolean |  |  |  | Enable sFlow. Overrides `fabric_sflow` setting. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "l3_edge.p2p_links.[].underlay_multicast") | Boolean |  | `False` |  | Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_pim_sm</samp>](## "l3_edge.p2p_links.[].multicast_pim_sm") | Boolean |  |  |  | Configure PIM sparse-mode on the P2P links.<br>Requires node setting `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`<br>The default value depends on the value of `include_in_underlay_protocol`:<br>* when `include_in_underlay_protocol: true`, the default value is `true`<br>* when `include_in_underlay_protocol: false`, the default value is `false`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_static</samp>](## "l3_edge.p2p_links.[].multicast_static") | Boolean |  |  |  | Configure static multicast on the P2P links.<br>Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`<br>The default value depends on the value of `include_in_underlay_protocol`:<br>* when `include_in_underlay_protocol: true`, the default value is `true`<br>* when `include_in_underlay_protocol: false`, the default value is `false`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "l3_edge.p2p_links.[].flow_tracking") | Dictionary |  |  |  | Enable flow-tracking. Overrides `fabric_flow_tracking` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l3_edge.p2p_links.[].flow_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "l3_edge.p2p_links.[].flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_edge.p2p_links.[].qos_profile") | String |  |  |  | QOS service profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;macsec_profile</samp>](## "l3_edge.p2p_links.[].macsec_profile") | String |  |  |  | MAC security profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "l3_edge.p2p_links.[].port_channel") | Dictionary |  |  |  | Port-channel parameters. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_edge.p2p_links.[].port_channel.description") | String |  |  |  | Description or description template to be used on the port-channel interface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local port-channel interface name.<br>  - `peer_interface`: The port-channel interface on the peer.<br>  - `port_channel_id`: The local port-channel ID.<br>  - `peer_port_channel_id`: The ID of the port-channel on the peer.<br><br>Falls back to the description on the `p2p_link` if set. Otherwise default description is set by `default_underlay_p2p_port_channel_description`.<br>By default the description is templated from the name and port_channel interface of the peer. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_edge.p2p_links.[].port_channel.description") | String |  |  |  | Description or description template to be used on the port-channel interface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local port-channel interface name.<br>  - `peer_interface`: The port-channel interface on the peer.<br>  - `port_channel_id`: The local port-channel ID.<br>  - `peer_port_channel_id`: The ID of the port-channel on the peer.<br><br>Falls back to the description on the `p2p_link` if set. Otherwise default description is set by `default_underlay_p2p_port_channel_description`.<br>By default the description is templated from the name and port_channel interface of the peer. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "l3_edge.p2p_links.[].port_channel.mode") | String |  | `active` | Valid Values:<br>- <code>on</code><br>- <code>active</code><br>- <code>passive</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;channel_id_algorithm</samp>](## "l3_edge.p2p_links.[].port_channel.channel_id_algorithm") | String |  | `first_port` | Valid Values:<br>- <code>first_port</code><br>- <code>p2p_link_id</code> | Configures how to derive the Port-Channel ID when not set.<br>By default the ID is derived from the first switch port in node_child_interfaces[].interfaces.<br>The `p2p_link_id` setting will use the `id` for each link plus the `channel_id_offset` to derive the Port-Channel ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;channel_id_offset</samp>](## "l3_edge.p2p_links.[].port_channel.channel_id_offset") | Integer |  |  |  | Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and `channel_id` is not set. |
@@ -121,7 +128,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].campus_link_type.[]") | String |  |  | Valid Values:<br>- <code>downlink</code><br>- <code>egress</code><br>- <code>fabric</code><br>- <code>mlag</code><br>- <code>uplink</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l3_edge.p2p_links.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the point-to-point interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routing_protocol</samp>](## "l3_edge.p2p_links.[].routing_protocol") | String |  |  | Valid Values:<br>- <code>ebgp</code> | Enables deviation of the routing protocol used on this link from the fabric underlay default.<br>- ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if configured. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_edge.p2p_links.[].structured_config") | Dictionary |  |  |  | Custom structured config for interfaces.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethernet_structured_config</samp>](## "l3_edge.p2p_links.[].ethernet_structured_config") | Dictionary |  |  |  | Custom structured config for ethernet interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel_structured_config</samp>](## "l3_edge.p2p_links.[].port_channel_structured_config") | Dictionary |  |  |  | Custom structured config for port-channel links. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "l3_edge.p2p_links.[].underlay_multicast") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>multicast_pim_sm</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_edge.p2p_links.[].structured_config") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ethernet_structured_config or port_channel_structured_config</samp> instead.</span> |
 
 === "YAML"
 
@@ -146,8 +156,8 @@
           # Required with ip_pool. ID starting from 1.
           id: <int>
 
-          # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-          speed: <str>
+          # Interface Speed.
+          speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
 
           # P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.
           ip_pool: <str>
@@ -156,7 +166,7 @@
           subnet: <str>
 
           # Specific IP addresses used on this P2P link.
-          ip:
+          ip: # 2-2 items
 
               # Node IPv4 address/Mask.
             - <str>
@@ -165,14 +175,14 @@
           ipv6_enable: <bool; default=False>
 
           # Nodes where this link should be configured.
-          nodes:
+          nodes: # 2-2 items
 
               # The values can be < node_a >, < node_b >.
               # ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].
             - <str>
 
           # Interfaces where this link should be configured and Required unless using port-channels.
-          interfaces:
+          interfaces: # 2-2 items
 
               # The value can be like < node_a_interface >, < node_b_interface >.
               # ex. - [ Ethernet2, Ethernet2 ].
@@ -186,10 +196,10 @@
             - <str>
 
           # Interface descriptions.
-          descriptions:
+          descriptions: # 2-2 items
 
               # Description or description template to be used on the ethernet interface.
-              # This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+              # This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
               # The available template fields are:
               #   - `peer`: The name of the peer.
               #   - `interface`: The local interface name.
@@ -207,7 +217,15 @@
           isis_authentication_mode: <str; "md5" | "text">
 
           # Type-7 encrypted password.
+          # Takes precedence over 'underlay_isis_authentication_key', 'underlay_isis_authentication_cleartext_key'
+          # and `isis_authentication_cleartext_key`.
           isis_authentication_key: <str>
+
+          # Cleartext password.
+          # Encrypted to Type 7 by AVD.
+          # Takes precedence over 'underlay_isis_authentication_key' and 'underlay_isis_authentication_cleartext_key'.
+          # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+          isis_authentication_cleartext_key: <str>
           isis_network_type: <str; "point-to-point" | "broadcast"; default="point-to-point">
 
           # MPLS parameters. Default value is true if switch.mpls_lsr is true.
@@ -241,8 +259,19 @@
           # Enable sFlow. Overrides `fabric_sflow` setting.
           sflow: <bool>
 
-          # Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.
-          underlay_multicast: <bool; default=False>
+          # Configure PIM sparse-mode on the P2P links.
+          # Requires node setting `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+          # The default value depends on the value of `include_in_underlay_protocol`:
+          # * when `include_in_underlay_protocol: true`, the default value is `true`
+          # * when `include_in_underlay_protocol: false`, the default value is `false`.
+          multicast_pim_sm: <bool>
+
+          # Configure static multicast on the P2P links.
+          # Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+          # The default value depends on the value of `include_in_underlay_protocol`:
+          # * when `include_in_underlay_protocol: true`, the default value is `true`
+          # * when `include_in_underlay_protocol: false`, the default value is `false`.
+          multicast_static: <bool>
 
           # Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
           flow_tracking:
@@ -261,7 +290,7 @@
           port_channel:
 
             # Description or description template to be used on the port-channel interface.
-            # This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+            # This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
             # The available template fields are:
             #   - `peer`: The name of the peer.
             #   - `interface`: The local port-channel interface name.
@@ -305,13 +334,15 @@
           # - ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if configured.
           routing_protocol: <str; "ebgp">
 
-          # Custom structured config for interfaces.
-          # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-          structured_config: <dict>
+          # Custom structured config for ethernet interfaces.
+          ethernet_structured_config: <dict>
+
+          # Custom structured config for port-channel links.
+          port_channel_structured_config: <dict>
       p2p_links:
 
           # Nodes where this link should be configured.
-        - nodes: # required
+        - nodes: # 2-2 items; required
 
               # The values can be < node_a >, < node_b >.
               # ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].
@@ -324,8 +355,8 @@
           # Required with ip_pool. ID starting from 1.
           id: <int>
 
-          # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-          speed: <str>
+          # Interface Speed.
+          speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
 
           # P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.
           ip_pool: <str>
@@ -334,7 +365,7 @@
           subnet: <str>
 
           # Specific IP addresses used on this P2P link.
-          ip:
+          ip: # 2-2 items
 
               # Node IPv4 address/Mask.
             - <str>
@@ -343,7 +374,7 @@
           ipv6_enable: <bool; default=False>
 
           # Interfaces where this link should be configured and Required unless using port-channels.
-          interfaces:
+          interfaces: # 2-2 items
 
               # The value can be like < node_a_interface >, < node_b_interface >.
               # ex. - [ Ethernet2, Ethernet2 ].
@@ -357,10 +388,10 @@
             - <str>
 
           # Interface descriptions.
-          descriptions:
+          descriptions: # 2-2 items
 
               # Description or description template to be used on the ethernet interface.
-              # This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+              # This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
               # The available template fields are:
               #   - `peer`: The name of the peer.
               #   - `interface`: The local interface name.
@@ -378,7 +409,15 @@
           isis_authentication_mode: <str; "md5" | "text">
 
           # Type-7 encrypted password.
+          # Takes precedence over 'underlay_isis_authentication_key', 'underlay_isis_authentication_cleartext_key'
+          # and `isis_authentication_cleartext_key`.
           isis_authentication_key: <str>
+
+          # Cleartext password.
+          # Encrypted to Type 7 by AVD.
+          # Takes precedence over 'underlay_isis_authentication_key' and 'underlay_isis_authentication_cleartext_key'.
+          # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+          isis_authentication_cleartext_key: <str>
           isis_network_type: <str; "point-to-point" | "broadcast"; default="point-to-point">
 
           # MPLS parameters. Default value is true if switch.mpls_lsr is true.
@@ -412,8 +451,19 @@
           # Enable sFlow. Overrides `fabric_sflow` setting.
           sflow: <bool>
 
-          # Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.
-          underlay_multicast: <bool; default=False>
+          # Configure PIM sparse-mode on the P2P links.
+          # Requires node setting `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+          # The default value depends on the value of `include_in_underlay_protocol`:
+          # * when `include_in_underlay_protocol: true`, the default value is `true`
+          # * when `include_in_underlay_protocol: false`, the default value is `false`.
+          multicast_pim_sm: <bool>
+
+          # Configure static multicast on the P2P links.
+          # Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+          # The default value depends on the value of `include_in_underlay_protocol`:
+          # * when `include_in_underlay_protocol: true`, the default value is `true`
+          # * when `include_in_underlay_protocol: false`, the default value is `false`.
+          multicast_static: <bool>
 
           # Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
           flow_tracking:
@@ -432,7 +482,7 @@
           port_channel:
 
             # Description or description template to be used on the port-channel interface.
-            # This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+            # This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
             # The available template fields are:
             #   - `peer`: The name of the peer.
             #   - `interface`: The local port-channel interface name.
@@ -476,7 +526,9 @@
           # - ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if configured.
           routing_protocol: <str; "ebgp">
 
-          # Custom structured config for interfaces.
-          # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-          structured_config: <dict>
+          # Custom structured config for ethernet interfaces.
+          ethernet_structured_config: <dict>
+
+          # Custom structured config for port-channel links.
+          port_channel_structured_config: <dict>
     ```

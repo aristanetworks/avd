@@ -1,0 +1,22 @@
+---
+# The goal of this test is to verify that the `ip_address` is optional on parent L3 port-channel interfaces but required on subinterfaces.
+
+type: l3spine
+
+l3spine:
+  nodes:
+    - name: node-type-l3-port-channels-subinterfaces
+      loopback_ipv4_pool: 192.168.255.0/24
+      id: 1
+      l3_port_channels:
+        - name: Port-Channel1
+          member_interfaces:
+            - name: Ethernet5
+              peer_interface: Ethernet5
+            - name: Ethernet6
+              peer_interface: Ethernet6
+          # IP addresses are declared on subinterfaces
+        - name: Port-Channel1.100
+          ip_address: 10.10.100.1/30
+        - name: Port-Channel1.200
+          ip_address: 10.10.200.1/30

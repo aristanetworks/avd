@@ -34,24 +34,36 @@ class EthernetInterfacesMixin(Protocol):
                 # Propagate campus_link_type for campus devices
                 if self.shared_utils.is_campus_device and p2p_link.campus_link_type:
                     ethernet_interface._internal_data.campus_link_type = list(p2p_link.campus_link_type)
+
+                if p2p_link.ethernet_structured_config:
+                    self.custom_structured_configs.nested.ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
+                        p2p_link.ethernet_structured_config,
+                        list_merge=self.custom_structured_configs.list_merge_strategy,
+                    )
+
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
             # Port-Channel members
             for member in p2p_link_data["port_channel_members"]:
                 ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
                     name=member["interface"],
-                    peer=p2p_link_data["peer"],
-                    peer_interface=member["peer_interface"],
-                    peer_type=p2p_link_data["peer_type"],
                     shutdown=False,
                     description=self._port_channel_member_description(p2p_link_data, member) or None,
                     speed=p2p_link.speed,
                 )
+                ethernet_interface.metadata._update(peer_interface=member["peer_interface"], peer=p2p_link_data["peer"], peer_type=p2p_link_data["peer_type"])
                 ethernet_interface.channel_group.id = p2p_link_data["port_channel_id"]
                 ethernet_interface.channel_group.mode = p2p_link.port_channel.mode
                 # Propagate campus_link_type for campus devices
                 if self.shared_utils.is_campus_device and p2p_link.campus_link_type:
                     ethernet_interface._internal_data.campus_link_type = list(p2p_link.campus_link_type)
+
+                if p2p_link.ethernet_structured_config:
+                    self.custom_structured_configs.nested.ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
+                        p2p_link.ethernet_structured_config,
+                        list_merge=self.custom_structured_configs.list_merge_strategy,
+                    )
+
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
     def _p2p_link_ethernet_description(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link_data: dict) -> str:

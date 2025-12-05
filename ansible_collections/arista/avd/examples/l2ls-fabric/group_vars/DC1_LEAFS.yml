@@ -2,3 +2,42 @@
 ### group_vars/DC1_LEAFS.yml
 
 type: l2leaf     # Must be l2leaf
+
+# Leaf Switches
+l2leaf:
+  defaults:
+    platform: cEOSLab
+    mlag_peer_ipv4_pool: 192.168.0.0/24
+    uplink_switches: [SPINE1, SPINE2]
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    mlag_interfaces: [Ethernet47, Ethernet48]
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+
+  node_groups:
+    - group: RACK1
+      mlag: true
+      filter:
+        tags: [bluezone, greenzone]
+      nodes:
+        - name: LEAF1
+          id: 1
+          mgmt_ip: 172.16.100.105/24
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+        - name: LEAF2
+          id: 2
+          mgmt_ip: 172.16.100.106/24
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+    - group: RACK2
+      mlag: true
+      filter:
+        tags: [bluezone, orangezone]
+      nodes:
+        - name: LEAF3
+          id: 3
+          mgmt_ip: 172.16.100.107/24
+          uplink_switch_interfaces: [Ethernet3, Ethernet3]
+        - name: LEAF4
+          id: 4
+          mgmt_ip: 172.16.100.108/24
+          uplink_switch_interfaces: [Ethernet4, Ethernet4]

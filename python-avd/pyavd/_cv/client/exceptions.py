@@ -29,7 +29,11 @@ class CVWorkspaceBuildFailed(CVClientException):
 
 
 class CVWorkspaceSubmitFailed(CVClientException):
-    """Build of CloudVision Workspace failed."""
+    """Failed to submit CloudVision Workspace."""
+
+
+class CVWorkspaceSubmitFailedInactiveDevices(CVClientException):
+    """Failed to submit CloudVision Workspace due to the presence of inactive devices."""
 
 
 class CVWorkspaceStateTimeout(CVClientException):
@@ -55,3 +59,7 @@ class CVDuplicatedDevices(CVClientException):
 
 class CVGRPCStatusUnavailable(CVClientException):
     """CloudVision gRPC status is unavailable."""
+
+
+class CVManifestError(CVClientException):
+    """Error while creating a CVManifest instance from a user AvdManifest."""

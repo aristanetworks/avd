@@ -11,8 +11,9 @@ from typing import TYPE_CHECKING, Literal, Protocol, TypeVar, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get_ip_from_pool
+from pyavd._utils.password_utils.password import isis_encrypt
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol
@@ -119,21 +120,17 @@ class UtilsMixin(Protocol):
         # Set descriptions or fallback to list with None values
         descriptions = p2p_link.descriptions or [None, None]
 
-        try:
-            ip = ips[index]
-            peer_ip = ips[peer_index]
-            description = descriptions[index]
-        except IndexError as exc:
-            msg = "p2p_links model is intended to work for only two devices per entry."
-            raise AristaAvdError(msg) from exc
+        ip = ips[index]
+        peer_ip = ips[peer_index]
+        description = descriptions[index]
 
         data = {
             "peer": peer,
             "peer_type": peer_type,
             "ip": ip,
             "peer_ip": peer_ip,
-            "bgp_as": str(bgp_as[index]) if index < len(bgp_as) and bgp_as[index] else None,
-            "peer_bgp_as": str(bgp_as[peer_index]) if peer_index < len(bgp_as) and bgp_as[peer_index] else None,
+            "bgp_as": self.shared_utils.get_asn(str(bgp_as[index])) if index < len(bgp_as) and bgp_as[index] else None,
+            "peer_bgp_as": self.shared_utils.get_asn(str(bgp_as[peer_index])) if peer_index < len(bgp_as) and bgp_as[peer_index] else None,
             "description": description,
         }
 
@@ -198,7 +195,7 @@ class UtilsMixin(Protocol):
         ptp_config = output_type()
 
         # Early return if PTP is not enabled
-        if not p2p_link.ptp.enabled:
+        if not (p2p_link.ptp.enabled and self.shared_utils.platform_settings.feature_support.ptp):
             return ptp_config
 
         if self.shared_utils.ptp_enabled:
@@ -239,37 +236,20 @@ class UtilsMixin(Protocol):
         """
         interface._update(
             name=p2p_link_data["interface"],
-            peer=p2p_link_data["peer"],
-            peer_interface=p2p_link_data["peer_interface"],
-            peer_type=p2p_link_data["peer_type"],
             shutdown=False,
             mtu=self.shared_utils.get_interface_mtu(p2p_link_data["interface"], p2p_link._get("mtu", self.shared_utils.p2p_uplinks_mtu)),
             service_profile=p2p_link._get("qos_profile", self.inputs.p2p_uplinks_qos_profile),
             eos_cli=p2p_link.raw_eos_cli,
         )
+        interface.metadata._update(peer_interface=p2p_link_data["peer_interface"], peer=p2p_link_data["peer"], peer_type=p2p_link_data["peer_type"])
         interface.switchport.enabled = False
-
-        if p2p_link.structured_config:
-            if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
-                # Port-channel
-                self.custom_structured_configs.nested.port_channel_interfaces.obtain(interface.name)._deepmerge(
-                    EosCliConfigGen.PortChannelInterfacesItem._from_dict(p2p_link.structured_config),
-                    list_merge=self.custom_structured_configs.list_merge_strategy,
-                )
-            else:
-                # Ethernet
-                self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface.name)._deepmerge(
-                    EosCliConfigGen.EthernetInterfacesItem._from_dict(p2p_link.structured_config),
-                    list_merge=self.custom_structured_configs.list_merge_strategy,
-                )
 
         if p2p_link_data["ip"]:
             interface.ip_address = p2p_link_data["ip"]
 
-        if p2p_link.include_in_underlay_protocol:
-            if p2p_link.underlay_multicast and self.shared_utils.underlay_multicast:
-                interface.pim.ipv4.sparse_mode = True
+        self._update_interface_multicast_config(p2p_link, interface)
 
+        if p2p_link.include_in_underlay_protocol:
             if (self.inputs.underlay_rfc5549 and p2p_link.routing_protocol != "ebgp") or p2p_link.ipv6_enable is True:
                 interface.ipv6_enable = True
 
@@ -290,19 +270,30 @@ class UtilsMixin(Protocol):
                 mode: Literal["md5", "text"] | None = default(p2p_link.isis_authentication_mode, self.inputs.underlay_isis_authentication_mode)
                 interface.isis_authentication.both.mode = mode
 
-                if isis_authentication_key := default(p2p_link.isis_authentication_key, self.inputs.underlay_isis_authentication_key):
+                if p2p_link.isis_authentication_key is not None:
+                    interface.isis_authentication.both._update(key=p2p_link.isis_authentication_key, key_type="7")
+                elif p2p_link.isis_authentication_cleartext_key is not None:
+                    interface.isis_authentication.both._update(
+                        key=isis_encrypt(
+                            password=p2p_link.isis_authentication_cleartext_key,
+                            key=cast("str", self.shared_utils.isis_instance_name),
+                            mode=mode or "none",
+                        ),
+                        key_type="7",
+                    )
+                elif (isis_authentication_key := self.shared_utils.underlay_isis_authentication_key) is not None:
                     interface.isis_authentication.both._update(key=isis_authentication_key, key_type="7")
 
         if p2p_link.macsec_profile:
             interface.mac_security.profile = p2p_link.macsec_profile
 
-        if p2p_link.sflow is not None:
-            interface.sflow.enable = p2p_link.sflow
-        elif p2p_link_sflow := self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge:
-            interface.sflow.enable = p2p_link_sflow
+        interface.sflow.enable = self.shared_utils.get_interface_sflow(
+            interface.name,
+            default(p2p_link.sflow, self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge),
+        )
 
         # Adding type check to avoid confusing the type checker.
-        if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):  # NOSONAR, this is for the type checker
+        if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):  # NOSONAR(S3923)
             interface._update(flow_tracker=self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker))
         else:
             interface._update(flow_tracker=self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker))
@@ -330,3 +321,22 @@ class UtilsMixin(Protocol):
 
         # channel_id_algorithm "first_port"
         return int("".join(re.findall(r"\d", node_data.interfaces[0])))
+
+    def _update_interface_multicast_config(
+        self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol,
+        p2p_link: T_P2pLinksItem,
+        interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
+    ) -> None:
+        if p2p_link.include_in_underlay_protocol:
+            if self.shared_utils.underlay_multicast_pim_sm_enabled and p2p_link.multicast_pim_sm is not False:
+                interface.pim.ipv4.sparse_mode = True
+
+            # static multicast
+            if self.shared_utils.underlay_multicast_static_enabled and p2p_link.multicast_static is not False:
+                interface.multicast.ipv4.static = True
+        else:
+            # not included in underlay protocol
+            if self.shared_utils.underlay_multicast_pim_sm_enabled and p2p_link.multicast_pim_sm:
+                interface.pim.ipv4.sparse_mode = True
+            if self.shared_utils.underlay_multicast_static_enabled and p2p_link.multicast_static:
+                interface.multicast.ipv4.static = True

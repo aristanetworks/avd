@@ -1,7 +1,0 @@
----
-# Test that auto_clock_identify: false works on a global level:
-ptp_settings:
-  enabled: true
-  auto_clock_identity: false
-  # Test overriding domain
-  domain: 111

@@ -25,6 +25,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chip_based</samp>](## "qos.random_detect.ecn.allow_non_ect.chip_based") | Boolean |  |  |  | Allow non-ect chip-based. |
     | [<samp>&nbsp;&nbsp;tx_queue</samp>](## "qos.tx_queue") | Dictionary |  |  |  | Global transmit queue settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shape_rate_percent_adaptive</samp>](## "qos.tx_queue.shape_rate_percent_adaptive") | Boolean |  |  |  | Use the parent available bandwidth for transmit queue percentage-based allocation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;queues</samp>](## "qos.tx_queue.queues") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "qos.tx_queue.queues.[].id") | Integer | Required, Unique |  | Min: 0<br>Max: 7 | Queue ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scheduler_profile_responsive</samp>](## "qos.tx_queue.queues.[].scheduler_profile_responsive") | Boolean |  |  |  | Set scheduler profile to optimize latency at the expense of burstiness. |
 
 === "YAML"
 
@@ -68,4 +71,11 @@
 
         # Use the parent available bandwidth for transmit queue percentage-based allocation.
         shape_rate_percent_adaptive: <bool>
+        queues:
+
+            # Queue ID.
+          - id: <int; 0-7; required; unique>
+
+            # Set scheduler profile to optimize latency at the expense of burstiness.
+            scheduler_profile_responsive: <bool>
     ```

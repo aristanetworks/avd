@@ -9,7 +9,7 @@ from collections import ChainMap
 from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.avdfacts import AvdFacts
-from pyavd._utils import AvdStringFormatter, default, strip_null_from_data
+from pyavd._utils import AvdStringFormatter, strip_null_from_data
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
@@ -18,9 +18,6 @@ if TYPE_CHECKING:
 class AvdInterfaceDescriptions(AvdFacts):
     """
     Class used to render Interface Descriptions either from custom Jinja2 templates or using default Python Logic.
-
-    Since some templates might contain certain legacy variables (switch_*),
-    those are mapped from the switch.* model
 
     This class is imported adhoc based on the variable `templates.interface_descriptions.python_module` so it can
     be overridden by a custom python class.
@@ -55,7 +52,8 @@ class AvdInterfaceDescriptions(AvdFacts):
             - type
             - vrf
             - wan_carrier
-            - wan_circuit_id.
+            - wan_circuit_id
+            - main_interface_wan_carrier
         """
         # This is historic behavior for these two modules where the defined description
         # should take precedence over anything. This was broken from AVD 5.0 to 5.3
@@ -78,6 +76,9 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "type": data.link_type,
                     "peer": data.peer,
                     "peer_interface": data.peer_interface,
+                    "wan_carrier": data.wan_carrier,
+                    "wan_circuit_id": data.wan_circuit_id,
+                    "main_interface_wan_carrier": data.main_interface_wan_carrier,
                 },
             )
 
@@ -99,6 +100,9 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "peer": data.peer,
                     "peer_interface": data.peer_interface,
                     "vrf": data.vrf,
+                    "wan_carrier": data.wan_carrier,
+                    "wan_circuit_id": data.wan_circuit_id,
+                    "main_interface_wan_carrier": data.main_interface_wan_carrier,
                 }
             ),
         )
@@ -453,7 +457,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             ),
         )
 
-    def router_id_loopback_interface(self, data: InterfaceDescriptionData) -> str:
+    def router_id_loopback_interface(self, data: InterfaceDescriptionData) -> str | None:
         """
         Build Router ID loopback interface description.
 
@@ -464,15 +468,12 @@ class AvdInterfaceDescriptions(AvdFacts):
             - overlay_routing_protocol
             - type.
         """
-        if template_path := default(
-            self.shared_utils.node_type_key_data.interface_descriptions.router_id_loopback_interface,
-            self.shared_utils.node_type_key_data.interface_descriptions.overlay_loopback_interface,
-        ):
-            return self._template(template_path, overlay_loopback_description=data.description, router_id_loopback_description=data.description)
+        if template_path := self.shared_utils.node_type_key_data.interface_descriptions.router_id_loopback_interface:
+            return self._template(template_path, router_id_loopback_description=data.description)
 
         return data.description
 
-    def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str:
+    def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str | None:
         """
         Build VTEP loopback interface description.
 
@@ -600,6 +601,10 @@ class InterfaceDescriptionData:
         self.wan_carrier = wan_carrier
         self.wan_circuit_id = wan_circuit_id
         self.main_interface_wan_carrier = main_interface_wan_carrier
+
+    @property
+    def hostname(self) -> str:
+        return self._shared_utils.hostname
 
     @property
     def mpls_overlay_role(self) -> str | None:

@@ -70,4 +70,14 @@ class DigitalTwinMixin(Protocol):
                     username=username,
                     password=password,
                 )
+                # Set internet_access flag if node_type is cloudeos or veos
+                if (
+                    act_internet_access := default(
+                        self.shared_utils.node_config.digital_twin.act_internet_access,
+                        self.inputs.digital_twin.fabric.act_internet_access,
+                    )
+                ) and digital_twin_node_type in ["cloudeos", "veos"]:
+                    self.structured_config.metadata.digital_twin._update(
+                        internet_access=act_internet_access,
+                    )
                 return

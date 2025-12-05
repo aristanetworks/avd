@@ -149,7 +149,7 @@ spanning-tree mode none
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -174,8 +174,8 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet2 | P2P_p3_Ethernet2 | - | 10.255.3.12/31 | default | 1500 | False | - | - |
 | Ethernet3 | P2P_p1_Ethernet3 | - | 10.255.3.10/31 | default | 1500 | False | - | - |
 | Ethernet4 | P2P_rr2_Ethernet4 | - | 10.255.3.14/31 | default | 1500 | False | - | - |
@@ -394,7 +394,7 @@ ASN Notation: asplain
 | ---------- |
 | no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -434,10 +434,10 @@ ASN Notation: asplain
 
 ##### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
-| MPLS-OVERLAY-PEERS | True | - | - | - | - |
-| RR-OVERLAY-PEERS | True | - | - | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| MPLS-OVERLAY-PEERS | True | - | - | - | - | - | - |
+| RR-OVERLAY-PEERS | True | - | - | - | - | - | - |
 
 #### Router BGP Device Configuration
 
@@ -448,7 +448,7 @@ router bgp 65001
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    bgp cluster-id 10.255.2.1
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    neighbor MPLS-OVERLAY-PEERS peer group
    neighbor MPLS-OVERLAY-PEERS remote-as 65001
    neighbor MPLS-OVERLAY-PEERS update-source Loopback0

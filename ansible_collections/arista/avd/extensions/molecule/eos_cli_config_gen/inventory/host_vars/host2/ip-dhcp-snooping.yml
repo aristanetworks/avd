@@ -1,0 +1,8 @@
+---
+### IP DHCP Snooping ###
+
+ip_dhcp_snooping:
+  enabled: true
+  information_option:
+    circuit_id_type: 10
+    circuit_id_format: '%h:%p'

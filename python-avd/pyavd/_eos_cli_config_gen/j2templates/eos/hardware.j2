@@ -16,6 +16,9 @@ hardware port-group {{ port_group.port_group }} select {{ port_group.select }}
 !
 {%     for feature in hardware_counters.features | arista.avd.natural_sort("name") %}
 {%         set hardware_counters_cli = "hardware counter feature " ~ feature.name %}
+{%         if feature.enabled is arista.avd.defined(false) %}
+{%             set hardware_counters_cli = "no " ~ hardware_counters_cli %}
+{%         endif %}
 {%         if feature.direction is arista.avd.defined %}
 {%             set hardware_counters_cli = hardware_counters_cli ~ " " ~ feature.direction %}
 {%         endif %}

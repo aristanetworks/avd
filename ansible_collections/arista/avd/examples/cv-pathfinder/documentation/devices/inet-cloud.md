@@ -121,9 +121,11 @@ ip domain lookup vrf MGMT source-interface Management1
 
 ##### NTP Servers
 
-| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 0.pool.ntp.org | MGMT | True | - | - | - | - | - | - | - |
+NTP servers VRF: MGMT
+
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 0.pool.ntp.org | True | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
@@ -205,13 +207,13 @@ aaa authorization exec default local
 
 ### DHCP Servers Summary
 
-| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile | IPv6 Lease Time |
-| ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | --------------- | ---------------- | ------------- | --------------- |
-| True | default | - | - | - | 6 days 23 hours 59 minutes | - | - | - | - |
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 TFTP Bootfile URL (Option 59) | IPv6 Lease Time |
+| ------------------- | --- | --------------- | ---------------- | ------------------------------ | ---------------------------- | ---------------------------- | --------------- | --------------- | ---------------- | ---------------------------------- | --------------- |
+| True | default | - | - | - | - | - | 6 days 23 hours 59 minutes | - | - | - | - |
 
 #### VRF default DHCP Server
 
-##### Subnets
+##### IPv4 Subnets
 
 | Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
 | ------ | ---- | ----------- | --------------- | ---------- | ------ |
@@ -290,7 +292,7 @@ spanning-tree mode none
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -315,8 +317,8 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | pf1-Ethernet2 | - | 100.64.100.1/24 | default | - | False | - | - |
 | Ethernet2 | pf2-Ethernet2 | - | 100.64.200.1/24 | default | - | False | - | - |
 | Ethernet5 | site1-wan1-Ethernet4 | - | 100.64.10.1/24 | default | - | False | - | - |
@@ -386,7 +388,7 @@ interface Ethernet10
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 
 ##### IPv4
 
@@ -497,7 +499,7 @@ ASN Notation: asplain
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -522,7 +524,7 @@ ASN Notation: asplain
 router bgp 65666
    router-id 172.31.255.23
    no bgp default ipv4-unicast
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000

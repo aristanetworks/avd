@@ -18,16 +18,17 @@
 
 **NOTE:** Not all options (columns) in the table below are compatible with every available feature, it is the user responsibility to configure valid options for each feature.
 
-| Feature | Flow Direction | Address Type | Layer3 | VRF | Prefix | Units Packets |
-| ------- | -------------- | ------------ | ------ | --- | ------ | ------------- |
+| Feature | Enabled | Flow Direction | Address Type | Layer3 | VRF | Prefix | Units Packets |
+| ------- | ------- | -------------- | ------------ | ------ | --- | ------ | ------------- |
 {%             for feature in hardware_counters.features | arista.avd.natural_sort("name") %}
+{%                 set feature_enabled = feature.enabled | arista.avd.default("True") %}
 {%                 set feature_direction = feature.direction | arista.avd.default("-") %}
 {%                 set feature_address_type = feature.address_type | arista.avd.default("-") %}
 {%                 set feature_vrf = feature.vrf | arista.avd.default("-") %}
 {%                 set feature_layer3 = feature.layer3 | arista.avd.default("-") %}
 {%                 set feature_prefix = feature.prefix | arista.avd.default("-") %}
 {%                 set feature_units_packets = feature.units_packets | arista.avd.default("-") %}
-| {{     feature.name }} | {{ feature_direction }} | {{ feature_address_type }} | {{ feature_vrf }} | {{ feature_layer3 }} | {{ feature_prefix }} | {{ feature_units_packets }} |
+| {{     feature.name }} | {{ feature_enabled }} | {{ feature_direction }} | {{ feature_address_type }} | {{ feature_vrf }} | {{ feature_layer3 }} | {{ feature_prefix }} | {{ feature_units_packets }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}

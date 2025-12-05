@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol, overload
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import Undefined, default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -40,8 +40,10 @@ class UtilsMixin(Protocol):
         underlay_links = self.facts.uplinks._deepcopy()
 
         for uplink in underlay_links:
-            uplink.sflow_enabled = self.inputs.fabric_sflow.uplinks
+            uplink.sflow_enabled = self.shared_utils.get_interface_sflow(uplink.interface, self.inputs.fabric_sflow.uplinks)
             uplink.flow_tracking = self.inputs.fabric_flow_tracking.uplinks
+            if not self.shared_utils.platform_settings.feature_support.ptp:
+                uplink.ptp.enable = False
 
         downlinks_flow_tracking = (
             # Cast as uplink model since that is used in the facts' uplink which we reuse below model
@@ -60,7 +62,7 @@ class UtilsMixin(Protocol):
                     peer_interface=uplink.interface,
                     peer_type=peer_facts.type,
                     peer_is_deployed=peer_facts.is_deployed,
-                    peer_bgp_as=peer_facts.bgp_as,
+                    peer_bgp_as=self.shared_utils.get_asn(peer_facts.bgp_as),
                     type=uplink.type,
                     speed=uplink.peer_speed or uplink.speed,
                     ip_address=uplink.peer_ip_address,
@@ -73,17 +75,32 @@ class UtilsMixin(Protocol):
                     native_vlan=uplink.native_vlan,
                     trunk_groups=uplink.peer_trunk_groups._cast_as(EosDesignsFacts.UplinksItem.TrunkGroups),
                     bfd=uplink.bfd,
-                    ptp=uplink.ptp,
+                    ptp=uplink.ptp if self.shared_utils.platform_settings.feature_support.ptp else Undefined,
                     mac_security=uplink.mac_security,
                     short_esi=uplink.peer_short_esi,
                     mlag=uplink.peer_mlag,
-                    underlay_multicast=uplink.underlay_multicast,
+                    underlay_multicast_pim_sm=uplink.underlay_multicast_pim_sm,
+                    underlay_multicast_static=uplink.underlay_multicast_static,
                     ipv6_enable=uplink.ipv6_enable,
-                    sflow_enabled=self.inputs.fabric_sflow.downlinks,
+                    sflow_enabled=self.shared_utils.get_interface_sflow(uplink.peer_interface, self.inputs.fabric_sflow.downlinks),
                     flow_tracking=downlinks_flow_tracking,
                     spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
-                    structured_config=uplink.structured_config,
+                    ethernet_structured_config=uplink.peer_ethernet_structured_config,
+                    port_channel_structured_config=uplink.peer_port_channel_structured_config,
                 )
+
+                if self.shared_utils.node_config.link_tracking.downlinks.enabled and self.shared_utils.link_tracking_groups is not None:
+                    if (downlink_group := self.shared_utils.node_config.link_tracking.downlinks.group) is None:
+                        first_group = next(iter(self.shared_utils.link_tracking_groups.values()))
+                        downlink.link_tracking_groups.append_new(name=first_group.name, direction="downstream")
+                    elif downlink_group not in self.shared_utils.link_tracking_groups:
+                        msg = (
+                            f"Link tracking group '{downlink_group}' referenced under node setting 'link_tracking.downlinks.group' "
+                            f"is not defined in 'link_tracking.groups' for device '{self.shared_utils.hostname}'."
+                        )
+                        raise AristaAvdInvalidInputsError(msg)
+                    else:
+                        downlink.link_tracking_groups.append_new(name=downlink_group, direction="downstream")
                 if peer_facts.inband_ztp:
                     # l2 inband ztp
                     downlink.inband_ztp_vlan = peer_facts.inband_ztp_vlan
@@ -141,8 +158,11 @@ class UtilsMixin(Protocol):
 
         # logic below is common to l3_interface and l3_port_channel interface types
 
+        # Check if the interface is a parent L3 Port-Channel with subinterfaces.
+        is_parent_l3_port_channel = schema_key == "l3_port_channels" and l3_generic_interface.name in self._l3_port_channels_with_subinterfaces
+
         # TODO: catch if ip_address is not valid or not dhcp
-        if not l3_generic_interface.ip_address:
+        if not l3_generic_interface.ip_address and not is_parent_l3_port_channel:
             msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].{schema_key}"
             msg += f"[name={l3_generic_interface.name}].ip_address"
             raise AristaAvdMissingVariableError(msg)
@@ -150,12 +170,12 @@ class UtilsMixin(Protocol):
         is_subinterface = "." in l3_generic_interface.name
         interface._update(
             name=l3_generic_interface.name,
-            peer=l3_generic_interface.peer,
             ip_address=l3_generic_interface.ip_address,
             shutdown=not l3_generic_interface.enabled,
             service_profile=l3_generic_interface.qos_profile,
             eos_cli=l3_generic_interface.raw_eos_cli,
         )
+        interface.metadata.peer = l3_generic_interface.peer
         interface.switchport.enabled = False if "." not in l3_generic_interface.name else None
 
         if is_subinterface:
@@ -195,10 +215,14 @@ class UtilsMixin(Protocol):
             del interfaces[link.interface]
         else:
             main_interface = EosCliConfigGen.EthernetInterfacesItem(
-                switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False), mtu=self.shared_utils.p2p_uplinks_mtu
+                switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False),
+                mtu=self.shared_utils.get_interface_mtu(link.interface, self.shared_utils.p2p_uplinks_mtu),
             )
 
-        if (mtu := default(main_interface.mtu, 1500)) != self.shared_utils.p2p_uplinks_mtu:
+        if (
+            self.shared_utils.platform_settings.feature_support.per_interface_mtu
+            and (mtu := default(main_interface.mtu, 1500)) != self.shared_utils.p2p_uplinks_mtu
+        ):
             msg = (
                 f"MTU '{self.shared_utils.p2p_uplinks_mtu}' set for 'p2p_uplinks_mtu' conflicts with MTU '{mtu}' "
                 f"set on SVI for uplink_native_vlan '{link.native_vlan}'."
@@ -223,20 +247,19 @@ class UtilsMixin(Protocol):
         interface_name = link.interface if is_native else f"{link.interface}.{svi.id}"
         subinterface = EosCliConfigGen.EthernetInterfacesItem(
             name=interface_name,
-            peer=link.peer,
-            peer_interface=f"{link.peer_interface} VLAN {svi.id}",
-            peer_type=link.peer_type,
             description=default(svi.description, svi.name),
             shutdown=not default(svi.enabled, False),  # noqa: FBT003
             switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False) if is_native else Undefined,
             encapsulation_dot1q=EosCliConfigGen.EthernetInterfacesItem.EncapsulationDot1q(vlan=svi.id) if not is_native else Undefined,
             vrf=vrf.name if vrf.name != "default" else None,
             ip_address=svi.ip_address,
+            ip_address_secondaries=EosCliConfigGen.EthernetInterfacesItem.IpAddressSecondaries(svi.ip_address_secondaries),
             ipv6_address=svi.ipv6_address,
             ipv6_enable=svi.ipv6_enable,
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
+        subinterface.metadata._update(peer_interface=f"{link.peer_interface} VLAN {svi.id}", peer=link.peer, peer_type=link.peer_type)
 
         if flow_tracker := self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker):
             subinterface.flow_tracker = flow_tracker

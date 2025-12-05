@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: Example for Campus Fabric
+title: Campus Fabric
 ---
 <!--
   ~ Copyright (c) 2023-2025 Arista Networks, Inc.
@@ -8,7 +8,7 @@ title: Example for Campus Fabric
   ~ that can be found in the LICENSE file.
   -->
 
-# Example for Campus Fabric
+# Campus Fabric
 
 ## Introduction
 
@@ -123,14 +123,14 @@ leaf:
 
 Details on this feature can be found [here](../../roles/eos_designs/docs/input-variables.md#node-type-inband-management).
 
-| Node   | Management0     | Vlan10    |
-| ------ | --------------- | --------- |
-| SPINE1 | 172.16.100.101 | 10.10.10.2  |
-| SPINE2 | 172.16.100.102 | 10.10.10.3  |
-| LEAF1A | 172.16.100.103 | 10.10.10.6  |
-| LEAF1B | 172.16.100.104 | 10.10.10.7  |
-| LEAF2A | 172.16.100.105 | 10.10.10.8  |
-| LEAF3A | 172.16.100.106 | 10.10.10.9  |
+| Node | Management0 | Vlan10 |
+| ---- | ----------- | ------ |
+| SPINE1 | 172.16.100.101 | 10.10.10.2 |
+| SPINE2 | 172.16.100.102 | 10.10.10.3 |
+| LEAF1A | 172.16.100.103 | 10.10.10.6 |
+| LEAF1B | 172.16.100.104 | 10.10.10.7 |
+| LEAF2A | 172.16.100.105 | 10.10.10.8 |
+| LEAF3A | 172.16.100.106 | 10.10.10.9 |
 | LEAF3B | 172.16.100.107 | 10.10.10.10 |
 | LEAF3C | 172.16.100.108 | 10.10.10.11 |
 | LEAF3D | 172.16.100.109 | 10.10.10.12 |

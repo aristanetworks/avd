@@ -33,7 +33,6 @@ AVD_TEST_INDEX: list[TestSpec] = [
     TestSpec(
         test_class=VerifyCoredump,
     ),
-    TestSpec(test_class=VerifyDNSServers, conditional_keys=[StructuredConfigKey.IP_NAME_SERVERS], input_factory=VerifyDNSServersInputFactory),
     TestSpec(
         test_class=VerifyEnvironmentCooling,
         input_factory=VerifyEnvironmentCoolingInputFactory,
@@ -44,6 +43,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyEnvironmentSystemCooling,
+        input_factory=VerifyEnvironmentSystemCoolingInputFactory,
     ),
     TestSpec(
         test_class=VerifyFileSystemUtilization,
@@ -69,6 +69,10 @@ AVD_TEST_INDEX: list[TestSpec] = [
         input_factory=VerifyInterfacesStatusInputFactory,
     ),
     TestSpec(
+        test_class=VerifyInventory,
+        input_factory=VerifyInventoryInputFactory,
+    ),
+    TestSpec(
         test_class=VerifyPortChannels,
         conditional_keys=[StructuredConfigKey.PORT_CHANNEL_INTERFACES],
         input_factory=VerifyPortChannelsInputFactory,
@@ -78,6 +82,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyStormControlDrops,
+        input_factory=VerifyStormControlDropsInputFactory,
     ),
     TestSpec(
         test_class=VerifyLLDPNeighbors,
@@ -86,6 +91,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyLoggingErrors,
+        input_factory=VerifyLoggingErrorsInputFactory,
     ),
     TestSpec(
         test_class=VerifyMaintenance,
@@ -98,18 +104,8 @@ AVD_TEST_INDEX: list[TestSpec] = [
         conditional_keys=[StructuredConfigKey.MLAG_CONFIGURATION],
     ),
     TestSpec(
-        test_class=VerifyMlagDualPrimary,
-        conditional_keys=[StructuredConfigKey.MLAG_DUAL_PRIMARY_DETECTION_DELAY],
-        input_factory=VerifyMlagDualPrimaryInputFactory,
-    ),
-    TestSpec(
         test_class=VerifyMlagInterfaces,
         conditional_keys=[StructuredConfigKey.MLAG_CONFIGURATION],
-    ),
-    TestSpec(
-        test_class=VerifyMlagReloadDelay,
-        conditional_keys=[StructuredConfigKey.RELOAD_DELAY_MLAG, StructuredConfigKey.RELOAD_DELAY_NON_MLAG],
-        input_factory=VerifyMlagReloadDelayInputFactory,
     ),
     TestSpec(
         test_class=VerifyMlagStatus,
@@ -117,6 +113,14 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyNTP,
+    ),
+    TestSpec(
+        test_class=VerifyOSPFNeighborState,
+        conditional_keys=[StructuredConfigKey.ROUTER_OSPF],
+    ),
+    TestSpec(
+        test_class=VerifyOSPFMaxLSA,
+        conditional_keys=[StructuredConfigKey.ROUTER_OSPF],
     ),
     TestSpec(
         test_class=VerifySpecificPath,
@@ -136,6 +140,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
         conditional_keys=[StructuredConfigKey.SERVICE_ROUTING_PROTOCOLS_MODEL],
         input_factory=VerifyRoutingProtocolModelInputFactory,
     ),
+    TestSpec(test_class=VerifyRoutingTableEntry, conditional_keys=[StructuredConfigKey.VXLAN1_INTERFACE], input_factory=VerifyRoutingTableEntryInputFactory),
     TestSpec(
         test_class=VerifySpecificIPSecConn,
         conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION],
@@ -146,10 +151,17 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyTemperature,
+        input_factory=VerifyTemperatureInputFactory,
+    ),
+    TestSpec(
+        test_class=VerifyTransceiversManufacturers,
+        input_factory=VerifyTransceiversManufacturersInputFactory,
     ),
     TestSpec(
         test_class=VerifyTransceiversTemperature,
+        input_factory=VerifyTransceiversTemperatureInputFactory,
     ),
+    TestSpec(test_class=VerifyVxlanConfigSanity, conditional_keys=[StructuredConfigKey.VXLAN1_INTERFACE]),
     TestSpec(
         test_class=VerifyZeroTouch,
     ),

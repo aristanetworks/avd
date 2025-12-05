@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -371,7 +371,16 @@ keys:
             - message-digest
         ospf_authentication_key:
           type: str
-          description: Encrypted password used for simple authentication.
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+            - int
+          description: Authentication key type.
+          default: "7"
+          valid_values:
+            - "7"
+            - "8a"
         ospf_message_digest_keys:
           type: list
           description: Keys used for message-digest authentication.
@@ -394,6 +403,15 @@ keys:
               key:
                 type: str
                 description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                  - int
+                description: Authentication key type.
+                default: "7"
+                valid_values:
+                  - "7"
+                  - "8a"
         pim:
           type: dict
           keys:
@@ -550,6 +568,11 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv4 address.
+                  secondary_addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Additional VRRP IPv4 addresses.
                   version:
                     type: int
                     convert_types:
@@ -560,10 +583,23 @@ keys:
               ipv6:
                 type: dict
                 keys:
+                  addresses:
+                    type: list
+                    required: true
+                    items:
+                      type: str
+                    description: Virtual IPv6 addresses.
                   address:
                     type: str
-                    required: true
                     description: Virtual IPv6 address.
+                    deprecation:
+                      warning: true
+                      removed: true
+                      remove_in_version: 6.0.0
+                      new_key: addresses
+              peer_authentication:
+                type: dict
+                $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/vrrp_ids/items/keys/peer_authentication"
         ip_attached_host_route_export:
           type: dict
           keys:
@@ -626,46 +662,35 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+        traffic_policy:
+          type: dict
+          keys:
+            input:
+              type: str
+              description: Ingress traffic policy.
+            output:
+              type: str
+              description: Egress traffic policy.
         ntp_serve:
           type: bool
           description: Enable/disable serving NTP to clients.
         pvlan_mapping:
           type: str
           description: List of VLANs as string.
-        tenant:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        tags:
-          type: list
-          items:
-            type: str
-          description: Key only used for documentation or validation purposes.
-        type:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          keys:
+            tenant:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            tags:
+              type: list
+              items:
+                type: str
+              description: Key only used for documentation or validation purposes.
+            type:
+              type: str
+              description: Key only used for documentation or validation purposes.
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
-        ipv6_address_virtual:
-          type: str
-          description: |
-            IPv6_address/Mask.
-          deprecation:
-            removed: true
-            warning: true
-            new_key: ipv6_address_virtuals
-            remove_in_version: "5.0.0"
-        ipv6_virtual_router_address:
-          type: str
-          deprecation:
-            removed: true
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: ipv6_virtual_router_addresses
-        vrrp:
-          type: dict
-          deprecation:
-            removed: true
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: vrrp_ids

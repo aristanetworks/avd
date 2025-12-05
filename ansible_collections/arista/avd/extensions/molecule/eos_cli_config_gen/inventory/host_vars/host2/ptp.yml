@@ -1,0 +1,11 @@
+---
+### ptp
+ptp:
+  monitor:
+    enabled: true
+    missing_message:
+      sequence_ids:
+        enabled: false
+  free_running:
+    enabled: true
+  forward_v1: false

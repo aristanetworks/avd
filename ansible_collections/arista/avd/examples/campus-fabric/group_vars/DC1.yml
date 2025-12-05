@@ -2,18 +2,19 @@
 ### group_vars/DC1.yml
 
 # local users
-local_users:
-  # Username with no password configured
-  - name: admin
-    privilege: 15
-    role: network-admin
-    no_password: true
+aaa_settings:
+  local_users:
+    # Username with no password configured
+    - name: admin
+      privilege: 15
+      role: network-admin
+      no_password: true
 
-  # Username with a password
-  - name: arista
-    privilege: 15
-    role: network-admin
-    sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
+    # Username with a password
+    - name: arista
+      privilege: 15
+      role: network-admin
+      sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
 
 # AAA Authorization
 custom_structured_configuration_aaa_authorization:

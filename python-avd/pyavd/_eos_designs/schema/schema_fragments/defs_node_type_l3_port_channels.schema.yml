@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -66,8 +66,7 @@ $defs:
                   The peer device interface. Used for description and documentation.
               speed:
                 type: str
-                description: |-
-                  Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
               rx_queue:
                 type: dict
                 $ref: "eos_designs#/$defs/rx_queue_settings"
@@ -149,11 +148,13 @@ $defs:
               description: |-
                 Prefix List Name. Accept routes for only these prefixes from the peer.
                 Required for wan interfaces.
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
             ipv4_prefix_list_out:
               type: str
               description: |-
                 Prefix List Name. Advertise routes for only these prefixes.
                 If not specified, nothing would be advertised.
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
         ipv4_acl_in:
           description: |-
             Name of the IPv4 access-list to be assigned in the ingress direction.

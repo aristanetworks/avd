@@ -3,7 +3,6 @@
 ## Table of Contents
 
 - [Management](#management)
-  - [Agents](#agents)
   - [Management Interfaces](#management-interfaces)
   - [DNS Domain](#dns-domain)
   - [IP Name Servers](#ip-name-servers)
@@ -19,6 +18,9 @@
   - [Management Security SSL Profiles](#management-security-ssl-profiles)
   - [SSL profile STUN-DTLS Certificates Summary](#ssl-profile-stun-dtls-certificates-summary)
   - [Management Security Device Configuration](#management-security-device-configuration)
+- [Kernel Settings](#kernel-settings)
+  - [Kernel Device Summary](#kernel-device-summary)
+  - [Kernel Device configuration](#kernel-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Flow Tracking](#flow-tracking)
@@ -67,23 +69,6 @@
   - [STUN Device Configuration](#stun-device-configuration)
 
 ## Management
-
-### Agents
-
-#### Agent KernelFib
-
-##### Environment Variables
-
-| Name | Value |
-| ---- | ----- |
-| KERNELFIB_PROGRAM_ALL_ECMP | 1 |
-
-#### Agents Device Configuration
-
-```eos
-!
-agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=1
-```
 
 ### Management Interfaces
 
@@ -165,9 +150,11 @@ ip domain lookup vrf MGMT source-interface Management1
 
 ##### NTP Servers
 
-| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 0.pool.ntp.org | MGMT | True | - | - | - | - | - | - | - |
+NTP servers VRF: MGMT
+
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 0.pool.ntp.org | True | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
@@ -276,6 +263,19 @@ management security
       certificate STUN-DTLS.crt key STUN-DTLS.key
 ```
 
+## Kernel Settings
+
+### Kernel Device Summary
+
+- Kernel software forwarding ECMP enabled
+
+### Kernel Device configuration
+
+```eos
+!
+kernel software forwarding ecmp
+```
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -309,7 +309,7 @@ daemon TerminAttr
 
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
-| FLOW-TRACKER | CV-TELEMETRY | - | - | Loopback0 |
+| FLOW-TRACKER | CV-TELEMETRY | 127.0.0.1 | - | Loopback0 |
 
 #### Flow Tracking Device Configuration
 
@@ -357,7 +357,7 @@ spanning-tree mode none
 ### IPSec profiles
 
 | Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode | Flow Parallelization |
-| ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
+| ------------ | ---------- | --------- | ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
 | CP-PROFILE | CP-IKE-POLICY | CP-SA-POLICY | start | - | - | - | transport | - |
 | DP-PROFILE | DP-IKE-POLICY | DP-SA-POLICY | start | - | - | - | transport | - |
 
@@ -414,7 +414,7 @@ ip security
 
 | Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
 | --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.3/32 | - | 9194 | Hardware: FLOW-TRACKER |  |
+| Dps1 | 192.168.42.3/32 | - | 9194 | Hardware: FLOW-TRACKER | - |
 
 #### DPS Interfaces Device Configuration
 
@@ -449,8 +449,8 @@ interface Dps1
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_site1-border1_Ethernet3 | - | 10.0.1.9/31 | default | 9194 | False | - | - |
 | Ethernet1.100 | P2P_site1-border1_Ethernet3.100_VRF_BLUE | - | 10.0.1.9/31 | BLUE | 9194 | False | - | - |
 | Ethernet1.101 | P2P_site1-border1_Ethernet3.101_VRF_RED | - | 10.0.1.9/31 | RED | 9194 | False | - | - |
@@ -569,8 +569,8 @@ interface Loopback0
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
 | BLUE | 100 | - |
 | default | 1 | - |
 | RED | 101 | - |
@@ -888,15 +888,15 @@ ASN Notation: asplain
 
 ##### EVPN Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| WAN-OVERLAY-PEERS | True |  RM-EVPN-SOO-IN | RM-EVPN-SOO-OUT | path-selection | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| WAN-OVERLAY-PEERS | True | RM-EVPN-SOO-IN | RM-EVPN-SOO-OUT | - | - | path-selection | - |
 
 ##### EVPN Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| -------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| 192.168.42.4 | True | - | - | path-selection | - |
+| Neighbor | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| -------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| 192.168.42.4 | True | - | - | - | - | path-selection | - |
 
 ##### EVPN DCI Gateway Summary
 
@@ -908,9 +908,9 @@ ASN Notation: asplain
 
 ##### IPv4 SR-TE Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| WAN-OVERLAY-PEERS | True | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ |
+| WAN-OVERLAY-PEERS | True | - | - | - | - |
 
 #### Router BGP Link-State Address Family
 
@@ -1237,13 +1237,13 @@ ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.3:101
 
 | List Name | Type | Match | Origin |
 | --------- | ---- | ----- | ------ |
-| ASPATH-WAN | permit | 65000 | any |
+| ASPATH-WAN | permit | `_65000_` | any |
 
 #### AS Path Lists Device Configuration
 
 ```eos
 !
-ip as-path access-list ASPATH-WAN permit 65000 any
+ip as-path access-list ASPATH-WAN permit _65000_ any
 ```
 
 ## ACL
@@ -1416,7 +1416,7 @@ application traffic recognition
 ##### Path Group INTERNET
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Path Group ID | 102 |
 | IPSec profile | CP-PROFILE |
 
@@ -1429,7 +1429,7 @@ application traffic recognition
 ###### Dynamic Peers Settings
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | IP Local | - |
 | IPSec | - |
 
@@ -1443,7 +1443,7 @@ application traffic recognition
 ##### Path Group LAN_HA
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Path Group ID | 65535 |
 | IPSec profile | DP-PROFILE |
 | Flow assignment | LAN |
@@ -1452,8 +1452,8 @@ application traffic recognition
 
 | Interface name | Public address | STUN server profile(s) |
 | -------------- | -------------- | ---------------------- |
-| Ethernet1 | - |  |
-| Ethernet2 | - |  |
+| Ethernet1 | - | - |
+| Ethernet2 | - | - |
 
 ###### Static Peers
 
@@ -1464,7 +1464,7 @@ application traffic recognition
 ##### Path Group MPLS
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Path Group ID | 101 |
 | IPSec profile | CP-PROFILE |
 
@@ -1477,7 +1477,7 @@ application traffic recognition
 ###### Dynamic Peers Settings
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | IP Local | - |
 | IPSec | - |
 

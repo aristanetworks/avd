@@ -1,0 +1,3 @@
+hostname: ci-s1-leaf3
+metadata:
+  is_deployed: true

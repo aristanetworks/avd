@@ -20,7 +20,8 @@
        or router_ospf is arista.avd.defined
        or router_isis is arista.avd.defined
        or router_bgp is arista.avd.defined
-       or policy_maps.pbr is arista.avd.defined %}
+       or policy_maps.pbr is arista.avd.defined
+       or router_rip is arista.avd.defined %}
 
 ## Routing
 {## Service Routing Configuration #}
@@ -57,6 +58,8 @@
 {%     include 'documentation/router-isis.j2' %}
 {## Router BGP #}
 {%     include 'documentation/router-bgp.j2' %}
+{## Router RIP #}
+{%     include 'documentation/router-rip.j2' %}
 {## PBR Policy Maps ##}
 {%     include 'documentation/policy-maps-pbr.j2' %}
 {% endif %}

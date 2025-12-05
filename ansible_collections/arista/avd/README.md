@@ -64,8 +64,8 @@ See [using Ansible collections](https://docs.ansible.com/ansible/devel/collectio
 The AVD collection requires the installation of additional Python packages. To ensure you install the correct versions, run the following commands:
 
 ```shell
-export ARISTA_AVD_DIR=$(ansible-galaxy collection list arista.avd --format yaml | head -1 | cut -d: -f1)
-pip3 install -r ${ARISTA_AVD_DIR}/arista/avd/requirements.txt
+export ARISTA_AVD_VERSION=$(ansible-galaxy collection list arista.avd --format yaml | tail -1 | cut -d: -f2 | tr '-' '.')
+pip3 install "pyavd[ansible-collection]==$ARISTA_AVD_VERSION"
 ```
 
 ### Enable Jinja2 Extensions
@@ -98,6 +98,7 @@ You can also open an [issue](https://github.com/aristanetworks/avd/issues) to re
 ## Support
 
 - AVD is an open-source project maintained by a dedicated Arista engineering team. Customers can purchase TAC support for AVD through the [A-Care Service contract](https://avd.arista.com/stable/docs/support/support_overview.html). TAC support for AVD must be purchased separately.
+- As Red Hat Ansible Certified Content, this collection is entitled to support through the Ansible Automation Platform (AAP) using the **Create issue** button on the top right corner.
 - Without a support contract AVD code can be used as-is, without any warranty and with best-effort problem resolution via [GitHub discussions board](https://github.com/aristanetworks/avd/discussions).
 
 ## Release Notes and Roadmap

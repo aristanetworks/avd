@@ -1,0 +1,7 @@
+---
+## AAA Authentication
+aaa_authentication:
+  policies:
+    lockout:
+      failure: 3
+      duration: 300

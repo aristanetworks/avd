@@ -118,18 +118,22 @@ class PortChannelInterfacesMixin(Protocol):
                 # Generate their structured config for the l3_port_channels.
                 port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
                     name=l3_port_channel.name,
-                    peer=l3_port_channel.peer,
                     mtu=self.shared_utils.get_interface_mtu(l3_port_channel.name, l3_port_channel.mtu),
                     description=interface_description or None,
                     ip_address=l3_port_channel.ip_address,
+                    ip_address_secondaries=EosCliConfigGen.PortChannelInterfacesItem.IpAddressSecondaries(l3_port_channel.ip_address_secondaries),
+                    arp_gratuitous_accept=l3_port_channel.arp_gratuitous_accept,
                     shutdown=not l3_port_channel.enabled,
                     eos_cli=l3_port_channel.raw_eos_cli,
                     flow_tracker=self.shared_utils.get_flow_tracker(
                         l3_port_channel.flow_tracking, output_type=EosCliConfigGen.PortChannelInterfacesItem.FlowTracker
                     ),
                     vrf=vrf.name if vrf.name != "default" else None,
-                    peer_type="l3_port_channel",
+                )
+                port_channel_interface.metadata._update(
                     peer_interface=l3_port_channel.peer_port_channel if l3_port_channel.peer_port_channel else None,
+                    peer=l3_port_channel.peer,
+                    peer_type="l3_port_channel",
                 )
                 if l3_port_channel.ipv4_acl_in:
                     acl = self.shared_utils.get_ipv4_acl(
@@ -198,9 +202,9 @@ class PortChannelInterfacesMixin(Protocol):
                     # This is a subinterface so we need to ensure that the parent is created
                     parent_interface = EosCliConfigGen.PortChannelInterfacesItem(
                         name=interface_name,
-                        peer_type="system",
                         shutdown=False,
                     )
+                    parent_interface.metadata.peer_type = "system"
                     parent_interface.switchport.enabled = False
 
                     if (short_esi := endpoint.port_channel.short_esi) is not None and len(short_esi.split(":")) == 3:
@@ -217,13 +221,13 @@ class PortChannelInterfacesMixin(Protocol):
                         subif_name = f"{interface_name}.{subif.number}"
                         interface = EosCliConfigGen.PortChannelInterfacesItem(
                             name=subif_name,
-                            peer_type="point_to_point_service",
                             shutdown=False,
                             encapsulation_vlan=EosCliConfigGen.PortChannelInterfacesItem.EncapsulationVlan(
                                 client=EosCliConfigGen.PortChannelInterfacesItem.EncapsulationVlan.Client(encapsulation="dot1q", vlan=subif.number),
                                 network=EosCliConfigGen.PortChannelInterfacesItem.EncapsulationVlan.Network(encapsulation="client"),
                             ),
                         )
+                        interface.metadata.peer_type = "point_to_point_service"
                         if subif.port_channel.raw_eos_cli:
                             interface.eos_cli = subif.port_channel.raw_eos_cli
 
@@ -237,9 +241,9 @@ class PortChannelInterfacesMixin(Protocol):
                 else:
                     port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
                         name=interface_name,
-                        peer_type="point_to_point_service",
                         shutdown=False,
                     )
+                    port_channel_interface.metadata.peer_type = "point_to_point_service"
                     port_channel_interface.switchport.enabled = False
 
                     if (short_esi := endpoint.port_channel.short_esi) is not None and len(short_esi.split(":")) == 3:
