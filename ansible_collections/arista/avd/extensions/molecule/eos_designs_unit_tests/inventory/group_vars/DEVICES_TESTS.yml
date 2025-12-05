@@ -20,6 +20,18 @@ devices:
     uplink_interfaces: [Ethernet7, Ethernet8]
     uplink_switch_interfaces: [Ethernet8, Ethernet8]
 
+  - name: devices-leaf2a
+    id: 3
+    bgp_as: 65101
+    profile: l3leaf
+    mlag_group: devices-leaf2
+
+  - name: devices-leaf2b
+    id: 4
+    bgp_as: 65101
+    profile: l3leaf
+    mlag_group: devices-leaf2
+
 device_profiles:
   - name: L3LEAF_PARENT_PROFILE
     mlag_group: L3LEAF1
@@ -53,3 +65,38 @@ device_profiles:
 
   - name: L3LEAF1B
     parent_profile: L3LEAF_PARENT_PROFILE
+
+  - name: l3leaf
+    type: l3leaf
+    loopback_ipv4_pool: 10.255.0.0/27
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 10.255.1.0/27
+    mlag_peer_ipv4_pool: 10.255.1.64/27
+    mlag_peer_l3_ipv4_pool: 10.255.1.96/27
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+
+# use_cv_topology: true is set in hostvars for these two switches only.
+cv_topology_levels:
+  - type: super-spine
+    level: 1
+  - type: l3spine
+    level: 2
+  - type: l3leaf
+    level: 3
+  - type: l2leaf
+    level: 4
+cv_topology:
+  - hostname: devices-leaf2a
+    platform: vEOS-LAB
+    interfaces:
+      - name: Ethernet5
+        neighbor: devices-leaf2b
+        neighbor_interface: Ethernet5
+  - hostname: devices-leaf2b
+    platform: vEOS-LAB
+    interfaces:
+      - name: Ethernet5
+        neighbor: devices-leaf2a
+        neighbor_interface: Ethernet5
