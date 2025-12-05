@@ -6,9 +6,13 @@
 
 # PyAVD
 
-PyAVD is a python package providing some of the features from the `arista.avd` Ansible collection without requiring Ansible. PyAVD leverages the same logic as the Ansible collection, so the generated outputs should be exactly the same based on the same inputs.
+PyAVD is a Python package that serves as the foundation for the Arista AVD project and the `arista.avd` Ansible collection. PyAVD is maintained alongside the `arista.avd` Ansible collection and they are co-versioned.
 
-PyAVD does not provide any inventory or variable management, so PyAVD cannot replace a full Ansible based solution by itself. PyAVD could serve as an element in larger framework.
+PyAVD does not provide inventory or variable management, however it can serve as a component in a larger framework that provides this capability.
+
+!!! note
+
+    [AVD support](../support/support_overview.md) customers must leverage the Arista AVD project via the `arista.avd` Ansible collection.
 
 Supported features:
 
@@ -43,16 +47,6 @@ Feedback is very welcome. Please use [GitHub discussions](https://github.com/ari
     - For `get_avd_facts()`, `fabric_name` is not used or verified and may differ between devices.
       All devices in the given inputs will be treated as one fabric.
     - `hostname` *must* be set in "structured_config" for each device. `hostname` *will* be set correctly when using `get_structured_config()`.
-
-## Roadmap
-
-!!! note
-    Subject to change. No commitments implied.
-
-- Add examples
-- Add more tests (current coverage is 85%)
-- Add CloudVision tag integrations
-- Explore support for custom Jinja2 templates.
 
 ## Installation
 
