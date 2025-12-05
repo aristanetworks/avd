@@ -9,7 +9,7 @@ anta_devices: "{{ ansible_play_hosts }}"
 # Enable AVD catalogs generation.
 avd_catalogs_enabled: true
 
-# Enable USER catalogs execution.
+# Disable USER catalogs execution.
 user_catalogs_enabled: false
 
 # Generate extra fabric-wide validation tests (e.g., reachability and routing tests).
