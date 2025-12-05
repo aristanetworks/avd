@@ -12558,7 +12558,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         l2_mru: int | None
         """"l2_mru" should only be defined for platforms supporting the "l2 mru" CLI."""
         loop_protection: bool | None
-        """Enable loop protection."""
+        """Enable/disable loop protection."""
         arp_gratuitous_accept: bool | None
         """Accept gratuitous ARP."""
         l2_protocol: L2Protocol
@@ -12890,7 +12890,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     mtu: mtu
                     l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
                     l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
-                    loop_protection: Enable loop protection.
+                    loop_protection: Enable/disable loop protection.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     l2_protocol: Subclass of AvdModel.
                     mac_timestamp:

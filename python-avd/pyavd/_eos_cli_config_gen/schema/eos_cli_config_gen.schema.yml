@@ -2562,7 +2562,7 @@ keys:
             '
         loop_protection:
           type: bool
-          description: Enable loop protection.
+          description: Enable/disable loop protection.
         arp_gratuitous_accept:
           type: bool
           description: Accept gratuitous ARP.
