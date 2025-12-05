@@ -16461,6 +16461,7 @@ class EosDesigns(EosDesignsRootModel):
             Default value: `"use_default_mgmt_method_vrf"`
             """
             ip_address: str
+            """IPv4 or IPv6 address for DNS server."""
             priority: int | None
             """Priority value (lower is first)."""
 
@@ -16492,7 +16493,7 @@ class EosDesigns(EosDesignsRootModel):
                            above depending on the value of `default_mgmt_method`.
                            - Any other string will be used directly as
                            the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
-                        ip_address: ip_address
+                        ip_address: IPv4 or IPv6 address for DNS server.
                         priority: Priority value (lower is first).
 
                     """
