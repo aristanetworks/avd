@@ -407,6 +407,10 @@
           {
             "peer_address": "10.255.128.12",
             "vrf": "default"
+          },
+          {
+            "interface": "Vlan4093",
+            "vrf": "default"
           }
         ]
       }

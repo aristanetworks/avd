@@ -502,7 +502,7 @@ ethernet_interfaces:
     peer: testing
     peer_interface: Nic1
     peer_type: Testing_Type_1
-    peer_key: Testing_1
+    peer_key: testing_1
   switchport:
     enabled: true
 hostname: connected_endpoints
