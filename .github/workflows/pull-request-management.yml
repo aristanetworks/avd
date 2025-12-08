@@ -136,7 +136,7 @@ jobs:
           python-version: "3.12"
       - name: Install pyavd and Ansible requirements
         run: |
-          pip install --group dev setuptools>=77.0 --upgrade
+          pip install --group dev --upgrade
       - name: PyRight static type checker
         # Specific SHA as allowed by github org admins
         uses: jakebailey/pyright-action@6cabc0f01c4994be48fd45cd9dbacdd6e1ee6e5e
