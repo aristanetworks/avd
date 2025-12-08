@@ -11,7 +11,7 @@ import pytest
 from pyavd.j2filters import secure_hash
 
 INVALID_PASSWORDS = [
-    pytest.param(True, "sha512_password", TypeError, "Password MUST be of type 'str' but is of type <class 'bool'>"),
+    pytest.param(True, "sha512_password", ValueError, "SHA-512 password hashing failed - check the input parameters of arista.avd.secure_hash"),
 ]
 
 VALID_PASSWORDS = [
@@ -28,13 +28,13 @@ INVALID_HASH_HASH_TYPES = [
         "pass",
         "",
         ValueError,
-        "The hash_type key does not support the value ''. The value used with hash_type must be in \\['sha512_password'\\]",
+        "The hash_type key does not support the value ''. The value used with hash_type must be one of \\['sha512_password'\\]",
     ),
     pytest.param(
         "pass",
         "user_p",
         ValueError,
-        "The hash_type key does not support the value 'user_p'. The value used with hash_type must be in \\['sha512_password'\\]",
+        "The hash_type key does not support the value 'user_p'. The value used with hash_type must be one of \\['sha512_password'\\]",
     ),
 ]
 

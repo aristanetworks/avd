@@ -24,10 +24,6 @@ def sha512_hash(clear_password: str, salt: str) -> str:
     # Importing inside the function to avoid neeedind pyavd-utils in the build dependencies.
     from pyavd_utils.passwords import sha512_crypt  # noqa: PLC0415
 
-    if not isinstance(clear_password, str):
-        msg = f"Password MUST be of type 'str' but is of type {type(clear_password)}"
-        raise TypeError(msg)
-
     try:
         # setting the rounds parameter to 5000 to omit rounds from the hash string, similar to EOS implementation
         return sha512_crypt(clear_password, salt)
@@ -52,7 +48,7 @@ def secure_hash(user_input: str, salt: str, hash_type: str = "sha512_password") 
         ValueError: if the hash_type value provided by the user is not supported.
     """
     if hash_type not in HASH_INPUT_TYPE:
-        msg = f"The hash_type key does not support the value '{hash_type}'. The value used with hash_type must be in {HASH_INPUT_TYPE}"
+        msg = f"The hash_type key does not support the value '{hash_type}'. The value used with hash_type must be one of {HASH_INPUT_TYPE}"
         raise ValueError(msg)
 
     return sha512_hash(user_input, salt)
