@@ -70,6 +70,26 @@ ethernet_interfaces:
     peer: flow-tracking-tests-l2-leaf2
     peer_interface: Ethernet1
     peer_type: l2leaf
+- name: Ethernet33
+  description: L2_flow-tracking-tests-l2-leaf3_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 33
+    mode: active
+  metadata:
+    peer: flow-tracking-tests-l2-leaf3
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+- name: Ethernet34
+  description: L2_flow-tracking-tests-l2-leaf4_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 34
+    mode: active
+  metadata:
+    peer: flow-tracking-tests-l2-leaf4
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet14
   description: SERVER_port-channel-interface-true_PCI1
   shutdown: false
@@ -187,6 +207,28 @@ port_channel_interfaces:
   description: L2_flow-tracking-tests-l2-leaf2_Port-Channel1
   shutdown: false
   mlag: 32
+  flow_tracker:
+    hardware: FLOW-TRACKER
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
+- name: Port-Channel33
+  description: L2_flow-tracking-tests-l2-leaf3_Port-Channel1
+  shutdown: false
+  mlag: 33
+  flow_tracker:
+    hardware: FLOW-TRACKER
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
+- name: Port-Channel34
+  description: L2_flow-tracking-tests-l2-leaf4_Port-Channel1
+  shutdown: false
+  mlag: 34
   flow_tracker:
     hardware: FLOW-TRACKER
   switchport:
