@@ -23,7 +23,7 @@ dev = [
     "pylint>=3.2.6",
     "pre-commit>=3.2.0",
     "pre-commit-hooks>=3.3.0",
-    "ruff==0.14.7",
+    "ruff==0.14.8",
     "tox>4",
     "twine>=6.2.0",
     "yamllint>=1.37.1",
