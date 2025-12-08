@@ -105,3 +105,6 @@ ip_access_lists:
         destination: any
   - name: ACL_WITHOUT_ENTRIES
     counters_per_entry: false
+  # Test for sort with ignore_case: false
+  - name: acl_aaa_short
+    counters_per_entry: false
