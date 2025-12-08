@@ -1,0 +1,6 @@
+---
+### Ethernet Interfaces ###
+ethernet_interfaces:
+  - name: Ethernet1
+    description: Loop protection disable
+    loop_protection: false

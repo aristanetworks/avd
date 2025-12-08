@@ -84,7 +84,7 @@
   - [PBR Policy Maps](#pbr-policy-maps)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
-- [Monitor Loop Protestion Options](#monitor-loop-protestion-options)
+- [Monitor Loop Protection](#monitor-loop-protection)
   - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
@@ -947,7 +947,9 @@ interface Dps1
 
 ```eos
 !
-interface Ethernet 4
+interface Ethernet1
+   description Loop protection disable
+   no loop-protection
 ```
 
 ### VXLAN Interface
@@ -1306,7 +1308,7 @@ router bfd
    session stats snapshot interval dangerous 8
 ```
 
-## Monitor Loop Protestion Options
+## Monitor Loop Protection
 
 | Options | Value |
 | ------- | ----- |
@@ -1316,7 +1318,9 @@ router bfd
 | rate-limit | 100 |
 | transmit-interval | 10 |
 
-Disabled Interfaces:
+| Disabled Interfaces |
+| ------------------- |
+| Ethernet1 |
 
 ### Monitor Loop Protection Configuration
 
@@ -1324,10 +1328,10 @@ Disabled Interfaces:
 !
 monitor loop-protection
    shutdown
-   disabled-time 100
    protect vlan 1000-1100
    rate-limit 100
    transmit-interval 10
+   disabled-time 100
 ```
 
 ## MPLS

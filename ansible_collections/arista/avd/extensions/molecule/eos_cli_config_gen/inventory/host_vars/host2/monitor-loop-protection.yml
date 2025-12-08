@@ -5,7 +5,3 @@ monitor_loop_protection:
   protect_vlan: 1000-1100
   rate_limit: 100
   transmit_interval: 10
-
-ethernet_interfaces:
-  - name: Ethernet 4
-    loop_protection: true
