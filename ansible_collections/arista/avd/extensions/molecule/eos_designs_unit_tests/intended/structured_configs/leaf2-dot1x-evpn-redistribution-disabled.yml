@@ -22,7 +22,7 @@ dot1x:
     service_type: true
 enable_password:
   disabled: true
-hostname: LEAF2_DOT1X_EVPN_REDISTRIBUTION_DISABLED
+hostname: leaf2-dot1x-evpn-redistribution-disabled
 ip_igmp_snooping:
   globally_enabled: true
 ip_radius_source_interfaces:
@@ -187,7 +187,7 @@ vrfs:
     tenant: Tenant_A
 vxlan_interface:
   vxlan1:
-    description: LEAF2_DOT1X_EVPN_REDISTRIBUTION_DISABLED_VTEP
+    description: leaf2-dot1x-evpn-redistribution-disabled_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

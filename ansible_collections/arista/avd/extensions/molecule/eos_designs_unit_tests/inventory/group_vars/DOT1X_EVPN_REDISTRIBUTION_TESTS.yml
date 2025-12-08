@@ -9,16 +9,16 @@ l3leaf:
     vtep_loopback_ipv4_pool: 10.1.1.0/24
     bgp_as: 65000
   nodes:
-    - name: LEAF1_DOT1X_EVPN_REDISTRIBUTION_ENABLED
+    - name: leaf1-dot1x-evpn-redistribution-enabled
       id: 11
       mgmt_ip: 172.20.20.111/24
-    - name: LEAF2_DOT1X_EVPN_REDISTRIBUTION_DISABLED
+    - name: leaf2-dot1x-evpn-redistribution-disabled
       id: 12
       mgmt_ip: 172.20.20.112/24
-    - name: LEAF1_DOT1X_EVPN_REDISTRIBUTION_ENABLED_VLAN_AWARE_BUNDLES
+    - name: leaf1-dot1x-evpn-redistribution-enabled-vlan-aware-bundles
       id: 13
       mgmt_ip: 172.20.20.113/24
-    - name: LEAF2_DOT1X_EVPN_REDISTRIBUTION_DISABLED_VLAN_AWARE_BUNDLES
+    - name: leaf2-dot1x-evpn-redistribution-disabled-vlan-aware-bundles
       id: 14
       mgmt_ip: 172.20.20.114/24
 
