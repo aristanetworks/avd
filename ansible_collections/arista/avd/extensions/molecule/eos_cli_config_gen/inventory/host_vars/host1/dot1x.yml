@@ -68,6 +68,13 @@ dot1x:
         passphrase: 1048080A01
       - name: Profile3
         ssl_profile: PF2
+      # Test for sort with ignore_case: false
+      - name: aa_profile4
+        eap_method: tls
+        identity: user_id1
+        passphrase_type: 0
+        passphrase: 1048080A02
+        ssl_profile: PF1
     logging: true
     disconnect_cached_results_timeout: 79
   vlan_assignment_groups:
@@ -76,6 +83,9 @@ dot1x:
     - name: Assignment_2
       members: 55
     - name: Assignment_1
+      members: 400-407
+    # Test for sort with ignore_case: false
+    - name: aa_Assignment_1
       members: 400-407
   eapol:
     vlan_change_logoff_disabled: true

@@ -17988,7 +17988,7 @@ class EosDesigns(EosDesignsRootModel):
                     "name": {"type": str},
                     "collectors": {"type": Collectors},
                     "format": {"type": Format},
-                    "local_interface": {"type": str},
+                    "local_interface": {"type": str, "default": "use_default_mgmt_method_interface"},
                     "template_interval": {"type": int},
                 }
                 name: str
@@ -17997,8 +17997,22 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
                 format: Format
                 """Subclass of AvdModel."""
-                local_interface: str | None
-                """Local Source Interface"""
+                local_interface: str
+                """
+                Local Source Interface.
+                The value will be interpreted according to these rules:
+                  -
+                `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.
+                  -
+                `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the local interface.
+                  -
+                `use_default_mgmt_method_interface` will configure `mgmt_interface` or `inband_mgmt_interface` as
+                the local interface depending on the value of `default_mgmt_method`.
+                  - Any other string will be
+                used directly as the local interface.
+
+                Default value: `"use_default_mgmt_method_interface"`
+                """
                 template_interval: int | None
                 """Template interval in milliseconds"""
 
@@ -18010,7 +18024,7 @@ class EosDesigns(EosDesignsRootModel):
                         name: str | UndefinedType = Undefined,
                         collectors: Collectors | UndefinedType = Undefined,
                         format: Format | UndefinedType = Undefined,
-                        local_interface: str | None | UndefinedType = Undefined,
+                        local_interface: str | UndefinedType = Undefined,
                         template_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18023,7 +18037,18 @@ class EosDesigns(EosDesignsRootModel):
                             name: Exporter Name
                             collectors: Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`).
                             format: Subclass of AvdModel.
-                            local_interface: Local Source Interface
+                            local_interface:
+                               Local Source Interface.
+                               The value will be interpreted according to these rules:
+                                 -
+                               `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.
+                                 -
+                               `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the local interface.
+                                 -
+                               `use_default_mgmt_method_interface` will configure `mgmt_interface` or `inband_mgmt_interface` as
+                               the local interface depending on the value of `default_mgmt_method`.
+                                 - Any other string will be
+                               used directly as the local interface.
                             template_interval: Template interval in milliseconds
 
                         """
@@ -57752,6 +57777,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    PasswordType: TypeAlias = Literal["7", "8a"]
+
                     class DefaultOriginate(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -58025,6 +58052,7 @@ class EosDesigns(EosDesignsRootModel):
                         "ebgp_multihop": {"type": int},
                         "next_hop_peer": {"type": bool},
                         "next_hop_self": {"type": bool},
+                        "password_type": {"type": str, "default": "7"},
                         "passive": {"type": bool},
                         "default_originate": {"type": DefaultOriginate},
                         "send_community": {"type": str},
@@ -58121,6 +58149,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Time-to-live in range of hops."""
                     next_hop_peer: bool | None
                     next_hop_self: bool | None
+                    password_type: PasswordType
+                    """Default value: `"7"`"""
                     passive: bool | None
                     default_originate: DefaultOriginate
                     """Subclass of AvdModel."""
@@ -58191,6 +58221,7 @@ class EosDesigns(EosDesignsRootModel):
                             ebgp_multihop: int | None | UndefinedType = Undefined,
                             next_hop_peer: bool | None | UndefinedType = Undefined,
                             next_hop_self: bool | None | UndefinedType = Undefined,
+                            password_type: PasswordType | UndefinedType = Undefined,
                             passive: bool | None | UndefinedType = Undefined,
                             default_originate: DefaultOriginate | UndefinedType = Undefined,
                             send_community: str | None | UndefinedType = Undefined,
@@ -58270,6 +58301,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ebgp_multihop: Time-to-live in range of hops.
                                 next_hop_peer: next_hop_peer
                                 next_hop_self: next_hop_self
+                                password_type: password_type
                                 passive: passive
                                 default_originate: Subclass of AvdModel.
                                 send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
@@ -63721,6 +63753,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        PasswordType: TypeAlias = Literal["7", "8a"]
+
                         class DefaultOriginate(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -63998,6 +64032,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ebgp_multihop": {"type": int},
                             "next_hop_peer": {"type": bool},
                             "next_hop_self": {"type": bool},
+                            "password_type": {"type": str, "default": "7"},
                             "passive": {"type": bool},
                             "default_originate": {"type": DefaultOriginate},
                             "send_community": {"type": str},
@@ -64094,6 +64129,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Time-to-live in range of hops."""
                         next_hop_peer: bool | None
                         next_hop_self: bool | None
+                        password_type: PasswordType
+                        """Default value: `"7"`"""
                         passive: bool | None
                         default_originate: DefaultOriginate
                         """Subclass of AvdModel."""
@@ -64164,6 +64201,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ebgp_multihop: int | None | UndefinedType = Undefined,
                                 next_hop_peer: bool | None | UndefinedType = Undefined,
                                 next_hop_self: bool | None | UndefinedType = Undefined,
+                                password_type: PasswordType | UndefinedType = Undefined,
                                 passive: bool | None | UndefinedType = Undefined,
                                 default_originate: DefaultOriginate | UndefinedType = Undefined,
                                 send_community: str | None | UndefinedType = Undefined,
@@ -64243,6 +64281,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ebgp_multihop: Time-to-live in range of hops.
                                     next_hop_peer: next_hop_peer
                                     next_hop_self: next_hop_self
+                                    password_type: password_type
                                     passive: passive
                                     default_originate: Subclass of AvdModel.
                                     send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.

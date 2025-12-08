@@ -120,13 +120,15 @@ changelog:
       labels:
         - 'rn: Fix(eos_cli_config_gen|eos_designs)'
         - 'rn: Fix(eos_designs|eos_cli_config_gen)'
+    - title: Fixed issues in anta_runner
+      labels:
+        - 'rn: Fix(anta_runner)'
     - title: Other Fixed issues
       labels:
         - 'rn: Fix(build_output_folders)'
         - 'rn: Fix(cv_deploy)'
         - 'rn: Fix(eos_config_deploy_eapi)'
         - 'rn: Fix(eos_snapshot)'
-        - 'rn: Fix(anta_runner)'
         - 'rn: Fix(plugins)'
         - 'rn: Fix(requirements)'
         - 'rn: Fix(containers)'
@@ -145,6 +147,7 @@ changelog:
         - 'rn: Doc(containers)'
         - 'rn: Doc(eos_designs|eos_cli_config_gen)'
         - 'rn: Doc(eos_cli_config_gen|eos_designs)'
+        - 'rn: Doc(pyavd)'
         - 'rn: Doc'
     - title: New features and enhancements in eos_cli_config_gen
       labels:
@@ -156,13 +159,15 @@ changelog:
       labels:
         - 'rn: Feat(eos_cli_config_gen|eos_designs)'
         - 'rn: Feat(eos_designs|eos_cli_config_gen)'
+    - title: New features and enhancements in anta_runner
+      labels:
+        - 'rn: Feat(anta_runner)'
     - title: Other new features and enhancements
       labels:
         - 'rn: Feat(build_output_folders)'
         - 'rn: Feat(cv_deploy)'
         - 'rn: Feat(eos_config_deploy_eapi)'
         - 'rn: Feat(eos_snapshot)'
-        - 'rn: Feat(anta_runner)'
         - 'rn: Feat(plugins)'
         - 'rn: Feat(requirements)'
         - 'rn: Feat(containers)'
