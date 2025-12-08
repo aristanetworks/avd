@@ -2,39 +2,11 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
-import re
 
 HASH_INPUT_TYPE = ["sha512_password"]
 
 
-def _validate_sha512_salt(salt: str) -> str:
-    """
-    Validate a given salt value.
-
-    Args:
-        salt: The salt value provided by the user.
-
-    Raises:
-        TypeError: If the salt is not of type 'str'.
-        ValueError: If the salt is greater than 16 characters.
-        ValueError: If the salt contains a character not matching ./0-9A-Za-z
-    """
-    if not isinstance(salt, str):
-        msg = f"Salt value MUST be of type 'str' but is of type {type(salt)}"
-        raise TypeError(msg)
-
-    if len(salt) > 16:
-        msg = f"Salt value length MUST not be greater than 16 characters but is {len(salt)}"
-        raise ValueError(msg)
-
-    if not re.fullmatch(r"[\.\/0-9A-Za-z]{1,16}", salt):
-        msg = "Salt value MUST only contain the characters ./0-9A-Za-z"
-        raise ValueError(msg)
-
-    return salt
-
-
-def _user_password_hash(clear_password: str, salt: str) -> str:
+def sha512_hash(clear_password: str, salt: str) -> str:
     """
     Generate a SHA-512 password hash from a cleartext password for a local user.
 
@@ -55,8 +27,6 @@ def _user_password_hash(clear_password: str, salt: str) -> str:
     if not isinstance(clear_password, str):
         msg = f"Password MUST be of type 'str' but is of type {type(clear_password)}"
         raise TypeError(msg)
-
-    salt = _validate_sha512_salt(salt)
 
     try:
         # setting the rounds parameter to 5000 to omit rounds from the hash string, similar to EOS implementation
@@ -85,4 +55,4 @@ def secure_hash(user_input: str, salt: str, hash_type: str = "sha512_password") 
         msg = f"The hash_type key does not support the value '{hash_type}'. The value used with hash_type must be in {HASH_INPUT_TYPE}"
         raise ValueError(msg)
 
-    return _user_password_hash(user_input, salt)
+    return sha512_hash(user_input, salt)
