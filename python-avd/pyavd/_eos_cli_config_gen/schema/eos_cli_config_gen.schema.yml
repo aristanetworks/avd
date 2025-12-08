@@ -1785,6 +1785,7 @@ keys:
                 type: str
         ipv4_vendor_options:
           type: list
+          min_length: 1
           primary_key: vendor_id
           items:
             type: dict
@@ -1837,12 +1838,15 @@ keys:
                         type: str
         ipv4_subnets:
           type: list
+          min_length: 1
           $ref: eos_cli_config_gen#/$defs/subnets
           items:
             type: dict
             keys:
               subnet:
                 description: IPv4 subnet.
+                type: str
+              default_gateway:
                 type: str
               reservations:
                 type: list
@@ -1871,6 +1875,7 @@ keys:
                       type: str
         ipv6_subnets:
           type: list
+          min_length: 1
           $ref: eos_cli_config_gen#/$defs/subnets
           items:
             type: dict
@@ -2366,12 +2371,27 @@ keys:
             type: list
             items:
               type: str
+              description: 'Specifies the events that should trigger this action.
+
+                The list of supported causes depends on both the EOS version and the
+                hardware platform.'
               valid_values:
               - acl
               - arp-inspection
               - dot1x
+              - dot1x-coa
+              - dot1x-phone-classification
+              - dot1x-session-replace
+              - error-correction-encoding
+              - hardware-speed-group
+              - interface-speed
+              - internal-error
               - link-change
+              - port-breakout
+              - storm-control
+              - switchcard-unreachable
               - tapagg
+              - transceiver-adapter
               - xcvr-misconfigured
               - xcvr-overheat
               - xcvr-power-unsupported
@@ -2386,19 +2406,37 @@ keys:
               keys:
                 name:
                   type: str
+                  description: 'Specifies the type of event that can trigger recovery
+                    actions.
+
+                    The list of supported causes depends on both the EOS version and
+                    the hardware platform.'
                   valid_values:
+                  - acl
                   - arp-inspection
                   - bpduguard
                   - dot1x
+                  - dot1x-coa
+                  - dot1x-phone-classification
+                  - dot1x-session-replace
+                  - error-correction-encoding
+                  - hardware-speed-group
                   - hitless-reload-down
+                  - interface-speed
+                  - internal-error
                   - lacp-rate-limit
                   - link-flap
                   - no-internal-vlan
+                  - port-breakout
                   - portchannelguard
                   - portsec
                   - speed-misconfigured
+                  - storm-control
+                  - stuck-queue
+                  - switchcard-unreachable
                   - tap-port-init
                   - tapagg
+                  - transceiver-adapter
                   - uplink-failure-detection
                   - xcvr-misconfigured
                   - xcvr-overheat
@@ -3871,6 +3909,24 @@ keys:
                     max: 8
                     convert_types:
                     - str
+            power:
+              type: dict
+              keys:
+                ignore:
+                  type: bool
+                  description: Ignore advertised transceiver power consumption.
+            transmitter:
+              type: dict
+              keys:
+                signal_power:
+                  type: str
+                  description: Optical signal power between < -30 and 10 > (dBm).
+                  convert_types:
+                  - int
+                  - float
+                disabled:
+                  type: bool
+                  description: Disable the optical transmitter.
         ip_proxy_arp:
           type: bool
         traffic_policy:
@@ -25185,8 +25241,6 @@ $defs:
           type: str
           convert_types:
           - int
-        default_gateway:
-          type: str
         dns_servers:
           type: list
           items:

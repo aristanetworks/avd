@@ -64,8 +64,8 @@ See [using Ansible collections](https://docs.ansible.com/ansible/devel/collectio
 The AVD collection requires the installation of additional Python packages. To ensure you install the correct versions, run the following commands:
 
 ```shell
-export ARISTA_AVD_DIR=$(ansible-galaxy collection list arista.avd --format yaml | head -1 | cut -d: -f1)
-pip3 install -r ${ARISTA_AVD_DIR}/arista/avd/requirements.txt
+export ARISTA_AVD_VERSION=$(ansible-galaxy collection list arista.avd --format yaml | tail -1 | cut -d: -f2 | tr '-' '.')
+pip3 install "pyavd[ansible-collection]==$ARISTA_AVD_VERSION"
 ```
 
 ### Enable Jinja2 Extensions

@@ -1,4 +1,54 @@
 [dependency-groups]
+# pyavd minimal requirements when running from source
+# anta is set to latest version to make sure developers run with the latest version
+# when generating molecule artifacts.
+dev = [
+    "anta==1.6.0",
+    "cryptography>=43.0.0",
+    "deepmerge>=1.1.0",
+    "netaddr>=0.7.19",
+    "PyYAML>=6.0.0",
+    "python-socks[asyncio]>=2.7.2",
+    # dev requirements"
+    {include-group = "pytest"},
+    {include-group = "molecule"},
+    "ansible-doc-extractor>=0.1.10",
+    "ansible-lint>=25.1.3",
+    "aristaproto[compiler]==0.1.4",
+    "bump-my-version>=1.2.4",
+    "codespell>=2.2.6",
+    "docker>=7.1.0",
+    "identify>=1.4.20",
+    "jsonschema-rs>=0.24",
+    "pylint>=3.2.6",
+    "pre-commit>=3.2.0",
+    "pre-commit-hooks>=3.3.0",
+    "ruff==0.14.8",
+    "tox>4",
+    "twine>=6.2.0",
+    "yamllint>=1.37.1",
+]
+coverage = [
+    "coverage[toml]==7.12.0",
+]
+doc = [
+    "mkdocs",
+    "mkdocs-material<10",
+    "mkdocs-material-extensions",
+    "mkdocs-same-dir",
+    "pymdown-extensions",
+    "mdx_truly_sane_lists",
+    "mike==1.1.2",
+    "mkdocs-git-revision-date-localized-plugin",
+    "mkdocs-git-revision-date-plugin",
+    "mkdocs-exclude",
+    "mkdocs-include-dir-to-nav",
+    "mkdocstrings[python]",
+]
+molecule = [
+    "molecule>=6.0",
+    "molecule-plugins[docker]>=23.4.0",
+]
 pytest = [
     "ansible-core>=2.16.0,<2.20.0",
     "anta>=1.6.0",
@@ -6,13 +56,6 @@ pytest = [
     "pytest-asyncio>=1.2.0",
     "pydantic>=2.3.0",
     "referencing>=0.35.0",
-]
-coverage = [
-    "coverage[toml]==7.12.0",
-]
-molecule = [
-    "molecule>=6.0",
-    "molecule-plugins[docker]>=23.4.0",
 ]
 
 [tool.ruff]
@@ -201,7 +244,7 @@ exclude_also = [
 
 [tool.bumpversion]
 
-current_version = "6.0.0-dev3"
+current_version = "6.0.0-dev4"
 
 allow_dirty = true
 commit = false
@@ -232,11 +275,6 @@ optional_value = "final"
 filename = "ansible_collections/arista/avd/galaxy.yml"
 search = "version: {current_version}"
 replace = "version: {new_version}"
-
-[[tool.bumpversion.files]]
-filename = "Cargo.toml"
-search = 'package.version = "{current_version}"'
-replace = 'package.version = "{new_version}"'
 
 ### Bumping version using PEP440 style like x.y.z.dev1
 
