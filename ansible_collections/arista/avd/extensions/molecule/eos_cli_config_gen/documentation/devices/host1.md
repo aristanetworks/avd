@@ -2042,10 +2042,10 @@ dhcp relay
 
 ##### IPv6 Subnets
 
-| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | ---- | ----------- | --------------- | ---------- | ------ |
-| 2a00:2::/64 | - | - | - | - | - |
-| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | - |
+| Subnet | Name | DNS Servers | Lease Time | Ranges |
+| ------ | ---- | ----------- | ---------- | ------ |
+| 2a00:2::/64 | - | - | - | - |
+| 2001:db8:abcd:1234:c000::/66 | - | - | - | - |
 
 ###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
 
@@ -2076,9 +2076,9 @@ dhcp relay
 
 ##### IPv6 Subnets
 
-| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | ---- | ----------- | --------------- | ---------- | ------ |
-| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | - |
+| Subnet | Name | DNS Servers | Lease Time | Ranges |
+| ------ | ---- | ----------- | ---------- | ------ |
+| 2001:db8:abcd:1234:c000::/66 | - | - | - | - |
 
 ###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
 
