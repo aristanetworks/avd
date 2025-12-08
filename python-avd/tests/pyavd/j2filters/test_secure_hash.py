@@ -11,7 +11,7 @@ import pytest
 from pyavd.j2filters import secure_hash
 
 INVALID_PASSWORDS = [
-    pytest.param(True, "sha512_password", ValueError, "SHA-512 password hashing failed - check the input parameters of arista.avd.secure_hash"),
+    pytest.param(True, "sha512_password", TypeError, "SHA-512 password hashing failed - check the input parameters of arista.avd.secure_hash"),
 ]
 
 VALID_PASSWORDS = [
