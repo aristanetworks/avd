@@ -1596,6 +1596,18 @@ Management interface is modified for specific platforms like modular platforms w
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/platform-settings.md
 --8<--
 
+## Platform skus
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/platform-skus.md
+--8<--
+
+## Platform families
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/platform-families.md
+--8<--
+
 ## PTP settings
 
 See the [Configuring PTP](how-to/ptp.md) how-to for details.
