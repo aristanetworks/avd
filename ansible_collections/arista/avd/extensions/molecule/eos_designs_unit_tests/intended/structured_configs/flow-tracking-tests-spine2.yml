@@ -167,7 +167,7 @@ flow_tracking:
       - name: ayush_exporter
         collectors:
         - host: 127.0.0.1
-        local_interface: Loopback0
+        local_interface: Management1
         template_interval: 40000
     - name: FLOW-TRACKER-2
       record_export:
