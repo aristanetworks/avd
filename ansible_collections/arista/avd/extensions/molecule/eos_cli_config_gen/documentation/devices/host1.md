@@ -2042,10 +2042,10 @@ dhcp relay
 
 ##### IPv6 Subnets
 
-| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | ---- | ----------- | --------------- | ---------- | ------ |
-| 2a00:2::/64 | - | - | - | - | - |
-| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | - |
+| Subnet | Name | DNS Servers | Lease Time | Ranges |
+| ------ | ---- | ----------- | ---------- | ------ |
+| 2a00:2::/64 | - | - | - | - |
+| 2001:db8:abcd:1234:c000::/66 | - | - | - | - |
 
 ###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
 
@@ -2076,9 +2076,9 @@ dhcp relay
 
 ##### IPv6 Subnets
 
-| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | ---- | ----------- | --------------- | ---------- | ------ |
-| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | - |
+| Subnet | Name | DNS Servers | Lease Time | Ranges |
+| ------ | ---- | ----------- | ---------- | ------ |
+| 2001:db8:abcd:1234:c000::/66 | - | - | - | - |
 
 ###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
 
@@ -4495,6 +4495,8 @@ interface Dps1
 | Ethernet82 | Switchport_tap_tool | tap-tool | - | - | - | - |
 | Ethernet83 | Test_tap_tool | tap-tool | - | - | - | - |
 | Ethernet84 | - | tap | - | - | - | - |
+| Ethernet86 | All_Transceiver_Commands | - | - | - | - | - |
+| Ethernet87 | Transmitter_SP_20 | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -4564,12 +4566,14 @@ interface Dps1
 
 ##### Transceiver Settings
 
-| Interface | Transceiver Frequency | Media Override | Application Override |
-| --------- | --------------------- | -------------- | -------------------- |
-| Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 |
-| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 |
-| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd |
-| Ethernet73 | - | 100gbase-ar4 | 5 |
+| Interface | Transceiver Frequency | Media Override | Application Override | Power Ignore | Transmitter Signal-Power | Transmitter Disabled |
+| --------- | --------------------- | -------------- | -------------------- | ------------ | ------------------------ | -------------------- |
+| Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 | - | - | - |
+| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 | - | - | - |
+| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd | - | - | - |
+| Ethernet73 | - | 100gbase-ar4 | 5 | - | - | - |
+| Ethernet86 | 190050.000 ghz | 100gbase-ar4 | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 | True | -10.68 | True |
+| Ethernet87 | - | - | - | - | -20.00 | - |
 
 ##### Link Tracking Groups
 
@@ -5880,6 +5884,25 @@ interface Ethernet84
 interface Ethernet85
    description DOT1X Testing - pae mode supplicant
    dot1x pae supplicant test_profile
+!
+interface Ethernet86
+   description All_Transceiver_Commands
+   no shutdown
+   switchport
+   transceiver media override 100gbase-ar4
+   transceiver power ignore
+   transceiver application override 5
+   transceiver application override 5 lanes start 1 end 1
+   transceiver application override 5 lanes start 2 end 3
+   transceiver frequency 190050.000 ghz
+   transceiver transmitter signal-power -10.68
+   transceiver transmitter disabled
+!
+interface Ethernet87
+   description Transmitter_SP_20
+   no shutdown
+   switchport
+   transceiver transmitter signal-power -20.00
 ```
 
 ### Port-Channel Interfaces
@@ -13082,19 +13105,31 @@ Errdisable recovery timer interval: 300 seconds
 
 | Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
 | ----- | ----------------- | ---------------- | --------------------------- |
-| acl | True | - | - |
+| acl | True | True | - |
 | arp-inspection | True | True | - |
 | bpduguard | - | True | 400 |
 | dot1x | True | True | 500 |
+| dot1x-coa | True | True | - |
+| dot1x-phone-classification | True | True | - |
+| dot1x-session-replace | True | True | - |
+| error-correction-encoding | True | True | - |
+| hardware-speed-group | True | True | - |
 | hitless-reload-down | - | True | - |
+| interface-speed | True | True | - |
+| internal-error | True | True | - |
 | lacp-rate-limit | - | True | - |
 | link-change | True | - | - |
 | link-flap | - | True | - |
 | no-internal-vlan | - | True | - |
+| port-breakout | True | True | - |
 | portchannelguard | - | True | - |
 | portsec | - | True | - |
 | speed-misconfigured | - | True | - |
+| storm-control | True | True | - |
+| stuck-queue | - | True | - |
+| switchcard-unreachable | True | True | - |
 | tapagg | True | True | - |
+| transceiver-adapter | True | True | - |
 | uplink-failure-detection | - | True | - |
 | xcvr-misconfigured | True | True | - |
 | xcvr-overheat | True | True | - |
@@ -13106,20 +13141,44 @@ Errdisable recovery timer interval: 300 seconds
 errdisable detect cause acl
 errdisable detect cause arp-inspection
 errdisable detect cause dot1x
+errdisable detect cause dot1x-coa
+errdisable detect cause dot1x-phone-classification
+errdisable detect cause dot1x-session-replace
+errdisable detect cause error-correction-encoding
+errdisable detect cause hardware-speed-group
+errdisable detect cause interface-speed
+errdisable detect cause internal-error
 errdisable detect cause link-change
+errdisable detect cause port-breakout
+errdisable detect cause storm-control
+errdisable detect cause switchcard-unreachable
 errdisable detect cause tapagg
+errdisable detect cause transceiver-adapter
 errdisable detect cause xcvr-misconfigured
 errdisable detect cause xcvr-overheat
 errdisable detect cause xcvr-power-unsupported
+errdisable recovery cause acl
 errdisable recovery cause arp-inspection
+errdisable recovery cause dot1x-coa
+errdisable recovery cause dot1x-phone-classification
+errdisable recovery cause dot1x-session-replace
+errdisable recovery cause error-correction-encoding
+errdisable recovery cause hardware-speed-group
 errdisable recovery cause hitless-reload-down
+errdisable recovery cause interface-speed
+errdisable recovery cause internal-error
 errdisable recovery cause lacp-rate-limit
 errdisable recovery cause link-flap
 errdisable recovery cause no-internal-vlan
+errdisable recovery cause port-breakout
 errdisable recovery cause portchannelguard
 errdisable recovery cause portsec
 errdisable recovery cause speed-misconfigured
+errdisable recovery cause storm-control
+errdisable recovery cause stuck-queue
+errdisable recovery cause switchcard-unreachable
 errdisable recovery cause tapagg
+errdisable recovery cause transceiver-adapter
 errdisable recovery cause uplink-failure-detection
 errdisable recovery cause xcvr-misconfigured
 errdisable recovery cause xcvr-overheat
