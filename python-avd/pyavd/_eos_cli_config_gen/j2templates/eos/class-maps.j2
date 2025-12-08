@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - class maps #}
-{% for class_map in class_maps.qos | arista.avd.natural_sort('name') %}
+{% for class_map in class_maps.qos | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 class-map type qos match-any {{ class_map.name }}
 {%     if class_map.vlan is arista.avd.defined %}

@@ -11,6 +11,21 @@ flow_tracking:
       ipv4: true
       threshold_minimum: 2
     trackers:
+      # Test for sort with ignore_case: false
+      - name: a1
+        record_export:
+          on_inactive_timeout: 3666
+          on_interval: 5666
+          mpls: true
+        exporters:
+          # Test for sort with ignore_case: false
+          - name: a2-e1
+            collectors:
+              - host: 42.42.42.42
+          - name: T2-E1
+            collectors:
+              - host: 42.42.42.42
+                # no port
       - name: T1
         record_export:
           on_inactive_timeout: 3666
@@ -59,6 +74,20 @@ flow_tracking:
   # Checking hardware
   hardware:
     trackers:
+      # Test for sort with ignore_case: false
+      - name: a1
+        record_export:
+          on_inactive_timeout: 3666
+          on_interval: 5666
+        exporters:
+          # Test for sort with ignore_case: false
+          - name: a2-e1
+            collectors:
+              - host: 42.42.42.42
+          - name: T2-E1
+            collectors:
+              - host: 42.42.42.42
+                # no port
       - name: T1
         record_export:
           on_inactive_timeout: 3666
@@ -104,6 +133,20 @@ flow_tracking:
       mpls: true
     sample_limit: 777
     trackers:
+      # Test for sort with ignore_case: false
+      - name: a1
+        record_export:
+          on_inactive_timeout: 3666
+          on_interval: 5666
+        exporters:
+          # Test for sort with ignore_case: false
+          - name: a2-e1
+            collectors:
+              - host: 42.42.42.42
+          - name: T2-E1
+            collectors:
+              - host: 42.42.42.42
+                # no port
       - name: T1
         record_export:
           on_inactive_timeout: 3666

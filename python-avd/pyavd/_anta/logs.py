@@ -104,15 +104,16 @@ class LogMessage(Enum):
     PATH_GROUP_NO_STUN_INTERFACE = "path group {path_group} skipped - No STUN client interfaces found"
     PATH_GROUP_NO_LOCAL_INTERFACES = "path group {path_group} skipped - No local interfaces found"
     PATH_GROUP_NO_STATIC_PEERS = "path group {path_group} skipped - No static peers configured"
-    NO_STATIC_PEERS = "skipped - No static peers configured in any path groups"
     PATH_GROUP_IPV6_STATIC_PEER = "static peer {peer} under path group {path_group} skipped - ANTA does not support IPv6 static peer"
+    NO_STATIC_PEERS = "skipped - No static peers configured in any path groups"
 
     # Input generation messages
-    INPUT_NONE_FOUND = "skipped - No inputs available"
+    NO_INPUTS_GENERATED = "skipped - No inputs generated"
     INPUT_NO_DATA_MODELS = "skipped - Data models {data_models} not found"
     INPUT_MISSING_FIELDS = "{identity} skipped - Missing required fields: {fields}"
     EXTRA_FABRIC_VALIDATION_DISABLED = "skipped - Extra fabric-wide validation tests disabled"
     HARDWARE_VALIDATION_DISABLED = "skipped - Hardware validation tests disabled"
+    NO_STORM_CONTROL_ENABLED = "skipped - No interfaces with storm-control enabled"
 
     # Device role message
     DEVICE_IS_WAN_ROUTER = "skipped - Device is a WAN router"

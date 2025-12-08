@@ -315,6 +315,12 @@ router_bgp:
     metadata:
       peer: dc2-spine2
     description: dc2-spine2_Loopback0
+  neighbor_interfaces:
+  - name: Vlan4093
+    remote_as: '65133'
+    metadata:
+      peer: dc1-svc-leaf1a
+      validate_state: true
   vlans:
   - id: 11
     metadata:
