@@ -5906,6 +5906,10 @@ interface Ethernet87
    no shutdown
    switchport
    transceiver transmitter signal-power -20.00
+!
+interface Ethernet88
+   description Loop protection disable
+   no loop-protection
 ```
 
 ### Port-Channel Interfaces
@@ -10544,6 +10548,10 @@ router bfd
 | protect vlan | 1000-1100 |
 | rate-limit | 100 |
 | transmit-interval | 10 |
+
+| Disabled Interfaces |
+| ------------------- |
+| Ethernet88 |
 
 ### Monitor Loop Protection Configuration
 
