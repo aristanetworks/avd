@@ -19,7 +19,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     ActionPluginVars,
     build_result_message,
     get_templar,
-    parse_load_inputs_result,
+    parse_validation_result,
 )
 
 PLUGIN_NAME = "arista.avd.eos_designs_facts"
@@ -141,8 +141,8 @@ class ActionModule(ActionBase):
             # Load input vars into the EosDesigns data class.
             host_result = load_inputs(host_hostvars)
 
-            data_validation_errors += parse_load_inputs_result(
-                load_inputs_result=host_result, hostname=host, ansible_display=display, validation_mode=self._validation_mode
+            data_validation_errors += parse_validation_result(
+                validation_result=host_result, hostname=host, ansible_display=display, validation_mode=self._validation_mode
             )
 
             if data_validation_errors:

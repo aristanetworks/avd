@@ -22,7 +22,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     AvdSwitchFactsDefaultDict,
     build_result_message,
     get_templar,
-    parse_load_inputs_result,
+    parse_validation_result,
     write_file,
 )
 
@@ -96,8 +96,8 @@ class ActionModule(ActionBase):
         # Load input vars into the EosDesigns data class.
         load_inputs_result = load_inputs(host_hostvars)
 
-        data_validation_errors = parse_load_inputs_result(
-            load_inputs_result=load_inputs_result, hostname=hostname, ansible_display=display, validation_mode=validation_mode
+        data_validation_errors = parse_validation_result(
+            validation_result=load_inputs_result, hostname=hostname, ansible_display=display, validation_mode=validation_mode
         )
 
         if data_validation_errors or load_inputs_result.inputs is None:

@@ -5,6 +5,8 @@ from functools import lru_cache
 from pathlib import Path
 from pickle import load
 
+from pyavd.constants import SCHEMA_STORE_GZ_FILE
+
 from .constants import PICKLED_SCHEMAS
 
 
@@ -19,3 +21,18 @@ def create_store(*, load_from_yaml: bool = False) -> dict:
             store[schema_id] = load(file)  # noqa: S301
 
     return store
+
+
+@lru_cache(maxsize=1)
+def init_store() -> None:
+    """
+    Init the schema store in pyavd-utils.
+
+    This should be called at least one time before each validation.
+    The cache decorator will ensure a quick return on subsequent calls.
+
+    TODO: Init from fragments when running from source.
+    """
+    from pyavd_utils.validation import init_store_from_file  # noqa: PLC0415
+
+    init_store_from_file(SCHEMA_STORE_GZ_FILE)

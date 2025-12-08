@@ -9,7 +9,7 @@ from .constants import ANSIBLE_ABOVE_2_19
 from .cprofile_decorator import cprofile
 from .deprecated_dict import DeprecatedDict
 from .get_templar import get_templar
-from .parse_load_inputs_result import build_result_message, parse_load_inputs_result
+from .parse_validation_result import build_result_message, parse_validation_result
 from .python_to_ansible_logging_handler import PythonToAnsibleContextFilter, PythonToAnsibleHandler
 from .write_file import write_file
 from .yaml_dumper import NoAliasDumper, YamlDumper
@@ -31,6 +31,6 @@ __all__ = [
     "compile_searchpath",
     "cprofile",
     "get_templar",
-    "parse_load_inputs_result",
+    "parse_validation_result",
     "write_file",
 ]

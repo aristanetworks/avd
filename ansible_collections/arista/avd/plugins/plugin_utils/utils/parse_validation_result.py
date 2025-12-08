@@ -8,14 +8,14 @@ from typing import TYPE_CHECKING, Literal
 if TYPE_CHECKING:
     from ansible.utils.display import Display
 
-    from pyavd.load_inputs import LoadInputsResult
+    from pyavd.load_inputs import ValidationResult
 
 
-def parse_load_inputs_result(
-    load_inputs_result: LoadInputsResult, hostname: str, ansible_display: Display, validation_mode: Literal["error", "warning"] = "error"
+def parse_validation_result(
+    validation_result: ValidationResult, hostname: str, ansible_display: Display, validation_mode: Literal["error", "warning"] = "error"
 ) -> int:
-    """Parser of pyavd.load_inputs.LoadInputsResult displaying warnings and errors and returning the number of validation errors."""
-    for deprecation in load_inputs_result.deprecations:
+    """Parser of pyavd.load_inputs.ValidationResult displaying warnings and errors and returning the number of validation errors."""
+    for deprecation in validation_result.deprecations:
         ansible_display.deprecated(
             msg=f"{hostname}: {deprecation}",
             version=deprecation.version,
@@ -24,8 +24,8 @@ def parse_load_inputs_result(
             removed=deprecation.removed,
         )
 
-    if (error_count := len(load_inputs_result.validation_errors)) > 0:
-        for validation_error in load_inputs_result.validation_errors:
+    if (error_count := len(validation_result.validation_errors)) > 0:
+        for validation_error in validation_result.validation_errors:
             message = f"{hostname}: {validation_error}"
             if validation_mode == "warning":
                 ansible_display.warning(message)
