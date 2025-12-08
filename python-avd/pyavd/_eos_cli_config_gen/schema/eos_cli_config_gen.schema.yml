@@ -1785,6 +1785,7 @@ keys:
                 type: str
         ipv4_vendor_options:
           type: list
+          min_length: 1
           primary_key: vendor_id
           items:
             type: dict
@@ -1837,6 +1838,7 @@ keys:
                         type: str
         ipv4_subnets:
           type: list
+          min_length: 1
           $ref: eos_cli_config_gen#/$defs/subnets
           items:
             type: dict
@@ -1856,6 +1858,7 @@ keys:
                       description: Valid IPv4 address from the given subnet.
         ipv6_subnets:
           type: list
+          min_length: 1
           $ref: eos_cli_config_gen#/$defs/subnets
           items:
             type: dict
