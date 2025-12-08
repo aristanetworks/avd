@@ -4495,6 +4495,8 @@ interface Dps1
 | Ethernet82 | Switchport_tap_tool | tap-tool | - | - | - | - |
 | Ethernet83 | Test_tap_tool | tap-tool | - | - | - | - |
 | Ethernet84 | - | tap | - | - | - | - |
+| Ethernet86 | All_Transceiver_Commands | - | - | - | - | - |
+| Ethernet87 | Transmitter_SP_20 | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -4564,12 +4566,14 @@ interface Dps1
 
 ##### Transceiver Settings
 
-| Interface | Transceiver Frequency | Media Override | Application Override |
-| --------- | --------------------- | -------------- | -------------------- |
-| Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 |
-| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 |
-| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd |
-| Ethernet73 | - | 100gbase-ar4 | 5 |
+| Interface | Transceiver Frequency | Media Override | Application Override | Power Ignore | Transmitter Signal-Power | Transmitter Disabled |
+| --------- | --------------------- | -------------- | -------------------- | ------------ | ------------------------ | -------------------- |
+| Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 | - | - | - |
+| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 | - | - | - |
+| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd | - | - | - |
+| Ethernet73 | - | 100gbase-ar4 | 5 | - | - | - |
+| Ethernet86 | 190050.000 ghz | 100gbase-ar4 | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 | True | -10.68 | True |
+| Ethernet87 | - | - | - | - | -20.00 | - |
 
 ##### Link Tracking Groups
 
@@ -5880,6 +5884,25 @@ interface Ethernet84
 interface Ethernet85
    description DOT1X Testing - pae mode supplicant
    dot1x pae supplicant test_profile
+!
+interface Ethernet86
+   description All_Transceiver_Commands
+   no shutdown
+   switchport
+   transceiver media override 100gbase-ar4
+   transceiver power ignore
+   transceiver application override 5
+   transceiver application override 5 lanes start 1 end 1
+   transceiver application override 5 lanes start 2 end 3
+   transceiver frequency 190050.000 ghz
+   transceiver transmitter signal-power -10.68
+   transceiver transmitter disabled
+!
+interface Ethernet87
+   description Transmitter_SP_20
+   no shutdown
+   switchport
+   transceiver transmitter signal-power -20.00
 ```
 
 ### Port-Channel Interfaces
