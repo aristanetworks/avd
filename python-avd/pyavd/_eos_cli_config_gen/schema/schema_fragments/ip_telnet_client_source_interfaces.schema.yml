@@ -8,13 +8,27 @@ type: dict
 keys:
   ip_telnet_client_source_interfaces:
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          required: true
-          description: Interface Name.
-        vrf:
-          type: str
-          description: VRF Name.
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+      new_key: ip_telnet_client
+  ip_telnet_client:
+    type: dict
+    documentation_options:
+      table: ip-telnet-client-source-interfaces
+    keys:
+      source_interface:
+        type: str
+        description: Source interface name for default vrf.
+      vrfs:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF Name.
+            source_interface:
+              type: str
+              description: Interface Name.
