@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# PBR class-map #}
-{% for class_map in class_maps.pbr | arista.avd.natural_sort('name') %}
+{% for class_map in class_maps.pbr | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 class-map type pbr match-any {{ class_map.name }}
 {%     if class_map.ip.access_group is arista.avd.defined %}

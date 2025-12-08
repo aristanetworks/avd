@@ -2645,7 +2645,15 @@ keys:
                         - str
                   local_interface:
                     type: str
-                    description: Local Source Interface
+                    default: use_default_mgmt_method_interface
+                    description: "Local Source Interface.\nThe value will be interpreted
+                      according to these rules:\n  - `use_mgmt_interface` will configure
+                      the `mgmt_interface` as the local interface.\n  - `use_inband_mgmt_interface`
+                      will configure the `inband_mgmt_interface` as the local interface.\n
+                      \ - `use_default_mgmt_method_interface` will configure `mgmt_interface`
+                      or `inband_mgmt_interface` as the local interface depending
+                      on the value of `default_mgmt_method`.\n  - Any other string
+                      will be used directly as the local interface."
                   template_interval:
                     type: int
                     convert_types:

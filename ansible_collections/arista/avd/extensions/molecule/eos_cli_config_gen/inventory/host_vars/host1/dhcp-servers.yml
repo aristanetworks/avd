@@ -2,6 +2,7 @@
 dhcp_servers:
   - vrf: defauls
   - vrf: defaulu
+  # Test for sort with ignore_case: false
   - vrf: TEST
     ipv4_vendor_options:
       - vendor_id: NTP
@@ -13,6 +14,11 @@ dhcp_servers:
           - code: 66
             array_ipv4_address: [1.1.1.1, 2.2.2.2]
           - code: 70
+      # Test for sort with ignore_case: false
+      - vendor_id: abcd
+        sub_options:
+          - code: 42
+            ipv4_address: "10.1.1.1"
     disabled: false
     lease_time_ipv4:
       days: 10

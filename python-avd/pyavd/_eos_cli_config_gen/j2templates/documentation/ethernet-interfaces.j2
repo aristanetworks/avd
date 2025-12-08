@@ -228,8 +228,8 @@
 
 ##### Transceiver Settings
 
-| Interface | Transceiver Frequency | Media Override | Application Override |
-| --------- | --------------------- | -------------- | -------------------- |
+| Interface | Transceiver Frequency | Media Override | Application Override | Power Ignore | Transmitter Signal-Power | Transmitter Disabled |
+| --------- | --------------------- | -------------- | -------------------- | ------------ | ------------------------ | -------------------- |
 {%         for transceiver_setting in transceiver_settings | arista.avd.natural_sort('name') %}
 {%             set interface = transceiver_setting.name %}
 {%             if transceiver_setting.transceiver.frequency is arista.avd.defined %}
@@ -255,7 +255,14 @@
 {%                 do applications.append("-") %}
 {%             endif %}
 {%             set m_override = transceiver_setting.transceiver.media.override | arista.avd.default('-') %}
-| {{ interface }} | {{ frequency }} | {{ m_override }} | {{ applications | join("</br>") }} |
+{%             set power_ignore = transceiver_setting.transceiver.power.ignore | arista.avd.default('-') %}
+{%             if transceiver_setting.transceiver.transmitter.signal_power is arista.avd.defined %}
+{%                 set transmitter_sp = "%.2f" | format(transceiver_setting.transceiver.transmitter.signal_power | float) %}
+{%             else %}
+{%                 set transmitter_sp = '-' %}
+{%             endif %}
+{%             set transmitter_disabled = transceiver_setting.transceiver.transmitter.disabled | arista.avd.default('-') %}
+| {{ interface }} | {{ frequency }} | {{ m_override }} | {{ applications | join("</br>") }} | {{ power_ignore }} | {{ transmitter_sp }} | {{ transmitter_disabled }} |
 {%         endfor %}
 {%     endif %}
 {# Link Tracking Groups #}
