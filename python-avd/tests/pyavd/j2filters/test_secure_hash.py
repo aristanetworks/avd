@@ -58,49 +58,47 @@ VALID_PASSWORDS = [
     ),
 ]
 
-INVALID_HASH_OUTPUT_TYPES = [
+INVALID_HASH_HASH_TYPES = [
     pytest.param(
         "pass",
         "",
         ValueError,
-        "The output_type key does not support the value ''. The value used with output_type must be in \\['sha512_password'\\]",
+        "The hash_type key does not support the value ''. The value used with hash_type must be in \\['sha512_password'\\]",
     ),
     pytest.param(
         "pass",
         "user_p",
         ValueError,
-        "The output_type key does not support the value 'user_p'. The value used with output_type must be in \\['sha512_password'\\]",
+        "The hash_type key does not support the value 'user_p'. The value used with hash_type must be in \\['sha512_password'\\]",
     ),
 ]
 
 
 class TestSecureHashFilter:
-    @pytest.mark.parametrize(("cleartext_password", "output_type", "expected_raise", "expected_raise_message"), INVALID_PASSWORDS)
-    def test_secure_hash_invalid_password(
-        self, cleartext_password: str, output_type: str, expected_raise: type[Exception], expected_raise_message: str
-    ) -> None:
+    @pytest.mark.parametrize(("cleartext_password", "hash_type", "expected_raise", "expected_raise_message"), INVALID_PASSWORDS)
+    def test_secure_hash_invalid_password(self, cleartext_password: str, hash_type: str, expected_raise: type[Exception], expected_raise_message: str) -> None:
         """Test secure_hash for invalid password types (non-string)."""
         with pytest.raises(expected_raise, match=expected_raise_message):
-            secure_hash(cleartext_password, output_type)
+            secure_hash(cleartext_password, hash_type)
 
-    @pytest.mark.parametrize(("cleartext_password", "salt", "output_type", "expected_raise", "expected_raise_message"), INVALID_SALTS)
+    @pytest.mark.parametrize(("cleartext_password", "salt", "hash_type", "expected_raise", "expected_raise_message"), INVALID_SALTS)
     def test_secure_hash_invalid_salt(
-        self, cleartext_password: str, salt: str, output_type: str, expected_raise: type[Exception], expected_raise_message: str
+        self, cleartext_password: str, salt: str, hash_type: str, expected_raise: type[Exception], expected_raise_message: str
     ) -> None:
         """Test secure_hash for invalid salt values."""
         with pytest.raises(expected_raise, match=expected_raise_message):
-            secure_hash(cleartext_password, salt, output_type)
+            secure_hash(cleartext_password, salt, hash_type)
 
-    @pytest.mark.parametrize(("cleartext_password", "output_type", "expected_raise", "expected_raise_message"), INVALID_HASH_OUTPUT_TYPES)
-    def test_secure_hash_invalid_type(self, cleartext_password: str, output_type: str, expected_raise: type[Exception], expected_raise_message: str) -> None:
-        """Test secure_hash for invalid output_type."""
+    @pytest.mark.parametrize(("cleartext_password", "hash_type", "expected_raise", "expected_raise_message"), INVALID_HASH_HASH_TYPES)
+    def test_secure_hash_invalid_type(self, cleartext_password: str, hash_type: str, expected_raise: type[Exception], expected_raise_message: str) -> None:
+        """Test secure_hash for invalid hash_type."""
         with pytest.raises(expected_raise, match=expected_raise_message):
-            secure_hash(cleartext_password, salt="AAAAAAAAA", output_type=output_type)
+            secure_hash(cleartext_password, salt="AAAAAAAAA", hash_type=hash_type)
 
-    @pytest.mark.parametrize(("cleartext_password", "output_type", "regex_of_hashed_password"), VALID_PASSWORD_FORMAT)
-    def test_secure_hash_password_format(self, cleartext_password: str, output_type: str, regex_of_hashed_password: str) -> None:
+    @pytest.mark.parametrize(("cleartext_password", "hash_type", "regex_of_hashed_password"), VALID_PASSWORD_FORMAT)
+    def test_secure_hash_password_format(self, cleartext_password: str, hash_type: str, regex_of_hashed_password: str) -> None:
         """Test the format of the hash output from secure_hash i.e. $6$<salt-value>$<hashed-password>."""
-        hashed_password = secure_hash(cleartext_password, salt="AAAAAAAAAAAA", output_type=output_type)
+        hashed_password = secure_hash(cleartext_password, salt="AAAAAAAAAAAA", hash_type=hash_type)
         assert re.fullmatch(regex_of_hashed_password, hashed_password)
 
     def test_secure_hash_uncaught_execption(self) -> None:

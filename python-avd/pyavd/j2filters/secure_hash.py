@@ -66,23 +66,23 @@ def _user_password_hash(clear_password: str, salt: str) -> str:
         raise ValueError(msg) from exc
 
 
-def secure_hash(user_input: str, salt: str, output_type: str = "sha512_password") -> str:
+def secure_hash(user_input: str, salt: str, hash_type: str = "sha512_password") -> str:
     """
     Returns a hash for a given input.
 
     Args:
         user_input: the user input cleartext that will be hashed.
         salt: Salt value to be used when creating password hash. It must be between 1 and 16 characters.
-        output_type: the use case for the cleartext provided by the user.
+        hash_type: the use case for the cleartext provided by the user.
 
     Returns:
         The hash digest.
 
     Raises:
-        ValueError: if the output_type value provided by the user is not supported.
+        ValueError: if the hash_type value provided by the user is not supported.
     """
-    if output_type not in HASH_INPUT_TYPE:
-        msg = f"The output_type key does not support the value '{output_type}'. The value used with output_type must be in {HASH_INPUT_TYPE}"
+    if hash_type not in HASH_INPUT_TYPE:
+        msg = f"The hash_type key does not support the value '{hash_type}'. The value used with hash_type must be in {HASH_INPUT_TYPE}"
         raise ValueError(msg)
 
     return _user_password_hash(user_input, salt)

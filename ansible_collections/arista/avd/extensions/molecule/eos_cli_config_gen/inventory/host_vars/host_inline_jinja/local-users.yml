@@ -8,7 +8,6 @@ local_users:
   - name: sha-user-the-second
     privilege: 15
     role: network-admin
-    sha512_password: "{{ clear_password | arista.avd.secure_hash(salt='VgF2EvFXVgIMP', output_type='sha512_password') }}"
-
+    sha512_password: "{{ clear_password | arista.avd.secure_hash(salt='VgF2EvFXVgIMP', hash_type='sha512_password') }}"
 # Note: this clear_password should be in a vault for production use
 clear_password: "arista"

@@ -31,9 +31,9 @@ author: Arista Ansible Team (@aristanetworks)
 version_added: "5.2.0"
 short_description: Generate an EOS supported hash digest.
 description: |-
-  This filter generates an EOS supported hash digest. The algorithm for the hash is defined with the `output_type` key. `sha512_password` can be
-  used with the `output_type` key to create a SHA-512 password hash from a cleartext password for a local user. By default, the secure_hash filter will use
-  sha512_password.
+  This filter generates an EOS supported hash digest. The algorithm for the hash is defined with the `hash_type` key. `sha512_password` can be
+  used with the `hash_type` key to create a SHA-512 password hash from a cleartext password for a local user. By default, the secure_hash filter will use
+  `hash_type="sha512_password"`.
 
   Each user should use a unique salt value to ensure that even if multiple users share the same password, their hashes will be unique.
 positional: _input
@@ -48,10 +48,10 @@ options:
       The salt value can only contain the characters `./`, digits `0-9`, and uppercase or lowercase letters `A-Z a-z`.
       The salt value should not be greater than 16 characters long.
     type: string
-  output_type:
+  hash_type:
     description: |-
-      The hashing algorithm used will be based on the value of the `output_type` key.
-      Currently, only `sha512_password` is supported with output_type and is set by default. `sha512_password` will generate a SHA-512 password hash from
+      The hashing algorithm used will be based on the value of the `hash_type` key.
+      Currently, only `sha512_password` is supported with hash_type and is set by default. `sha512_password` will generate a SHA-512 password hash from
       a cleartext password for a local user.
     choices: ["sha512_password"]
     type: string
@@ -61,13 +61,13 @@ options:
 EXAMPLES = r"""
 ---
 local_users:
-  # Create a sha512 password hash with a user defined salt value (recommended). The output_type will default to sha512_password.
+  # Create a sha512 password hash with a user defined salt value (recommended). The hash_type will default to sha512_password.
   - name: cvpadmin
     sha512_password: "{{ 'securepassword' | arista.avd.secure_hash(salt='Yar49ahkzKddRVYS')}}"
 
-    # Create a sha512 password hash with a user defined salt value and specifying the output_type as a sha512_password.
+    # Create a sha512 password hash with a user defined salt value and specifying the hash_type as a sha512_password.
   - name: cvpuser
-    sha512_password: "{{ 'newpassword' | arista.avd.secure_hash(salt='Kte5paJ3czRQczbk', output_type='sha512_password')}}"
+    sha512_password: "{{ 'newpassword' | arista.avd.secure_hash(salt='Kte5paJ3czRQczbk', hash_type='sha512_password')}}"
 """
 
 
