@@ -17284,14 +17284,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
 
             _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
-            name: str | None
-            """VRF Name."""
-            source_interface: str | None
-            """Interface Name."""
+            name: str
+            source_interface: str
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | None | UndefinedType = Undefined, source_interface: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType = Undefined) -> None:
                     """
                     VrfsItem.
 
@@ -17299,21 +17297,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        name: VRF Name.
-                        source_interface: Interface Name.
+                        name: name
+                        source_interface: source_interface
 
                     """
 
-        class Vrfs(AvdList[VrfsItem]):
-            """Subclass of AvdList with `VrfsItem` items."""
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
 
         _fields: ClassVar[dict] = {"source_interface": {"type": str}, "vrfs": {"type": Vrfs}}
         source_interface: str | None
-        """Source interface name for default vrf."""
+        """Define `source_interface` for VRF default."""
         vrfs: Vrfs
-        """Subclass of AvdList with `VrfsItem` items."""
+        """
+        Define vrfs for any VRF other than default.
+
+        Subclass of AvdIndexedList with `VrfsItem` items.
+        Primary key is `name` (`str`).
+        """
 
         if TYPE_CHECKING:
 
@@ -17325,8 +17330,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    source_interface: Source interface name for default vrf.
-                    vrfs: Subclass of AvdList with `VrfsItem` items.
+                    source_interface: Define `source_interface` for VRF default.
+                    vrfs:
+                       Define vrfs for any VRF other than default.
+
+                       Subclass of AvdIndexedList with `VrfsItem` items.
+                       Primary key is `name` (`str`).
 
                 """
 
