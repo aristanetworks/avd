@@ -3900,6 +3900,14 @@ lldp receive packet tagged drop
 
 ### Forwarding Profiles
 
+#### aaa
+
+| Protocol | Forward | Tagged Forward | Untagged Forward |
+| -------- | ------- | -------------- | ---------------- |
+| bfd per-link rfc-7130 | False | True | - |
+| e-lmi | True | - | - |
+| isis | - | - | True |
+
 #### TEST1
 
 | Protocol | Forward | Tagged Forward | Untagged Forward |
@@ -3967,6 +3975,10 @@ l2-protocol
       pause untagged forward
       stp tagged forward
       stp untagged forward
+   forwarding profile aaa
+      bfd per-link rfc-7130 tagged forward
+      e-lmi forward
+      isis untagged forward
 ```
 
 ## LACP
@@ -7809,14 +7821,28 @@ IPv6 neighbor cache persistency is enabled. The refresh-delay is 1000 seconds af
 | --- | ------------ | -------------- | ----------- |
 | MGMT | 11:22:33:44:55:66:77:88 | Ethernet1 | 11:22:33:44:55:66 |
 | - | ::ffff:192.1.56.10 | Loopback99 | aa:af:12:34:bc:bf |
+| MGMT | 11:11:11:11:11:11:11:11 | Ethernet3 | 11:11:11:11:11:11 |
+| - | ::ffff:192.1.56.10 | Ethernet2 | 22:22:22:22:22:22 |
+| - | 11:22:33:44:55:66:77:77 | Ethernet2 | 22:22:22:22:22:22 |
+| MGMT | 11:11:11:11:11:11:11:11 | Ethernet4 | 00:00:00:00:00:00 |
+| MGMT | 11:22:33:44:55:66:77:88 | Ethernet1 | 11:22:33:44:55:66 |
+| guest | 11:11:11:11:11:11:11:11 | Ethernet4 | 00:00:00:00:00:00 |
+| data | 11:22:33:44:55:66:77:77 | Ethernet2 | 22:22:22:22:22:22 |
 
 #### IPv6 Neighbor Configuration
 
 ```eos
 !
 ipv6 neighbor persistent refresh-delay 1000
-ipv6 neighbor vrf MGMT 11:22:33:44:55:66:77:88 Ethernet1 11:22:33:44:55:66
+ipv6 neighbor 11:22:33:44:55:66:77:77 Ethernet2 22:22:22:22:22:22
+ipv6 neighbor ::ffff:192.1.56.10 Ethernet2 22:22:22:22:22:22
 ipv6 neighbor ::ffff:192.1.56.10 Loopback99 aa:af:12:34:bc:bf
+ipv6 neighbor vrf MGMT 11:11:11:11:11:11:11:11 Ethernet3 11:11:11:11:11:11
+ipv6 neighbor vrf MGMT 11:11:11:11:11:11:11:11 Ethernet4 00:00:00:00:00:00
+ipv6 neighbor vrf MGMT 11:22:33:44:55:66:77:88 Ethernet1 11:22:33:44:55:66
+ipv6 neighbor vrf MGMT 11:22:33:44:55:66:77:88 Ethernet1 11:22:33:44:55:66
+ipv6 neighbor vrf data 11:22:33:44:55:66:77:77 Ethernet2 22:22:22:22:22:22
+ipv6 neighbor vrf guest 11:11:11:11:11:11:11:11 Ethernet4 00:00:00:00:00:00
 ```
 
 ### ARP
@@ -11164,6 +11190,12 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 
 #### IPv6 Prefix-lists Summary
 
+##### ipv6_list1
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 1b11:3a00:22b0:0082::/64 eq 128 |
+
 ##### PL-IPV6-LOOPBACKS
 
 | Sequence | Action |
@@ -11175,6 +11207,9 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ```eos
 !
 ipv6 prefix-list PL-IPV6-LOOPBACKS
+   seq 10 permit 1b11:3a00:22b0:0082::/64 eq 128
+!
+ipv6 prefix-list ipv6_list1
    seq 10 permit 1b11:3a00:22b0:0082::/64 eq 128
 ```
 
@@ -11792,6 +11827,13 @@ ip access-list acl_aaa_short
 
 #### IPv6 Standard Access-lists Summary
 
+##### ipv6_test1
+
+| Sequence | Action |
+| -------- | ------ |
+| 5 | deny 2001:db8:1000::/64 |
+| 10 | permit 2001:db8::/32 |
+
 ##### TEST4
 
 | Sequence | Action |
@@ -11829,6 +11871,10 @@ ipv6 access-list standard TEST5
    10 deny 2001:db8::/32
 !
 ipv6 access-list standard TEST6
+   5 deny 2001:db8:1000::/64
+   10 permit 2001:db8::/32
+!
+ipv6 access-list standard ipv6_test1
    5 deny 2001:db8:1000::/64
    10 permit 2001:db8::/32
 ```
