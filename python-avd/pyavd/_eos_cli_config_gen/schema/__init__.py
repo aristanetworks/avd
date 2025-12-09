@@ -2450,8 +2450,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
-    AvdDataValidationMode: TypeAlias = Literal["error", "warning"]
-
     class Banners(AvdModel):
         """Subclass of AvdModel."""
 
@@ -68420,7 +68418,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "application_traffic_recognition": {"type": ApplicationTrafficRecognition},
         "arp": {"type": Arp},
         "as_path": {"type": AsPath},
-        "avd_data_validation_mode": {"type": str, "default": "error"},
         "banners": {"type": Banners},
         "bgp_groups": {"type": BgpGroups},
         "boot": {"type": Boot},
@@ -68639,19 +68636,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     as_path: AsPath
     """Subclass of AvdModel."""
-    avd_data_validation_mode: AvdDataValidationMode
-    """
-    Validation Mode for AVD input data validation.
-    Input data validation will validate the input
-    variables according to the schema.
-    During validation, messages will generated with information about
-    the host(s) and key(s) which failed validation.
-    "error" will produce error messages and fail the
-    task.
-    "warning" will produce warning messages.
-
-    Default value: `"error"`
-    """
     banners: Banners
     """Subclass of AvdModel."""
     bgp_groups: BgpGroups
@@ -69176,7 +69160,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             application_traffic_recognition: ApplicationTrafficRecognition | UndefinedType = Undefined,
             arp: Arp | UndefinedType = Undefined,
             as_path: AsPath | UndefinedType = Undefined,
-            avd_data_validation_mode: AvdDataValidationMode | UndefinedType = Undefined,
             banners: Banners | UndefinedType = Undefined,
             bgp_groups: BgpGroups | UndefinedType = Undefined,
             boot: Boot | UndefinedType = Undefined,
@@ -69387,15 +69370,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 arp: Subclass of AvdModel.
                 as_path: Subclass of AvdModel.
-                avd_data_validation_mode:
-                   Validation Mode for AVD input data validation.
-                   Input data validation will validate the input
-                   variables according to the schema.
-                   During validation, messages will generated with information about
-                   the host(s) and key(s) which failed validation.
-                   "error" will produce error messages and fail the
-                   task.
-                   "warning" will produce warning messages.
                 banners: Subclass of AvdModel.
                 bgp_groups: Subclass of AvdIndexedList with `BgpGroupsItem` items. Primary key is `name` (`str`).
                 boot:
