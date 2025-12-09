@@ -17988,7 +17988,7 @@ class EosDesigns(EosDesignsRootModel):
                     "name": {"type": str},
                     "collectors": {"type": Collectors},
                     "format": {"type": Format},
-                    "local_interface": {"type": str},
+                    "local_interface": {"type": str, "default": "use_default_mgmt_method_interface"},
                     "template_interval": {"type": int},
                 }
                 name: str
@@ -17997,8 +17997,22 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
                 format: Format
                 """Subclass of AvdModel."""
-                local_interface: str | None
-                """Local Source Interface"""
+                local_interface: str
+                """
+                Local Source Interface.
+                The value will be interpreted according to these rules:
+                  -
+                `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.
+                  -
+                `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the local interface.
+                  -
+                `use_default_mgmt_method_interface` will configure `mgmt_interface` or `inband_mgmt_interface` as
+                the local interface depending on the value of `default_mgmt_method`.
+                  - Any other string will be
+                used directly as the local interface.
+
+                Default value: `"use_default_mgmt_method_interface"`
+                """
                 template_interval: int | None
                 """Template interval in milliseconds"""
 
@@ -18010,7 +18024,7 @@ class EosDesigns(EosDesignsRootModel):
                         name: str | UndefinedType = Undefined,
                         collectors: Collectors | UndefinedType = Undefined,
                         format: Format | UndefinedType = Undefined,
-                        local_interface: str | None | UndefinedType = Undefined,
+                        local_interface: str | UndefinedType = Undefined,
                         template_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18023,7 +18037,18 @@ class EosDesigns(EosDesignsRootModel):
                             name: Exporter Name
                             collectors: Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`).
                             format: Subclass of AvdModel.
-                            local_interface: Local Source Interface
+                            local_interface:
+                               Local Source Interface.
+                               The value will be interpreted according to these rules:
+                                 -
+                               `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.
+                                 -
+                               `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the local interface.
+                                 -
+                               `use_default_mgmt_method_interface` will configure `mgmt_interface` or `inband_mgmt_interface` as
+                               the local interface depending on the value of `default_mgmt_method`.
+                                 - Any other string will be
+                               used directly as the local interface.
                             template_interval: Template interval in milliseconds
 
                         """

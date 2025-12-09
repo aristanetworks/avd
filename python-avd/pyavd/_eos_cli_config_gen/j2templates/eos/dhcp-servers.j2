@@ -119,9 +119,6 @@
                 and subnet.lease_time.minutes is arista.avd.defined %}
       lease time {{ subnet.lease_time.days }} days {{ subnet.lease_time.hours }} hours {{ subnet.lease_time.minutes }} minutes
 {%             endif %}
-{%             if subnet.default_gateway is arista.avd.defined %}
-      default-gateway {{ subnet.default_gateway }}
-{%             endif %}
 {%         endfor %}
 {%         for option in dhcp_server.ipv4_vendor_options | arista.avd.natural_sort(sort_key="vendor_id", ignore_case=false) %}
    !
