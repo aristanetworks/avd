@@ -7,7 +7,7 @@ import json
 import logging
 from contextlib import suppress
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any
 
 import yaml
 from ansible.errors import AnsibleActionFail
@@ -47,7 +47,6 @@ ARGUMENT_SPEC = {
     "config_filename": {"type": "str"},
     "documentation_filename": {"type": "str"},
     "read_structured_config_from_file": {"type": "bool", "default": True},
-    "validation_mode": {"type": "str", "default": "error"},
     "generate_device_config": {"type": "bool", "default": True},
     "generate_device_doc": {"type": "bool", "default": True},
     "device_doc_toc": {"type": "bool", "default": True},
@@ -97,7 +96,6 @@ class ActionModule(ActionBase):
             # result dict will be in-place updated.
             validated_task_vars = self.validate_task_vars(
                 hostname=task_vars["inventory_hostname"],
-                validation_mode=validated_args["validation_mode"],
                 task_vars=task_vars,
                 result=result,
             )
@@ -208,7 +206,7 @@ class ActionModule(ActionBase):
 
         return task_vars
 
-    def validate_task_vars(self, hostname: str, validation_mode: Literal["error", "warning"], task_vars: dict, result: dict) -> dict:
+    def validate_task_vars(self, hostname: str, task_vars: dict, result: dict) -> dict:
         """
         Validate inputs and emit warnings and errors via Ansible display and in-place update the given result.
 
@@ -232,11 +230,10 @@ class ActionModule(ActionBase):
         validated_inputs: dict = json.loads(validated_data_result.validated_data) if validated_data_result.validated_data is not None else {}
         validation_errors = tuple(AvdValidationError.from_violation(violation) for violation in validated_data_result.validation_result.violations)
         deprecations = tuple(AvdDeprecationWarning.from_deprecation(deprecation) for deprecation in validated_data_result.validation_result.deprecations)
-        validation_errors = parse_validation_result(ValidationResult(validation_errors, deprecations), hostname, display, validation_mode)
-        if validation_errors and validation_mode == "error":
+        validation_errors = parse_validation_result(ValidationResult(validation_errors, deprecations), hostname, display)
+        if validation_errors:
             result["failed"] = True
-
-        result["msg"] = build_result_message(validation_errors)
+            result["msg"] = build_result_message(validation_errors)
 
         return validated_inputs
 

@@ -58,7 +58,6 @@ class ActionModule(ActionBase):
         # Only template output on ansible versions < 2.19.
         self.template_output = bool(self._task.args.get("template_output", False)) and not ANSIBLE_ABOVE_2_19
 
-        self._validation_mode = self._task.args.get("validation_mode")
         self._digital_twin = self._task.args.get("digital_twin", False)
         output_dir = self._task.args.get("output_dir")
 
@@ -141,9 +140,7 @@ class ActionModule(ActionBase):
             # Load input vars into the EosDesigns data class.
             host_result = load_inputs(host_hostvars)
 
-            data_validation_errors += parse_validation_result(
-                validation_result=host_result, hostname=host, ansible_display=display, validation_mode=self._validation_mode
-            )
+            data_validation_errors += parse_validation_result(validation_result=host_result, hostname=host, ansible_display=display)
 
             if data_validation_errors:
                 # Quickly continue if data validation failed

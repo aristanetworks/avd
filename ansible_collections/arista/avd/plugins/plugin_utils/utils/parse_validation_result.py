@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ansible.utils.display import Display
@@ -11,9 +11,7 @@ if TYPE_CHECKING:
     from pyavd.load_inputs import ValidationResult
 
 
-def parse_validation_result(
-    validation_result: ValidationResult, hostname: str, ansible_display: Display, validation_mode: Literal["error", "warning"] = "error"
-) -> int:
+def parse_validation_result(validation_result: ValidationResult, hostname: str, ansible_display: Display) -> int:
     """Parser of pyavd.load_inputs.ValidationResult displaying warnings and errors and returning the number of validation errors."""
     for deprecation in validation_result.deprecations:
         ansible_display.deprecated(
@@ -27,10 +25,7 @@ def parse_validation_result(
     if (error_count := len(validation_result.validation_errors)) > 0:
         for validation_error in validation_result.validation_errors:
             message = f"{hostname}: {validation_error}"
-            if validation_mode == "warning":
-                ansible_display.warning(message)
-            else:
-                ansible_display.error(message, wrap_text=False)
+            ansible_display.error(message, wrap_text=False)
 
     return error_count
 

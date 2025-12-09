@@ -243,6 +243,10 @@ keys:
       "warning" will produce warning messages.
 
       '
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
