@@ -115,6 +115,14 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                 name=config.name,
                 record_export=config.record_export._cast_as(EosCliConfigGen.FlowTracking.Hardware.TrackersItem.RecordExport),
             )
+            if config.export_to_cloudvision.enabled:
+                local_interface = config.export_to_cloudvision.source_interface or self.shared_utils.get_local_interface(config.export_to_cloudvision.vrf)
+                collector = [EosCliConfigGen.FlowTracking.Hardware.TrackersItem.ExportersItem.CollectorsItem(host="127.0.0.1")]
+                flow_tracking_hardware_tracker.exporters.append_new(
+                    name=config.export_to_cloudvision.name,
+                    collectors=EosCliConfigGen.FlowTracking.Hardware.TrackersItem.ExportersItem.Collectors(collector),
+                    local_interface=local_interface,
+                )
             for exporter in config.exporters:
                 local_interface = self.shared_utils.get_local_interface(exporter.local_interface)
                 flow_tracking_hardware_tracker.exporters.append_new(
@@ -162,6 +170,14 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                 record_export=record_export,
                 table_size=config.sampled.table_size,
             )
+            if config.export_to_cloudvision.enabled:
+                local_interface = config.export_to_cloudvision.source_interface or self.shared_utils.get_local_interface(config.export_to_cloudvision.vrf)
+                collector = [EosCliConfigGen.FlowTracking.Sampled.TrackersItem.ExportersItem.CollectorsItem(host="127.0.0.1")]
+                flow_tracking_sampled_tracker.exporters.append_new(
+                    name=config.export_to_cloudvision.name,
+                    collectors=EosCliConfigGen.FlowTracking.Sampled.TrackersItem.ExportersItem.Collectors(collector),
+                    local_interface=local_interface,
+                )
             for exporter in config.exporters:
                 local_interface = self.shared_utils.get_local_interface(exporter.local_interface)
                 flow_tracking_sampled_tracker.exporters.append_new(

@@ -17923,6 +17923,101 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class ExportToCloudvision(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool},
+                    "name": {"type": str, "default": "CLOUDVISION"},
+                    "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
+                    "source_interface": {"type": str},
+                }
+                enabled: bool | None
+                """
+                When set to `true`, AVD automatically:
+                - Configures an flow tracking at `127.0.0.1` port `4739` in
+                the VRF determined by `export_to_cloudvision.vrf`.
+                - Configures the TerminAttr daemon (`daemon
+                terminattr`) to export flow tracking to the same `export_to_cloudvision.vrf/127.0.0.1:4739` in the
+                selected VRF.
+                """
+                name: str
+                """Default value: `"CLOUDVISION"`"""
+                vrf: str
+                """
+                VRF name.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will
+                configure under the VRF set with `mgmt_interface_vrf`.
+                  An error will be raised if `mgmt_ip` or
+                `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure under the
+                VRF set with `inband_mgmt_vrf`.
+                  An error will be raised if inband management is not configured for
+                the device.
+                - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of
+                the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be
+                used directly as the VRF name.
+
+                Default value: `"use_default_mgmt_method_vrf"`
+                """
+                source_interface: str | None
+                """
+                Local interface used to connect to TerminAttr on EOS.
+                If not set, the local interface may be set
+                automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+                `use_default_mgmt_method_vrf`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        name: str | UndefinedType = Undefined,
+                        vrf: str | UndefinedType = Undefined,
+                        source_interface: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ExportToCloudvision.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled:
+                               When set to `true`, AVD automatically:
+                               - Configures an flow tracking at `127.0.0.1` port `4739` in
+                               the VRF determined by `export_to_cloudvision.vrf`.
+                               - Configures the TerminAttr daemon (`daemon
+                               terminattr`) to export flow tracking to the same `export_to_cloudvision.vrf/127.0.0.1:4739` in the
+                               selected VRF.
+                            name: name
+                            vrf:
+                               VRF name.
+                               The value will be interpreted according to these rules:
+                               - `use_mgmt_interface_vrf` will
+                               configure under the VRF set with `mgmt_interface_vrf`.
+                                 An error will be raised if `mgmt_ip` or
+                               `ipv6_mgmt_ip` are not configured for the device.
+                               - `use_inband_mgmt_vrf` will configure under the
+                               VRF set with `inband_mgmt_vrf`.
+                                 An error will be raised if inband management is not configured for
+                               the device.
+                               - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of
+                               the two options above depending on the value of `default_mgmt_method`.
+                               - Any other string will be
+                               used directly as the VRF name.
+                            source_interface:
+                               Local interface used to connect to TerminAttr on EOS.
+                               If not set, the local interface may be set
+                               automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+                               `use_default_mgmt_method_vrf`.
+
+                        """
+
             class ExportersItem(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -18064,6 +18159,7 @@ class EosDesigns(EosDesignsRootModel):
                 "name": {"type": str},
                 "sampled": {"type": Sampled},
                 "record_export": {"type": RecordExport},
+                "export_to_cloudvision": {"type": ExportToCloudvision},
                 "exporters": {"type": Exporters},
             }
             name: str
@@ -18076,6 +18172,12 @@ class EosDesigns(EosDesignsRootModel):
             """
             record_export: RecordExport
             """Subclass of AvdModel."""
+            export_to_cloudvision: ExportToCloudvision
+            """
+            Enables automatic flow tracking export to CloudVision.
+
+            Subclass of AvdModel.
+            """
             exporters: Exporters
             """Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`)."""
 
@@ -18087,6 +18189,7 @@ class EosDesigns(EosDesignsRootModel):
                     name: str | UndefinedType = Undefined,
                     sampled: Sampled | UndefinedType = Undefined,
                     record_export: RecordExport | UndefinedType = Undefined,
+                    export_to_cloudvision: ExportToCloudvision | UndefinedType = Undefined,
                     exporters: Exporters | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -18102,6 +18205,10 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         record_export: Subclass of AvdModel.
+                        export_to_cloudvision:
+                           Enables automatic flow tracking export to CloudVision.
+
+                           Subclass of AvdModel.
                         exporters: Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`).
 
                     """
