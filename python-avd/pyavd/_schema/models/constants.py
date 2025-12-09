@@ -5,7 +5,6 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
 EOS_CLI_CONFIG_GEN_ROLE_KEYS = {
     "eos_cli_config_gen_documentation",
-    "avd_data_validation_mode",
     "custom_templates",
     "eos_cli_config_gen_configuration",
 }

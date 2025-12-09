@@ -61,8 +61,8 @@
 
 ##### IPv4 Subnets
 
-| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | ---- | ----------- | --------------- | ---------- | ------ |
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ | ------------------------------ | ---------------------------- | ---------------------------- |
 {%                     for subnet in dhcp_server.ipv4_subnets | arista.avd.natural_sort("subnet") %}
 {%                         set subnet_dns_servers = subnet.dns_servers | arista.avd.default(["-"]) | join(", ") %}
 {%                         if subnet.lease_time.days is arista.avd.defined
@@ -81,7 +81,10 @@
 {%                         else %}
 {%                             set subnet_ranges = ["-"] %}
 {%                         endif %}
-| {{ subnet.subnet }} | {{ subnet.name | arista.avd.default("-") }} | {{ subnet_dns_servers }} | {{ subnet_default_gw }} | {{ subnet_lease_time }} | {{ subnet_ranges | join(", ") }} |
+{%                         set subnet_tftp_server_file = subnet.tftp_server.file | arista.avd.default("-") %}
+{%                         set subnet_tftp_server_option_66 = subnet.tftp_server.option_66 | arista.avd.default("-") %}
+{%                         set subnet_tftp_server_option_150 = subnet.tftp_server.option_150 | arista.avd.default("-") | join(", ") %}
+| {{ subnet.subnet }} | {{ subnet.name | arista.avd.default("-") }} | {{ subnet_dns_servers }} | {{ subnet_default_gw }} | {{ subnet_lease_time }} | {{ subnet_ranges | join(", ") }} | {{ subnet_tftp_server_file }} | {{ subnet_tftp_server_option_66 }} | {{ subnet_tftp_server_option_150 }} |
 {%                     endfor %}
 {%                     for subnet in dhcp_server.ipv4_subnets | arista.avd.natural_sort("subnet") %}
 {%                         if subnet.reservations is arista.avd.defined %}
@@ -100,8 +103,8 @@
 
 ##### IPv6 Subnets
 
-| Subnet | Name | DNS Servers | Lease Time | Ranges |
-| ------ | ---- | ----------- | ---------- | ------ |
+| Subnet | Name | DNS Servers | Lease Time | Ranges | IPv6 TFTP Bootfile URL (Option 59) |
+| ------ | ---- | ----------- | ---------- | ------ | ---------------------------------- |
 {%                     for subnet in dhcp_server.ipv6_subnets | arista.avd.natural_sort %}
 {%                         set subnet_dns_servers = subnet.dns_servers | arista.avd.default(["-"]) | join(", ") %}
 {%                         if subnet.lease_time.days is arista.avd.defined
@@ -119,7 +122,8 @@
 {%                         else %}
 {%                             set subnet_ranges = ["-"] %}
 {%                         endif %}
-| {{ subnet.subnet }} | {{ subnet.name | arista.avd.default("-") }} | {{ subnet_dns_servers }} | {{ subnet_lease_time }} | {{ subnet_ranges | join(", ") }} |
+{%                         set subnet_tftp_server_file = subnet.tftp_server.file | arista.avd.default("-") %}
+| {{ subnet.subnet }} | {{ subnet.name | arista.avd.default("-") }} | {{ subnet_dns_servers }} | {{ subnet_lease_time }} | {{ subnet_ranges | join(", ") }} | {{ subnet_tftp_server_file }} |
 {%                     endfor %}
 {%                     for subnet in dhcp_server.ipv6_subnets | arista.avd.natural_sort("subnet") %}
 {%                         if subnet.reservations is arista.avd.defined %}
