@@ -31,8 +31,8 @@
 {%         if ip_telnet_client.source_interface is arista.avd.defined %}
 | Telnet | default | {{ ip_telnet_client.source_interface }} |
 {%         endif %}
-{%         for ip_telnet_client_source_interface in ip_telnet_client.vrfs | arista.avd.natural_sort %}
-| Telnet | {{ ip_telnet_client_source_interface.name }} | {{ ip_telnet_client_source_interface.source_interface }} |
+{%         for vrf in ip_telnet_client.vrfs | arista.avd.natural_sort('name') %}
+| Telnet | {{ vrf.name }} | {{ vrf.source_interface }} |
 {%         endfor %}
 {%     endif %}
 {%     if ip_tftp_client_source_interfaces is arista.avd.defined %}
