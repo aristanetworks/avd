@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+from dataclasses import dataclass
 from hashlib import sha1
 from logging import getLogger
 from os import environ
@@ -30,6 +31,14 @@ if TYPE_CHECKING:
 
 LOGGER = getLogger(__name__)
 RECORDING_DIR = Path(__file__).parent / "api_recordings"
+
+
+@dataclass
+class CvEnvironment:
+    id: str
+    cv_server: str
+    cv_access_token: str
+    verify_certs: bool
 
 
 def mocked_cvdevices(hostnames: list[str] | None = None, device_count: int | None = None) -> list[CVDevice]:

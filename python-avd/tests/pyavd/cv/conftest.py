@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING
 from unittest.mock import patch
 
 import aristaproto
+import pytest
 import pytest_asyncio
 
 from pyavd._cv.client import CVClient
@@ -24,10 +25,10 @@ from tests.pyavd.cv.mockery import (
     recording_unary_unary,
 )
 
+from .mockery import CvEnvironment
+
 if TYPE_CHECKING:
     from collections.abc import AsyncGenerator
-
-    import pytest
 
 
 LOGGER = getLogger(__name__)
@@ -90,3 +91,37 @@ async def cv_client(request: pytest.FixtureRequest) -> AsyncGenerator[CVClient, 
         aristaproto.grpc.grpclib_client.ServiceStub._unary_unary = aristaproto.grpc.grpclib_client.ServiceStub._org_unary_unary
         aristaproto.grpc.grpclib_client.ServiceStub._unary_stream = aristaproto.grpc.grpclib_client.ServiceStub._org_unary_stream
         return
+
+
+@pytest.fixture(scope="session", params=["PRD", "STG", "ONPREM"])
+def cv_environment(request: pytest.FixtureRequest) -> CvEnvironment:
+    """
+    Fixture that loads environment variables and returns a CvEnvironment dataclass instance.
+
+    Raises:
+        pytest.UsageError if specific CV environment must be tested but related env variables are not set.
+    """
+    env_prefix: str = request.param
+
+    cv_server = environ.get(f"CV_{env_prefix}_SERVER")
+    cv_access_token = environ.get(f"CV_{env_prefix}_ACCESS_TOKEN")
+
+    err_msg = (
+        "Mandatory environment variable '{missing_variable}' for CV_{env_prefix} is missing or is set to an empty string. "
+        "Please properly set all required env variables to run tests against CV_{env_prefix} environment."
+    )
+    if not cv_server or cv_server.strip() == "":
+        msg = err_msg.format(missing_variable=f"CV_{env_prefix}_SERVER", env_prefix=env_prefix)
+        raise pytest.UsageError(msg)
+    if not cv_access_token or cv_access_token.strip() == "":
+        msg = err_msg.format(missing_variable=f"CV_{env_prefix}_ACCESS_TOKEN", env_prefix=env_prefix)
+        raise pytest.UsageError(msg)
+
+    verify_certs: bool = env_prefix != "ONPREM"
+
+    return CvEnvironment(
+        id=f"CVAAS_{env_prefix}",
+        cv_server=cv_server.strip(),
+        cv_access_token=cv_access_token.strip(),
+        verify_certs=verify_certs,
+    )
