@@ -6,7 +6,7 @@
 HASH_INPUT_TYPE = ["sha512_password"]
 
 
-def sha512_hash(clear_password: str, salt: str) -> str:
+def sha512_password(clear_password: str, salt: str) -> str:
     """
     Generate a SHA-512 password hash from a cleartext password for a local user.
 
@@ -51,4 +51,4 @@ def secure_hash(user_input: str, salt: str, hash_type: str = "sha512_password") 
         msg = f"The hash_type key does not support the value '{hash_type}'. The value used with hash_type must be one of {HASH_INPUT_TYPE}"
         raise ValueError(msg)
 
-    return sha512_hash(user_input, salt)
+    return sha512_password(user_input, salt)
