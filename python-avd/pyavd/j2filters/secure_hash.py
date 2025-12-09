@@ -27,12 +27,9 @@ def sha512_hash(clear_password: str, salt: str) -> str:
     try:
         # setting the rounds parameter to 5000 to omit rounds from the hash string, similar to EOS implementation
         return sha512_crypt(clear_password, salt)
-    except TypeError as exc:
-        msg = f"SHA-512 password hashing failed - check the input parameters of arista.avd.secure_hash: {exc}"
-        raise TypeError(msg) from exc
     except Exception as exc:
-        msg = "SHA-512 password hashing failed - check the input parameters of arista.avd.secure_hash"
-        raise ValueError(msg) from exc
+        msg = f"SHA-512 password hashing failed - check the input parameters of arista.avd.secure_hash: {exc}"
+        raise type(exc)(msg) from exc
 
 
 def secure_hash(user_input: str, salt: str, hash_type: str = "sha512_password") -> str:
