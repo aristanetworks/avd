@@ -30,6 +30,7 @@ class DaemonTerminattrMixin(Protocol):
         The schema will enforce that we only use either new or old models.
         """
         cv_settings = self.inputs.cv_settings
+        sflow_settings = self.inputs.sflow_settings
         flow_tracking_settings = self.inputs.flow_tracking_settings
 
         if not cv_settings:
@@ -40,6 +41,14 @@ class DaemonTerminattrMixin(Protocol):
                         " Please configure 'cv_settings' when enabling 'flow_tracking_settings.export_to_cloudvision.enabled'."
                     )
                     raise AristaAvdInvalidInputsError(msg)
+
+            if sflow_settings.export_to_cloudvision.enabled:
+                msg = (
+                    "CloudVision export is enabled for sFlow, but 'cv_settings' is not defined."
+                    " Please configure 'cv_settings' when enabling 'sflow_settings.export_to_cloudvision.enabled'."
+                )
+                raise AristaAvdInvalidInputsError(msg)
+
             return
 
         for tracker in flow_tracking_settings.trackers:
@@ -61,6 +70,10 @@ class DaemonTerminattrMixin(Protocol):
             smashexcludes=cv_settings.terminattr.smashexcludes,
             disable_aaa=cv_settings.terminattr.disable_aaa,
         )
+
+        if sflow_settings.export_to_cloudvision.enabled:
+            sflow_vrf = self.shared_utils.get_vrf(sflow_settings.export_to_cloudvision.vrf, context="sflow_settings.export_to_cloudvision.vrf")
+            self.structured_config.daemon_terminattr.sflowaddr = f"{sflow_vrf}/127.0.0.1:6343"
 
         if len(clusters) == 1:
             # Only one cluster so we add it with general terminattr config.
