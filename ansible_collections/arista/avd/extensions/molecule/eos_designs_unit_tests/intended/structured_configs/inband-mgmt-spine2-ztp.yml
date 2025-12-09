@@ -25,8 +25,8 @@ dhcp_servers:
       - 2.2.2.55
   ipv4_subnets:
   - subnet: 172.16.255.2/31
-    name: inband ztp for inband-mgmt-parent-Ethernet2
     default_gateway: 172.16.255.2
+    name: inband ztp for inband-mgmt-parent-Ethernet2
     ranges:
     - start: 172.16.255.3
       end: 172.16.255.3

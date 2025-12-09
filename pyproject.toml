@@ -23,7 +23,7 @@ dev = [
     "pylint>=3.2.6",
     "pre-commit>=3.2.0",
     "pre-commit-hooks>=3.3.0",
-    "ruff==0.14.7",
+    "ruff==0.14.8",
     "tox>4",
     "twine>=6.2.0",
     "yamllint>=1.37.1",
@@ -244,7 +244,7 @@ exclude_also = [
 
 [tool.bumpversion]
 
-current_version = "6.0.0-dev3"
+current_version = "6.0.0-dev4"
 
 allow_dirty = true
 commit = false
@@ -275,11 +275,6 @@ optional_value = "final"
 filename = "ansible_collections/arista/avd/galaxy.yml"
 search = "version: {current_version}"
 replace = "version: {new_version}"
-
-[[tool.bumpversion.files]]
-filename = "Cargo.toml"
-search = 'package.version = "{current_version}"'
-replace = 'package.version = "{new_version}"'
 
 ### Bumping version using PEP440 style like x.y.z.dev1
 
