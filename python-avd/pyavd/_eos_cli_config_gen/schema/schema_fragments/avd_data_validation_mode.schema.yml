@@ -15,7 +15,7 @@ keys:
     description: |
       Validation Mode for AVD input data validation.
       Input data validation will validate the input variables according to the schema.
-      During validation, messages will generated with information about the host(s) and key(s) which failed validation.
+      During validation, messages will be generated with information about the host(s) and key(s) which failed validation.
       "error" will produce error messages and fail the task.
       "warning" will produce warning messages.
     deprecation:
