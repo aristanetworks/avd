@@ -3,30 +3,33 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from anta.input_models.routing.bgp import BgpPeer
 from anta.tests.routing.bgp import VerifyBGPPeerSession
 
+from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory[VerifyBGPPeerSession.Input]):
     """
     Input factory class for the `VerifyBGPPeerSession` test.
 
-    This factory generates test inputs for BGP peer session verification.
+    Generates inputs for BGP peer session verification. For all VRFs, collects BGP neighbors and
+    neighbor interfaces (RFC5549) that are neither directly shutdown nor part of a shutdown peer group.
 
-    It collects BGP neighbors and neighbor interfaces (RFC5549) that are not directly
-    shutdown or not in shutdown peer groups from the default VRF. If `allow_bgp_vrfs`
-    is enabled in the input factory settings, it will also include BGP neighbors in VRFs.
-
-    When a fabric `peer` is provided in the neighbor structured config, the factory verifies
-    that the peer is available (`is_deployed: true`) before including it in the test inputs.
+    It also considers the `metadata.validate_state` knob and when `metadata.peer` is provided,
+    ensures that the peer is available (`is_deployed: true`) before including it in the test inputs.
     """
 
-    def create(self) -> list[VerifyBGPPeerSession.Input] | None:
-        """Create a list of inputs for the `VerifyBGPPeerSession` test."""
+    def create(self) -> Iterator[VerifyBGPPeerSession.Input]:
+        """Generate the inputs for the `VerifyBGPPeerSession` test."""
         bgp_peers = natural_sort(
             [
                 BgpPeer(
@@ -52,4 +55,8 @@ class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory[VerifyBGPPeerSession
             )
         )
 
-        return [VerifyBGPPeerSession.Input(bgp_peers=bgp_peers)] if bgp_peers else None
+        if not bgp_peers:
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
+            return
+
+        yield VerifyBGPPeerSession.Input(bgp_peers=bgp_peers)
