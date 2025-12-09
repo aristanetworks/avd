@@ -27,13 +27,13 @@ ip nat translation max-entries {{ ip_nat.translation.max_entries.host_limit }} h
 {%     if ip_nat.translation.low_mark.host_percentage is arista.avd.defined %}
 ip nat translation low-mark {{ ip_nat.translation.low_mark.host_percentage }} host
 {%     endif %}
-{%     for ip_limit in ip_nat.translation.max_entries.ip_limits | arista.avd.default([]) %}
+{%     for ip_limit in ip_nat.translation.max_entries.ip_limits | arista.avd.natural_sort("ip") %}
 ip nat translation max-entries {{ ip_limit.limit }} {{ ip_limit.ip }}
 {%     endfor %}
 {%     if ip_nat.kernel_buffer_size is arista.avd.defined %}
 ip nat kernel buffer size {{ ip_nat.kernel_buffer_size }}
 {%     endif %}
-{%     for profile in ip_nat.profiles | arista.avd.natural_sort("name") %}
+{%     for profile in ip_nat.profiles | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 !
 {%         set nat_profile_def = "ip nat profile " ~ profile.name %}
 {%         if profile.vrf is arista.avd.defined %}

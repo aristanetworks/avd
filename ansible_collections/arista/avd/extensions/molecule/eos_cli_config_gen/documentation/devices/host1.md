@@ -11876,12 +11876,6 @@ ACL has counting mode `counters per-entry` enabled!
 
 ```eos
 !
-ipv6 access-list acl_qos_tc0_v6
-   10 permit ipv6 any any dscp cs1
-!
-ipv6 access-list acl_qos_tc5_v6
-   10 permit ipv6 any 2001:db8::/48
-!
 ipv6 access-list TEST1
    5 deny ipv6 fe80::/64 any
    10 permit ipv6 fe90::/64 any
@@ -11894,6 +11888,12 @@ ipv6 access-list TEST2
 ipv6 access-list TEST3
    5 deny ipv6 2001:db8:1000::/64 any
    10 permit ipv6 2001:db8::/32 any
+!
+ipv6 access-list acl_qos_tc0_v6
+   10 permit ipv6 any any dscp cs1
+!
+ipv6 access-list acl_qos_tc5_v6
+   10 permit ipv6 any 2001:db8::/48
 ```
 
 ### MAC Access-lists
@@ -12975,7 +12975,7 @@ NAT profile VRF is: TEST
 | --------- | --------- | ------------- | ------------------------- | ----------------------- | ---------------- |
 | port_only_1 | port-only | - | - | - | - |
 | port_only_2 | port-only | - | - | - | 1024-65535 |
-| prefix_16 | ip-port | 16 | 91 | 10.0.0.1-10.0.255.254<br>10.1.0.0-10.1.255.255 | -<br>1024-65535 |
+| prefix_16 | ip-port | 16 | 91 | 10.0.0.1-10.0.255.254<br>10.1.0.0-10.1.255.255<br>10.2.0.1-10.2.255.254 | -<br>1024-65535<br>-65535 |
 | prefix_21 | ip-port | 21 | - | - | - |
 | prefix_24 | ip-port | 24 | 100 | - | - |
 | prefix_32 | ip-port | 32 | - | 10.2.0.1-10.2.0.1<br>10.2.0.2-10.2.0.2 | 1024-65535<br>- |
@@ -13003,6 +13003,7 @@ NAT profile VRF is: TEST
 | per Host Connection Limit | max. 1000 Connections |
 | IP Host 10.0.0.1 Connection Limit | max. 100 Connections |
 | IP Host 10.0.0.2 Connection Limit | max. 200 Connections |
+| IP Host 9.0.0.1 Connection Limit | max. 300 Connections |
 | Global Connection Limit Low Mark | 50 % |
 | per Host Connection Limit Low Mark | 50 % |
 | UDP Connection Timeout | 3600 Seconds |
@@ -13020,6 +13021,7 @@ ip nat translation max-entries 100000
 ip nat translation low-mark 50
 ip nat translation max-entries 1000 host
 ip nat translation low-mark 50 host
+ip nat translation max-entries 300 9.0.0.1
 ip nat translation max-entries 100 10.0.0.1
 ip nat translation max-entries 200 10.0.0.2
 ip nat kernel buffer size 64
@@ -13063,14 +13065,15 @@ ip nat profile NAT-PROFILE-TEST-VRF vrf TEST
 !
 ip nat pool prefix_16 prefix-length 16
    range 10.0.0.1 10.0.255.254
+   range 10.2.0.1 10.2.255.254
    range 10.1.0.0 10.1.255.255 1024 65535
    utilization threshold 91 action log
 ip nat pool prefix_21 prefix-length 21
 ip nat pool prefix_24 prefix-length 24
    utilization threshold 100 action log
 ip nat pool prefix_32 prefix-length 32
-   range 10.2.0.1 10.2.0.1 1024 65535
    range 10.2.0.2 10.2.0.2
+   range 10.2.0.1 10.2.0.1 1024 65535
 ip nat pool prefix_32_without_ip prefix-length 32
 ip nat pool port_only_1 port-only
 ip nat pool port_only_2 port-only
