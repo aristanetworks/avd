@@ -6815,18 +6815,18 @@ keys:
         vrf:
           type: str
           description: VRF Name.
+  ip_tftp_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/ip_client
   ip_tftp_client_source_interfaces:
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          required: true
-          description: Interface Name.
-        vrf:
-          type: str
-          description: VRF Name.
+    documentation_options:
+      table: ip-tftp-client
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+      new_key: ip_tftp_client
   ip_virtual_router_mac_address:
     type: str
     description: MAC address (hh:hh:hh:hh:hh:hh).
@@ -25479,3 +25479,21 @@ $defs:
           min: 1
           max: 65535
           description: requires 'original_port'.
+  ip_client:
+    type: dict
+    keys:
+      source_interface:
+        type: str
+        description: Define `source_interface` for VRF default.
+      vrfs:
+        type: list
+        primary_key: name
+        description: Define vrfs for any VRF other than default.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            source_interface:
+              type: str
+              required: true

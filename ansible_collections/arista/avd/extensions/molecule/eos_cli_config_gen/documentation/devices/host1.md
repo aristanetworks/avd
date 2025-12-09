@@ -894,9 +894,9 @@ management tech-support
 | Telnet | default | Ethernet10 |
 | Telnet | default | Loopback0 |
 | Telnet | MGMT | Management0 |
-| TFTP | default | Ethernet10 |
 | TFTP | default | Loopback0 |
 | TFTP | MGMT | Management0 |
+| TFTP | data | Ethernet10 |
 
 #### IP Client Source Interfaces Device Configuration
 
@@ -914,9 +914,9 @@ ip ssh client source-interface Management0 vrf MGMT
 ip telnet client source-interface Ethernet10
 ip telnet client source-interface Loopback0 vrf default
 ip telnet client source-interface Management0 vrf MGMT
-ip tftp client source-interface Ethernet10
-ip tftp client source-interface Loopback0 vrf default
+ip tftp client source-interface Loopback0
 ip tftp client source-interface Management0 vrf MGMT
+ip tftp client source-interface Ethernet10 vrf data
  ```
 
 ### Management Accounts
