@@ -38,7 +38,7 @@ class DaemonTerminattrMixin(Protocol):
                 if tracker.export_to_cloudvision.enabled:
                     msg = (
                         "CloudVision export is enabled for flow_tracking_settings, but 'cv_settings' is not defined."
-                        " Please configure 'cv_settings' when enabling 'flow_tracking_settings.export_to_cloudvision.enabled'."
+                        " Please configure 'cv_settings' when enabling 'flow_tracking_settings.trackers[].export_to_cloudvision.enabled'."
                     )
                     raise AristaAvdInvalidInputsError(msg)
 
