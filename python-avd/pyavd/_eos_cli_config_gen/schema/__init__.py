@@ -4507,15 +4507,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "subnet": {"type": str},
+                "default_gateway": {"type": str},
                 "reservations": {"type": Reservations},
                 "name": {"type": str},
-                "default_gateway": {"type": str},
                 "dns_servers": {"type": DnsServers},
                 "ranges": {"type": Ranges},
                 "lease_time": {"type": LeaseTime},
             }
             subnet: str
             """IPv4 subnet."""
+            default_gateway: str | None
             reservations: Reservations
             """
             DHCP client reservations.
@@ -4524,7 +4525,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             `mac_address` (`str`).
             """
             name: str | None
-            default_gateway: str | None
             dns_servers: DnsServers
             """Subclass of AvdList with `str` items."""
             ranges: Ranges
@@ -4538,9 +4538,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     subnet: str | UndefinedType = Undefined,
+                    default_gateway: str | None | UndefinedType = Undefined,
                     reservations: Reservations | UndefinedType = Undefined,
                     name: str | None | UndefinedType = Undefined,
-                    default_gateway: str | None | UndefinedType = Undefined,
                     dns_servers: DnsServers | UndefinedType = Undefined,
                     ranges: Ranges | UndefinedType = Undefined,
                     lease_time: LeaseTime | UndefinedType = Undefined,
@@ -4553,13 +4553,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         subnet: IPv4 subnet.
+                        default_gateway: default_gateway
                         reservations:
                            DHCP client reservations.
 
                            Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
                            `mac_address` (`str`).
                         name: name
-                        default_gateway: default_gateway
                         dns_servers: Subclass of AvdList with `str` items.
                         ranges: Subclass of AvdList with `RangesItem` items.
                         lease_time: Subclass of AvdModel.
@@ -4677,7 +4677,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "subnet": {"type": str},
                 "reservations": {"type": Reservations},
                 "name": {"type": str},
-                "default_gateway": {"type": str},
                 "dns_servers": {"type": DnsServers},
                 "ranges": {"type": Ranges},
                 "lease_time": {"type": LeaseTime},
@@ -4692,7 +4691,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             `mac_address` (`str`).
             """
             name: str | None
-            default_gateway: str | None
             dns_servers: DnsServers
             """Subclass of AvdList with `str` items."""
             ranges: Ranges
@@ -4708,7 +4706,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     subnet: str | UndefinedType = Undefined,
                     reservations: Reservations | UndefinedType = Undefined,
                     name: str | None | UndefinedType = Undefined,
-                    default_gateway: str | None | UndefinedType = Undefined,
                     dns_servers: DnsServers | UndefinedType = Undefined,
                     ranges: Ranges | UndefinedType = Undefined,
                     lease_time: LeaseTime | UndefinedType = Undefined,
@@ -4727,7 +4724,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
                            `mac_address` (`str`).
                         name: name
-                        default_gateway: default_gateway
                         dns_servers: Subclass of AvdList with `str` items.
                         ranges: Subclass of AvdList with `RangesItem` items.
                         lease_time: Subclass of AvdModel.
@@ -9868,12 +9864,59 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             ApplicationOverrideLanes._item_type = ApplicationOverrideLanesItem
 
+            class Power(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ignore": {"type": bool}}
+                ignore: bool | None
+                """Ignore advertised transceiver power consumption."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ignore: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        Power.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ignore: Ignore advertised transceiver power consumption.
+
+                        """
+
+            class Transmitter(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"signal_power": {"type": str}, "disabled": {"type": bool}}
+                signal_power: str | None
+                """Optical signal power between < -30 and 10 > (dBm)."""
+                disabled: bool | None
+                """Disable the optical transmitter."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, signal_power: str | None | UndefinedType = Undefined, disabled: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        Transmitter.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            signal_power: Optical signal power between < -30 and 10 > (dBm).
+                            disabled: Disable the optical transmitter.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "frequency": {"type": str},
                 "frequency_unit": {"type": str},
                 "media": {"type": Media},
                 "application_override": {"type": str},
                 "application_override_lanes": {"type": ApplicationOverrideLanes},
+                "power": {"type": Power},
+                "transmitter": {"type": Transmitter},
             }
             frequency: str | None
             """Transceiver Laser Frequency in GHz (min 190000, max 200000)."""
@@ -9894,6 +9937,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of
             AvdList with `ApplicationOverrideLanesItem` items.
             """
+            power: Power
+            """Subclass of AvdModel."""
+            transmitter: Transmitter
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -9905,6 +9952,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     media: Media | UndefinedType = Undefined,
                     application_override: ApplicationOverride | None | UndefinedType = Undefined,
                     application_override_lanes: ApplicationOverrideLanes | UndefinedType = Undefined,
+                    power: Power | UndefinedType = Undefined,
+                    transmitter: Transmitter | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Transceiver.
@@ -9925,6 +9974,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of
                            AvdList with `ApplicationOverrideLanesItem` items.
+                        power: Subclass of AvdModel.
+                        transmitter: Subclass of AvdModel.
 
                     """
 
