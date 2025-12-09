@@ -883,8 +883,8 @@ management tech-support
 | IP Client | VRF | Source Interface Name |
 | --------- | --- | --------------------- |
 | FTP | default | Loopback0 |
-| FTP | abc | Ethernet10 |
 | FTP | MGMT | Management0 |
+| FTP | abc | Ethernet10 |
 | HTTP | default | Loopback0 |
 | HTTP | MGMT | Management0 |
 | HTTP | default | Ethernet10 |
