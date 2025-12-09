@@ -14,8 +14,8 @@
 {%         if ip_ftp_client.source_interface is arista.avd.defined %}
 | FTP | default | {{ ip_ftp_client.source_interface }} |
 {%         endif %}
-{%         for ip_ftp_client_source_interface in ip_ftp_client.vrfs | arista.avd.natural_sort %}
-| FTP | {{ ip_ftp_client_source_interface.name }} | {{ ip_ftp_client_source_interface.source_interface }} |
+{%         for vrf in ip_ftp_client.vrfs | arista.avd.natural_sort('name') %}
+| FTP | {{ vrf.name }} | {{ vrf.source_interface }} |
 {%         endfor %}
 {%     endif %}
 {%     if ip_http_client_source_interfaces is arista.avd.defined %}
