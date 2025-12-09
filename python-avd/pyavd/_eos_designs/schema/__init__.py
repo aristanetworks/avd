@@ -28953,12 +28953,10 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"}}
             enabled: bool | None
             """
-            When set to `true`, AVD automatically:
-            - Configures an sFlow destination at `127.0.0.1` port `6343`
-            in the VRF determined by `export_to_cloudvision.vrf`.
-            - Configures the TerminAttr daemon (`daemon
-            terminattr`) to export sFlow to the same `export_to_cloudvision.vrf/127.0.0.1:6343` in the selected
-            VRF.
+            Configures an sFlow destination for `127.0.0.1` port `6343` in the VRF defined in
+            `export_to_cloudvision.vrf`.
+            Also configures the TerminAttr daemon to export sFlow to this
+            destination.
             """
             vrf: str
             """
@@ -28993,12 +28991,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled:
-                           When set to `true`, AVD automatically:
-                           - Configures an sFlow destination at `127.0.0.1` port `6343`
-                           in the VRF determined by `export_to_cloudvision.vrf`.
-                           - Configures the TerminAttr daemon (`daemon
-                           terminattr`) to export sFlow to the same `export_to_cloudvision.vrf/127.0.0.1:6343` in the selected
-                           VRF.
+                           Configures an sFlow destination for `127.0.0.1` port `6343` in the VRF defined in
+                           `export_to_cloudvision.vrf`.
+                           Also configures the TerminAttr daemon to export sFlow to this
+                           destination.
                         vrf:
                            VRF Name.
                            The value of `vrf` will be interpreted according to these rules:
