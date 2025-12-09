@@ -9,6 +9,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.constants import CV_REGION_TO_SERVER_MAP
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._errors import AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigBaseProtocol
@@ -28,7 +29,16 @@ class DaemonTerminattrMixin(Protocol):
 
         The schema will enforce that we only use either new or old models.
         """
-        if not (cv_settings := self.inputs.cv_settings):
+        cv_settings = self.inputs.cv_settings
+        sflow_settings = self.inputs.sflow_settings
+
+        if not cv_settings:
+            if sflow_settings.export_to_cloudvision.enabled:
+                msg = (
+                    "CloudVision export is enabled for sFlow, but 'cv_settings' is not defined."
+                    " Please configure 'cv_settings' when enabling 'sflow_settings.export_to_cloudvision.enabled'."
+                )
+                raise AristaAvdInvalidInputsError(msg)
             return
 
         clusters: list[EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem] = (
@@ -45,6 +55,10 @@ class DaemonTerminattrMixin(Protocol):
             smashexcludes=cv_settings.terminattr.smashexcludes,
             disable_aaa=cv_settings.terminattr.disable_aaa,
         )
+
+        if sflow_settings.export_to_cloudvision.enabled:
+            sflow_vrf = self.shared_utils.get_vrf(sflow_settings.export_to_cloudvision.vrf, context="sflow_settings.export_to_cloudvision.vrf")
+            self.structured_config.daemon_terminattr.sflowaddr = f"{sflow_vrf}/127.0.0.1:6343"
 
         if len(clusters) == 1:
             # Only one cluster so we add it with general terminattr config.
