@@ -2631,12 +2631,11 @@ keys:
                   type: bool
                   description: 'When set to `true`, AVD automatically:
 
-                    - Configures an flow tracking at `127.0.0.1` port `4739` in the
-                    VRF determined by `export_to_cloudvision.vrf`.
+                    Configure an Flow tracking for `127.0.0.1` port `4739` in the
+                    VRF defined in `export_to_cloudvision.vrf`.
 
-                    - Configures the TerminAttr daemon (`daemon terminattr`) to export
-                    flow tracking to the same `export_to_cloudvision.vrf/127.0.0.1:4739`
-                    in the selected VRF.'
+                    Also configures the TerminAttr daemon to export sFlow to this
+                    destination.'
                 name:
                   type: str
                   default: CLOUDVISION
