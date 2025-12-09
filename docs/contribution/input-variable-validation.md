@@ -44,27 +44,12 @@ is also given in the inputs, there is a conflict leading to validation error to 
 
 If a removed key is set in the inputs, a validation error will be raised and the task will fail.
 
-## Validation Options
+## Input Variables Validation
 
 Schema validation is built in to the central Action plugins used in AVD. Each plugin runs variable type conversion first and then
 performs validation of the converted data.
 
-By default any data validation issues will trigger errors - blocking further processing.
-This behavior can be adjusted by setting the variables described below.
-
-!!! danger
-    The input variable `avd_data_validation_mode` now has a default value of `error`, and while it can be set to `warning`, this is highly discouraged.
-    All AVD code relies on the validation to ensure valid data, so the code assumes that the data is valid.
-
-    If the validation mode is set to `warning`, execution will continue with invalid data, which can lead to hard-to-read errors or incorrect behavior.
-
-```yaml
-# Validation Mode for AVD input data validation | Optional
-# During validation, messages will generated with information about the host(s) and key(s) which failed validation.
-# "error" will produce error messages and fail the task.
-# "warning" will produce warning messages.
-avd_data_validation_mode: < "error" | "warning" | default -> "error" >
-```
+Any data validation issues will trigger errors - blocking further processing.
 
 ## Schema Details
 
