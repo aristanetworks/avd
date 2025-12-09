@@ -25797,7 +25797,6 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
-            "kernel_ecmp_cli": {"type": bool, "default": True},
             "feature_support": {"type": FeatureSupport},
             "security_entropy_sources": {"type": SecurityEntropySources},
             "digital_twin": {"type": DigitalTwin},
@@ -25824,18 +25823,6 @@ class EosDesigns(EosDesignsRootModel):
         Set MTU on point to point uplink interfaces.
         Takes precedence over the root key "p2p_uplinks_mtu".
         <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
-        """
-        kernel_ecmp_cli: bool
-        """
-        Use EOS CLI to configure kernel forwarding ECMP programming.
-        For EOS kernel forwarding, ECMP
-        programming can be enabled in two different ways, depending on the EOS version.
-        - For newer EOS
-        versions (starting 4.33.2) use the proper CLI.
-        - For older EOS versions use an agent environment
-        variable. Changing this requires restarting the KernelFib agent.
-
-        Default value: `True`
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
@@ -25884,7 +25871,6 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 default_interface_mtu: int | None | UndefinedType = Undefined,
                 p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
-                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
@@ -25912,14 +25898,6 @@ class EosDesigns(EosDesignsRootModel):
                        Set MTU on point to point uplink interfaces.
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
-                    kernel_ecmp_cli:
-                       Use EOS CLI to configure kernel forwarding ECMP programming.
-                       For EOS kernel forwarding, ECMP
-                       programming can be enabled in two different ways, depending on the EOS version.
-                       - For newer EOS
-                       versions (starting 4.33.2) use the proper CLI.
-                       - For older EOS versions use an agent environment
-                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     security_entropy_sources:
                        Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
@@ -26568,7 +26546,6 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
-            "kernel_ecmp_cli": {"type": bool, "default": True},
             "feature_support": {"type": FeatureSupport},
             "security_entropy_sources": {"type": SecurityEntropySources},
             "digital_twin": {"type": DigitalTwin},
@@ -26595,18 +26572,6 @@ class EosDesigns(EosDesignsRootModel):
         Set MTU on point to point uplink interfaces.
         Takes precedence over the root key "p2p_uplinks_mtu".
         <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
-        """
-        kernel_ecmp_cli: bool
-        """
-        Use EOS CLI to configure kernel forwarding ECMP programming.
-        For EOS kernel forwarding, ECMP
-        programming can be enabled in two different ways, depending on the EOS version.
-        - For newer EOS
-        versions (starting 4.33.2) use the proper CLI.
-        - For older EOS versions use an agent environment
-        variable. Changing this requires restarting the KernelFib agent.
-
-        Default value: `True`
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
@@ -26655,7 +26620,6 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 default_interface_mtu: int | None | UndefinedType = Undefined,
                 p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
-                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
@@ -26683,14 +26647,6 @@ class EosDesigns(EosDesignsRootModel):
                        Set MTU on point to point uplink interfaces.
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
-                    kernel_ecmp_cli:
-                       Use EOS CLI to configure kernel forwarding ECMP programming.
-                       For EOS kernel forwarding, ECMP
-                       programming can be enabled in two different ways, depending on the EOS version.
-                       - For newer EOS
-                       versions (starting 4.33.2) use the proper CLI.
-                       - For older EOS versions use an agent environment
-                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     security_entropy_sources:
                        Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
