@@ -4445,6 +4445,51 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Reservations._item_type = ReservationsItem
 
+            class TftpServer(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Option150(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Option150._item_type = str
+
+                _fields: ClassVar[dict] = {"file": {"type": str}, "option_66": {"type": str}, "option_150": {"type": Option150}}
+                file: str | None
+                """Name of TFTP file for IPv4 clients."""
+                option_66: str | None
+                """IPv4 address or server FQDN for TFTP option 66."""
+                option_150: Option150
+                """
+                List of IPv4 addresses for TFTP option 150.
+
+                Subclass of AvdList with `str` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        file: str | None | UndefinedType = Undefined,
+                        option_66: str | None | UndefinedType = Undefined,
+                        option_150: Option150 | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        TftpServer.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            file: Name of TFTP file for IPv4 clients.
+                            option_66: IPv4 address or server FQDN for TFTP option 66.
+                            option_150:
+                               List of IPv4 addresses for TFTP option 150.
+
+                               Subclass of AvdList with `str` items.
+
+                        """
+
             class DnsServers(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -4507,6 +4552,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "subnet": {"type": str},
                 "default_gateway": {"type": str},
                 "reservations": {"type": Reservations},
+                "tftp_server": {"type": TftpServer},
                 "name": {"type": str},
                 "dns_servers": {"type": DnsServers},
                 "ranges": {"type": Ranges},
@@ -4522,6 +4568,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
             `mac_address` (`str`).
             """
+            tftp_server: TftpServer
+            """Subclass of AvdModel."""
             name: str | None
             dns_servers: DnsServers
             """Subclass of AvdList with `str` items."""
@@ -4538,6 +4586,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     subnet: str | UndefinedType = Undefined,
                     default_gateway: str | None | UndefinedType = Undefined,
                     reservations: Reservations | UndefinedType = Undefined,
+                    tftp_server: TftpServer | UndefinedType = Undefined,
                     name: str | None | UndefinedType = Undefined,
                     dns_servers: DnsServers | UndefinedType = Undefined,
                     ranges: Ranges | UndefinedType = Undefined,
@@ -4557,6 +4606,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
                            `mac_address` (`str`).
+                        tftp_server: Subclass of AvdModel.
                         name: name
                         dns_servers: Subclass of AvdList with `str` items.
                         ranges: Subclass of AvdList with `RangesItem` items.
@@ -4612,6 +4662,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _primary_key: ClassVar[str] = "mac_address"
 
             Reservations._item_type = ReservationsItem
+
+            class TftpServer(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"file": {"type": str}}
+                file: str | None
+                """Name of TFTP file for IPv6 clients."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, file: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        TftpServer.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            file: Name of TFTP file for IPv6 clients.
+
+                        """
 
             class DnsServers(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
@@ -4674,6 +4745,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "subnet": {"type": str},
                 "reservations": {"type": Reservations},
+                "tftp_server": {"type": TftpServer},
                 "name": {"type": str},
                 "dns_servers": {"type": DnsServers},
                 "ranges": {"type": Ranges},
@@ -4688,6 +4760,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
             `mac_address` (`str`).
             """
+            tftp_server: TftpServer
+            """Subclass of AvdModel."""
             name: str | None
             dns_servers: DnsServers
             """Subclass of AvdList with `str` items."""
@@ -4703,6 +4777,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     subnet: str | UndefinedType = Undefined,
                     reservations: Reservations | UndefinedType = Undefined,
+                    tftp_server: TftpServer | UndefinedType = Undefined,
                     name: str | None | UndefinedType = Undefined,
                     dns_servers: DnsServers | UndefinedType = Undefined,
                     ranges: Ranges | UndefinedType = Undefined,
@@ -4721,6 +4796,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
                            `mac_address` (`str`).
+                        tftp_server: Subclass of AvdModel.
                         name: name
                         dns_servers: Subclass of AvdList with `str` items.
                         ranges: Subclass of AvdList with `RangesItem` items.
