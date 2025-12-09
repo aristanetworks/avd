@@ -5,6 +5,6 @@ ip_telnet_client:
   vrfs:
     - source_interface: Loopback0
       name: data
-    - name: Management0
-      source_interface: MGMT
+    - name: MGMT
+      source_interface: Management0
   source_interface: Ethernet10
