@@ -14,10 +14,11 @@ ip nat pool {{ pool.name }} prefix-length {{ pool.prefix_length }}
 {%                 for range in pool.ranges | arista.avd.default([])
                     | selectattr("first_ip", "arista.avd.defined")
                     | selectattr("last_ip", "arista.avd.defined")
-                    | rejectattr("first_port", "arista.avd.defined")
-                    | rejectattr("last_port", "arista.avd.defined")
                     %}
+{# Only render if both first and last port are NOT set for backward compatibility #}
+{%                     if not (range.first_port is arista.avd.defined and range.last_port is arista.avd.defined) %}
    range {{ range.first_ip }} {{ range.last_ip }}
+{%                     endif %}
 {%                 endfor %}
 {# Then handle pools with first and last ip and first and last port #}
 {%                 for range in pool.ranges | arista.avd.default([])
