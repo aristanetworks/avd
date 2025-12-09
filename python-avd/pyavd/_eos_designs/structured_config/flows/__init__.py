@@ -111,11 +111,19 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
         # Validate and configure trackers
         for tracker_name in natural_sort(trackers):
             config = self._get_tracker_input_config(tracker_name)
-            self.structured_config.flow_tracking.hardware.trackers.append_new(
+            flow_tracking_hardware_tracker = self.structured_config.flow_tracking.hardware.trackers.append_new(
                 name=config.name,
                 record_export=config.record_export._cast_as(EosCliConfigGen.FlowTracking.Hardware.TrackersItem.RecordExport),
-                exporters=config.exporters._cast_as(EosCliConfigGen.FlowTracking.Hardware.TrackersItem.Exporters),
             )
+            for exporter in config.exporters:
+                local_interface = self.shared_utils.get_local_interface(exporter.local_interface)
+                flow_tracking_hardware_tracker.exporters.append_new(
+                    name=exporter.name,
+                    collectors=exporter.collectors._cast_as(EosCliConfigGen.FlowTracking.Hardware.TrackersItem.ExportersItem.Collectors),
+                    format=exporter.format._cast_as(EosCliConfigGen.FlowTracking.Hardware.TrackersItem.ExportersItem.Format),
+                    local_interface=local_interface,
+                    template_interval=exporter.template_interval,
+                )
 
     def _set_sampled_flow_tracking(self) -> None:
         """Set the structured configuration for sampled flow tracking if any interface is configured."""
@@ -149,12 +157,20 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
             record_export = config.record_export._cast_as(EosCliConfigGen.FlowTracking.Sampled.TrackersItem.RecordExport)
             record_export.mpls = config.sampled.record_export.mpls
 
-            self.structured_config.flow_tracking.sampled.trackers.append_new(
+            flow_tracking_sampled_tracker = self.structured_config.flow_tracking.sampled.trackers.append_new(
                 name=config.name,
                 record_export=record_export,
-                exporters=config.exporters._cast_as(EosCliConfigGen.FlowTracking.Sampled.TrackersItem.Exporters),
                 table_size=config.sampled.table_size,
             )
+            for exporter in config.exporters:
+                local_interface = self.shared_utils.get_local_interface(exporter.local_interface)
+                flow_tracking_sampled_tracker.exporters.append_new(
+                    name=exporter.name,
+                    collectors=exporter.collectors._cast_as(EosCliConfigGen.FlowTracking.Sampled.TrackersItem.ExportersItem.Collectors),
+                    format=exporter.format._cast_as(EosCliConfigGen.FlowTracking.Sampled.TrackersItem.ExportersItem.Format),
+                    local_interface=local_interface,
+                    template_interval=exporter.template_interval,
+                )
 
     def _get_tracker_input_config(self, tracker_name: str) -> EosDesigns.FlowTrackingSettings.TrackersItem:
         """
