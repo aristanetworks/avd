@@ -63,17 +63,6 @@ options:
       - Ignored for ansible-core versions >= 2.19, since it is no longer needed.
     required: false
     type: bool
-  validation_mode:
-    description:
-      - Run validation in either "error" or "warning" mode.
-      - Validation will validate the input variables according to the schema.
-      - During validation, messages will be generated with information about the host(s) and key(s) which failed validation.
-      - validation_mode:error will produce error messages and fail the task.
-      - validation_mode:warning will produce warning messages.
-    required: false
-    default: "error"
-    type: str
-    choices: [ "error", "warning" ]
   cprofile_file:
     description:
       - Filename for storing cprofile data used to debug performance issues.
