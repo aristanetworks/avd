@@ -6005,17 +6005,8 @@ keys:
                 type: str
                 required: true
                 description: Regular Expression.
-  ip_ftp_client_source_interfaces:
-    type: list
-    deprecation:
-      warning: true
-      removed: true
-      remove_in_version: 6.0.0
-      new_key: ip_ftp_client
   ip_ftp_client:
     type: dict
-    documentation_options:
-      table: ip-ftp-client-source-interfaces
     keys:
       source_interface:
         type: str
@@ -6032,6 +6023,15 @@ keys:
             source_interface:
               type: str
               description: Interface Name.
+  ip_ftp_client_source_interfaces:
+    documentation_options:
+      table: ip-ftp-client
+    type: list
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+      new_key: ip_ftp_client
   ip_hardware:
     type: dict
     keys:

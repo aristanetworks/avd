@@ -7,29 +7,11 @@
 type: dict
 keys:
   ip_ftp_client_source_interfaces:
+    documentation_options:
+      table: ip-ftp-client
     type: list
     deprecation:
       warning: true
       removed: true
       remove_in_version: 6.0.0
       new_key: ip_ftp_client
-  ip_ftp_client:
-    type: dict
-    documentation_options:
-      table: ip-ftp-client-source-interfaces
-    keys:
-      source_interface:
-        type: str
-        description: Source interface name for default vrf.
-      vrfs:
-        type: list
-        primary_key: name
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: VRF Name.
-            source_interface:
-              type: str
-              description: Interface Name.
