@@ -12,7 +12,7 @@ from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
 from pyavd._utils.get import get_v2
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Mapping
+    from collections.abc import Callable, MutableMapping
     from typing import TypeVar
 
     from typing_extensions import Self
@@ -159,7 +159,7 @@ class StructuredConfigGenerator(AvdFacts, StructuredConfigGeneratorProtocol):
 
     def __init__(
         self,
-        hostvars: Mapping,
+        hostvars: MutableMapping,
         inputs: EosDesigns,
         facts: EosDesignsFacts,
         shared_utils: SharedUtilsProtocol,
