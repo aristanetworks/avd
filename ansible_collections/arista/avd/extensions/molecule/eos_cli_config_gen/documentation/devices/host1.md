@@ -7635,11 +7635,21 @@ ipv6 hardware fib optimize prefixes profile internet
 | TENANT_A_PROJECT01 | 10.3.6.0/24 | 11.2.1.1 (tracked with BFD) | Ethernet40 | 100 | 1000 | Track-BFD | 300 |
 | TENANT_A_PROJECT01 | 10.3.7.0/24 | - | Ethernet41 | 100 | 1000 | No-Track-BFD | 300 |
 | aaa | 10.3.8.0/24 | - | Null0 | 1 | - | - | - |
+| default | 1.1.1.0/24 | 2.2.2.2 | - | 1 | - | - | - |
+| default | 1.1.1.0/24 | 1.1.1.1 | - | 1 | - | - | - |
+| default | 1.1.1.0/24 | - | Ethernet1 | 1 | - | - | - |
+| default | 1.1.1.0/24 | - | Vlan2 | 1 | - | - | - |
+| default | 2.2.2.0/24 | 3.3.3.3 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
+ip route 1.1.1.0/24 Ethernet1
+ip route 1.1.1.0/24 Vlan2
+ip route 1.1.1.0/24 1.1.1.1
+ip route 1.1.1.0/24 2.2.2.2
+ip route 2.2.2.0/24 3.3.3.3
 ip route 1.1.1.0/24 Vlan1001 10.1.1.1
 ip route 1.1.2.0/24 Vlan1001 10.1.1.1 200 tag 666 name RT-TO-FAKE-DMZ
 ip route vrf BLUE-C1 193.1.0.0/24 Null0
