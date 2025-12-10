@@ -7,6 +7,7 @@
 {% if snmp_server is arista.avd.defined %}
 !
 {# TODO IPv4/IPv6 access list config order is not correct as per EOS #}
+{# TODO change the model for ipv4_acls and ipv6_acls to handle vrf default and handle the cli ordering #}
 {%     if snmp_server.ipv4_acls is arista.avd.defined %}
 {%         for acl in snmp_server.ipv4_acls %}
 {%             set acl_cli = "snmp-server ipv4 access-list " ~ acl.name %}
@@ -34,7 +35,6 @@ snmp-server contact {{ snmp_server.contact }}
 {%     if snmp_server.location is arista.avd.defined %}
 snmp-server location {{ snmp_server.location }}
 {%     endif %}
-{# TODO local interfaces config order is not correct as per EOS #}
 {%     if snmp_server.local_interfaces is arista.avd.defined %}
 {%         set without_vrf = snmp_server.local_interfaces | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort("name") %}
 {%         set with_vrf = snmp_server.local_interfaces | selectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort(sort_key="vrf", ignore_case=false) %}
