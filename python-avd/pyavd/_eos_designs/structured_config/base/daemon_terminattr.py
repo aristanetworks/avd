@@ -54,7 +54,7 @@ class DaemonTerminattrMixin(Protocol):
         for tracker in flow_tracking_settings.trackers:
             if tracker.export_to_cloudvision.enabled:
                 flow_tracking_vrf = self.shared_utils.get_vrf(tracker.export_to_cloudvision.vrf, context="flow_tracking_settings.export_to_cloudvision.vrf")
-                self.structured_config.daemon_terminattr.sflowaddr = f"{flow_tracking_vrf}/127.0.0.1:4739"
+                self.structured_config.daemon_terminattr.ipfixaddr = f"{flow_tracking_vrf}/127.0.0.1:4739"
 
         clusters: list[EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem] = (
             list(cv_settings.cvaas.clusters) if cv_settings.cvaas.enabled else []

@@ -11,7 +11,7 @@ daemon_terminattr:
   cvvrf: default
   disable_aaa: false
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
-  sflowaddr: default/127.0.0.1:4739
+  ipfixaddr: default/127.0.0.1:4739
 enable_password:
   disabled: true
 ethernet_interfaces:
