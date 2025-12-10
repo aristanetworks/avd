@@ -66,7 +66,7 @@ class AvdDataConverter:
             yield from converter(schema[key], data, schema, path, parent_dict)
 
     def convert_keys(
-        self, keys: dict[Any, Any], data: dict[str, Any], schema: dict[str, Any], path: list[str | int], _parent_dict: dict | None
+        self, keys: dict, data: dict[str, Any], schema: dict[str, Any], path: list[str | int], _parent_dict: dict | None
     ) -> Generator[AvdDeprecationWarning, None, None]:
         """This function performs conversion on each key with the relevant subschema."""
         if not is_type(data, "dict"):
@@ -116,7 +116,7 @@ class AvdDataConverter:
             return
 
         # Resolve "keys" from schema "dynamic_keys" by looking for the dynamic key in data.
-        keys: dict[Any, Any] = {}
+        keys = {}
         for dynamic_key, childschema in dynamic_keys.items():
             data_with_defaults = get_instance_with_defaults(data, dynamic_key, schema)
             resolved_keys = get_all(data_with_defaults, dynamic_key)
@@ -181,8 +181,8 @@ class AvdDataConverter:
             return
 
         for convert_type in convert_types:
-            py_convert_type = SCHEMA_TO_PY_TYPE_MAP.get(convert_type)
-            if py_convert_type is not None and isinstance(value, py_convert_type) and schema_type in SIMPLE_CONVERTERS:
+            py_convert_type = SCHEMA_TO_PY_TYPE_MAP[convert_type]
+            if isinstance(value, py_convert_type) and schema_type in SIMPLE_CONVERTERS:
                 # Ignore errors
                 # TODO: Log message
                 with contextlib.suppress(Exception):
