@@ -1,21 +1,18 @@
 # Copyright (c) 2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-import sys
-import yaml
 import logging
+import sys
 from pathlib import Path
-from typing import List, Optional, Union, Dict
+
+import yaml
 
 # Configure Logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(message)s',
-    stream=sys.stdout
-)
+logging.basicConfig(level=logging.INFO, format="%(message)s", stream=sys.stdout)
 logger = logging.getLogger(__name__)
 
-def load_file(filepath: str) -> Optional[List[str]]:
+
+def load_file(filepath: str) -> list[str] | None:
     """Safely loads a text file using pathlib."""
     path = Path(filepath)
     if not path.exists():
@@ -24,9 +21,10 @@ def load_file(filepath: str) -> Optional[List[str]]:
     with path.open("r", encoding="utf-8") as f:
         return f.read().splitlines()
 
-def extract_section(lines: List[str], section_header: str) -> List[str]:
+
+def extract_section(lines: list[str], section_header: str) -> list[str]:
     """Extracts a specific configuration section based on indentation."""
-    buffer: List[str] = []
+    buffer: list[str] = []
     capture: bool = False
 
     for line in lines:
@@ -53,9 +51,11 @@ def extract_section(lines: List[str], section_header: str) -> List[str]:
 
     return buffer
 
-def apply_filters(block: List[str], filters: List[str]) -> List[str]:
+
+def apply_filters(block: list[str], filters: list[str]) -> list[str]:
     """
     Filters a captured block hierarchically.
+
     - If a line matches a filter: Keep it, and auto-keep all its children.
     - If a line fails filter: Skip it, and auto-skip all its children.
     """
@@ -63,11 +63,11 @@ def apply_filters(block: List[str], filters: List[str]) -> List[str]:
         return block
 
     # Always keep the main header (e.g., 'router bgp...')
-    filtered_block: List[str] = [block[0]]
+    filtered_block: list[str] = [block[0]]
 
     # State tracking
-    keep_barrier: Optional[int] = None
-    skip_barrier: Optional[int] = None
+    keep_barrier: int | None = None
+    skip_barrier: int | None = None
 
     # Iterate content lines (skipping the header at index 0)
     for line in block[1:]:
@@ -85,19 +85,17 @@ def apply_filters(block: List[str], filters: List[str]) -> List[str]:
         # 1. Check if we are stuck in a "Skip Block" (children of a rejected parent)
         if skip_barrier is not None:
             if current_indent > skip_barrier:
-                continue # Strictly skip this child
-            else:
-                # We have returned to the parent level or higher
-                skip_barrier = None
+                continue  # Strictly skip this child
+            # We have returned to the parent level or higher
+            skip_barrier = None
 
         # 2. Check if we are inside a "Keep Block" (children of an accepted parent)
         if keep_barrier is not None:
             if current_indent > keep_barrier:
-                filtered_block.append(line) # Automatically keep child
+                filtered_block.append(line)  # Automatically keep child
                 continue
-            else:
-                # We have returned to the parent level or higher
-                keep_barrier = None
+            # We have returned to the parent level or higher
+            keep_barrier = None
 
         # 3. Decision Time: We are at a new "node" in the config tree
         # Check if this line matches any user filter
@@ -105,11 +103,12 @@ def apply_filters(block: List[str], filters: List[str]) -> List[str]:
 
         if is_match:
             filtered_block.append(line)
-            keep_barrier = current_indent # Capture all children of this line
+            keep_barrier = current_indent  # Capture all children of this line
         else:
-            skip_barrier = current_indent # Ignore all children of this line
+            skip_barrier = current_indent  # Ignore all children of this line
 
     return filtered_block
+
 
 def process_config(config_path: str, output_dir: str) -> None:
     logger.info("--- Loading Config: %s ---", config_path)
@@ -123,10 +122,10 @@ def process_config(config_path: str, output_dir: str) -> None:
         jobs = yaml.safe_load(f)
 
     for job in jobs:
-        target_file: str = job.get('file')
+        target_file: str = job.get("file")
         # Sections can now be a list of Strings OR Dictionaries
-        sections_def: List[Union[str, Dict]] = job.get('sections', [])
-        artifact_filename: str = job.get('artifact')
+        sections_def: list[str | dict] = job.get("sections", [])
+        artifact_filename: str = job.get("artifact")
 
         full_output_path = out_path / artifact_filename
         logger.info("Processing target: %s", target_file)
@@ -135,7 +134,7 @@ def process_config(config_path: str, output_dir: str) -> None:
         if not eos_lines:
             continue
 
-        extracted_data: List[str] = []
+        extracted_data: list[str] = []
 
         for item in sections_def:
             # Determine if this is a simple string or a complex filter dict
@@ -143,8 +142,8 @@ def process_config(config_path: str, output_dir: str) -> None:
                 header = item
                 filters = []
             elif isinstance(item, dict):
-                header = item.get('header')
-                filters = item.get('filters', [])
+                header = item.get("header")
+                filters = item.get("filters", [])
             else:
                 logger.warning("Skipping invalid section definition: %s", item)
                 continue
@@ -173,6 +172,7 @@ def process_config(config_path: str, output_dir: str) -> None:
             with full_output_path.open("w", encoding="utf-8") as out:
                 out.write("\n".join(extracted_data))
             logger.info("  > Saved to %s", full_output_path)
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
