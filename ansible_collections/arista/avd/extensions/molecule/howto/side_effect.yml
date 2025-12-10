@@ -1,32 +1,28 @@
 ---
-- name: Run EOS Config Parser Locally
+- name: Run EOS Config Parser
   hosts: localhost
   connection: local
   gather_facts: false
 
   vars:
-    # Define root relative to molecule/default/
-    project_root: "{{ playbook_dir }}"
-    script_path: "processor.py"
-    config_path: "doc_artifacts/config.yml"
+    script_path: "../../scripts/processor.py"
+    config_file: "artifacts.yml"
+    output_dir: "doc_artifacts"
 
   tasks:
-    - name: Verify Config File Exists
+    - name: Sanity check - config exists
       stat:
-        path: "{{ project_root }}/{{ config_path }}"
+        path: "{{ config_file }}"
       register: cfg_stat
 
     - name: Fail if config is missing
       fail:
-        msg: "Could not find config at {{ project_root }}/{{ config_path }}"
+        msg: "Config not found at {{ config_file }}"
       when: not cfg_stat.stat.exists
 
-    - name: Execute Python Parser
-      # We change directory (chdir) to the project root so the script
-      # can find 'inventory/intended/...' easily.
-      command: "python3 {{ script_path }} {{ config_path }}"
-      args:
-        chdir: "{{ project_root }}"
+    - name: Execute Shared Python Parser
+      # Syntax: python3 <script> <config_input> <output_folder>
+      command: "python3 {{ script_path }} {{ config_file }} {{ output_dir }}"
       register: parser_output
       changed_when: false
 

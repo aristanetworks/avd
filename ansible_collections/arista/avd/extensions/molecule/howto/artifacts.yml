@@ -1,0 +1,8 @@
+---
+- file: inventory/intended/configs/dc1-leaf1a.cfg
+  sections: ["vlan 11", "interface Port-Channel3"]
+  artifact: "ce_artifact.cfg"
+
+- file: inventory/intended/configs/dc1-leaf1b.cfg
+  sections: ["daemon TerminAttr", "service routing protocols model multi-agent", "router bgp 65101"]
+  artifact: "leaf1b_artifact.cfg"

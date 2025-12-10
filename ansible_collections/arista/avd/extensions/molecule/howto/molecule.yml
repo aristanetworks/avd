@@ -11,12 +11,6 @@ ansible:
     defaults:
       jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
       gathering: explicit
-provisioner:
-  name: ansible
-  playbooks:
-    converge: converge.yml
-    verify: verify.yml
-    side_effect: side_effect.yml
 scenario:
   converge_sequence:
     - syntax
