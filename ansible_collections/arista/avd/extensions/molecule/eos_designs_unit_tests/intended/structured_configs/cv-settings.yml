@@ -64,8 +64,32 @@ daemon_terminattr:
   disable_aaa: true
   ingestexclude: this_is_ingest_excluded
   smashexcludes: this_is_smash_excluded
+  sflowaddr: INBAND_MGMT_VRF/127.0.0.1:6343
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: L2_dns-settings-1_Ethernet5
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: dns-settings-1
+    peer_interface: Ethernet5
+    peer_type: l2leaf
+- name: Ethernet12
+  description: P2P_dns-settings-1_Ethernet12
+  shutdown: false
+  mtu: 9214
+  metadata:
+    peer: dns-settings-1
+    peer_interface: Ethernet12
+    peer_type: l2leaf
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
 hostname: cv-settings
 ip_igmp_snooping:
   globally_enabled: true
@@ -79,7 +103,23 @@ management_interfaces:
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+port_channel_interfaces:
+- name: Port-Channel1
+  description: L2_dns-settings-1_Port-Channel5
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '4092'
 service_routing_protocols_model: multi-agent
+sflow:
+  vrfs:
+  - name: INBAND_MGMT_VRF
+    destinations:
+    - destination: 127.0.0.1
+      port: 6343
+  run: true
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan4092

@@ -375,9 +375,12 @@ radius-server attribute 32 include-in-access-req format myformat
 | Type | Sub-type | User Stores |
 | ---- | -------- | ---------- |
 
+Policy lockout has been enabled. After **3** failed login attempts within **1440** minutes, you'll be locked out for **300** minutes.
+
 #### AAA Authentication Device Configuration
 
 ```eos
+aaa authentication policy lockout failure 3 duration 300
 !
 ```
 
@@ -504,6 +507,7 @@ dhcp relay
 
 | CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
 | -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 10.20.20.3:9910 | - | - | - | - | False |
 | gzip | 10.20.20.1:9910 | mgt | certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt | - | - | False |
 | gzip | 10.30.30.1:9910 | mgt | key,<removed> | - | - | False |
 | gzip | 10.40.40.1:9910 | mgt | token,/tmp/tokenDC3 | - | - | False |
@@ -517,7 +521,7 @@ dhcp relay
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvopt DC1.addr=10.20.20.1:9910 -cvopt DC1.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt -cvopt DC1.vrf=mgt -cvopt DC1.sourceintf=Loopback10 -cvopt DC2.addr=10.30.30.1:9910 -cvopt DC2.auth=key,<removed> -cvopt DC2.vrf=mgt -cvopt DC2.sourceintf=Vlan500 -cvopt DC3.addr=10.40.40.1:9910 -cvopt DC3.auth=token,/tmp/tokenDC3 -cvopt DC3.vrf=mgt -cvopt DC3.sourceintf=Vlan500 -cvopt DC4.addr=10.40.40.1:9910 -cvopt DC4.auth=token-secure,/tmp/tokenDC4 -cvopt DC4.vrf=mgt -cvopt DC4.sourceip=10.10.10.10 -cvopt DC4.proxy=http://arista:arista@10.10.10.1:3128 -cvopt DC4.obscurekeyfile=True -cvopt DC4.sourceintf=Vlan500 -cvopt DC5.addr=10.20.20.2:9910 -cvopt DC5.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key -cvopt DC5.vrf=mgt -cvopt DC5.sourceintf=Loopback11 -cvopt DC6.addr=10.20.20.3:9910 -cvaddr=apiserver.arista.io:443 -cvauth=key,<removed> -taillogs -ipfix=false -sflow=false
+   exec /usr/bin/TerminAttr -cvopt ac7.addr=10.20.20.3:9910 -cvopt DC1.addr=10.20.20.1:9910 -cvopt DC1.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt -cvopt DC1.vrf=mgt -cvopt DC1.sourceintf=Loopback10 -cvopt DC2.addr=10.30.30.1:9910 -cvopt DC2.auth=key,<removed> -cvopt DC2.vrf=mgt -cvopt DC2.sourceintf=Vlan500 -cvopt DC3.addr=10.40.40.1:9910 -cvopt DC3.auth=token,/tmp/tokenDC3 -cvopt DC3.vrf=mgt -cvopt DC3.sourceintf=Vlan500 -cvopt DC4.addr=10.40.40.1:9910 -cvopt DC4.auth=token-secure,/tmp/tokenDC4 -cvopt DC4.vrf=mgt -cvopt DC4.sourceip=10.10.10.10 -cvopt DC4.proxy=http://arista:arista@10.10.10.1:3128 -cvopt DC4.obscurekeyfile=True -cvopt DC4.sourceintf=Vlan500 -cvopt DC5.addr=10.20.20.2:9910 -cvopt DC5.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key -cvopt DC5.vrf=mgt -cvopt DC5.sourceintf=Loopback11 -cvopt DC6.addr=10.20.20.3:9910 -cvaddr=apiserver.arista.io:443 -cvauth=key,<removed> -taillogs -ipfix=false -sflow=false
    no shutdown
 ```
 
@@ -666,6 +670,11 @@ sflow interface egress enable default
 
 ```eos
 !
+flow tracking mirror-on-drop
+   tracker T1
+      record export on inactive timeout 3666
+      record export on interval 5666
+!
 flow tracking sampled
    sample 666
    hardware offload ipv4 ipv6
@@ -673,11 +682,6 @@ flow tracking sampled
       record export on inactive timeout 3666
       record export on interval 5666
       record export mpls
-!
-flow tracking mirror-on-drop
-   tracker T1
-      record export on inactive timeout 3666
-      record export on interval 5666
 ```
 
 ### Monitor Telemetry Postcard Policy
@@ -1617,11 +1621,16 @@ ipv6 dhcp relay option remote-id format %m:%p
 
 IP DHCP Snooping is enabled
 
+IP DHCP Snooping Circuit-ID Suboption: 10
+
+IP DHCP Snooping Circuit-ID Format: %h:%p
+
 ### IP DHCP Snooping Device Configuration
 
 ```eos
 !
 ip dhcp snooping
+ip dhcp snooping information option circuit-id type 10 format %h:%p
 ```
 
 ## IP NAT

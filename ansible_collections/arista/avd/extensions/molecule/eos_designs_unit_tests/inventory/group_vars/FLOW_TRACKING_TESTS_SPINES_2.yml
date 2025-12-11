@@ -35,10 +35,10 @@ flow_tracking_settings:
         on_inactive_timeout: 50000
         on_interval: 300331
       exporters:
+        # Testing local_interface with default oob management
         - name: ayush_exporter
           collectors:
             - host: 127.0.0.1
-          local_interface: Loopback0
           template_interval: 40000
 
 # False by default
