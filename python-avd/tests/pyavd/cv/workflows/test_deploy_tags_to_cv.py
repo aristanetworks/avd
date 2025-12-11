@@ -3,9 +3,10 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from contextlib import nullcontext as does_not_raise
 from logging import INFO, getLogger
 from os import environ
-from typing import TYPE_CHECKING, Any
+from typing import Any
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -17,10 +18,6 @@ from pyavd._cv.workflows.deploy_tags_to_cv import deploy_tags_to_cv
 from pyavd._cv.workflows.models import CVDevice, CVDeviceTag, CVInterfaceTag, CVWorkspace
 
 from .helpers import get_tags_assignments_cv_state, get_tags_cv_state
-
-if TYPE_CHECKING:
-    from tests.pyavd.cv.mockery import CvEnvironment
-
 
 LOGGER = getLogger(__name__)
 WORKSPACE = CVWorkspace()
@@ -732,19 +729,49 @@ async def test_deploy_tags_to_cv_all_interface_tags(
 ## Live TAGs tests ##
 @pytest.mark.skipif(environ.get("CV_LIVE_TEST") is None, reason="CV_LIVE_TEST env variable is not set. Live cv_deploy tests are skipped.")
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("targeted_cv", "verify_certs"),
+    [
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_PRD_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_PRD_SERVER", default=""),
+            },
+            True,
+            id="CVAAS_PRD",
+        ),
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_STG_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_STG_SERVER", default=""),
+            },
+            True,
+            id="CVAAS_STG",
+        ),
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_ONPREM_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_ONPREM_SERVER", default=""),
+            },
+            False,
+            id="CV_ONPREM",
+        ),
+    ],
+)
 @pytest.mark.filterwarnings("ignore:Unverified HTTPS request is being made to host")
 async def test_deploy_tags_to_cv_message_splitting(
     caplog: pytest.LogCaptureFixture,
-    cv_environment: CvEnvironment,
+    targeted_cv: dict[str, str],
+    verify_certs: bool,
     cv_tags_fixture: set[CVTag],
     cv_tag_assignments_fixture: set[CVTagAssignment],
 ) -> None:
     """Test ability to gracefully push amount of Tags and Assignments which exceeds the message limit (1837788 vs. 1048576 max)."""
-    with caplog.at_level(INFO):
+    with does_not_raise(), caplog.at_level(INFO):
         async with CVClient(
-            servers=cv_environment.cv_server,
-            token=cv_environment.cv_access_token,
-            verify_certs=cv_environment.verify_certs,
+            servers=targeted_cv["cv_server"],
+            token=targeted_cv["cv_access_token"],
+            verify_certs=verify_certs,
         ) as cv_client:
             cv_tags = cv_tags_fixture
             cv_tag_assignments = cv_tag_assignments_fixture
@@ -769,5 +796,5 @@ async def test_deploy_tags_to_cv_message_splitting(
                     await cv_client.delete_workspace(workspace_id=workspace.id)
                 except Exception as e:
                     LOGGER.warning(
-                        "The following exception faced while trying to abandon/clean Workspace %s on %s: %s", workspace.id, cv_environment.cv_server, e
+                        "The following exception faced while trying to abandon/clean Workspace %s on %s: %s", workspace.id, targeted_cv["cv_server"], e
                     )
