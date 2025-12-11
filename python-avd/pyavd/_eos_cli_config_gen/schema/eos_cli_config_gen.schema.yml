@@ -866,7 +866,7 @@ keys:
 
       Input data validation will validate the input variables according to the schema.
 
-      During validation, messages will generated with information about the host(s)
+      During validation, messages will be generated with information about the host(s)
       and key(s) which failed validation.
 
       "error" will produce error messages and fail the task.
@@ -1789,6 +1789,7 @@ keys:
                 type: str
         ipv4_vendor_options:
           type: list
+          min_length: 1
           primary_key: vendor_id
           items:
             type: dict
@@ -1841,12 +1842,15 @@ keys:
                         type: str
         ipv4_subnets:
           type: list
+          min_length: 1
           $ref: eos_cli_config_gen#/$defs/subnets
           items:
             type: dict
             keys:
               subnet:
                 description: IPv4 subnet.
+                type: str
+              default_gateway:
                 type: str
               reservations:
                 type: list
@@ -1856,8 +1860,26 @@ keys:
                     ipv4_address:
                       type: str
                       description: Valid IPv4 address from the given subnet.
+              tftp_server:
+                type: dict
+                keys:
+                  file:
+                    type: str
+                    min_length: 1
+                    max_length: 253
+                    description: Name of TFTP file for IPv4 clients.
+                  option_66:
+                    type: str
+                    description: IPv4 address or server FQDN for TFTP option 66.
+                  option_150:
+                    type: list
+                    min_length: 1
+                    description: List of IPv4 addresses for TFTP option 150.
+                    items:
+                      type: str
         ipv6_subnets:
           type: list
+          min_length: 1
           $ref: eos_cli_config_gen#/$defs/subnets
           items:
             type: dict
@@ -1873,6 +1895,14 @@ keys:
                     ipv6_address:
                       type: str
                       description: Valid IPv6 address from the given subnet.
+              tftp_server:
+                type: dict
+                keys:
+                  file:
+                    type: str
+                    min_length: 1
+                    max_length: 253
+                    description: Name of TFTP file for IPv6 clients.
         subnets:
           type: list
           deprecation:
@@ -2345,12 +2375,27 @@ keys:
             type: list
             items:
               type: str
+              description: 'Specifies the events that should trigger this action.
+
+                The list of supported causes depends on both the EOS version and the
+                hardware platform.'
               valid_values:
               - acl
               - arp-inspection
               - dot1x
+              - dot1x-coa
+              - dot1x-phone-classification
+              - dot1x-session-replace
+              - error-correction-encoding
+              - hardware-speed-group
+              - interface-speed
+              - internal-error
               - link-change
+              - port-breakout
+              - storm-control
+              - switchcard-unreachable
               - tapagg
+              - transceiver-adapter
               - xcvr-misconfigured
               - xcvr-overheat
               - xcvr-power-unsupported
@@ -2365,19 +2410,37 @@ keys:
               keys:
                 name:
                   type: str
+                  description: 'Specifies the type of event that can trigger recovery
+                    actions.
+
+                    The list of supported causes depends on both the EOS version and
+                    the hardware platform.'
                   valid_values:
+                  - acl
                   - arp-inspection
                   - bpduguard
                   - dot1x
+                  - dot1x-coa
+                  - dot1x-phone-classification
+                  - dot1x-session-replace
+                  - error-correction-encoding
+                  - hardware-speed-group
                   - hitless-reload-down
+                  - interface-speed
+                  - internal-error
                   - lacp-rate-limit
                   - link-flap
                   - no-internal-vlan
+                  - port-breakout
                   - portchannelguard
                   - portsec
                   - speed-misconfigured
+                  - storm-control
+                  - stuck-queue
+                  - switchcard-unreachable
                   - tap-port-init
                   - tapagg
+                  - transceiver-adapter
                   - uplink-failure-detection
                   - xcvr-misconfigured
                   - xcvr-overheat
@@ -3850,6 +3913,24 @@ keys:
                     max: 8
                     convert_types:
                     - str
+            power:
+              type: dict
+              keys:
+                ignore:
+                  type: bool
+                  description: Ignore advertised transceiver power consumption.
+            transmitter:
+              type: dict
+              keys:
+                signal_power:
+                  type: str
+                  description: Optical signal power between < -30 and 10 > (dBm).
+                  convert_types:
+                  - int
+                  - float
+                disabled:
+                  type: bool
+                  description: Disable the optical transmitter.
         ip_proxy_arp:
           type: bool
         traffic_policy:
@@ -25164,8 +25245,6 @@ $defs:
           type: str
           convert_types:
           - int
-        default_gateway:
-          type: str
         dns_servers:
           type: list
           items:
