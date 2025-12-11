@@ -176,10 +176,6 @@ router_bgp:
     password: q+VNViP5i4rVjW1cxFv2wA==
     send_community: all
     maximum_routes: 0
-  - name: UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   redistribute:
     connected:
       enabled: true

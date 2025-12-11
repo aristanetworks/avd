@@ -90,10 +90,6 @@ router_bgp:
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   aggregate_addresses:
   - prefix: 10.1.1.0/8
     advertise_only: true

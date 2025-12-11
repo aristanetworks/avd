@@ -260,10 +260,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     ttl_maximum_hops: 1
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   redistribute:
     connected:
       enabled: true
