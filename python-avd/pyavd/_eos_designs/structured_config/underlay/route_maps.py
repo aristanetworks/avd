@@ -109,7 +109,8 @@ class RouteMapsMixin(Protocol):
                 self.structured_config.route_maps.append_new(name=route_map_name, sequence_numbers=sequence_numbers)
 
         # Route-map IN and OUT for SOO, rendered for WAN routers
-        if self.shared_utils.underlay_routing_protocol == "ebgp" and self.shared_utils.wan_role == "client":
+        if self.shared_utils.underlay_routing_protocol == "ebgp" and self.shared_utils.wan_role == "client" \
+        and self.structured_config.router_bgp.peer_groups.get(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name):
             # RM-BGP-UNDERLAY-PEERS-IN
             sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
             sequence_numbers.append_new(
