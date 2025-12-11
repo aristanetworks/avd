@@ -89,6 +89,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
 
         This relies on flow-tracking being rendered after all other eos_designs modules (except structured config).
         """
+        self.export_to_cv = self.inputs.flow_tracking_settings.cloudvision_exporter
         if self.shared_utils.flow_tracking_type == "hardware":
             self._set_hardware_flow_tracking()
         elif self.shared_utils.flow_tracking_type == "sampled":
@@ -116,11 +117,11 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                 name=config.name,
                 record_export=config.record_export._cast_as(EosCliConfigGen.FlowTracking.Hardware.TrackersItem.RecordExport),
             )
-            if config.export_to_cloudvision.enabled:
-                local_interface = config.export_to_cloudvision.source_interface or self.shared_utils.get_local_interface(config.export_to_cloudvision.vrf)
+            if config.export_to_cloudvision:
+                local_interface = self.export_to_cv.source_interface or self.shared_utils.get_local_interface(self.export_to_cv.vrf)
                 collector = [EosCliConfigGen.FlowTracking.Hardware.TrackersItem.ExportersItem.CollectorsItem(host="127.0.0.1")]
                 flow_tracking_hardware_tracker.exporters.append_new(
-                    name=config.export_to_cloudvision.name,
+                    name=self.export_to_cv.name,
                     collectors=EosCliConfigGen.FlowTracking.Hardware.TrackersItem.ExportersItem.Collectors(collector),
                     local_interface=local_interface,
                 )
@@ -171,11 +172,11 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                 record_export=record_export,
                 table_size=config.sampled.table_size,
             )
-            if config.export_to_cloudvision.enabled:
-                local_interface = config.export_to_cloudvision.source_interface or self.shared_utils.get_local_interface(config.export_to_cloudvision.vrf)
+            if config.export_to_cloudvision:
+                local_interface = self.export_to_cv.source_interface or self.shared_utils.get_local_interface(self.export_to_cv.vrf)
                 collector = [EosCliConfigGen.FlowTracking.Sampled.TrackersItem.ExportersItem.CollectorsItem(host="127.0.0.1")]
                 flow_tracking_sampled_tracker.exporters.append_new(
-                    name=config.export_to_cloudvision.name,
+                    name=self.export_to_cv.name,
                     collectors=EosCliConfigGen.FlowTracking.Sampled.TrackersItem.ExportersItem.Collectors(collector),
                     local_interface=local_interface,
                 )

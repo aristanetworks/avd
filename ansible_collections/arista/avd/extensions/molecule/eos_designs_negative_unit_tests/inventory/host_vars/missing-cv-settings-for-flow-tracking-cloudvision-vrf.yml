@@ -24,9 +24,8 @@ l3leaf:
 flow_tracking_settings:
   trackers:
     - name: FLOW-TRACKER-11
-      export_to_cloudvision:
-        enabled: true
+      export_to_cloudvision: true
 
 expected_error_message: >-
   CloudVision export is enabled for flow_tracking_settings, but 'cv_settings' is not defined.
-  Please configure 'cv_settings' when enabling 'flow_tracking_settings.trackers[].export_to_cloudvision.enabled'.
+  Please configure 'cv_settings' when enabling 'flow_tracking_settings.trackers[name=FLOW-TRACKER-11].export_to_cloudvision'.

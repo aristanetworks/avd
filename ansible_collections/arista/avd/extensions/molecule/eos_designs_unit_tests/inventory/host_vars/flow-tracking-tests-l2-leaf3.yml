@@ -29,6 +29,9 @@ cv_settings:
     enabled: true
 
 flow_tracking_settings:
+  # Testing export_to_cloudvision for sampled
+  cloudvision_exporter:
+    source_interface: Ethernet101
   trackers:
     - name: FLOW-TRACKER-10
       record_export:
@@ -41,6 +44,4 @@ flow_tracking_settings:
           template_interval: 40020
           local_interface: use_inband_mgmt_interface
       # Testing export_to_cloudvision for sampled
-      export_to_cloudvision:
-        enabled: true
-        source_interface: Ethernet101
+      export_to_cloudvision: true

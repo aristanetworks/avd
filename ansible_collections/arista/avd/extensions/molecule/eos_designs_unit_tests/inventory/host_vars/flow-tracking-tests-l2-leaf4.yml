@@ -42,5 +42,4 @@ flow_tracking_settings:
           template_interval: 40020
           local_interface: use_mgmt_interface
       # Testing export_to_cloudvision for hardware
-      export_to_cloudvision:
-        enabled: true
+      export_to_cloudvision: true

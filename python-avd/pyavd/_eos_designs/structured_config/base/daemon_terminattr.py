@@ -32,15 +32,21 @@ class DaemonTerminattrMixin(Protocol):
         cv_settings = self.inputs.cv_settings
         sflow_settings = self.inputs.sflow_settings
         flow_tracking_settings = self.inputs.flow_tracking_settings
+        enable_export_to_cloudvision = False
+        tracker_name = ""
+        for tracker in flow_tracking_settings.trackers:
+            if tracker.export_to_cloudvision:
+                enable_export_to_cloudvision = True
+                tracker_name = tracker.name
+                break
 
         if not cv_settings:
-            for tracker in flow_tracking_settings.trackers:
-                if tracker.export_to_cloudvision.enabled:
-                    msg = (
-                        "CloudVision export is enabled for flow_tracking_settings, but 'cv_settings' is not defined."
-                        " Please configure 'cv_settings' when enabling 'flow_tracking_settings.trackers[].export_to_cloudvision.enabled'."
-                    )
-                    raise AristaAvdInvalidInputsError(msg)
+            if enable_export_to_cloudvision:
+                msg = (
+                    "CloudVision export is enabled for flow_tracking_settings, but 'cv_settings' is not defined."
+                    f" Please configure 'cv_settings' when enabling 'flow_tracking_settings.trackers[name={tracker_name}].export_to_cloudvision'."
+                )
+                raise AristaAvdInvalidInputsError(msg)
 
             if sflow_settings.export_to_cloudvision.enabled:
                 msg = (
@@ -51,10 +57,11 @@ class DaemonTerminattrMixin(Protocol):
 
             return
 
-        for tracker in flow_tracking_settings.trackers:
-            if tracker.export_to_cloudvision.enabled:
-                flow_tracking_vrf = self.shared_utils.get_vrf(tracker.export_to_cloudvision.vrf, context="flow_tracking_settings.export_to_cloudvision.vrf")
-                self.structured_config.daemon_terminattr.ipfixaddr = f"{flow_tracking_vrf}/127.0.0.1:4739"
+        if enable_export_to_cloudvision:
+            flow_tracking_vrf = self.shared_utils.get_vrf(
+                flow_tracking_settings.cloudvision_exporter.vrf, context="flow_tracking_settings.export_to_cloudvision.vrf"
+            )
+            self.structured_config.daemon_terminattr.ipfixaddr = f"{flow_tracking_vrf}/127.0.0.1:4739"
 
         clusters: list[EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem] = (
             list(cv_settings.cvaas.clusters) if cv_settings.cvaas.enabled else []
