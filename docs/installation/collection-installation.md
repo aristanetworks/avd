@@ -10,7 +10,6 @@
 
 - Install [Python](https://www.python.org/downloads/) **3.10** or later
 - Install [arista.avd](#install-collection-from-ansible-galaxy) collection including Python requirements.
-- Modify `ansible.cfg` file to support additional [jinja2 extensions](#ansible-configuration-file)
 
 ## Install Collection from Ansible Galaxy
 
@@ -98,12 +97,9 @@ See the [collection installation](#install-collection-from-ansible-galaxy) secti
 
 ## Ansible configuration file
 
-- Enable Jinja2 extensions: `loopcontrols` and `do`
-  - [Jinja2 Extensions Documentation](https://jinja.palletsprojects.com/extensions/)
 - By default, Ansible will issue a warning when a duplicate dict key is encountered in YAML. We recommend to change to error instead and stop playbook execution when a duplicate key is detected.
 
 ```ini
-jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
 duplicate_dict_key=error
 ```
 
