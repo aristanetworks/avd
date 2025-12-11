@@ -301,3 +301,21 @@ class UtilsMixin(Protocol):
                 return self.inband_mgmt_vrf or "default"
             case _:
                 return vrf_input
+
+    def get_local_interface(self: SharedUtilsProtocol, input_interface: str | None) -> str | None:
+        """
+        Resolve and return the appropriate local interface.
+
+        Given an `input_interface`, this function determines the corresponding local interface.
+        If the input is None, empty, or one of the predefined keywords, it returns the relevant
+        management or inband interface.
+        Otherwise, the provided interface name is returned as-is.
+        """
+        match input_interface:
+            case None | "" | "use_default_mgmt_method_interface":
+                return self.default_mgmt_protocol_interface
+            case "use_mgmt_interface":
+                return self.mgmt_interface
+            case "use_inband_mgmt_interface":
+                return self.inband_mgmt_interface
+        return input_interface

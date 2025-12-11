@@ -2450,8 +2450,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
-    AvdDataValidationMode: TypeAlias = Literal["error", "warning"]
-
     class Banners(AvdModel):
         """Subclass of AvdModel."""
 
@@ -4447,6 +4445,51 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Reservations._item_type = ReservationsItem
 
+            class TftpServer(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Option150(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Option150._item_type = str
+
+                _fields: ClassVar[dict] = {"file": {"type": str}, "option_66": {"type": str}, "option_150": {"type": Option150}}
+                file: str | None
+                """Name of TFTP file for IPv4 clients."""
+                option_66: str | None
+                """IPv4 address or server FQDN for TFTP option 66."""
+                option_150: Option150
+                """
+                List of IPv4 addresses for TFTP option 150.
+
+                Subclass of AvdList with `str` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        file: str | None | UndefinedType = Undefined,
+                        option_66: str | None | UndefinedType = Undefined,
+                        option_150: Option150 | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        TftpServer.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            file: Name of TFTP file for IPv4 clients.
+                            option_66: IPv4 address or server FQDN for TFTP option 66.
+                            option_150:
+                               List of IPv4 addresses for TFTP option 150.
+
+                               Subclass of AvdList with `str` items.
+
+                        """
+
             class DnsServers(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -4507,15 +4550,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "subnet": {"type": str},
-                "reservations": {"type": Reservations},
-                "name": {"type": str},
                 "default_gateway": {"type": str},
+                "reservations": {"type": Reservations},
+                "tftp_server": {"type": TftpServer},
+                "name": {"type": str},
                 "dns_servers": {"type": DnsServers},
                 "ranges": {"type": Ranges},
                 "lease_time": {"type": LeaseTime},
             }
             subnet: str
             """IPv4 subnet."""
+            default_gateway: str | None
             reservations: Reservations
             """
             DHCP client reservations.
@@ -4523,8 +4568,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
             `mac_address` (`str`).
             """
+            tftp_server: TftpServer
+            """Subclass of AvdModel."""
             name: str | None
-            default_gateway: str | None
             dns_servers: DnsServers
             """Subclass of AvdList with `str` items."""
             ranges: Ranges
@@ -4538,9 +4584,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     subnet: str | UndefinedType = Undefined,
-                    reservations: Reservations | UndefinedType = Undefined,
-                    name: str | None | UndefinedType = Undefined,
                     default_gateway: str | None | UndefinedType = Undefined,
+                    reservations: Reservations | UndefinedType = Undefined,
+                    tftp_server: TftpServer | UndefinedType = Undefined,
+                    name: str | None | UndefinedType = Undefined,
                     dns_servers: DnsServers | UndefinedType = Undefined,
                     ranges: Ranges | UndefinedType = Undefined,
                     lease_time: LeaseTime | UndefinedType = Undefined,
@@ -4553,13 +4600,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         subnet: IPv4 subnet.
+                        default_gateway: default_gateway
                         reservations:
                            DHCP client reservations.
 
                            Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
                            `mac_address` (`str`).
+                        tftp_server: Subclass of AvdModel.
                         name: name
-                        default_gateway: default_gateway
                         dns_servers: Subclass of AvdList with `str` items.
                         ranges: Subclass of AvdList with `RangesItem` items.
                         lease_time: Subclass of AvdModel.
@@ -4615,6 +4663,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Reservations._item_type = ReservationsItem
 
+            class TftpServer(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"file": {"type": str}}
+                file: str | None
+                """Name of TFTP file for IPv6 clients."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, file: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        TftpServer.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            file: Name of TFTP file for IPv6 clients.
+
+                        """
+
             class DnsServers(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -4676,8 +4745,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "subnet": {"type": str},
                 "reservations": {"type": Reservations},
+                "tftp_server": {"type": TftpServer},
                 "name": {"type": str},
-                "default_gateway": {"type": str},
                 "dns_servers": {"type": DnsServers},
                 "ranges": {"type": Ranges},
                 "lease_time": {"type": LeaseTime},
@@ -4691,8 +4760,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
             `mac_address` (`str`).
             """
+            tftp_server: TftpServer
+            """Subclass of AvdModel."""
             name: str | None
-            default_gateway: str | None
             dns_servers: DnsServers
             """Subclass of AvdList with `str` items."""
             ranges: Ranges
@@ -4707,8 +4777,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     subnet: str | UndefinedType = Undefined,
                     reservations: Reservations | UndefinedType = Undefined,
+                    tftp_server: TftpServer | UndefinedType = Undefined,
                     name: str | None | UndefinedType = Undefined,
-                    default_gateway: str | None | UndefinedType = Undefined,
                     dns_servers: DnsServers | UndefinedType = Undefined,
                     ranges: Ranges | UndefinedType = Undefined,
                     lease_time: LeaseTime | UndefinedType = Undefined,
@@ -4726,8 +4796,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdIndexedList with `ReservationsItem` items. Primary key is
                            `mac_address` (`str`).
+                        tftp_server: Subclass of AvdModel.
                         name: name
-                        default_gateway: default_gateway
                         dns_servers: Subclass of AvdList with `str` items.
                         ranges: Subclass of AvdList with `RangesItem` items.
                         lease_time: Subclass of AvdModel.
@@ -6129,18 +6199,31 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 Name: TypeAlias = Literal[
+                    "acl",
                     "arp-inspection",
                     "bpduguard",
                     "dot1x",
+                    "dot1x-coa",
+                    "dot1x-phone-classification",
+                    "dot1x-session-replace",
+                    "error-correction-encoding",
+                    "hardware-speed-group",
                     "hitless-reload-down",
+                    "interface-speed",
+                    "internal-error",
                     "lacp-rate-limit",
                     "link-flap",
                     "no-internal-vlan",
+                    "port-breakout",
                     "portchannelguard",
                     "portsec",
                     "speed-misconfigured",
+                    "storm-control",
+                    "stuck-queue",
+                    "switchcard-unreachable",
                     "tap-port-init",
                     "tapagg",
+                    "transceiver-adapter",
                     "uplink-failure-detection",
                     "xcvr-misconfigured",
                     "xcvr-overheat",
@@ -6149,6 +6232,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ]
                 _fields: ClassVar[dict] = {"name": {"type": str}, "interval": {"type": int}}
                 name: Name
+                """
+                Specifies the type of event that can trigger recovery actions.
+                The list of supported causes depends
+                on both the EOS version and the hardware platform.
+                """
                 interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -6162,7 +6250,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name: name
+                            name:
+                               Specifies the type of event that can trigger recovery actions.
+                               The list of supported causes depends
+                               on both the EOS version and the hardware platform.
                             interval: Interval for each recovery cause in seconds.
 
                         """
@@ -9847,12 +9938,59 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             ApplicationOverrideLanes._item_type = ApplicationOverrideLanesItem
 
+            class Power(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ignore": {"type": bool}}
+                ignore: bool | None
+                """Ignore advertised transceiver power consumption."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ignore: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        Power.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ignore: Ignore advertised transceiver power consumption.
+
+                        """
+
+            class Transmitter(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"signal_power": {"type": str}, "disabled": {"type": bool}}
+                signal_power: str | None
+                """Optical signal power between < -30 and 10 > (dBm)."""
+                disabled: bool | None
+                """Disable the optical transmitter."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, signal_power: str | None | UndefinedType = Undefined, disabled: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        Transmitter.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            signal_power: Optical signal power between < -30 and 10 > (dBm).
+                            disabled: Disable the optical transmitter.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "frequency": {"type": str},
                 "frequency_unit": {"type": str},
                 "media": {"type": Media},
                 "application_override": {"type": str},
                 "application_override_lanes": {"type": ApplicationOverrideLanes},
+                "power": {"type": Power},
+                "transmitter": {"type": Transmitter},
             }
             frequency: str | None
             """Transceiver Laser Frequency in GHz (min 190000, max 200000)."""
@@ -9873,6 +10011,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of
             AvdList with `ApplicationOverrideLanesItem` items.
             """
+            power: Power
+            """Subclass of AvdModel."""
+            transmitter: Transmitter
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -9884,6 +10026,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     media: Media | UndefinedType = Undefined,
                     application_override: ApplicationOverride | None | UndefinedType = Undefined,
                     application_override_lanes: ApplicationOverrideLanes | UndefinedType = Undefined,
+                    power: Power | UndefinedType = Undefined,
+                    transmitter: Transmitter | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Transceiver.
@@ -9904,6 +10048,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of
                            AvdList with `ApplicationOverrideLanesItem` items.
+                        power: Subclass of AvdModel.
+                        transmitter: Subclass of AvdModel.
 
                     """
 
@@ -68348,7 +68494,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "application_traffic_recognition": {"type": ApplicationTrafficRecognition},
         "arp": {"type": Arp},
         "as_path": {"type": AsPath},
-        "avd_data_validation_mode": {"type": str, "default": "error"},
         "banners": {"type": Banners},
         "bgp_groups": {"type": BgpGroups},
         "boot": {"type": Boot},
@@ -68567,19 +68712,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     as_path: AsPath
     """Subclass of AvdModel."""
-    avd_data_validation_mode: AvdDataValidationMode
-    """
-    Validation Mode for AVD input data validation.
-    Input data validation will validate the input
-    variables according to the schema.
-    During validation, messages will generated with information about
-    the host(s) and key(s) which failed validation.
-    "error" will produce error messages and fail the
-    task.
-    "warning" will produce warning messages.
-
-    Default value: `"error"`
-    """
     banners: Banners
     """Subclass of AvdModel."""
     bgp_groups: BgpGroups
@@ -69104,7 +69236,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             application_traffic_recognition: ApplicationTrafficRecognition | UndefinedType = Undefined,
             arp: Arp | UndefinedType = Undefined,
             as_path: AsPath | UndefinedType = Undefined,
-            avd_data_validation_mode: AvdDataValidationMode | UndefinedType = Undefined,
             banners: Banners | UndefinedType = Undefined,
             bgp_groups: BgpGroups | UndefinedType = Undefined,
             boot: Boot | UndefinedType = Undefined,
@@ -69315,15 +69446,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 arp: Subclass of AvdModel.
                 as_path: Subclass of AvdModel.
-                avd_data_validation_mode:
-                   Validation Mode for AVD input data validation.
-                   Input data validation will validate the input
-                   variables according to the schema.
-                   During validation, messages will generated with information about
-                   the host(s) and key(s) which failed validation.
-                   "error" will produce error messages and fail the
-                   task.
-                   "warning" will produce warning messages.
                 banners: Subclass of AvdModel.
                 bgp_groups: Subclass of AvdIndexedList with `BgpGroupsItem` items. Primary key is `name` (`str`).
                 boot:
