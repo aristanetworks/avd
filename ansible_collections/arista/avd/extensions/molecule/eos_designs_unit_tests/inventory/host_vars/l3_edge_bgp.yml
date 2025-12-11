@@ -11,6 +11,7 @@ spine:
 
 bgp_peer_groups:
   ipv4_underlay_peers:
+    cleartext_password: arista
     structured_config:
       description: Test_for_ipv4_underlay_peers
 
