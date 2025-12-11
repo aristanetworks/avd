@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import contextlib
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any
 
 from pyavd._errors import AvdDeprecationWarning
 from pyavd._utils import get_all
@@ -162,9 +162,7 @@ class AvdDataConverter:
         schema_type = schema.get("type")
 
         # Get value from input data
-        # Pyright is not able to understand that if index is a str, data is a dict.
-        # So we have to cast it.
-        value = cast("dict", data)[index] if isinstance(index, str) else cast("list", data)[index]
+        value = data[index]  # type: ignore  # noqa: PGH003
 
         # For simple conversions, skip conversion if the value is of the correct type
         # Avoid corner case where we want to convert bool to int. Bool is a subclass of Int so it passes the check above.
@@ -186,12 +184,7 @@ class AvdDataConverter:
                 # Ignore errors
                 # TODO: Log message
                 with contextlib.suppress(Exception):
-                    if isinstance(index, str):
-                        # Pyright is not able to understand that if index is a str, data is a dict.
-                        # So we have to cast it.
-                        cast("dict", data)[index] = SIMPLE_CONVERTERS[schema_type](value)
-                    else:
-                        cast("list", data)[index] = SIMPLE_CONVERTERS[schema_type](value)
+                    data[index] = SIMPLE_CONVERTERS[schema_type](value)  # type: ignore  # noqa: PGH003
 
                 return
 
