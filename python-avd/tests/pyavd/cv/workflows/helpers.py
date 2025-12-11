@@ -108,6 +108,7 @@ def get_device_tags_cv_state() -> list[Tag]:
         ("device_tag_2", "device_tag_2_value_1"),
         ("mixed_tag_1", "mixed_tag_1_value_2"),
         ("mixed_tag_2", "mixed_tag_2_value_1"),
+        ("K", "V"),
     ]
     return [_get_device_tag(label, value) for label, value in label_value_map]
 
@@ -123,7 +124,7 @@ def get_interface_tags_cv_state() -> list[Tag]:
     return [_get_interface_tag(label, value) for label, value in label_value_map]
 
 
-def get_device_tag_assignments_cv_state() -> list[Tag]:
+def get_device_tag_assignments_cv_state() -> list[TagAssignment]:
     label_value_map = [
         ("device_tag_1", "device_tag_1_value_2", "L2_serial"),
         ("device_tag_1", "device_tag_1_value_2", "L3_serial"),
@@ -135,7 +136,7 @@ def get_device_tag_assignments_cv_state() -> list[Tag]:
     return [_get_device_tag_assignment(label, value, device_id) for label, value, device_id in label_value_map]
 
 
-def get_interface_tag_assignments_cv_state() -> list[Tag]:
+def get_interface_tag_assignments_cv_state() -> list[TagAssignment]:
     label_value_map = [
         ("interface_tag_1", "interface_tag_1_value_2", "L2_serial"),
         ("interface_tag_1", "interface_tag_1_value_2", "L3_serial"),

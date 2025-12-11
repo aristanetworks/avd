@@ -50,27 +50,26 @@ class CvEnvironment:
 @pytest.fixture(scope="session", params=["PRD", "STG", "ONPREM"])
 def cv_environment(request: pytest.FixtureRequest) -> CvEnvironment:
     """
-    Fixture that loads environment variables and yields a CvEnvironment dataclass instance.
+    Fixture that loads environment variables and returns a CvEnvironment dataclass instance.
 
-    Skips the test case if either the server URL or the access token is missing.
+    Raises:
+        pytest.UsageError if environment variables required for testing specific CloudVision environment are not set.
     """
     env_prefix: str = request.param
 
     cv_server = environ.get(f"CV_{env_prefix}_SERVER")
     cv_access_token = environ.get(f"CV_{env_prefix}_ACCESS_TOKEN")
 
-    missing_vars = []
+    err_msg = (
+        "Mandatory environment variable '{missing_variable}' for CV_{env_prefix} is missing or is set to an empty string. "
+        "Please properly set all required env variables to run tests against CV_{env_prefix} environment."
+    )
     if not cv_server or cv_server.strip() == "":
-        missing_vars.append(f"CV_{env_prefix}_SERVER")
+        msg = err_msg.format(missing_variable=f"CV_{env_prefix}_SERVER", env_prefix=env_prefix)
+        raise pytest.UsageError(msg)
     if not cv_access_token or cv_access_token.strip() == "":
-        missing_vars.append(f"CV_{env_prefix}_ACCESS_TOKEN")
-
-    if missing_vars:
-        pytest.skip(f"Skipping test case for {env_prefix} because mandatory environment variable(s) are missing: {', '.join(missing_vars)}")
-
-    # pyright is not smart enough to understand pytest.skip
-    assert cv_server is not None
-    assert cv_access_token is not None
+        msg = err_msg.format(missing_variable=f"CV_{env_prefix}_ACCESS_TOKEN", env_prefix=env_prefix)
+        raise pytest.UsageError(msg)
 
     verify_certs: bool = env_prefix != "ONPREM"
 

@@ -183,9 +183,9 @@ class TestDeployStaticConfigStudio:
         mock_cv_client.get_studio_inputs_with_path.return_value = [root_id, unused_root_id]
 
         # New desired state from AVD.
-        cfl1 = AvdConfiglet(name="CF_LEAF1", file="/path/to/cfl1.cfg")
-        cfl2 = AvdConfiglet(name="CF_LEAF2", file="/path/to/cfl2.cfg")
-        cfs1 = AvdConfiglet(name="CF_SPINE1", file="/path/to/cfs1.cfg")  # New configlet
+        cfl1 = AvdConfiglet(name="CF_LEAF1", file=Path("/path/to/cfl1.cfg"))
+        cfl2 = AvdConfiglet(name="CF_LEAF2", file=Path("/path/to/cfl2.cfg"))
+        cfs1 = AvdConfiglet(name="CF_SPINE1", file=Path("/path/to/cfs1.cfg"))  # New configlet
 
         cnt_leaf1 = AvdContainer(
             name="CNT_LEAF1",
