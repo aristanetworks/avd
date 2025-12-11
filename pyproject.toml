@@ -125,6 +125,7 @@ docstring-code-format = true
 runtime-evaluated-base-classes = ["pydantic.BaseModel"]
 
 [tool.pyright]
+typeCheckingMode = "standard"
 exclude = [
   "ansible_collections/arista/avd",                                      # TODO
   "python-avd/pyavd/api",                                                # TODO
