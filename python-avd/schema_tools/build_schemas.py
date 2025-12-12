@@ -37,7 +37,7 @@ def combine_schemas() -> None:
     """
     Combine all schema fragments into a single YAML file.
 
-    Also writes the schema_store.json.gz file.
+    Also writes the schemas.json.gz file.
     """
     store: dict[str, dict] = {}
     for schema_name, schema_paths in SCHEMAS.items():

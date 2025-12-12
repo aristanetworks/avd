@@ -54,4 +54,4 @@ SCHEMAS = {
     ),
 }
 
-SCHEMA_STORE_GZ_FILE = PYAVD_DIR.joinpath("_schema/schema_store.json.gz")
+SCHEMA_STORE_GZ_FILE = PYAVD_DIR.joinpath("_schema/schemas.json.gz")
