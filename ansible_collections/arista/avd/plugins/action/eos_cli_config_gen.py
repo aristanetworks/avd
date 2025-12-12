@@ -40,7 +40,6 @@ ARGUMENT_SPEC = {
     "config_filename": {"type": "str"},
     "documentation_filename": {"type": "str"},
     "read_structured_config_from_file": {"type": "bool", "default": True},
-    "validation_mode": {"type": "str", "default": "error"},
     "generate_device_config": {"type": "bool", "default": True},
     "generate_device_doc": {"type": "bool", "default": True},
     "device_doc_toc": {"type": "bool", "default": True},
@@ -90,7 +89,6 @@ class ActionModule(ActionBase):
             # result dict will be in-place updated.
             self.validate_task_vars(
                 hostname=task_vars["inventory_hostname"],
-                validation_mode=validated_args["validation_mode"],
                 task_vars=task_vars,
                 result=result,
             )
@@ -201,13 +199,12 @@ class ActionModule(ActionBase):
 
         return task_vars
 
-    def validate_task_vars(self, hostname: str, validation_mode: str, task_vars: dict, result: dict) -> None:
+    def validate_task_vars(self, hostname: str, task_vars: dict, result: dict) -> None:
         # Load schema tools for input schema
         input_schema_tools = AvdSchemaTools(
             hostname=hostname,
             ansible_display=display,
             schema_id="eos_cli_config_gen",
-            validation_mode=validation_mode,
         )
         result.update(input_schema_tools.convert_and_validate_data(task_vars))
 

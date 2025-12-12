@@ -648,8 +648,6 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    AvdDataValidationMode: TypeAlias = Literal["error", "warning"]
-
     class BfdMultihop(AvdModel):
         """Subclass of AvdModel."""
 
@@ -30481,6 +30479,74 @@ class EosDesigns(EosDesignsRootModel):
 
         Destinations._item_type = DestinationsItem
 
+        class ExportToCloudvision(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"}}
+            enabled: bool | None
+            """
+            Configures an sFlow destination for `127.0.0.1` port `6343` in the VRF defined in
+            `export_to_cloudvision.vrf`.
+            Also configures the TerminAttr daemon to export sFlow to this
+            destination.
+            """
+            vrf: str
+            """
+            VRF Name.
+            The value of `vrf` will be interpreted according to these rules:
+            -
+            `use_mgmt_interface_vrf` will configure the sFlow destination and daemon terminattr sflow address
+            under the VRF defined by `mgmt_interface_vrf`.
+              An error will be raised if `mgmt_ip` or
+            `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf` will configure the sFlow
+            destination and daemon terminattr sflow address under the VRF defined by `inband_mgmt_vrf`.
+              An
+            error will be raised if inband management is not configured for the device.
+            -
+            `use_default_mgmt_method_vrf` will configure the VRF and daemon terminattr sflow address for one of
+            the two options above depending on the value of `default_mgmt_method`.
+            - Any other string will be
+            used directly as the VRF name.
+
+            Default value: `"use_default_mgmt_method_vrf"`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, vrf: str | UndefinedType = Undefined) -> None:
+                    """
+                    ExportToCloudvision.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Configures an sFlow destination for `127.0.0.1` port `6343` in the VRF defined in
+                           `export_to_cloudvision.vrf`.
+                           Also configures the TerminAttr daemon to export sFlow to this
+                           destination.
+                        vrf:
+                           VRF Name.
+                           The value of `vrf` will be interpreted according to these rules:
+                           -
+                           `use_mgmt_interface_vrf` will configure the sFlow destination and daemon terminattr sflow address
+                           under the VRF defined by `mgmt_interface_vrf`.
+                             An error will be raised if `mgmt_ip` or
+                           `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf` will configure the sFlow
+                           destination and daemon terminattr sflow address under the VRF defined by `inband_mgmt_vrf`.
+                             An
+                           error will be raised if inband management is not configured for the device.
+                           -
+                           `use_default_mgmt_method_vrf` will configure the VRF and daemon terminattr sflow address for one of
+                           the two options above depending on the value of `default_mgmt_method`.
+                           - Any other string will be
+                           used directly as the VRF name.
+
+                    """
+
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -30523,6 +30589,7 @@ class EosDesigns(EosDesignsRootModel):
             "polling_interval": {"type": int},
             "sample": {"type": Sample},
             "destinations": {"type": Destinations},
+            "export_to_cloudvision": {"type": ExportToCloudvision},
             "vrfs": {"type": Vrfs},
         }
         polling_interval: int | None
@@ -30530,7 +30597,22 @@ class EosDesigns(EosDesignsRootModel):
         sample: Sample
         """Subclass of AvdModel."""
         destinations: Destinations
-        """Subclass of AvdList with `DestinationsItem` items."""
+        """
+        sFlow will be configured if at least one destination is set in `destinations` or if
+        `export_to_cloudvision.enabled: true`.
+        One of them is required.
+
+        Subclass of AvdList with
+        `DestinationsItem` items.
+        """
+        export_to_cloudvision: ExportToCloudvision
+        """
+        Enables automatic sFlow export to CloudVision.
+        sFlow will be configured if at least one destination
+        is set in `destinations` or if `export_to_cloudvision.enabled: true`.
+        One of them is required.
+        Subclass of AvdModel.
+        """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
 
@@ -30542,6 +30624,7 @@ class EosDesigns(EosDesignsRootModel):
                 polling_interval: int | None | UndefinedType = Undefined,
                 sample: Sample | UndefinedType = Undefined,
                 destinations: Destinations | UndefinedType = Undefined,
+                export_to_cloudvision: ExportToCloudvision | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -30553,7 +30636,19 @@ class EosDesigns(EosDesignsRootModel):
                 Args:
                     polling_interval: Interval in seconds for sending counter data to the sFlow collector.
                     sample: Subclass of AvdModel.
-                    destinations: Subclass of AvdList with `DestinationsItem` items.
+                    destinations:
+                       sFlow will be configured if at least one destination is set in `destinations` or if
+                       `export_to_cloudvision.enabled: true`.
+                       One of them is required.
+
+                       Subclass of AvdList with
+                       `DestinationsItem` items.
+                    export_to_cloudvision:
+                       Enables automatic sFlow export to CloudVision.
+                       sFlow will be configured if at least one destination
+                       is set in `destinations` or if `export_to_cloudvision.enabled: true`.
+                       One of them is required.
+                       Subclass of AvdModel.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
                 """
@@ -87748,7 +87843,6 @@ class EosDesigns(EosDesignsRootModel):
         "aaa_settings": {"type": AaaSettings},
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
-        "avd_data_validation_mode": {"type": str, "default": "error"},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_debug": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
@@ -88301,19 +88395,6 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
-    avd_data_validation_mode: AvdDataValidationMode
-    """
-    Validation Mode for AVD input data validation.
-    Input data validation will validate the input
-    variables according to the schema.
-    During validation, messages will generated with information about
-    the host(s) and key(s) which failed validation.
-    "error" will produce error messages and fail the
-    task.
-    "warning" will produce warning messages.
-
-    Default value: `"error"`
-    """
     avd_digital_twin_mode: bool
     """
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -90308,7 +90389,6 @@ class EosDesigns(EosDesignsRootModel):
             aaa_settings: AaaSettings | UndefinedType = Undefined,
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
-            avd_data_validation_mode: AvdDataValidationMode | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_debug: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
@@ -90526,15 +90606,6 @@ class EosDesigns(EosDesignsRootModel):
                 aaa_settings: Subclass of AvdModel.
                 address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
-                avd_data_validation_mode:
-                   Validation Mode for AVD input data validation.
-                   Input data validation will validate the input
-                   variables according to the schema.
-                   During validation, messages will generated with information about
-                   the host(s) and key(s) which failed validation.
-                   "error" will produce error messages and fail the
-                   task.
-                   "warning" will produce warning messages.
                 avd_digital_twin_mode:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.

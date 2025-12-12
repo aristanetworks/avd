@@ -7,8 +7,9 @@ dev = [
     "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
     "netaddr>=0.7.19",
-    "PyYAML>=6.0.0",
+    "pyavd-utils==0.0.1.dev1",
     "python-socks[asyncio]>=2.7.2",
+    "pyyaml>=6.0.0",
     # dev requirements"
     {include-group = "pytest"},
     {include-group = "molecule"},
@@ -20,10 +21,11 @@ dev = [
     "docker>=7.1.0",
     "identify>=1.4.20",
     "jsonschema-rs>=0.24",
-    "pylint>=3.2.6",
-    "pre-commit>=3.2.0",
     "pre-commit-hooks>=3.3.0",
+    "pre-commit>=3.2.0",
+    "pylint>=3.2.6",
     "ruff==0.14.8",
+    "setuptools>=77.0", # for pyright check in CI
     "tox>4",
     "twine>=6.2.0",
     "yamllint>=1.37.1",
@@ -46,8 +48,8 @@ doc = [
     "mkdocstrings[python]",
 ]
 molecule = [
-    "molecule>=6.0",
-    "molecule-plugins[docker]>=23.4.0",
+    "molecule>=25.11.0",
+    "molecule-plugins[docker]>=25.8.12",
 ]
 pytest = [
     "ansible-core>=2.16.0,<2.20.0",
@@ -164,11 +166,14 @@ docstring-code-format = true
 runtime-evaluated-base-classes = ["pydantic.BaseModel"]
 
 [tool.pyright]
+typeCheckingMode = "standard"
 exclude = [
   "ansible_collections/arista/avd",                                      # TODO
   "python-avd/pyavd/_cv",                                                # TODO
   "python-avd/pyavd/_schema",                                            # TODO
-  "python-avd/schema_tools",                                             # TODO
+  "python-avd/schema_tools/generate_classes",                            # TODO
+  "python-avd/schema_tools/generate_docs",                               # TODO
+  "python-avd/schema_tools/metaschema",                                  # TODO
   "python-avd/tests",                                                    # TODO
   # Excluded
   "python-avd/pyavd/_cv/api",
