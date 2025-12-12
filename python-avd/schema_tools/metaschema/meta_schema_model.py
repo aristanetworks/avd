@@ -131,7 +131,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     # Signal to __init__ if the $ref in the schema should be resolved before initializing the pydantic model.
     _resolve_schema: ClassVar[Literal["eos_designs", "eos_cli_config_gen", "all"] | None] = "all"
 
-    def __init__(self, _resolve_schema: str | None = None, **data: Any) -> None:
+    def __init__(self, _resolve_schema: Literal["eos_designs", "eos_cli_config_gen", "all"] | None = None, **data: Any) -> None:
         """
         Takes a kwarg "_resolve_schema" which controls if $refs are resolved, and if a string, only the given schema will be resolved.
 
