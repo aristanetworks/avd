@@ -866,7 +866,7 @@ keys:
 
       Input data validation will validate the input variables according to the schema.
 
-      During validation, messages will generated with information about the host(s)
+      During validation, messages will be generated with information about the host(s)
       and key(s) which failed validation.
 
       "error" will produce error messages and fail the task.
@@ -874,6 +874,10 @@ keys:
       "warning" will produce warning messages.
 
       '
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
   banners:
     type: dict
     keys:
@@ -1856,6 +1860,23 @@ keys:
                     ipv4_address:
                       type: str
                       description: Valid IPv4 address from the given subnet.
+              tftp_server:
+                type: dict
+                keys:
+                  file:
+                    type: str
+                    min_length: 1
+                    max_length: 253
+                    description: Name of TFTP file for IPv4 clients.
+                  option_66:
+                    type: str
+                    description: IPv4 address or server FQDN for TFTP option 66.
+                  option_150:
+                    type: list
+                    min_length: 1
+                    description: List of IPv4 addresses for TFTP option 150.
+                    items:
+                      type: str
         ipv6_subnets:
           type: list
           min_length: 1
@@ -1874,6 +1895,14 @@ keys:
                     ipv6_address:
                       type: str
                       description: Valid IPv6 address from the given subnet.
+              tftp_server:
+                type: dict
+                keys:
+                  file:
+                    type: str
+                    min_length: 1
+                    max_length: 253
+                    description: Name of TFTP file for IPv6 clients.
         subnets:
           type: list
           deprecation:
