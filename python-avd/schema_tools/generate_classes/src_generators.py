@@ -407,7 +407,7 @@ class FileSrc:
 
     def _render_classes(self) -> str:
         """Render the python source code for classes."""
-        return "\n\n".join(str(cls) for cls in self.classes)
+        return "\n\n".join(str(cls) for cls in self.classes if cls is not None)
 
     def _render_imports(self) -> str:
         """Render the python source code for imports."""

@@ -24,7 +24,6 @@ The AVD collection has the following requirements:
 - Python 3.10 or above
 - Ansible Core 2.16.0 to 2.18.x
 - the Python package `pyavd[ansible-collection]` matching the collection version
-- Modify the `ansible.cfg` file to support additional Jinja2 extensions
 
 ## Installation
 
@@ -66,16 +65,6 @@ The AVD collection requires the installation of additional Python packages. To e
 ```shell
 export ARISTA_AVD_VERSION=$(ansible-galaxy collection list arista.avd --format yaml | tail -1 | cut -d: -f2 | tr '-' '.')
 pip3 install "pyavd[ansible-collection]==$ARISTA_AVD_VERSION"
-```
-
-### Enable Jinja2 Extensions
-
-In your `ansible.cfg` file, add the following modifications:
-
-```ini
-[defaults]
-jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
-duplicate_dict_key=error
 ```
 
 ## Use Cases
