@@ -119,11 +119,15 @@ class RouterBgpMixin(Protocol):
                 self.structured_config.router_bgp.address_family_ipv6.peer_groups.append(af_peer_group)
 
         # router bgp default vrf configuration for evpn
-        if self._vrf_default_evpn and (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]):
-            if self.structured_config.router_bgp.peer_groups.get(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name):
-                target_peer_group = self.structured_config.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
-                target_peer_group.metadata.type = "ipv4"
-                target_peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
+        if (
+            self._vrf_default_evpn
+            and (self._vrf_default_ipv4_subnets
+            or self._vrf_default_ipv4_static_routes["static_routes"])
+            and self.structured_config.router_bgp.peer_groups.get(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
+        ):
+            target_peer_group = self.structured_config.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
+            target_peer_group.metadata.type = "ipv4"
+            target_peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
 
     def _router_bgp_vrfs(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
