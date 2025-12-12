@@ -46,7 +46,7 @@ flow_tracking:
       - name: CLOUDVISION
         collectors:
         - host: 127.0.0.1
-        local_interface: use_default_mgmt_method_vrf
+        local_interface: Vlan4092
       - name: ayush_exporter
         collectors:
         - host: 127.0.2.1

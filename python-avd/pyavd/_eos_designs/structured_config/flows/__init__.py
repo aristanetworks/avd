@@ -118,7 +118,11 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                 record_export=config.record_export._cast_as(EosCliConfigGen.FlowTracking.Hardware.TrackersItem.RecordExport),
             )
             if config.export_to_cloudvision:
-                local_interface = self.export_to_cv.source_interface or self.shared_utils.get_local_interface(self.export_to_cv.vrf)
+                local_interface = None
+                if self.export_to_cv.source_interface:
+                    local_interface = self.export_to_cv.source_interface
+                elif self.export_to_cv.vrf in ["use_mgmt_interface_vrf", "use_inband_mgmt_vrf", "use_default_mgmt_method_vrf"]:
+                    local_interface = self.shared_utils.get_local_interface(self.export_to_cv.vrf.replace("vrf", "interface"))
                 collector = [EosCliConfigGen.FlowTracking.Hardware.TrackersItem.ExportersItem.CollectorsItem(host="127.0.0.1")]
                 flow_tracking_hardware_tracker.exporters.append_new(
                     name=self.export_to_cv.name,
@@ -173,7 +177,11 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                 table_size=config.sampled.table_size,
             )
             if config.export_to_cloudvision:
-                local_interface = self.export_to_cv.source_interface or self.shared_utils.get_local_interface(self.export_to_cv.vrf)
+                local_interface = None
+                if self.export_to_cv.source_interface:
+                    local_interface = self.export_to_cv.source_interface
+                elif self.export_to_cv.vrf in ["use_mgmt_interface_vrf", "use_inband_mgmt_vrf", "use_default_mgmt_method_vrf"]:
+                    local_interface = self.shared_utils.get_local_interface(self.export_to_cv.vrf.replace("vrf", "interface"))
                 collector = [EosCliConfigGen.FlowTracking.Sampled.TrackersItem.ExportersItem.CollectorsItem(host="127.0.0.1")]
                 flow_tracking_sampled_tracker.exporters.append_new(
                     name=self.export_to_cv.name,
