@@ -12500,27 +12500,14 @@ $defs:
           type: str
         lag_hardware_only:
           type: bool
-        default_interface_mtu:
+        max_mtu_size:
           type: int
           convert_types:
           - str
-          description: 'Default interface MTU configured on EOS under "interface defaults".
+          description: 'Set the maximum MTU size supported by the platform.
 
-            Takes precedence over the root key "default_interface_mtu".
-
-            '
-          min: 68
-          max: 65535
-        p2p_uplinks_mtu:
-          type: int
-          convert_types:
-          - str
-          description: 'Set MTU on point to point uplink interfaces.
-
-            Takes precedence over the root key "p2p_uplinks_mtu".
-
-            <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu
-            -> 9214.
+            This will be automatically enforce and evaluate the lowest common denominator
+            set by "`<node_type>.uplink_mtu` -> `p2p_uplinks_mtu`" and `platform_families.max_mtu_size`.
 
             '
           min: 68
@@ -12819,9 +12806,6 @@ $defs:
               - third-party
               - tools-server
               - veos
-        validate_hardware:
-          type: dict
-          $ref: eos_cli_config_gen#/keys/metadata/keys/validate_hardware
         structured_config:
           type: dict
           relaxed_validation: true

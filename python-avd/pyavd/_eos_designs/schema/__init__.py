@@ -25795,12 +25795,10 @@ class EosDesigns(EosDesignsRootModel):
             "reload_delay": {"type": ReloadDelay},
             "tcam_profile": {"type": str},
             "lag_hardware_only": {"type": bool},
-            "default_interface_mtu": {"type": int},
-            "p2p_uplinks_mtu": {"type": int},
+            "max_mtu_size": {"type": int},
             "feature_support": {"type": FeatureSupport},
             "security_entropy_sources": {"type": SecurityEntropySources},
             "digital_twin": {"type": DigitalTwin},
-            "validate_hardware": {"type": EosCliConfigGen.Metadata.ValidateHardware},
             "structured_config": {"type": EosCliConfigGen},
             "raw_eos_cli": {"type": str},
         }
@@ -25812,17 +25810,12 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         tcam_profile: str | None
         lag_hardware_only: bool | None
-        default_interface_mtu: int | None
+        max_mtu_size: int | None
         """
-        Default interface MTU configured on EOS under "interface defaults".
-        Takes precedence over the root
-        key "default_interface_mtu".
-        """
-        p2p_uplinks_mtu: int | None
-        """
-        Set MTU on point to point uplink interfaces.
-        Takes precedence over the root key "p2p_uplinks_mtu".
-        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+        Set the maximum MTU size supported by the platform.
+        This will be automatically enforce and evaluate
+        the lowest common denominator set by "`<node_type>.uplink_mtu` -> `p2p_uplinks_mtu`" and
+        `platform_families.max_mtu_size`.
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
@@ -25840,20 +25833,6 @@ class EosDesigns(EosDesignsRootModel):
         Subclass
         of AvdModel.
         """
-        validate_hardware: EosCliConfigGen.Metadata.ValidateHardware
-        """
-        Settings for hardware validation performed by the `anta_runner` role.
-        If `enabled` is set to
-        `false`, all other keys in this dictionary are ignored.
-
-        For the `min_*` keys:
-        - Undefined
-        (Default): Validate that all available slots are populated.
-        - Positive Integer: Validate that the
-        number of components inserted is at least the specified minimum.
-        - 0: Skip the validation for this
-        specific component.
-        """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
         raw_eos_cli: str | None
@@ -25869,12 +25848,10 @@ class EosDesigns(EosDesignsRootModel):
                 reload_delay: ReloadDelay | UndefinedType = Undefined,
                 tcam_profile: str | None | UndefinedType = Undefined,
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
-                default_interface_mtu: int | None | UndefinedType = Undefined,
-                p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
+                max_mtu_size: int | None | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
-                validate_hardware: EosCliConfigGen.Metadata.ValidateHardware | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -25890,14 +25867,11 @@ class EosDesigns(EosDesignsRootModel):
                     reload_delay: Subclass of AvdModel.
                     tcam_profile: tcam_profile
                     lag_hardware_only: lag_hardware_only
-                    default_interface_mtu:
-                       Default interface MTU configured on EOS under "interface defaults".
-                       Takes precedence over the root
-                       key "default_interface_mtu".
-                    p2p_uplinks_mtu:
-                       Set MTU on point to point uplink interfaces.
-                       Takes precedence over the root key "p2p_uplinks_mtu".
-                       <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+                    max_mtu_size:
+                       Set the maximum MTU size supported by the platform.
+                       This will be automatically enforce and evaluate
+                       the lowest common denominator set by "`<node_type>.uplink_mtu` -> `p2p_uplinks_mtu`" and
+                       `platform_families.max_mtu_size`.
                     feature_support: Subclass of AvdModel.
                     security_entropy_sources:
                        Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
@@ -25909,18 +25883,6 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
-                    validate_hardware:
-                       Settings for hardware validation performed by the `anta_runner` role.
-                       If `enabled` is set to
-                       `false`, all other keys in this dictionary are ignored.
-
-                       For the `min_*` keys:
-                       - Undefined
-                       (Default): Validate that all available slots are populated.
-                       - Positive Integer: Validate that the
-                       number of components inserted is at least the specified minimum.
-                       - 0: Skip the validation for this
-                       specific component.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -26544,12 +26506,10 @@ class EosDesigns(EosDesignsRootModel):
             "reload_delay": {"type": ReloadDelay},
             "tcam_profile": {"type": str},
             "lag_hardware_only": {"type": bool},
-            "default_interface_mtu": {"type": int},
-            "p2p_uplinks_mtu": {"type": int},
+            "max_mtu_size": {"type": int},
             "feature_support": {"type": FeatureSupport},
             "security_entropy_sources": {"type": SecurityEntropySources},
             "digital_twin": {"type": DigitalTwin},
-            "validate_hardware": {"type": EosCliConfigGen.Metadata.ValidateHardware},
             "structured_config": {"type": EosCliConfigGen},
             "raw_eos_cli": {"type": str},
         }
@@ -26561,17 +26521,12 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         tcam_profile: str | None
         lag_hardware_only: bool | None
-        default_interface_mtu: int | None
+        max_mtu_size: int | None
         """
-        Default interface MTU configured on EOS under "interface defaults".
-        Takes precedence over the root
-        key "default_interface_mtu".
-        """
-        p2p_uplinks_mtu: int | None
-        """
-        Set MTU on point to point uplink interfaces.
-        Takes precedence over the root key "p2p_uplinks_mtu".
-        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+        Set the maximum MTU size supported by the platform.
+        This will be automatically enforce and evaluate
+        the lowest common denominator set by "`<node_type>.uplink_mtu` -> `p2p_uplinks_mtu`" and
+        `platform_families.max_mtu_size`.
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
@@ -26589,20 +26544,6 @@ class EosDesigns(EosDesignsRootModel):
         Subclass
         of AvdModel.
         """
-        validate_hardware: EosCliConfigGen.Metadata.ValidateHardware
-        """
-        Settings for hardware validation performed by the `anta_runner` role.
-        If `enabled` is set to
-        `false`, all other keys in this dictionary are ignored.
-
-        For the `min_*` keys:
-        - Undefined
-        (Default): Validate that all available slots are populated.
-        - Positive Integer: Validate that the
-        number of components inserted is at least the specified minimum.
-        - 0: Skip the validation for this
-        specific component.
-        """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
         raw_eos_cli: str | None
@@ -26618,12 +26559,10 @@ class EosDesigns(EosDesignsRootModel):
                 reload_delay: ReloadDelay | UndefinedType = Undefined,
                 tcam_profile: str | None | UndefinedType = Undefined,
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
-                default_interface_mtu: int | None | UndefinedType = Undefined,
-                p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
+                max_mtu_size: int | None | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
-                validate_hardware: EosCliConfigGen.Metadata.ValidateHardware | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -26639,14 +26578,11 @@ class EosDesigns(EosDesignsRootModel):
                     reload_delay: Subclass of AvdModel.
                     tcam_profile: tcam_profile
                     lag_hardware_only: lag_hardware_only
-                    default_interface_mtu:
-                       Default interface MTU configured on EOS under "interface defaults".
-                       Takes precedence over the root
-                       key "default_interface_mtu".
-                    p2p_uplinks_mtu:
-                       Set MTU on point to point uplink interfaces.
-                       Takes precedence over the root key "p2p_uplinks_mtu".
-                       <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
+                    max_mtu_size:
+                       Set the maximum MTU size supported by the platform.
+                       This will be automatically enforce and evaluate
+                       the lowest common denominator set by "`<node_type>.uplink_mtu` -> `p2p_uplinks_mtu`" and
+                       `platform_families.max_mtu_size`.
                     feature_support: Subclass of AvdModel.
                     security_entropy_sources:
                        Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
@@ -26658,18 +26594,6 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
-                    validate_hardware:
-                       Settings for hardware validation performed by the `anta_runner` role.
-                       If `enabled` is set to
-                       `false`, all other keys in this dictionary are ignored.
-
-                       For the `min_*` keys:
-                       - Undefined
-                       (Default): Validate that all available slots are populated.
-                       - Positive Integer: Validate that the
-                       number of components inserted is at least the specified minimum.
-                       - 0: Skip the validation for this
-                       specific component.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
