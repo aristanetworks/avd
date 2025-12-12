@@ -76,6 +76,12 @@ logging:
           ports:
             - 100
             - 200
+    - name: VRFA
+      hosts:
+        - name: 1.2.3.4
+          protocol: udp
+        - name: 2001:db8::1:2:3:4
+          protocol: udp
   event:
     congestion_drops_interval: 10
     global_link_status: false

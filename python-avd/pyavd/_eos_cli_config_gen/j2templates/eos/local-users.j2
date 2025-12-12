@@ -6,7 +6,7 @@
 {# eos - local users #}
 {% if local_users is arista.avd.defined %}
 !
-{%     for local_user in local_users | arista.avd.natural_sort('name') %}
+{%     for local_user in local_users | arista.avd.natural_sort('name', ignore_case=false) %}
 {%         set local_user_cli = "username " ~ local_user.name %}
 {%         if local_user.disabled is arista.avd.defined(true) %}
 no {{ local_user_cli }}

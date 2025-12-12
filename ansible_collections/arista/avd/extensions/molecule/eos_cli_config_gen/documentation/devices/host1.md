@@ -1269,6 +1269,7 @@ cvx
 
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
+| SSHUSER | 15 | network-admin | False | - |
 | admin | 15 | network-admin | False | - |
 | admin1 | - | - | True | - |
 | ansible | 15 | network-admin | False | - |
@@ -1279,6 +1280,7 @@ cvx
 
 ```eos
 !
+username SSHUSER privilege 15 role network-admin nopassword
 username admin privilege 15 role network-admin nopassword
 no username admin1
 username ansible privilege 15 role network-admin secret sha512 <removed>
@@ -2307,6 +2309,8 @@ daemon random
 
 | VRF | Hosts | Ports | Protocol | SSL-profile |
 | --- | ----- | ----- | -------- | ----------- |
+| VRFA | 1.2.3.4 | Default | UDP | - |
+| VRFA | 2001:db8::1:2:3:4 | Default | UDP | - |
 | default | 20.20.20.7 | Default | UDP | - |
 | default | 50.50.50.7 | 100, 200 | TCP | - |
 | default | 60.60.60.7 | 100, 200 | UDP | - |
@@ -2344,6 +2348,8 @@ no logging trap
 logging console errors
 no logging monitor
 logging synchronous level warnings
+logging vrf VRFA host 1.2.3.4
+logging vrf VRFA host 2001:db8::1:2:3:4
 logging host 20.20.20.7
 logging host 50.50.50.7 100 200 protocol tcp
 logging host 60.60.60.7 100 200
