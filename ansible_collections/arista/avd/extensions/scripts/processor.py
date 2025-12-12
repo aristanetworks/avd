@@ -7,7 +7,6 @@ from pathlib import Path
 
 import yaml
 
-# Configure Logging
 logging.basicConfig(level=logging.INFO, format="%(message)s", stream=sys.stdout)
 logger = logging.getLogger(__name__)
 
@@ -22,6 +21,22 @@ def load_file(filepath: str) -> list[str] | None:
         return f.read().splitlines()
 
 
+def is_strict_match(line: str, pattern: str) -> bool:
+    """
+    Checks if 'line' matches 'pattern' strictly.
+
+    Match is valid if:
+    1. line == pattern (Exact match)
+    2. line starts with "pattern " (Pattern followed by space)
+    """
+    clean_line = line.rstrip()
+
+    if clean_line == pattern:
+        return True
+
+    return clean_line.startswith(pattern + " ")
+
+
 def extract_section(lines: list[str], section_header: str) -> list[str]:
     """Extracts a specific configuration section based on indentation."""
     buffer: list[str] = []
@@ -30,13 +45,13 @@ def extract_section(lines: list[str], section_header: str) -> list[str]:
     for line in lines:
         stripped = line.strip()
 
-        # Check start of section
-        if line.startswith(section_header) and not capture:
-            capture = True
-            buffer.append(line)
-            continue
+        if not capture:
+            match = is_strict_match(line, section_header)
+            if match:
+                capture = True
+                buffer.append(line)
+                continue
 
-        # Capture logic
         if capture:
             if not stripped:
                 continue
@@ -53,28 +68,20 @@ def extract_section(lines: list[str], section_header: str) -> list[str]:
 
 
 def apply_filters(block: list[str], filters: list[str]) -> list[str]:
-    """
-    Filters a captured block hierarchically.
-
-    - If a line matches a filter: Keep it, and auto-keep all its children.
-    - If a line fails filter: Skip it, and auto-skip all its children.
-    """
+    """Filters a captured block hierarchically with strict matching."""
     if not block or not filters:
         return block
 
-    # Always keep the main header (e.g., 'router bgp...')
     filtered_block: list[str] = [block[0]]
 
-    # State tracking
     keep_barrier: int | None = None
     skip_barrier: int | None = None
+    pending_separator: str | None = None
 
-    # Iterate content lines (skipping the header at index 0)
     for line in block[1:]:
         stripped_line = line.strip()
 
-        # If blank line, preserve if we are in a 'keep' block, otherwise skip?
-        # Usually safer to skip unless we are strictly keeping children.
+        # Preserve blank lines only if we are inside a kept block
         if not stripped_line:
             if keep_barrier is not None:
                 filtered_block.append(line)
@@ -82,30 +89,38 @@ def apply_filters(block: list[str], filters: list[str]) -> list[str]:
 
         current_indent = len(line) - len(line.lstrip())
 
-        # 1. Check if we are stuck in a "Skip Block" (children of a rejected parent)
+        # 1. Skip Barrier Check
         if skip_barrier is not None:
             if current_indent > skip_barrier:
-                continue  # Strictly skip this child
-            # We have returned to the parent level or higher
+                continue
             skip_barrier = None
 
-        # 2. Check if we are inside a "Keep Block" (children of an accepted parent)
+        # 2. Keep Barrier Check
         if keep_barrier is not None:
             if current_indent > keep_barrier:
-                filtered_block.append(line)  # Automatically keep child
+                filtered_block.append(line)
                 continue
-            # We have returned to the parent level or higher
             keep_barrier = None
 
-        # 3. Decision Time: We are at a new "node" in the config tree
-        # Check if this line matches any user filter
-        is_match = any(stripped_line.startswith(f) for f in filters)
+        # 3. Special Handling for Separators (!)
+        if stripped_line == "!":
+            pending_separator = line
+            continue
+
+        # 4. Filter Check
+        is_match = any(is_strict_match(stripped_line, f) for f in filters)
 
         if is_match:
+            # Inject buffered separator if it exists
+            if pending_separator:
+                filtered_block.append(pending_separator)
+                pending_separator = None
+
             filtered_block.append(line)
-            keep_barrier = current_indent  # Capture all children of this line
+            keep_barrier = current_indent
         else:
-            skip_barrier = current_indent  # Ignore all children of this line
+            skip_barrier = current_indent
+            pending_separator = None
 
     return filtered_block
 
@@ -123,7 +138,6 @@ def process_config(config_path: str, output_dir: str) -> None:
 
     for job in jobs:
         target_file: str = job.get("file")
-        # Sections can now be a list of Strings OR Dictionaries
         sections_def: list[str | dict] = job.get("sections", [])
         artifact_filename: str = job.get("artifact")
 
@@ -137,7 +151,6 @@ def process_config(config_path: str, output_dir: str) -> None:
         extracted_data: list[str] = []
 
         for item in sections_def:
-            # Determine if this is a simple string or a complex filter dict
             if isinstance(item, str):
                 header = item
                 filters = []
@@ -145,21 +158,14 @@ def process_config(config_path: str, output_dir: str) -> None:
                 header = item.get("header")
                 filters = item.get("filters", [])
             else:
-                logger.warning("Skipping invalid section definition: %s", item)
                 continue
 
-            # 1. Extract the full block first
             raw_block = extract_section(eos_lines, header)
 
             if raw_block:
-                # 2. Apply filters if they exist
-                if filters:
-                    logger.info("  > Filtering block '%s' with %d filters", header, len(filters))
-                    final_block = apply_filters(raw_block, filters)
-                else:
-                    final_block = raw_block
+                final_block = apply_filters(raw_block, filters) if filters else raw_block
 
-                # 3. Cleanup trailing '!'
+                # Clean up any trailing separators that might have been left over
                 while final_block and final_block[-1].strip() == "!":
                     final_block.pop()
 
