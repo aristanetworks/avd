@@ -1,17 +1,11 @@
 ---
 - file: inventory/intended/configs/dc1-leaf1a.cfg
   sections:
-    - header: "vlan 11"
-    - header: "interface Port-Channel3"
-    - header: "router bgp 65101"
-      filters:
-        - "neighbor EVPN-OVERLAY-PEERS"
-        - "vrf VRF10"
-  artifact: "ce_artifact.cfg"
+    - header: "interface Ethernet1"
+  artifact: "WEB-SERVER-01.cfg"
 
-- file: inventory/intended/configs/dc1-leaf1b.cfg
+- file: inventory/intended/configs/dc1-leaf1a.cfg
   sections:
-    - header: "daemon TerminAttr"
-    - header: "service routing protocols model multi-agent"
-    - header: "router bgp 65101"
-  artifact: "leaf1b_artifact.cfg"
+    - header: "interface Port-Channel11"
+    - header: "interface Ethernet11"
+  artifact: "ESXI-HOST-03.cfg"

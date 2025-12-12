@@ -7,7 +7,7 @@
   vars:
     script_path: "../../scripts/processor.py"
     config_file: "artifacts.yml"
-    output_dir: "doc_artifacts"
+    output_dir: "../../../../../../docs/howto/connected_endpoints/artifacts/"
 
   tasks:
     - name: Sanity check - config exists

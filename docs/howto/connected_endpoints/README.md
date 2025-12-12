@@ -35,28 +35,9 @@ Profiles are defined under the `port_profiles` key.
 This would typically be in a shared file like `group_vars/FABRIC.yml` or in a dedicated file `group_vars/PROFILES.yml` if you have a large fabric.
 
 ```yaml
-port_profiles:
-
-  - profile: PP-WEBSERVER # (1)!
-    mode: access
-    vlans: "10"
-    spanning_tree_portfast: edge
-    storm_control:
-      - action: drop
-        level: "10"
-        unit: percent
-
-  - profile: PP-VMHOST-LACP # (2)!
-    mode: trunk
-    vlans: "20,30"
-    port_channel:
-      mode: active
-    spanning_tree_portfast: edge
-
-  - profile: PP-FIREWALL-TRUNK # (3)!
-    mode: trunk
-    vlans: "10,20,30,100"
-    native_vlan: 100
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC1/port_profiles.yml
+--8<--
 ```
 
 1. Profile for a single-homed server in VLAN 10
@@ -81,20 +62,9 @@ For each endpoint, you define its **adapters**. An adapter represents a network 
 This would typically be in `host_vars/leaf1.yml`.
 
 ``` yaml
-connected_endpoints:
-  - name: WEB-SERVER-01 # (1)!
-    adapters:
-      - switch_ports: [Ethernet1]
-        profile: PP-WEBSERVER
-        description: "Connects to WEB-SERVER-01 NIC1"
-
-  - name: ESXI-HOST-03 # (2)!
-    adapters:
-      - switch_ports: [Ethernet5, Ethernet6]
-        profile: PP-VMHOST-LACP
-        description: "LACP bundle to ESXI-HOST-03"
-        port_channel:
-          channel_id: 3 # (3)!
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/CONNECTED_ENDPOINTS/ce1.yml
+--8<--
 ```
 
 1. Endpoint 1: A single-homed web server
@@ -110,35 +80,17 @@ Using the examples above, AVD would generate the following EOS configuration on 
 ### Code snippet for WEB-SERVER-01
 
 ```cli
-interface Ethernet1
-   description Connects to WEB-SERVER-01 NIC1
-   switchport
-   switchport mode access
-   switchport access vlan 10
-   spanning-tree portfast edge
-   storm-control all level 10
-!
+--8<--
+docs/howto/connected_endpoints/artifacts/WEB-SERVER-01.cfg
+--8<--
 ```
 
 ### Code snippet for ESXI-HOST-03
 
 ```cli
-interface Port-Channel3
-   description LACP bundle to ESXI-HOST-03
-   switchport
-   switchport mode trunk
-   switchport trunk allowed vlan 20,30
-   spanning-tree portfast edge
-   mlag 3
-!
-interface Ethernet5
-   description LACP bundle to ESXI-HOST-03_Po3
-   channel-group 3 mode active
-!
-interface Ethernet6
-   description LACP bundle to ESXI-HOST-03_Po3
-   channel-group 3 mode active
-!
+--8<--
+docs/howto/connected_endpoints/artifacts/ESXI-HOST-03.cfg
+--8<--
 ```
 
 *(Note: `mlag 3` is automatically added by AVD if the Port-Channel ID is also configured on another MLAG peer.)*
