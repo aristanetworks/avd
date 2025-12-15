@@ -23,7 +23,7 @@
 {%     endif %}
 {%     if ip_http_client is arista.avd.defined %}
 {%         if ip_http_client.source_interface is arista.avd.defined %}
-{{ "ip http client local-interface " ~ ip_http_client.source_interface }}
+ip http client local-interface {{ ip_http_client.source_interface }}
 {%         endif %}
 {%         for vrf in ip_http_client.vrfs | arista.avd.natural_sort("name", ignore_case=false) %}
 ip http client local-interface {{ vrf.source_interface }} vrf {{ vrf.name }}
@@ -31,10 +31,10 @@ ip http client local-interface {{ vrf.source_interface }} vrf {{ vrf.name }}
 {%     endif %}
 {%     if ip_ssh_client is arista.avd.defined %}
 {%         if ip_ssh_client.source_interface is arista.avd.defined %}
-{{ "ip ssh client source-interface " ~ ip_ssh_client.source_interface | capitalize }}
+ip ssh client source-interface {{ ip_ssh_client.source_interface | capitalize }}
 {%         endif %}
 {%         for vrf in ip_ssh_client.vrfs | arista.avd.natural_sort("name", ignore_case=false) %}
-{{ "ip ssh client source-interface " ~ vrf.source_interface | capitalize ~ " vrf " ~ vrf.name }}
+ip ssh client source-interface {{ vrf.source_interface | capitalize }} vrf {{ vrf.name }}
 {%         endfor %}
 {%     endif %}
 {%     if ip_ssh_client_source_interfaces is arista.avd.defined %}
