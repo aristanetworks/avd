@@ -78,7 +78,7 @@ class DaemonTerminattrMixin(Protocol):
             disable_aaa=cv_settings.terminattr.disable_aaa,
         )
 
-        if enable_export_to_cloudvision:
+        if first_tracker_exporting_to_cloudvision != "":
             flow_tracking_vrf = self.shared_utils.get_vrf(
                 flow_tracking_settings.cloudvision_exporter.vrf, context="flow_tracking_settings.export_to_cloudvision.vrf"
             )
