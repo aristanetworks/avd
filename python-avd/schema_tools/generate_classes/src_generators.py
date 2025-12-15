@@ -175,7 +175,7 @@ class ModelSrc:
 
     name: str
     classes: list[ModelSrc | ListSrc]
-    fields: list[FieldSrc | None]
+    fields: list[FieldSrc]
     class_vars: list[ClassVarSrc] | None = None
     imports: set[str] | None = None
     base_classes: list[str] | None = None

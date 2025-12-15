@@ -5,14 +5,27 @@ from __future__ import annotations
 
 from functools import cached_property
 from keyword import iskeyword
-from typing import Generic, TypeVar
-
-from schema_tools.metaschema.meta_schema_model import AvdSchemaBool, AvdSchemaDict, AvdSchemaField, AvdSchemaInt, AvdSchemaList, AvdSchemaStr
+from typing import TYPE_CHECKING, Generic, Literal, TypeVar
 
 from .src_generators import ClassVarSrc, FieldSrc, FieldTypeHintSrc, ListSrc, LiteralSrc, ModelSrc, SrcData
 from .utils import generate_class_name, generate_class_name_from_ref
 
-SchemaClasses = AvdSchemaBool | AvdSchemaDict | AvdSchemaInt | AvdSchemaList | AvdSchemaStr | AvdSchemaField
+if TYPE_CHECKING:
+    from schema_tools.metaschema.meta_schema_model import (
+        AvdSchemaBool,  # noqa: TC004
+        AvdSchemaDict,  # noqa: TC004
+        AvdSchemaInt,  # noqa: TC004
+        AvdSchemaList,  # noqa: TC004
+        AvdSchemaStr,  # noqa: TC004
+    )
+
+    # Define the type alias using the imported types for the type checker
+    SchemaClasses = AvdSchemaBool | AvdSchemaDict | AvdSchemaInt | AvdSchemaList | AvdSchemaStr
+else:
+    # At runtime, we only need the string names for the type hint to work
+    # and to avoid the circular import.
+    SchemaClasses = Literal["AvdSchemaBool", "AvdSchemaDict", "AvdSchemaInt", "AvdSchemaList", "AvdSchemaStr"]
+
 T = TypeVar("T", bound=SchemaClasses)
 
 
@@ -308,7 +321,7 @@ class SrcGenDict(SrcGenBase[AvdSchemaDict]):
         """Return a set of strings with Python imports that are needed for this class or field. Only used for rootdict."""
         return set()
 
-    def get_children_classes_and_fields(self) -> tuple[list[ModelSrc | ListSrc], list[FieldSrc | None]]:
+    def get_children_classes_and_fields(self) -> tuple[list[ModelSrc | ListSrc], list[FieldSrc]]:
         """Return lists of ModelSrc and FieldSrc for any nested fields."""
         classes = []
         fields = []
@@ -379,7 +392,7 @@ class SrcGenRootDict(SrcGenDict):
 
         return imports
 
-    def get_children_classes_and_fields(self) -> tuple[list[ModelSrc | ListSrc], list[FieldSrc | None]]:
+    def get_children_classes_and_fields(self) -> tuple[list[ModelSrc | ListSrc], list[FieldSrc]]:
         """
         Return lists of ModelSrc and FieldSrc for any nested fields.
 
@@ -450,26 +463,23 @@ class SrcGenRootDict(SrcGenDict):
                 dynamic_key_model_name = generate_class_name(f"dynamic_{dynamic_key_type}")
                 _dynamic_key_maps.append({"dynamic_keys_path": dynamic_keys_path, "model_key": dynamic_key_type})
                 fieldsrc = childschema._generate_class_src(class_name=generate_class_name(dynamic_key_type))
+                fields = [
+                    FieldSrc(
+                        name="key", field_type="str", type_hints=[FieldTypeHintSrc(field_type="str")], description="Key used as dynamic key", optional=False
+                    )
+                ]
                 # Overriding the details from the autocreated field. This way we can reuse the field definition with types and type hints
                 if fieldsrc.field is not None:
                     fieldsrc.field.name = "value"
                     fieldsrc.field.description = "Value of dynamic key"
+                    fields.append(fieldsrc.field)
                 dyn_classes.extend(
                     [
                         ModelSrc(
                             name=f"{dynamic_key_model_name}Item",
                             # Reversing the order to ensure we put items before the class needing it.
                             classes=[cls for cls in [*reversed(fieldsrc.item_classes or []), fieldsrc.cls] if cls is not None],
-                            fields=[
-                                FieldSrc(
-                                    name="key",
-                                    field_type="str",
-                                    type_hints=[FieldTypeHintSrc(field_type="str")],
-                                    description="Key used as dynamic key",
-                                    optional=False,
-                                ),
-                                fieldsrc.field,
-                            ],
+                            fields=fields,
                         ),
                         ListSrc(
                             name=dynamic_key_model_name,
