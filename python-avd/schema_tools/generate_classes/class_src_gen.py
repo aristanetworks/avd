@@ -5,22 +5,26 @@ from __future__ import annotations
 
 from functools import cached_property
 from keyword import iskeyword
-from typing import TYPE_CHECKING
+from typing import Generic, TypeVar
+
+from schema_tools.metaschema.meta_schema_model import AvdSchemaBool, AvdSchemaDict, AvdSchemaField, AvdSchemaInt, AvdSchemaList, AvdSchemaStr
 
 from .src_generators import ClassVarSrc, FieldSrc, FieldTypeHintSrc, ListSrc, LiteralSrc, ModelSrc, SrcData
 from .utils import generate_class_name, generate_class_name_from_ref
 
-if TYPE_CHECKING:
-    from schema_tools.metaschema.meta_schema_model import AvdSchemaBool, AvdSchemaDict, AvdSchemaField, AvdSchemaInt, AvdSchemaList, AvdSchemaStr
+SchemaClasses = AvdSchemaBool | AvdSchemaDict | AvdSchemaInt | AvdSchemaList | AvdSchemaStr | AvdSchemaField
+T = TypeVar("T", bound=SchemaClasses)
 
 
-class SrcGenBase:
+class SrcGenBase(Generic[T]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
 
     # TODO: add deprecation handling
     #       dynamic_valid_values
 
-    def generate_class_src(self, schema: AvdSchemaField, class_name: str | None = None) -> SrcData:
+    schema: T
+
+    def generate_class_src(self, schema: T, class_name: str | None = None) -> SrcData:
         """
         Returns SrcData for the given schema.
 
@@ -106,10 +110,8 @@ class SrcGenBase:
         return None
 
 
-class SrcGenInt(SrcGenBase):
+class SrcGenInt(SrcGenBase[AvdSchemaInt]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
-
-    schema: AvdSchemaInt
 
     @cached_property
     def class_src(self) -> LiteralSrc | None:
@@ -120,16 +122,12 @@ class SrcGenInt(SrcGenBase):
         return LiteralSrc(self.get_class_name(), self.schema.valid_values)
 
 
-class SrcGenBool(SrcGenBase):
+class SrcGenBool(SrcGenBase[AvdSchemaBool]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
 
-    schema: AvdSchemaBool
 
-
-class SrcGenStr(SrcGenBase):
+class SrcGenStr(SrcGenBase[AvdSchemaStr]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
-
-    schema: AvdSchemaStr
 
     def get_default(self) -> str | None:
         """Returns the default value from the schema as a source code string."""
@@ -146,28 +144,22 @@ class SrcGenStr(SrcGenBase):
         return LiteralSrc(self.get_class_name(), self.schema.valid_values)
 
 
-class SrcGenList(SrcGenBase):
+class SrcGenList(SrcGenBase[AvdSchemaList]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
-
-    schema: AvdSchemaList
 
     def get_type(self) -> str:
         if self.schema.field_ref:
             return generate_class_name_from_ref(self.schema.field_ref)
         return self.get_class_name()
 
-    def generate_class_src(self, schema: AvdSchemaField, class_name: str | None = None) -> SrcData:
+    def generate_class_src(self, schema: AvdSchemaList, class_name: str | None = None) -> SrcData:
         """
         Returns SrcData for the given schema.
 
         Recursively walks child schemas and creates nested classes and fields.
         """
         # getting circular import error
-        from schema_tools.metaschema.meta_schema_model import AvdSchemaList  # noqa: PLC0415
 
-        if not isinstance(schema, AvdSchemaList):
-            msg = f"SrcGenList.generate_class_src only accepts 'AvdSchemaList' as 'schema' argument but received '{type(schema)}'."
-            raise TypeError(msg)
         self.schema = schema
         self.class_name = class_name
 
@@ -273,10 +265,8 @@ class SrcGenList(SrcGenBase):
         return imports
 
 
-class SrcGenDict(SrcGenBase):
+class SrcGenDict(SrcGenBase[AvdSchemaDict]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
-
-    schema: AvdSchemaDict
 
     def get_type(self) -> str:
         if self.schema.field_ref:
