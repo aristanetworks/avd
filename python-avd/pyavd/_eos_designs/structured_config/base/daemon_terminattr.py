@@ -22,7 +22,7 @@ class DaemonTerminattrMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    def _validate_cv_settings(self: AvdStructuredConfigBaseProtocol, enable_export_to_cloudvision: bool, tracker_name: str) -> None | bool:
+    def _validate_cv_settings(self: AvdStructuredConfigBaseProtocol, first_tracker_exporting_to_cloudvision: str) -> bool:
         """Validate that cv_settings is configured if CloudVision export is enabled for sFlow or flow tracking."""
         if not self.inputs.cv_settings:
             if enable_export_to_cloudvision:
