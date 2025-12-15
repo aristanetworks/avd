@@ -133,7 +133,7 @@ keys:
               description: |-
                 When set to `true`, AVD automatically:
                 Configure an Flow tracking for `127.0.0.1` port `4739` in the VRF defined in `cloudvision_exporter.vrf`.
-                Also configures the TerminAttr daemon to export ipfixaddr to this destination.
+                Also configures the TerminAttr daemon IPFIX Collector address to listen on for receiving IPFIX packets.
             exporters:
               type: list
               primary_key: name
