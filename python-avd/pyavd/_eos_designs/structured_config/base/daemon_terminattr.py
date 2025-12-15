@@ -51,14 +51,7 @@ class DaemonTerminattrMixin(Protocol):
         cv_settings = self.inputs.cv_settings
         sflow_settings = self.inputs.sflow_settings
         flow_tracking_settings = self.inputs.flow_tracking_settings
-        first_tracker_exported_to_cloudvision = next(
-            (
-                tracker.name 
-                for tracker in flow_tracking_settings.trackers 
-                if tracker.export_to_cloudvision
-            ),
-            "" 
-        )
+        first_tracker_exported_to_cloudvision = next((tracker.name for tracker in flow_tracking_settings.trackers if tracker.export_to_cloudvision), "")
 
         if self._validate_cv_settings(first_tracker_exported_to_cloudvision):
             return

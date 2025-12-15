@@ -51,7 +51,7 @@
     | [<samp>&nbsp;&nbsp;hardware</samp>](## "flow_tracking_settings.hardware") | Dictionary |  |  |  | The options relevant only for flow tracker type hardware. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;record</samp>](## "flow_tracking_settings.hardware.record") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;format_ipfix_standard_timestamps_counters</samp>](## "flow_tracking_settings.hardware.record.format_ipfix_standard_timestamps_counters") | Boolean |  |  |  | Enable software export of IPFIX data records. |
-    | [<samp>&nbsp;&nbsp;cloudvision_exporter</samp>](## "flow_tracking_settings.cloudvision_exporter") | Dictionary |  |  |  | Automatic flow tracking export to CloudVision. |
+    | [<samp>&nbsp;&nbsp;cloudvision_exporter</samp>](## "flow_tracking_settings.cloudvision_exporter") | Dictionary |  |  |  | Configuration for the exporter to CloudVision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "flow_tracking_settings.cloudvision_exporter.name") | String |  | `CLOUDVISION` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "flow_tracking_settings.cloudvision_exporter.vrf") | String |  | `use_default_mgmt_method_vrf` |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure under the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure under the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "flow_tracking_settings.cloudvision_exporter.source_interface") | String |  |  |  | Local interface used to connect to TerminAttr on EOS.<br>If not set, the local interface may be set automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`. |
@@ -64,7 +64,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;record_export</samp>](## "flow_tracking_settings.trackers.[].record_export") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on_inactive_timeout</samp>](## "flow_tracking_settings.trackers.[].record_export.on_inactive_timeout") | Integer |  |  | Min: 3000<br>Max: 900000 | Flow record inactive export timeout in milliseconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on_interval</samp>](## "flow_tracking_settings.trackers.[].record_export.on_interval") | Integer |  |  | Min: 1000<br>Max: 36000000 | Flow record export interval in milliseconds |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;export_to_cloudvision</samp>](## "flow_tracking_settings.trackers.[].export_to_cloudvision") | Boolean |  |  |  | When set to `true`, AVD automatically:<br>Configure an Flow tracking for `127.0.0.1` port `4739` in the VRF defined in `cloudvision_exporter.vrf`.<br>Also configures the TerminAttr daemon to export ipfixaddr to this destination. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;export_to_cloudvision</samp>](## "flow_tracking_settings.trackers.[].export_to_cloudvision") | Boolean |  |  |  | When set to `true`, AVD automatically:<br>Configure an Flow tracking for `127.0.0.1` port `4739` in the VRF defined in `cloudvision_exporter.vrf`.<br>Also configures the TerminAttr daemon IPFIX Collector address to listen on for receiving IPFIX packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exporters</samp>](## "flow_tracking_settings.trackers.[].exporters") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "flow_tracking_settings.trackers.[].exporters.[].name") | String | Required, Unique |  |  | Exporter Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;collectors</samp>](## "flow_tracking_settings.trackers.[].exporters.[].collectors") | List, items: Dictionary |  |  |  |  |
@@ -181,7 +181,7 @@
           # Enable software export of IPFIX data records.
           format_ipfix_standard_timestamps_counters: <bool>
 
-      # Automatic flow tracking export to CloudVision.
+      # Configuration for the exporter to CloudVision.
       cloudvision_exporter:
         name: <str; default="CLOUDVISION">
 
@@ -222,7 +222,7 @@
 
           # When set to `true`, AVD automatically:
           # Configure an Flow tracking for `127.0.0.1` port `4739` in the VRF defined in `cloudvision_exporter.vrf`.
-          # Also configures the TerminAttr daemon to export ipfixaddr to this destination.
+          # Also configures the TerminAttr daemon IPFIX Collector address to listen on for receiving IPFIX packets.
           export_to_cloudvision: <bool>
           exporters:
 

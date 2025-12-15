@@ -18157,8 +18157,8 @@ class EosDesigns(EosDesignsRootModel):
             When set to `true`, AVD automatically:
             Configure an Flow tracking for `127.0.0.1` port `4739` in the
             VRF defined in `cloudvision_exporter.vrf`.
-            Also configures the TerminAttr daemon to export ipfixaddr
-            to this destination.
+            Also configures the TerminAttr daemon IPFIX Collector
+            address to listen on for receiving IPFIX packets.
             """
             exporters: Exporters
             """Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`)."""
@@ -18191,8 +18191,8 @@ class EosDesigns(EosDesignsRootModel):
                            When set to `true`, AVD automatically:
                            Configure an Flow tracking for `127.0.0.1` port `4739` in the
                            VRF defined in `cloudvision_exporter.vrf`.
-                           Also configures the TerminAttr daemon to export ipfixaddr
-                           to this destination.
+                           Also configures the TerminAttr daemon IPFIX Collector
+                           address to listen on for receiving IPFIX packets.
                         exporters: Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`).
 
                     """
@@ -18238,7 +18238,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         cloudvision_exporter: CloudvisionExporter
         """
-        Automatic flow tracking export to CloudVision.
+        Configuration for the exporter to CloudVision.
 
         Subclass of AvdModel.
         """
@@ -18275,7 +18275,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     cloudvision_exporter:
-                       Automatic flow tracking export to CloudVision.
+                       Configuration for the exporter to CloudVision.
 
                        Subclass of AvdModel.
                     trackers: Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
