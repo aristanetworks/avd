@@ -44,7 +44,7 @@ flow_tracking:
         on_interval: 300321
       name: FLOW-TRACKER-10
       exporters:
-      - name: CLOUDVISION
+      - name: Exporter1
         collectors:
         - host: 127.0.0.1
         local_interface: Ethernet101

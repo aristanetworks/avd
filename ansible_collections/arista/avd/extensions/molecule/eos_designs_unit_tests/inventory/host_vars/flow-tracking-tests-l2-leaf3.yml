@@ -31,6 +31,7 @@ cv_settings:
 flow_tracking_settings:
   # Testing export_to_cloudvision for sampled
   cloudvision_exporter:
+    name: Exporter1
     source_interface: Ethernet101
     vrf: vrf_exporter
   trackers:

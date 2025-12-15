@@ -28,7 +28,8 @@ class DaemonTerminattrMixin(Protocol):
             if first_tracker_exporting_to_cloudvision:
                 msg = (
                     "CloudVision export is enabled for flow_tracking_settings, but 'cv_settings' is not defined."
-                    f" Please configure 'cv_settings' when enabling 'flow_tracking_settings.trackers[name={tracker_name}].export_to_cloudvision'."
+                    f" Please configure 'cv_settings' when enabling \
+                    'flow_tracking_settings.trackers[name={first_tracker_exporting_to_cloudvision}].export_to_cloudvision'."
                 )
                 raise AristaAvdInvalidInputsError(msg)
 
@@ -39,7 +40,7 @@ class DaemonTerminattrMixin(Protocol):
                 )
                 raise AristaAvdInvalidInputsError(msg)
             return True
-        return None
+        return False
 
     @structured_config_contributor
     def daemon_terminattr(self: AvdStructuredConfigBaseProtocol) -> None:
@@ -71,7 +72,7 @@ class DaemonTerminattrMixin(Protocol):
             disable_aaa=cv_settings.terminattr.disable_aaa,
         )
 
-        if first_tracker_exporting_to_cloudvision != "":
+        if first_tracker_exported_to_cloudvision != "":
             flow_tracking_vrf = self.shared_utils.get_vrf(
                 flow_tracking_settings.cloudvision_exporter.vrf, context="flow_tracking_settings.export_to_cloudvision.vrf"
             )
