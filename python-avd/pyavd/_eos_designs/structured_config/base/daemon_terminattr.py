@@ -51,15 +51,16 @@ class DaemonTerminattrMixin(Protocol):
         cv_settings = self.inputs.cv_settings
         sflow_settings = self.inputs.sflow_settings
         flow_tracking_settings = self.inputs.flow_tracking_settings
-        enable_export_to_cloudvision = False
-        tracker_name = ""
-        for tracker in flow_tracking_settings.trackers:
-            if tracker.export_to_cloudvision:
-                enable_export_to_cloudvision = True
-                tracker_name = tracker.name
-                break
+        first_tracker_exported_to_cloudvision = next(
+            (
+                tracker.name 
+                for tracker in flow_tracking_settings.trackers 
+                if tracker.export_to_cloudvision
+            ),
+            "" 
+        )
 
-        if self._validate_cv_settings(enable_export_to_cloudvision, tracker_name):
+        if self._validate_cv_settings(first_tracker_exported_to_cloudvision):
             return
 
         clusters: list[EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem] = (
