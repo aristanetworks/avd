@@ -25,7 +25,7 @@ class DaemonTerminattrMixin(Protocol):
     def _validate_cv_settings(self: AvdStructuredConfigBaseProtocol, first_tracker_exporting_to_cloudvision: str) -> bool:
         """Validate that cv_settings is configured if CloudVision export is enabled for sFlow or flow tracking."""
         if not self.inputs.cv_settings:
-            if enable_export_to_cloudvision:
+            if first_tracker_exporting_to_cloudvision:
                 msg = (
                     "CloudVision export is enabled for flow_tracking_settings, but 'cv_settings' is not defined."
                     f" Please configure 'cv_settings' when enabling 'flow_tracking_settings.trackers[name={tracker_name}].export_to_cloudvision'."
