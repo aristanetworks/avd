@@ -61,7 +61,7 @@ keys:
                 description: Enable software export of IPFIX data records.
       cloudvision_exporter:
         type: dict
-        description: Automatic flow tracking export to CloudVision.
+        description: Configuration for the exporter to CloudVision.
         keys:
           name:
             type: str
