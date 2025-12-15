@@ -162,7 +162,7 @@ class AvdDataConverter:
         schema_type = schema.get("type")
 
         # Get value from input data
-        value = data[index] # pyright: ignore[reportCallIssue, reportArgumentType]
+        value = data[index]  # pyright: ignore[reportCallIssue, reportArgumentType]
 
         # For simple conversions, skip conversion if the value is of the correct type
         # Avoid corner case where we want to convert bool to int. Bool is a subclass of Int so it passes the check above.
