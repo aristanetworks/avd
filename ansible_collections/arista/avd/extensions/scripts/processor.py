@@ -171,10 +171,12 @@ def process_config(config_path: str, output_dir: str) -> None:
 
                 extracted_data.extend(final_block)
                 extracted_data.append("!")
+
             else:
                 logger.warning("  > Section '%s' not found.", header)
 
         if extracted_data:
+            extracted_data[-1] = extracted_data[-1] + "\n"
             with full_output_path.open("w", encoding="utf-8") as out:
                 out.write("\n".join(extracted_data))
             logger.info("  > Saved to %s", full_output_path)
