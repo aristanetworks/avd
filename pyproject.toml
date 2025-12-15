@@ -171,7 +171,9 @@ exclude = [
   "ansible_collections/arista/avd",                                      # TODO
   "python-avd/pyavd/_cv",                                                # TODO
   "python-avd/pyavd/_schema",                                            # TODO
-  "python-avd/schema_tools",                                             # TODO
+  "python-avd/schema_tools/generate_classes",                            # TODO
+  "python-avd/schema_tools/generate_docs",                               # TODO
+  "python-avd/schema_tools/metaschema",                                  # TODO
   "python-avd/tests",                                                    # TODO
   # Excluded
   "python-avd/pyavd/_cv/api",

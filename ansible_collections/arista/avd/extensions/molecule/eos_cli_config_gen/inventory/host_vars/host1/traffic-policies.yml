@@ -8,6 +8,8 @@ traffic_policies:
       - name: SERVICE-DEMO
         port_range: "10,20,80,440-450"
       - name: SERVICE-DEMO2
+      - name: service-demo3
+        port_range: "20-25"
     ipv4:
       - name: DEMO-02
         prefixes:
@@ -23,6 +25,10 @@ traffic_policies:
           - 10.2.2.2/32
       - name: DEMO-03
   policies:
+    - name: policy1
+      default_actions:
+        ipv4:
+          drop: true
     - name: BLUE-C1-POLICY
       default_actions:
         ipv4:
