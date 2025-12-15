@@ -25,7 +25,7 @@
 {%         if ip_http_client.source_interface is arista.avd.defined %}
 {{ "ip http client local-interface " ~ ip_http_client.source_interface }}
 {%         endif %}
-{%         for vrf in ip_http_client.vrfs | arista.avd.natural_sort("name") %}
+{%         for vrf in ip_http_client.vrfs | arista.avd.natural_sort("name", ignore_case=false) %}
 {{ "ip http client local-interface " ~ vrf.source_interface ~ " vrf " ~ vrf.name }}
 {%         endfor %}
 {%     endif %}
