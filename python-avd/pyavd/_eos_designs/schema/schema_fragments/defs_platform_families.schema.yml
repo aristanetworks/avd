@@ -268,6 +268,9 @@ $defs:
                 Support for Precision Time Protocol (PTP).
                 The feature will be ignored on platforms where this is false.
               default: true
+        management_interface:
+          type: str
+          default: Management1
         security_entropy_sources:
           description: Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
           type: dict

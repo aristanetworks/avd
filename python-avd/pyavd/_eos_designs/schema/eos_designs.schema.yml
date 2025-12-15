@@ -12803,6 +12803,9 @@ $defs:
 
                 The feature will be ignored on platforms where this is false.'
               default: true
+        management_interface:
+          type: str
+          default: Management1
         security_entropy_sources:
           description: Entropy source improves the randomness of the numbers used
             to generate MACsec's cryptographic keys.
@@ -13257,9 +13260,6 @@ $defs:
           type: str
           description: Inherit settings from platform family name defined under `platform_families`.
           required: true
-        management_interface:
-          type: str
-          default: Management1
         poe:
           type: bool
           default: false

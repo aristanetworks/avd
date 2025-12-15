@@ -25795,6 +25795,7 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "max_mtu_size": {"type": int},
             "feature_support": {"type": FeatureSupport},
+            "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
             "digital_twin": {"type": DigitalTwin},
             "structured_config": {"type": EosCliConfigGen},
@@ -25817,6 +25818,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
+        management_interface: str
+        """Default value: `"Management1"`"""
         security_entropy_sources: SecurityEntropySources
         """
         Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
@@ -25848,6 +25851,7 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 max_mtu_size: int | None | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
+                management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
@@ -25871,6 +25875,7 @@ class EosDesigns(EosDesignsRootModel):
                        the lowest common denominator set by "`<node_type>.uplink_mtu` -> `p2p_uplinks_mtu`" and
                        `platform_families.max_mtu_size`.
                     feature_support: Subclass of AvdModel.
+                    management_interface: management_interface
                     security_entropy_sources:
                        Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
                        Subclass of AvdModel.
@@ -26506,6 +26511,7 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "max_mtu_size": {"type": int},
             "feature_support": {"type": FeatureSupport},
+            "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
             "digital_twin": {"type": DigitalTwin},
             "structured_config": {"type": EosCliConfigGen},
@@ -26528,6 +26534,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
+        management_interface: str
+        """Default value: `"Management1"`"""
         security_entropy_sources: SecurityEntropySources
         """
         Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
@@ -26559,6 +26567,7 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 max_mtu_size: int | None | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
+                management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
@@ -26582,6 +26591,7 @@ class EosDesigns(EosDesignsRootModel):
                        the lowest common denominator set by "`<node_type>.uplink_mtu` -> `p2p_uplinks_mtu`" and
                        `platform_families.max_mtu_size`.
                     feature_support: Subclass of AvdModel.
+                    management_interface: management_interface
                     security_entropy_sources:
                        Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
                        Subclass of AvdModel.
@@ -28189,18 +28199,11 @@ class EosDesigns(EosDesignsRootModel):
     class CustomPlatformSkusItem(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {
-            "name": {"type": str},
-            "platform_family": {"type": str},
-            "management_interface": {"type": str, "default": "Management1"},
-            "poe": {"type": bool, "default": False},
-        }
+        _fields: ClassVar[dict] = {"name": {"type": str}, "platform_family": {"type": str}, "poe": {"type": bool, "default": False}}
         name: str
         """Arista SKU name."""
         platform_family: str
         """Inherit settings from platform family name defined under `platform_families`."""
-        management_interface: str
-        """Default value: `"Management1"`"""
         poe: bool
         """
         Support for PoE.
@@ -28212,12 +28215,7 @@ class EosDesigns(EosDesignsRootModel):
         if TYPE_CHECKING:
 
             def __init__(
-                self,
-                *,
-                name: str | UndefinedType = Undefined,
-                platform_family: str | UndefinedType = Undefined,
-                management_interface: str | UndefinedType = Undefined,
-                poe: bool | UndefinedType = Undefined,
+                self, *, name: str | UndefinedType = Undefined, platform_family: str | UndefinedType = Undefined, poe: bool | UndefinedType = Undefined
             ) -> None:
                 """
                 CustomPlatformSkusItem.
@@ -28228,7 +28226,6 @@ class EosDesigns(EosDesignsRootModel):
                 Args:
                     name: Arista SKU name.
                     platform_family: Inherit settings from platform family name defined under `platform_families`.
-                    management_interface: management_interface
                     poe:
                        Support for PoE.
                        The feature will be ignored on platforms where this is false.
@@ -28245,18 +28242,11 @@ class EosDesigns(EosDesignsRootModel):
     class PlatformSkusItem(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {
-            "name": {"type": str},
-            "platform_family": {"type": str},
-            "management_interface": {"type": str, "default": "Management1"},
-            "poe": {"type": bool, "default": False},
-        }
+        _fields: ClassVar[dict] = {"name": {"type": str}, "platform_family": {"type": str}, "poe": {"type": bool, "default": False}}
         name: str
         """Arista SKU name."""
         platform_family: str
         """Inherit settings from platform family name defined under `platform_families`."""
-        management_interface: str
-        """Default value: `"Management1"`"""
         poe: bool
         """
         Support for PoE.
@@ -28268,12 +28258,7 @@ class EosDesigns(EosDesignsRootModel):
         if TYPE_CHECKING:
 
             def __init__(
-                self,
-                *,
-                name: str | UndefinedType = Undefined,
-                platform_family: str | UndefinedType = Undefined,
-                management_interface: str | UndefinedType = Undefined,
-                poe: bool | UndefinedType = Undefined,
+                self, *, name: str | UndefinedType = Undefined, platform_family: str | UndefinedType = Undefined, poe: bool | UndefinedType = Undefined
             ) -> None:
                 """
                 PlatformSkusItem.
@@ -28284,7 +28269,6 @@ class EosDesigns(EosDesignsRootModel):
                 Args:
                     name: Arista SKU name.
                     platform_family: Inherit settings from platform family name defined under `platform_families`.
-                    management_interface: management_interface
                     poe:
                        Support for PoE.
                        The feature will be ignored on platforms where this is false.

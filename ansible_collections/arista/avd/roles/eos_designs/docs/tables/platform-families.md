@@ -68,6 +68,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow_subinterfaces</samp>](## "custom_platform_families.[].feature_support.sflow_subinterfaces") | Boolean |  | `True` |  | Support for sFlow on sub-interfaces.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan</samp>](## "custom_platform_families.[].feature_support.wan") | Boolean |  | `True` |  | Support for Arista WAN features.<br>An error will be raised if the feature is enabled and this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "custom_platform_families.[].feature_support.ptp") | Boolean |  | `True` |  | Support for Precision Time Protocol (PTP).<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "custom_platform_families.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "custom_platform_families.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "custom_platform_families.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;haveged</samp>](## "custom_platform_families.[].security_entropy_sources.haveged") | Boolean |  |  |  | Use the HAVEGE algorithm. |
@@ -139,6 +140,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow_subinterfaces</samp>](## "platform_families.[].feature_support.sflow_subinterfaces") | Boolean |  | `True` |  | Support for sFlow on sub-interfaces.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan</samp>](## "platform_families.[].feature_support.wan") | Boolean |  | `True` |  | Support for Arista WAN features.<br>An error will be raised if the feature is enabled and this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "platform_families.[].feature_support.ptp") | Boolean |  | `True` |  | Support for Precision Time Protocol (PTP).<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "platform_families.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "platform_families.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "platform_families.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;haveged</samp>](## "platform_families.[].security_entropy_sources.haveged") | Boolean |  |  |  | Use the HAVEGE algorithm. |
@@ -291,6 +293,7 @@
           # Support for Precision Time Protocol (PTP).
           # The feature will be ignored on platforms where this is false.
           ptp: <bool; default=True>
+        management_interface: <str; default="Management1">
 
         # Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
         security_entropy_sources:
@@ -462,6 +465,7 @@
           # Support for Precision Time Protocol (PTP).
           # The feature will be ignored on platforms where this is false.
           ptp: <bool; default=True>
+        management_interface: <str; default="Management1">
 
         # Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
         security_entropy_sources:
