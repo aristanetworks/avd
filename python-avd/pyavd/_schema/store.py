@@ -4,12 +4,13 @@
 from functools import lru_cache
 from pathlib import Path
 from pickle import load
+from typing import Any
 
 from .constants import PICKLED_SCHEMAS
 
 
 @lru_cache
-def create_store(*, load_from_yaml: bool = False) -> dict:
+def create_store(*, load_from_yaml: bool = False) -> dict[str, dict[str, Any]]:
     if load_from_yaml:
         msg = "'load_from_yaml' not supported for create_store under PyAVD"
         raise NotImplementedError(msg)
