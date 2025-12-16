@@ -761,8 +761,6 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    AvdDataValidationMode: TypeAlias = Literal["error", "warning"]
-
     class BfdMultihop(AvdModel):
         """Subclass of AvdModel."""
 
@@ -86741,7 +86739,6 @@ class EosDesigns(EosDesignsRootModel):
         "aaa_settings": {"type": AaaSettings},
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
-        "avd_data_validation_mode": {"type": str, "default": "error"},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_debug": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
@@ -87291,19 +87288,6 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
-    avd_data_validation_mode: AvdDataValidationMode
-    """
-    Validation Mode for AVD input data validation.
-    Input data validation will validate the input
-    variables according to the schema.
-    During validation, messages will generated with information about
-    the host(s) and key(s) which failed validation.
-    "error" will produce error messages and fail the
-    task.
-    "warning" will produce warning messages.
-
-    Default value: `"error"`
-    """
     avd_digital_twin_mode: bool
     """
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -89258,7 +89242,6 @@ class EosDesigns(EosDesignsRootModel):
             aaa_settings: AaaSettings | UndefinedType = Undefined,
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
-            avd_data_validation_mode: AvdDataValidationMode | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_debug: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
@@ -89473,15 +89456,6 @@ class EosDesigns(EosDesignsRootModel):
                 aaa_settings: Subclass of AvdModel.
                 address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
-                avd_data_validation_mode:
-                   Validation Mode for AVD input data validation.
-                   Input data validation will validate the input
-                   variables according to the schema.
-                   During validation, messages will generated with information about
-                   the host(s) and key(s) which failed validation.
-                   "error" will produce error messages and fail the
-                   task.
-                   "warning" will produce warning messages.
                 avd_digital_twin_mode:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
